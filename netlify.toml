@@ -1,0 +1,28 @@
+# Configuration Netlify — MBC La Montagne Basket Club
+
+# Cache modéré sur les assets (noms de fichiers stables, pas de hash) :
+# 1 jour, revalidation possible -> évite de figer une image mise à jour.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# Vidéos : fichiers plus lourds, cache un peu plus long tout en restant remplaçable.
+[[headers]]
+  for = "/assets/videos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+
+# HTML toujours frais
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Sécurité de base
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

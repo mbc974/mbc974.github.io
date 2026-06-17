@@ -1,0 +1,19 @@
+{
+  "name": "MBC La Montagne Basket Club",
+  "short_name": "MBC974",
+  "description": "Club de basket à La Montagne, Saint-Denis, La Réunion.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0D1526",
+  "theme_color": "#0D1526",
+  "icons": [
+    {
+      "src": "assets/icons/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
