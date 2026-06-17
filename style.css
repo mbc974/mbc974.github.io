@@ -3865,3 +3865,58 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero::before,.kit-card::before,.kit-card__season::after,.float-cta::after{display:none}
   .g-tile figcaption{transform:none!important;opacity:1!important}
 }
+
+/* ============================================================
+   V16 "VITRINE" — staff agrandi, logos sponsors agrandis,
+   cascades (galerie / L'essentiel) + interactions curseur premium
+   ============================================================ */
+
+/* ---- Staff : cartes & photos agrandies (surtout mobile / tablette) ---- */
+.staff-grid{max-width:480px}
+@media (min-width:560px){.staff-grid{grid-template-columns:repeat(2,1fr);max-width:880px;gap:1.5rem}}
+@media (min-width:980px){.staff-grid{grid-template-columns:repeat(3,1fr);max-width:1200px;gap:1.7rem}}
+.staff-card__name{font-size:1.7rem}
+
+/* ---- Sponsors & mécènes : logos nettement plus grands ---- */
+.partner-wall .partner-card{height:clamp(150px,14vw,190px)!important;min-height:150px!important}
+.partner-wall .partner-card picture{height:112px!important}
+.partner-wall .partner-logo--round{max-width:100%!important;max-height:100%!important}
+.partner-wall .partner-logo--wide{max-width:100%!important;max-height:100%!important}
+.partner-wall .partner-logo--boost{width:126%!important;height:116%!important}
+.partner-wall .partner-card__name{font-size:.8rem}
+
+/* ---- Cascade d'apparition : galerie matchday + L'essentiel ---- */
+@media (prefers-reduced-motion:no-preference){
+  .gallery-mosaic.in .g-tile{animation:sigFadeIn .6s var(--ease-out) backwards}
+  .gallery-mosaic.in .g-tile:nth-child(2){animation-delay:.08s}
+  .gallery-mosaic.in .g-tile:nth-child(3){animation-delay:.16s}
+  .gallery-mosaic.in .g-tile:nth-child(4){animation-delay:.24s}
+  .gallery-mosaic.in .g-tile:nth-child(5){animation-delay:.32s}
+  .essentiel-grid.in .essentiel-card{animation:sigFadeIn .55s var(--ease-out) backwards}
+  .essentiel-grid.in .essentiel-card:nth-child(2){animation-delay:.06s}
+  .essentiel-grid.in .essentiel-card:nth-child(3){animation-delay:.12s}
+  .essentiel-grid.in .essentiel-card:nth-child(4){animation-delay:.18s}
+  .essentiel-grid.in .essentiel-card:nth-child(5){animation-delay:.24s}
+  .essentiel-grid.in .essentiel-card:nth-child(6){animation-delay:.3s}
+}
+
+/* ---- Scroll-ball : légère pulsation "dribble" (desktop) ---- */
+@media (min-width:760px) and (prefers-reduced-motion:no-preference){
+  .scroll-bar::after{animation:ballPulse 2.4s ease-in-out infinite}
+}
+@keyframes ballPulse{0%,100%{box-shadow:0 0 10px 2px rgba(232,130,42,.7),0 0 0 2px rgba(7,13,24,.55)}50%{box-shadow:0 0 17px 5px rgba(232,130,42,.92),0 0 0 2px rgba(7,13,24,.55)}}
+
+/* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop, JS pose --bx/--by) ---- */
+.btn--primary,.btn--roi{--bx:50%;--by:50%}
+.btn--primary::before,.btn--roi::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(100px circle at var(--bx) var(--by),rgba(255,255,255,.5),transparent 60%);opacity:0;transition:opacity .35s var(--ease-out);pointer-events:none;mix-blend-mode:soft-light}
+.btn--primary:hover::before,.btn--roi:hover::before{opacity:1}
+
+/* ---- Hero crest : retour fluide après le parallaxe souris ---- */
+.hero__crest--giant{transition:transform .4s var(--ease-out)}
+
+/* ---- a11y : neutralise les nouveaux effets si prefers-reduced-motion ---- */
+@media (prefers-reduced-motion:reduce){
+  .gallery-mosaic.in .g-tile,.essentiel-grid.in .essentiel-card,.scroll-bar::after{animation:none!important}
+  .btn--primary::before,.btn--roi::before{display:none}
+  .hero__crest--giant{transition:none}
+}

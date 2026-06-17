@@ -317,4 +317,36 @@
       });
     });
   }
+
+  /* ---- Hero crest : parallaxe doux à la souris (desktop uniquement) ---- */
+  const crest = document.querySelector('.hero__crest--giant');
+  if (crest && hero && finePointer && !reduceMotion) {
+    let craf = null;
+    hero.addEventListener('pointerenter', function () { crest.style.animation = 'none'; });
+    hero.addEventListener('pointermove', function (e) {
+      const r = hero.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      if (craf) cancelAnimationFrame(craf);
+      craf = requestAnimationFrame(function () {
+        crest.style.transform = 'translate3d(' + (px * 24).toFixed(1) + 'px,' + (py * 16).toFixed(1) + 'px,0) rotate(' + (px * 2.5).toFixed(2) + 'deg)';
+      });
+    });
+    hero.addEventListener('pointerleave', function () {
+      if (craf) cancelAnimationFrame(craf);
+      crest.style.transform = '';
+      crest.style.animation = '';
+    });
+  }
+
+  /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop uniquement) ---- */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('.btn--primary,.btn--roi').forEach(function (btn) {
+      btn.addEventListener('pointermove', function (e) {
+        const r = btn.getBoundingClientRect();
+        btn.style.setProperty('--bx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        btn.style.setProperty('--by', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      });
+    });
+  }
 })();
