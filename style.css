@@ -3781,3 +3781,87 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 
 /* ---- CTA flottant mobile : respect des safe areas (encoche / barre home iPhone) ---- */
 .float-cta{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+
+/* ============================================================
+   V15 "SIGNATURE" — identité d'animation basket premium
+   Priorité transform/opacity · mobile allégé · a11y respectée
+   ============================================================ */
+
+/* ---- 1. Scroll-bar : ballon orange qui suit la trajectoire de lecture ---- */
+.scroll-bar{overflow:visible}
+.scroll-bar::after{content:"";position:absolute;right:-3px;top:50%;width:9px;height:9px;border-radius:50%;background:var(--orange-vif);box-shadow:0 0 10px 2px rgba(232,130,42,.7),0 0 0 2px rgba(7,13,24,.55);transform:translateY(-50%)}
+
+/* ---- 1b. Hero "tip-off" : un seul balayage lumineux à l'entrée (pas de clignotement) ---- */
+.hero::before{content:"";position:absolute;top:0;left:0;width:36%;height:100%;z-index:2;pointer-events:none;background:linear-gradient(105deg,transparent,rgba(232,130,42,.12),rgba(255,255,255,.07),transparent);transform:translateX(-140%) skewX(-12deg);opacity:0}
+.hero.in::before{animation:heroTipOff 1.5s var(--ease-out) .25s 1 backwards}
+@keyframes heroTipOff{0%{transform:translateX(-140%) skewX(-12deg);opacity:0}22%{opacity:1}100%{transform:translateX(330%) skewX(-12deg);opacity:0}}
+
+/* ---- 3. Catégories : numéro "scoreboard" + lien plus vivant au survol ---- */
+.cat__num{transition:color .45s var(--ease-out),text-shadow .45s var(--ease-out)}
+.cat:hover .cat__num{color:rgba(232,130,42,.18);text-shadow:0 0 24px rgba(232,130,42,.35)}
+/* le CTA "Je veux m'inscrire" s'anime dès le survol de toute la carte (l'aiguille avance) */
+.cat:hover .cat__link{gap:.85em}
+
+/* ---- 4. Maillots : reflet diagonal au survol + badge saison animé ---- */
+.kit-card{position:relative}
+.kit-card::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.30) 49%,transparent 58%);transform:translateX(-120%);opacity:0;transition:opacity .25s}
+.kit-card:hover::before{opacity:1;animation:kitSheen 1.05s var(--ease-out) 1}
+@keyframes kitSheen{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.kit-card__season{position:absolute;top:1rem;right:1rem;z-index:3;overflow:hidden;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem;color:var(--bleu-glacier);background:rgba(7,13,24,.5);border:1px solid rgba(191,210,228,.22);padding:.36em .8em;border-radius:999px;backdrop-filter:blur(6px)}
+.kit-card__season::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.45) 50%,transparent 58%);transform:translateX(-130%);animation:seasonShine 7s ease-in-out 2.5s infinite}
+@keyframes seasonShine{0%,84%{transform:translateX(-130%)}93%,100%{transform:translateX(130%)}}
+
+/* ---- 5. Sponsors : mur premium — cascade des logos & des formules ---- */
+@media (prefers-reduced-motion:no-preference){
+  .partner-wall.in .partner-card{animation:sigFadeUp .55s var(--ease-out) backwards}
+  .partner-wall.in .partner-card:nth-child(2){animation-delay:.07s}
+  .partner-wall.in .partner-card:nth-child(3){animation-delay:.14s}
+  .partner-wall.in .partner-card:nth-child(4){animation-delay:.21s}
+  .partner-wall.in .partner-card:nth-child(5){animation-delay:.28s}
+  .packs.in .packs-grid--four .pack{animation:sigFadeIn .5s var(--ease-out) backwards}
+  .packs.in .packs-grid--four .pack:nth-child(2){animation-delay:.09s}
+  .packs.in .packs-grid--four .pack:nth-child(3){animation-delay:.18s}
+  .packs.in .packs-grid--four .pack:nth-child(4){animation-delay:.27s}
+}
+@keyframes sigFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes sigFadeIn{from{opacity:0}to{opacity:1}}
+/* MVP : badge "Populaire" qui respire légèrement (scale → pas de conflit avec son box-shadow !important) */
+.sponsor-pack.pack--feat .pack__tag{animation:mvpPulse 3.6s ease-in-out infinite}
+@keyframes mvpPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.07)}}
+
+/* ---- 6. Galerie matchday : légende qui remonte (souris fine uniquement) ---- */
+@media (hover:hover) and (pointer:fine){
+  .g-tile figcaption{transform:translateY(8px);opacity:.86;transition:transform .4s var(--ease-pop),opacity .4s}
+  .g-tile:hover figcaption{transform:translateY(0);opacity:1}
+}
+
+/* ---- 7. Calendrier scoreboard : horaires alignés + highlight orange au survol ---- */
+.cal2 .ctime{font-variant-numeric:tabular-nums;transition:color .25s,text-shadow .25s}
+.cal2-row:not(.cal2-row--head):hover .ctime{text-shadow:0 0 14px rgba(232,130,42,.55)}
+.cal2-row:not(.cal2-row--head):hover .cday{color:var(--orange-vif)}
+
+/* ---- 8. CTA flottant mobile : reflet "app native" toutes les ~12 s (bref, non permanent) ---- */
+.float-cta{overflow:hidden}
+.float-cta::after{content:"";position:absolute;top:0;left:0;width:42%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-180%) skewX(-18deg);pointer-events:none}
+.float-cta.show::after{animation:ctaShine 12s ease-in-out 4s infinite}
+@keyframes ctaShine{0%,90%{transform:translateX(-180%) skewX(-18deg)}97%,100%{transform:translateX(320%) skewX(-18deg)}}
+
+/* ---- 10. Micro-typo : "100 %" insécable (ne se coupe jamais en fin de ligne) ---- */
+.why-spon__big{white-space:nowrap}
+
+/* ---- 9. Perf mobile : aucun effet permanent lourd sous 760px ----
+   (le reflet du CTA flottant reste actif : c'est l'animation "app native"
+   voulue sur mobile, et elle est brève + compositor-friendly) */
+@media (max-width:759px){
+  .hero__crest--giant,.hero__halo,.hero__glow{animation:none}
+  .kit-card__season::after,.sponsor-pack.pack--feat .pack__tag{animation:none}
+}
+
+/* ---- a11y : neutralise toutes les nouvelles animations si prefers-reduced-motion ---- */
+@media (prefers-reduced-motion:reduce){
+  .hero.in::before,.kit-card:hover::before,.kit-card__season::after,
+  .sponsor-pack.pack--feat .pack__tag,.float-cta.show::after,
+  .partner-wall.in .partner-card,.packs.in .packs-grid--four .pack{animation:none!important}
+  .hero::before,.kit-card::before,.kit-card__season::after,.float-cta::after{display:none}
+  .g-tile figcaption{transform:none!important;opacity:1!important}
+}

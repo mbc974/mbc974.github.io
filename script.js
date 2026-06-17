@@ -100,7 +100,9 @@
 
   /* ---- Parallax ---- */
   const layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
-  if (layers.length && !reduceMotion) {
+  /* Parallax désactivé sur mobile (perf + évite tout effet de profondeur lourd au scroll tactile) */
+  const allowParallax = window.matchMedia('(min-width: 760px)').matches;
+  if (layers.length && !reduceMotion && allowParallax) {
     let ticking = false;
     function applyParallax() {
       const y = window.scrollY;
