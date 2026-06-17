@@ -3958,3 +3958,35 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .engage-missions{list-style:none;display:grid;gap:.5rem;margin:0 0 1.1rem}
 .engage-missions li{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45rem .7rem;font-size:.94rem;color:var(--txt);line-height:1.4;padding:.55rem .8rem;border-radius:var(--r-sm);background:rgba(191,210,228,.04);border-left:2px solid rgba(232,130,42,.55)}
 .engage-missions__t{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:var(--orange-vif);white-space:nowrap}
+
+/* ============================================================
+   V17 "FINITION PRO" — typo header, icônes & cartes premium
+   ============================================================ */
+
+/* ---- 1. Header : lockup logo + texte épuré, moderne, pro ---- */
+/* (Barlow Condensed au lieu d'Anton : plus subtil ; filet fin gris au lieu du gros trait orange) */
+.brand__txt{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:.14rem;padding-left:.8rem;border-left:1px solid rgba(191,210,228,.18);white-space:nowrap}
+.brand__sub{font-family:var(--ff-cond)!important;font-weight:700!important;font-size:1.06rem!important;letter-spacing:.04em!important;text-transform:uppercase;color:#fff!important;line-height:1!important;text-shadow:none!important}
+.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bleu-glacier);line-height:1;opacity:.85}
+@media (max-width:560px){.brand__sub{font-size:.95rem!important}.brand__sub2{font-size:.5rem;letter-spacing:.26em}}
+
+/* ---- 2. L'essentiel : icônes en pastille premium (au lieu d'icônes nues) ---- */
+.essentiel-card__ic{width:46px;height:46px;padding:10px;border-radius:13px;color:var(--orange-vif);background:linear-gradient(150deg,rgba(232,130,42,.16),rgba(27,81,158,.10));border:1px solid rgba(232,130,42,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:transform .4s var(--ease-pop),box-shadow .4s,border-color .4s}
+.essentiel-card:hover .essentiel-card__ic{transform:translateY(-2px) scale(1.06);border-color:rgba(232,130,42,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 20px rgba(217,106,27,.28)}
+.essentiel-card{box-shadow:var(--e1),var(--bevel)}
+
+/* ---- 3. Cartes 95 € / 3 ans + / 48 h : rendu premium ---- */
+.adhesion-video__points li{padding:1.6rem 1.3rem!important;border:1px solid rgba(191,210,228,.14)!important;border-radius:18px!important;background:linear-gradient(160deg,rgba(28,48,84,.5),rgba(7,13,24,.94))!important;box-shadow:var(--e2),var(--bevel)!important}
+.adhesion-video__points li::after{left:auto!important;top:-34px!important;right:-34px!important;width:120px!important;height:120px!important;border-radius:50%!important;background:radial-gradient(circle,rgba(232,130,42,.2),transparent 70%)!important;opacity:.6!important;transition:transform .55s var(--ease-pop),opacity .4s!important}
+.adhesion-video__points li:hover{transform:translateY(-6px)!important;border-color:rgba(232,130,42,.42)!important;box-shadow:var(--e3)!important}
+.adhesion-video__points li:hover::after{transform:scale(1.5)!important;opacity:1!important}
+.adhesion-video__points b.apk__val{text-shadow:0 4px 18px rgba(0,0,0,.45),0 0 30px rgba(27,81,158,.22)}
+.adhesion-video__points span.apk__lbl{margin-top:.9rem!important;padding-top:.75rem;border-top:1px solid rgba(191,210,228,.1)}
+
+/* ---- 4. Stats : FFBB plus imposant (doit frapper au défilement) ---- */
+.stat-cell--ffbb .ffbb{font-size:clamp(3.4rem,8vw,5.6rem)!important;letter-spacing:.02em!important;text-shadow:0 0 36px rgba(232,130,42,.4),0 6px 22px rgba(0,0,0,.5)}
+
+/* ---- 6. Carte « logo sponsor sur le maillot » : premium (icône en pastille) ---- */
+.kit-spon{gap:.9rem!important;padding:1.15rem 1.25rem!important;border:1px solid rgba(232,130,42,.28)!important;border-radius:16px!important;background:linear-gradient(150deg,rgba(232,130,42,.12),rgba(13,21,38,.6))!important;box-shadow:var(--e1),inset 0 1px 0 rgba(255,255,255,.05)!important}
+.kit-spon .ic{width:40px!important;height:40px!important;padding:9px;flex:none;border-radius:11px;color:var(--orange-vif);background:rgba(232,130,42,.16);border:1px solid rgba(232,130,42,.32);box-sizing:border-box;margin-top:0!important}
+.kit-spon b{display:block;color:#fff;margin-bottom:.15rem}
