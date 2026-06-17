@@ -3550,3 +3550,92 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
     width:100%;
   }
 }
+
+/* ============================================================
+   V9 "FINITION PRO" — header lockup, chiffres, encarts, 3D
+   ============================================================ */
+
+/* ---- 1. Header : lockup logo + texte premium sur 2 lignes ---- */
+.brand{gap:.95rem}
+.brand .logo-img{width:88px;height:54px}
+.brand__txt{display:flex!important;flex-direction:column!important;gap:.12rem;line-height:1;padding-left:.95rem;border-left:2px solid rgba(232,130,42,.55);white-space:nowrap}
+.brand__sub{display:block!important;font-family:var(--ff-display)!important;font-size:1.18rem!important;letter-spacing:.06em!important;text-transform:uppercase;color:#fff!important;line-height:.95!important}
+.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--orange-vif);line-height:1}
+@media (max-width:560px){
+  .brand .logo-img{width:64px;height:40px}
+  .brand__txt{padding-left:.7rem;gap:.08rem}
+  .brand__sub{font-size:.98rem!important}
+  .brand__sub2{font-size:.56rem;letter-spacing:.28em}
+}
+
+/* ---- 3. Compteurs : chiffres plus grands & impactants ---- */
+.stat-cell .num{
+  font-size:clamp(3.6rem,9vw,6.2rem)!important;
+  min-height:clamp(3.6rem,9vw,6.2rem)!important;
+  letter-spacing:0!important;
+  text-shadow:0 0 38px rgba(27,81,158,.45), 0 6px 24px rgba(0,0,0,.5);
+}
+.stat-cell--ffbb .ffbb{font-size:clamp(2.8rem,7vw,4.6rem)!important}
+.stat-cell .lbl{font-size:.86rem;margin-top:.7rem}
+.stat-cell .num .plus{font-size:.62em}
+/* halo permanent léger derrière les chiffres pour les faire ressortir */
+.stat-cell::before{width:170px;height:170px;opacity:.45}
+.stat-cell:hover::before{opacity:1}
+
+/* ---- 2. Encarts 95 € / 3 ans / 48 h : rendu premium (anti-pâté) ---- */
+.adhesion-video__points li{
+  position:relative;
+  display:flex;flex-direction:column;justify-content:center;
+  min-height:128px;
+  padding:1.3rem 1.15rem;
+  border:1px solid rgba(191,210,228,.16);
+  border-radius:16px;
+  background:linear-gradient(158deg,rgba(24,40,70,.7),rgba(7,13,24,.9));
+  overflow:hidden;
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s;
+}
+.adhesion-video__points li::after{
+  content:"";position:absolute;left:0;top:0;width:3px;height:100%;
+  background:linear-gradient(180deg,var(--orange-vif),transparent);opacity:.85;
+}
+.adhesion-video__points li:hover{
+  transform:translateY(-4px);
+  border-color:rgba(232,130,42,.42);
+  box-shadow:0 18px 40px rgba(0,0,0,.4);
+}
+.adhesion-video__points b.apk__val{
+  display:flex;align-items:baseline;gap:.14em;
+  font-family:var(--ff-display);
+  font-size:clamp(2.5rem,4.4vw,3.4rem);
+  line-height:.9;color:#fff;letter-spacing:.5px;
+}
+.apk__unit{
+  font-family:var(--ff-cond);font-weight:700;
+  font-size:.42em;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--orange-vif);
+}
+.adhesion-video__points span.apk__lbl{
+  display:block;margin-top:.7rem;
+  font-family:var(--ff-cond);font-weight:500;
+  color:var(--bleu-glacier);
+  font-size:.82rem;line-height:1.4;letter-spacing:.02em;
+  text-transform:none;
+}
+
+/* ---- 4. Maillots : tilt 3D au survol / mouvement souris ---- */
+.maillots-grid,.maillots__cards,.kit-grid{perspective:1200px}
+.kit-card,.maillot-card,[class*="maillot"][class*="card"]{
+  transform-style:preserve-3d;
+  transition:transform .25s var(--ease),box-shadow .35s var(--ease);
+  will-change:transform;
+}
+.tilt3d{transform-style:preserve-3d;transition:transform .12s ease-out,box-shadow .35s var(--ease);will-change:transform}
+.tilt3d__inner{transform:translateZ(40px);transition:transform .25s var(--ease)}
+.tilt3d.is-tilting{box-shadow:0 30px 70px rgba(0,0,0,.5)}
+.tilt3d .tilt3d__shine{
+  position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,40%),rgba(255,255,255,.18),transparent 55%);
+  opacity:0;transition:opacity .3s;mix-blend-mode:overlay;z-index:3;
+}
+.tilt3d.is-tilting .tilt3d__shine{opacity:1}
+@media (prefers-reduced-motion:reduce){.tilt3d{transform:none!important}.tilt3d .tilt3d__shine{display:none}}
