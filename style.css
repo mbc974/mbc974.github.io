@@ -2085,7 +2085,7 @@ body{text-rendering:optimizeLegibility}
 .loyalty-table span{font-family:var(--ff-cond);font-weight:800;text-transform:uppercase;color:#fff}
 .loyalty-table b{font-family:var(--ff-display);font-size:1.15rem;color:var(--orange-vif)}
 .loyalty-table em{color:var(--txt-soft);font-size:.92rem}
-@media(max-width:560px){.loyalty-table div{grid-template-columns:1fr;gap:.15rem}}
+@media(max-width:560px){.loyalty-table div{grid-template-columns:1fr;gap:.4rem;padding:.85rem .95rem}}
 
 .partner-wall{
   margin-top:3rem;
@@ -3950,3 +3950,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .g-tile figcaption{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(7,13,24,.82)!important}
   .kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }
+
+/* ---- Bénévoles : mini-missions concrètes (léger, sans blur ni animation) ---- */
+.engage-missions{list-style:none;display:grid;gap:.5rem;margin:0 0 1.1rem}
+.engage-missions li{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45rem .7rem;font-size:.94rem;color:var(--txt);line-height:1.4;padding:.55rem .8rem;border-radius:var(--r-sm);background:rgba(191,210,228,.04);border-left:2px solid rgba(232,130,42,.55)}
+.engage-missions__t{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:var(--orange-vif);white-space:nowrap}

@@ -181,6 +181,7 @@
       applyZoom();
       lightbox.classList.add('show');
       lightbox.setAttribute('aria-hidden', 'false');
+      lightbox.removeAttribute('inert');
       lightboxOpen = true;
       syncBodyLock();
       lightboxClose.focus({ preventScroll: true });
@@ -189,6 +190,7 @@
     function closeLb() {
       lightbox.classList.remove('show', 'is-zoomed');
       lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.setAttribute('inert', '');
       lightboxOpen = false;
       syncBodyLock();
       zoom = 1;
