@@ -3651,19 +3651,25 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   --ease-snap:cubic-bezier(.16,.9,.18,1.18);
 }
 
-/* ---- Reveal au scroll : plus de profondeur (blur + translate + léger scale) ---- */
+/* ---- Reveal au scroll : profondeur (translate + scale partout, blur réservé desktop) ---- */
 .reveal{
   opacity:0;
-  transform:translateY(46px) scale(.97);
-  filter:blur(7px);
-  transition:opacity .7s var(--ease-out),transform .7s var(--ease-pop),filter .7s var(--ease-out);
+  transform:translateY(42px) scale(.98);
+  transition:opacity .7s var(--ease-out),transform .7s var(--ease-pop);
 }
-.reveal.in{opacity:1;transform:none;filter:blur(0)}
-.reveal--l{transform:translateX(-64px) scale(.97);filter:blur(7px)}
-.reveal--r{transform:translateX(64px) scale(.97);filter:blur(7px)}
-.reveal--l.in,.reveal--r.in{transform:none;filter:blur(0)}
-.reveal--scale{transform:scale(.82);filter:blur(8px)}
-.reveal--scale.in{transform:none;filter:blur(0);transition:opacity .65s var(--ease-out),transform .65s var(--ease-pop),filter .65s var(--ease-out)}
+.reveal.in{opacity:1;transform:none}
+.reveal--l{transform:translateX(-58px) scale(.98)}
+.reveal--r{transform:translateX(58px) scale(.98)}
+.reveal--l.in,.reveal--r.in{transform:none}
+.reveal--scale{transform:scale(.84)}
+.reveal--scale.in{transform:none;transition:opacity .65s var(--ease-out),transform .65s var(--ease-pop)}
+/* blur de profondeur uniquement sur écrans larges → fluidité préservée sur mobile */
+@media (min-width:760px) and (prefers-reduced-motion:no-preference){
+  .reveal{filter:blur(6px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-pop),filter .7s var(--ease-out)}
+  .reveal.in{filter:blur(0)}
+  .reveal--l,.reveal--r,.reveal--scale{filter:blur(6px)}
+  .reveal--l.in,.reveal--r.in,.reveal--scale.in{filter:blur(0)}
+}
 
 /* ---- Hero : entrée plus dynamique + halo "vivant" ---- */
 .hero .reveal-up .word{transform:translateY(125%) scale(.94);opacity:0;transition:transform .85s var(--ease-pop),opacity .6s var(--ease-out)}
@@ -3751,3 +3757,27 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .cat,.action-card,.staff-card,.kit-card,.brand,.nav__cta,.btn,.partner-slot,.engage-card,.fond-pillar,.p-pillar,.why,.cal2-row{transition:none!important}
   .cat:hover,.action-card:hover,.staff-card:hover,.kit-card:hover,.brand:hover,.why:hover,.partner-slot:hover{transform:none!important}
 }
+
+/* ============================================================
+   V14 "CONVERSION" — bloc L'essentiel + CTA mobile safe-area
+   ============================================================ */
+
+/* ---- L'essentiel : infos rapides juste après le hero ---- */
+.essentiel{position:relative;overflow:hidden;background:radial-gradient(90% 130% at 50% -10%,rgba(27,81,158,.28),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+.essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
+.essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
+.essentiel-card::after{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad-orange);opacity:.85;transform:scaleY(.4);transform-origin:top;transition:transform .4s var(--ease-out)}
+.essentiel-card:hover{transform:translateY(-6px);border-color:rgba(232,130,42,.42);box-shadow:var(--e2)}
+.essentiel-card:hover::after{transform:scaleY(1)}
+.essentiel-card__ic{width:34px;height:34px;color:var(--orange-vif);flex:none}
+.essentiel-card__val{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.5rem,4.5vw,2rem);line-height:1;color:#fff;letter-spacing:.5px}
+.essentiel-card__lbl{font-family:var(--ff-cond);font-weight:500;font-size:.95rem;line-height:1.4;color:var(--bleu-glacier)}
+.essentiel-card__links{display:flex;flex-direction:column;gap:.25rem}
+.essentiel-card__links a{color:var(--bleu-glacier);font-weight:600;transition:color .2s}
+.essentiel-card__links a:hover{color:var(--orange-vif)}
+.essentiel-cta{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2rem}
+@media (min-width:560px){.essentiel-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.essentiel-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ---- CTA flottant mobile : respect des safe areas (encoche / barre home iPhone) ---- */
+.float-cta{bottom:calc(16px + env(safe-area-inset-bottom,0px))}

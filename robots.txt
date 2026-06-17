@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mbc974.re/sitemap.xml
+Sitemap: https://mbc974.com/sitemap.xml
