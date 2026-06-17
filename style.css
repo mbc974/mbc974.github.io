@@ -4000,3 +4000,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .kit-spon__txt{display:flex;flex-direction:column;gap:.3rem}
 .kit-spon b{display:block!important;color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1.05rem;letter-spacing:.01em;line-height:1.2;margin:0!important}
 .kit-spon__txt span{color:var(--txt-soft);font-size:.92rem;line-height:1.5}
+
+/* ---- Encarts adhésion : espace propre entre le chiffre et l'unité (95 € / 3 ans et + / 48 h) ---- */
+.adhesion-video__points b.apk__val{gap:0}
