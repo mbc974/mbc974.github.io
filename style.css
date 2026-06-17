@@ -3920,3 +3920,33 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .btn--primary::before,.btn--roi::before{display:none}
   .hero__crest--giant{transition:none}
 }
+
+/* ============================================================
+   PERF MOBILE (≤760px) — HÉRO ALLÉGÉ POUR UN SCROLL FLUIDE
+   Sur GPU mobile, ces effets sont les plus coûteux :
+   · backdrop-filter (re-floute la page à CHAQUE frame de scroll)
+   · filter:blur(100px) (rayon énorme)
+   · conic-gradient flouté en rotation permanente
+   On les retire / remplace par des fonds quasi opaques.
+   Rendu quasi identique, fluidité nettement meilleure.
+   ============================================================ */
+@media (max-width:760px){
+  /* Chrome toujours visible pendant le scroll : header sans flou temps réel */
+  .site-header{background:rgba(7,13,24,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  .nav,.nav-backdrop,.btn--ghost{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+  /* HÉRO : on coupe les effets GPU permanents */
+  .hero__glow{display:none!important}                 /* 2× blur(100px) */
+  .hero__halo{filter:none!important}                  /* blur(10px) superflu sur un radial */
+  .hero__halo::before{display:none!important;animation:none!important}  /* conic blur(26px) en rotation = gros lag */
+  .hero__texture{display:none!important}              /* mix-blend-mode:screen */
+  .hero__slash{will-change:auto!important}            /* pas de calque GPU forcé (parallax off sur mobile) */
+  .hero .eyebrow{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(191,210,228,.08)!important}
+  .action-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(165deg,rgba(24,46,86,.94),rgba(11,18,33,.97))!important}
+  .action-card--don{background:linear-gradient(165deg,rgba(120,58,20,.5),rgba(11,18,33,.97))!important}
+  .hero__crest--giant{filter:drop-shadow(0 12px 26px rgba(0,0,0,.6))!important}  /* 1 ombre au lieu de 3 */
+
+  /* Petits flous de fond plus bas dans la page : allégés aussi */
+  .g-tile figcaption{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(7,13,24,.82)!important}
+  .kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}
