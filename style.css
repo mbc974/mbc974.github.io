@@ -3990,3 +3990,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .kit-spon{gap:.9rem!important;padding:1.15rem 1.25rem!important;border:1px solid rgba(232,130,42,.28)!important;border-radius:16px!important;background:linear-gradient(150deg,rgba(232,130,42,.12),rgba(13,21,38,.6))!important;box-shadow:var(--e1),inset 0 1px 0 rgba(255,255,255,.05)!important}
 .kit-spon .ic{width:40px!important;height:40px!important;padding:9px;flex:none;border-radius:11px;color:var(--orange-vif);background:rgba(232,130,42,.16);border:1px solid rgba(232,130,42,.32);box-sizing:border-box;margin-top:0!important}
 .kit-spon b{display:block;color:#fff;margin-bottom:.15rem}
+
+/* ============================================================
+   V18 — carte « logo sponsor sur le maillot » pro + nettoyage
+   ============================================================ */
+.kit-spon{display:flex!important;align-items:flex-start!important;gap:1rem!important;margin-top:.4rem!important;padding:1.3rem 1.4rem!important;border:1px solid var(--line-strong)!important;border-radius:var(--r-md)!important;background:linear-gradient(158deg,rgba(24,40,70,.55),rgba(7,13,24,.9))!important;box-shadow:var(--e2),var(--bevel)!important;position:relative;overflow:hidden;text-align:left!important}
+.kit-spon::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--grad-orange);opacity:.85}
+.kit-spon .ic{width:42px!important;height:42px!important;padding:10px;flex:none;border-radius:12px;color:var(--orange-vif);background:rgba(232,130,42,.15);border:1px solid rgba(232,130,42,.3);box-sizing:border-box;margin:0!important}
+.kit-spon__txt{display:flex;flex-direction:column;gap:.3rem}
+.kit-spon b{display:block!important;color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1.05rem;letter-spacing:.01em;line-height:1.2;margin:0!important}
+.kit-spon__txt span{color:var(--txt-soft);font-size:.92rem;line-height:1.5}
