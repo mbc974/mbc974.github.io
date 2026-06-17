@@ -307,7 +307,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .footer__swatches{display:flex;gap:.5rem;margin-top:.4rem;flex-wrap:wrap}
 .footer__swatches i{width:26px;height:26px;border-radius:6px;border:1px solid rgba(255,255,255,.12);display:block}
 .footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 0}
-.footer__legal{font-size:.82rem;color:var(--txt-soft)}
+.footer__legal{font-size:.72rem;letter-spacing:.02em;color:var(--txt-soft);opacity:.72}
 .footer__hand{font-family:var(--ff-cond);letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;color:var(--bleu-glacier)}
 
 /* ---------------- Reveal (scroll) ---------------- */
@@ -3950,6 +3950,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .g-tile figcaption{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(7,13,24,.82)!important}
   .kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 }
+
+/* ---- Hero : une seule carte d'action (pré-inscription) → centrée ---- */
+.hero__actions{grid-template-columns:1fr;max-width:480px;margin-inline:auto}
 
 /* ---- Bénévoles : mini-missions concrètes (léger, sans blur ni animation) ---- */
 .engage-missions{list-style:none;display:grid;gap:.5rem;margin:0 0 1.1rem}
