@@ -351,4 +351,15 @@
       });
     });
   }
+
+  /* ---- Cartes "spotlight" : halo qui suit le curseur (why-spon + formules) ---- */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('.why-spon__item,.pack').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      });
+    });
+  }
 })();
