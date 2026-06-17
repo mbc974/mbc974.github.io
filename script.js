@@ -92,7 +92,7 @@
                      parent.classList.contains('staff-grid') || parent.classList.contains('engage-grid') ||
                      parent.classList.contains('fondatrice__pillars'))) {
         const idx = Array.prototype.indexOf.call(parent.children, el);
-        el.style.transitionDelay = Math.min(idx, 6) * 70 + 'ms';
+        el.style.transitionDelay = Math.min(idx, 6) * 90 + 'ms';
       }
       io.observe(el);
     });
@@ -284,7 +284,7 @@
   const tiltCards = document.querySelectorAll('.kit-card');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if (tiltCards.length && finePointer && !reduceMotion) {
-    const MAX = 9; // deg
+    const MAX = 12; // deg
     tiltCards.forEach(function (card) {
       card.classList.add('tilt3d');
       // shine overlay

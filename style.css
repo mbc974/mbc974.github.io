@@ -3639,3 +3639,115 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 }
 .tilt3d.is-tilting .tilt3d__shine{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d{transform:none!important}.tilt3d .tilt3d__shine{display:none}}
+
+/* ============================================================
+   V13 "IMPACT" — animations plus vives, plus premium, plus profondes
+   (toutes les règles ci-dessous surchargent volontairement les
+   versions précédentes pour intensifier le rendu existant)
+   ============================================================ */
+
+:root{
+  --ease-pop:cubic-bezier(.22,1.42,.36,1);
+  --ease-snap:cubic-bezier(.16,.9,.18,1.18);
+}
+
+/* ---- Reveal au scroll : plus de profondeur (blur + translate + léger scale) ---- */
+.reveal{
+  opacity:0;
+  transform:translateY(46px) scale(.97);
+  filter:blur(7px);
+  transition:opacity .7s var(--ease-out),transform .7s var(--ease-pop),filter .7s var(--ease-out);
+}
+.reveal.in{opacity:1;transform:none;filter:blur(0)}
+.reveal--l{transform:translateX(-64px) scale(.97);filter:blur(7px)}
+.reveal--r{transform:translateX(64px) scale(.97);filter:blur(7px)}
+.reveal--l.in,.reveal--r.in{transform:none;filter:blur(0)}
+.reveal--scale{transform:scale(.82);filter:blur(8px)}
+.reveal--scale.in{transform:none;filter:blur(0);transition:opacity .65s var(--ease-out),transform .65s var(--ease-pop),filter .65s var(--ease-out)}
+
+/* ---- Hero : entrée plus dynamique + halo "vivant" ---- */
+.hero .reveal-up .word{transform:translateY(125%) scale(.94);opacity:0;transition:transform .85s var(--ease-pop),opacity .6s var(--ease-out)}
+.hero.in .reveal-up .word{transform:none;opacity:1}
+.hero .reveal-fade{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s var(--ease-out) .35s,transform .7s var(--ease-pop) .35s}
+.hero.in .reveal-fade{opacity:1;transform:none}
+.hero__crest--giant{animation:heroFloat 6.5s ease-in-out infinite}
+.hero__halo{animation:haloPulse 5s ease-in-out infinite}
+.hero__glow{animation:glowBreathe 7s ease-in-out infinite}
+.hero__glow--o{animation-delay:-2.4s}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-1deg)}}
+@keyframes haloPulse{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}50%{opacity:.78;transform:translate(-50%,-50%) scale(1.08)}}
+@keyframes glowBreathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.14)}}
+
+/* ---- Boutons & CTA : micro-interactions plus toniques ---- */
+.btn{transition:transform .3s var(--ease-pop),box-shadow .3s var(--ease-out),background .25s,color .25s,border-color .25s}
+.btn--primary:hover,.btn--roi:hover{transform:translateY(-5px) scale(1.045)}
+.btn--primary:active,.btn--roi:active,.btn--ghost:active{transform:translateY(-1px) scale(.97);transition-duration:.12s}
+.btn--ghost:hover{transform:translateY(-5px) scale(1.03)}
+.nav__cta{transition:transform .3s var(--ease-pop),box-shadow .3s}
+.nav__cta:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(217,106,27,.5)}
+
+/* ---- Cartes catégories : plus de relief au survol ---- */
+.cat{transition:transform .45s var(--ease-pop),border-color .35s,box-shadow .45s var(--ease-out)}
+.cat:hover{transform:translateY(-14px) scale(1.02);box-shadow:0 34px 70px rgba(0,0,0,.55),0 0 0 1px rgba(232,130,42,.25)}
+.cat::before{transition:transform .6s var(--ease-pop),opacity .4s}
+.cat:hover::before{transform:scale(2.1)}
+.cat__icon{transition:transform .4s var(--ease-pop)}
+.cat:hover .cat__icon{transform:scale(1.18) rotate(-6deg);color:var(--orange-vif)}
+
+/* ---- Action cards (hero) : lift plus marqué ---- */
+.action-card{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
+.action-card:hover{transform:translateY(-9px) scale(1.015);box-shadow:0 32px 64px rgba(0,0,0,.5)}
+.action-card::before{transition:transform .5s var(--ease-pop)}
+.action-card:hover::before{transform:scale(1.85)}
+.action-card .btn--primary,.action-card .btn--roi{transition:transform .3s var(--ease-pop)}
+.action-card:hover .btn--primary,.action-card:hover .btn--roi{transform:translateY(-2px)}
+
+/* ---- Staff / cartes équipe : entrée plus vivante ---- */
+.staff-card{transition:transform .45s var(--ease-pop),border-color .35s,box-shadow .45s var(--ease-out)}
+.staff-card:hover{transform:translateY(-12px) scale(1.025)}
+.staff-card__media img{transition:transform .7s var(--ease-pop)}
+.staff-card:hover .staff-card__media img{transform:scale(1.11)}
+
+/* ---- Maillots : tilt 3D plus expressif + glow au survol ---- */
+.kit-card{transition:transform .5s var(--ease-pop),box-shadow .5s var(--ease-out)}
+.kit-card:hover{box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 60px rgba(217,106,27,.18)}
+.kit-card img{transition:transform .7s var(--ease-pop)}
+.kit-card:hover img{transform:scale(1.06)}
+
+/* ---- Logo : réaction au survol du header ---- */
+.brand{transition:transform .3s var(--ease-pop)}
+.brand:hover{transform:scale(1.035)}
+.brand:hover .logo-img{filter:drop-shadow(0 4px 14px rgba(0,0,0,.6)) drop-shadow(0 0 18px rgba(232,130,42,.35))}
+
+/* ---- Navigation desktop : soulignement dynamique ---- */
+.nav a:not(.nav__cta){position:relative}
+.nav a:not(.nav__cta)::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.25em;height:2px;background:var(--grad-orange);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-pop)}
+.nav a:not(.nav__cta):hover::after{transform:scaleX(1)}
+
+/* ---- Calendrier : lignes plus réactives ---- */
+.cal2-row:not(.cal2-row--head){transition:background .25s,transform .25s var(--ease-out)}
+.cal2-row:not(.cal2-row--head):hover{transform:translateX(6px)}
+
+/* ---- Engagement / partenaires / sponsors : lift cohérent ---- */
+.partner-slot{transition:transform .35s var(--ease-pop),border-color .3s,background .3s}
+.partner-slot:hover{transform:translateY(-5px) scale(1.03)}
+.engage-card,.fond-pillar,.p-pillar,.why{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
+.why:hover{transform:translateY(-10px) scale(1.02)}
+.fond-pillar:hover,.p-pillar:hover{transform:translateY(-7px)}
+
+/* ---- Marquee : un poil plus vif sans devenir agressif ---- */
+.marquee__track{animation-duration:21s}
+
+/* ---- Pulse CTA flottant mobile : respiration légère ---- */
+.float-cta{transition:transform .45s var(--ease-pop),box-shadow .35s}
+.float-cta.show{animation:floatCtaIn .5s var(--ease-pop)}
+@keyframes floatCtaIn{0%{transform:translateX(-50%) translateY(140%)}100%{transform:translateX(-50%) translateY(0)}}
+
+/* ---- Garde-fou accessibilité : tout reste statique si demandé ---- */
+@media (prefers-reduced-motion:reduce){
+  .reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  .hero .reveal-up .word,.hero .reveal-fade{transform:none!important;opacity:1!important;transition:none!important}
+  .hero__crest--giant,.hero__halo,.hero__glow,.float-cta.show{animation:none!important}
+  .cat,.action-card,.staff-card,.kit-card,.brand,.nav__cta,.btn,.partner-slot,.engage-card,.fond-pillar,.p-pillar,.why,.cal2-row{transition:none!important}
+  .cat:hover,.action-card:hover,.staff-card:hover,.kit-card:hover,.brand:hover,.why:hover,.partner-slot:hover{transform:none!important}
+}
