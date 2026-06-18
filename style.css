@@ -4275,3 +4275,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .sponsors-wall.in .sponsor-card{animation:none!important}
   .sponsor-card:hover,.sponsor-card:hover .sponsor-card__plate img{transform:none!important}
 }
+
+/* ============================================================
+   V23 — RGPD formulaire + mentions légales / confidentialité
+   ============================================================ */
+.form-rgpd{margin-top:1rem;font-size:.78rem;line-height:1.55;color:var(--txt-soft);opacity:.92}
+.form-rgpd a{color:var(--orange-vif);font-weight:600}
+
+.footer-legal{max-width:var(--wrap);margin:0 auto;border-top:1px solid var(--line);padding:1.1rem 0}
+.footer-legal>summary{cursor:pointer;list-style:none;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem;color:var(--bleu-glacier);display:inline-flex;align-items:center;gap:.55em;transition:color .2s}
+.footer-legal>summary::-webkit-details-marker{display:none}
+.footer-legal>summary::before{content:"+";font-size:1.05em;line-height:1;color:var(--orange-vif);font-weight:800}
+.footer-legal[open]>summary::before{content:"–"}
+.footer-legal>summary:hover{color:#fff}
+.footer-legal__body{margin-top:.9rem;display:grid;gap:.7rem;max-width:92ch}
+.footer-legal__body p{font-size:.82rem;line-height:1.6;color:var(--txt-soft)}
+.footer-legal__body b{color:var(--bleu-glacier)}
+.footer-legal__body a{color:var(--orange-vif)}
