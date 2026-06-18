@@ -4345,3 +4345,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .adh-back{text-align:center;margin-top:1.6rem}
 .adh-back a{color:var(--bleu-glacier);font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;transition:color .2s}
 .adh-back a:hover{color:var(--orange-vif)}
+
+/* ============================================================
+   V26 — Mur sponsors : cartes cliquables (sites partenaires)
+   + disposition centrée et équilibrée
+   ============================================================ */
+.sponsors-grid{display:flex!important;flex-wrap:wrap;justify-content:center;gap:clamp(1rem,2vw,1.5rem)}
+.sponsor-card{flex:0 1 200px;cursor:pointer;color:inherit;text-decoration:none}
+.sponsor-card:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+/* indice « lien externe » discret, accolé au nom du partenaire */
+.sponsor-card__name::after{content:"↗";display:inline-block;margin-left:.35em;color:var(--bleu-glacier);opacity:.55;transition:transform .3s var(--ease-out),color .3s,opacity .3s}
+.sponsor-card:hover .sponsor-card__name::after,
+.sponsor-card:focus-visible .sponsor-card__name::after{color:var(--orange-vif);opacity:1;transform:translate(2px,-2px)}
+@media (max-width:560px){.sponsor-card{flex:0 1 150px}}
