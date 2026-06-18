@@ -148,14 +148,14 @@
     <a href="#engagement">Bénévoles</a>
     <a href="#partenaires">Sponsors</a>
     <a href="#contact">Contact</a>
-    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="nav__cta">Pré-inscription</a>
+    <a href="adhesion.html" class="nav__cta">Pré-inscription</a>
   </nav>
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
 </header>
 <div class="nav-backdrop" id="navBackdrop"></div>
 
 <!-- ===== Floating mobile CTA ===== -->
-<a class="float-cta" id="floatCta" href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener">
+<a class="float-cta" id="floatCta" href="adhesion.html">
   <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
   Pré-inscription 2026-2027
 </a>
@@ -186,7 +186,7 @@
         <span class="action-card__eyebrow">Saison fondatrice 2026 / 2027</span>
         <span class="action-card__title">Pré-inscription</span>
         <p class="action-card__txt">Réservez la place de votre marmay — ou la vôtre — pour la toute première saison du club. Du Baby Basket (3 ans) aux Seniors.</p>
-        <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary">Je réserve ma place</a>
+        <a href="adhesion.html" class="btn btn--primary">Je réserve ma place</a>
         <span class="action-card__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg> Licence FFBB &amp; assurance incluses · Sans engagement · Séance d'essai possible</span>
       </div>
     </div>
@@ -245,7 +245,7 @@
     </ul>
 
     <div class="essentiel-cta reveal">
-      <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je me pré-inscris</a>
+      <a href="adhesion.html" class="btn btn--primary btn--lg">Je me pré-inscris</a>
       <a href="#categories" class="btn btn--ghost btn--lg">Voir les catégories</a>
     </div>
   </div>
@@ -433,9 +433,10 @@
         <span class="tarifs__lbl">Licence saison 2026-2027</span>
         <span class="tarifs__price">95 €</span>
         <span class="tarifs__note">pour toutes les catégories</span>
+        <span class="tarifs__perm">soit moins de 8 € / mois</span>
       </div>
       <div class="tarifs__rest">
-        <p><b>Licence saison 2026-2027 : 95 € pour toutes les catégories.</b> Baby Basket, École de Basket, U13, U15, U18, Seniors loisirs et compétition : même prix, licence FFBB et assurance comprises.</p>
+        <p><b>Un seul tarif, tout compris.</b> Du Baby Basket aux Seniors, loisir comme compétition : <b>même prix pour tous</b>, licence FFBB et assurance incluses. Le basket reste accessible à toute la famille.</p>
         <div class="tarifs__chips" aria-label="Catégories incluses dans le tarif unique">
           <span>Baby</span><span>École</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
         </div>
@@ -847,10 +848,10 @@
           <select id="cat" name="cat"><option value="">Choisir une catégorie…</option><option>Baby Basket (3-6 ans)</option><option>École de Basket (7-10 ans)</option><option>U13 (11-12 ans)</option><option>U15 (13-14 ans)</option><option>U18 (15-17 ans)</option><option>Seniors / Loisirs (dès 16 ans)</option><option>Bénévolat</option><option>Partenariat / Sponsoring</option><option>Don / Mécénat</option><option>Institution / Collectivité</option></select>
         </div>
         <div class="field"><label for="msg">Message (facultatif)</label><textarea id="msg" name="msg" rows="4"></textarea></div>
-        <button type="submit" class="btn btn--primary btn--full">Envoyer ma demande</button>
+        <button type="submit" class="btn btn--primary btn--full" aria-describedby="formRgpd">Envoyer ma demande</button>
         <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
         <p style="margin-top:1rem;font-size:.86rem;color:var(--txt-soft)">Pour une inscription officielle, utilisez directement notre <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" style="color:var(--orange-vif);font-weight:600">espace adhésion en ligne</a>.</p>
-        <p class="form-rgpd">Les informations transmises sont utilisées uniquement pour répondre à votre demande liée au MBC. Elles ne sont pas revendues ni utilisées à d'autres fins. Vous pouvez demander leur suppression à tout moment à <a href="mailto:mbc.re974@gmail.com">mbc.re974@gmail.com</a>.</p>
+        <p class="form-rgpd" id="formRgpd">Les informations transmises sont utilisées uniquement pour répondre à votre demande liée au MBC. Elles ne sont pas revendues ni utilisées à d'autres fins. Vous pouvez demander leur suppression à tout moment à <a href="mailto:mbc.re974@gmail.com">mbc.re974@gmail.com</a>.</p>
       </form>
 
       <aside class="contact-aside reveal reveal--r">
@@ -891,12 +892,12 @@
       </div>
       <div class="footer__col">
         <h4>Le club</h4>
-        <a href="#recrutement">Recrutement</a><a href="#categories">Catégories</a><a href="#maillots">Maillots</a><a href="#calendrier">Calendrier</a><a href="#galerie">Galerie</a><a href="#staff">L'équipe</a><a href="#engagement">Engagement</a><a href="#fondatrice">Saison fondatrice</a>
+        <a href="#recrutement">Recrutement</a><a href="#categories">Catégories</a><a href="#maillots">Maillots</a><a href="#calendrier">Calendrier</a><a href="#galerie">Galerie</a><a href="#staff">L'équipe</a><a href="#engagement">Engagement</a><a href="#fondatrice">Saison fondatrice</a><a href="adhesion.html">Adhésion 2026/2027</a>
       </div>
       <div class="footer__col">
         <h4>Agir</h4>
         <div class="footer__actions">
-          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Pré-inscription</a>
+          <a href="adhesion.html"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Adhésion</a>
           <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg> Faire un don</a>
           <a href="#contact"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Contact</a>
         </div>

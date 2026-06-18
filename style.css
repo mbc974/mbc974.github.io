@@ -4294,39 +4294,54 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .footer-legal__body a{color:var(--orange-vif)}
 
 /* ============================================================
-   V24 — Tarif « 95 € » mis en valeur : taille XL + shimmer or
+   V24 — Tarif « 95 € » : grand, subtil & premium + bloc clarifié
    ============================================================ */
 .tarifs{overflow:hidden}
 .tarifs__main{position:relative}
 .tarifs__main>*{position:relative;z-index:1}
+
+/* Prix XL, dégradé orange STATIQUE (poli) + glow doux → premium discret */
 .tarifs__price{
-  font-size:clamp(3.6rem,8vw,5.4rem)!important;
-  line-height:.95!important;letter-spacing:1px!important;
-  filter:drop-shadow(0 6px 26px rgba(232,130,42,.5));
+  font-size:clamp(3.4rem,7.5vw,5rem)!important;
+  line-height:.95!important;letter-spacing:.5px!important;
+  color:var(--orange-vif);
+  filter:drop-shadow(0 6px 22px rgba(232,130,42,.32));
 }
-/* shimmer or (texte dégradé animé) — navigateurs compatibles uniquement */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .tarifs__price{
-    background:linear-gradient(100deg,#E8822A 22%,#ffe6bf 47%,#ffffff 51%,#ffe6bf 55%,#D96A1B 78%);
-    background-size:220% 100%;
+    background:linear-gradient(180deg,#F6A862,#E8822A 46%,#C75F14);
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
-    animation:priceShine 4.5s ease-in-out infinite;
   }
 }
-@keyframes priceShine{0%{background-position:170% 0}50%{background-position:-70% 0}100%{background-position:170% 0}}
-/* halo doux qui respire derrière le prix */
+/* halo statique très doux derrière le prix (aucun mouvement) */
 .tarifs__main::before{
-  content:"";position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
-  width:190px;height:190px;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(circle,rgba(232,130,42,.22),transparent 68%);
-  animation:priceHalo 4.5s ease-in-out infinite;
+  content:"";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
+  width:160px;height:160px;border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(232,130,42,.15),transparent 70%);
 }
-@keyframes priceHalo{0%,100%{opacity:.45;transform:translate(-50%,-50%) scale(.9)}50%{opacity:.85;transform:translate(-50%,-50%) scale(1.1)}}
 
-/* mobile : on garde la taille XL + le shimmer (léger), halo figé */
-@media (max-width:760px){.tarifs__main::before{animation:none;opacity:.5}}
-/* a11y : prix statique en orange plein si mouvement réduit */
-@media (prefers-reduced-motion:reduce){
-  .tarifs__price{animation:none!important;background:none!important;-webkit-text-fill-color:var(--orange-vif)!important;color:var(--orange-vif)!important}
-  .tarifs__main::before{animation:none!important;opacity:.4}
+/* Repère « pas cher » sous le prix */
+.tarifs__perm{align-self:center;display:inline-block;margin-top:.55rem;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.72rem;color:#190f04;background:var(--grad-orange);padding:.34em .9em;border-radius:99px;box-shadow:0 6px 16px rgba(217,106,27,.3)}
+
+/* Colonne de droite : centrée, claire, lisible */
+.tarifs__rest{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.15rem}
+.tarifs__rest p{max-width:48ch;margin:0;color:var(--txt-soft);line-height:1.65;font-size:1rem}
+.tarifs__rest p b{color:#fff}
+.tarifs__chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:0}
+@media (min-width:680px){
+  .tarifs__rest{text-align:center!important;align-items:center!important}
+  .tarifs__rest .btn{align-self:center!important}
 }
+
+/* ============================================================
+   V25 — Page Adhésion (/adhesion.html) — réutilise les classes
+   existantes, très peu de CSS dédié.
+   ============================================================ */
+.adhesion-page{padding-top:clamp(6.5rem,13vh,9.5rem)}
+.adh-prepare{max-width:640px;margin:2.6rem auto 0;padding:1.7rem 1.9rem;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--grad-card);box-shadow:var(--e1),var(--bevel)}
+.adh-prepare__title{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.4rem,4vw,2rem);color:#fff;letter-spacing:.5px;margin-bottom:1.1rem;text-align:center}
+.adh-prepare__list{margin:0;max-width:none}
+.adh-note{margin-top:1.4rem;text-align:center;font-family:var(--ff-cond);font-weight:600;font-size:.85rem;color:var(--bleu-glacier);letter-spacing:.02em}
+.adh-back{text-align:center;margin-top:1.6rem}
+.adh-back a{color:var(--bleu-glacier);font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;transition:color .2s}
+.adh-back a:hover{color:var(--orange-vif)}
