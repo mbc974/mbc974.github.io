@@ -273,7 +273,7 @@
       ].join('\n'));
       feedback.textContent = 'Votre messagerie va s\u2019ouvrir pour finaliser l\u2019envoi…';
       feedback.className = 'form-feedback ok';
-      window.location.href = 'mailto:mbc.re974@gmail.com?subject=' + subject + '&body=' + body;
+      window.location.href = 'mailto:contact@mbc974.com?subject=' + subject + '&body=' + body;
     });
   }
 
