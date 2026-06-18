@@ -4358,3 +4358,29 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .sponsor-card:hover .sponsor-card__name::after,
 .sponsor-card:focus-visible .sponsor-card__name::after{color:var(--orange-vif);opacity:1;transform:translate(2px,-2px)}
 @media (max-width:560px){.sponsor-card{flex:0 1 150px}}
+
+/* ============================================================
+   V27 — Encart visibilité sponsors + bloc licences solidaires
+   + mention équipementier (discrète)
+   ============================================================ */
+/* Sponsors : « Votre visibilité concrète » */
+.visi{max-width:760px;margin:2rem auto 0;padding:1.3rem 1.5rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1),var(--bevel);text-align:center}
+.visi__title{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.84rem;color:var(--orange-vif);margin-bottom:.9rem}
+.visi__tags{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0}
+.visi__tags li{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.78rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.34em .9em;background:rgba(27,81,158,.12)}
+.visi__tags li span{text-transform:none;letter-spacing:0;font-weight:500;font-size:.92em;color:var(--txt-soft)}
+
+/* Dons : « Objectif licences solidaires » (sobre) */
+.solidaire{margin-top:1.6rem;padding:1.2rem 1.3rem;border:1px solid var(--line);border-left:3px solid var(--orange-vif);border-radius:var(--r-sm);background:rgba(191,210,228,.03)}
+.solidaire__title{display:flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;color:#fff}
+.solidaire__title .ic{width:1.1em;height:1.1em;color:var(--orange-vif);flex:none}
+.solidaire__txt{margin:.5rem 0 .9rem;font-size:.92rem;color:var(--txt-soft);line-height:1.5}
+.solidaire__bar{height:8px;border-radius:99px;background:rgba(191,210,228,.12);overflow:hidden}
+.solidaire__fill{display:block;height:100%;border-radius:99px;background:var(--grad-orange)}
+.solidaire__count{margin-top:.6rem;font-family:var(--ff-cond);font-weight:600;font-size:.82rem;color:var(--bleu-glacier);letter-spacing:.02em}
+.solidaire__count b{color:#fff}
+
+/* Footer : mention équipementier discrète */
+.footer__equip{margin-top:.9rem;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;color:var(--txt-soft);opacity:.85}
+.footer__equip a{color:var(--bleu-glacier);transition:color .2s}
+.footer__equip a:hover{color:var(--orange-vif)}
