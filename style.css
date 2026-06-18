@@ -4510,3 +4510,79 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .nav__lamp{transition:opacity .2s ease}
   .nav__pill a{transition:color .2s ease}
 }
+
+/* ============================================================
+   V29 — HERO : slogans animés (rotator) + badge saison
+   Inspiration "Animated Hero" recréée 100% en CSS/JS natif.
+   Aucune dépendance (pas de React / framer-motion / Tailwind).
+   ============================================================ */
+
+/* Badge premium au-dessus du titre. */
+.hero__badge{
+  display:inline-flex;align-items:center;gap:.55em;
+  margin-bottom:1.1rem;
+  padding:.5em 1.05em;
+  border-radius:var(--r-pill);
+  background:linear-gradient(180deg,rgba(21,35,61,.6),rgba(13,21,38,.45));
+  border:1px solid rgba(232,130,42,.32);
+  box-shadow:0 6px 20px rgba(3,7,15,.35),inset 0 1px 0 rgba(255,255,255,.06);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.13em;font-size:.74rem;color:var(--blanc);line-height:1;
+}
+.hero__badge-dot{
+  position:relative;width:.5em;height:.5em;border-radius:50%;flex:none;
+  background:var(--orange-vif);
+}
+/* halo qui se diffuse — animé en transform/opacity (composité GPU, pas de repaint). */
+.hero__badge-dot::after{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:rgba(232,130,42,.5);
+  animation:heroBadgePulse 2.4s var(--ease) infinite;
+}
+@keyframes heroBadgePulse{
+  0%{transform:scale(1);opacity:.6}
+  70%{transform:scale(3.2);opacity:0}
+  100%{transform:scale(3.2);opacity:0}
+}
+
+/* Ligne de slogans animés : "Le basket à La Montagne, c'est [slogan]". */
+/* align-self:stretch → le rotator prend toute la largeur du hero centré,
+   sinon il se rétrécirait à la largeur de la ligne d'intro et les slogans
+   longs passeraient sur plusieurs lignes (coupées par overflow:hidden). */
+.hero__rotator{margin:.1rem 0 1.3rem;align-self:stretch;font-family:var(--ff-cond);font-weight:600;line-height:1.12}
+.hero__rotator-lead{
+  display:block;text-transform:uppercase;letter-spacing:.05em;
+  font-size:clamp(1.02rem,2.5vw,1.45rem);color:var(--bleu-glacier);
+}
+.hero__rotator-stage{
+  position:relative;display:block;
+  font-size:clamp(1.4rem,4.8vw,2.7rem);
+  min-height:1.32em;margin-top:.18em;overflow:hidden;
+}
+.hero__rotator-word{
+  display:block;font-family:var(--ff-display);font-weight:400;
+  text-transform:uppercase;letter-spacing:.5px;line-height:1.3;font-size:1em;white-space:nowrap;
+  background:var(--grad-orange);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 18px rgba(217,106,27,.32));
+}
+/* Fallback sans JS : seul le 1er slogan s'affiche, en flux normal. */
+.hero__rotator-stage:not(.is-ready) .hero__rotator-word{display:none}
+.hero__rotator-stage:not(.is-ready) .hero__rotator-word:first-child{display:block}
+/* JS actif : carrousel vertical piloté par .is-active / .is-leaving. */
+.hero__rotator-stage.is-ready .hero__rotator-word{
+  position:absolute;left:0;right:0;top:0;
+  opacity:0;transform:translateY(120%);
+  transition:opacity .55s var(--ease-out),transform .55s var(--ease-out);
+  will-change:transform,opacity;
+}
+.hero__rotator-stage.is-ready .hero__rotator-word.is-active{opacity:1;transform:translateY(0)}
+.hero__rotator-stage.is-ready .hero__rotator-word.is-leaving{opacity:0;transform:translateY(-120%)}
+.hero__rotator-stage.is-ready .hero__rotator-word.no-anim{transition:none}
+
+/* Accessibilité : pas de mouvement si l'utilisateur le demande. */
+@media (prefers-reduced-motion:reduce){
+  .hero__badge-dot{animation:none}
+  .hero__rotator-stage.is-ready .hero__rotator-word{transition:opacity .3s ease;transform:none}
+  .hero__rotator-stage.is-ready .hero__rotator-word.is-leaving{transform:none}
+}

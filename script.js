@@ -134,6 +134,45 @@
   const hero = document.getElementById('hero');
   if (hero) requestAnimationFrame(function () { setTimeout(function () { hero.classList.add('in'); }, 80); });
 
+  /* ---- Hero : slogans animés (rotator "Animated Hero" sans React) ----
+     Alterne des slogans FR / créole. Fallback : sans JS, seul le 1er slogan
+     s'affiche (cf. CSS). Respecte prefers-reduced-motion (pas de rotation). */
+  const rotatorStage = document.querySelector('.hero__rotator-stage');
+  if (rotatorStage) {
+    const words = Array.prototype.slice.call(rotatorStage.querySelectorAll('.hero__rotator-word'));
+    if (words.length) {
+      rotatorStage.classList.add('is-ready');
+      let idx = 0;
+      words[0].classList.add('is-active');
+      if (!reduceMotion && words.length > 1) {
+        let timer = null;
+        function advance() {
+          const cur = words[idx];
+          idx = (idx + 1) % words.length;
+          const next = words[idx];
+          cur.classList.remove('is-active');
+          cur.classList.add('is-leaving');
+          next.classList.add('is-active');
+          /* une fois sorti par le haut, on le replace en bas SANS animation
+             (évite que l'ancien slogan ne traverse la scène en repartant). */
+          window.setTimeout(function () {
+            cur.classList.add('no-anim');
+            cur.classList.remove('is-leaving');
+            void cur.offsetWidth; /* reflow : applique le saut instantané */
+            cur.classList.remove('no-anim');
+          }, 600);
+        }
+        function start() { if (!timer) timer = window.setInterval(advance, 2600); }
+        function stop() { if (timer) { window.clearInterval(timer); timer = null; } }
+        start();
+        /* on met en pause quand l'onglet n'est pas visible. */
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) stop(); else start();
+        });
+      }
+    }
+  }
+
   /* ---- Scroll reveal ---- */
   const reveals = document.querySelectorAll('.reveal');
   if (reduceMotion || !('IntersectionObserver' in window)) {
