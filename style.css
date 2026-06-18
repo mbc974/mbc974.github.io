@@ -4292,3 +4292,41 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .footer-legal__body p{font-size:.82rem;line-height:1.6;color:var(--txt-soft)}
 .footer-legal__body b{color:var(--bleu-glacier)}
 .footer-legal__body a{color:var(--orange-vif)}
+
+/* ============================================================
+   V24 — Tarif « 95 € » mis en valeur : taille XL + shimmer or
+   ============================================================ */
+.tarifs{overflow:hidden}
+.tarifs__main{position:relative}
+.tarifs__main>*{position:relative;z-index:1}
+.tarifs__price{
+  font-size:clamp(3.6rem,8vw,5.4rem)!important;
+  line-height:.95!important;letter-spacing:1px!important;
+  filter:drop-shadow(0 6px 26px rgba(232,130,42,.5));
+}
+/* shimmer or (texte dégradé animé) — navigateurs compatibles uniquement */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .tarifs__price{
+    background:linear-gradient(100deg,#E8822A 22%,#ffe6bf 47%,#ffffff 51%,#ffe6bf 55%,#D96A1B 78%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+    animation:priceShine 4.5s ease-in-out infinite;
+  }
+}
+@keyframes priceShine{0%{background-position:170% 0}50%{background-position:-70% 0}100%{background-position:170% 0}}
+/* halo doux qui respire derrière le prix */
+.tarifs__main::before{
+  content:"";position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);
+  width:190px;height:190px;border-radius:50%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(232,130,42,.22),transparent 68%);
+  animation:priceHalo 4.5s ease-in-out infinite;
+}
+@keyframes priceHalo{0%,100%{opacity:.45;transform:translate(-50%,-50%) scale(.9)}50%{opacity:.85;transform:translate(-50%,-50%) scale(1.1)}}
+
+/* mobile : on garde la taille XL + le shimmer (léger), halo figé */
+@media (max-width:760px){.tarifs__main::before{animation:none;opacity:.5}}
+/* a11y : prix statique en orange plein si mouvement réduit */
+@media (prefers-reduced-motion:reduce){
+  .tarifs__price{animation:none!important;background:none!important;-webkit-text-fill-color:var(--orange-vif)!important;color:var(--orange-vif)!important}
+  .tarifs__main::before{animation:none!important;opacity:.4}
+}
