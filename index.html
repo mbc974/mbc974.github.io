@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-hero-fx">
+<link rel="stylesheet" href="style.css?v=202606-hero-premium">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -176,32 +176,38 @@
     <div class="hero-fx__grid"></div>
     <div class="hero-fx__glow"></div>
   </div>
+  <div class="hero__mountain" aria-hidden="true">
+    <svg class="hero__mtn-svg" viewBox="0 0 1440 280" preserveAspectRatio="xMidYMax slice" focusable="false">
+      <defs>
+        <linearGradient id="mbcMtnGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1B519E" stop-opacity=".42"/>
+          <stop offset="1" stop-color="#0a1426" stop-opacity=".95"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 200 L240 120 L380 200 L560 70 L760 180 L980 92 L1200 168 L1440 108 L1440 280 L0 280 Z" fill="url(#mbcMtnGrad)"/>
+      <path class="hero__mtn-ridge" d="M0 200 L240 120 L380 200 L560 70 L760 180 L980 92 L1200 168 L1440 108" fill="none"/>
+    </svg>
+  </div>
   <div class="hero__inner">
     <div class="hero__content">
       <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
       <span class="logo-img hero__crest hero__crest--brand reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
       <h1 class="hero__headline hero__headline-fixed reveal-fade">Le basket prend de la hauteur</h1>
-      <p class="hero__rotator reveal-fade" aria-hidden="true">
-        <span class="hero__rotator-stage">
-          <span class="hero__rotator-word">Nout basket, nout fierté</span>
-          <span class="hero__rotator-word">La Montagne en lèr</span>
-          <span class="hero__rotator-word">Nout kartié, nout club</span>
-          <span class="hero__rotator-word">Ensemble, plus forts</span>
-        </span>
-      </p>
-      <span class="sr-only">Le basket à La Montagne : nout basket, nout fierté.</span>
-      <p class="hero__sub reveal-fade d2">Le club de basket de La Montagne — une saison fondatrice pour toutes les générations.</p>
+      <p class="hero__subtitle reveal-fade">Nout basket, nout fierté</p>
+      <p class="hero__sub reveal-fade d2">Le nouveau club de basket de La Montagne — une saison fondatrice pour toutes les générations.</p>
       <div class="hero-offer reveal-fade d3">
         <p class="hero-offer__label">Pré-inscriptions ouvertes</p>
         <p class="hero-offer__txt">Baby Basket, jeunes, loisirs et seniors — réserve ta place pour la saison 2026/2027.</p>
         <div class="hero-offer__btns">
-          <a href="adhesion.html" class="btn btn--primary btn--cta btn--xl">Je me pré-inscris maintenant <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a href="adhesion.html" class="btn btn--primary btn--cta btn--xl hero-offer__main" aria-label="Je rejoins le MBC — pré-inscription saison 2026/2027">
+            <span class="hero-offer__main-t">Je rejoins le MBC <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            <span class="hero-offer__main-s">Pré-inscription saison 2026/2027</span>
+          </a>
           <a href="#categories" class="btn btn--ghost btn--hero-sec">Voir les catégories</a>
         </div>
         <ul class="hero-offer__proof" aria-label="Garanties du club">
           <li>Club affilié FFBB</li>
           <li>Encadrement déclaré &amp; assuré</li>
-          <li>Réponse sous 48 h</li>
           <li>Licence 95 €</li>
         </ul>
       </div>
@@ -975,6 +981,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-hero-fx" defer></script>
+<script src="script.js?v=202606-hero-premium" defer></script>
 </body>
 </html>
