@@ -4958,7 +4958,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
     text-align:left;
     max-width:600px;
     margin-inline:0;
-    margin-left:clamp(6vw,7.5vw,9vw);
+    /* calé à gauche jusqu'à 1440px, puis ramené vers le centre (évite le vide au milieu sur grands écrans) */
+    margin-left:max(clamp(6vw,7.5vw,9vw), calc((100vw - 1440px) / 2));
     gap:.7rem;
   }
   .hero--split .hero__pill{align-self:flex-start;margin-inline:0}
@@ -4971,6 +4972,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero-offer__label,.hero-offer__txt{text-align:left}
   .hero-offer__btns{justify-content:flex-start;gap:14px}
   .hero-offer__proof{justify-content:flex-start}
+}
+/* Grands écrans (>1440px) : on recentre la photo joueur avec le contenu dans une
+   zone ~1440px (composition compacte, plus de vide au milieu) + fondu du bord droit. */
+@media (min-width:981px){
+  .hero--split .hero__photo{
+    right:max(0px, calc((100vw - 1440px) / 2));
+    -webkit-mask-image:linear-gradient(to left,transparent 0%,#000 8%,#000 34%,rgba(0,0,0,.8) 55%,transparent 85%),linear-gradient(to top,transparent 0%,#000 20%);
+    mask-image:linear-gradient(to left,transparent 0%,#000 8%,#000 34%,rgba(0,0,0,.8) 55%,transparent 85%),linear-gradient(to top,transparent 0%,#000 20%);
+    -webkit-mask-composite:source-in;mask-composite:intersect;
+  }
 }
 /* Mobile (<768px) : hero recentré, CTA pleine largeur, boutons empilés/centrés */
 @media (max-width:768px){
