@@ -1677,10 +1677,6 @@ body{text-rendering:optimizeLegibility}
 /* ---- Hero : micro-réassurance sous les CTA + bandeau garanties ---- */
 .action-card__note{position:relative;z-index:1;display:flex;align-items:flex-start;gap:.45em;margin-top:.1rem;font-family:var(--ff-cond);font-weight:600;font-size:.78rem;letter-spacing:.01em;color:var(--bleu-glacier);line-height:1.35;text-align:left}
 .action-card__note svg{width:1.05em;height:1.05em;flex:none;color:var(--orange-vif);margin-top:.15em}
-.trust-strip{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem 1.4rem;margin:1.7rem auto 0;max-width:780px}
-.trust-strip li{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.78rem;color:var(--bleu-glacier)}
-.trust-strip svg{width:1.2em;height:1.2em;flex:none;color:var(--orange-vif)}
-.trust-strip b{color:#fff}
 
 /* ---- Parcours "3 étapes" ---- */
 .how{background:linear-gradient(180deg,var(--nuit-2),var(--nuit-0))}
@@ -4530,14 +4526,22 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    battre le bloc "compact hero" existant (lui-même en !important).
    ============================================================ */
 
-/* Carte : un peu plus large, plus de padding, verre plus contrasté. */
-.hero__actions{max-width:720px !important}
+/* Carte : plus large, plus de padding, verre plus contrasté. */
+.hero__actions{max-width:760px !important;margin-top:1rem !important}
 .action-card--cta{
-  padding:2.1rem 2rem !important;
-  gap:.6rem !important;
-  border:1px solid rgba(191,210,228,.14);
-  background:linear-gradient(165deg,rgba(27,81,158,.30),rgba(9,15,28,.82)) !important;
-  box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:stretch;
+  min-height:auto !important;
+  padding:clamp(1.45rem,2.4vw,2.15rem) clamp(1.25rem,3vw,2.45rem) !important;
+  gap:.62rem !important;
+  border:1px solid rgba(191,210,228,.2);
+  background:linear-gradient(160deg,rgba(27,81,158,.34) 0%,rgba(13,21,38,.88) 52%,rgba(7,13,24,.94) 100%) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.54),0 0 42px rgba(232,130,42,.1),inset 0 1px 0 rgba(255,255,255,.08);
+}
+.hero__actions.reveal-fade{
+  opacity:1 !important;
+  transform:none !important;
 }
 /* Liseré subtil bleu → orange (préserve les coins arrondis via masque). */
 .action-card--cta::after{
@@ -4549,31 +4553,44 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 }
 
 /* Hiérarchie typo : titre beaucoup plus grand et sportif (Anton). */
-.action-card--cta .action-card__eyebrow{font-size:.8rem;letter-spacing:.18em}
+.action-card--cta .action-card__eyebrow{
+  font-size:.82rem;
+  letter-spacing:.18em;
+  line-height:1.15;
+}
 .action-card--cta .action-card__title{
-  font-size:clamp(1.9rem,3vw,2.5rem) !important;
-  line-height:1.02;letter-spacing:.5px;margin-top:.05rem;
+  min-height:0 !important;
+  font-size:clamp(2.15rem,3.35vw,2.85rem) !important;
+  line-height:.96;
+  letter-spacing:.5px;
+  margin-top:.04rem;
+  text-wrap:balance;
 }
 .action-card--cta .action-card__sub{
   position:relative;z-index:1;
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.04em;font-size:clamp(.9rem,1.3vw,1.05rem);color:var(--bleu-glacier);
+  font-family:var(--ff-cond);font-weight:700;text-transform:none;
+  letter-spacing:.02em;font-size:clamp(1rem,1.35vw,1.12rem);color:#fff;
 }
 .action-card--cta .action-card__txt{
-  font-size:.98rem !important;line-height:1.5 !important;color:var(--txt-soft);
+  flex:0 1 auto !important;
+  font-size:clamp(.98rem,1.15vw,1.06rem) !important;line-height:1.5 !important;color:var(--txt-soft);
 }
 
 /* Bouton principal : impact + glow orange doux autour (box-shadow non rognée). */
 .action-card--cta .btn--cta{
-  margin-top:.7rem;
+  margin-top:.55rem !important;
   min-height:64px !important;
-  font-size:clamp(1.05rem,1.4vw,1.2rem);
-  font-weight:800;letter-spacing:.04em;
-  box-shadow:0 12px 30px rgba(217,106,27,.42),0 0 22px rgba(232,130,42,.22);
+  padding:1.05rem 1.65rem !important;
+  font-size:clamp(1.0625rem,1.35vw,1.25rem) !important;
+  font-weight:900;letter-spacing:.035em;
+  line-height:1.05;
+  color:#170b02;
+  background:linear-gradient(100deg,#D96A1B 0%,#F08A2F 58%,#FFB15B 100%);
+  box-shadow:0 14px 34px rgba(217,106,27,.46),0 0 28px rgba(232,130,42,.26),inset 0 1px 0 rgba(255,255,255,.34);
 }
 .action-card--cta .btn--cta:hover{
-  transform:translateY(-3px) scale(1.015);
-  box-shadow:0 20px 46px rgba(232,130,42,.55),0 0 34px rgba(232,130,42,.4);
+  transform:translateY(-4px) scale(1.015);
+  box-shadow:0 22px 52px rgba(232,130,42,.58),0 0 40px rgba(232,130,42,.42),inset 0 1px 0 rgba(255,255,255,.38);
 }
 .action-card--cta .btn--cta:active{transform:translateY(-1px) scale(.985)}
 .btn__arrow{width:1.1em;height:1.1em;flex:none;transition:transform .25s var(--ease-out)}
@@ -4581,7 +4598,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 
 /* CTA secondaire discret. */
 .action-card--cta .action-card__link{
-  position:relative;z-index:1;align-self:flex-start;margin-top:-.05rem;
+  position:relative;z-index:1;align-self:center;margin-top:.05rem;
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.05em;font-size:.82rem;color:var(--bleu-glacier);
   border-bottom:1px solid transparent;transition:color .25s,border-color .25s;
@@ -4591,13 +4608,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* Micro-preuves : discrètes mais lisibles. */
 .action-card--cta .action-card__note{
   margin-top:.45rem !important;min-height:0 !important;
-  font-size:.76rem !important;color:var(--bleu-glacier);
+  padding-top:.75rem;
+  border-top:1px solid rgba(191,210,228,.12);
+  font-size:.78rem !important;color:rgba(191,210,228,.9);
+  justify-content:center;
+  text-align:center;
 }
 
 /* Mobile : carte lisible, bouton pleine largeur, pas de débordement. */
 @media (max-width:680px){
-  .action-card--cta{padding:1.5rem 1.25rem !important}
-  .action-card--cta .action-card__title{font-size:clamp(1.65rem,7.5vw,2.1rem) !important}
-  .action-card--cta .btn--cta{width:100%;font-size:1.06rem}
+  .hero__actions{margin-top:.45rem !important}
+  .action-card--cta{padding:1rem .95rem 1.08rem !important;gap:.42rem !important}
+  .action-card--cta .action-card__eyebrow{font-size:.64rem;letter-spacing:.13em}
+  .action-card--cta .action-card__title{font-size:clamp(1.52rem,7.2vw,1.88rem) !important;line-height:.95}
+  .action-card--cta .action-card__sub{font-size:.9rem;line-height:1.12}
+  .action-card--cta .action-card__txt{font-size:.86rem !important;line-height:1.32 !important}
+  .action-card--cta .btn--cta{width:100%;min-height:56px !important;font-size:clamp(.86rem,3.75vw,.98rem) !important;letter-spacing:.02em;padding-inline:.65rem !important;white-space:nowrap}
+  .action-card--cta .btn__arrow{width:1em;height:1em}
   .action-card--cta .action-card__link{align-self:center}
+  .action-card--cta .action-card__note{font-size:.72rem !important;line-height:1.35;text-align:left;justify-content:flex-start}
 }
