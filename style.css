@@ -2220,8 +2220,6 @@ section[id]{scroll-margin-top:92px}
     drop-shadow(0 0 90px rgba(232,130,42,.16)) !important;
   transition:transform .6s var(--ease-out);
 }
-.hero.in .hero__crest--giant{animation:crestFloat 7s ease-in-out 1.2s infinite}
-@keyframes crestFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .hero__crest--giant::before{
   inset:-10% !important;
   background:radial-gradient(circle at 50% 46%,
@@ -3672,12 +3670,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .hero.in .reveal-up .word{transform:none;opacity:1}
 .hero .reveal-fade{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s var(--ease-out) .35s,transform .7s var(--ease-pop) .35s}
 .hero.in .reveal-fade{opacity:1;transform:none}
-.hero__crest--giant{animation:heroFloat 6.5s ease-in-out infinite}
-.hero__halo{animation:haloPulse 5s ease-in-out infinite}
+/* crest → animé par crestPremiumFloat ; halo → par mbcHaloBreath (V30).
+   heroFloat & haloPulse retirés (toujours écrasés → morts). */
 .hero__glow{animation:glowBreathe 7s ease-in-out infinite}
 .hero__glow--o{animation-delay:-2.4s}
-@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-1deg)}}
-@keyframes haloPulse{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}50%{opacity:.78;transform:translate(-50%,-50%) scale(1.08)}}
 @keyframes glowBreathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.14)}}
 
 /* ---- Boutons & CTA : micro-interactions plus toniques ---- */
@@ -4517,52 +4513,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero-light-motion .hero__halo{animation:none}
 }
 
-/* ============================================================
-   V32 — HERO : React/Spline island, subtle desktop-only layer
-   ============================================================ */
-#hero-spline-root{
-  position:absolute;
-  inset:0;
-  z-index:2;
-  pointer-events:none;
-}
-.hero-spline-react{
-  position:absolute;
-  right:-4%;
-  top:12%;
-  width:clamp(360px,36vw,540px);
-  height:clamp(360px,36vw,540px);
-  opacity:.32;
-  pointer-events:none;
-  mix-blend-mode:screen;
-  filter:saturate(1.08) contrast(1.05);
-}
-.hero-spline-canvas{
-  width:100%;
-  height:100%;
-  pointer-events:none;
-}
-.spline-loader{
-  width:100%;
-  height:100%;
-  display:grid;
-  place-items:center;
-}
-.spline-loader span{
-  width:28px;
-  height:28px;
-  border:2px solid rgba(244,122,31,.35);
-  border-top-color:rgba(244,122,31,.95);
-  border-radius:999px;
-  animation:splineLoader .8s linear infinite;
-}
-@keyframes splineLoader{to{transform:rotate(360deg)}}
-@media (max-width:1024px){
-  #hero-spline-root{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  #hero-spline-root{display:none}
-}
+/* (V32 "React/Spline island" retirée — résidu Vite mort : aucun /src/main.tsx,
+   #hero-spline-root jamais monté. Voir nettoyage 202606.) */
 
 /* ============================================================
    V31 — HERO : bloc CTA premium (carte de conversion)

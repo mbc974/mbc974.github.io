@@ -127,7 +127,7 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     reveals.forEach(function (el) {
       const parent = el.parentElement;
-      if (parent && (parent.classList.contains('cat-grid') || parent.classList.contains('why-grid') ||
+      if (parent && (parent.classList.contains('cat-grid') ||
                      parent.classList.contains('staff-grid') || parent.classList.contains('engage-grid') ||
                      parent.classList.contains('fondatrice__pillars'))) {
         const idx = Array.prototype.indexOf.call(parent.children, el);
@@ -391,9 +391,9 @@
     });
   }
 
-  /* ---- Cartes "spotlight" : halo qui suit le curseur (why-spon + formules) ---- */
+  /* ---- Cartes "spotlight" : halo qui suit le curseur (formules partenaires) ---- */
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll('.why-spon__item,.pack').forEach(function (card) {
+    document.querySelectorAll('.pack').forEach(function (card) {
       card.addEventListener('pointermove', function (e) {
         const r = card.getBoundingClientRect();
         card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
