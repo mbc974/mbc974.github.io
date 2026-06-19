@@ -1691,16 +1691,7 @@ body{text-rendering:optimizeLegibility}
   .step:not(:last-child)::after{content:"";position:absolute;top:50%;right:-.95rem;width:1.1rem;height:2px;background:linear-gradient(90deg,var(--orange-vif),transparent);z-index:2}}
 
 /* ---- Parents : piliers + FAQ ---- */
-.parents{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(80% 120% at 92% 0,rgba(27,81,158,.30),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
-.parents>.wrap{position:relative;z-index:2}
-.parents__photo{position:absolute;top:clamp(2rem,7vw,5rem);right:0;width:min(48vw,720px);height:min(68%,720px);z-index:0;pointer-events:none;opacity:.28;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.76) 55%,transparent 90%),linear-gradient(to bottom,transparent 0%,#000 16%,#000 74%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.76) 55%,transparent 90%),linear-gradient(to bottom,transparent 0%,#000 16%,#000 74%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
-.parents__photo img{width:100%;height:100%;object-fit:cover;object-position:52% 24%;display:block;filter:saturate(1.04) contrast(1.04)}
-.parents__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,13,24,.92),rgba(7,13,24,.36) 44%,rgba(7,13,24,.12)),linear-gradient(to top,rgba(7,13,24,.76),transparent 42%)}
-@media(max-width:900px){
-  .parents__photo{top:4rem;right:-18%;width:115%;height:36%;opacity:.16;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 20%,#000 64%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0%,#000 20%,#000 64%,transparent 100%);-webkit-mask-composite:source-over;mask-composite:add}
-  .parents__photo img{object-position:50% 18%}
-  .parents__photo::after{background:linear-gradient(to bottom,rgba(7,13,24,.9),rgba(7,13,24,.42) 48%,rgba(7,13,24,.92))}
-}
+.parents{background:radial-gradient(80% 120% at 92% 0,rgba(27,81,158,.30),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
 .parents-grid{display:grid;gap:1rem;grid-template-columns:1fr;margin-bottom:2.8rem}
 .p-pillar{display:flex;flex-direction:column;gap:.55rem;padding:1.7rem 1.6rem;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--grad-card);box-shadow:var(--e2),var(--bevel);transition:transform .35s var(--ease-spring),border-color .3s}
 .p-pillar:hover{transform:translateY(-5px);border-color:rgba(232,130,42,.45)}
@@ -4847,16 +4838,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .hero-offer__main-t{display:inline-flex;align-items:center;gap:.5em;font-weight:900;letter-spacing:.03em}
 .hero-offer__main-s{font-size:.62em;font-weight:600;letter-spacing:.04em;text-transform:none;opacity:.92}
 
-/* Relief montagne stylisé "La Montagne" (silhouette élégante en bas, derrière le contenu). */
-.hero__mountain{
-  position:absolute;left:0;right:0;bottom:0;height:38%;
-  z-index:1;pointer-events:none;
-  -webkit-mask-image:linear-gradient(to top,#000 58%,transparent 100%);
-  mask-image:linear-gradient(to top,#000 58%,transparent 100%);
-}
-.hero__mtn-svg{width:100%;height:100%;display:block}
-.hero__mtn-ridge{stroke:rgba(232,130,42,.42);stroke-width:1.5;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 7px rgba(232,130,42,.3))}
-
 /* Watermark logo : encore plus subtil (simple texture de fond). */
 .hero--split .hero__watermark{opacity:.03}
 
@@ -4864,7 +4845,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (max-width:680px){
   .hero__headline-fixed{font-size:clamp(2.3rem,8.5vw,3.2rem) !important;line-height:.94}
   .hero__subtitle{font-size:clamp(1.3rem,6vw,1.9rem)}
-  .hero__mountain{height:26%}
 }
 
 /* ===================================================================
@@ -4960,4 +4940,50 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .footer__actions a:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:3px}
 @media (prefers-reduced-motion:reduce){
   .cascade-link__c{transition:none;transform:none!important;text-shadow:none}
+}
+
+/* ============================================================
+   V39 — HERO split-screen : contenu aligné à GAUCHE (desktop)
+   Texte + CTA à gauche · joueur (.hero__photo) à droite · mobile recentré.
+   Surcharge ciblée du centrage (V33/V36). Visuel global, photo, aurora,
+   montagne et couleurs MBC inchangés.
+   ============================================================ */
+/* Logo MBC en filigrane : plus petit = net & premium (au lieu d'un upscale flou) */
+.hero--split .hero__watermark{width:min(50vw,460px);height:min(50vw,460px);opacity:.06}
+@media (min-width:769px){
+  .hero--split{padding-block:clamp(4rem,7.5vh,6rem) 3.5rem}
+  .hero--split .hero__inner{max-width:none;margin-inline:0;padding-inline:0}
+  .hero--split .hero__content{
+    align-items:flex-start;
+    text-align:left;
+    max-width:600px;
+    margin-inline:0;
+    margin-left:clamp(6vw,7.5vw,9vw);
+    gap:.7rem;
+  }
+  .hero--split .hero__pill{align-self:flex-start;margin-inline:0}
+  .hero--split .hero__crest--brand{align-self:flex-start;margin:0;width:clamp(60px,5vw,78px)}
+  .hero--split .hero__headline{align-self:flex-start;text-align:left}
+  .hero__headline-fixed{font-size:clamp(4rem,7vw,7.5rem)!important;line-height:.9;max-width:720px}
+  .hero--split .hero__subtitle{align-self:flex-start;text-align:left;font-size:clamp(2rem,4.4vw,3.8rem);line-height:1.02}
+  .hero--split .hero__sub{max-width:520px;margin-inline:0;text-align:left}
+  .hero-offer{max-width:520px;margin-top:32px;padding:28px 32px}
+  .hero-offer__label,.hero-offer__txt{text-align:left}
+  .hero-offer__btns{justify-content:flex-start;gap:14px}
+  .hero-offer__proof{justify-content:flex-start}
+}
+/* Mobile (<768px) : hero recentré, CTA pleine largeur, boutons empilés/centrés */
+@media (max-width:768px){
+  .hero--split .hero__content{align-items:center;text-align:center;max-width:none;margin-left:0;margin-inline:auto}
+  .hero--split .hero__pill,
+  .hero--split .hero__crest--brand{align-self:center}
+  .hero--split .hero__headline,
+  .hero--split .hero__subtitle{text-align:center;align-self:center}
+  .hero--split .hero__subtitle{font-size:clamp(1.6rem,6.6vw,2.4rem)}
+  .hero--split .hero__sub{text-align:center;margin-inline:auto;max-width:none}
+  .hero-offer{max-width:none}
+  .hero-offer__label,.hero-offer__txt{text-align:center}
+  .hero-offer__btns{flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  .hero-offer__main{width:100%}
+  .hero-offer__proof{justify-content:center}
 }

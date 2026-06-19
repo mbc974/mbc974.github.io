@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-footcascade">
+<link rel="stylesheet" href="style.css?v=202606-hero-split3">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -176,18 +176,6 @@
     <div class="hero-fx__grid"></div>
     <div class="hero-fx__glow"></div>
   </div>
-  <div class="hero__mountain" aria-hidden="true">
-    <svg class="hero__mtn-svg" viewBox="0 0 1440 280" preserveAspectRatio="xMidYMax slice" focusable="false">
-      <defs>
-        <linearGradient id="mbcMtnGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#1B519E" stop-opacity=".42"/>
-          <stop offset="1" stop-color="#0a1426" stop-opacity=".95"/>
-        </linearGradient>
-      </defs>
-      <path d="M0 200 L240 120 L380 200 L560 70 L760 180 L980 92 L1200 168 L1440 108 L1440 280 L0 280 Z" fill="url(#mbcMtnGrad)"/>
-      <path class="hero__mtn-ridge" d="M0 200 L240 120 L380 200 L560 70 L760 180 L980 92 L1200 168 L1440 108" fill="none"/>
-    </svg>
-  </div>
   <div class="hero__photo" aria-hidden="true">
     <img src="assets/images/joueur-dribble.webp" alt="" width="900" height="1350" decoding="async" fetchpriority="high"
          onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/joueur-dribble.jpg'}else{this.closest('.hero__photo').classList.add('is-empty')}">
@@ -195,9 +183,8 @@
   <div class="hero__inner">
     <div class="hero__content">
       <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
-      <span class="logo-img hero__crest hero__crest--brand reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
       <h1 class="hero__headline hero__headline-fixed reveal-fade">Le basket prend de la hauteur</h1>
-      <p class="hero__subtitle reveal-fade">Nout basket, nout fierté</p>
+      <p class="hero__subtitle reveal-fade">Ansamb nou lé pli for</p>
       <p class="hero__sub reveal-fade d2">Le nouveau club de basket de La Montagne — une saison fondatrice pour toutes les générations.</p>
       <div class="hero-offer reveal-fade d3">
         <p class="hero-offer__label">Pré-inscriptions ouvertes</p>
@@ -452,9 +439,6 @@
 
 <!-- ===== Parents (réassurance + FAQ) ===== -->
 <section class="section parents" id="parents">
-  <div class="parents__photo" aria-hidden="true">
-    <img src="assets/images/joueur-mbc-action.jpg" alt="" loading="lazy" decoding="async" width="970" height="1024">
-  </div>
   <span class="bg-word" style="top:4%;right:-3%" aria-hidden="true">CONFIANCE</span>
   <div class="wrap">
     <header class="sec-head reveal">
@@ -473,7 +457,7 @@
     <div class="tarifs reveal" id="tarifs">
       <div class="tarifs__main">
         <span class="tarifs__lbl">Licence saison 2026-2027</span>
-        <span class="tarifs__price"><span class="sr-only">95 €</span><span aria-hidden="true"><span data-count="95">95</span> €</span></span>
+        <span class="tarifs__price"><span data-count="95">95</span> €</span>
         <span class="tarifs__note">pour toutes les catégories</span>
         <span class="tarifs__perm">soit moins de 8 € / mois</span>
       </div>
@@ -842,7 +826,7 @@
       <p class="partners-cta__txt">Prêt à associer votre entreprise à une aventure locale positive&nbsp;?</p>
       <div class="partners-cta__btns">
         <a href="assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download="DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" class="btn btn--primary btn--lg"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5M12 15V3"/></svg> Télécharger le dossier partenaire</a>
-        <a href="#contact" class="btn btn--roi btn--lg">Devenir partenaire</a>
+        <a href="#contact" class="btn btn--roi btn--lg">Associer mon entreprise au MBC</a>
       </div>
     </div>
   </div>
@@ -901,7 +885,7 @@
         <div class="field"><label for="msg">Message (facultatif)</label><textarea id="msg" name="msg" rows="4"></textarea></div>
         <button type="submit" class="btn btn--primary btn--full" aria-describedby="formRgpd">Envoyer ma demande</button>
         <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
-        <p style="margin-top:1rem;font-size:.86rem;color:var(--txt-soft)">Pour une inscription officielle, utilisez directement notre <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" style="color:var(--orange-vif);font-weight:600">espace adhésion en ligne</a>.</p>
+        <p style="margin-top:1rem;font-size:.86rem;color:var(--txt-soft)">Pour une inscription officielle, rendez-vous sur notre <a href="adhesion.html" style="color:var(--orange-vif);font-weight:600">page adhésion</a>.</p>
         <p class="form-rgpd" id="formRgpd">Les informations transmises sont utilisées uniquement pour répondre à votre demande liée au MBC. Elles ne sont pas revendues ni utilisées à d'autres fins. Vous pouvez demander leur suppression à tout moment à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>.</p>
       </form>
 
@@ -987,6 +971,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-footcascade" defer></script>
+<script src="script.js?v=202606-hero-split3" defer></script>
 </body>
 </html>

@@ -53,7 +53,7 @@ Tout le contenu se trouve dans `index.html` :
 - **Créneaux / calendrier** : section `id="calendrier"`.
 - **Sponsors** : ajoutez le logo dans `assets/sponsors/` puis dupliquez une carte dans la section `id="partenaires"`.
 - **Maillots / galerie** : remplacez les images dans `assets/maillots/` et `assets/galerie/` (gardez les mêmes noms de fichiers).
-- **Coordonnées / email** : recherchez `mbc.re974@gmail.com` dans `index.html`.
+- **Coordonnées / email** : l'email public est `contact@mbc974.com` (présent dans `index.html`, `adhesion.html`, le footer, les mentions légales et le JSON-LD).
 
 ---
 
