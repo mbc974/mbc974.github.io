@@ -115,6 +115,225 @@
     }
   }
 
+  /* ---- Hero : subtle 3D basketball layer (static-site canvas, no build step) ---- */
+  const heroBasketLayer = document.querySelector('.hero__basket3d');
+  const heroBasketCanvas = document.querySelector('.hero__basket3d-canvas');
+  if (heroBasketLayer && heroBasketCanvas && heroBasketLayer.dataset.heroBasket3d !== 'off') {
+    const ctx = heroBasketCanvas.getContext('2d', { alpha: true });
+    const desktop3d = window.matchMedia('(min-width: 981px)');
+    let basketRaf = null;
+    let basketVisible = true;
+    let basketW = 0;
+    let basketH = 0;
+    let basketDpr = 1;
+
+    function resizeHeroBasket() {
+      const rect = heroBasketCanvas.getBoundingClientRect();
+      basketW = Math.max(1, rect.width);
+      basketH = Math.max(1, rect.height);
+      basketDpr = Math.min(2, window.devicePixelRatio || 1);
+      heroBasketCanvas.width = Math.round(basketW * basketDpr);
+      heroBasketCanvas.height = Math.round(basketH * basketDpr);
+      ctx.setTransform(basketDpr, 0, 0, basketDpr, 0, 0);
+    }
+
+    function spherePoint(cx, cy, r, lon, lat, rot) {
+      const x3 = Math.cos(lat) * Math.sin(lon + rot);
+      const y3 = Math.sin(lat);
+      const z3 = Math.cos(lat) * Math.cos(lon + rot);
+      const depth = 1 / (1 - z3 * 0.16);
+      return {
+        x: cx + x3 * r * depth,
+        y: cy - y3 * r * depth,
+        z: z3
+      };
+    }
+
+    function drawProjectedPath(cx, cy, r, points, color, width, glow) {
+      ctx.save();
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      if (glow) {
+        ctx.shadowColor = glow;
+        ctx.shadowBlur = width * 2.2;
+      }
+      ctx.beginPath();
+      let drawing = false;
+      points.forEach(function (p) {
+        if (p.z < -0.18) {
+          drawing = false;
+          return;
+        }
+        if (!drawing) {
+          ctx.moveTo(p.x, p.y);
+          drawing = true;
+        } else {
+          ctx.lineTo(p.x, p.y);
+        }
+      });
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function buildLatitude(cx, cy, r, lat, rot) {
+      const pts = [];
+      for (let i = -88; i <= 88; i += 2) {
+        pts.push(spherePoint(cx, cy, r, i / 88 * Math.PI, lat, rot));
+      }
+      return pts;
+    }
+
+    function buildMeridian(cx, cy, r, lon, rot) {
+      const pts = [];
+      for (let i = -74; i <= 74; i += 2) {
+        const lat = i / 74 * 1.22;
+        pts.push(spherePoint(cx, cy, r, lon + Math.sin(lat * 1.8) * 0.22, lat, rot));
+      }
+      return pts;
+    }
+
+    function drawHeroBasket(now) {
+      if (!ctx || !desktop3d.matches) return;
+      const t = reduceMotion ? 0 : now;
+      const rot = t * 0.00016;
+      const bob = reduceMotion ? 0 : Math.sin(t * 0.00045) * 5;
+      const cx = basketW * 0.5;
+      const cy = basketH * 0.5 + bob;
+      const r = Math.min(basketW, basketH) * 0.34;
+
+      ctx.clearRect(0, 0, basketW, basketH);
+
+      const glow = ctx.createRadialGradient(cx - r * 0.12, cy - r * 0.1, r * 0.08, cx, cy, r * 1.34);
+      glow.addColorStop(0, 'rgba(255,255,255,.18)');
+      glow.addColorStop(0.34, 'rgba(232,130,42,.18)');
+      glow.addColorStop(0.62, 'rgba(27,81,158,.18)');
+      glow.addColorStop(1, 'rgba(7,13,24,0)');
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 1.34, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.clip();
+
+      const base = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.42, r * 0.04, cx + r * 0.18, cy + r * 0.2, r * 1.18);
+      base.addColorStop(0, '#ffb15b');
+      base.addColorStop(0.2, '#f1842d');
+      base.addColorStop(0.58, '#c95816');
+      base.addColorStop(0.82, '#692915');
+      base.addColorStop(1, '#141017');
+      ctx.fillStyle = base;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+
+      ctx.globalCompositeOperation = 'screen';
+      let light = ctx.createRadialGradient(cx - r * 0.42, cy - r * 0.44, 0, cx - r * 0.24, cy - r * 0.32, r * 0.9);
+      light.addColorStop(0, 'rgba(255,255,255,.42)');
+      light.addColorStop(0.35, 'rgba(255,177,91,.22)');
+      light.addColorStop(1, 'rgba(255,177,91,0)');
+      ctx.fillStyle = light;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+
+      light = ctx.createRadialGradient(cx + r * 0.45, cy + r * 0.2, 0, cx + r * 0.48, cy + r * 0.18, r * 0.8);
+      light.addColorStop(0, 'rgba(27,81,158,.34)');
+      light.addColorStop(1, 'rgba(27,81,158,0)');
+      ctx.fillStyle = light;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+      ctx.globalCompositeOperation = 'source-over';
+
+      for (let i = 0; i < 85; i += 1) {
+        const lon = ((i * 2.399) % (Math.PI * 2)) - Math.PI;
+        const lat = Math.asin(Math.sin(i * 1.618) * 0.86);
+        const p = spherePoint(cx, cy, r * 0.96, lon, lat, rot * 0.8);
+        if (p.z > -0.08) {
+          ctx.fillStyle = i % 7 === 0 ? 'rgba(255,226,185,.16)' : 'rgba(64,28,18,.18)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(0.7, r * 0.0055), 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      const seamColor = 'rgba(40,22,18,.78)';
+      const seamGlow = 'rgba(255,148,58,.35)';
+      [-0.42, 0.42].forEach(function (lat) {
+        drawProjectedPath(cx, cy, r, buildLatitude(cx, cy, r, lat, rot), seamColor, r * 0.036, seamGlow);
+      });
+      [-1.55, 0, 1.55, 3.1].forEach(function (lon) {
+        drawProjectedPath(cx, cy, r, buildMeridian(cx, cy, r, lon, rot), seamColor, r * 0.034, seamGlow);
+      });
+
+      const rim = ctx.createRadialGradient(cx, cy, r * 0.68, cx, cy, r);
+      rim.addColorStop(0, 'rgba(0,0,0,0)');
+      rim.addColorStop(0.78, 'rgba(0,0,0,.08)');
+      rim.addColorStop(1, 'rgba(3,7,15,.66)');
+      ctx.fillStyle = rim;
+      ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
+      ctx.strokeStyle = 'rgba(232,130,42,.28)';
+      ctx.lineWidth = Math.max(1, r * 0.014);
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 1.01, -0.9, 2.5);
+      ctx.stroke();
+      ctx.strokeStyle = 'rgba(27,81,158,.22)';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 1.04, 2.2, 5.2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function stopHeroBasket() {
+      if (basketRaf) {
+        window.cancelAnimationFrame(basketRaf);
+        basketRaf = null;
+      }
+    }
+
+    function loopHeroBasket(now) {
+      drawHeroBasket(now);
+      if (!reduceMotion && desktop3d.matches && basketVisible && !document.hidden) {
+        basketRaf = window.requestAnimationFrame(loopHeroBasket);
+      } else {
+        basketRaf = null;
+      }
+    }
+
+    function startHeroBasket() {
+      stopHeroBasket();
+      if (!desktop3d.matches) {
+        ctx.clearRect(0, 0, basketW, basketH);
+        return;
+      }
+      resizeHeroBasket();
+      if (reduceMotion) {
+        drawHeroBasket(0);
+      } else if (basketVisible && !document.hidden) {
+        basketRaf = window.requestAnimationFrame(loopHeroBasket);
+      }
+    }
+
+    resizeHeroBasket();
+    if ('IntersectionObserver' in window) {
+      const basketObserver = new IntersectionObserver(function (entries) {
+        basketVisible = entries[0].isIntersecting;
+        if (basketVisible) startHeroBasket(); else stopHeroBasket();
+      }, { threshold: 0.08 });
+      basketObserver.observe(heroBasketLayer);
+    } else {
+      startHeroBasket();
+    }
+    window.addEventListener('resize', startHeroBasket, { passive: true });
+    if (desktop3d.addEventListener) desktop3d.addEventListener('change', startHeroBasket);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stopHeroBasket(); else startHeroBasket();
+    });
+  }
+
   /* ---- Scroll reveal ---- */
   const reveals = document.querySelectorAll('.reveal');
   if (reduceMotion || !('IntersectionObserver' in window)) {
