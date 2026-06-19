@@ -181,14 +181,32 @@
   /* ---- Poster / one-page lightbox ---- */
   const lightboxTriggers = document.querySelectorAll('[data-lightbox-src]');
   const lightbox = document.getElementById('lightbox');
-  const lightboxClose = document.getElementById('lightboxClose');
   const lightboxImg = document.getElementById('lightboxImg');
   const lightboxViewport = lightbox ? lightbox.querySelector('.lightbox__viewport') : null;
-  const zoomIn = document.getElementById('lightboxZoomIn');
-  const zoomOut = document.getElementById('lightboxZoomOut');
-  const zoomReset = document.getElementById('lightboxZoomReset');
-  const zoomLabel = document.getElementById('lightboxZoomLabel');
-  if (lightboxTriggers.length && lightbox && lightboxClose && lightboxImg && lightboxViewport) {
+  if (lightboxTriggers.length && lightbox && lightboxImg && lightboxViewport) {
+    /* Contrôles (fermer + zoom) générés en JS → absents du HTML statique parsé.
+       Lightbox fermée : tout reste sous inert + aria-hidden sur #lightbox. */
+    const lightboxClose = document.createElement('button');
+    lightboxClose.type = 'button';
+    lightboxClose.className = 'lightbox__close';
+    lightboxClose.setAttribute('aria-label', 'Fermer');
+    lightboxClose.innerHTML = '&times;';
+    lightbox.insertBefore(lightboxClose, lightbox.firstChild);
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'lightbox__toolbar';
+    toolbar.setAttribute('aria-label', 'Contrôles de zoom');
+    const zoomOut = document.createElement('button');
+    zoomOut.type = 'button'; zoomOut.setAttribute('aria-label', 'Réduire le zoom'); zoomOut.textContent = '−';
+    const zoomLabel = document.createElement('span'); zoomLabel.textContent = '100%';
+    const zoomIn = document.createElement('button');
+    zoomIn.type = 'button'; zoomIn.setAttribute('aria-label', 'Augmenter le zoom'); zoomIn.textContent = '+';
+    const zoomReset = document.createElement('button');
+    zoomReset.type = 'button'; zoomReset.setAttribute('aria-label', 'Réinitialiser le zoom'); zoomReset.textContent = 'Reset';
+    toolbar.append(zoomOut, zoomLabel, zoomIn, zoomReset);
+    const lightboxStage = lightbox.querySelector('.lightbox__stage');
+    if (lightboxStage) lightboxStage.insertBefore(toolbar, lightboxStage.firstChild);
+
     let zoom = 1;
     let lastFocused = null;
     const minZoom = 0.75;

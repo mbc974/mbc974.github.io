@@ -176,16 +176,16 @@
     <div class="hero__content">
       <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
       <span class="logo-img hero__crest hero__crest--brand reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
-      <h1 class="hero__headline reveal-fade">
-        <span class="hero__headline-fixed">Le basket prend de la hauteur</span>
-        <span class="hero__rotator-stage" aria-hidden="true">
+      <h1 class="hero__headline hero__headline-fixed reveal-fade">Le basket prend de la hauteur</h1>
+      <p class="hero__rotator reveal-fade" aria-hidden="true">
+        <span class="hero__rotator-stage">
           <span class="hero__rotator-word">Nout basket, nout fierté</span>
           <span class="hero__rotator-word">La Montagne en lèr</span>
           <span class="hero__rotator-word">Nout kartié, nout club</span>
           <span class="hero__rotator-word">Ensemble, plus forts</span>
         </span>
-        <span class="sr-only">Nout basket, nout fierté.</span>
-      </h1>
+      </p>
+      <span class="sr-only">Le basket à La Montagne : nout basket, nout fierté.</span>
       <p class="hero__sub reveal-fade d2">Le club de basket de La Montagne — une saison fondatrice pour toutes les générations.</p>
       <div class="hero-offer reveal-fade d3">
         <p class="hero-offer__label">Pré-inscriptions ouvertes</p>
@@ -864,7 +864,23 @@
           <div class="field"><label for="tel">Téléphone</label><input type="tel" id="tel" name="tel" autocomplete="tel"></div>
         </div>
         <div class="field"><label for="cat">Catégorie souhaitée</label>
-          <select id="cat" name="cat"><option value="">Choisir une catégorie…</option><option>Baby Basket (3-6 ans)</option><option>École de Basket (7-10 ans)</option><option>U13 (11-12 ans)</option><option>U15 (13-14 ans)</option><option>U18 (15-17 ans)</option><option>Seniors / Loisirs (dès 16 ans)</option><option>Bénévolat</option><option>Partenariat / Sponsoring</option><option>Don / Mécénat</option><option>Institution / Collectivité</option></select>
+          <select id="cat" name="cat">
+            <option value="">Choisir une catégorie…</option>
+            <optgroup label="Catégories joueurs">
+              <option>Baby Basket (3-6 ans)</option>
+              <option>École de Basket (7-10 ans)</option>
+              <option>U13 (11-12 ans)</option>
+              <option>U15 (13-14 ans)</option>
+              <option>U18 (15-17 ans)</option>
+              <option>Seniors / Loisirs (dès 16 ans)</option>
+            </optgroup>
+            <optgroup label="Autre demande">
+              <option>Bénévolat</option>
+              <option>Partenariat / Sponsoring</option>
+              <option>Don / Mécénat</option>
+              <option>Institution / Collectivité</option>
+            </optgroup>
+          </select>
         </div>
         <div class="field"><label for="msg">Message (facultatif)</label><textarea id="msg" name="msg" rows="4"></textarea></div>
         <button type="submit" class="btn btn--primary btn--full" aria-describedby="formRgpd">Envoyer ma demande</button>
@@ -948,14 +964,7 @@
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Affiche agrandie" inert>
-  <button class="lightbox__close" id="lightboxClose" aria-label="Fermer">&times;</button>
   <div class="lightbox__stage">
-    <div class="lightbox__toolbar" aria-label="Contrôles de zoom">
-      <button type="button" id="lightboxZoomOut" aria-label="Réduire le zoom">−</button>
-      <span id="lightboxZoomLabel">100%</span>
-      <button type="button" id="lightboxZoomIn" aria-label="Augmenter le zoom">+</button>
-      <button type="button" id="lightboxZoomReset" aria-label="Réinitialiser le zoom">Reset</button>
-    </div>
     <div class="lightbox__viewport">
       <img src="assets/images/creneaux.avif" alt="Calendrier des activités MBC La Montagne Basket Club saison 2026-2027" id="lightboxImg" loading="lazy" decoding="async">
     </div>
