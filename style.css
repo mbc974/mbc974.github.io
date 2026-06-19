@@ -4726,7 +4726,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 /* Le slogan créole est un <p> séparé sous le H1 : on annule la marge
    par défaut du paragraphe et on le rapproche du titre (titre + slogan liés). */
-.hero__rotator{margin:-.3rem 0 0}
+.hero__rotator{margin:-.3rem 0 0;align-self:stretch}  /* pleine largeur : sinon la scène (mots en position:absolute) se réduit à 0 */
 .hero--split .hero__rotator-stage{margin-top:0}
 
 /* Page adhésion : timeline "Comment s'inscrire" + FAQ (cartes centrées). */
