@@ -4628,71 +4628,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .action-card--cta .action-card__note{font-size:.72rem !important;line-height:1.35;text-align:left;justify-content:flex-start}
 }
 
-/* ============================================================
-   Hero Spline integration — décor 3D premium (desktop, enhancement)
-   Web Component <spline-viewer> injecté par JS (initHeroSpline()).
-   Décoratif : derrière le contenu, pointer-events:none, non focusable,
-   masqué sur mobile et en prefers-reduced-motion. Fallback glow CSS si
-   Spline ne charge pas (jamais de trou vide). Aucune dépendance critique.
-   ============================================================ */
-.hero-spline{
-  position:absolute;
-  top:12%;bottom:12%;right:6vw;left:auto;
-  width:48vw;                /* 42–52vw : ambiance centre-droit, pas un gros visuel */
-  z-index:1;                 /* calque de fond, derrière le contenu (.hero__inner z-3) */
-  pointer-events:none;       /* ne bloque jamais les CTA / clics */
-  overflow:hidden;
-  display:none;              /* activé desktop uniquement (cf. media query) */
-  /* OVERLAY : le fond sombre de la scène disparaît (screen), on garde les lumières/oranges. */
-  mix-blend-mode:screen;
-  /* masque radial : montagne visible (silhouette cinématique) + bords fondus. */
-  -webkit-mask-image:radial-gradient(66% 82% at 58% 46%,#000 46%,transparent 82%);
-  mask-image:radial-gradient(66% 82% at 58% 46%,#000 46%,transparent 82%);
-}
-/* Halo orange chaud autour du ballon (screen → lueur qui intègre la scène à l'ambiance MBC). */
-.hero-spline::after{
-  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(36% 40% at 68% 46%,rgba(232,130,42,.45),transparent 70%);
-}
-/* Fallback glow MBC : visible même sans JS / si Spline échoue (jamais de trou vide). */
-.hero-spline__fallback{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(55% 45% at 55% 38%,rgba(232,130,42,.30),transparent 70%),
-    radial-gradient(60% 55% at 60% 66%,rgba(27,81,158,.34),transparent 72%);
-  filter:blur(12px);
-}
-/* Le <spline-viewer> injecté : couvre la zone, apparition douce au chargement. */
-.hero-spline spline-viewer{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  pointer-events:none;
-  opacity:0;
-  transform:scale(.78);          /* scène plus petite (0.65–0.82), marge transparente */
-  transform-origin:center;
-  filter:contrast(1.08) brightness(1.08) saturate(1.05);  /* montagne moins fade */
-  transition:opacity 1.2s var(--ease-out);
-}
-.hero-spline.is-loaded spline-viewer{opacity:.68}   /* opacité maîtrisée (0.55–0.75) */
-
-/* Desktop uniquement (≥ 1024px). */
-@media (min-width:1024px){
-  .hero-spline{display:block}
-}
-/* Accessibilité : pas de Spline si mouvement réduit. */
-@media (prefers-reduced-motion:reduce){
-  .hero-spline{display:none}
-}
+/* (Intégration Spline retirée — hero recentré sur le CTA. 202606-hero-cta) */
 
 /* ============================================================
-   HERO V33 — refonte "split" : contenu à gauche · scène Spline à droite
-   Grille premium 2 colonnes (desktop) / 1 colonne (mobile). Logo réduit
-   (élément de marque), watermark atténué, titre fixe + slogans créoles,
-   CTA intégrés au layout. Le Spline reste décoratif (z-1, pointer-events:none).
+   HERO — refonte centrée, impactante, axée CTA (sans Spline)
+   Contenu centré H/V, grosses typos, gros bloc CTA central premium.
    ============================================================ */
 .hero--split{padding-block:clamp(6rem,12vh,9rem) 4.5rem}
 .hero--split .hero__inner{
@@ -4732,47 +4672,51 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* Sous-titre centré */
 .hero--split .hero__sub{max-width:620px;margin-inline:auto;text-align:center;color:var(--bleu-glacier)}
 
-/* CTA centrés, plus grands */
-.hero__cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.85rem;margin-top:.6rem}
-.hero__cta .btn{min-height:60px}
-.hero__cta .btn--cta{font-weight:800;letter-spacing:.03em;box-shadow:0 12px 30px rgba(217,106,27,.42),0 0 22px rgba(232,130,42,.22)}
-.hero__cta .btn--cta:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 20px 46px rgba(232,130,42,.55),0 0 34px rgba(232,130,42,.4)}
-.hero__cta .btn--cta:active{transform:translateY(-1px) scale(.985)}
-.btn--hero-sec{padding-inline:1.45em}
-
-/* Preuves centrées */
-.hero__proof{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.45rem 1.1rem;margin:.8rem 0 0;padding:0}
-.hero__proof li{display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:600;font-size:.8rem;letter-spacing:.02em;color:var(--bleu-glacier)}
-.hero__proof svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
-
-/* Voile de lisibilité cinématique (au-dessus du Spline z-1, sous le contenu z-3). */
-.hero-veil{
-  position:absolute;inset:0;z-index:2;pointer-events:none;display:none;
-  background:
-    radial-gradient(58% 56% at 46% 46%,rgba(7,13,24,.6),rgba(7,13,24,0) 72%),
-    linear-gradient(to bottom,rgba(7,13,24,.55) 0%,rgba(7,13,24,0) 22%,rgba(7,13,24,0) 64%,rgba(7,13,24,.72) 100%),
-    radial-gradient(125% 110% at 50% 48%,rgba(7,13,24,0) 52%,rgba(7,13,24,.5) 100%);
+/* ===== Gros bloc CTA central premium (pré-inscription) ===== */
+.hero-offer{
+  position:relative;margin-top:1.4rem;
+  display:flex;flex-direction:column;align-items:center;gap:.7rem;
+  width:100%;max-width:600px;
+  padding:1.7rem 1.6rem;
+  border-radius:var(--r-lg);
+  background:linear-gradient(168deg,rgba(27,81,158,.26),rgba(9,15,28,.74));
+  border:1px solid rgba(191,210,228,.16);
+  box-shadow:0 26px 64px rgba(3,7,15,.5),inset 0 1px 0 rgba(255,255,255,.07);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
 }
+/* liseré dégradé bleu → orange subtil (coins arrondis préservés) */
+.hero-offer::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,rgba(27,81,158,.55),rgba(232,130,42,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none;
+}
+.hero-offer__label{margin:0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.92rem;color:var(--orange-vif)}
+.hero-offer__txt{margin:0;max-width:46ch;font-size:.98rem;line-height:1.5;color:var(--bleu-glacier)}
+.hero-offer__btns{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.8rem;margin-top:.45rem;width:100%}
+/* CTA secondaire discret */
+.btn--hero-sec{padding-inline:1.45em}
+/* GROS bouton principal */
+.btn--xl{min-height:68px;font-size:clamp(1.08rem,1.5vw,1.3rem);font-weight:800;letter-spacing:.04em;padding-inline:1.9em}
+.hero-offer .btn--cta{box-shadow:0 14px 34px rgba(217,106,27,.5),0 0 26px rgba(232,130,42,.32)}
+.hero-offer .btn--cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 52px rgba(232,130,42,.62),0 0 42px rgba(232,130,42,.46)}
+.hero-offer .btn--cta:active{transform:translateY(-1px) scale(.985)}
+/* preuves (puces orange) */
+.hero-offer__proof{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1rem;margin:.55rem 0 0;padding:0}
+.hero-offer__proof li{display:inline-flex;align-items:center;gap:.42em;font-family:var(--ff-cond);font-weight:600;font-size:.76rem;letter-spacing:.02em;color:var(--bleu-glacier)}
+.hero-offer__proof li::before{content:"";width:.42em;height:.42em;border-radius:50%;background:var(--orange-vif);flex:none}
 
-/* Watermark géant : texture de fond quasi invisible. */
-.hero--split .hero__watermark{opacity:.02}
+/* Watermark géant : texture de fond très discrète (plus de Spline). */
+.hero--split .hero__watermark{opacity:.045}
 
-/* ---- Desktop ≥ 1024 : contenu centré agrandi + voile + Spline en fond ---- */
+/* ---- Desktop ≥ 1024 : contenu centré agrandi ---- */
 @media (min-width:1024px){
   .hero--split .hero__content{max-width:880px}
-  .hero--split .hero__watermark{opacity:0}   /* masqué : le Spline est le décor principal */
-  .hero-veil{display:block}
 }
 
-/* ---- Décor net : fine montagne "La Montagne" en bas à droite (compense la
-   qualité du Spline, lui donne une base nette). Aucune image, très discret. ---- */
-.hero-mtn{
-  position:absolute;right:0;bottom:0;
-  width:min(56vw,800px);height:42%;
-  z-index:1;pointer-events:none;display:none;opacity:.55;
-  -webkit-mask-image:linear-gradient(to left,#000 52%,transparent 100%);
-  mask-image:linear-gradient(to left,#000 52%,transparent 100%);
+/* ---- Mobile : bouton principal pleine largeur, facile au pouce ---- */
+@media (max-width:680px){
+  .hero-offer{padding:1.35rem 1.15rem;max-width:none}
+  .hero-offer__btns .btn--cta{width:100%}
+  .btn--xl{min-height:62px;font-size:1.05rem;padding-inline:1.2em}
 }
-.hero-mtn__fill{fill:rgba(27,81,158,.10)}
-.hero-mtn__line{stroke:rgba(191,210,228,.22);stroke-width:1.4;vector-effect:non-scaling-stroke}
-@media (min-width:1024px){.hero-mtn{display:block}}
