@@ -102,9 +102,9 @@
             cur.classList.remove('is-leaving');
             void cur.offsetWidth; /* reflow : applique le saut instantané */
             cur.classList.remove('no-anim');
-          }, 600);
+          }, 720);
         }
-        function start() { if (!timer) timer = window.setInterval(advance, 2600); }
+        function start() { if (!timer) timer = window.setInterval(advance, 3200); }
         function stop() { if (timer) { window.clearInterval(timer); timer = null; } }
         start();
         /* on met en pause quand l'onglet n'est pas visible. */
