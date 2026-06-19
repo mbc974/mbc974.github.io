@@ -4637,17 +4637,17 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 .hero-spline{
   position:absolute;
-  top:10%;bottom:8%;right:-2vw;left:auto;
-  width:48vw;                /* réduit (~25%) : présence atmosphérique, pas un gros visuel */
+  top:12%;bottom:12%;right:6vw;left:auto;
+  width:48vw;                /* 42–52vw : ambiance centre-droit, pas un gros visuel */
   z-index:1;                 /* calque de fond, derrière le contenu (.hero__inner z-3) */
   pointer-events:none;       /* ne bloque jamais les CTA / clics */
   overflow:hidden;
   display:none;              /* activé desktop uniquement (cf. media query) */
   /* OVERLAY : le fond sombre de la scène disparaît (screen), on garde les lumières/oranges. */
   mix-blend-mode:screen;
-  /* masque radial calé à droite → bord gauche fondu (protège le texte) + bords adoucis. */
-  -webkit-mask-image:radial-gradient(60% 76% at 70% 44%,#000 40%,transparent 80%);
-  mask-image:radial-gradient(60% 76% at 70% 44%,#000 40%,transparent 80%);
+  /* masque radial : montagne visible (silhouette cinématique) + bords fondus. */
+  -webkit-mask-image:radial-gradient(66% 82% at 58% 46%,#000 46%,transparent 82%);
+  mask-image:radial-gradient(66% 82% at 58% 46%,#000 46%,transparent 82%);
 }
 /* Halo orange chaud autour du ballon (screen → lueur qui intègre la scène à l'ambiance MBC). */
 .hero-spline::after{
@@ -4672,11 +4672,12 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   display:block;
   pointer-events:none;
   opacity:0;
-  transform:scale(.86);          /* la scène respire (marge transparente autour) */
+  transform:scale(.78);          /* scène plus petite (0.65–0.82), marge transparente */
   transform-origin:center;
+  filter:contrast(1.08) brightness(1.08) saturate(1.05);  /* montagne moins fade */
   transition:opacity 1.2s var(--ease-out);
 }
-.hero-spline.is-loaded spline-viewer{opacity:.6}   /* opacité maîtrisée (montez/baissez selon le rendu) */
+.hero-spline.is-loaded spline-viewer{opacity:.68}   /* opacité maîtrisée (0.55–0.75) */
 
 /* Desktop uniquement (≥ 1024px). */
 @media (min-width:1024px){
@@ -4693,64 +4694,74 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    (élément de marque), watermark atténué, titre fixe + slogans créoles,
    CTA intégrés au layout. Le Spline reste décoratif (z-1, pointer-events:none).
    ============================================================ */
-.hero--split{padding-block:clamp(6rem,12vh,8.5rem) 4rem}
+.hero--split{padding-block:clamp(6rem,12vh,9rem) 4.5rem}
 .hero--split .hero__inner{
   position:relative;z-index:3;
   display:block;
-  width:100%;max-width:1340px;margin-inline:auto;
+  width:100%;max-width:1180px;margin-inline:auto;
   padding-inline:clamp(18px,5vw,56px);
-  text-align:left;
+  text-align:center;
 }
-/* contenu calé à gauche, largeur maîtrisée (≈ 430–540 px), parfaitement lisible. */
-.hero--split .hero__content{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;min-width:0;max-width:540px}
+/* contenu CENTRÉ, agrandi — rendu affiche cinématique premium. */
+.hero--split .hero__content{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.05rem;min-width:0;max-width:880px;margin-inline:auto}
 
 /* Badge */
-.hero--split .hero__pill{margin-bottom:.15rem}
+.hero--split .hero__pill{margin-bottom:.2rem}
 
-/* Logo = élément de marque réduit (plus l'objet central). */
+/* Logo = marque centrée, taille moyenne premium (88–120 px). */
 .hero__crest--brand{
-  width:clamp(70px,8vw,100px);height:auto;aspect-ratio:.97;margin:0 0 .15rem;
-  filter:drop-shadow(0 10px 26px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(27,81,158,.3));
+  width:clamp(88px,9vw,118px);height:auto;aspect-ratio:.97;margin:0 auto .35rem;
+  filter:drop-shadow(0 12px 30px rgba(0,0,0,.55)) drop-shadow(0 0 30px rgba(27,81,158,.32));
 }
 
-/* Titre fixe (présent en HTML, lisible) + slogan rotatif créole. */
-.hero--split .hero__headline{align-self:stretch;margin:.1rem 0 .2rem;text-align:left}
+/* Titre fixe (présent en HTML) + slogan rotatif créole — typographies agrandies. */
+.hero--split .hero__headline{align-self:stretch;margin:.1rem 0 .25rem;text-align:center}
 .hero__headline-fixed{
   display:block;font-family:var(--ff-display);text-transform:uppercase;
-  color:var(--blanc);letter-spacing:.5px;line-height:.92;
-  font-size:clamp(2.05rem,4.6vw,3.55rem);
-  text-shadow:0 8px 40px rgba(0,0,0,.55);
+  color:var(--blanc);letter-spacing:.5px;line-height:.9;
+  font-size:clamp(2.6rem,5.6vw,6rem);
+  text-shadow:0 10px 48px rgba(0,0,0,.6);
 }
 .hero--split .hero__rotator-stage{
-  font-size:clamp(1.45rem,3.2vw,2.45rem) !important;
-  min-height:1.7em !important;margin-top:.22em;text-align:left;
+  font-size:clamp(1.7rem,3.8vw,3.6rem) !important;
+  min-height:1.5em !important;margin-top:.18em;text-align:center;
 }
 .hero--split .hero__rotator-word{white-space:nowrap;line-height:1.1}
-.hero--split .hero__rotator-stage.is-ready .hero__rotator-word{justify-content:flex-start;text-align:left}
+.hero--split .hero__rotator-stage.is-ready .hero__rotator-word{justify-content:center;text-align:center}
 
-/* Sous-titre */
-.hero--split .hero__sub{max-width:44ch;margin:0;color:var(--bleu-glacier)}
+/* Sous-titre centré */
+.hero--split .hero__sub{max-width:620px;margin-inline:auto;text-align:center;color:var(--bleu-glacier)}
 
-/* CTA : principal très visible + secondaire discret, intégrés au flux. */
-.hero__cta{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin-top:.5rem}
-.hero__cta .btn{min-height:58px}
+/* CTA centrés, plus grands */
+.hero__cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.85rem;margin-top:.6rem}
+.hero__cta .btn{min-height:60px}
 .hero__cta .btn--cta{font-weight:800;letter-spacing:.03em;box-shadow:0 12px 30px rgba(217,106,27,.42),0 0 22px rgba(232,130,42,.22)}
 .hero__cta .btn--cta:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 20px 46px rgba(232,130,42,.55),0 0 34px rgba(232,130,42,.4)}
 .hero__cta .btn--cta:active{transform:translateY(-1px) scale(.985)}
 .btn--hero-sec{padding-inline:1.45em}
 
-/* Preuves */
-.hero__proof{list-style:none;display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;margin:.7rem 0 0;padding:0}
+/* Preuves centrées */
+.hero__proof{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.45rem 1.1rem;margin:.8rem 0 0;padding:0}
 .hero__proof li{display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:600;font-size:.8rem;letter-spacing:.02em;color:var(--bleu-glacier)}
 .hero__proof svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
 
-/* Watermark géant : simple texture de fond très discrète. */
-.hero--split .hero__watermark{opacity:.025}
+/* Voile de lisibilité cinématique (au-dessus du Spline z-1, sous le contenu z-3). */
+.hero-veil{
+  position:absolute;inset:0;z-index:2;pointer-events:none;display:none;
+  background:
+    radial-gradient(58% 56% at 46% 46%,rgba(7,13,24,.6),rgba(7,13,24,0) 72%),
+    linear-gradient(to bottom,rgba(7,13,24,.55) 0%,rgba(7,13,24,0) 22%,rgba(7,13,24,0) 64%,rgba(7,13,24,.72) 100%),
+    radial-gradient(125% 110% at 50% 48%,rgba(7,13,24,0) 52%,rgba(7,13,24,.5) 100%);
+}
 
-/* ---- Desktop ≥ 1024 : contenu à gauche + scène Spline en fond (cf. .hero-spline) ---- */
+/* Watermark géant : texture de fond quasi invisible. */
+.hero--split .hero__watermark{opacity:.02}
+
+/* ---- Desktop ≥ 1024 : contenu centré agrandi + voile + Spline en fond ---- */
 @media (min-width:1024px){
-  .hero--split .hero__content{max-width:520px}   /* largeur maîtrisée, calée à gauche */
-  .hero--split .hero__watermark{opacity:0}       /* masqué quand la scène Spline est présente */
+  .hero--split .hero__content{max-width:880px}
+  .hero--split .hero__watermark{opacity:0}   /* masqué : le Spline est le décor principal */
+  .hero-veil{display:block}
 }
 
 /* ---- Décor net : fine montagne "La Montagne" en bas à droite (compense la
