@@ -4637,27 +4637,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 .hero-spline{
   position:absolute;
-  top:0;
-  right:0;
-  bottom:0;
-  width:min(50vw,680px);
-  z-index:1;                 /* derrière le contenu (.hero__inner, z-8) */
+  inset:0;                   /* remplit la zone visuelle .hero__visual (colonne droite) */
+  z-index:1;                 /* derrière le contenu (.hero__content) */
   pointer-events:none;       /* ne bloque jamais les CTA / clics */
   overflow:hidden;
   display:none;              /* activé desktop uniquement (cf. media query) */
-  /* fondu vers la gauche : la scène reste à droite, la zone du titre centré
-     reste dégagée et lisible. Régler 24%/80% si tu veux l'étendre. */
-  -webkit-mask-image:linear-gradient(to left,#000 24%,transparent 80%);
-  mask-image:linear-gradient(to left,#000 24%,transparent 80%);
+  /* fondu radial doux des bords : la scène s'intègre au fond du hero. */
+  -webkit-mask-image:radial-gradient(78% 78% at 58% 50%,#000 52%,transparent 100%);
+  mask-image:radial-gradient(78% 78% at 58% 50%,#000 52%,transparent 100%);
 }
-/* Fallback glow MBC : visible même sans JS / si Spline échoue. */
+/* Fallback glow MBC : visible même sans JS / si Spline échoue (jamais de trou vide). */
 .hero-spline__fallback{
   position:absolute;
   inset:0;
   background:
-    radial-gradient(58% 50% at 80% 36%,rgba(232,130,42,.30),transparent 70%),
-    radial-gradient(54% 60% at 92% 66%,rgba(27,81,158,.34),transparent 72%);
-  filter:blur(10px);
+    radial-gradient(55% 45% at 55% 38%,rgba(232,130,42,.30),transparent 70%),
+    radial-gradient(60% 55% at 60% 66%,rgba(27,81,158,.34),transparent 72%);
+  filter:blur(12px);
 }
 /* Le <spline-viewer> injecté : couvre la zone, apparition douce au chargement. */
 .hero-spline spline-viewer{
@@ -4679,4 +4675,74 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* Accessibilité : pas de Spline si mouvement réduit. */
 @media (prefers-reduced-motion:reduce){
   .hero-spline{display:none}
+}
+
+/* ============================================================
+   HERO V33 — refonte "split" : contenu à gauche · scène Spline à droite
+   Grille premium 2 colonnes (desktop) / 1 colonne (mobile). Logo réduit
+   (élément de marque), watermark atténué, titre fixe + slogans créoles,
+   CTA intégrés au layout. Le Spline reste décoratif (z-1, pointer-events:none).
+   ============================================================ */
+.hero--split{padding-block:clamp(6rem,12vh,8.5rem) 4rem}
+.hero--split .hero__inner{
+  position:relative;z-index:3;
+  display:grid;
+  grid-template-columns:1fr;          /* mobile : 1 colonne */
+  align-items:center;
+  gap:1.8rem;
+  width:100%;max-width:1340px;margin-inline:auto;
+  padding-inline:clamp(18px,5vw,56px);
+  text-align:left;
+}
+.hero--split .hero__content{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;min-width:0}
+.hero--split .hero__visual{display:none}   /* zone Spline : desktop uniquement */
+
+/* Badge */
+.hero--split .hero__pill{margin-bottom:.15rem}
+
+/* Logo = élément de marque réduit (plus l'objet central). */
+.hero__crest--brand{
+  width:clamp(70px,8vw,100px);height:auto;aspect-ratio:.97;margin:0 0 .15rem;
+  filter:drop-shadow(0 10px 26px rgba(0,0,0,.55)) drop-shadow(0 0 26px rgba(27,81,158,.3));
+}
+
+/* Titre fixe (présent en HTML, lisible) + slogan rotatif créole. */
+.hero--split .hero__headline{align-self:stretch;margin:.1rem 0 .2rem;text-align:left}
+.hero__headline-fixed{
+  display:block;font-family:var(--ff-display);text-transform:uppercase;
+  color:var(--blanc);letter-spacing:.5px;line-height:.92;
+  font-size:clamp(2.05rem,4.6vw,3.55rem);
+  text-shadow:0 8px 40px rgba(0,0,0,.55);
+}
+.hero--split .hero__rotator-stage{
+  font-size:clamp(1.45rem,3.2vw,2.45rem) !important;
+  min-height:1.7em !important;margin-top:.22em;text-align:left;
+}
+.hero--split .hero__rotator-word{white-space:nowrap;line-height:1.1}
+.hero--split .hero__rotator-stage.is-ready .hero__rotator-word{justify-content:flex-start;text-align:left}
+
+/* Sous-titre */
+.hero--split .hero__sub{max-width:44ch;margin:0;color:var(--bleu-glacier)}
+
+/* CTA : principal très visible + secondaire discret, intégrés au flux. */
+.hero__cta{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem;margin-top:.5rem}
+.hero__cta .btn{min-height:58px}
+.hero__cta .btn--cta{font-weight:800;letter-spacing:.03em;box-shadow:0 12px 30px rgba(217,106,27,.42),0 0 22px rgba(232,130,42,.22)}
+.hero__cta .btn--cta:hover{transform:translateY(-3px) scale(1.015);box-shadow:0 20px 46px rgba(232,130,42,.55),0 0 34px rgba(232,130,42,.4)}
+.hero__cta .btn--cta:active{transform:translateY(-1px) scale(.985)}
+.btn--hero-sec{padding-inline:1.45em}
+
+/* Preuves */
+.hero__proof{list-style:none;display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;margin:.7rem 0 0;padding:0}
+.hero__proof li{display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:600;font-size:.8rem;letter-spacing:.02em;color:var(--bleu-glacier)}
+.hero__proof svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
+
+/* Watermark géant : simple texture de fond très discrète. */
+.hero--split .hero__watermark{opacity:.025}
+
+/* ---- Desktop ≥ 1024 : 2 colonnes + zone visuelle Spline ---- */
+@media (min-width:1024px){
+  .hero--split .hero__inner{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:2.4rem}
+  .hero--split .hero__visual{display:block;position:relative;align-self:stretch;min-height:min(62vh,560px)}
+  .hero--split .hero__watermark{opacity:0}   /* masqué quand la scène Spline est présente */
 }

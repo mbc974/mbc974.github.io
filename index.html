@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-spline">
+<link rel="stylesheet" href="style.css?v=202606-hero-spline">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -163,7 +163,7 @@
 <main id="contenu">
 
 <!-- ===== 1. HERO ===== -->
-<section class="hero hero--centered hero-light-motion" id="hero">
+<section class="hero hero--split hero-light-motion" id="hero">
   <div class="hero__watermark" aria-hidden="true"></div>
   <div class="hero__texture" aria-hidden="true"></div>
   <div class="hero__court" aria-hidden="true"></div>
@@ -172,44 +172,36 @@
   <div class="hero__glow hero__glow--o" aria-hidden="true"></div>
   <div class="hero__slash" data-parallax="-0.06" aria-hidden="true"></div>
   <div class="hero__lightmotion" aria-hidden="true"></div>
-  <div class="hero-spline" aria-hidden="true">
-    <div class="hero-spline__fallback"></div>
-  </div>
-
   <div class="hero__inner">
-    <span class="logo-img hero__crest hero__crest--giant reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
-    <p class="hero__pill reveal-fade">
-      <span class="hero__pill-dot" aria-hidden="true"></span>
-      <span class="hero__pill-full">La Montagne lé là · Saint-Denis · La Réunion · Saison 2026/2027 · Pré-inscriptions ouvertes</span>
-      <span class="hero__pill-short">La Montagne lé là · Saison 2026/2027 · Pré-inscriptions ouvertes</span>
-    </p>
-    <h1 class="hero__headline reveal-fade">
-      <span class="hero__headline-lead">Le basket à La Montagne, c'est</span>
-      <span class="hero__rotator-stage" aria-hidden="true">
-        <span class="hero__rotator-word">La Montagne lé en lèr</span>
-        <span class="hero__rotator-word">Nout basket, nout fierté</span>
-        <span class="hero__rotator-word">Ansanm nou lé pli for</span>
-        <span class="hero__rotator-word">Nout marmay, nout l'avenir</span>
-        <span class="hero__rotator-word">MBC, nout famille</span>
-        <span class="hero__rotator-word">Nou fé grandi le basket péi</span>
-        <span class="hero__rotator-word">Ici, le cœur i bat basket</span>
-      </span>
-      <span class="sr-only">La Montagne lé en lèr.</span>
-    </h1>
-    <p class="hero__sub reveal-fade d2">Le club de basket de La Montagne. Nout quartier, une famille, une passion, une ambition — pour toutes les générations.</p>
-
-    <div class="hero__actions reveal-fade d3">
-      <div class="action-card action-card--cta">
-        <span class="action-card__eyebrow">SAISON FONDATRICE 2026 / 2027</span>
-        <span class="action-card__title">REJOINS LA SAISON FONDATRICE</span>
-        <p class="action-card__sub">Pré-inscriptions ouvertes pour La Montagne Basket Club</p>
-        <p class="action-card__txt">Baby Basket, jeunes, loisirs et seniors — réserve ta place dès maintenant.</p>
-        <a href="adhesion.html" class="btn btn--primary btn--cta">JE ME PRÉ-INSCRIS MAINTENANT <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a href="#categories" class="action-card__link">Voir les catégories disponibles</a>
-        <span class="action-card__note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg> Club affilié FFBB · Encadrement déclaré &amp; assuré · Réponse sous 48h</span>
+    <div class="hero__content">
+      <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
+      <span class="logo-img hero__crest hero__crest--brand reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
+      <h1 class="hero__headline reveal-fade">
+        <span class="hero__headline-fixed">Le basket prend de la hauteur</span>
+        <span class="hero__rotator-stage" aria-hidden="true">
+          <span class="hero__rotator-word">Nout basket, nout fierté</span>
+          <span class="hero__rotator-word">La Montagne en lèr</span>
+          <span class="hero__rotator-word">Nout kartié, nout club</span>
+          <span class="hero__rotator-word">Ensemble, plus forts</span>
+        </span>
+        <span class="sr-only">Nout basket, nout fierté.</span>
+      </h1>
+      <p class="hero__sub reveal-fade d2">Le club de basket de La Montagne. Baby Basket, jeunes, loisirs et seniors — une saison fondatrice pour toutes les générations.</p>
+      <div class="hero__cta reveal-fade d3">
+        <a href="adhesion.html" class="btn btn--primary btn--cta">Je me pré-inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="#categories" class="btn btn--ghost btn--hero-sec">Voir les catégories</a>
+      </div>
+      <ul class="hero__proof reveal-fade d3" aria-label="Garanties du club">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg> Club affilié FFBB</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg> Encadrement déclaré &amp; assuré</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Réponse sous 48 h</li>
+      </ul>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero-spline" aria-hidden="true">
+        <div class="hero-spline__fallback"></div>
       </div>
     </div>
-    <p class="hero__est reveal-fade d3">Ensemble, plus forts — La Montagne en lér&nbsp;!</p>
   </div>
   <a class="hero__scroll" href="#essentiel" aria-label="Voir l'essentiel des pré-inscriptions 2026-2027"><span aria-hidden="true"></span><span class="hero__scroll-label">L'essentiel</span></a>
 </section>
@@ -970,6 +962,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-spline" defer></script>
+<script src="script.js?v=202606-hero-spline" defer></script>
 </body>
 </html>
