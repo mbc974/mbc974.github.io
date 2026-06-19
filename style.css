@@ -4720,3 +4720,21 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero-offer__btns .btn--cta{width:100%}
   .btn--xl{min-height:62px;font-size:1.05rem;padding-inline:1.2em}
 }
+
+/* ============================================================
+   V34 — Polish 202606 : rotator hors du H1 + timeline/FAQ adhésion
+   ============================================================ */
+/* Le slogan créole est un <p> séparé sous le H1 : on annule la marge
+   par défaut du paragraphe et on le rapproche du titre (titre + slogan liés). */
+.hero__rotator{margin:-.3rem 0 0}
+.hero--split .hero__rotator-stage{margin-top:0}
+
+/* Page adhésion : timeline "Comment s'inscrire" + FAQ (cartes centrées). */
+.adh-steps,.adh-faq{max-width:640px;margin:2.2rem auto 0}
+.adh-timeline{list-style:none;margin:1.1rem 0 0;padding:0;display:grid;gap:.7rem}
+.adh-step{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--line);border-radius:var(--r-md);background:rgba(191,210,228,.03)}
+.adh-step__num{flex:none;width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;font-family:var(--ff-display);font-size:1.05rem;color:#190f04;background:var(--grad-orange);box-shadow:0 6px 16px rgba(217,106,27,.35)}
+.adh-step__txt{display:flex;flex-direction:column;gap:.1rem;line-height:1.4}
+.adh-step__txt b{color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1rem}
+.adh-step__txt span{color:var(--txt-soft);font-size:.88rem}
+.adh-faq .faq__item{margin-top:.6rem}
