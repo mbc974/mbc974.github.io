@@ -4746,7 +4746,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    couleurs MBC (bleu électrique + orange ballon + blanc doux).
    ---- RÉGLAGES RAPIDES ----
    • Intensité globale : .hero-fx { opacity } (def. 1)
-   • Halo : .hero-fx__glow { opacity / filter:blur() / width-height }
+   • Aurora : .hero-fx__glow { opacity (intensité) / --aurora (couleurs) / filter:blur / animation 60s (vitesse) }
    • Faisceaux : .hero-fx__beams { opacity } · vitesse : animation 22s
    • Grille : .hero-fx__grid { opacity / background-size }
    • Couleurs : rgba(23,107,255)=bleu élec · rgba(232,130,42)=orange ballon
@@ -4761,21 +4761,29 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);
   mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);
 }
-/* 1) Halo "projecteur" : bleu électrique + orange ballon + blanc doux, respiration lente */
+/* 1) AURORA : bandes lumineuses diagonales animées (remplace l'ancien halo radial)
+      Adapté de "Aurora Background" (21st.dev) → 100% CSS natif, couleurs MBC.
+      Réglages : --aurora (couleurs) · opacity (intensité) · filter:blur (douceur) · animation 60s (vitesse) */
 .hero-fx__glow{
-  position:absolute;left:50%;top:-12%;transform:translateX(-50%);
-  width:min(120vw,1500px);height:min(80vh,820px);
-  background:
-    radial-gradient(closest-side at 50% 42%,rgba(23,107,255,.30),transparent 72%),
-    radial-gradient(closest-side at 42% 30%,rgba(232,130,42,.22),transparent 70%),
-    radial-gradient(closest-side at 58% 30%,rgba(232,130,42,.15),transparent 66%),
-    radial-gradient(closest-side at 50% 20%,rgba(255,255,255,.10),transparent 60%);
-  filter:blur(8px);
-  animation:heroFxBreathe 14s ease-in-out infinite;
+  position:absolute;inset:-80px;
+  --aurora:repeating-linear-gradient(100deg,
+     var(--bleu-roi) 6%,#2b7fff 11%,#6aa8ff 16%,var(--orange-vif) 21%,var(--bleu-roi) 27%);
+  --streak:repeating-linear-gradient(100deg,
+     rgba(255,255,255,.06) 0%,rgba(255,255,255,.06) 6%,transparent 9%,transparent 12%,rgba(255,255,255,.06) 16%);
+  background-image:var(--streak),var(--aurora);
+  background-size:200% 130%,220% 200%;
+  background-position:50% 50%,50% 50%;
+  filter:blur(22px) saturate(1.18);
+  opacity:.42;
+  /* concentre l'aurora en haut-droite puis fondu (comme le composant d'origine) */
+  -webkit-mask-image:radial-gradient(125% 95% at 85% 0%,#000 8%,transparent 66%);
+  mask-image:radial-gradient(125% 95% at 85% 0%,#000 8%,transparent 66%);
+  animation:mbcAurora 60s linear infinite;
+  will-change:background-position;
 }
-@keyframes heroFxBreathe{
-  0%,100%{transform:translateX(-50%) scale(1);opacity:.85}
-  50%{transform:translateX(-50%) scale(1.06);opacity:1}
+@keyframes mbcAurora{
+  from{background-position:50% 50%,50% 50%}
+  to{background-position:350% 50%,350% 50%}
 }
 /* 2) Grille discrète (profondeur, modernité) — fondue autour du haut-centre */
 .hero-fx__grid{
@@ -4792,7 +4800,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (max-width:760px){
   .hero-fx{height:60%}
   .hero-fx__grid{background-size:34px 34px;opacity:.32}
-  .hero-fx__glow{filter:blur(6px)}
+  .hero-fx__glow{filter:blur(16px) saturate(1.18);opacity:.34}
 }
 /* Accessibilité : pas d'animation si mouvement réduit */
 @media (prefers-reduced-motion:reduce){
