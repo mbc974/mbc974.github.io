@@ -4932,35 +4932,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 }
 
 /* ============================================================
-   V38 — Lien "cascade" (adapté de TextReveal / 21st.dev → 100% CSS+JS natif)
-   Au survol/focus, chaque lettre glisse pour révéler une copie orange.
-   Réglages : --cascade-hover (couleur) · --cascade-dur (durée) · stagger = var(--i)*26ms
+   V38 — Effet "cascade" sur liens (adapté de TextReveal / 21st.dev → CSS+JS natif)
+   Appliqué aux liens de la colonne "Agir" du footer (Adhésion · Faire un don · Contact).
+   Le JS ([data-cascade]) découpe le texte en lettres ; au survol/focus du lien,
+   chaque lettre glisse vers le haut et révèle une copie orange (décalage var(--i)).
+   Réglages : --cascade-dur (durée) · var(--i)*26ms (décalage) · couleur = currentColor (orange au survol).
    ============================================================ */
-.cascade-link{
-  --cascade-hover:var(--orange-vif);
-  --cascade-dur:260ms;
-  display:inline-flex;align-items:center;
-  margin-top:1.7rem;
-  font-family:var(--ff-display);
-  font-size:clamp(1.6rem,3.2vw,2.3rem);
-  text-transform:uppercase;letter-spacing:.5px;line-height:1;
-  color:var(--blanc);text-decoration:none;cursor:pointer;
-  padding:.06em .02em .14em;
-  border-bottom:3px solid rgba(232,130,42,.5);
-  transition:color .35s ease,border-color .35s ease;
-  -webkit-tap-highlight-color:transparent;
-}
-.cascade-link:hover,.cascade-link:focus-visible{color:var(--cascade-hover);border-bottom-color:var(--orange-vif)}
-.cascade-link:focus-visible{outline:2px solid var(--orange-vif);outline-offset:4px;border-radius:2px}
-.cascade-link__inner{display:inline-flex;overflow:hidden;height:1em;line-height:1}
+.cascade-link__inner{display:inline-flex;overflow:hidden;height:1em;line-height:1;vertical-align:-.14em}
 .cascade-link__c{
   display:inline-block;position:relative;will-change:transform;
   text-shadow:0 1em currentColor;             /* copie de la lettre 1em plus bas (révélée au survol) */
-  transition:transform var(--cascade-dur) cubic-bezier(.6,.01,.3,1);
-  transition-delay:calc(var(--i,0)*26ms);     /* effet "cascade" décalé lettre par lettre */
+  transition:transform var(--cascade-dur,260ms) cubic-bezier(.6,.01,.3,1);
+  transition-delay:calc(var(--i,0)*26ms);     /* cascade décalée lettre par lettre */
 }
-.cascade-link:hover .cascade-link__c,
-.cascade-link:focus-visible .cascade-link__c{transform:translateY(-1em)}
+/* déclenchement au survol/focus du lien (la couleur orange vient déjà de .footer__actions a:hover) */
+.footer__actions a:hover .cascade-link__c,
+.footer__actions a:focus-visible .cascade-link__c{transform:translateY(-1em)}
+.footer__actions a:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:3px}
 @media (prefers-reduced-motion:reduce){
   .cascade-link__c{transition:none;transform:none!important;text-shadow:none}
 }
