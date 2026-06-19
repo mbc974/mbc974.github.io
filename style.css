@@ -4637,23 +4637,22 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 .hero-spline{
   position:absolute;
-  top:-5%;bottom:-5%;right:-6vw;left:auto;
-  width:64vw;                /* assez large pour que montagne + ballon respirent (non coupés) */
+  top:10%;bottom:8%;right:-2vw;left:auto;
+  width:48vw;                /* réduit (~25%) : présence atmosphérique, pas un gros visuel */
   z-index:1;                 /* calque de fond, derrière le contenu (.hero__inner z-3) */
   pointer-events:none;       /* ne bloque jamais les CTA / clics */
   overflow:hidden;
   display:none;              /* activé desktop uniquement (cf. media query) */
-  /* fondu radial doux : la scène se dissout dans le hero, aucun bord net. */
-  -webkit-mask-image:radial-gradient(70% 80% at 62% 46%,#000 40%,transparent 84%);
-  mask-image:radial-gradient(70% 80% at 62% 46%,#000 40%,transparent 84%);
+  /* OVERLAY : le fond sombre de la scène disparaît (screen), on garde les lumières/oranges. */
+  mix-blend-mode:screen;
+  /* masque radial calé à droite → bord gauche fondu (protège le texte) + bords adoucis. */
+  -webkit-mask-image:radial-gradient(60% 76% at 70% 44%,#000 40%,transparent 80%);
+  mask-image:radial-gradient(60% 76% at 70% 44%,#000 40%,transparent 80%);
 }
-/* Fusion premium : dégradé bleu nuit depuis la gauche (protège le texte)
-   + fondu vertical en bas → la montagne fond dans le hero, pas de rectangle noir. */
+/* Halo orange chaud autour du ballon (screen → lueur qui intègre la scène à l'ambiance MBC). */
 .hero-spline::after{
   content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:
-    linear-gradient(100deg,var(--nuit-0) 0%,rgba(7,13,24,.62) 24%,rgba(7,13,24,0) 56%),
-    linear-gradient(to top,var(--nuit-0) 0%,rgba(7,13,24,.35) 14%,rgba(7,13,24,0) 40%);
+  background:radial-gradient(36% 40% at 68% 46%,rgba(232,130,42,.45),transparent 70%);
 }
 /* Fallback glow MBC : visible même sans JS / si Spline échoue (jamais de trou vide). */
 .hero-spline__fallback{
@@ -4673,6 +4672,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   display:block;
   pointer-events:none;
   opacity:0;
+  transform:scale(.86);          /* la scène respire (marge transparente autour) */
+  transform-origin:center;
   transition:opacity 1.2s var(--ease-out);
 }
 .hero-spline.is-loaded spline-viewer{opacity:.6}   /* opacité maîtrisée (montez/baissez selon le rendu) */
@@ -4751,3 +4752,16 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero--split .hero__content{max-width:520px}   /* largeur maîtrisée, calée à gauche */
   .hero--split .hero__watermark{opacity:0}       /* masqué quand la scène Spline est présente */
 }
+
+/* ---- Décor net : fine montagne "La Montagne" en bas à droite (compense la
+   qualité du Spline, lui donne une base nette). Aucune image, très discret. ---- */
+.hero-mtn{
+  position:absolute;right:0;bottom:0;
+  width:min(56vw,800px);height:42%;
+  z-index:1;pointer-events:none;display:none;opacity:.55;
+  -webkit-mask-image:linear-gradient(to left,#000 52%,transparent 100%);
+  mask-image:linear-gradient(to left,#000 52%,transparent 100%);
+}
+.hero-mtn__fill{fill:rgba(27,81,158,.10)}
+.hero-mtn__line{stroke:rgba(191,210,228,.22);stroke-width:1.4;vector-effect:non-scaling-stroke}
+@media (min-width:1024px){.hero-mtn{display:block}}
