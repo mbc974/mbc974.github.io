@@ -4773,11 +4773,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   background-image:var(--streak),var(--aurora);
   background-size:200% 130%,220% 200%;
   background-position:50% 50%,50% 50%;
-  filter:blur(22px) saturate(1.18);
-  opacity:.42;
+  filter:blur(22px) saturate(1.3);
+  opacity:.62;
   /* concentre l'aurora en haut-droite puis fondu (comme le composant d'origine) */
-  -webkit-mask-image:radial-gradient(125% 95% at 85% 0%,#000 8%,transparent 66%);
-  mask-image:radial-gradient(125% 95% at 85% 0%,#000 8%,transparent 66%);
+  -webkit-mask-image:radial-gradient(135% 105% at 82% 0%,#000 16%,transparent 82%);
+  mask-image:radial-gradient(135% 105% at 82% 0%,#000 16%,transparent 82%);
   animation:mbcAurora 60s linear infinite;
   will-change:background-position;
 }
@@ -4800,7 +4800,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (max-width:760px){
   .hero-fx{height:60%}
   .hero-fx__grid{background-size:34px 34px;opacity:.32}
-  .hero-fx__glow{filter:blur(16px) saturate(1.18);opacity:.34}
+  .hero-fx__glow{filter:blur(16px) saturate(1.3);opacity:.5}
 }
 /* Accessibilité : pas d'animation si mouvement réduit */
 @media (prefers-reduced-motion:reduce){
