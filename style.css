@@ -4520,3 +4520,84 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero-light-motion .hero__lightmotion{animation:none}
   .hero-light-motion .hero__halo{animation:none}
 }
+
+/* ============================================================
+   V31 — HERO : bloc CTA premium (carte de conversion)
+   On muscle UNIQUEMENT la carte de pré-inscription du hero
+   (.action-card--cta) : hiérarchie typo forte, bouton plus impactant,
+   lien secondaire et micro-preuves. Scopé pour ne pas toucher les
+   autres cartes du site. !important utilisé seulement là où il faut
+   battre le bloc "compact hero" existant (lui-même en !important).
+   ============================================================ */
+
+/* Carte : un peu plus large, plus de padding, verre plus contrasté. */
+.hero__actions{max-width:720px !important}
+.action-card--cta{
+  padding:2.1rem 2rem !important;
+  gap:.6rem !important;
+  border:1px solid rgba(191,210,228,.14);
+  background:linear-gradient(165deg,rgba(27,81,158,.30),rgba(9,15,28,.82)) !important;
+  box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+}
+/* Liseré subtil bleu → orange (préserve les coins arrondis via masque). */
+.action-card--cta::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(135deg,rgba(27,81,158,.6),rgba(232,130,42,.55));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:.55;pointer-events:none;z-index:0;
+}
+
+/* Hiérarchie typo : titre beaucoup plus grand et sportif (Anton). */
+.action-card--cta .action-card__eyebrow{font-size:.8rem;letter-spacing:.18em}
+.action-card--cta .action-card__title{
+  font-size:clamp(1.9rem,3vw,2.5rem) !important;
+  line-height:1.02;letter-spacing:.5px;margin-top:.05rem;
+}
+.action-card--cta .action-card__sub{
+  position:relative;z-index:1;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.04em;font-size:clamp(.9rem,1.3vw,1.05rem);color:var(--bleu-glacier);
+}
+.action-card--cta .action-card__txt{
+  font-size:.98rem !important;line-height:1.5 !important;color:var(--txt-soft);
+}
+
+/* Bouton principal : impact + glow orange doux autour (box-shadow non rognée). */
+.action-card--cta .btn--cta{
+  margin-top:.7rem;
+  min-height:64px !important;
+  font-size:clamp(1.05rem,1.4vw,1.2rem);
+  font-weight:800;letter-spacing:.04em;
+  box-shadow:0 12px 30px rgba(217,106,27,.42),0 0 22px rgba(232,130,42,.22);
+}
+.action-card--cta .btn--cta:hover{
+  transform:translateY(-3px) scale(1.015);
+  box-shadow:0 20px 46px rgba(232,130,42,.55),0 0 34px rgba(232,130,42,.4);
+}
+.action-card--cta .btn--cta:active{transform:translateY(-1px) scale(.985)}
+.btn__arrow{width:1.1em;height:1.1em;flex:none;transition:transform .25s var(--ease-out)}
+.btn--cta:hover .btn__arrow{transform:translateX(5px)}
+
+/* CTA secondaire discret. */
+.action-card--cta .action-card__link{
+  position:relative;z-index:1;align-self:flex-start;margin-top:-.05rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.05em;font-size:.82rem;color:var(--bleu-glacier);
+  border-bottom:1px solid transparent;transition:color .25s,border-color .25s;
+}
+.action-card--cta .action-card__link:hover{color:var(--orange-vif);border-bottom-color:var(--orange-vif)}
+
+/* Micro-preuves : discrètes mais lisibles. */
+.action-card--cta .action-card__note{
+  margin-top:.45rem !important;min-height:0 !important;
+  font-size:.76rem !important;color:var(--bleu-glacier);
+}
+
+/* Mobile : carte lisible, bouton pleine largeur, pas de débordement. */
+@media (max-width:680px){
+  .action-card--cta{padding:1.5rem 1.25rem !important}
+  .action-card--cta .action-card__title{font-size:clamp(1.65rem,7.5vw,2.1rem) !important}
+  .action-card--cta .btn--cta{width:100%;font-size:1.06rem}
+  .action-card--cta .action-card__link{align-self:center}
+}
