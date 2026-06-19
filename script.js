@@ -72,64 +72,6 @@
   updateScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  /* ---- Tubelight nav : scrollspy + lampe coulissante ----
-     Recrée l'effet "Tubelight Navbar" sans React : la lampe (.nav__lamp)
-     glisse sous l'onglet correspondant à la section visible. */
-  const navPill = document.querySelector('.nav__pill');
-  if (navPill) {
-    const lampLinks = Array.prototype.slice.call(navPill.querySelectorAll('a[href^="#"]'));
-    /* On associe chaque lien à sa section, puis on trie par position verticale
-       réelle car l'ordre du menu diffère de l'ordre du DOM (Calendrier/Parents…). */
-    const tracked = [];
-    lampLinks.forEach(function (a) {
-      const sec = document.getElementById(a.getAttribute('href').slice(1));
-      if (sec) tracked.push({ link: a, sec: sec });
-    });
-    tracked.sort(function (p, q) { return p.sec.offsetTop - q.sec.offsetTop; });
-
-    let activeLink = null;
-    function moveLamp(link) {
-      if (!link) { navPill.classList.remove('has-active'); return; }
-      navPill.style.setProperty('--lamp-x', link.offsetLeft + 'px');
-      navPill.style.setProperty('--lamp-w', link.offsetWidth + 'px');
-      navPill.classList.add('has-active');
-    }
-    function setActive(link) {
-      if (link !== activeLink) {
-        if (activeLink) { activeLink.classList.remove('is-active'); activeLink.removeAttribute('aria-current'); }
-        activeLink = link;
-        if (link) { link.classList.add('is-active'); link.setAttribute('aria-current', 'true'); }
-      }
-      moveLamp(link); /* repositionne même à lien identique (resize / polices) */
-    }
-    function currentLink() {
-      const line = (header ? header.offsetHeight : 72) + 40;
-      let chosen = null;
-      for (let i = 0; i < tracked.length; i++) {
-        if (tracked[i].sec.getBoundingClientRect().top <= line) chosen = tracked[i].link; else break;
-      }
-      /* bas de page : on force le dernier onglet (Contact). */
-      if (tracked.length && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
-        chosen = tracked[tracked.length - 1].link;
-      }
-      return chosen;
-    }
-
-    let navTicking = false;
-    function syncNav() { setActive(currentLink()); navTicking = false; }
-    function onNavScroll() {
-      if (!navTicking) { window.requestAnimationFrame(syncNav); navTicking = true; }
-    }
-    window.addEventListener('scroll', onNavScroll, { passive: true });
-    window.addEventListener('resize', function () { window.requestAnimationFrame(syncNav); });
-    /* Clic : activation immédiate, sans attendre la fin du smooth-scroll. */
-    lampLinks.forEach(function (a) { a.addEventListener('click', function () { setActive(a); }); });
-    /* Recalage après chargement complet et après les polices web (largeurs des liens). */
-    window.addEventListener('load', function () { window.requestAnimationFrame(syncNav); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { syncNav(); });
-    syncNav();
-  }
-
   /* ---- Hero intro ---- */
   const hero = document.getElementById('hero');
   if (hero) requestAnimationFrame(function () { setTimeout(function () { hero.classList.add('in'); }, 80); });
