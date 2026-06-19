@@ -4627,3 +4627,56 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .action-card--cta .action-card__link{align-self:center}
   .action-card--cta .action-card__note{font-size:.72rem !important;line-height:1.35;text-align:left;justify-content:flex-start}
 }
+
+/* ============================================================
+   Hero Spline integration — décor 3D premium (desktop, enhancement)
+   Web Component <spline-viewer> injecté par JS (initHeroSpline()).
+   Décoratif : derrière le contenu, pointer-events:none, non focusable,
+   masqué sur mobile et en prefers-reduced-motion. Fallback glow CSS si
+   Spline ne charge pas (jamais de trou vide). Aucune dépendance critique.
+   ============================================================ */
+.hero-spline{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:min(50vw,680px);
+  z-index:1;                 /* derrière le contenu (.hero__inner, z-8) */
+  pointer-events:none;       /* ne bloque jamais les CTA / clics */
+  overflow:hidden;
+  display:none;              /* activé desktop uniquement (cf. media query) */
+  /* fondu vers la gauche : la scène reste à droite, la zone du titre centré
+     reste dégagée et lisible. Régler 24%/80% si tu veux l'étendre. */
+  -webkit-mask-image:linear-gradient(to left,#000 24%,transparent 80%);
+  mask-image:linear-gradient(to left,#000 24%,transparent 80%);
+}
+/* Fallback glow MBC : visible même sans JS / si Spline échoue. */
+.hero-spline__fallback{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(58% 50% at 80% 36%,rgba(232,130,42,.30),transparent 70%),
+    radial-gradient(54% 60% at 92% 66%,rgba(27,81,158,.34),transparent 72%);
+  filter:blur(10px);
+}
+/* Le <spline-viewer> injecté : couvre la zone, apparition douce au chargement. */
+.hero-spline spline-viewer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 1.2s var(--ease-out);
+}
+.hero-spline.is-loaded spline-viewer{opacity:.5}   /* opacité maîtrisée, sobre (montez à .6/.7 si voulu) */
+
+/* Desktop uniquement (≥ 1024px). */
+@media (min-width:1024px){
+  .hero-spline{display:block}
+}
+/* Accessibilité : pas de Spline si mouvement réduit. */
+@media (prefers-reduced-motion:reduce){
+  .hero-spline{display:none}
+}
