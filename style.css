@@ -4470,3 +4470,53 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero__rotator-stage.is-ready .hero__rotator-word{transition:opacity .3s ease;transform:none}
   .hero__rotator-stage.is-ready .hero__rotator-word.is-leaving{transform:none}
 }
+
+/* ============================================================
+   V30 — HERO : micro-animation lumineuse "aurora" MBC (CSS natif)
+   Inspiration "AuroraBackground" mais SANS React/Tailwind : on ne rajoute
+   pas une grosse aurora — on donne vie aux lumières déjà présentes avec
+   un glow lent et très subtil, concentré derrière le logo et le titre.
+   Couleurs MBC uniquement (orange ballon, bleu roi, blanc très léger).
+   Layers : fond/lumières fixes (z 0-1) · glow animé (z 2) · contenu (z 3+).
+   ============================================================ */
+
+/* Glow animé subtil, posé entre les lumières fixes et le contenu.
+   NB : on utilise un vrai calque enfant (.hero__lightmotion) et non ::before,
+   car .hero::before sert déjà au faisceau d'entrée "tip-off" (heroTipOff)
+   et .hero::after à l'overlay de lisibilité — on ne les touche pas. */
+.hero-light-motion .hero__lightmotion{
+  position:absolute;
+  inset:-15%;
+  z-index:2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(232,130,42,.16), transparent 30%),
+    radial-gradient(circle at 43% 47%, rgba(27,81,158,.16), transparent 36%),
+    radial-gradient(circle at 58% 38%, rgba(255,255,255,.06), transparent 20%);
+  filter:blur(28px);
+  opacity:.6;
+  will-change:transform,opacity;
+  animation:mbcHeroGlow 19s ease-in-out infinite;
+}
+@keyframes mbcHeroGlow{
+  0%,100%{opacity:.4;transform:translate3d(0,0,0) scale(1)}
+  50%{opacity:.58;transform:translate3d(1.2%,-1.2%,0) scale(1.05)}
+}
+
+/* On donne aussi vie au halo bleu existant derrière le logo (respiration lente).
+   Le halo n'a pas de parallaxe → on peut animer son transform sans rien casser. */
+.hero-light-motion .hero__halo{animation:mbcHaloBreath 16s ease-in-out infinite}
+@keyframes mbcHaloBreath{
+  0%,100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
+}
+
+/* Mobile : effet encore plus discret + blur allégé (perf). */
+@media (max-width:768px){
+  .hero-light-motion .hero__lightmotion{opacity:.32;filter:blur(24px)}
+}
+/* Accessibilité : aucune animation si mouvement réduit. */
+@media (prefers-reduced-motion:reduce){
+  .hero-light-motion .hero__lightmotion{animation:none}
+  .hero-light-motion .hero__halo{animation:none}
+}
