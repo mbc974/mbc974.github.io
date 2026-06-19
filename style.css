@@ -4872,7 +4872,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   opacity:0;transform:translateX(26px) scale(1.03);
   transition:opacity 1.1s var(--ease,ease),transform 1.5s cubic-bezier(.16,.84,.44,1)}
 .hero.in .hero__photo{opacity:1;transform:none}
-.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:62% 18%;display:block;filter:saturate(1.05) contrast(1.03)}
+.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:57% 18%;display:block;filter:saturate(1.05) contrast(1.03)}
 .hero__photo.is-empty img{display:none}
 .hero__photo.is-empty::after{display:none} /* pas de photo : on retire l'overlay d'intégration, on garde le halo */
 /* halo bleu/orange derrière le joueur */
