@@ -424,6 +424,7 @@
         viewer.setAttribute('aria-hidden', 'true');
         viewer.setAttribute('tabindex', '-1');
         viewer.setAttribute('loading-anim-type', 'none'); // on garde notre fallback, pas le loader Spline
+        viewer.setAttribute('background', 'transparent'); // fond transparent → pas de rectangle noir, le bleu nuit du hero passe
         viewer.addEventListener('load', function () { host.classList.add('is-loaded'); });
         host.appendChild(viewer);
         /* sécurité : apparition même si l'event 'load' ne se déclenche pas */

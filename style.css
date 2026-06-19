@@ -4637,14 +4637,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 .hero-spline{
   position:absolute;
-  inset:0;                   /* remplit la zone visuelle .hero__visual (colonne droite) */
-  z-index:1;                 /* derrière le contenu (.hero__content) */
+  top:-5%;bottom:-5%;right:-6vw;left:auto;
+  width:64vw;                /* assez large pour que montagne + ballon respirent (non coupés) */
+  z-index:1;                 /* calque de fond, derrière le contenu (.hero__inner z-3) */
   pointer-events:none;       /* ne bloque jamais les CTA / clics */
   overflow:hidden;
   display:none;              /* activé desktop uniquement (cf. media query) */
-  /* fondu radial doux des bords : la scène s'intègre au fond du hero. */
-  -webkit-mask-image:radial-gradient(78% 78% at 58% 50%,#000 52%,transparent 100%);
-  mask-image:radial-gradient(78% 78% at 58% 50%,#000 52%,transparent 100%);
+  /* fondu radial doux : la scène se dissout dans le hero, aucun bord net. */
+  -webkit-mask-image:radial-gradient(70% 80% at 62% 46%,#000 40%,transparent 84%);
+  mask-image:radial-gradient(70% 80% at 62% 46%,#000 40%,transparent 84%);
+}
+/* Fusion premium : dégradé bleu nuit depuis la gauche (protège le texte)
+   + fondu vertical en bas → la montagne fond dans le hero, pas de rectangle noir. */
+.hero-spline::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:
+    linear-gradient(100deg,var(--nuit-0) 0%,rgba(7,13,24,.62) 24%,rgba(7,13,24,0) 56%),
+    linear-gradient(to top,var(--nuit-0) 0%,rgba(7,13,24,.35) 14%,rgba(7,13,24,0) 40%);
 }
 /* Fallback glow MBC : visible même sans JS / si Spline échoue (jamais de trou vide). */
 .hero-spline__fallback{
@@ -4666,7 +4675,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   opacity:0;
   transition:opacity 1.2s var(--ease-out);
 }
-.hero-spline.is-loaded spline-viewer{opacity:.5}   /* opacité maîtrisée, sobre (montez à .6/.7 si voulu) */
+.hero-spline.is-loaded spline-viewer{opacity:.6}   /* opacité maîtrisée (montez/baissez selon le rendu) */
 
 /* Desktop uniquement (≥ 1024px). */
 @media (min-width:1024px){
@@ -4686,16 +4695,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .hero--split{padding-block:clamp(6rem,12vh,8.5rem) 4rem}
 .hero--split .hero__inner{
   position:relative;z-index:3;
-  display:grid;
-  grid-template-columns:1fr;          /* mobile : 1 colonne */
-  align-items:center;
-  gap:1.8rem;
+  display:block;
   width:100%;max-width:1340px;margin-inline:auto;
   padding-inline:clamp(18px,5vw,56px);
   text-align:left;
 }
-.hero--split .hero__content{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;min-width:0}
-.hero--split .hero__visual{display:none}   /* zone Spline : desktop uniquement */
+/* contenu calé à gauche, largeur maîtrisée (≈ 430–540 px), parfaitement lisible. */
+.hero--split .hero__content{display:flex;flex-direction:column;align-items:flex-start;gap:1rem;min-width:0;max-width:540px}
 
 /* Badge */
 .hero--split .hero__pill{margin-bottom:.15rem}
@@ -4740,9 +4746,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* Watermark géant : simple texture de fond très discrète. */
 .hero--split .hero__watermark{opacity:.025}
 
-/* ---- Desktop ≥ 1024 : 2 colonnes + zone visuelle Spline ---- */
+/* ---- Desktop ≥ 1024 : contenu à gauche + scène Spline en fond (cf. .hero-spline) ---- */
 @media (min-width:1024px){
-  .hero--split .hero__inner{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:2.4rem}
-  .hero--split .hero__visual{display:block;position:relative;align-self:stretch;min-height:min(62vh,560px)}
-  .hero--split .hero__watermark{opacity:0}   /* masqué quand la scène Spline est présente */
+  .hero--split .hero__content{max-width:520px}   /* largeur maîtrisée, calée à gauche */
+  .hero--split .hero__watermark{opacity:0}       /* masqué quand la scène Spline est présente */
 }
