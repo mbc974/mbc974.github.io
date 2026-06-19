@@ -2508,6 +2508,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .kit-card__cap span{font-size:.82rem;color:#46566c}
 .kit-card.img-fallback{min-height:360px}
 
+.kit-action{position:relative;overflow:hidden;margin:clamp(1.6rem,4vw,2.6rem) auto 0;max-width:980px;border:1px solid rgba(191,210,228,.18);border-radius:var(--r-lg);background:#0a1426;box-shadow:var(--e3)}
+.kit-action::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(7,13,24,.86) 0%,rgba(7,13,24,.34) 36%,rgba(7,13,24,.08) 64%),linear-gradient(to top,rgba(7,13,24,.88),transparent 46%)}
+.kit-action img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;object-position:52% 30%;filter:saturate(1.07) contrast(1.04)}
+.kit-action figcaption{position:absolute;left:clamp(1rem,4vw,2rem);right:clamp(1rem,4vw,2rem);bottom:clamp(1rem,3vw,1.6rem);z-index:2;display:flex;flex-direction:column;gap:.25rem;max-width:30rem}
+.kit-action figcaption strong{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.75rem,4vw,2.65rem);line-height:.95;color:#fff;letter-spacing:.03em;text-shadow:0 8px 24px rgba(0,0,0,.45)}
+.kit-action figcaption span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--bleu-glacier)}
+@media(max-width:680px){
+  .kit-action{border-radius:var(--r-md)}
+  .kit-action::before{background:linear-gradient(to top,rgba(7,13,24,.92),rgba(7,13,24,.28) 58%,rgba(7,13,24,.05))}
+  .kit-action img{aspect-ratio:4/5;object-position:51% 26%}
+}
+
 .kit-copy{text-align:center}
 @media(min-width:920px){.kit-copy{text-align:left}}
 .kit-copy__eyebrow{
@@ -4872,7 +4884,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   opacity:0;transform:translateX(26px) scale(1.03);
   transition:opacity 1.1s var(--ease,ease),transform 1.5s cubic-bezier(.16,.84,.44,1)}
 .hero.in .hero__photo{opacity:1;transform:none}
-.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:57% 18%;display:block;filter:saturate(1.05) contrast(1.03)}
+.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:62% 18%;display:block;filter:saturate(1.05) contrast(1.03)}
 .hero__photo.is-empty img{display:none}
 .hero__photo.is-empty::after{display:none} /* pas de photo : on retire l'overlay d'intégration, on garde le halo */
 /* halo bleu/orange derrière le joueur */
