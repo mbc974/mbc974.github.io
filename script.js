@@ -137,6 +137,31 @@
     });
   }
 
+  /* ---- Cascade text (lien animé : chaque lettre révèle une copie au survol) ---- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cascade]'), function (el) {
+    const text = (el.getAttribute('data-cascade-text') || el.textContent || '').trim();
+    if (!text) return;
+    el.setAttribute('aria-label', text);
+    let chars;
+    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+      chars = Array.from(new Intl.Segmenter('fr', { granularity: 'grapheme' }).segment(text), function (s) { return s.segment; });
+    } else {
+      chars = Array.prototype.slice.call(text);
+    }
+    const inner = document.createElement('span');
+    inner.className = 'cascade-link__inner';
+    inner.setAttribute('aria-hidden', 'true');
+    chars.forEach(function (ch, i) {
+      const c = document.createElement('span');
+      c.className = 'cascade-link__c';
+      c.style.setProperty('--i', String(i));
+      c.textContent = (ch === ' ') ? ' ' : ch;
+      inner.appendChild(c);
+    });
+    el.textContent = '';
+    el.appendChild(inner);
+  });
+
   /* ---- Parallax ---- */
   const layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
   /* Parallax désactivé sur mobile (perf + évite tout effet de profondeur lourd au scroll tactile) */
