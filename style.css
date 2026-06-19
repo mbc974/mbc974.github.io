@@ -1691,7 +1691,16 @@ body{text-rendering:optimizeLegibility}
   .step:not(:last-child)::after{content:"";position:absolute;top:50%;right:-.95rem;width:1.1rem;height:2px;background:linear-gradient(90deg,var(--orange-vif),transparent);z-index:2}}
 
 /* ---- Parents : piliers + FAQ ---- */
-.parents{background:radial-gradient(80% 120% at 92% 0,rgba(27,81,158,.30),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+.parents{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(80% 120% at 92% 0,rgba(27,81,158,.30),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+.parents>.wrap{position:relative;z-index:2}
+.parents__photo{position:absolute;top:clamp(2rem,7vw,5rem);right:0;width:min(48vw,720px);height:min(68%,720px);z-index:0;pointer-events:none;opacity:.28;-webkit-mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.76) 55%,transparent 90%),linear-gradient(to bottom,transparent 0%,#000 16%,#000 74%,transparent 100%);mask-image:linear-gradient(to left,#000 24%,rgba(0,0,0,.76) 55%,transparent 90%),linear-gradient(to bottom,transparent 0%,#000 16%,#000 74%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
+.parents__photo img{width:100%;height:100%;object-fit:cover;object-position:52% 24%;display:block;filter:saturate(1.04) contrast(1.04)}
+.parents__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,13,24,.92),rgba(7,13,24,.36) 44%,rgba(7,13,24,.12)),linear-gradient(to top,rgba(7,13,24,.76),transparent 42%)}
+@media(max-width:900px){
+  .parents__photo{top:4rem;right:-18%;width:115%;height:36%;opacity:.16;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 20%,#000 64%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0%,#000 20%,#000 64%,transparent 100%);-webkit-mask-composite:source-over;mask-composite:add}
+  .parents__photo img{object-position:50% 18%}
+  .parents__photo::after{background:linear-gradient(to bottom,rgba(7,13,24,.9),rgba(7,13,24,.42) 48%,rgba(7,13,24,.92))}
+}
 .parents-grid{display:grid;gap:1rem;grid-template-columns:1fr;margin-bottom:2.8rem}
 .p-pillar{display:flex;flex-direction:column;gap:.55rem;padding:1.7rem 1.6rem;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--grad-card);box-shadow:var(--e2),var(--bevel);transition:transform .35s var(--ease-spring),border-color .3s}
 .p-pillar:hover{transform:translateY(-5px);border-color:rgba(232,130,42,.45)}
@@ -2507,18 +2516,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .kit-card__cap strong{display:block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0D1526;font-size:1.04rem}
 .kit-card__cap span{font-size:.82rem;color:#46566c}
 .kit-card.img-fallback{min-height:360px}
-
-.kit-action{position:relative;overflow:hidden;margin:clamp(1.6rem,4vw,2.6rem) auto 0;max-width:980px;border:1px solid rgba(191,210,228,.18);border-radius:var(--r-lg);background:#0a1426;box-shadow:var(--e3)}
-.kit-action::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(7,13,24,.86) 0%,rgba(7,13,24,.34) 36%,rgba(7,13,24,.08) 64%),linear-gradient(to top,rgba(7,13,24,.88),transparent 46%)}
-.kit-action img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;object-position:52% 30%;filter:saturate(1.07) contrast(1.04)}
-.kit-action figcaption{position:absolute;left:clamp(1rem,4vw,2rem);right:clamp(1rem,4vw,2rem);bottom:clamp(1rem,3vw,1.6rem);z-index:2;display:flex;flex-direction:column;gap:.25rem;max-width:30rem}
-.kit-action figcaption strong{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.75rem,4vw,2.65rem);line-height:.95;color:#fff;letter-spacing:.03em;text-shadow:0 8px 24px rgba(0,0,0,.45)}
-.kit-action figcaption span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--bleu-glacier)}
-@media(max-width:680px){
-  .kit-action{border-radius:var(--r-md)}
-  .kit-action::before{background:linear-gradient(to top,rgba(7,13,24,.92),rgba(7,13,24,.28) 58%,rgba(7,13,24,.05))}
-  .kit-action img{aspect-ratio:4/5;object-position:51% 26%}
-}
 
 .kit-copy{text-align:center}
 @media(min-width:920px){.kit-copy{text-align:left}}
