@@ -172,9 +172,7 @@
   <div class="hero__glow hero__glow--o" data-parallax="0.1" aria-hidden="true"></div>
   <div class="hero__slash" data-parallax="-0.06" aria-hidden="true"></div>
   <div class="hero__lightmotion" aria-hidden="true"></div>
-  <div class="hero__basket3d" aria-hidden="true" data-hero-basket3d="on">
-    <canvas class="hero__basket3d-canvas" width="720" height="720"></canvas>
-  </div>
+  <div id="hero-spline-root"></div>
 
   <div class="hero__inner">
     <span class="logo-img hero__crest hero__crest--giant reveal-fade" role="img" aria-label="Écusson MBC La Montagne Basket Club"></span>
@@ -970,6 +968,7 @@
   </div>
 </div>
 
-<script src="script.js" defer></script>
+<script type="module" src="/src/main.tsx"></script>
+<script type="module" src="/script.js"></script>
 </body>
 </html>

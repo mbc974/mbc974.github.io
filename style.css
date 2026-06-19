@@ -4518,59 +4518,50 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 }
 
 /* ============================================================
-   V32 — HERO : ballon 3D canvas, subtil et non interactif
+   V32 — HERO : React/Spline island, subtle desktop-only layer
    ============================================================ */
-.hero__basket3d{
+#hero-spline-root{
   position:absolute;
+  inset:0;
   z-index:2;
-  right:clamp(-150px,-7vw,-54px);
-  top:clamp(8.2rem,17vh,12rem);
-  width:clamp(340px,34vw,560px);
-  aspect-ratio:1;
   pointer-events:none;
-  opacity:.34;
-  mix-blend-mode:screen;
-  filter:saturate(1.1) contrast(1.04);
-  transform:rotate(-7deg);
-  transform-origin:center;
-  contain:layout paint size;
-  -webkit-mask-image:radial-gradient(circle at 50% 50%,#000 0 58%,rgba(0,0,0,.55) 72%,transparent 83%);
-  mask-image:radial-gradient(circle at 50% 50%,#000 0 58%,rgba(0,0,0,.55) 72%,transparent 83%);
 }
-.hero__basket3d::before,
-.hero__basket3d::after{
-  content:"";
+.hero-spline-react{
   position:absolute;
-  inset:7%;
-  border-radius:50%;
+  right:-4%;
+  top:12%;
+  width:clamp(360px,36vw,540px);
+  height:clamp(360px,36vw,540px);
+  opacity:.32;
   pointer-events:none;
+  mix-blend-mode:screen;
+  filter:saturate(1.08) contrast(1.05);
 }
-.hero__basket3d::before{
-  background:radial-gradient(circle at 34% 30%,rgba(255,255,255,.18),transparent 26%),
-             radial-gradient(circle at 70% 66%,rgba(27,81,158,.34),transparent 44%);
-  filter:blur(18px);
-  opacity:.72;
-}
-.hero__basket3d::after{
-  inset:18%;
-  box-shadow:0 0 46px rgba(232,130,42,.28),0 0 86px rgba(27,81,158,.22);
-  opacity:.8;
-}
-.hero__basket3d-canvas{
-  position:relative;
-  z-index:1;
-  display:block;
+.hero-spline-canvas{
   width:100%;
   height:100%;
+  pointer-events:none;
 }
-@media (max-width:980px){
-  .hero__basket3d{display:none}
+.spline-loader{
+  width:100%;
+  height:100%;
+  display:grid;
+  place-items:center;
 }
-@media (min-width:1280px) and (min-height:900px){
-  .hero__basket3d{top:clamp(9rem,18vh,13.5rem);opacity:.32}
+.spline-loader span{
+  width:28px;
+  height:28px;
+  border:2px solid rgba(244,122,31,.35);
+  border-top-color:rgba(244,122,31,.95);
+  border-radius:999px;
+  animation:splineLoader .8s linear infinite;
+}
+@keyframes splineLoader{to{transform:rotate(360deg)}}
+@media (max-width:1024px){
+  #hero-spline-root{display:none}
 }
 @media (prefers-reduced-motion:reduce){
-  .hero__basket3d{opacity:.24}
+  #hero-spline-root{display:none}
 }
 
 /* ============================================================

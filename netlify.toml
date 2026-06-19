@@ -1,5 +1,9 @@
 # Configuration Netlify — MBC La Montagne Basket Club
 
+[build]
+  command = "npm run build"
+  publish = "dist"
+
 # Cache modéré sur les assets (noms de fichiers stables, pas de hash) :
 # 1 jour, revalidation possible -> évite de figer une image mise à jour.
 [[headers]]
