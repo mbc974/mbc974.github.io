@@ -5039,3 +5039,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .sponsors-marquee__track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
   .sponsors-marquee__track [aria-hidden="true"]{display:none}
 }
+
+/* ============================================================
+   V42 — Formules partenaires : finition "pricing" (description + CTA par carte)
+   Adapté du composant Pricing (shadcn) → CSS natif. Le toggle mensuel/annuel +
+   confetti ne s'appliquent pas à un sponsoring ponctuel ; on garde l'essentiel
+   (déjà en place : cartes hiérarchisées, ★ Populaire, features à coches) + CTA.
+   ============================================================ */
+.pack__desc{display:block;margin:-.4rem 0 1rem;min-height:2.5em;color:var(--txt-soft);font-size:.85rem;line-height:1.4}
+.sponsor-pack.pack--feat .pack__desc{color:var(--bleu-glacier)}
+.packs-grid--four .pack ul{margin-bottom:1.2rem}
+.pack__cta{margin-top:auto;width:100%;justify-content:center;font-size:.9rem;padding:.74em 1em;letter-spacing:.02em}
