@@ -5055,9 +5055,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .cta-band__photo{top:0;bottom:0;right:max(2.5vw,calc((100vw - 1180px) / 2));width:clamp(270px,30vw,380px)}
   .cta-band__photo img{width:100%;height:100%;object-fit:contain;object-position:bottom center;
     /* image DÉTOURÉE (fond transparent) : joueur net sur le navy + ombre de contact + léger fondu des pieds */
-    filter:drop-shadow(0 26px 46px rgba(0,0,0,.55)) drop-shadow(0 6px 14px rgba(0,0,0,.42));
-    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 6%);
-    mask-image:linear-gradient(to top,transparent 0%,#000 6%)}
+    /* fondu des contours : micro-flou + halo navy qui fait fondre la silhouette dans le fond */
+    filter:blur(.4px) drop-shadow(0 0 4px rgba(11,17,33,.9)) drop-shadow(0 0 16px rgba(13,21,38,.6)) drop-shadow(0 24px 44px rgba(0,0,0,.5));
+    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 7%);
+    mask-image:linear-gradient(to top,transparent 0%,#000 7%)}
   .cta-band__photo::before{content:"";position:absolute;inset:4% -8% 0 4%;z-index:-1;
     background:radial-gradient(48% 42% at 60% 40%,rgba(232,130,42,.32),transparent 62%),radial-gradient(66% 58% at 64% 66%,rgba(27,107,255,.28),transparent 66%);filter:blur(10px)}
   .cta-band__photo::after{content:none} /* image détourée : aucune vignette nécessaire */
