@@ -5395,8 +5395,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    sans React/framer-motion) en fond de "Sur le terrain" (#galerie).
    Grille faible qui défile + calque orange révélé au curseur + halos.
    ============================================================ */
-.gallery{overflow:hidden}
-.gallery>.wrap{position:relative;z-index:1}
+.recrutement{overflow:hidden}
+.recrutement>.wrap{position:relative;z-index:1}
 .grid-fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .grid-fx__layer{position:absolute;inset:0;
   background-image:linear-gradient(to right,var(--gl) 1px,transparent 1px),linear-gradient(to bottom,var(--gl) 1px,transparent 1px);
