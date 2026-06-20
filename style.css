@@ -256,7 +256,8 @@ a{color:inherit;text-decoration:none}
 .partners-cta{margin-top:2.2rem}
 
 /* ---------------- CTA BAND ---------------- */
-.cta-band{position:relative;overflow:hidden;background:radial-gradient(100% 120% at 50% -12%,rgba(27,81,158,.4),transparent 64%),linear-gradient(180deg,var(--nuit-2),var(--nuit-0))}
+/* haut = #0b1626 (= bas EXACT de .partenaires) -> frontière invisible ; halo bleu déplacé derrière le joueur, il ne touche plus le bord haut */
+.cta-band{position:relative;overflow:hidden;background:radial-gradient(88% 76% at 62% 58%,rgba(27,81,158,.22),transparent 72%),linear-gradient(180deg,#0b1626 0%,#0a1322 52%,#070d18 100%)}
 .cta-band__slash{position:absolute;inset:0;pointer-events:none;opacity:.5;background:linear-gradient(115deg,transparent 56%,rgba(232,130,42,.9) 56.4%,rgba(232,130,42,.9) 57.3%,transparent 57.8%,transparent 60%,rgba(27,81,158,.65) 60.2%,rgba(27,81,158,.65) 61%,transparent 61.5%);-webkit-mask-image:linear-gradient(115deg,transparent 36%,#000 90%);mask-image:linear-gradient(115deg,transparent 36%,#000 90%)}
 .cta-band__inner{position:relative;z-index:1;text-align:center;max-width:64ch;margin-inline:auto}
 .cta-band .h2{margin-bottom:.7rem}
