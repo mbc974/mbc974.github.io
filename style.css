@@ -5018,3 +5018,24 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cal-venue__tag .ic{width:1em;height:1em}
 .cal-venue__name{font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.5px;line-height:1;font-size:clamp(1.5rem,3.4vw,2.4rem);color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.65)}
 .cal-venue__addr{font-family:var(--ff-cond);font-weight:600;font-size:clamp(.86rem,1.4vw,1rem);color:var(--bleu-glacier)}
+
+/* ============================================================
+   V41 — Sponsors : bandeau de logos en défilement infini
+   (adapté d'un carousel embla/shadcn → CSS natif, mécanisme "marquee").
+   Boucle continue (2 séries + translateX -50%), pause au survol/focus, repli statique.
+   Réglages : vitesse (animation 34s) · largeur carte (flex-basis) · masque des bords
+   ============================================================ */
+.sponsors-marquee{position:relative;overflow:hidden;margin-top:.4rem;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.sponsors-marquee__track{display:flex;width:max-content;padding-block:.8rem;animation:sponsorsScroll 34s linear infinite;will-change:transform}
+.sponsors-marquee:hover .sponsors-marquee__track,
+.sponsors-marquee:focus-within .sponsors-marquee__track{animation-play-state:paused}
+/* carte adaptée au bandeau : largeur fixe, espacement par marge (boucle nette), sans flou (perf défilement) */
+.sponsors-marquee .sponsor-card{flex:0 0 clamp(186px,22vw,236px);margin-right:clamp(1rem,2vw,1.5rem);-webkit-backdrop-filter:none;backdrop-filter:none;animation:none!important}
+@keyframes sponsorsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){
+  .sponsors-marquee{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .sponsors-marquee__track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
+  .sponsors-marquee__track [aria-hidden="true"]{display:none}
+}
