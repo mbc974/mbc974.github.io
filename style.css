@@ -5389,3 +5389,25 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .spotglow:hover::after{opacity:.85}
 @media (prefers-reduced-motion:reduce){.spotglow::after{transition:none}}
 @media (hover:none){.spotglow::after{display:none}}
+
+/* ============================================================
+   V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,
+   sans React/framer-motion) en fond de "Sur le terrain" (#galerie).
+   Grille faible qui défile + calque orange révélé au curseur + halos.
+   ============================================================ */
+.gallery{overflow:hidden}
+.gallery>.wrap{position:relative;z-index:1}
+.grid-fx{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.grid-fx__layer{position:absolute;inset:0;
+  background-image:linear-gradient(to right,var(--gl) 1px,transparent 1px),linear-gradient(to bottom,var(--gl) 1px,transparent 1px);
+  background-size:40px 40px;animation:gridScroll 2.6s linear infinite}
+.grid-fx__base{opacity:.08;--gl:rgba(191,210,228,.55)}
+.grid-fx__reveal{opacity:.55;--gl:rgba(232,130,42,.95);
+  -webkit-mask-image:radial-gradient(300px circle at var(--grx,50%) var(--gry,50%),#000,transparent 70%);
+          mask-image:radial-gradient(300px circle at var(--grx,50%) var(--gry,50%),#000,transparent 70%)}
+@keyframes gridScroll{from{background-position:0 0,0 0}to{background-position:40px 40px,40px 40px}}
+.grid-fx__glow{position:absolute;border-radius:50%;filter:blur(90px)}
+.grid-fx__glow--orange{right:-12%;top:-18%;width:38%;height:48%;background:radial-gradient(circle,rgba(232,130,42,.45),transparent 70%)}
+.grid-fx__glow--blue{left:-12%;bottom:-20%;width:38%;height:48%;background:radial-gradient(circle,rgba(27,107,255,.4),transparent 70%)}
+@media (prefers-reduced-motion:reduce){.grid-fx__layer{animation:none}}
+@media (hover:none){.grid-fx__reveal{display:none}}
