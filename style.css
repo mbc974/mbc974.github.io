@@ -5053,18 +5053,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .cta-band--player .lead{margin-inline:0 !important;max-width:46ch}
   .cta-band--player .cta-band__btns{justify-content:flex-start}
   .cta-band__photo{top:0;bottom:0;right:max(2.5vw,calc((100vw - 1180px) / 2));width:clamp(270px,30vw,380px)}
-  .cta-band__photo img{width:100%;height:100%;object-fit:cover;object-position:50% 16%;
-    filter:saturate(.74) contrast(1.06) brightness(.94);
-    /* feather doux sur tous les bords : aucune arête nette */
-    -webkit-mask-image:radial-gradient(150% 145% at 54% 42%,#000 64%,transparent 100%);
-    mask-image:radial-gradient(150% 145% at 54% 42%,#000 64%,transparent 100%)}
+  .cta-band__photo img{width:100%;height:100%;object-fit:contain;object-position:bottom center;
+    /* image DÉTOURÉE (fond transparent) : joueur net sur le navy + ombre de contact + léger fondu des pieds */
+    filter:drop-shadow(0 26px 46px rgba(0,0,0,.55)) drop-shadow(0 6px 14px rgba(0,0,0,.42));
+    -webkit-mask-image:linear-gradient(to top,transparent 0%,#000 6%);
+    mask-image:linear-gradient(to top,transparent 0%,#000 6%)}
   .cta-band__photo::before{content:"";position:absolute;inset:4% -8% 0 4%;z-index:-1;
     background:radial-gradient(48% 42% at 60% 40%,rgba(232,130,42,.32),transparent 62%),radial-gradient(66% 58% at 64% 66%,rgba(27,107,255,.28),transparent 66%);filter:blur(10px)}
-  .cta-band__photo::after{content:"";position:absolute;inset:0;
-    /* vignette navy : la photo fond dans le bandeau (bords → navy), centre dégagé sur le joueur */
-    background:radial-gradient(80% 84% at 57% 40%,transparent 18%,rgba(13,21,38,.5) 54%,rgba(13,21,38,.98) 86%),
-              linear-gradient(to bottom,rgba(13,21,38,.95) 0%,transparent 22%),
-              linear-gradient(100deg,rgba(13,21,38,.76) 0%,rgba(13,21,38,.24) 46%,rgba(13,21,38,.1) 100%)}
+  .cta-band__photo::after{content:none} /* image détourée : aucune vignette nécessaire */
   /* repli : si la photo n'est pas encore déposée, on recentre la bannière */
   .cta-band--player:has(.cta-band__photo.is-empty) .cta-band__inner{padding-right:0;max-width:64ch;margin-inline:auto;align-items:center;text-align:center;min-height:auto}
   .cta-band--player:has(.cta-band__photo.is-empty) .cta-band__btns{justify-content:center}
