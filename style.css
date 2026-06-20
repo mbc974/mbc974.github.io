@@ -5325,16 +5325,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    Grille photos N&B en 3 colonnes décalées + liste de noms ;
    survol SYNCHRONISÉ (nom <-> photo). Mobile : photos puis liste.
    ============================================================ */
-.team{display:flex;flex-direction:column;gap:2rem;width:100%;max-width:1120px;margin:1.6rem auto 0;align-items:center}
-.team__photos{display:flex;gap:.85rem;flex:none;justify-content:center;max-width:100%}
-.team__col{display:flex;flex-direction:column;gap:.85rem}
-.team__col--2{margin-top:clamp(46px,6vw,82px)}
-.team__col--3{margin-top:clamp(22px,3vw,40px)}
+/* la section staff élargit son conteneur pour laisser respirer les photos */
+.staff .wrap{max-width:min(95vw,1360px)}
+.team{display:flex;flex-direction:column;gap:2rem;width:100%;max-width:none;margin:1.6rem auto 0;align-items:center}
+.team__photos{display:flex;gap:1rem;flex:none;justify-content:center;max-width:100%}
+.team__col{display:flex;flex-direction:column;gap:1rem}
+.team__col--2{margin-top:clamp(56px,7vw,100px)}
+.team__col--3{margin-top:clamp(28px,3.5vw,50px)}
 .team__photo{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;flex:none;
   background:#0b1626;border:1px solid rgba(191,210,228,.12);aspect-ratio:1 / 1.06;transition:opacity .4s,box-shadow .4s,border-color .4s}
-.team__col--1 .team__photo{width:clamp(135px,18vw,205px)}
-.team__col--2 .team__photo{width:clamp(150px,20vw,228px)}
-.team__col--3 .team__photo{width:clamp(142px,19vw,215px)}
+.team__col--1 .team__photo{width:clamp(170px,22vw,265px)}
+.team__col--2 .team__photo{width:clamp(190px,25vw,300px)}
+.team__col--3 .team__photo{width:clamp(180px,24vw,288px)}
 .team__photo .staff-card__media{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;display:grid;place-items:center}
 .team__photo .staff-card__media:not(.img-fallback)::after{display:none} /* retire le voile sombre hérité de l'ancienne carte */
 .team__photo .staff-card__media.img-fallback::after{opacity:1;background:none} /* label de secours lisible */
@@ -5345,7 +5347,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .team__photo.is-active{border-color:rgba(232,130,42,.5);box-shadow:0 16px 36px rgba(0,0,0,.5)}
 .team__photo.is-dim{opacity:.5}
 /* liste de noms */
-.team__list{display:flex;flex-direction:column;gap:1.05rem;flex:1;min-width:0;list-style:none;margin:0;padding:0;width:100%;max-width:360px}
+.team__list{display:flex;flex-direction:column;gap:1.05rem;flex:1;min-width:0;list-style:none;margin:0;padding:0;width:100%;max-width:320px}
 .team__row{cursor:pointer;transition:opacity .3s}
 .team__row.is-dim{opacity:.45}
 .team__row-top{display:flex;align-items:center;gap:.6rem}
@@ -5356,7 +5358,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .team__role{display:block;margin:.45rem 0 0;padding-left:1.6rem;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(191,210,228,.74)}
 .team__hint{text-align:center;margin:1.1rem 0 0;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;color:rgba(191,210,228,.5)}
 @media (min-width:860px){
-  .team{flex-direction:row;align-items:flex-start;gap:clamp(2rem,4vw,3.5rem)}
+  .team{flex-direction:row;align-items:flex-start;gap:clamp(1.6rem,3vw,2.6rem)}
   .team__photos{justify-content:flex-start}
   .team__list{padding-top:.4rem}
 }
