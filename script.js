@@ -587,7 +587,7 @@
     for (var j = 0; j < 6; j++) {
       var bx = XM[j] * u, by = YF[j] * lf;
       if (j === hi) {
-        setT(cards[j], bx, by - 30, ROT[j] * 0.5, SC[j] * 1.08, 30);
+        setT(cards[j], bx, by - 40, ROT[j] * 0.5, SC[j] * 1.09, 30);
       } else {
         var dir = j < hi ? -1 : 1, dist = Math.abs(j - hi);
         var push = Math.max(0, 30 - 9 * (dist - 1));
