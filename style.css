@@ -834,16 +834,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   overflow:hidden;
   background:linear-gradient(180deg,var(--nuit-0),#0c1729 52%,var(--nuit-2));
 }
-.social-spotlight::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:.48;
-  background:linear-gradient(115deg,transparent 50%,rgba(232,130,42,.72) 50.4%,rgba(232,130,42,.72) 51.1%,transparent 51.7%,transparent 58%,rgba(27,81,158,.58) 58.3%,rgba(27,81,158,.58) 59.1%,transparent 59.7%);
-  -webkit-mask-image:linear-gradient(115deg,transparent 18%,#000 76%,transparent 100%);
-  mask-image:linear-gradient(115deg,transparent 18%,#000 76%,transparent 100%);
-}
+.social-spotlight::before{content:none} /* slash diagonal orange/bleu retiré */
 .social-spotlight__inner{
   position:relative;
   z-index:1;
@@ -4761,28 +4752,24 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);
   mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);
 }
-/* 1) AMBIANCE LUMINEUSE : halos diffus bleu/orange (lumière de salle) + voile diagonal
-      très léger. Remplace les bandes "aurora" trop marquées → l'effet s'incruste dans le
-      visuel au lieu de se poser dessus.
-      Réglages : opacity (intensité) · filter:blur (diffusion) · les radial-gradient (zones/couleurs) */
+/* 1) AURORA premium : rubans de lumière fluides (adapté d'Aurora Background / 21st.dev → CSS natif),
+      fortement floutés + masque radial → effet "aurores boréales" haut de gamme (pas des bandes nettes).
+      Réglages : opacity (intensité) · filter:blur (douceur) · --aurora (couleurs) · animation 55s (vitesse) */
 .hero-fx__glow{
-  position:absolute;inset:-12%;
-  background:
-    radial-gradient(46% 40% at 76% 8%, rgba(40,120,255,.30), transparent 60%),    /* halo bleu électrique, haut-droite */
-    radial-gradient(42% 38% at 64% 44%, rgba(232,130,42,.20), transparent 62%),    /* halo chaud, derrière le joueur */
-    radial-gradient(50% 42% at 16% 92%, rgba(27,81,158,.22), transparent 64%),     /* halo froid, bas-gauche (équilibre) */
-    linear-gradient(116deg, transparent 40%, rgba(130,175,255,.07) 50%, transparent 60%); /* voile diagonal très diffus (rappel aurora) */
-  filter:blur(48px) saturate(1.06);
-  opacity:.9;
-  -webkit-mask-image:radial-gradient(150% 130% at 72% 2%, #000 6%, transparent 90%);
-  mask-image:radial-gradient(150% 130% at 72% 2%, #000 6%, transparent 90%);
-  animation:heroGlowDrift 26s ease-in-out infinite alternate;
-  will-change:transform;
+  position:absolute;inset:-15%;
+  --aurora:repeating-linear-gradient(100deg,
+     #0d2452 0%,#1f5fd6 8%,#4f86ff 14%,#7b6cff 19%,#e8822a 25%,#1f5fd6 31%);
+  background-image:var(--aurora);
+  background-size:200% 170%;
+  background-position:50% 50%;
+  filter:blur(44px) saturate(1.22);
+  opacity:.5;
+  -webkit-mask-image:radial-gradient(130% 105% at 72% 0%,#000 6%,transparent 80%);
+  mask-image:radial-gradient(130% 105% at 72% 0%,#000 6%,transparent 80%);
+  animation:mbcAurora 55s linear infinite;
+  will-change:background-position;
 }
-@keyframes heroGlowDrift{
-  0%{transform:translate3d(-1.8%,-1.2%,0) scale(1.02)}
-  100%{transform:translate3d(2.2%,1.6%,0) scale(1.06)}
-}
+@keyframes mbcAurora{from{background-position:50% 50%}to{background-position:350% 50%}}
 /* 2) Grille discrète (profondeur, modernité) — fondue autour du haut-centre */
 .hero-fx__grid{
   position:absolute;inset:0;
@@ -4798,7 +4785,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (max-width:760px){
   .hero-fx{height:60%}
   .hero-fx__grid{background-size:34px 34px;opacity:.32}
-  .hero-fx__glow{filter:blur(30px) saturate(1.06);opacity:.72}
+  .hero-fx__glow{filter:blur(30px) saturate(1.22);opacity:.5}
 }
 /* Accessibilité : pas d'animation si mouvement réduit */
 @media (prefers-reduced-motion:reduce){
