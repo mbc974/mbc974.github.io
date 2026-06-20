@@ -4075,8 +4075,28 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .footer__signature:hover .sig-heart{animation-duration:1s}
 
 /* ---- B. Header : écart symétrique de part et d'autre de la barre ---- */
-.brand{gap:1rem}
-.brand__txt{padding-left:1rem!important}
+.brand{gap:.9rem;align-items:center}
+.brand .logo-img{width:78px;height:52px;background-position:center;background-size:contain}
+.brand__txt{
+  position:relative;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;
+  gap:.18rem;min-height:38px;padding-left:.9rem!important;border-left:1px solid rgba(255,255,255,.22);
+  transform:translateY(.5px);white-space:nowrap;
+}
+.brand__sub{
+  display:block!important;font-family:var(--ff-cond)!important;font-weight:800!important;font-size:1.02rem!important;
+  line-height:.92!important;letter-spacing:.075em!important;text-transform:uppercase;color:#fff!important;text-shadow:none!important;
+}
+.brand__sub2{
+  display:block;font-family:var(--ff-cond);font-weight:500;font-size:.57rem;line-height:1;
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72);opacity:1;
+}
+@media (max-width:560px){
+  .brand{gap:.72rem}
+  .brand .logo-img{width:64px;height:42px}
+  .brand__txt{min-height:31px;padding-left:.72rem!important;gap:.13rem}
+  .brand__sub{font-size:.9rem!important;letter-spacing:.06em!important}
+  .brand__sub2{font-size:.49rem;letter-spacing:.18em}
+}
 
 /* ---- C. CTA pré-inscription : nettement plus gros (ça saute aux yeux) ---- */
 .btn--lg{font-size:clamp(1.18rem,1.9vw,1.42rem)!important;padding:1.1em 2.3em!important}
