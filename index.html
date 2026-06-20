@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-cards">
+<link rel="stylesheet" href="style.css?v=202606-deck">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -276,10 +276,22 @@
       <p class="kicker">Adhésion 2026 / 2027</p>
       <h2 class="h2" id="adhesionVideoTitle">La licence MBC, <span class="hl">ça commence ici</span></h2>
       <p class="lead">Une courte vidéo pour découvrir l'esprit du club et réserver votre place pour la saison fondatrice. Baby Basket, jeunes, Seniors : le MBC accueille chaque marmay, chaque famille et chaque passionné de La Montagne.</p>
-      <ul class="adhesion-video__points" aria-label="Points clés de l'adhésion MBC">
-        <li><b class="apk__val">95<span class="apk__unit">&nbsp;€</span></b><span class="sr-only"> — </span><span class="apk__lbl">Licence FFBB &amp; assurance incluses</span></li>
-        <li><b class="apk__val">3<span class="apk__unit">&nbsp;ans et +</span></b><span class="sr-only"> — </span><span class="apk__lbl">Du Baby Basket aux Seniors</span></li>
-        <li><b class="apk__val">48<span class="apk__unit">&nbsp;h</span></b><span class="sr-only"> — </span><span class="apk__lbl">Réponse rapide après pré-inscription</span></li>
+      <ul class="mbc-deck reveal" aria-label="Points clés de l'adhésion MBC">
+        <li class="mbc-deck__card mbc-deck__card--1">
+          <span class="mbc-deck__top"><span class="mbc-deck__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h4"/></svg></span><span class="mbc-deck__eyebrow">Tarif unique</span></span>
+          <span class="mbc-deck__stat">95<span class="u">&nbsp;€</span></span>
+          <span class="mbc-deck__desc">Licence FFBB &amp; assurance incluses</span>
+        </li>
+        <li class="mbc-deck__card mbc-deck__card--2">
+          <span class="mbc-deck__top"><span class="mbc-deck__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span><span class="mbc-deck__eyebrow">Toutes catégories</span></span>
+          <span class="mbc-deck__stat">3<span class="u">&nbsp;ans et +</span></span>
+          <span class="mbc-deck__desc">Du Baby Basket aux Seniors</span>
+        </li>
+        <li class="mbc-deck__card mbc-deck__card--3">
+          <span class="mbc-deck__top"><span class="mbc-deck__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="mbc-deck__eyebrow">Réactivité</span></span>
+          <span class="mbc-deck__stat">48<span class="u">&nbsp;h</span></span>
+          <span class="mbc-deck__desc">Réponse rapide après pré-inscription</span>
+        </li>
       </ul>
       <div class="adhesion-video__actions">
         <a href="adhesion.html" class="btn btn--primary btn--lg">Je prends ma licence</a>
@@ -1030,6 +1042,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-cards" defer></script>
+<script src="script.js?v=202606-deck" defer></script>
 </body>
 </html>
