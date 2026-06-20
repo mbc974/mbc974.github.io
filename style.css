@@ -5155,10 +5155,10 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .mbc-deck__top{display:flex;align-items:center;gap:.55rem;margin:0}
 .mbc-deck__ico{display:inline-flex;align-items:center;justify-content:center;width:1.95rem;height:1.95rem;border-radius:999px;background:rgba(27,81,158,.92);color:#fff;flex:none}
 .mbc-deck__ico svg{width:1rem;height:1rem}
-.mbc-deck__eyebrow{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;color:var(--bleu-glacier)}
+.mbc-deck__eyebrow{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;color:#fff}
 .mbc-deck__stat{margin:0;font-family:var(--ff-display);font-size:clamp(2.3rem,3.4vw,3rem);line-height:.88;color:#fff;display:flex;align-items:baseline;gap:.14em}
-.mbc-deck__stat .u{font-size:.3em;font-weight:800;color:var(--orange-vif);letter-spacing:.02em;text-transform:uppercase}
-.mbc-deck__desc{margin:0;font-size:.85rem;line-height:1.3;color:var(--bleu-glacier)}
+.mbc-deck__stat .u{font-size:.3em;font-weight:800;color:#fff;letter-spacing:.02em;text-transform:uppercase}
+.mbc-deck__desc{margin:0;font-size:.85rem;line-height:1.3;color:#fff}
 @media (prefers-reduced-motion:reduce){.mbc-deck__card{transition:none}}
 /* mobile : on déplie en pile verticale lisible (un deck est mauvais au tap) */
 @media (max-width:760px){
