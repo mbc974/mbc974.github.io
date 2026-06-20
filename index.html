@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-pack-cta">
+<link rel="stylesheet" href="style.css?v=202606-cta-player">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -867,8 +867,12 @@
 </section>
 
 <!-- ===== 14. CTA band ===== -->
-<section class="section cta-band" id="inscription">
+<section class="section cta-band cta-band--player" id="inscription">
   <div class="cta-band__slash" aria-hidden="true"></div>
+  <div class="cta-band__photo reveal" aria-hidden="true">
+    <img src="assets/images/joueur-kit.webp" alt="" width="600" height="1320" loading="lazy" decoding="async"
+         onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/joueur-kit.jpg'}else{this.closest('.cta-band__photo').classList.add('is-empty')}">
+  </div>
   <div class="wrap cta-band__inner reveal reveal--scale">
     <p class="kicker kicker--center">Saison 2026-2027</p>
     <h2 class="h2">Prêt à rejoindre <span class="hl">l'aventure&nbsp;?</span></h2>
@@ -1005,6 +1009,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-pack-cta" defer></script>
+<script src="script.js?v=202606-cta-player" defer></script>
 </body>
 </html>
