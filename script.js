@@ -671,8 +671,28 @@
   }
   els.forEach(function (el) {
     el.addEventListener('mouseenter', function () { set(el.getAttribute('data-m')); });
-    el.addEventListener('focusin', function () { set(el.getAttribute('data-m')); });
   });
   root.addEventListener('mouseleave', function () { set(null); });
-  root.addEventListener('focusout', function (e) { if (!root.contains(e.relatedTarget)) set(null); });
+})();
+
+/* ============================================================
+   Spotlight glow MBC autour des cartes (adaptation native de
+   spotlight-card) : le liseré suit le curseur dans la carte survolée.
+   ============================================================ */
+(function () {
+  'use strict';
+  if (window.matchMedia('(hover:none)').matches) return;
+  var sel = '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card';
+  var cards = Array.prototype.slice.call(document.querySelectorAll(sel));
+  if (!cards.length) return;
+  cards.forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      if (!r.width) return;
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      card.style.setProperty('--smx', x.toFixed(0) + 'px');
+      card.style.setProperty('--smy', y.toFixed(0) + 'px');
+      card.style.setProperty('--smxp', Math.max(0, Math.min(1, x / r.width)).toFixed(3));
+    }, { passive: true });
+  });
 })();
