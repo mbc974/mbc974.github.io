@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-deck">
+<link rel="stylesheet" href="style.css?v=202606-orbital">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -229,38 +229,64 @@
       <p class="sec-head__sub" style="margin-inline:auto">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le club de basket de La Montagne, à Saint-Denis (974).</p>
     </header>
 
-    <ul class="essentiel-grid reveal" aria-label="Informations essentielles pour la pré-inscription au MBC">
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.7 9.2c0-1.1-1.2-1.7-2.7-1.7s-2.7.7-2.7 1.8c0 2.5 5.4 1.6 5.4 4.2 0 1.1-1.2 1.8-2.7 1.8s-2.7-.6-2.7-1.7"/></svg></span>
-        <span class="essentiel-card__val">95 €</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Licence saison 2026-2027 — toutes catégories, FFBB &amp; assurance incluses</span>
-      </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span>
-        <span class="essentiel-card__val">Dès 3 ans</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Du Baby Basket aux Seniors — une catégorie pour chaque âge</span>
-      </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <span class="essentiel-card__val">2 lieux</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Gymnase de La Montagne &amp; Terrain Ruisseau Blanc</span>
-      </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-        <span class="essentiel-card__val">Sous 48 h</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Réponse rapide après votre pré-inscription en ligne</span>
-      </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
-        <span class="essentiel-card__val">Séance d'essai</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Venez tester un entraînement avant de vous engager</span>
-      </li>
-      <li class="essentiel-card essentiel-card--contact">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L20 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span>
-        <span class="essentiel-card__val">Contact</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl essentiel-card__links"><a href="tel:+262692556458">06 92 55 64 58</a><a href="mailto:contact@mbc974.com">contact@mbc974.com</a></span>
-      </li>
-    </ul>
+    <div class="orbital reveal" id="essOrbital" role="group" aria-label="L'essentiel — cliquez un repère pour afficher le détail">
+      <div class="orbital__stage">
+        <div class="orbital__center">
+          <div class="orbital__core" aria-hidden="true"><span class="orbital__core-dot"></span></div>
+          <div class="orbital__detail" aria-live="polite"></div>
+        </div>
+        <span class="orbital__ring" aria-hidden="true"></span>
+
+        <div class="orbital__item" data-cat="Tarif">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="95 € — licence : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.7 9.2c0-1.1-1.2-1.7-2.7-1.7s-2.7.7-2.7 1.8c0 2.5 5.4 1.6 5.4 4.2 0 1.1-1.2 1.8-2.7 1.8s-2.7-.6-2.7-1.7"/></svg></span>
+            <span class="orbital__label">95 €</span>
+          </button>
+          <div class="orbital__sub">Licence saison 2026-2027 — toutes catégories, FFBB &amp; assurance incluses.</div>
+        </div>
+
+        <div class="orbital__item" data-cat="Catégories">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="Dès 3 ans : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span>
+            <span class="orbital__label">Dès 3 ans</span>
+          </button>
+          <div class="orbital__sub">Du Baby Basket aux Seniors — une catégorie pour chaque âge.</div>
+        </div>
+
+        <div class="orbital__item" data-cat="Salles">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="2 lieux : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span class="orbital__label">2 lieux</span>
+          </button>
+          <div class="orbital__sub">Gymnase de La Montagne &amp; Terrain Ruisseau Blanc.</div>
+        </div>
+
+        <div class="orbital__item" data-cat="Délai">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="Sous 48 h : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="orbital__label">Sous 48 h</span>
+          </button>
+          <div class="orbital__sub">Réponse rapide après votre pré-inscription en ligne.</div>
+        </div>
+
+        <div class="orbital__item" data-cat="Découverte">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="Séance d'essai : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
+            <span class="orbital__label">Séance d'essai</span>
+          </button>
+          <div class="orbital__sub">Venez tester un entraînement avant de vous engager.</div>
+        </div>
+
+        <div class="orbital__item" data-cat="Nous joindre">
+          <button type="button" class="orbital__node" aria-expanded="false" aria-label="Contact : voir le détail">
+            <span class="orbital__dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L20 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span>
+            <span class="orbital__label">Contact</span>
+          </button>
+          <div class="orbital__sub orbital__sub--links"><a href="tel:+262692556458">06 92 55 64 58</a><a href="mailto:contact@mbc974.com">contact@mbc974.com</a></div>
+        </div>
+      </div>
+      <p class="orbital__hint" aria-hidden="true">Cliquez un repère · échap ou clic en dehors pour fermer</p>
+    </div>
 
     <div class="essentiel-cta reveal">
       <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
@@ -1042,6 +1068,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-deck" defer></script>
+<script src="script.js?v=202606-orbital" defer></script>
 </body>
 </html>

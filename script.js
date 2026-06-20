@@ -446,3 +446,112 @@
   }
 
 })();
+
+/* ============================================================
+   Orbite radiale "L'essentiel en un coup d'œil"
+   (adaptation native de radial-orbital-timeline — pas de React)
+   ============================================================ */
+(function () {
+  'use strict';
+  var orb = document.getElementById('essOrbital');
+  if (!orb) return;
+  var stage = orb.querySelector('.orbital__stage');
+  var detail = orb.querySelector('.orbital__detail');
+  var items = Array.prototype.slice.call(orb.querySelectorAll('.orbital__item'));
+  var N = items.length;
+  if (!stage || !detail || !N) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mqMobile = window.matchMedia('(max-width: 760px)');
+  var mobile = mqMobile.matches;
+  var R = 180, rot = 0, active = null, raf = null;
+
+  function computeR() {
+    mobile = mqMobile.matches;
+    var w = stage.clientWidth || 520;
+    R = Math.min(190, Math.max(120, w * 0.36));
+  }
+  function place() {
+    if (mobile) {
+      items.forEach(function (it) { it.style.transform = ''; it.style.opacity = ''; it.style.zIndex = ''; });
+      return;
+    }
+    items.forEach(function (it, i) {
+      var ang = ((i / N) * 360 + rot) % 360;
+      var rad = ang * Math.PI / 180;
+      var x = R * Math.cos(rad), y = R * Math.sin(rad);
+      it.style.transform = 'translate(-50%,-50%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+      if (!active) {
+        it.style.zIndex = String(Math.round(100 + 50 * Math.cos(rad)));
+        it.style.opacity = Math.max(0.5, Math.min(1, 0.5 + 0.5 * ((1 + Math.sin(rad)) / 2))).toFixed(3);
+      }
+    });
+  }
+  function frame() {
+    if (!active && !reduce && !mobile) { rot = (rot + 0.22) % 360; place(); }
+    raf = window.requestAnimationFrame(frame);
+  }
+  function open(it) {
+    active = it;
+    items.forEach(function (o) {
+      var on = o === it;
+      o.classList.toggle('is-active', on);
+      o.classList.toggle('is-dim', !on);
+      var btn = o.querySelector('.orbital__node');
+      if (btn) btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+      o.style.zIndex = on ? '300' : '70';
+      o.style.opacity = on ? '1' : '0.4';
+    });
+    var cat = it.getAttribute('data-cat') || '';
+    var label = it.querySelector('.orbital__label').textContent;
+    var sub = it.querySelector('.orbital__sub');
+    detail.innerHTML =
+      '<button type="button" class="orbital__d-close" aria-label="Fermer le détail">×</button>' +
+      '<span class="orbital__d-cat">' + cat + '</span>' +
+      '<strong class="orbital__d-title">' + label + '</strong>' +
+      '<div class="orbital__d-text">' + (sub ? sub.innerHTML : '') + '</div>';
+    orb.classList.add('is-open');
+  }
+  function close() {
+    if (!active) return;
+    active = null;
+    items.forEach(function (o) {
+      o.classList.remove('is-active', 'is-dim');
+      var btn = o.querySelector('.orbital__node');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      o.style.opacity = '';
+    });
+    detail.innerHTML = '';
+    orb.classList.remove('is-open');
+    place();
+  }
+
+  items.forEach(function (it) {
+    var btn = it.querySelector('.orbital__node');
+    if (!btn) return;
+    btn.addEventListener('click', function (e) {
+      if (mobile) return;
+      e.stopPropagation();
+      if (active === it) close(); else open(it);
+    });
+  });
+  detail.addEventListener('click', function (e) { if (e.target.closest('.orbital__d-close')) close(); });
+  stage.addEventListener('click', function (e) { if (active && e.target === stage) close(); });
+  document.addEventListener('keydown', function (e) { if ((e.key === 'Escape' || e.key === 'Esc') && active) close(); });
+
+  computeR();
+  place();
+  if (!reduce && !mobile) raf = window.requestAnimationFrame(frame);
+
+  var rt;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () {
+      computeR();
+      if (mobile && active) close();
+      place();
+      if (mobile && raf) { window.cancelAnimationFrame(raf); raf = null; }
+      else if (!mobile && !reduce && !raf) { raf = window.requestAnimationFrame(frame); }
+    }, 160);
+  });
+})();
