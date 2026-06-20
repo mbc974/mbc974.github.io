@@ -4075,30 +4075,30 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .footer__signature:hover .sig-heart{animation-duration:1s}
 
 /* ---- B. Header : écart symétrique de part et d'autre de la barre ---- */
-.brand{gap:.82rem;align-items:center}
+.brand{gap:.38rem;align-items:center}
 .brand .logo-img{width:52px;height:52px;background-position:center;background-size:contain}
 .brand__txt{
   position:relative;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;
-  --brand-word-w:4.65rem;
+  --brand-word-w:5.05rem;
   gap:.18rem;min-height:38px;padding-left:.82rem!important;border-left:1px solid rgba(255,255,255,.22);
   transform:translateY(.5px);white-space:nowrap;
 }
 .brand__sub{
-  display:flex!important;align-items:center;justify-content:space-between;inline-size:var(--brand-word-w);
+  display:block!important;inline-size:var(--brand-word-w);text-align:justify;text-align-last:justify;
   font-family:var(--ff-cond)!important;font-weight:800!important;font-size:1.02rem!important;
-  line-height:.92!important;letter-spacing:.035em!important;text-transform:uppercase;color:#fff!important;text-shadow:none!important;
+  line-height:.92!important;letter-spacing:.02em!important;text-transform:uppercase;color:#fff!important;text-shadow:none!important;
 }
 .brand__sub2{
-  display:flex;align-items:center;justify-content:space-between;inline-size:var(--brand-word-w);
+  display:block;inline-size:var(--brand-word-w);text-align:justify;text-align-last:justify;
   font-family:var(--ff-cond);font-weight:500;font-size:.57rem;line-height:1;
-  letter-spacing:.11em;text-transform:uppercase;color:rgba(255,255,255,.72);opacity:1;
+  letter-spacing:.03em;text-transform:uppercase;color:rgba(255,255,255,.72);opacity:1;
 }
 @media (max-width:560px){
-  .brand{gap:.68rem}
+  .brand{gap:.34rem}
   .brand .logo-img{width:42px;height:42px}
-  .brand__txt{--brand-word-w:4.08rem;min-height:31px;padding-left:.68rem!important;gap:.13rem}
-  .brand__sub{font-size:.9rem!important;letter-spacing:.02em!important}
-  .brand__sub2{font-size:.49rem;letter-spacing:.08em}
+  .brand__txt{--brand-word-w:4.48rem;min-height:31px;padding-left:.68rem!important;gap:.13rem}
+  .brand__sub{font-size:.9rem!important;letter-spacing:.01em!important}
+  .brand__sub2{font-size:.49rem;letter-spacing:.02em}
 }
 
 /* ---- C. CTA pré-inscription : nettement plus gros (ça saute aux yeux) ---- */
