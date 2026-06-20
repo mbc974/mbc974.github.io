@@ -5001,3 +5001,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .hero--split .hero__watermark{display:none}
   .hero.in .hero__photo{opacity:.3}
 }
+
+/* ============================================================
+   V40 — Calendrier : bannière "salle" (photo du Gymnase de La Montagne)
+   Réglages : hauteur (.cal-venue img height) · cadrage (object-position) · overlay (.cal-venue::after)
+   ============================================================ */
+.cal-venue{position:relative;margin:0 0 2rem;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--e1),var(--bevel)}
+.cal-venue img{display:block;width:100%;height:clamp(220px,30vw,380px);object-fit:cover;object-position:center 40%}
+.cal-venue.is-empty{min-height:clamp(180px,24vw,260px);background:linear-gradient(120deg,#13284b,#0a1426)}
+.cal-venue.is-empty img{display:none}
+/* dégradé navy : lisibilité de la légende en bas-gauche, image dégagée au centre (logo MBC au mur) */
+.cal-venue::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(7,13,24,.6),rgba(7,13,24,.12) 44%,transparent 64%),linear-gradient(0deg,rgba(7,13,24,.84),rgba(7,13,24,.08) 54%,transparent 72%)}
+.cal-venue__cap{position:absolute;left:clamp(1rem,3vw,2rem);right:clamp(1rem,3vw,2rem);bottom:clamp(.9rem,3vw,1.5rem);z-index:2;display:flex;flex-direction:column;gap:.35rem}
+.cal-venue__tag{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;color:#190f04;background:var(--orange-vif);padding:.3em .75em;border-radius:999px}
+.cal-venue__tag .ic{width:1em;height:1em}
+.cal-venue__name{font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.5px;line-height:1;font-size:clamp(1.5rem,3.4vw,2.4rem);color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.65)}
+.cal-venue__addr{font-family:var(--ff-cond);font-weight:600;font-size:clamp(.86rem,1.4vw,1rem);color:var(--bleu-glacier)}
