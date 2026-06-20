@@ -603,3 +603,50 @@
   });
   fan.addEventListener('mouseleave', function () { if (!mqMobile.matches) reset(); });
 })();
+
+/* ============================================================
+   Pile animée "La licence MBC" — bouton Suivant fait défiler la pile
+   (adaptation native de animate-card-animation — pas de framer-motion)
+   ============================================================ */
+(function () {
+  'use strict';
+  var stack = document.getElementById('licStack');
+  if (!stack) return;
+  var deck = stack.querySelector('.licstack__deck');
+  var cards = Array.prototype.slice.call(deck.querySelectorAll('.licstack__card'));
+  var btn = document.getElementById('licStackBtn');
+  if (cards.length < 2 || !btn) return;
+
+  var PCLS = ['is-p0', 'is-p1', 'is-p2'];
+  var ord = cards.map(function (_, i) { return i; }); // ord[0]=avant … ord[n-1]=arrière
+  var animating = false;
+
+  function clsFor(slot) { return PCLS[Math.min(slot, PCLS.length - 1)]; }
+  function setSlot(card, slot) {
+    card.classList.remove('is-exit', 'is-p0', 'is-p1', 'is-p2');
+    card.classList.add(clsFor(slot));
+  }
+  function paint() { ord.forEach(function (idx, slot) { setSlot(cards[idx], slot); }); }
+  function next() {
+    if (animating) return;
+    animating = true;
+    var exitIdx = ord[0];
+    var exitCard = cards[exitIdx];
+    exitCard.classList.remove('is-p0', 'is-p1', 'is-p2');
+    exitCard.classList.add('is-exit');
+    ord = ord.slice(1).concat(exitIdx);
+    ord.forEach(function (idx, slot) {
+      if (idx === exitIdx) return; // la carte sortante est replacée après l'animation
+      setSlot(cards[idx], slot);
+    });
+    window.setTimeout(function () {
+      exitCard.style.transition = 'none';
+      setSlot(exitCard, ord.length - 1); // placée à l'arrière, sans glissement
+      void exitCard.offsetHeight;
+      exitCard.style.transition = '';
+      animating = false;
+    }, 600);
+  }
+  btn.addEventListener('click', next);
+  paint();
+})();

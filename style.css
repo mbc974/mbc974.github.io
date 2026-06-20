@@ -5282,3 +5282,39 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .fan::-webkit-scrollbar{display:none}
   .fan-card{position:relative;top:auto;left:auto;flex:0 0 66vw;max-width:300px;width:auto;transform:none!important;scroll-snap-align:center;z-index:auto!important;box-shadow:0 14px 30px rgba(0,0,0,.45)}
 }
+
+/* ============================================================
+   V48 — Pile de cartes animée (adaptation NATIVE de animate-card-animation,
+   sans React/framer-motion) pour "La licence MBC". 3 stats empilées,
+   bouton "Suivant" : la carte du dessus glisse vers le bas, la suivante remonte.
+   Police de stat UNIFORME (95 € / 3 ans et + / 48 h).
+   ============================================================ */
+.licstack{width:100%;max-width:520px;margin:1.7rem auto 1.3rem}
+.licstack__deck{position:relative;height:clamp(205px,23vw,238px);overflow:hidden}
+.licstack__card{position:absolute;left:50%;bottom:0;width:min(430px,96%);min-height:158px;box-sizing:border-box;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.5rem;
+  padding:1.3rem 1.4rem;border-radius:18px;
+  border:1px solid rgba(191,210,228,.18);background:linear-gradient(158deg,rgba(27,46,82,.96),rgba(8,14,26,.98));
+  box-shadow:0 18px 44px rgba(0,0,0,.52);
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition:transform .6s cubic-bezier(.34,1.18,.5,1),opacity .45s ease;will-change:transform,opacity}
+.licstack__card.is-p0{transform:translateX(-50%) translateY(0) scale(1);z-index:3;opacity:1}
+.licstack__card.is-p1{transform:translateX(-50%) translateY(-14px) scale(.95);z-index:2;opacity:1}
+.licstack__card.is-p2{transform:translateX(-50%) translateY(-28px) scale(.9);z-index:1;opacity:1}
+.licstack__card.is-exit{transform:translateX(-50%) translateY(330px) scale(1);z-index:6;opacity:0}
+.licstack__top{display:flex;align-items:center;gap:.55rem}
+.licstack__ico{display:inline-flex;align-items:center;justify-content:center;width:1.9rem;height:1.9rem;border-radius:999px;background:rgba(27,81,158,.92);color:#fff;flex:none}
+.licstack__ico svg{width:1rem;height:1rem}
+.licstack__eyebrow{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;color:var(--bleu-glacier)}
+/* taille de police IDENTIQUE pour les 3 stats */
+.licstack__stat{font-family:var(--ff-display);font-size:clamp(1.7rem,2.7vw,2.15rem);line-height:1;color:#fff;letter-spacing:.01em}
+.licstack__desc{margin:0;font-size:.88rem;line-height:1.4;color:var(--bleu-glacier);max-width:32ch}
+.licstack__bar{display:flex;justify-content:center;margin-top:.85rem;border-top:1px solid rgba(191,210,228,.12);padding-top:1rem}
+.licstack__btn{display:inline-flex;align-items:center;gap:.35rem;height:42px;padding:0 1.25rem;border-radius:10px;
+  border:1px solid rgba(191,210,228,.22);background:rgba(191,210,228,.05);color:#fff;cursor:pointer;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;
+  transition:background .25s,border-color .25s,transform .12s}
+.licstack__btn:hover{background:rgba(232,130,42,.16);border-color:rgba(232,130,42,.5)}
+.licstack__btn:active{transform:scale(.97)}
+.licstack__btn svg{width:1.05em;height:1.05em}
+@media (prefers-reduced-motion:reduce){.licstack__card{transition:opacity .3s}}
