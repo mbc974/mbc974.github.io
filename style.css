@@ -4874,14 +4874,18 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* ---- (2) Section dunk "Rejoindre le mouvement" ---- */
 .join{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#0a1426,#0d1a30)}
 .join__media{position:absolute;inset:0 0 0 auto;width:62%;max-width:1000px;z-index:0;pointer-events:none}
-.join__media img{width:100%;height:100%;object-fit:cover;object-position:56% 22%;display:block}
+.join__media img{width:100%;height:100%;object-fit:cover;object-position:60% 20%;display:block;
+  /* la photo se dissout dans le fond réel (pas d'à-plat) -> aucune démarcation */
+  -webkit-mask-image:linear-gradient(98deg,transparent 2%,rgba(0,0,0,.1) 20%,rgba(0,0,0,.4) 38%,rgba(0,0,0,.8) 56%,#000 70%);
+          mask-image:linear-gradient(98deg,transparent 2%,rgba(0,0,0,.1) 20%,rgba(0,0,0,.4) 38%,rgba(0,0,0,.8) 56%,#000 70%)}
 .join__media.is-empty{background:radial-gradient(80% 90% at 80% 28%,rgba(27,81,158,.45),transparent 70%)}
 .join__media.is-empty img{display:none}
 .join__media.is-empty::after{background:linear-gradient(95deg,#0a1426 14%,rgba(10,20,38,.5) 44%,transparent 78%)} /* fallback : overlay plus léger sans photo */
 /* overlay navy->transparent : fond la photo + garde le texte lisible à gauche */
 .join__media::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(95deg,#0a1426 16%,rgba(10,20,38,.72) 42%,rgba(10,20,38,.16) 68%,transparent 86%),
-             linear-gradient(to top,rgba(8,14,26,.82),transparent 44%)}
+  /* seulement un ancrage haut/bas : le fondu gauche est géré par le mask de l'image */
+  background:linear-gradient(to top,rgba(8,14,26,.5),transparent 34%),
+             linear-gradient(to bottom,rgba(8,14,26,.42),transparent 24%)}
 /* halos identité MBC (orange + bleu) */
 .join::before{content:"";position:absolute;top:-14%;right:6%;width:42vw;height:42vw;max-width:560px;max-height:560px;z-index:1;pointer-events:none;
   background:radial-gradient(circle,rgba(232,130,42,.26),transparent 64%);filter:blur(8px)}
@@ -4897,7 +4901,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .join__btn:hover .btn__arrow{transform:translateX(5px)}
 @media (max-width:860px){
   .join__media{width:100%;max-width:none}
-  .join__media img{object-position:50% 16%}
+  .join__media img{object-position:50% 16%;-webkit-mask-image:none;mask-image:none}
   .join__media::after{background:linear-gradient(to top,#0a1426 12%,rgba(10,20,38,.82) 46%,rgba(10,20,38,.5) 78%,rgba(10,20,38,.38)),linear-gradient(95deg,rgba(10,20,38,.5),transparent 82%)}
   .join__inner{min-height:clamp(440px,88vw,580px);align-items:flex-end;padding-bottom:clamp(2rem,8vw,3rem)}
   .join__copy{max-width:none}
