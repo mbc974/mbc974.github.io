@@ -5411,3 +5411,62 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .grid-fx__glow--blue{left:-12%;bottom:-20%;width:38%;height:48%;background:radial-gradient(circle,rgba(27,107,255,.4),transparent 70%)}
 @media (prefers-reduced-motion:reduce){.grid-fx__layer{animation:none}}
 @media (hover:none){.grid-fx__reveal{display:none}}
+
+/* ============================================================
+   V52 — Carte cinématique "La licence MBC" (adaptation NATIVE de
+   cinematic-landing-hero, sans GSAP/React). Carte bleu nuit premium
+   (profondeur 3D + reflet souris) + mockup iPhone qui charge 0->100%
+   puis révèle la vidéo officielle d'adhésion. Funnel : titre -> preuve
+   (stats + vidéo) -> CTA (Je prends ma licence / Voir les garanties).
+   ============================================================ */
+.cine-card{position:relative;overflow:hidden;border-radius:clamp(20px,2.5vw,30px);
+  padding:clamp(1.5rem,4vw,3.2rem);
+  background:linear-gradient(150deg,#16306d 0%,#0a121f 100%);
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 40px 100px -22px rgba(0,0,0,.7),0 20px 40px -22px rgba(0,0,0,.6),inset 0 1px 2px rgba(255,255,255,.12),inset 0 -2px 4px rgba(0,0,0,.6)}
+.cine-card__glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.5}
+.cine-card__glow--o{top:-22%;right:-8%;width:46%;height:60%;background:radial-gradient(circle,rgba(232,130,42,.5),transparent 70%)}
+.cine-card__glow--b{bottom:-26%;left:-8%;width:46%;height:60%;background:radial-gradient(circle,rgba(31,95,214,.55),transparent 70%)}
+.cine-card__sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:6;mix-blend-mode:screen;
+  background:radial-gradient(700px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(255,255,255,.06),transparent 42%)}
+.cine-grid{position:relative;z-index:2;display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:center}
+@media (min-width:880px){.cine-grid{grid-template-columns:1.04fr .96fr}}
+/* --- colonne texte --- */
+.cine-copy .kicker{color:var(--orange-vif)}
+.cine-copy .lead{color:rgba(219,232,244,.86)}
+.cine-stats{display:flex;flex-wrap:wrap;gap:.7rem 1.7rem;list-style:none;margin:1.5rem 0;padding:0}
+.cine-stats li{display:flex;flex-direction:column;gap:.25rem}
+.cine-stats b{font-family:var(--ff-display);font-size:clamp(1.5rem,2.2vw,1.9rem);line-height:1;color:#fff}
+.cine-stats span{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.66rem;color:var(--orange-vif)}
+.cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
+.cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
+/* --- scène / mockup --- */
+.cine-stage{position:relative;margin:0;display:flex;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
+.cine-phone{position:relative;width:clamp(244px,30vw,288px);aspect-ratio:280/580;border-radius:2.6rem;background:#111;transform-style:preserve-3d;transition:transform .5s var(--ease-out,ease);
+  box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 80px -16px rgba(0,0,0,.85),0 15px 25px -6px rgba(0,0,0,.6)}
+.cine-phone__island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:88px;height:25px;background:#000;border-radius:99px;z-index:8;display:flex;align-items:center;justify-content:flex-end;padding-right:9px}
+.cine-phone__island i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.8);animation:cinePulse 2s ease-in-out infinite}
+.cine-phone__screen{position:absolute;inset:7px;border-radius:2.15rem;overflow:hidden;background:#050914;box-shadow:inset 0 0 15px rgba(0,0,0,1)}
+.cine-phone__screen::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.07),rgba(255,255,255,0) 45%)}
+.cine-loader{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease}
+.cine-ring{width:150px;height:150px;transform:rotate(-90deg)}
+.cine-ring__bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:10}
+.cine-ring__fg{fill:none;stroke:var(--orange-vif);stroke-width:10;stroke-linecap:round;stroke-dasharray:390;stroke-dashoffset:390;transition:stroke-dashoffset .12s linear;filter:drop-shadow(0 0 6px rgba(232,130,42,.5))}
+.cine-loader__num{position:absolute;font-family:var(--ff-display);font-size:2.1rem;color:#fff;transform:translateY(-10px)}
+.cine-loader__lbl{position:absolute;transform:translateY(34px);font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.58rem;color:rgba(191,210,228,.6);white-space:nowrap}
+.cine-video{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:#050914;opacity:0;transition:opacity .6s ease}
+.cine-video video{width:100%;height:100%;object-fit:contain}
+.cine-card.is-loaded .cine-loader{opacity:0;pointer-events:none}
+.cine-card.is-loaded .cine-video{opacity:1}
+/* --- badges flottants --- */
+.cine-badge{position:absolute;z-index:7;display:flex;flex-direction:column;gap:.12rem;padding:.6rem .9rem;border-radius:14px;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.02));backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 0 0 1px rgba(255,255,255,.1),0 22px 44px -14px rgba(0,0,0,.8),inset 0 1px 1px rgba(255,255,255,.2)}
+.cine-badge b{font-family:var(--ff-display);font-size:1.15rem;line-height:1;color:#fff}
+.cine-badge span{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.56rem;color:var(--orange-vif)}
+.cine-badge--1{top:5%;left:-2%}
+.cine-badge--2{bottom:11%;right:-2%}
+.cine-caption{position:absolute;left:0;right:0;bottom:-1.9rem;text-align:center;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.62rem;color:rgba(191,210,228,.5)}
+@keyframes cinePulse{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.cine-ring__fg{transition:none}.cine-phone__island i{animation:none}.cine-phone{transition:none}}
+@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}.cine-badge{display:none}.cine-caption{bottom:-1.6rem}}

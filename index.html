@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-grid">
+<link rel="stylesheet" href="style.css?v=202606-cine2">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -297,49 +297,54 @@
 
 <!-- ===== Vidéo adhésion 2026-2027 ===== -->
 <section class="section adhesion-video" id="adhesion-2026-video" aria-labelledby="adhesionVideoTitle">
-  <div class="wrap adhesion-video__grid">
-    <div class="adhesion-video__copy reveal reveal--l">
-      <p class="kicker">Adhésion 2026 / 2027</p>
-      <h2 class="h2" id="adhesionVideoTitle">La licence MBC, <span class="hl">ça commence ici</span></h2>
-      <p class="lead">Une courte vidéo pour découvrir l'esprit du club et réserver votre place pour la saison fondatrice. Baby Basket, jeunes, Seniors : le MBC accueille chaque marmay, chaque famille et chaque passionné de La Montagne.</p>
-      <div class="licstack reveal" id="licStack" role="group" aria-label="Points clés de l'adhésion MBC">
-        <div class="licstack__deck">
-          <article class="licstack__card">
-            <span class="licstack__top"><span class="licstack__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h4"/></svg></span><span class="licstack__eyebrow">Tarif unique</span></span>
-            <span class="licstack__stat">95 €</span>
-            <span class="licstack__desc">Licence FFBB &amp; assurance incluses</span>
-          </article>
-          <article class="licstack__card">
-            <span class="licstack__top"><span class="licstack__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span><span class="licstack__eyebrow">Toutes catégories</span></span>
-            <span class="licstack__stat">3 ans et +</span>
-            <span class="licstack__desc">Du Baby Basket aux Seniors</span>
-          </article>
-          <article class="licstack__card">
-            <span class="licstack__top"><span class="licstack__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="licstack__eyebrow">Réactivité</span></span>
-            <span class="licstack__stat">48 h</span>
-            <span class="licstack__desc">Réponse rapide après pré-inscription</span>
-          </article>
+  <div class="wrap">
+    <div class="cine-card reveal" id="cineCard">
+      <span class="cine-card__glow cine-card__glow--o" aria-hidden="true"></span>
+      <span class="cine-card__glow cine-card__glow--b" aria-hidden="true"></span>
+      <span class="cine-card__sheen" aria-hidden="true"></span>
+      <div class="cine-grid">
+        <div class="cine-copy">
+          <p class="kicker">Adhésion 2026 / 2027</p>
+          <h2 class="h2" id="adhesionVideoTitle">La licence MBC, <span class="hl">ça commence ici</span></h2>
+          <p class="lead">Une courte vidéo pour découvrir l'esprit du club et réserver votre place pour la saison fondatrice. Baby Basket, jeunes, Seniors : le MBC accueille chaque marmay, chaque famille et chaque passionné de La Montagne.</p>
+          <ul class="cine-stats" aria-label="Points clés de l'adhésion MBC">
+            <li><b>95 €</b><span>Licence FFBB &amp; assurance</span></li>
+            <li><b>3 ans +</b><span>Du Baby aux Seniors</span></li>
+            <li><b>48 h</b><span>Réponse rapide</span></li>
+          </ul>
+          <div class="cine-actions">
+            <a href="adhesion.html" class="btn btn--primary btn--lg">Je prends ma licence</a>
+            <a href="#parents" class="btn btn--ghost btn--lg">Voir les garanties</a>
+          </div>
+          <p class="cine-note">Nout quartier, nout basket : places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
         </div>
-        <div class="licstack__bar">
-          <button type="button" class="licstack__btn" id="licStackBtn" aria-label="Voir le point suivant">Suivant<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
-        </div>
-      </div>
-      <div class="adhesion-video__actions">
-        <a href="adhesion.html" class="btn btn--primary btn--lg">Je prends ma licence</a>
-        <a href="#parents" class="btn btn--ghost btn--lg">Voir les garanties</a>
-      </div>
-      <p class="adhesion-video__note">Nout quartier, nout basket : places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
-    </div>
 
-    <figure class="adhesion-video__media reveal reveal--r">
-      <div class="adhesion-video__frame">
-        <video class="adhesion-video__player" controls preload="metadata" playsinline poster="assets/videos/promo-adhesion-2026-2027-poster.jpg" aria-label="Vidéo officielle d'adhésion MBC La Montagne Basket Club saison 2026-2027">
-          <source src="assets/videos/promo-adhesion-2026-2027.mp4" type="video/mp4">
-          Votre navigateur ne peut pas lire cette vidéo. <a href="assets/videos/promo-adhesion-2026-2027.mp4">Télécharger la vidéo d'adhésion MBC 2026-2027</a>.
-        </video>
+        <figure class="cine-stage">
+          <div class="cine-phone" id="cinePhone">
+            <span class="cine-phone__island" aria-hidden="true"><i></i></span>
+            <div class="cine-phone__screen">
+              <div class="cine-loader" id="cineLoader" role="status" aria-live="polite">
+                <svg class="cine-ring" viewBox="0 0 180 180" aria-hidden="true">
+                  <circle class="cine-ring__bg" cx="90" cy="90" r="62"></circle>
+                  <circle class="cine-ring__fg" cx="90" cy="90" r="62"></circle>
+                </svg>
+                <span class="cine-loader__num"><b id="cinePct">0</b>%</span>
+                <span class="cine-loader__lbl">Chargement de la vidéo…</span>
+              </div>
+              <div class="cine-video">
+                <video class="adhesion-video__player" controls preload="none" playsinline poster="assets/videos/promo-adhesion-2026-2027-poster.jpg" aria-label="Vidéo officielle d'adhésion MBC La Montagne Basket Club saison 2026-2027">
+                  <source src="assets/videos/promo-adhesion-2026-2027.mp4" type="video/mp4">
+                  Votre navigateur ne peut pas lire cette vidéo. <a href="assets/videos/promo-adhesion-2026-2027.mp4">Télécharger la vidéo d'adhésion MBC 2026-2027</a>.
+                </video>
+              </div>
+            </div>
+          </div>
+          <span class="cine-badge cine-badge--1" aria-hidden="true"><b>FFBB</b><span>Club affilié</span></span>
+          <span class="cine-badge cine-badge--2" aria-hidden="true"><b>95 €</b><span>tout compris</span></span>
+          <figcaption class="cine-caption">Vidéo officielle adhésions 2026‑2027 — MBC La Montagne Basket Club.</figcaption>
+        </figure>
       </div>
-      <figcaption>Vidéo officielle adhésions 2026-2027 — MBC La Montagne Basket Club.</figcaption>
-    </figure>
+    </div>
     <p class="sr-only">Résumé de la vidéo : le MBC La Montagne Basket Club invite les enfants, les jeunes, les seniors et les familles de La Montagne à rejoindre la saison 2026-2027. La licence inclut l'affiliation FFBB et l'assurance. Les pré-inscriptions se font en ligne.</p>
   </div>
 </section>
@@ -1096,6 +1101,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-grid" defer></script>
+<script src="script.js?v=202606-cine2" defer></script>
 </body>
 </html>

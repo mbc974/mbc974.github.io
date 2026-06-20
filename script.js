@@ -728,3 +728,65 @@
     });
   }, { passive: true });
 })();
+
+/* ============================================================
+   Carte cinématique "La licence MBC" : chargement 0->100% qui révèle
+   la vidéo officielle + reflet/parallaxe à la souris (sans GSAP).
+   ============================================================ */
+(function () {
+  'use strict';
+  var card = document.getElementById('cineCard');
+  if (!card) return;
+  var pctEl = document.getElementById('cinePct');
+  var ringFg = card.querySelector('.cine-ring__fg');
+  var phone = document.getElementById('cinePhone');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DASH = 390, started = false;
+
+  function runLoad() {
+    if (started) return; started = true;
+    if (reduce) {
+      if (pctEl) pctEl.textContent = '100';
+      if (ringFg) ringFg.style.strokeDashoffset = '0';
+      card.classList.add('is-loaded');
+      return;
+    }
+    var pct = 0;
+    var iv = window.setInterval(function () {
+      pct = Math.min(100, pct + 2);
+      if (pctEl) pctEl.textContent = pct;
+      if (ringFg) ringFg.style.strokeDashoffset = (DASH * (1 - pct / 100)).toFixed(1);
+      if (pct >= 100) { window.clearInterval(iv); card.classList.add('is-loaded'); }
+    }, 44);
+  }
+
+  // déclenchement fiable au défilement (l'IO peut être throttlé hors écran)
+  function maybeStart() {
+    if (started) return;
+    var r = card.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.8 && r.bottom > 0) {
+      runLoad();
+      window.removeEventListener('scroll', maybeStart);
+    }
+  }
+  maybeStart();
+  window.addEventListener('scroll', maybeStart, { passive: true });
+
+  /* reflet (sheen) + parallaxe 3D du téléphone à la souris */
+  if (!window.matchMedia('(hover:none)').matches) {
+    var raf = null, mx = 0, my = 0, gx = 0, gy = 0;
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      mx = e.clientX - r.left; my = e.clientY - r.top;
+      gx = mx / r.width - 0.5; gy = my / r.height - 0.5;
+      if (raf) return;
+      raf = window.requestAnimationFrame(function () {
+        raf = null;
+        card.style.setProperty('--mouse-x', mx.toFixed(0) + 'px');
+        card.style.setProperty('--mouse-y', my.toFixed(0) + 'px');
+        if (phone && !reduce) phone.style.transform = 'rotateY(' + (gx * 9).toFixed(2) + 'deg) rotateX(' + (-gy * 9).toFixed(2) + 'deg)';
+      });
+    }, { passive: true });
+    card.addEventListener('pointerleave', function () { if (phone) phone.style.transform = ''; });
+  }
+})();
