@@ -650,3 +650,29 @@
   btn.addEventListener('click', next);
   paint();
 })();
+
+/* ============================================================
+   Team showcase "L'équipe MBC" — survol synchronisé nom <-> photo
+   (adaptation native de team-showcase — pas de React)
+   ============================================================ */
+(function () {
+  'use strict';
+  var root = document.getElementById('teamShowcase');
+  if (!root) return;
+  var els = Array.prototype.slice.call(root.querySelectorAll('[data-m]'));
+  if (!els.length) return;
+
+  function set(active) {
+    els.forEach(function (el) {
+      var m = el.getAttribute('data-m');
+      el.classList.toggle('is-active', !!active && m === active);
+      el.classList.toggle('is-dim', !!active && m !== active);
+    });
+  }
+  els.forEach(function (el) {
+    el.addEventListener('mouseenter', function () { set(el.getAttribute('data-m')); });
+    el.addEventListener('focusin', function () { set(el.getAttribute('data-m')); });
+  });
+  root.addEventListener('mouseleave', function () { set(null); });
+  root.addEventListener('focusout', function (e) { if (!root.contains(e.relatedTarget)) set(null); });
+})();
