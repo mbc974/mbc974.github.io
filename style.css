@@ -5372,8 +5372,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    le curseur, SUBTIL, au survol. Variables dédiées --sm* (pas de
    conflit avec le spotlight intérieur existant de .pack/--mx).
    ============================================================ */
-.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card{position:relative;--smx:50%;--smy:50%;--smxp:.5}
-.action-card::after,.engage-card::after,.pack::after,.p-pillar::after,.social-card::after,.kit-spon::after,.kit-card::after{
+/* La classe .spotglow est posée par script.js sur tous les éléments bordés
+   ciblés (cartes, photos, sponsors, lignes de tableau, cadre vidéo, boutons
+   ghost...). Un seul pointermove délégué met à jour --smx/--smy/--smxp. */
+.spotglow{position:relative;--smx:50%;--smy:50%;--smxp:.5}
+.spotglow::after{
   content:"";position:absolute;inset:0;border-radius:inherit;padding:1.6px;pointer-events:none;z-index:4;opacity:0;transition:opacity .35s ease;
   background:radial-gradient(210px 210px at var(--smx) var(--smy),hsl(28 92% 56% / calc(var(--smxp) * .85)),transparent 62%),
              radial-gradient(210px 210px at var(--smx) var(--smy),hsl(214 84% 62% / calc((1 - var(--smxp)) * .85)),transparent 62%);
@@ -5381,6 +5384,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
 }
-.action-card:hover::after,.engage-card:hover::after,.pack:hover::after,.p-pillar:hover::after,.social-card:hover::after,.kit-spon:hover::after,.kit-card:hover::after{opacity:.8}
-@media (prefers-reduced-motion:reduce){.action-card::after,.engage-card::after,.pack::after,.p-pillar::after,.social-card::after,.kit-spon::after,.kit-card::after{transition:none}}
-@media (hover:none){.action-card::after,.engage-card::after,.pack::after,.p-pillar::after,.social-card::after,.kit-spon::after,.kit-card::after{display:none}}
+.spotglow:hover::after{opacity:.85}
+@media (prefers-reduced-motion:reduce){.spotglow::after{transition:none}}
+@media (hover:none){.spotglow::after{display:none}}

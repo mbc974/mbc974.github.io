@@ -682,17 +682,27 @@
 (function () {
   'use strict';
   if (window.matchMedia('(hover:none)').matches) return;
-  var sel = '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card';
-  var cards = Array.prototype.slice.call(document.querySelectorAll(sel));
-  if (!cards.length) return;
-  cards.forEach(function (card) {
-    card.addEventListener('pointermove', function (e) {
-      var r = card.getBoundingClientRect();
+  // Tous les éléments bordés qui reçoivent le liseré lumineux (::after libre vérifié)
+  var SEL = '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card,' +
+            '.team__photo,.sponsor-card,.partner-slot,.adhesion-video__frame,.cal2-row,.btn--ghost';
+  var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
+  if (!targets.length) return;
+  targets.forEach(function (el) { el.classList.add('spotglow'); });
+
+  // Un seul handler délégué (rAF) : éclaire l'élément bordé sous le curseur.
+  var raf = null, cx = 0, cy = 0, src = null;
+  document.addEventListener('pointermove', function (e) {
+    cx = e.clientX; cy = e.clientY; src = e.target;
+    if (raf) return;
+    raf = window.requestAnimationFrame(function () {
+      raf = null;
+      var el = (src && src.closest) ? src.closest('.spotglow') : null;
+      if (!el) return;
+      var r = el.getBoundingClientRect();
       if (!r.width) return;
-      var x = e.clientX - r.left, y = e.clientY - r.top;
-      card.style.setProperty('--smx', x.toFixed(0) + 'px');
-      card.style.setProperty('--smy', y.toFixed(0) + 'px');
-      card.style.setProperty('--smxp', Math.max(0, Math.min(1, x / r.width)).toFixed(3));
-    }, { passive: true });
-  });
+      el.style.setProperty('--smx', (cx - r.left).toFixed(0) + 'px');
+      el.style.setProperty('--smy', (cy - r.top).toFixed(0) + 'px');
+      el.style.setProperty('--smxp', Math.max(0, Math.min(1, (cx - r.left) / r.width)).toFixed(3));
+    });
+  }, { passive: true });
 })();
