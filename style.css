@@ -4085,6 +4085,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* ---- E. Encarts adhésion : unité en blanc (pas d'orange sur € / ans et + / h) ---- */
 .adhesion-video__points .apk__unit{color:#fff!important}
 
+/* ---- E-bis. Encarts adhésion : disposition CENTRÉE premium (chiffre + accent + légende) ---- */
+.adhesion-video__points li{align-items:center!important;text-align:center!important}
+.adhesion-video__points b.apk__val{justify-content:center!important;align-items:baseline!important;gap:.04em!important}
+.adhesion-video__points span.apk__lbl{
+  position:relative!important;border-top:0!important;
+  margin:1.3rem auto 0!important;padding-top:1.25rem!important;max-width:24ch!important;
+  font-size:.82rem!important;line-height:1.5!important;letter-spacing:.02em!important;
+  color:var(--bleu-glacier)!important}
+/* accent orange court, centré, à la place de la barre pleine largeur */
+.adhesion-video__points span.apk__lbl::before{
+  content:""!important;position:absolute!important;top:0!important;left:50%!important;
+  transform:translateX(-50%)!important;width:38px!important;height:2px!important;border-radius:2px!important;
+  background:linear-gradient(90deg,var(--orange-vif),#ffb267)!important}
+
 /* ---- F. Stats : « % » à la même taille et même couleur que le chiffre ---- */
 .stat-cell .num .plus{font-size:1em!important;color:inherit!important}
 
