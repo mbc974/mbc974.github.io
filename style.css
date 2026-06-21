@@ -5653,3 +5653,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .p-pillar:hover .p-pillar__ico{transform:translateY(-2px) scale(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 32px -10px rgba(217,106,27,.5)}
 .p-pillar:hover .p-pillar__ico::before{transform:rotate(140deg);filter:brightness(1.25)}
 @media (prefers-reduced-motion:reduce){.p-pillar__ico,.p-pillar__ico::before{transition:none}.p-pillar:hover .p-pillar__ico{transform:none}}
+
+/* ============================================================
+   V60 — "Gradient dots" animés (port NATIF du composant React/framer,
+   sans React/framer). Fond animé de la section Parents : maille de
+   points + halos colorés qui défilent + cycle de teinte (hue-rotate).
+   ============================================================ */
+.gradient-dots{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background-color:#0a1426;
+  background-image:
+    radial-gradient(circle at 50% 50%, transparent 1.5px, #0a1426 0 8px, transparent 8px),
+    radial-gradient(circle at 50% 50%, transparent 1.5px, #0a1426 0 8px, transparent 8px),
+    radial-gradient(circle at 50% 50%, #f00, transparent 60%),
+    radial-gradient(circle at 50% 50%, #ff0, transparent 60%),
+    radial-gradient(circle at 50% 50%, #0f0, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #00f, transparent 60%);
+  background-size:10px 17.32px,10px 17.32px,200% 200%,200% 200%,200% 200%,200% 17.32px;
+  animation:gdotsMove 30s linear infinite, gdotsHue 6s linear infinite}
+@keyframes gdotsMove{
+  from{background-position:0 0,5px 8.66px,800% 400%,1000% -400%,-1200% -600%,400% 17.32px}
+  to{background-position:0 0,5px 8.66px,0 0,0 0,0 0,0 0}}
+@keyframes gdotsHue{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(360deg)}}
+.parents>.wrap,.parents>.bg-word,.parents>.tarifs{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.gradient-dots{animation:none}}
