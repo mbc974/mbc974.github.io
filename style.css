@@ -5080,9 +5080,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cal-venue__tag .ic{width:1em;height:1em}
 .cal-venue__name{font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.5px;line-height:1;font-size:clamp(1.5rem,3.4vw,2.4rem);color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.65)}
 .cal-venue__addr{font-family:var(--ff-cond);font-weight:600;font-size:clamp(.86rem,1.4vw,1rem);color:var(--bleu-glacier)}
-/* Ink reveal : calque "encre" au-dessus de la photo, sous la légende (z-index 2) */
-.ink-reveal{position:absolute;inset:0;z-index:1;display:block;cursor:crosshair}
-.cal-venue__cap{pointer-events:none}
 
 /* ============================================================
    V41 — Sponsors : bandeau de logos en défilement infini
