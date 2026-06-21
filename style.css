@@ -5396,6 +5396,38 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (prefers-reduced-motion:reduce){.spotglow>.spotglow__fx{transition:none}}
 @media (hover:none){.spotglow>.spotglow__fx{display:none}}
 
+/* ===== V54 — Horizon hero (composant cosmos Three.js/GSAP, CDN) ===== */
+.hero-container.cosmos-style{position:relative;width:100%;background:#000;color:#fff;
+  font-family:var(--ff-display,'Oswald',system-ui,sans-serif);isolation:isolate}
+.hero-canvas{position:sticky;top:0;left:0;display:block;width:100%;height:100vh;margin-bottom:-100vh;z-index:0}
+.hero-content,.scroll-sections .content-section{position:relative;z-index:2;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  padding:2rem;pointer-events:none}
+.scroll-sections{position:relative;z-index:2}
+.hero-title{margin:0;font-weight:800;line-height:.92;letter-spacing:.06em;text-transform:uppercase;
+  font-size:clamp(3.2rem,15vw,12rem);
+  background:linear-gradient(180deg,#ffffff,#9bb6ff 68%,#5f82ff);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 36px rgba(110,140,255,.28))}
+.title-char{display:inline-block;will-change:transform,opacity}
+.hero-subtitle{margin-top:1.6rem;display:flex;flex-direction:column;gap:.35rem}
+.subtitle-line{margin:0;font-size:clamp(.85rem,2vw,1.25rem);letter-spacing:.34em;
+  text-transform:uppercase;color:rgba(220,230,255,.82)}
+.side-menu{position:fixed;top:50%;left:1.6rem;transform:translateY(-50%);z-index:6;
+  display:flex;flex-direction:column;align-items:center;gap:1.4rem;
+  opacity:0;transition:opacity .45s ease;pointer-events:none}
+.side-menu.is-active{opacity:1}
+.menu-icon{display:flex;flex-direction:column;gap:5px}
+.menu-icon span{width:26px;height:2px;background:#fff;display:block}
+.vertical-text{writing-mode:vertical-rl;letter-spacing:.45em;font-size:.72rem;color:rgba(255,255,255,.7)}
+.scroll-progress{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%);z-index:6;
+  display:flex;align-items:center;gap:1rem;opacity:0;transition:opacity .45s ease;pointer-events:none;
+  font-size:.7rem;letter-spacing:.3em;color:rgba(255,255,255,.78);text-transform:uppercase}
+.scroll-progress.is-active{opacity:1}
+.progress-track{width:160px;height:2px;background:rgba(255,255,255,.22);overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#6f8cff,#e8822a)}
+@media (prefers-reduced-motion:reduce){.title-char{opacity:1!important;transform:none!important}}
+
 /* ============================================================
    V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,
    sans React/framer-motion) en fond de "Sur le terrain" (#galerie).

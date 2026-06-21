@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-noshader">
+<link rel="stylesheet" href="style.css?v=202606-horizon">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -139,6 +139,16 @@
   ]
 }
 </script>
+<!-- Horizon hero : Three.js + GSAP via CDN (import map) — pas de npm/build, le site reste statique -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+    "gsap": "https://unpkg.com/gsap@3.12.5/index.js"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -218,6 +228,43 @@
   </div>
   <a class="hero__scroll" href="#essentiel" aria-label="Voir l'essentiel des pré-inscriptions 2026-2027"><span aria-hidden="true"></span><span class="hero__scroll-label">L'essentiel</span></a>
 </section>
+
+<!-- ===== Horizon hero (composant cosmos — Three.js / GSAP, CDN) ===== -->
+<div class="hero-container cosmos-style" id="horizonHero">
+  <canvas class="hero-canvas" id="horizonCanvas"></canvas>
+  <div class="side-menu" id="horizonMenu">
+    <div class="menu-icon"><span></span><span></span><span></span></div>
+    <div class="vertical-text">SPACE</div>
+  </div>
+  <div class="hero-content cosmos-content">
+    <h1 class="hero-title">HORIZON</h1>
+    <div class="hero-subtitle cosmos-subtitle">
+      <p class="subtitle-line">Where vision meets reality,</p>
+      <p class="subtitle-line">we shape the future of tomorrow</p>
+    </div>
+  </div>
+  <div class="scroll-progress" id="horizonProgress">
+    <div class="scroll-text">SCROLL</div>
+    <div class="progress-track"><div class="progress-fill" id="horizonFill"></div></div>
+    <div class="section-counter" id="horizonCounter">00 / 02</div>
+  </div>
+  <div class="scroll-sections">
+    <section class="content-section">
+      <h1 class="hero-title">COSMOS</h1>
+      <div class="hero-subtitle cosmos-subtitle">
+        <p class="subtitle-line">Beyond the boundaries of imagination,</p>
+        <p class="subtitle-line">lies the universe of possibilities</p>
+      </div>
+    </section>
+    <section class="content-section">
+      <h1 class="hero-title">INFINITY</h1>
+      <div class="hero-subtitle cosmos-subtitle">
+        <p class="subtitle-line">In the space between thought and creation,</p>
+        <p class="subtitle-line">we find the essence of true innovation</p>
+      </div>
+    </section>
+  </div>
+</div>
 
 <!-- ===== L'essentiel — infos rapides pré-inscription ===== -->
 <section class="section essentiel" id="essentiel" aria-labelledby="essentielTitle">
@@ -1075,6 +1122,245 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-noshader" defer></script>
+<script src="script.js?v=202606-horizon" defer></script>
+
+<!-- ===== Horizon hero : portage natif (sans React) du composant Three.js/GSAP ===== -->
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { gsap } from 'gsap';
+
+(function () {
+  const container = document.getElementById('horizonHero');
+  const canvas = document.getElementById('horizonCanvas');
+  if (!container || !canvas) return;
+  const menuEl = document.getElementById('horizonMenu');
+  const progressEl = document.getElementById('horizonProgress');
+  const fillEl = document.getElementById('horizonFill');
+  const counterEl = document.getElementById('horizonCounter');
+
+  const refs = { scene:null, camera:null, renderer:null, composer:null, stars:[], nebula:null,
+    mountains:[], animationId:0, locations:[], targetCameraX:undefined, targetCameraY:undefined, targetCameraZ:undefined };
+  const smoothCameraPos = { x:0, y:30, z:100 };
+  const totalSections = 2;
+  let running = false, introDone = false;
+
+  const W = () => document.documentElement.clientWidth;
+  const H = () => window.innerHeight;
+
+  function createStarField() {
+    const starCount = 5000;
+    for (let i = 0; i < 3; i++) {
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(starCount * 3);
+      const colors = new Float32Array(starCount * 3);
+      const sizes = new Float32Array(starCount);
+      for (let j = 0; j < starCount; j++) {
+        const radius = 200 + Math.random() * 800;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(Math.random() * 2 - 1);
+        positions[j*3] = radius * Math.sin(phi) * Math.cos(theta);
+        positions[j*3+1] = radius * Math.sin(phi) * Math.sin(theta);
+        positions[j*3+2] = radius * Math.cos(phi);
+        const color = new THREE.Color();
+        const c = Math.random();
+        if (c < 0.7) color.setHSL(0, 0, 0.8 + Math.random() * 0.2);
+        else if (c < 0.9) color.setHSL(0.08, 0.5, 0.8);
+        else color.setHSL(0.6, 0.5, 0.8);
+        colors[j*3] = color.r; colors[j*3+1] = color.g; colors[j*3+2] = color.b;
+        sizes[j] = Math.random() * 2 + 0.5;
+      }
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+      const material = new THREE.ShaderMaterial({
+        uniforms: { time: { value: 0 }, depth: { value: i } },
+        vertexShader: 'attribute float size; attribute vec3 color; varying vec3 vColor; uniform float time; uniform float depth;'
+          + 'void main(){ vColor = color; vec3 pos = position; float angle = time * 0.05 * (1.0 - depth * 0.3);'
+          + 'mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)); pos.xy = rot * pos.xy;'
+          + 'vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0); gl_PointSize = size * (300.0 / -mvPosition.z); gl_Position = projectionMatrix * mvPosition; }',
+        fragmentShader: 'varying vec3 vColor; void main(){ float dist = length(gl_PointCoord - vec2(0.5)); if (dist > 0.5) discard;'
+          + 'float opacity = 1.0 - smoothstep(0.0, 0.5, dist); gl_FragColor = vec4(vColor, opacity); }',
+        transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+      });
+      const stars = new THREE.Points(geometry, material);
+      refs.scene.add(stars); refs.stars.push(stars);
+    }
+  }
+
+  function createNebula() {
+    const geometry = new THREE.PlaneGeometry(8000, 4000, 100, 100);
+    const material = new THREE.ShaderMaterial({
+      uniforms: { time: { value: 0 }, color1: { value: new THREE.Color(0x0033ff) }, color2: { value: new THREE.Color(0xff0066) }, opacity: { value: 0.3 } },
+      vertexShader: 'varying vec2 vUv; varying float vElevation; uniform float time;'
+        + 'void main(){ vUv = uv; vec3 pos = position; float elevation = sin(pos.x*0.01+time)*cos(pos.y*0.01+time)*20.0; pos.z += elevation; vElevation = elevation;'
+        + 'gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0); }',
+      fragmentShader: 'uniform vec3 color1; uniform vec3 color2; uniform float opacity; uniform float time; varying vec2 vUv; varying float vElevation;'
+        + 'void main(){ float mixFactor = sin(vUv.x*10.0+time)*cos(vUv.y*10.0+time); vec3 color = mix(color1, color2, mixFactor*0.5+0.5);'
+        + 'float alpha = opacity * (1.0 - length(vUv - 0.5) * 2.0); alpha *= 1.0 + vElevation * 0.01; gl_FragColor = vec4(color, alpha); }',
+      transparent: true, blending: THREE.AdditiveBlending, side: THREE.DoubleSide, depthWrite: false
+    });
+    const nebula = new THREE.Mesh(geometry, material);
+    nebula.position.z = -1050; nebula.rotation.x = 0;
+    refs.scene.add(nebula); refs.nebula = nebula;
+  }
+
+  function createMountains() {
+    const layers = [
+      { distance:-50, height:60, color:0x1a1a2e, opacity:1 },
+      { distance:-100, height:80, color:0x16213e, opacity:0.8 },
+      { distance:-150, height:100, color:0x0f3460, opacity:0.6 },
+      { distance:-200, height:120, color:0x0a4668, opacity:0.4 }
+    ];
+    layers.forEach((layer, index) => {
+      const points = []; const segments = 50;
+      for (let i = 0; i <= segments; i++) {
+        const x = (i / segments - 0.5) * 1000;
+        const y = Math.sin(i*0.1)*layer.height + Math.sin(i*0.05)*layer.height*0.5 + Math.random()*layer.height*0.2 - 100;
+        points.push(new THREE.Vector2(x, y));
+      }
+      points.push(new THREE.Vector2(5000, -300));
+      points.push(new THREE.Vector2(-5000, -300));
+      const shape = new THREE.Shape(points);
+      const geometry = new THREE.ShapeGeometry(shape);
+      const material = new THREE.MeshBasicMaterial({ color: layer.color, transparent: true, opacity: layer.opacity, side: THREE.DoubleSide });
+      const mountain = new THREE.Mesh(geometry, material);
+      mountain.position.z = layer.distance;
+      mountain.position.y = layer.distance;
+      mountain.userData = { baseZ: layer.distance, index };
+      refs.scene.add(mountain); refs.mountains.push(mountain);
+    });
+  }
+
+  function createAtmosphere() {
+    const geometry = new THREE.SphereGeometry(600, 32, 32);
+    const material = new THREE.ShaderMaterial({
+      uniforms: { time: { value: 0 } },
+      vertexShader: 'varying vec3 vNormal; varying vec3 vPosition;'
+        + 'void main(){ vNormal = normalize(normalMatrix * normal); vPosition = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: 'varying vec3 vNormal; varying vec3 vPosition; uniform float time;'
+        + 'void main(){ float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0); vec3 atmosphere = vec3(0.3, 0.6, 1.0) * intensity;'
+        + 'float pulse = sin(time * 2.0) * 0.1 + 0.9; atmosphere *= pulse; gl_FragColor = vec4(atmosphere, intensity * 0.25); }',
+      side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true
+    });
+    refs.scene.add(new THREE.Mesh(geometry, material));
+  }
+
+  function getLocation() { refs.locations = refs.mountains.map(m => m.position.z); }
+
+  function animate() {
+    if (!running) return;
+    refs.animationId = requestAnimationFrame(animate);
+    const time = Date.now() * 0.001;
+    refs.stars.forEach(s => { if (s.material.uniforms) s.material.uniforms.time.value = time; });
+    if (refs.nebula && refs.nebula.material.uniforms) refs.nebula.material.uniforms.time.value = time * 0.5;
+    if (refs.camera && refs.targetCameraX !== undefined) {
+      const sf = 0.05;
+      smoothCameraPos.x += (refs.targetCameraX - smoothCameraPos.x) * sf;
+      smoothCameraPos.y += (refs.targetCameraY - smoothCameraPos.y) * sf;
+      smoothCameraPos.z += (refs.targetCameraZ - smoothCameraPos.z) * sf;
+      const floatX = Math.sin(time * 0.1) * 2;
+      const floatY = Math.cos(time * 0.15) * 1;
+      refs.camera.position.x = smoothCameraPos.x + floatX;
+      refs.camera.position.y = smoothCameraPos.y + floatY;
+      refs.camera.position.z = smoothCameraPos.z;
+      refs.camera.lookAt(0, 10, -600);
+    }
+    refs.mountains.forEach((m, i) => {
+      const p = 1 + i * 0.5;
+      m.position.x = Math.sin(time * 0.1) * 2 * p;
+      m.position.y = 50 + (Math.cos(time * 0.15) * 1 * p);
+    });
+    if (refs.composer) refs.composer.render();
+  }
+
+  function startLoop() { if (running) return; running = true; animate(); }
+  function stopLoop() { running = false; if (refs.animationId) cancelAnimationFrame(refs.animationId); refs.animationId = 0; }
+
+  function initThree() {
+    refs.scene = new THREE.Scene();
+    refs.scene.fog = new THREE.FogExp2(0x000000, 0.00025);
+    refs.camera = new THREE.PerspectiveCamera(75, W() / H(), 0.1, 2000);
+    refs.camera.position.z = 100; refs.camera.position.y = 20;
+    refs.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    refs.renderer.setSize(W(), H());
+    refs.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    refs.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    refs.renderer.toneMappingExposure = 0.5;
+    refs.composer = new EffectComposer(refs.renderer);
+    refs.composer.addPass(new RenderPass(refs.scene, refs.camera));
+    refs.composer.addPass(new UnrealBloomPass(new THREE.Vector2(W(), H()), 0.8, 0.4, 0.85));
+    createStarField(); createNebula(); createMountains(); createAtmosphere(); getLocation();
+  }
+
+  function onResize() {
+    if (!refs.camera) return;
+    refs.camera.aspect = W() / H();
+    refs.camera.updateProjectionMatrix();
+    refs.renderer.setSize(W(), H());
+    refs.composer.setSize(W(), H());
+  }
+
+  const cameraPositions = [ { x:0, y:30, z:300 }, { x:0, y:40, z:-50 }, { x:0, y:50, z:-700 } ];
+  function onScroll() {
+    const rect = container.getBoundingClientRect();
+    const maxScroll = Math.max(1, container.offsetHeight - H());
+    const local = Math.min(Math.max(-rect.top, 0), maxScroll);
+    const progress = Math.min(local / maxScroll, 1);
+    const newSection = Math.floor(progress * totalSections);
+    if (fillEl) fillEl.style.width = (progress * 100).toFixed(1) + '%';
+    if (counterEl) counterEl.textContent = String(newSection).padStart(2, '0') + ' / ' + String(totalSections).padStart(2, '0');
+    const inView = rect.bottom > 0 && rect.top < H();
+    if (progressEl) progressEl.classList.toggle('is-active', inView);
+    if (menuEl) menuEl.classList.toggle('is-active', inView);
+
+    const totalProgress = progress * totalSections;
+    const sectionProgress = totalProgress % 1;
+    const currentPos = cameraPositions[newSection] || cameraPositions[0];
+    const nextPos = cameraPositions[newSection + 1] || currentPos;
+    refs.targetCameraX = currentPos.x + (nextPos.x - currentPos.x) * sectionProgress;
+    refs.targetCameraY = currentPos.y + (nextPos.y - currentPos.y) * sectionProgress;
+    refs.targetCameraZ = currentPos.z + (nextPos.z - currentPos.z) * sectionProgress;
+
+    refs.mountains.forEach((m, i) => {
+      const speed = 1 + i * 0.9;
+      const targetZ = m.userData.baseZ + local * speed * 0.5;
+      if (refs.nebula) refs.nebula.position.z = (targetZ + progress * speed * 0.01) - 100;
+      m.userData.targetZ = targetZ;
+      if (progress > 0.7) m.position.z = 600000;
+      if (progress < 0.7) m.position.z = refs.locations[i];
+    });
+    if (refs.nebula && refs.mountains[3]) refs.nebula.position.z = refs.mountains[3].position.z;
+  }
+
+  function runIntro() {
+    if (introDone) return; introDone = true;
+    const title = container.querySelector('.hero-content .hero-title');
+    const sub = container.querySelector('.hero-content .hero-subtitle');
+    if (title) {
+      const txt = title.textContent; title.textContent = '';
+      txt.split('').forEach(ch => { const s = document.createElement('span'); s.className = 'title-char'; s.textContent = ch === ' ' ? ' ' : ch; title.appendChild(s); });
+      gsap.from(title.querySelectorAll('.title-char'), { y:200, opacity:0, duration:1.5, stagger:0.05, ease:'power4.out' });
+    }
+    if (sub) gsap.from(sub.querySelectorAll('.subtitle-line'), { y:50, opacity:0, duration:1, stagger:0.2, ease:'power3.out', delay:0.4 });
+  }
+
+  try { initThree(); }
+  catch (err) { console.warn('Horizon hero: init Three.js échouée', err); return; }
+
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { startLoop(); runIntro(); } else stopLoop(); });
+    }, { threshold: 0 });
+    io.observe(container);
+  } else { startLoop(); runIntro(); }
+})();
+</script>
 </body>
 </html>
