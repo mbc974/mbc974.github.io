@@ -645,3 +645,106 @@
   canvas.addEventListener('mousemove', function (e) { var p = relPos(e); stampAlong(p.x, p.y); startLoop(); });
   canvas.addEventListener('mouseleave', function () { lastPos = null; });
 })();
+
+/* ============================================================
+   Vidéo adhésion (mobile) : tap -> zoom depuis le téléphone vers le
+   plein écran (FLIP), lecture, puis effet inverse à la fin de la vidéo.
+   Plein écran custom (CSS) -> animation fluide, sans contrainte iOS.
+   ============================================================ */
+(function () {
+  'use strict';
+  var card = document.getElementById('cineCard');
+  if (!card) return;
+  var video = card.querySelector('.adhesion-video__player');
+  if (!video) return;
+
+  function isMobile() { return window.matchMedia('(max-width: 760px)').matches; }
+  function reduce() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+  var open = false, slot = null, marker = null, backdrop = null, closeBtn = null;
+
+  function ensureUI() {
+    if (backdrop) return;
+    backdrop = document.createElement('div');
+    backdrop.className = 'cine-fs-backdrop';
+    closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.className = 'cine-fs-close';
+    closeBtn.setAttribute('aria-label', 'Fermer la vidéo');
+    closeBtn.innerHTML = '&times;';
+    document.body.appendChild(backdrop);
+    document.body.appendChild(closeBtn);
+    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) doClose(); });
+    closeBtn.addEventListener('click', doClose);
+    document.addEventListener('keydown', function (e) { if (open && e.key === 'Escape') doClose(); });
+  }
+
+  /* place l'élément au rect "start" puis l'anime vers sa position naturelle */
+  function flipFrom(el, start, dur) {
+    var nat = el.getBoundingClientRect();
+    var dx = start.left - nat.left, dy = start.top - nat.top;
+    var sx = start.width / nat.width, sy = start.height / nat.height;
+    el.style.transformOrigin = '0 0';
+    el.style.transition = 'none';
+    el.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+    void el.offsetWidth;
+    el.style.transition = reduce() ? 'none' : ('transform ' + dur + 'ms cubic-bezier(.5,.05,.15,1)');
+    el.style.transform = 'none';
+  }
+  /* anime l'élément depuis sa position naturelle vers le rect "target" */
+  function flipTo(el, target, dur, after) {
+    var nat = el.getBoundingClientRect();
+    var dx = target.left - nat.left, dy = target.top - nat.top;
+    var sx = target.width / nat.width, sy = target.height / nat.height;
+    el.style.transformOrigin = '0 0';
+    el.style.transition = reduce() ? 'none' : ('transform ' + dur + 'ms cubic-bezier(.5,.05,.15,1)');
+    el.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx.toFixed(4) + ',' + sy.toFixed(4) + ')';
+    var done = false;
+    function fin() { if (done) return; done = true; el.removeEventListener('transitionend', fin); if (after) after(); }
+    el.addEventListener('transitionend', fin);
+    setTimeout(fin, (reduce() ? 0 : dur) + 90);
+  }
+
+  function doOpen() {
+    if (open) return; open = true;
+    ensureUI();
+    var first = video.getBoundingClientRect();      // position dans le téléphone
+    slot = video.parentNode;
+    marker = document.createComment('cine-video');
+    slot.insertBefore(marker, video);
+    backdrop.classList.add('show');
+    document.body.appendChild(video);               // sort du téléphone (clipping)
+    video.classList.add('cine-fs-video');           // position naturelle = plein écran
+    video.setAttribute('controls', '');
+    document.documentElement.style.overflow = 'hidden';
+    flipFrom(video, first, 560);                    // part du téléphone -> grandit au plein écran
+    video.play().catch(function () {});
+    setTimeout(function () { closeBtn.classList.add('show'); }, 300);
+  }
+
+  function doClose() {
+    if (!open) return; open = false;
+    closeBtn.classList.remove('show');
+    video.pause();
+    var target = slot.getBoundingClientRect();      // emplacement dans le téléphone
+    backdrop.classList.remove('show');
+    document.documentElement.style.overflow = '';
+    flipTo(video, target, 500, function () {         // rétrécit vers le téléphone
+      video.classList.remove('cine-fs-video');
+      video.style.transition = ''; video.style.transform = ''; video.style.transformOrigin = '';
+      if (marker && marker.parentNode) {
+        marker.parentNode.insertBefore(video, marker);
+        marker.parentNode.removeChild(marker);
+      } else if (slot) { slot.appendChild(video); }
+      try { video.currentTime = 0; } catch (e) {}
+    });
+  }
+
+  /* on intercepte la lecture sur mobile : pause + ouverture plein écran */
+  video.addEventListener('play', function () {
+    if (open || !isMobile()) return;
+    video.pause();
+    doOpen();
+  });
+  video.addEventListener('ended', function () { if (open) doClose(); });
+})();
