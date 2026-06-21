@@ -5378,18 +5378,23 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* La classe .spotglow est posée par script.js sur tous les éléments bordés
    ciblés (cartes, photos, sponsors, lignes de tableau, cadre vidéo, boutons
    ghost...). Un seul pointermove délégué met à jour --smx/--smy/--smxp. */
+/* Glow via élément ENFANT .spotglow__fx (injecté par script.js) : aucun
+   conflit de pseudo-élément -> applicable à n'importe quel élément. */
 .spotglow{position:relative;--smx:50%;--smy:50%;--smxp:.5}
-.spotglow::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;padding:1.6px;pointer-events:none;z-index:4;opacity:0;transition:opacity .35s ease;
-  background:radial-gradient(210px 210px at var(--smx) var(--smy),hsl(28 92% 56% / calc(var(--smxp) * .85)),transparent 62%),
-             radial-gradient(210px 210px at var(--smx) var(--smy),hsl(214 84% 62% / calc((1 - var(--smxp)) * .85)),transparent 62%);
+.spotglow>.spotglow__fx{
+  position:absolute;inset:0;border-radius:inherit;padding:2.5px;pointer-events:none;z-index:3;opacity:0;
+  transition:opacity .3s ease;will-change:opacity;
+  background:radial-gradient(280px 280px at var(--smx) var(--smy),
+    hsl(28 96% 58% / calc(var(--smxp) * 1)),
+    hsl(214 92% 62% / calc((1 - var(--smxp)) * 1)) 45%,
+    transparent 72%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
-}
-.spotglow:hover::after{opacity:.85}
-@media (prefers-reduced-motion:reduce){.spotglow::after{transition:none}}
-@media (hover:none){.spotglow::after{display:none}}
+  filter:brightness(1.35) saturate(1.15)}
+.spotglow:hover>.spotglow__fx{opacity:1}
+@media (prefers-reduced-motion:reduce){.spotglow>.spotglow__fx{transition:none}}
+@media (hover:none){.spotglow>.spotglow__fx{display:none}}
 
 /* ============================================================
    V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,

@@ -682,12 +682,21 @@
 (function () {
   'use strict';
   if (window.matchMedia('(hover:none)').matches) return;
-  // Tous les éléments bordés qui reçoivent le liseré lumineux (::after libre vérifié)
-  var SEL = '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card,' +
+  // Tous les éléments rectangulaires qui reçoivent le liseré lumineux.
+  var SEL = '.essentiel-card,.hero-offer,.cine-card,.recr__visual,.cat,.tarifs__rest,.cal-venue,' +
+            '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card,' +
             '.team__photo,.sponsor-card,.partner-slot,.adhesion-video__frame,.cal2-row,.btn--ghost';
   var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
   if (!targets.length) return;
-  targets.forEach(function (el) { el.classList.add('spotglow'); });
+  // glow = élément enfant injecté (pas de pseudo -> aucun conflit, marche partout)
+  targets.forEach(function (el) {
+    if (el.querySelector(':scope > .spotglow__fx')) return;
+    el.classList.add('spotglow');
+    var fx = document.createElement('i');
+    fx.className = 'spotglow__fx';
+    fx.setAttribute('aria-hidden', 'true');
+    el.appendChild(fx);
+  });
 
   // Un seul handler délégué (rAF) : éclaire l'élément bordé sous le curseur.
   var raf = null, cx = 0, cy = 0, src = null;
