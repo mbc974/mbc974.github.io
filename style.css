@@ -4929,7 +4929,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
     -webkit-mask-image:linear-gradient(to top,transparent 3%,#000 26%,#000 72%,transparent 100%);
     mask-image:linear-gradient(to top,transparent 3%,#000 26%,#000 72%,transparent 100%);
     -webkit-mask-composite:source-over;mask-composite:add}
-  .hero.in .hero__photo{opacity:.16}
+  .hero.in .hero__photo{opacity:.5}
   .hero__photo img{object-position:50% 16%}
   .hero__photo::before{opacity:.5}
   .hero__photo::after{background:linear-gradient(to top,rgba(7,13,24,.72),rgba(7,13,24,.34) 50%,rgba(7,13,24,.72))}
@@ -5061,7 +5061,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* Mobile/tablette (photo en fond) : pas de filigrane logo + joueur plus perceptible derrière le texte/CTA */
 @media (max-width:980px){
   .hero--split .hero__watermark{display:none}
-  .hero.in .hero__photo{opacity:.3}
+  .hero.in .hero__photo{opacity:.5}
 }
 
 /* ============================================================
