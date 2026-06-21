@@ -50,7 +50,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-cine3">
+<link rel="stylesheet" href="style.css?v=202606-cine4">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -324,11 +324,13 @@
             <span class="cine-phone__island" aria-hidden="true"><i></i></span>
             <div class="cine-phone__screen">
               <div class="cine-loader" id="cineLoader" role="status" aria-live="polite">
-                <svg class="cine-ring" viewBox="0 0 180 180" aria-hidden="true">
-                  <circle class="cine-ring__bg" cx="90" cy="90" r="62"></circle>
-                  <circle class="cine-ring__fg" cx="90" cy="90" r="62"></circle>
-                </svg>
-                <span class="cine-loader__num"><b id="cinePct">0</b>%</span>
+                <div class="cine-loader__ring">
+                  <svg class="cine-ring" viewBox="0 0 180 180" aria-hidden="true">
+                    <circle class="cine-ring__bg" cx="90" cy="90" r="62"></circle>
+                    <circle class="cine-ring__fg" cx="90" cy="90" r="62"></circle>
+                  </svg>
+                  <span class="cine-loader__num"><b id="cinePct">0</b>%</span>
+                </div>
                 <span class="cine-loader__lbl">Chargement de la vidéo…</span>
               </div>
               <div class="cine-video">
@@ -339,8 +341,6 @@
               </div>
             </div>
           </div>
-          <span class="cine-badge cine-badge--1" aria-hidden="true"><b>FFBB</b><span>Club affilié</span></span>
-          <span class="cine-badge cine-badge--2" aria-hidden="true"><b>95 €</b><span>tout compris</span></span>
           <figcaption class="cine-caption">Vidéo officielle adhésions 2026‑2027 — MBC La Montagne Basket Club.</figcaption>
         </figure>
       </div>
@@ -1101,6 +1101,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-cine3" defer></script>
+<script src="script.js?v=202606-cine4" defer></script>
 </body>
 </html>
