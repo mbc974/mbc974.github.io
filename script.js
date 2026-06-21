@@ -539,3 +539,109 @@
     card.addEventListener('pointerleave', function () { if (phone) phone.style.transform = ''; });
   }
 })();
+
+/* ============================================================
+   Ink reveal — photo du gymnase (adaptation NATIVE du composant
+   React "ink-reveal", sans React/canvas-lib). Un calque "encre"
+   bleu nuit masque la photo ; au survol, le pinceau la révèle, et
+   l'encre se referme doucement. Désactivé sur tactile (pas de hover)
+   et prefers-reduced-motion -> la photo reste visible normalement.
+   ============================================================ */
+(function () {
+  'use strict';
+  var canvas = document.querySelector('[data-ink-reveal]');
+  if (!canvas) return;
+  if (window.matchMedia('(hover:none)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    canvas.remove(); // pas d'effet -> on retire le calque, la photo s'affiche
+    return;
+  }
+  var parent = canvas.parentElement;
+  var ctx = canvas.getContext('2d');
+  if (!parent || !ctx) return;
+
+  var MASK = [16, 28, 50];                 // encre bleu nuit
+  var BRUSH = 120, LIFETIME = 650, R_START = 10, R_VARY = 0.45;
+  var STAMP_STEP = 10, MAX_STAMPS = 200, SEGMENTS = 36;
+  var WOBBLE = [0.14, 0.08, 0.05], GRAD_INNER = 0.2, GRAD_STOPS = [0.95, 0.88, 0];
+
+  var stamps = [], running = false, lastPos = null, dims = { w: 0, h: 0 };
+
+  function fillMask(w, h) {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = 'rgb(' + MASK[0] + ',' + MASK[1] + ',' + MASK[2] + ')';
+    ctx.fillRect(0, 0, w, h);
+  }
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = parent.getBoundingClientRect();
+    var w = rect.width, h = rect.height;
+    dims = { w: w, h: h };
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    fillMask(w, h);
+  }
+  function carveInk(x, y, r, seed, alpha) {
+    var g = ctx.createRadialGradient(x, y, r * GRAD_INNER, x, y, r);
+    g.addColorStop(0, 'rgba(0,0,0,' + (GRAD_STOPS[0] * alpha) + ')');
+    g.addColorStop(0.5, 'rgba(0,0,0,' + (GRAD_STOPS[1] * alpha) + ')');
+    g.addColorStop(1, 'rgba(0,0,0,' + (GRAD_STOPS[2] * alpha) + ')');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    for (var i = 0; i <= SEGMENTS; i++) {
+      var a = (i / SEGMENTS) * Math.PI * 2;
+      var wob = 0.78 +
+        WOBBLE[0] * Math.sin(a * 3 + seed) +
+        WOBBLE[1] * Math.sin(a * 5 + seed * 2.1) +
+        WOBBLE[2] * Math.sin(a * 7 + seed * 0.7);
+      var px = x + Math.cos(a) * r * wob;
+      var py = y + Math.sin(a) * r * wob;
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fill();
+  }
+  function addStamp(x, y) {
+    if (stamps.length >= MAX_STAMPS) stamps.shift();
+    stamps.push({ x: x, y: y, born: performance.now(),
+      seed: Math.random() * Math.PI * 2,
+      rmax: BRUSH * (1 - R_VARY + Math.random() * R_VARY) });
+  }
+  function stampAlong(x, y) {
+    if (!lastPos) { addStamp(x, y); }
+    else {
+      var dx = x - lastPos.x, dy = y - lastPos.y, dist = Math.hypot(dx, dy);
+      var steps = Math.max(1, Math.ceil(dist / STAMP_STEP));
+      for (var i = 1; i <= steps; i++) addStamp(lastPos.x + dx * i / steps, lastPos.y + dy * i / steps);
+    }
+    lastPos = { x: x, y: y };
+  }
+  function loop() {
+    var w = dims.w, h = dims.h, now = performance.now();
+    fillMask(w, h);
+    ctx.globalCompositeOperation = 'destination-out';
+    for (var i = stamps.length - 1; i >= 0; i--) {
+      var t = (now - stamps[i].born) / LIFETIME;
+      if (t >= 1) { stamps.splice(i, 1); continue; }
+      var ease = 1 - Math.pow(1 - t, 3);
+      var r = R_START + (stamps[i].rmax - R_START) * ease;
+      var alpha = 1 - t * t;
+      carveInk(stamps[i].x, stamps[i].y, r, stamps[i].seed, alpha);
+    }
+    if (stamps.length) requestAnimationFrame(loop); else running = false;
+  }
+  function startLoop() { if (!running) { running = true; requestAnimationFrame(loop); } }
+  function relPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  canvas.addEventListener('mouseenter', function (e) { var p = relPos(e); lastPos = p; stampAlong(p.x, p.y); startLoop(); });
+  canvas.addEventListener('mousemove', function (e) { var p = relPos(e); stampAlong(p.x, p.y); startLoop(); });
+  canvas.addEventListener('mouseleave', function () { lastPos = null; });
+})();
