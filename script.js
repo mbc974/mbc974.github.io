@@ -684,8 +684,9 @@
   if (window.matchMedia('(hover:none)').matches) return;
   // Tous les éléments rectangulaires qui reçoivent le liseré lumineux.
   var SEL = '.essentiel-card,.hero-offer,.cine-card,.recr__visual,.cat,.tarifs,.cal-venue,' +
+            '.dons__card,.impact li,.dons__fiscal,.solidaire,.partner-intro,.visi,.contact-form,.contact-info,' +
             '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card,' +
-            '.team__photo,.sponsor-card,.partner-slot,.adhesion-video__frame,.cal2-row,.btn--ghost';
+            '.team__photo,.sponsor-card,.partner-slot,.adhesion-video__frame,.btn--ghost';
   var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
   if (!targets.length) return;
   // glow = élément enfant injecté (pas de pseudo -> aucun conflit, marche partout)
