@@ -723,7 +723,7 @@
    ============================================================ */
 (function () {
   'use strict';
-  var gal = document.getElementById('recrutement');
+  var gal = document.getElementById('categories');
   if (!gal || !gal.querySelector('.grid-fx')) return;
   if (window.matchMedia('(hover:none)').matches) return;
   var raf = null, gx = 0, gy = 0;
