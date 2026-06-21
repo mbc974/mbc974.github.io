@@ -836,85 +836,119 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   background:linear-gradient(180deg,var(--nuit-0),#0c1729 52%,var(--nuit-2));
 }
 .social-spotlight::before{content:none} /* slash diagonal orange/bleu retiré */
+/* en-tête pleine largeur, puis 2 colonnes équilibrées (visuel + réseaux) */
 .social-spotlight__inner{
   position:relative;
   z-index:1;
-  display:grid;
-  gap:2rem;
-  align-items:end;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(1.6rem,3vw,2.4rem);
 }
 .social-spotlight__head{max-width:620px}
 .social-spotlight .h2{margin-bottom:1rem}
 .social-spotlight__sub{
-  max-width:44ch;
+  max-width:48ch;
   color:var(--txt-soft);
   font-size:clamp(1.02rem,2vw,1.16rem);
   line-height:1.65;
 }
-.social-spotlight__grid{
+.social-spotlight__body{
   display:grid;
   grid-template-columns:1fr;
-  gap:1rem;
+  gap:1.2rem;
+}
+/* visuel campagne (carte que tu aimes) à gauche */
+.social-spotlight__body .social-promo{margin:0;max-width:none;width:100%;align-self:start}
+/* réseaux : pile verticale premium */
+.social-spotlight__grid{
+  display:flex;
+  flex-direction:column;
+  gap:.85rem;
 }
 .social-card{
-  min-height:126px;
+  position:relative;
   display:grid;
-  grid-template-columns:auto 1fr;
+  grid-template-columns:auto 1fr auto;
   align-items:center;
-  gap:1rem;
-  padding:1.25rem;
+  gap:1.15rem;
+  min-height:88px;
+  padding:1.1rem 1.3rem;
   border:1px solid var(--line);
-  border-radius:16px;
-  background:linear-gradient(160deg,rgba(191,210,228,.09),rgba(7,13,24,.5));
-  box-shadow:0 18px 45px rgba(0,0,0,.3);
-  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s,background .35s;
+  border-radius:18px;
+  background:linear-gradient(150deg,rgba(191,210,228,.08),rgba(7,13,24,.55));
+  box-shadow:var(--e1),var(--bevel);
+  isolation:isolate;
+  overflow:hidden;
+  transition:transform .45s var(--ease-spring),border-color .35s,box-shadow .4s,background .35s;
 }
-.social-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(232,130,42,.42);
-  box-shadow:0 28px 60px rgba(0,0,0,.45);
+.social-card::before{
+  content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .45s;
+  background:radial-gradient(130% 150% at 0% 50%,var(--brand,rgba(232,130,42,.22)),transparent 62%);
 }
+.social-card:hover,.social-card:focus-visible{
+  transform:translateY(-5px);
+  border-color:var(--brandline,rgba(232,130,42,.5));
+  box-shadow:var(--e3),0 18px 46px -12px var(--brandglow,rgba(232,130,42,.45));
+}
+.social-card:hover::before,.social-card:focus-visible::before{opacity:1}
 .social-card__icon{
-  width:54px;
-  height:54px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:14px;
-  color:#190f04;
+  width:54px;height:54px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:15px;color:#fff;
   background:var(--grad-orange);
-  box-shadow:0 10px 24px rgba(217,106,27,.28);
+  box-shadow:0 10px 24px rgba(217,106,27,.28),inset 0 1px 0 rgba(255,255,255,.28);
+  transition:transform .45s var(--ease-spring);
 }
-.social-card__icon svg{width:26px;height:26px}
-.social-card__body{display:flex;flex-direction:column;gap:.25rem}
+.social-card:hover .social-card__icon{transform:scale(1.07) rotate(-3deg)}
+.social-card__icon svg{width:27px;height:27px}
+.social-card__body{display:flex;flex-direction:column;gap:.16rem;min-width:0}
 .social-card__body strong{
   font-family:var(--ff-display);
-  text-transform:uppercase;
-  letter-spacing:.04em;
-  font-size:1.35rem;
-  line-height:1;
-  color:#fff;
+  text-transform:uppercase;letter-spacing:.04em;
+  font-size:1.34rem;line-height:1;color:#fff;
 }
-.social-card__body span{
-  font-family:var(--ff-cond);
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-  font-size:.78rem;
-  color:var(--bleu-glacier);
+.social-card__desc{
+  font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.09em;
+  font-size:.78rem;color:var(--bleu-glacier);
 }
-.social-card--facebook .social-card__icon{background:linear-gradient(135deg,#1B519E,#4b86d8);color:#fff}
-.social-card--instagram .social-card__icon{background:linear-gradient(135deg,#E8822A,#d62976 62%,#1B519E);color:#fff}
-.social-card--tiktok .social-card__icon{background:linear-gradient(135deg,#101b30,#E8822A);color:#fff}
-@media (min-width:860px){
-  .social-spotlight__inner{grid-template-columns:.95fr 1.3fr}
-  .social-spotlight__grid{grid-template-columns:repeat(3,1fr)}
-  .social-card{grid-template-columns:1fr;align-content:space-between;min-height:172px}
+.social-card__handle{
+  font-family:var(--ff-body);font-size:.82rem;letter-spacing:.01em;
+  color:var(--txt-soft);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.social-card__go{
+  width:40px;height:40px;flex:none;display:grid;place-items:center;
+  border-radius:50%;border:1px solid var(--line-strong);color:var(--bleu-glacier);
+  transition:transform .4s var(--ease-spring),color .35s,border-color .35s,background .35s;
+}
+.social-card__go svg{width:18px;height:18px}
+.social-card:hover .social-card__go,.social-card:focus-visible .social-card__go{
+  transform:translateX(4px);color:#fff;
+  border-color:var(--brandline,rgba(232,130,42,.6));
+  background:var(--brandglow,rgba(232,130,42,.16));
+}
+/* couleurs officielles des plateformes */
+.social-card--facebook{--brand:rgba(24,119,242,.24);--brandline:rgba(24,119,242,.6);--brandglow:rgba(24,119,242,.5)}
+.social-card--facebook .social-card__icon{background:linear-gradient(135deg,#1877F2,#0a4bb3);box-shadow:0 10px 24px rgba(24,119,242,.4),inset 0 1px 0 rgba(255,255,255,.28)}
+.social-card--instagram{--brand:rgba(221,42,123,.24);--brandline:rgba(221,42,123,.62);--brandglow:rgba(221,42,123,.5)}
+.social-card--instagram .social-card__icon{background:linear-gradient(135deg,#F58529,#DD2A7B 52%,#8134AF);box-shadow:0 10px 24px rgba(221,42,123,.42),inset 0 1px 0 rgba(255,255,255,.28)}
+.social-card--tiktok{--brand:rgba(37,244,238,.2);--brandline:rgba(254,44,85,.6);--brandglow:rgba(254,44,85,.45)}
+.social-card--tiktok .social-card__icon{background:linear-gradient(135deg,#25F4EE,#0b0b0b 46%,#FE2C55);box-shadow:0 10px 24px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.22)}
+@media (min-width:880px){
+  .social-spotlight__body{grid-template-columns:1.08fr .92fr;gap:clamp(1.4rem,2.5vw,2.2rem);align-items:stretch}
+  .social-card{flex:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .social-card,.social-card__icon,.social-card__go{transition:none}
+  .social-card:hover,.social-card:focus-visible{transform:none}
 }
 @media (max-width:560px){
-  .social-card{min-height:108px;padding:1rem}
+  .social-card{min-height:0;padding:.95rem 1.05rem;gap:.9rem;border-radius:15px}
   .social-card__icon{width:48px;height:48px}
+  .social-card__icon svg{width:24px;height:24px}
   .social-card__body strong{font-size:1.18rem}
+  .social-card__go{width:36px;height:36px}
 }
 
 /* ---- Sponsors premium ---- */
@@ -1046,12 +1080,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   font-size:clamp(1rem,1.45vw,1.16rem);
   line-height:1.28;
   max-width:19ch;
-}
-
-.social-card--tiktok .social-card__icon{
-  background:linear-gradient(135deg,#05070a,#101722 58%,#020304);
-  box-shadow:0 12px 26px rgba(0,0,0,.46),inset 0 0 0 1px rgba(255,255,255,.12);
-  color:#fff;
 }
 
 /* ============================================================
