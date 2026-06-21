@@ -5367,9 +5367,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .team__list{padding-top:.4rem}
 }
 @media (max-width:600px){
-  .team__photos{overflow-x:auto;justify-content:flex-start;padding-bottom:.4rem;scrollbar-width:none}
-  .team__photos::-webkit-scrollbar{display:none}
-  .team__list{display:grid;grid-template-columns:1fr 1fr;gap:1rem;max-width:none}
+  /* tous les membres visibles : grille 2 colonnes (au lieu d'un carrousel horizontal qui en cachait) */
+  .team__photos{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;overflow:visible;width:100%;max-width:none}
+  .team__col{display:contents}
+  .team__col--2,.team__col--3{margin-top:0}
+  .team__photo{width:auto!important}
+  .team__list{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.1rem;max-width:none}
+  .team__hint{display:none}
 }
 
 /* ============================================================
