@@ -2368,7 +2368,7 @@ section[id]{scroll-margin-top:92px}
   box-shadow:0 26px 64px rgba(217,106,27,.28),var(--e2),var(--bevel) !important;
   transform:translateY(-6px);
 }
-.sponsor-pack.pack--feat::after{border-radius:0 0 var(--r-lg) var(--r-lg)}
+.sponsor-pack.pack--feat::after{inset:auto var(--r-lg) 0;height:3px;border-radius:99px}
 .sponsor-pack.pack--feat .pack__tag{
   top:-15px !important;
   font-size:.74rem !important;
