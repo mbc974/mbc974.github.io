@@ -5653,15 +5653,3 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .p-pillar:hover .p-pillar__ico{transform:translateY(-2px) scale(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 32px -10px rgba(217,106,27,.5)}
 .p-pillar:hover .p-pillar__ico::before{transform:rotate(140deg);filter:brightness(1.25)}
 @media (prefers-reduced-motion:reduce){.p-pillar__ico,.p-pillar__ico::before{transition:none}.p-pillar:hover .p-pillar__ico{transform:none}}
-
-/* ============================================================
-   V59 — Vidéo adhésion : "zoom vers le téléphone -> plein écran" (mobile)
-   La vidéo grandit depuis le téléphone jusqu'à remplir l'écran (FLIP),
-   joue, puis revient à sa place à la fin (effet inverse).
-   ============================================================ */
-.cine-fs-backdrop{position:fixed;inset:0;z-index:1000;background:rgba(4,8,16,.96);opacity:0;pointer-events:none;transition:opacity .5s ease}
-.cine-fs-backdrop.show{opacity:1;pointer-events:auto}
-.cine-fs-video{position:fixed!important;left:0;top:0;width:100vw;height:100vh;height:100dvh;z-index:1001!important;margin:0!important;border-radius:0!important;object-fit:contain;background:#000;will-change:transform}
-.cine-fs-close{position:fixed;z-index:1002;top:calc(.8rem + env(safe-area-inset-top,0px));right:.9rem;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(10,16,28,.6);color:#fff;font-size:1.7rem;line-height:1;display:grid;place-items:center;opacity:0;pointer-events:none;transition:opacity .3s;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.cine-fs-close.show{opacity:1;pointer-events:auto}
-@media (prefers-reduced-motion:reduce){.cine-fs-backdrop{transition:none}}
