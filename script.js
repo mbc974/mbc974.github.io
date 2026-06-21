@@ -899,30 +899,48 @@
     return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
   }
 
-  var time = 1.0, rafId = 0, running = false;
+  // UNE SEULE passe quand la section entre dans le viewport (pas de boucle
+  // perpétuelle) : on anime ~6 s puis on FIGE la dernière image en fond statique.
+  var DURATION = 6000; // ms
+  var time = 1.0, rafId = 0, running = false, played = false, t0 = 0;
   function draw() {
     if (!ready || gl.isContextLost()) return;
     time += 0.05; gl.uniform1f(uTime, time); gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
-  function frame() { if (!running) return; draw(); rafId = window.requestAnimationFrame(frame); }
-  function start() { if (running || !ready) return; running = true; resize(); draw(); rafId = window.requestAnimationFrame(frame); }
+  function frame(ts) {
+    if (!running) return;
+    if (!t0) t0 = ts;
+    draw();
+    if (ts - t0 < DURATION) rafId = window.requestAnimationFrame(frame);
+    else { running = false; rafId = 0; } // fin de la passe : image figée
+  }
+  function playOnce() {
+    if (played || !ready) return;
+    played = true; running = true; t0 = 0; resize();
+    rafId = window.requestAnimationFrame(frame);
+  }
   function stop() { running = false; if (rafId) window.cancelAnimationFrame(rafId); rafId = 0; }
 
-  // Perte de contexte (reset GPU/veille) : on stoppe, puis on RECONSTRUIT à la restauration.
+  // Perte de contexte (reset GPU/veille) : on stoppe, puis on REJOUE la passe à la restauration.
   canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); ready = false; stop(); }, false);
   canvas.addEventListener('webglcontextrestored', function () {
-    if (initGL()) { resize(); if (!document.hidden && onScreen()) start(); }
+    if (initGL()) { resize(); played = false; if (!document.hidden && onScreen()) playOnce(); }
   }, false);
 
-  start();
+  // Déclencheur : la passe unique part dès que la section est visible.
+  // IntersectionObserver + repli scroll/chargement -> robuste partout, et "played" garantit une seule passe.
+  function maybeStart() {
+    if (played) { window.removeEventListener('scroll', maybeStart); return; }
+    if (onScreen()) playOnce();
+  }
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (en) { if (en.isIntersecting && !document.hidden) start(); else stop(); });
-    }, { threshold: 0.01 });
+      for (var k = 0; k < es.length; k++) {
+        if (es[k].isIntersecting) { playOnce(); io.disconnect(); break; }
+      }
+    }, { threshold: 0.15 });
     io.observe(canvas);
   }
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) stop();
-    else if (onScreen()) start();
-  });
+  window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
 })();
