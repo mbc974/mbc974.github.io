@@ -5603,8 +5603,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* photo "fille saison fondatrice" en fondu (masque radial) — pas de cadre, se dissout dans le fond */
 .social-promo{position:relative;margin:1.8rem 0 0;isolation:isolate;max-width:460px}
 .social-promo img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:center 28%;display:block;
-  -webkit-mask-image:radial-gradient(135% 120% at 47% 40%,#000 52%,rgba(0,0,0,.35) 80%,transparent 98%);
-  mask-image:radial-gradient(135% 120% at 47% 40%,#000 52%,rgba(0,0,0,.35) 80%,transparent 98%)}
+  -webkit-mask-image:radial-gradient(68% 74% at 50% 40%,#000 20%,rgba(0,0,0,.42) 50%,transparent 80%);
+  mask-image:radial-gradient(68% 74% at 50% 40%,#000 20%,rgba(0,0,0,.42) 50%,transparent 80%)}
 .social-promo.is-empty{display:none}
 
 /* ============================================================
