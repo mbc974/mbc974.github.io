@@ -5588,32 +5588,27 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   .cta-photo{aspect-ratio:4/5;max-height:78vh;margin-inline:auto;max-width:520px;width:100%}
 }
 
-/* ---- 2. Bande Territoire — illustration réduite + fondu premium (même traitement que .hero__photo / .join) ---- */
-.territoire{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(120deg,#0c1830,#0a1426 58%,#070f1d)}
-/* image réduite (à droite) et fondue dans le fond : vers le texte (gauche) + bords haut/bas */
-.territoire__bg{position:absolute;top:0;right:0;bottom:0;width:54%;max-width:880px;z-index:0;pointer-events:none;
-  -webkit-mask-image:linear-gradient(to left,#000 30%,rgba(0,0,0,.7) 56%,transparent 88%),linear-gradient(to top,transparent 0,#000 16%,#000 84%,transparent);
-  mask-image:linear-gradient(to left,#000 30%,rgba(0,0,0,.7) 56%,transparent 88%),linear-gradient(to top,transparent 0,#000 16%,#000 84%,transparent);
+/* ---- 2. Footer — illustration La Montagne en accent à droite (fondu premium, même traitement que .hero__photo / .join) ---- */
+.site-footer{position:relative;overflow:hidden;isolation:isolate}
+.site-footer>.wrap{position:relative;z-index:1}
+/* image réduite à droite, fondue dans le fond : vers le contenu (gauche) + bords haut/bas */
+.site-footer__art{position:absolute;top:0;right:0;bottom:0;width:42%;max-width:680px;z-index:0;pointer-events:none;
+  -webkit-mask-image:linear-gradient(to left,#000 26%,rgba(0,0,0,.6) 54%,transparent 90%),linear-gradient(to top,transparent 0,#000 18%,#000 82%,transparent);
+  mask-image:linear-gradient(to left,#000 26%,rgba(0,0,0,.6) 54%,transparent 90%),linear-gradient(to top,transparent 0,#000 18%,#000 82%,transparent);
   -webkit-mask-composite:source-in;mask-composite:intersect}
-.territoire__bg img{width:100%;height:100%;object-fit:cover;object-position:74% 42%;display:block;opacity:.85;filter:saturate(1.02)}
-/* voile bleu nuit : très sombre côté texte (gauche), plus léger à droite */
-.territoire__bg::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(to left,transparent 22%,rgba(9,16,32,.4) 55%,rgba(9,16,32,.92) 88%),
-            linear-gradient(to top,rgba(7,13,24,.5),transparent 42%)}
-.territoire.is-empty .territoire__bg{background:radial-gradient(75% 90% at 82% 35%,rgba(27,81,158,.38),transparent 70%)}
-.territoire.is-empty .territoire__bg img{display:none}
-.territoire__inner{position:relative;z-index:1;max-width:56ch}
-.territoire .h2{text-shadow:0 4px 22px rgba(0,0,0,.5)}
-.territoire .lead{color:var(--txt);max-width:46ch}
-.territoire__points{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.7rem;padding:0}
-.territoire__points li{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:.46em 1.05em;background:rgba(7,13,24,.4)}
+.site-footer__art img{width:100%;height:100%;object-fit:cover;object-position:55% 45%;display:block;opacity:.5;filter:saturate(1.02)}
+/* voile nuit : protège la lisibilité du contenu (gauche), laisse respirer la droite */
+.site-footer__art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to left,transparent 16%,rgba(5,10,19,.5) 52%,rgba(5,10,19,.92) 86%),
+            linear-gradient(to top,rgba(5,10,19,.55),transparent 48%)}
+.site-footer__art.is-empty{display:none}
 @media (max-width:760px){
-  .territoire__bg{width:100%;max-width:none;
-    -webkit-mask-image:linear-gradient(to top,transparent 2%,#000 24%,#000 80%,transparent 100%);
-    mask-image:linear-gradient(to top,transparent 2%,#000 24%,#000 80%,transparent 100%);
+  .site-footer__art{width:100%;max-width:none;
+    -webkit-mask-image:linear-gradient(to top,transparent 4%,#000 32%,rgba(0,0,0,.5));
+    mask-image:linear-gradient(to top,transparent 4%,#000 32%,rgba(0,0,0,.5));
     -webkit-mask-composite:source-over;mask-composite:add}
-  .territoire__bg img{object-position:62% 36%;opacity:.42}
-  .territoire__bg::after{background:linear-gradient(to top,rgba(7,13,24,.82),rgba(7,13,24,.46) 50%,rgba(7,13,24,.84))}
+  .site-footer__art img{object-position:58% 42%;opacity:.26}
+  .site-footer__art::after{background:linear-gradient(to top,rgba(5,10,19,.86),rgba(5,10,19,.6))}
 }
 
 /* ---- 3. Carte campagne "Rejoignez le MBC" (réseaux sociaux) ---- */
