@@ -5621,7 +5621,3 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   border:1px solid var(--line-strong);background:linear-gradient(160deg,#13284b,#0a1426);box-shadow:var(--e2)}
 .social-promo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
 .social-promo.is-empty{display:none}
-.social-promo__cap{display:flex;flex-direction:column;gap:.2rem;padding:.85rem 1.1rem;
-  background:linear-gradient(180deg,rgba(7,13,24,.12),rgba(7,13,24,.55))}
-.social-promo__cap strong{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;color:var(--blanc)}
-.social-promo__cap span{font-size:.9rem;color:var(--txt-soft)}
