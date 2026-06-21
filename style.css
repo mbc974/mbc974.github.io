@@ -5473,7 +5473,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
 /* --- scène / mockup --- */
-.cine-stage{position:relative;margin:0;display:flex;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
+.cine-stage{position:relative;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
 .cine-phone{position:relative;width:clamp(244px,30vw,288px);aspect-ratio:280/580;border-radius:2.6rem;background:#111;transform-style:preserve-3d;transition:transform .5s var(--ease-out,ease);
   box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 80px -16px rgba(0,0,0,.85),0 15px 25px -6px rgba(0,0,0,.6)}
 .cine-phone__island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:88px;height:25px;background:#000;border-radius:99px;z-index:8;display:flex;align-items:center;justify-content:flex-end;padding-right:9px}
@@ -5499,7 +5499,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-badge span{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.56rem;color:var(--orange-vif)}
 .cine-badge--1{top:5%;left:-2%}
 .cine-badge--2{bottom:11%;right:-2%}
-.cine-caption{position:absolute;left:0;right:0;bottom:-1.9rem;text-align:center;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.62rem;color:rgba(191,210,228,.5)}
+.cine-caption{margin-top:clamp(1.6rem,3.5vw,2rem);max-width:32ch;text-align:center;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.62rem;line-height:1.45;color:rgba(191,210,228,.5)}
 @keyframes cinePulse{0%,100%{opacity:1}50%{opacity:.35}}
 @media (prefers-reduced-motion:reduce){.cine-ring__fg{transition:none}.cine-phone__island i{animation:none}.cine-phone{transition:none}}
-@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}.cine-badge{display:none}.cine-caption{bottom:-1.6rem}}
+@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}.cine-badge{display:none}.cine-caption{margin-top:1.7rem}}
