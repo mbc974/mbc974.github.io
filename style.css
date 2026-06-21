@@ -5457,11 +5457,15 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* --- colonne texte --- */
 .cine-copy .kicker{color:var(--orange-vif)}
 .cine-copy .lead{color:rgba(219,232,244,.86)}
-.cine-stats{display:flex;flex-wrap:wrap;gap:1.3rem 0;list-style:none;margin:2rem 0;padding:0}
-.cine-stats li{display:flex;flex-direction:column;gap:.5rem;padding:0 0 0 1.9rem;border-left:2px solid rgba(232,130,42,.32)}
-.cine-stats li:first-child{padding-left:0;border-left:0}
-.cine-stats b{font-family:var(--ff-display);font-size:clamp(2.5rem,3.6vw,3.4rem);line-height:.9;color:#fff;letter-spacing:.5px}
-.cine-stats span{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.85rem;line-height:1.25;color:var(--orange-vif);max-width:16ch}
+/* chips premium "effet verre" (non cliquables) — propre et pro */
+.cine-stats{display:flex;flex-wrap:wrap;gap:.7rem;list-style:none;margin:1.8rem 0;padding:0}
+.cine-stats li{display:flex;flex-direction:column;gap:.15rem;padding:.6rem 1.05rem;border-radius:13px;
+  background:linear-gradient(160deg,rgba(255,255,255,.11),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.15);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 8px 22px rgba(3,7,15,.28)}
+.cine-stats b{font-family:var(--ff-display);font-size:1.5rem;line-height:1.05;color:#fff;letter-spacing:.4px}
+.cine-stats span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.64rem;line-height:1.2;color:var(--bleu-glacier);max-width:14ch}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
 /* --- scène / mockup --- */
