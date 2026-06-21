@@ -857,9 +857,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   grid-template-columns:1fr;
   gap:1.2rem;
 }
-/* visuel campagne (carte que tu aimes) à gauche */
-.social-spotlight__body .social-promo{margin:0;width:100%;align-self:start}
-/* réseaux : pile verticale premium */
+/* réseaux : rangée de cartes premium */
 .social-spotlight__grid{
   display:flex;
   flex-direction:column;
@@ -936,8 +934,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .social-card--tiktok{--brand:rgba(37,244,238,.2);--brandline:rgba(254,44,85,.6);--brandglow:rgba(254,44,85,.45)}
 .social-card--tiktok .social-card__icon{background:linear-gradient(135deg,#25F4EE,#0b0b0b 46%,#FE2C55);box-shadow:0 10px 24px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.22)}
 @media (min-width:880px){
-  .social-spotlight__body{grid-template-columns:1.08fr .92fr;gap:clamp(1.4rem,2.5vw,2.2rem);align-items:stretch}
-  .social-card{flex:1}
+  .social-spotlight__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
 }
 @media (prefers-reduced-motion:reduce){
   .social-card,.social-card__icon,.social-card__go{transition:none}
@@ -5599,13 +5596,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 }
 
 
-/* ---- 3. Carte campagne "Rejoignez le MBC" (réseaux sociaux) ---- */
-/* photo "fille saison fondatrice" en fondu (masque radial) — pas de cadre, se dissout dans le fond */
-.social-promo{position:relative;margin:1.8rem 0 0;isolation:isolate;max-width:460px}
-.social-promo img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:center 28%;display:block;
-  -webkit-mask-image:radial-gradient(68% 74% at 50% 40%,#000 20%,rgba(0,0,0,.42) 50%,transparent 80%);
-  mask-image:radial-gradient(68% 74% at 50% 40%,#000 20%,rgba(0,0,0,.42) 50%,transparent 80%)}
-.social-promo.is-empty{display:none}
 
 /* ============================================================
    V47 — Cartes catégories avec photo (bandeau haut premium)
