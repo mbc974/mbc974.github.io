@@ -5616,3 +5616,36 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   border:1px solid var(--line-strong);background:linear-gradient(160deg,#13284b,#0a1426);box-shadow:var(--e2)}
 .social-promo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
 .social-promo.is-empty{display:none}
+
+/* ============================================================
+   V47 — Cartes catégories avec photo (bandeau haut premium)
+   Photo en haut de chaque carte (n° + âge en surimpression),
+   texte dessous. Repli .is-empty : dégradé conservé si la photo
+   n'est pas encore déposée dans assets/categories/.
+   ============================================================ */
+.cat--photo{padding-top:0 !important}
+.cat--photo .cat__photo{
+  position:relative;margin:0 -1.8rem 1.4rem;     /* débord latéral = padding ; haut à ras */
+  height:clamp(160px,20vw,196px);overflow:hidden;isolation:isolate;
+  background:linear-gradient(160deg,#16294a,#0b1830);
+}
+.cat--photo .cat__photo img{width:100%;height:100%;object-fit:cover;object-position:center 26%;display:block;
+  transition:transform .6s var(--ease)}
+.cat--photo:hover .cat__photo img{transform:scale(1.05)}
+.cat--photo .cat__photo.is-empty img{display:none}
+/* dégradé : lisibilité n°/âge + fondu vers le contenu de la carte */
+.cat--photo .cat__photo::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,13,24,.30) 0,rgba(7,13,24,0) 26%,rgba(7,13,24,0) 52%,rgba(13,21,38,.62) 84%,rgba(13,21,38,.96) 100%)}
+/* numéro en filigrane (coin haut droit de la photo) */
+.cat--photo .cat__num{position:absolute;top:.1rem;right:.7rem;left:auto;bottom:auto;z-index:2;
+  font-size:clamp(3.4rem,6vw,4.4rem);line-height:1;color:rgba(255,255,255,.20);
+  -webkit-text-stroke:0;text-shadow:0 2px 16px rgba(0,0,0,.55)}
+.cat--photo:hover .cat__num{color:rgba(232,130,42,.45)}
+/* badge âge en surimpression (coin bas gauche) */
+.cat--photo .cat__age{position:absolute;left:.85rem;bottom:.8rem;z-index:2;margin:0;
+  background:linear-gradient(135deg,#E8822A,#D96A1B);border-color:transparent;color:#190f04;
+  box-shadow:0 6px 18px rgba(217,106,27,.42),0 0 0 1px rgba(255,255,255,.12)}
+.cat--photo h3{margin-top:0}
+@media (max-width:560px){
+  .cat--photo .cat__photo{height:clamp(150px,44vw,180px)}
+}
