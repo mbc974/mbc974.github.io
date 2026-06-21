@@ -4916,8 +4916,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .join__media{position:absolute;inset:0 0 0 auto;width:62%;max-width:1000px;z-index:0;pointer-events:none}
 .join__media img{width:100%;height:100%;object-fit:cover;object-position:62% 6%;display:block;
   /* la photo se dissout dans le fond réel -> aucune démarcation */
-  -webkit-mask-image:linear-gradient(100deg,transparent 4%,rgba(0,0,0,.14) 26%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.85) 64%,#000 78%);
-          mask-image:linear-gradient(100deg,transparent 4%,rgba(0,0,0,.14) 26%,rgba(0,0,0,.5) 48%,rgba(0,0,0,.85) 64%,#000 78%)}
+  -webkit-mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%);
+          mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%)}
 .join__media.is-empty{background:radial-gradient(80% 90% at 80% 28%,rgba(27,81,158,.45),transparent 70%)}
 .join__media.is-empty img{display:none}
 .join__media.is-empty::after{background:linear-gradient(95deg,#0a1426 14%,rgba(10,20,38,.5) 44%,transparent 78%)} /* fallback : overlay plus léger sans photo */
@@ -4925,8 +4925,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .join__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   /* LAVAGE = couleur EXACTE du fond de section, opaque à gauche : la photo fond sans aucune marche ni ligne */
   background:linear-gradient(180deg,#0a1426,#0d1a30);
-  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 30%,rgba(0,0,0,.5) 50%,transparent 68%);
-          mask-image:linear-gradient(100deg,#000 0%,#000 30%,rgba(0,0,0,.5) 50%,transparent 68%)}
+  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 17%,rgba(0,0,0,.5) 35%,transparent 51%);
+          mask-image:linear-gradient(100deg,#000 0%,#000 17%,rgba(0,0,0,.5) 35%,transparent 51%)}
 .join__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   /* ancrage haut/bas avec les couleurs EXACTES du fond */
   background:linear-gradient(to bottom,#0a1426,transparent 16%),
