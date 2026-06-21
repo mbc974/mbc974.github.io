@@ -726,6 +726,14 @@
       <p class="kicker">La communauté MBC</p>
       <h2 class="h2" id="socialTitle">Suivez <span class="hl">le MBC</span></h2>
       <p class="social-spotlight__sub">Actus du club, coulisses, photos et temps forts de La Montagne. Reste connecté, nou lé là.</p>
+      <figure class="social-promo reveal">
+        <img src="assets/images/rejoignez-mbc.webp" alt="" aria-hidden="true" width="1536" height="1024" loading="lazy" decoding="async"
+             onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/rejoignez-mbc.jpg'}else{this.closest('.social-promo').classList.add('is-empty')}">
+        <figcaption class="social-promo__cap">
+          <strong>Campagne inscriptions 2026/2027</strong>
+          <span>Rejoignez le MBC et partagez nos publications pour faire grandir le club.</span>
+        </figcaption>
+      </figure>
     </div>
     <div class="social-spotlight__grid">
       <a class="social-card social-card--facebook reveal" href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener" aria-label="Suivre le MBC sur Facebook">
@@ -770,6 +778,24 @@
       <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je fais un don</a>
       <span class="dons__card-note">Paiement 100 % sécurisé · Confirmation par e-mail</span>
     </div>
+  </div>
+</section>
+
+<!-- ===== Territoire — Un club ancré à La Montagne ===== -->
+<section class="section territoire" id="territoire" aria-labelledby="territoireTitle">
+  <div class="territoire__bg" aria-hidden="true">
+    <img src="assets/images/territoire-la-montagne.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"
+         onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/territoire-la-montagne.jpg'}else{this.closest('.territoire').classList.add('is-empty')}">
+  </div>
+  <div class="wrap territoire__inner reveal reveal--l">
+    <p class="kicker">Notre territoire</p>
+    <h2 class="h2" id="territoireTitle">Un club ancré <span class="hl">à La Montagne</span></h2>
+    <p class="lead">Le MBC porte une ambition simple&nbsp;: faire grandir le basket au cœur du quartier, avec les familles, les jeunes, les bénévoles et les partenaires locaux.</p>
+    <ul class="territoire__points" aria-label="Notre ancrage local">
+      <li>La Montagne · Saint-Denis · La Réunion</li>
+      <li>Un projet familial &amp; formateur</li>
+      <li>Ouvert à toutes les générations</li>
+    </ul>
   </div>
 </section>
 
@@ -875,16 +901,13 @@
   </div>
 </section>
 
-<!-- ===== 14. CTA band ===== -->
-<section class="section cta-band cta-band--player" id="inscription">  <!-- Visuel joueur détouré : assets/images/joueur-kit.png (webp prioritaire). Si le fichier est absent, .is-empty recadre proprement la bannière (pas d'affichage forcé). -->
-  <div class="cta-band__photo cta-player-visual reveal" aria-hidden="true">
-    <img src="assets/images/joueur-kit.webp" alt="" width="600" height="1320" loading="lazy" decoding="async"
-         onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/joueur-kit.png'}else{this.closest('.cta-band__photo').classList.add('is-empty')}">
-  </div>
-  <div class="wrap cta-band__inner reveal reveal--scale">
-    <p class="kicker kicker--center">Saison 2026-2027</p>
-    <h2 class="h2">Prêt à rejoindre <span class="hl">l'aventure&nbsp;?</span></h2>
-    <p class="lead" style="margin-inline:auto">Les pré-inscriptions sont ouvertes. Réservez votre place pour la saison fondatrice du MBC.</p>
+<!-- ===== 14. CTA band — variante 2 colonnes (carte joueur action) ===== -->
+<section class="section cta-band cta-band--split" id="inscription">  <!-- Carte joueur action : assets/images/joueur-action.webp (jpg fallback). Si le fichier est absent, .is-empty recentre proprement la bannière — rien ne casse. -->
+  <div class="wrap cta-band__grid">
+    <div class="cta-band__copy reveal reveal--l">
+    <p class="kicker">Saison 2026-2027</p>
+    <h2 class="h2">La saison fondatrice <span class="hl">commence maintenant</span></h2>
+    <p class="lead">Inscris-toi au MBC et deviens l'un des premiers joueurs de l'histoire du club. Les pré-inscriptions de la saison fondatrice 2026/2027 sont ouvertes.</p>
     <div class="cta-band__btns">
       <a href="adhesion.html" class="btn btn--primary btn--lg"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Je m'inscris · saison 2026/2027</a>
       <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener" class="btn btn--roi btn--lg"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg>Faire un don</a>
@@ -892,6 +915,11 @@
       <a href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20les%20inscriptions%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener" class="btn btn--ghost btn--lg btn--wa"><svg class="ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>WhatsApp</a>
     </div>
     <span class="cta-band__pill"><span class="dot"></span> Places limitées par catégorie</span>
+    </div>
+    <figure class="cta-photo reveal reveal--r">
+      <img src="assets/images/joueur-action.webp" alt="Joueur du MBC La Montagne Basket Club en action, maillot bleu, lors d'un match de basket à Saint-Denis de La Réunion" width="1080" height="1440" loading="lazy" decoding="async"
+           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/joueur-action.jpg'}else{this.closest('.cta-photo').classList.add('is-empty')}">
+    </figure>
   </div>
 </section>
 

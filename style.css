@@ -5518,3 +5518,68 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @keyframes cinePulse{0%,100%{opacity:1}50%{opacity:.35}}
 @media (prefers-reduced-motion:reduce){.cine-ring__fg{transition:none}.cine-phone__island i{animation:none}.cine-phone{transition:none}}
 @media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}.cine-badge{display:none}.cine-caption{margin-top:1.7rem}}
+
+/* ============================================================
+   V45 — Intégration 3 visuels premium
+   1) CTA final 2 colonnes + carte joueur action
+   2) Bande Territoire (illustration La Montagne en ambiance)
+   3) Carte campagne "Rejoignez le MBC" (réseaux sociaux)
+   Toutes les images : fallback .is-empty -> rien ne casse si le
+   fichier n'est pas encore déposé dans assets/images/.
+   ============================================================ */
+
+/* ---- 1. CTA final — variante 2 colonnes ---- */
+.cta-band--split .cta-band__grid{position:relative;z-index:1;display:grid;gap:clamp(2rem,5vw,4rem);align-items:center}
+.cta-band--split .cta-band__copy{min-width:0;text-align:left;max-width:60ch}
+.cta-band--split .cta-band__copy .lead{margin-inline:0;max-width:48ch}
+.cta-band--split .cta-band__btns{justify-content:flex-start}
+@media (min-width:880px){
+  .cta-band--split .cta-band__grid{grid-template-columns:1.05fr .95fr}
+}
+
+/* carte photo joueur : coins arrondis, overlay bleu nuit, liseré bleu/orange, ombre premium */
+.cta-photo{position:relative;margin:0;min-width:0;border-radius:var(--r-lg);overflow:hidden;isolation:isolate;
+  aspect-ratio:3/4;
+  border:1px solid var(--line-strong);
+  background:linear-gradient(160deg,#13284b,#0a1426);
+  box-shadow:var(--e3),var(--glow-b)}
+.cta-photo img{width:100%;height:100%;object-fit:cover;object-position:center 16%;display:block}
+.cta-photo::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(7,13,24,0) 42%,rgba(7,13,24,.55) 100%),
+             linear-gradient(115deg,rgba(13,21,38,.34),transparent 58%)}
+.cta-photo::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgba(232,130,42,.34),var(--bevel)}
+.cta-photo.is-empty{display:none}
+/* repli : photo absente -> on recentre la bannière */
+.cta-band--split:has(.cta-photo.is-empty) .cta-band__grid{grid-template-columns:1fr;max-width:64ch;margin-inline:auto;text-align:center}
+.cta-band--split:has(.cta-photo.is-empty) .cta-band__copy{text-align:center;margin-inline:auto}
+.cta-band--split:has(.cta-photo.is-empty) .cta-band__copy .lead{margin-inline:auto}
+.cta-band--split:has(.cta-photo.is-empty) .cta-band__btns{justify-content:center}
+@media (max-width:879px){
+  .cta-band--split .cta-band__copy,.cta-band--split .cta-band__copy .lead{text-align:left}
+  .cta-photo{aspect-ratio:4/5;max-height:78vh;margin-inline:auto;max-width:520px;width:100%}
+}
+
+/* ---- 2. Bande Territoire — illustration La Montagne en ambiance ---- */
+.territoire{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,#13284b,#0a1426)}
+.territoire__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.territoire__bg img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.territoire__bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(7,13,24,.7),rgba(7,13,24,.7)),
+            linear-gradient(105deg,rgba(7,13,24,.6) 6%,rgba(7,13,24,.28) 52%,rgba(7,13,24,.55))}
+.territoire.is-empty .territoire__bg img{display:none}
+.territoire__inner{position:relative;z-index:1;max-width:60ch}
+.territoire .h2{text-shadow:0 4px 22px rgba(0,0,0,.45)}
+.territoire .lead{color:var(--txt);max-width:50ch}
+.territoire__points{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.7rem;padding:0}
+.territoire__points li{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.86rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:.46em 1.05em;background:rgba(7,13,24,.4)}
+
+/* ---- 3. Carte campagne "Rejoignez le MBC" (réseaux sociaux) ---- */
+.social-promo{position:relative;margin:1.8rem 0 0;border-radius:var(--r-md);overflow:hidden;isolation:isolate;max-width:520px;
+  border:1px solid var(--line-strong);background:linear-gradient(160deg,#13284b,#0a1426);box-shadow:var(--e2)}
+.social-promo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
+.social-promo.is-empty{display:none}
+.social-promo__cap{display:flex;flex-direction:column;gap:.2rem;padding:.85rem 1.1rem;
+  background:linear-gradient(180deg,rgba(7,13,24,.12),rgba(7,13,24,.55))}
+.social-promo__cap strong{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;color:var(--blanc)}
+.social-promo__cap span{font-size:.9rem;color:var(--txt-soft)}
