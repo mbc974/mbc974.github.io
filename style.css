@@ -858,7 +858,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   gap:1.2rem;
 }
 /* visuel campagne (carte que tu aimes) à gauche */
-.social-spotlight__body .social-promo{margin:0;max-width:none;width:100%;align-self:start}
+.social-spotlight__body .social-promo{margin:0;width:100%;align-self:start}
 /* réseaux : pile verticale premium */
 .social-spotlight__grid{
   display:flex;
@@ -5600,9 +5600,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 
 
 /* ---- 3. Carte campagne "Rejoignez le MBC" (réseaux sociaux) ---- */
-.social-promo{position:relative;margin:1.8rem 0 0;border-radius:var(--r-md);overflow:hidden;isolation:isolate;max-width:520px;
-  border:1px solid var(--line-strong);background:linear-gradient(160deg,#13284b,#0a1426);box-shadow:var(--e2)}
-.social-promo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block}
+/* photo "fille saison fondatrice" en fondu (masque radial) — pas de cadre, se dissout dans le fond */
+.social-promo{position:relative;margin:1.8rem 0 0;isolation:isolate;max-width:460px}
+.social-promo img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;object-position:center 28%;display:block;
+  -webkit-mask-image:radial-gradient(135% 120% at 47% 40%,#000 52%,rgba(0,0,0,.35) 80%,transparent 98%);
+  mask-image:radial-gradient(135% 120% at 47% 40%,#000 52%,rgba(0,0,0,.35) 80%,transparent 98%)}
 .social-promo.is-empty{display:none}
 
 /* ============================================================
