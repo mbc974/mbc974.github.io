@@ -5396,6 +5396,20 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (prefers-reduced-motion:reduce){.spotglow>.spotglow__fx{transition:none}}
 @media (hover:none){.spotglow>.spotglow__fx{display:none}}
 
+/* ===== V53 — Shader WebGL : fond animé de la section "L'essentiel" ===== */
+.essentiel{position:relative;overflow:hidden}
+.ess-shader{
+  position:absolute;inset:0;width:100%;height:100%;display:block;border:0;
+  z-index:0;pointer-events:none;
+  mix-blend-mode:screen;opacity:.55;
+  -webkit-mask:radial-gradient(125% 95% at 50% 40%,#000 34%,transparent 100%);
+          mask:radial-gradient(125% 95% at 50% 40%,#000 34%,transparent 100%);
+}
+.essentiel>.wrap{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.ess-shader{display:none}}
+/* coupé sur tactile/petit écran (batterie) — cohérent avec le gating JS */
+@media (hover:none),(max-width:760px){.ess-shader{display:none}}
+
 /* ============================================================
    V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,
    sans React/framer-motion) en fond de "Sur le terrain" (#galerie).

@@ -800,3 +800,129 @@
     card.addEventListener('pointerleave', function () { if (phone) phone.style.transform = ''; });
   }
 })();
+
+/* ============================================================
+   Fond animé "L'essentiel" : shader WebGL natif (adaptation du
+   composant shader-animation — SANS Three.js, sans build).
+   Quad plein écran + fragment shader (traits lumineux radiaux).
+   Pause hors-écran / onglet caché ; respecte prefers-reduced-motion.
+   ============================================================ */
+(function () {
+  'use strict';
+  var canvas = document.querySelector('.ess-shader');
+  if (!canvas) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Comme tous les autres effets du site (parallax/tilt/spotglow/grille), on coupe sur
+  // tactile/petit écran : un shader plein écran en boucle viderait la batterie mobile.
+  if (window.matchMedia && window.matchMedia('(hover:none),(max-width:760px)').matches) return;
+
+  var gl = null;
+  try { gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl'); } catch (e) { gl = null; }
+  if (!gl) return; // pas de WebGL -> fond nu (dégradation gracieuse)
+
+  var vertSrc =
+    'attribute vec2 position;' +
+    'void main(){ gl_Position = vec4(position, 0.0, 1.0); }';
+
+  // Maths du shader d'origine conservées, mais sortie RE-TEINTÉE bleu roi -> orange
+  // ballon (identité MBC) au lieu des canaux R/V/B arc-en-ciel d'origine.
+  var fragSrc = [
+    'precision highp float;',
+    'uniform vec2 resolution;',
+    'uniform float time;',
+    'void main(void){',
+    '  vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);',
+    '  float t = time * 0.05;',
+    '  float lineWidth = 0.002;',
+    '  vec3 color = vec3(0.0);',
+    '  for(int j = 0; j < 3; j++){',
+    '    for(int i = 0; i < 5; i++){',
+    '      color[j] += lineWidth*float(i*i) / abs(fract(t - 0.01*float(j)+float(i)*0.01)*5.0 - length(uv) + mod(uv.x+uv.y, 0.2));',
+    '    }',
+    '  }',
+    '  float glow = color.r + color.g + color.b;',
+    '  vec3 roi = vec3(0.106, 0.318, 0.620);',     // bleu roi MBC ~#1B519E
+    '  vec3 orange = vec3(0.851, 0.416, 0.106);',  // orange ballon MBC ~#D96A1B
+    '  vec3 tint = mix(roi, orange, clamp(glow * 0.6, 0.0, 1.0));',
+    '  gl_FragColor = vec4(tint * glow, 1.0);',
+    '}'
+  ].join('\n');
+
+  var buf = null, uTime = null, uRes = null, ready = false;
+
+  function compile(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { gl.deleteShader(s); return null; }
+    return s;
+  }
+
+  // (Re)crée toutes les ressources GL — appelé au démarrage ET après webglcontextrestored.
+  function initGL() {
+    ready = false;
+    var vs = compile(gl.VERTEX_SHADER, vertSrc);
+    var fs = compile(gl.FRAGMENT_SHADER, fragSrc);
+    if (!vs || !fs) return false;
+    var prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
+    gl.useProgram(prog);
+    // Quad plein écran : 2 triangles couvrant le clip-space
+    buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+    var loc = gl.getAttribLocation(prog, 'position');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    uTime = gl.getUniformLocation(prog, 'time');
+    uRes = gl.getUniformLocation(prog, 'resolution');
+    ready = true;
+    return true;
+  }
+  if (!initGL()) return;
+
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function resize() {
+    var w = Math.max(1, Math.floor(canvas.clientWidth * dpr));
+    var h = Math.max(1, Math.floor(canvas.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+  }
+  window.addEventListener('resize', resize, { passive: true });
+
+  function onScreen() {
+    var r = canvas.getBoundingClientRect();
+    return r.bottom > 0 && r.top < (window.innerHeight || document.documentElement.clientHeight);
+  }
+
+  var time = 1.0, rafId = 0, running = false;
+  function draw() {
+    if (!ready || gl.isContextLost()) return;
+    time += 0.05; gl.uniform1f(uTime, time); gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+  function frame() { if (!running) return; draw(); rafId = window.requestAnimationFrame(frame); }
+  function start() { if (running || !ready) return; running = true; resize(); draw(); rafId = window.requestAnimationFrame(frame); }
+  function stop() { running = false; if (rafId) window.cancelAnimationFrame(rafId); rafId = 0; }
+
+  // Perte de contexte (reset GPU/veille) : on stoppe, puis on RECONSTRUIT à la restauration.
+  canvas.addEventListener('webglcontextlost', function (e) { e.preventDefault(); ready = false; stop(); }, false);
+  canvas.addEventListener('webglcontextrestored', function () {
+    if (initGL()) { resize(); if (!document.hidden && onScreen()) start(); }
+  }, false);
+
+  start();
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting && !document.hidden) start(); else stop(); });
+    }, { threshold: 0.01 });
+    io.observe(canvas);
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop();
+    else if (onScreen()) start();
+  });
+})();
