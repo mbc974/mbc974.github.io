@@ -5408,6 +5408,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .essentiel-card:hover::after{transform:scaleX(1);opacity:1}
 @media (prefers-reduced-motion:reduce){.essentiel-card,.essentiel-card::before,.essentiel-card::after{transition:none}.essentiel-card:hover{transform:none!important}}
 
+/* ===== V64 — "L'essentiel" sur MOBILE : carte premium horizontale (icône | valeur + libellé) =====
+   En 1 colonne (<560px) la pile verticale paraissait plate. Layout horizontal pro :
+   pastille conic à gauche (centrée), valeur en gradient + libellé à droite, filet orange visible. */
+@media (max-width:559px){
+  .essentiel-card{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    align-items:center;
+    column-gap:1.1rem;
+    row-gap:.22rem;
+    padding:1.15rem 1.25rem !important;
+  }
+  .essentiel-card__ico{grid-column:1;grid-row:1 / 3;align-self:center}
+  .essentiel-card .sr-only{position:absolute} /* sécurité : reste hors de la grille */
+  .essentiel-card__val{grid-column:2;grid-row:1;align-self:end;font-size:1.5rem !important;margin:0}
+  .essentiel-card__lbl{grid-column:2;grid-row:2;align-self:start;font-size:.85rem !important;line-height:1.34}
+  /* filet orange visible d'office (pas de survol sur tactile) */
+  .essentiel-card::after{transform:scaleX(1) !important;opacity:.6 !important;left:1.25rem;right:1.25rem}
+}
+
 /* ============================================================
    V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,
    sans React/framer-motion) en fond de "Sur le terrain" (#galerie).
