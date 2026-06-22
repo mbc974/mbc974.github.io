@@ -5357,7 +5357,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* la section staff élargit son conteneur pour laisser respirer les photos */
 .staff .wrap{max-width:min(95vw,1360px)}
 .team{--staff-tint:232,130,42;display:flex;flex-direction:column;gap:2rem;width:100%;max-width:none;margin:1.6rem auto 0;align-items:center} /* teinte staff : 232,130,42 = orange · bleu = 27,81,158 */
-.team__photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;flex:none;width:100%;max-width:clamp(560px,52vw,840px)}
+.team__photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;flex:none;width:100%;max-width:clamp(620px,60vw,980px)}
 .team__col{display:flex;flex-direction:column;gap:1rem;margin-top:0}
 .team__photo{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;width:100%;isolation:isolate;
   background:#0b1626;border:1px solid rgba(191,210,228,.12);aspect-ratio:1 / 1.06;transition:opacity .4s,box-shadow .4s,border-color .4s}
@@ -5384,10 +5384,9 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .team__name{font-family:var(--ff-display);font-size:clamp(1.15rem,1.6vw,1.42rem);line-height:1;color:rgba(219,232,244,.82);transition:color .3s}
 .team__row.is-active .team__name{color:#fff}
 .team__role{display:block;margin:.45rem 0 0;padding-left:1.6rem;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.16em;font-size:.7rem;color:rgba(191,210,228,.74)}
-@media (min-width:860px){
-  .team{flex-direction:row;align-items:flex-start;gap:clamp(1.6rem,3vw,2.6rem)}
-  .team__photos{justify-content:flex-start}
-  .team__list{padding-top:.4rem}
+@media (min-width:1100px){
+  .team{flex-direction:row;align-items:center;justify-content:center;gap:clamp(1.6rem,3vw,2.6rem)}
+  .team__list{flex:none;padding-top:0}
 }
 @media (max-width:600px){
   /* tous les membres visibles : grille 2 colonnes (au lieu d'un carrousel horizontal qui en cachait) */
