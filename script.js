@@ -583,3 +583,88 @@
   video.addEventListener('ended', exitFullscreen);
 })();
 
+/* ============================================================
+   Flow field — fond animé section Parents (adaptation NATIVE du
+   composant React canvas, sans React). Particules bleu MBC suivant
+   un champ de flux, traînées, répulsion au survol. Tourne uniquement
+   quand la section est visible ; allégé sur mobile ; coupé en
+   prefers-reduced-motion (le fond normal de la section reste).
+   ============================================================ */
+(function () {
+  'use strict';
+  var canvas = document.querySelector('[data-flow-field]');
+  if (!canvas) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.remove(); return; }
+  var container = canvas.parentElement;
+  var ctx = canvas.getContext('2d');
+  if (!container || !ctx) return;
+
+  var COLOR = '#4f86e8';                 // particules bleu MBC
+  var TRAIL = 'rgba(7,13,24,0.10)';      // fondu vers le bleu nuit (traînées)
+  var BASE = '#0a1426';                  // fond initial
+  var SPEED = 0.8;
+  var COUNT = window.matchMedia('(max-width: 760px)').matches ? 280 : 560;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  var width = 0, height = 0, particles = [], raf = null, running = false, inited = false;
+  var mouse = { x: -1000, y: -1000 };
+
+  function reset(p) {
+    p.x = Math.random() * width; p.y = Math.random() * height;
+    p.vx = 0; p.vy = 0; p.age = 0; p.life = Math.random() * 200 + 100;
+  }
+  function update(p) {
+    var angle = (Math.cos(p.x * 0.005) + Math.sin(p.y * 0.005)) * Math.PI;
+    p.vx += Math.cos(angle) * 0.2 * SPEED;
+    p.vy += Math.sin(angle) * 0.2 * SPEED;
+    var dx = mouse.x - p.x, dy = mouse.y - p.y, dist = Math.sqrt(dx * dx + dy * dy), R = 150;
+    if (dist < R) { var f = (R - dist) / R; p.vx -= dx * f * 0.05; p.vy -= dy * f * 0.05; }
+    p.x += p.vx; p.y += p.vy; p.vx *= 0.95; p.vy *= 0.95;
+    p.age++; if (p.age > p.life) reset(p);
+    if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
+    if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
+  }
+  function size() {
+    var rect = container.getBoundingClientRect();
+    width = rect.width; height = rect.height;
+    canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+    canvas.style.width = width + 'px'; canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = BASE; ctx.fillRect(0, 0, width, height);
+  }
+  function init() {
+    size();
+    particles = [];
+    for (var i = 0; i < COUNT; i++) { var p = {}; reset(p); particles.push(p); }
+  }
+  function frame() {
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = TRAIL;
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = COLOR;
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      update(p);
+      ctx.globalAlpha = 1 - Math.abs((p.age / p.life) - 0.5) * 2;
+      ctx.fillRect(p.x, p.y, 1.6, 1.6);
+    }
+    raf = window.requestAnimationFrame(frame);
+  }
+  function start() { if (!running) { running = true; raf = window.requestAnimationFrame(frame); } }
+  function stop() { if (running) { running = false; window.cancelAnimationFrame(raf); } }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) { if (!inited) { init(); inited = true; } start(); }
+      else { stop(); }
+    }, { threshold: 0 }).observe(container);
+  } else { init(); inited = true; start(); }
+
+  window.addEventListener('resize', function () { if (inited) init(); });
+  container.addEventListener('mousemove', function (e) {
+    var rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top;
+  });
+  container.addEventListener('mouseleave', function () { mouse.x = -1000; mouse.y = -1000; });
+})();
+
