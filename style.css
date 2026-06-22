@@ -4343,7 +4343,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 
 /* Prix XL, dégradé orange STATIQUE (poli) + glow doux → premium discret */
 .tarifs__price{
-  font-size:clamp(3.4rem,7.5vw,5rem)!important;
+  font-size:clamp(4.2rem,9vw,6.4rem)!important;
   line-height:.95!important;letter-spacing:.5px!important;
   color:var(--orange-vif);
   filter:drop-shadow(0 6px 22px rgba(232,130,42,.32));
@@ -4932,7 +4932,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* ---- (2) Section dunk "Rejoindre le mouvement" ---- */
 .join{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#0a1426,#0d1a30)}
 .join__media{position:absolute;inset:0 0 0 auto;width:62%;max-width:1000px;z-index:0;pointer-events:none}
-.join__media img{width:100%;height:100%;object-fit:cover;object-position:58% 15%;display:block;
+.join__media img{width:100%;height:100%;object-fit:cover;object-position:58% 30%;display:block;
   /* la photo se dissout dans le fond réel -> aucune démarcation */
   -webkit-mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%);
           mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%)}
@@ -4964,7 +4964,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .join__btn:hover .btn__arrow{transform:translateX(5px)}
 @media (max-width:860px){
   .join__media{width:100%;max-width:none}
-  .join__media img{object-position:50% 14%;-webkit-mask-image:none;mask-image:none}
+  .join__media img{object-position:50% 26%;-webkit-mask-image:none;mask-image:none}
   .join__media::before{display:none}
   .join__media::after{background:linear-gradient(to top,#0a1426 12%,rgba(10,20,38,.82) 46%,rgba(10,20,38,.5) 78%,rgba(10,20,38,.38)),linear-gradient(95deg,rgba(10,20,38,.5),transparent 82%)}
   .join__inner{min-height:clamp(440px,88vw,580px);align-items:flex-end;padding-bottom:clamp(2rem,8vw,3rem)}
@@ -5481,7 +5481,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 @property --cine-a{syntax:"<angle>";inherits:false;initial-value:0deg}
 .cine-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;list-style:none;margin:2rem 0;padding:0}
-.cine-stats li{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:.45rem;min-width:0;padding:1.3rem 1.05rem 1.05rem;border-radius:var(--r-md);isolation:isolate;
+.cine-stats li{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:.45rem;min-width:0;padding:1.2rem 1rem;border-radius:var(--r-md);isolation:isolate;
   background:radial-gradient(120% 80% at 100% 0%,rgba(27,81,158,.20),transparent 55%),linear-gradient(168deg,rgba(21,35,61,.74),rgba(7,13,24,.80));
   -webkit-backdrop-filter:blur(7px) saturate(118%);backdrop-filter:blur(7px) saturate(118%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(7,13,24,.45),0 18px 36px -18px rgba(3,7,15,.70);
@@ -5502,7 +5502,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-stats li:hover b,.cine-stats li:focus-within b{filter:drop-shadow(0 0 14px rgba(232,130,42,.45))}
 .cine-stats span{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.78rem;line-height:1.25;color:var(--bleu-glacier);max-width:none}
 @keyframes cine-aurora{to{--cine-a:360deg}}
-@media (max-width:520px){.cine-stats{gap:.5rem}.cine-stats li{padding:.95rem .7rem .85rem;gap:.3rem}.cine-stats li::before{padding:1.25px}.cine-stats b{font-size:clamp(1.5rem,7.2vw,1.95rem);letter-spacing:.2px}.cine-stats span{font-size:.66rem;letter-spacing:.04em;line-height:1.2}}
+@media (max-width:520px){.cine-stats{gap:.5rem}.cine-stats li{padding:.9rem .7rem;gap:.3rem}.cine-stats li::before{padding:1.25px}.cine-stats b{font-size:clamp(1.5rem,7.2vw,1.95rem);letter-spacing:.2px}.cine-stats span{font-size:.66rem;letter-spacing:.04em;line-height:1.2}}
 @media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}.cine-stats li::before{animation:none;opacity:.7}.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
