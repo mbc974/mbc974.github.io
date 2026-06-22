@@ -5677,15 +5677,6 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (prefers-reduced-motion:reduce){.gradient-dots{animation:none}}
 
 /* ============================================================
-   V61 — "Flow field" (champ de particules) : port NATIF du composant
-   React (canvas, sans React). Fond animé de la section Parents :
-   particules bleu MBC suivant un champ de flux + traînées + répulsion
-   au survol. Pause hors-écran, allégé sur mobile, coupé en reduced-motion.
-   ============================================================ */
-.flow-field{position:absolute;inset:0;z-index:0;display:block;pointer-events:none;background:#0a1426}
-.section:has(>.flow-field)>*:not(.flow-field){position:relative;z-index:1}
-
-/* ============================================================
    V62 — Carte réseaux "fan" (footer) : adaptation NATIVE du composant
    React "social-card" (livré SANS CSS) recréée en HTML/CSS. Au survol
    ou au focus clavier, les tuiles réseaux jaillissent du centre en 2x2.
