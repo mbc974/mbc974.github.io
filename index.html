@@ -51,7 +51,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-ui53">
+<link rel="stylesheet" href="style.css?v=202606-ui54">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -232,7 +232,7 @@
     <ul class="essentiel-grid reveal" aria-label="Informations essentielles pour la pré-inscription au MBC">
       <li class="essentiel-card">
         <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.7 9.2c0-1.1-1.2-1.7-2.7-1.7s-2.7.7-2.7 1.8c0 2.5 5.4 1.6 5.4 4.2 0 1.1-1.2 1.8-2.7 1.8s-2.7-.6-2.7-1.7"/></svg></span>
-        <span class="essentiel-card__val">95 €</span><span class="sr-only"> — </span>
+        <span class="essentiel-card__val essentiel-card__val--price">95 €</span><span class="sr-only"> — </span>
         <span class="essentiel-card__lbl">Licence saison 2026-2027 — toutes catégories, FFBB &amp; assurance incluses</span>
       </li>
       <li class="essentiel-card">
@@ -253,7 +253,7 @@
       <li class="essentiel-card">
         <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
         <span class="essentiel-card__val">Séance d'essai</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Venez tester un entraînement avant de vous engager</span>
+        <span class="essentiel-card__lbl">Venez tester un entraînement gratuitement, sans engagement</span>
       </li>
       <li class="essentiel-card essentiel-card--contact">
         <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L20 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></span>
@@ -325,15 +325,13 @@
 <!-- ===== 2. COMPTEURS ===== -->
 <!-- Marquee 1 -->
 <div class="marquee" aria-hidden="true"><div class="marquee__track">
-  <span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>La Montagne en lér</span>
-  <span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Nout kartié</span><span>La Montagne en lér</span>
+  <span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span>
 </div></div>
 
 
 <!-- Marquee 2 -->
 <div class="marquee marquee--roi marquee--rev" aria-hidden="true"><div class="marquee__track">
-  <span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
-  <span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
+  <span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span><span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span><span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span><span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span><span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span><span>Baby Basket</span><span>École de Basket</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
 </div></div>
 
 <!-- ===== 4. CATÉGORIES ===== -->
@@ -534,6 +532,7 @@
       <details class="faq__item"><summary>Combien coûte l'inscription&nbsp;?</summary><p><b>Licence saison 2026-2027 : 95 € pour toutes les catégories.</b> La cotisation inclut la licence FFBB et l'assurance, du Baby Basket aux Seniors.</p></details>
       <details class="faq__item"><summary>Comment se déroule une séance&nbsp;?</summary><p>Échauffement, jeux, exercices techniques et petits matchs encadrés par les coachs. De 1&nbsp;h à 1&nbsp;h&nbsp;30 selon la catégorie.</p></details>
       <details class="faq__item"><summary>Puis-je assister aux entraînements&nbsp;?</summary><p>Oui, les parents sont les bienvenus. Le club vit grâce à l'implication des familles.</p></details>
+      <details class="faq__item"><summary>Y aura-t-il des matchs à suivre&nbsp;?</summary><p>Oui&nbsp;! Selon la catégorie&nbsp;: des plateaux conviviaux pour les plus jeunes et le championnat FFBB (matchs le week-end, à domicile au gymnase et en déplacement sur l'île) pour les autres. Les parents sont chaleureusement invités à venir encourager — sans obligation. Tous les déplacements restent à La Réunion et le club facilite le covoiturage.</p></details>
       <div class="faq__cta">
         <a href="adhesion.html" class="btn btn--primary">Je m'inscris · saison 2026/2027</a>
         <a href="#contact" class="btn btn--ghost">J'ai une question avant d'inscrire</a>
@@ -1058,6 +1057,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-ui53" defer></script>
+<script src="script.js?v=202606-ui54" defer></script>
 </body>
 </html>

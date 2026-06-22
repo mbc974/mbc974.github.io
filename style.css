@@ -127,7 +127,7 @@ a{color:inherit;text-decoration:none}
 .marquee__track{display:inline-flex;white-space:nowrap;will-change:transform;animation:marq 26s linear infinite}
 .marquee--rev .marquee__track{animation-direction:reverse}
 .marquee:hover .marquee__track{animation-play-state:paused}
-.marquee__track span{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.1rem,3vw,1.7rem);letter-spacing:.04em;color:#190f04;padding:0 1.4rem;display:inline-flex;align-items:center;gap:1.4rem}
+.marquee__track span{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.1rem,3vw,1.7rem);letter-spacing:.04em;color:#190f04;padding:0 .7rem;display:inline-flex;align-items:center;gap:.85rem}
 .marquee--roi .marquee__track span{color:#fff}
 .marquee--dark .marquee__track span{color:var(--txt-soft)}
 .marquee__track span::after{content:"●";font-size:.5em;color:rgba(0,0,0,.4)}
@@ -713,7 +713,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .footer__brand p.small{margin-bottom:.2rem}
 
 /* ---- Marquee : éviter l'effet "compressé" sur mobile ---- */
-@media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 1rem}}
+@media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 .5rem}}
 
 /* ---- Hero actions : grille parfaitement symétrique ---- */
 .hero__actions{align-items:stretch}
@@ -2326,7 +2326,7 @@ section[id]{scroll-margin-top:92px}
   .why-playbook__metrics span{flex:1 1 auto;text-align:center}
 }
 /* Marquee : respiration homogène, jamais "compressé" */
-.marquee__track span{padding:0 1.15rem}
+.marquee__track span{padding:0 .55rem}
 
 /* ---- 5. TERRITOIRE · filigrane 974 agrandi + identité réunionnaise ---- */
 .editorial__word{
@@ -3744,7 +3744,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .fond-pillar:hover,.p-pillar:hover{transform:translateY(-7px)}
 
 /* ---- Marquee : un poil plus vif sans devenir agressif ---- */
-.marquee__track{animation-duration:21s}
+.marquee__track{animation-duration:36s}
 
 /* ---- Pulse CTA flottant mobile : respiration légère ---- */
 .float-cta{transition:transform .45s var(--ease-pop),box-shadow .35s}
@@ -5588,3 +5588,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .p-pillar:hover .p-pillar__ico{transform:translateY(-2px) scale(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 32px -10px rgba(217,106,27,.5)}
 .p-pillar:hover .p-pillar__ico::before{transform:rotate(140deg);filter:brightness(1.25)}
 @media (prefers-reduced-motion:reduce){.p-pillar__ico,.p-pillar__ico::before{transition:none}.p-pillar:hover .p-pillar__ico{transform:none}}
+
+/* 95 EUR mis en avant (argument cle) - plus gros PC + mobile */
+.essentiel-card__val--price{font-size:clamp(2.7rem,6.5vw,3.7rem)!important;letter-spacing:0!important}
+@media (max-width:559px){.essentiel-card__val--price{font-size:clamp(2.2rem,9vw,2.9rem)!important}}
