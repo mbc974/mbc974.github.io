@@ -5684,3 +5684,45 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 .flow-field{position:absolute;inset:0;z-index:0;display:block;pointer-events:none;background:#0a1426}
 .section:has(>.flow-field)>*:not(.flow-field){position:relative;z-index:1}
+
+/* ============================================================
+   V62 — Carte réseaux "fan" (footer) : adaptation NATIVE du composant
+   React "social-card" (livré SANS CSS) recréée en HTML/CSS. Au survol
+   ou au focus clavier, les tuiles réseaux jaillissent du centre en 2x2.
+   Sur écran tactile (hover:none), elles sont déployées d'office.
+   ============================================================ */
+.social-fan{position:relative;width:150px;height:150px;border-radius:22px;margin-top:1rem;
+  background:linear-gradient(160deg,#13243f,#0b1322);
+  border:1px solid rgba(191,210,228,.14);
+  box-shadow:0 18px 38px -18px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);
+  overflow:hidden;cursor:pointer;transition:transform .35s ease,box-shadow .35s ease}
+.social-fan:hover,.social-fan:focus-within{transform:translateY(-3px);box-shadow:0 26px 54px -20px rgba(27,81,158,.55)}
+.social-fan__logo{position:absolute;inset:0;display:grid;place-items:center;z-index:1;
+  font-weight:800;letter-spacing:.6px;text-transform:uppercase;font-size:.9rem;color:#cfe0f2;
+  transition:opacity .3s ease,transform .3s ease}
+.social-fan:hover .social-fan__logo,.social-fan:focus-within .social-fan__logo{opacity:0;transform:scale(.55)}
+.social-fan__box{position:absolute;top:50%;left:50%;width:56px;height:56px;margin:-28px 0 0 -28px;
+  border-radius:15px;display:grid;place-items:center;color:#fff;z-index:2;
+  box-shadow:0 8px 18px -8px rgba(0,0,0,.6);text-decoration:none;
+  opacity:0;transform:scale(.2);
+  transition:transform .5s cubic-bezier(.34,1.4,.5,1),opacity .35s ease,filter .25s ease}
+.social-fan__box svg{width:26px;height:26px}
+.social-fan:hover .social-fan__box,.social-fan:focus-within .social-fan__box{opacity:1}
+.social-fan:hover .sfb--fb,.social-fan:focus-within .sfb--fb{transform:translate(-33px,-33px) scale(1)}
+.social-fan:hover .sfb--ig,.social-fan:focus-within .sfb--ig{transform:translate(33px,-33px) scale(1);transition-delay:.07s}
+.social-fan:hover .sfb--tt,.social-fan:focus-within .sfb--tt{transform:translate(-33px,33px) scale(1);transition-delay:.14s}
+.social-fan:hover .sfb--deco,.social-fan:focus-within .sfb--deco{transform:translate(33px,33px) scale(1);transition-delay:.21s}
+.social-fan__box:hover{filter:brightness(1.12)}
+.sfb--fb{background:linear-gradient(135deg,#1f8bff,#0a5bd0)}
+.sfb--ig{background:linear-gradient(135deg,#feda75,#fa7e1e 32%,#d62976 64%,#962fbf)}
+.sfb--tt{background:linear-gradient(135deg,#25f4ee,#0b0b0b 45%,#fe2c55)}
+.sfb--deco{background:linear-gradient(135deg,var(--roi,#1B519E),var(--orange-v,#E8822A))}
+@media (hover:none){
+  .social-fan__logo{opacity:0}
+  .social-fan__box{opacity:1}
+  .sfb--fb{transform:translate(-33px,-33px) scale(1)}
+  .sfb--ig{transform:translate(33px,-33px) scale(1)}
+  .sfb--tt{transform:translate(-33px,33px) scale(1)}
+  .sfb--deco{transform:translate(33px,33px) scale(1)}
+}
+@media (prefers-reduced-motion:reduce){.social-fan,.social-fan__logo,.social-fan__box{transition:none}}
