@@ -47,10 +47,11 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
 
-<link rel="preload" as="image" href="assets/logos/mbc-logo.png" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202606-ui49">
+<link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
+<link rel="stylesheet" href="style.css?v=202606-ui50">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Identifiants association à activer quand attribués : ajouter dans le SportsClub ci-dessous, ex.
@@ -454,7 +455,7 @@
       <figure class="kit-card kit-card--home reveal reveal--l">
         <span class="kit-card__tag">Domicile</span>
         <span class="kit-card__season">Saison 2026 / 2027</span>
-        <img src="assets/maillots/maillot-domicile.jpg" alt="Maillot domicile du MBC La Montagne Basket Club, bleu nuit et orange, saison 2026-2027" loading="lazy" decoding="async" width="690" height="960" onerror="this.closest('.kit-card').classList.add('img-fallback');this.closest('.kit-card').setAttribute('data-fallback','Maillot domicile MBC');this.closest('picture').remove();">
+        <picture><source srcset="assets/maillots/maillot-domicile.webp" type="image/webp"><img src="assets/maillots/maillot-domicile.jpg" alt="Maillot domicile du MBC La Montagne Basket Club, bleu nuit et orange, saison 2026-2027" loading="lazy" decoding="async" width="690" height="960" onerror="this.closest('.kit-card').classList.add('img-fallback');this.closest('.kit-card').setAttribute('data-fallback','Maillot domicile MBC');this.closest('picture').remove();"></picture>
         <figcaption class="kit-card__cap"><strong>Tenue domicile</strong><span>Bleu nuit · motif péi · logo club</span></figcaption>
       </figure>
 
@@ -478,7 +479,7 @@
       <figure class="kit-card kit-card--away reveal reveal--r">
         <span class="kit-card__tag kit-card__tag--alt">Extérieur</span>
         <span class="kit-card__season">Saison 2026 / 2027</span>
-        <img src="assets/maillots/maillot-exterieur.jpg" alt="Maillot extérieur du MBC La Montagne Basket Club, édition argent et orange, saison 2026-2027" loading="lazy" decoding="async" width="690" height="960" onerror="this.closest('.kit-card').classList.add('img-fallback');this.closest('.kit-card').setAttribute('data-fallback','Maillot extérieur MBC');this.closest('picture').remove();">
+        <picture><source srcset="assets/maillots/maillot-exterieur.webp" type="image/webp"><img src="assets/maillots/maillot-exterieur.jpg" alt="Maillot extérieur du MBC La Montagne Basket Club, édition argent et orange, saison 2026-2027" loading="lazy" decoding="async" width="690" height="960" onerror="this.closest('.kit-card').classList.add('img-fallback');this.closest('.kit-card').setAttribute('data-fallback','Maillot extérieur MBC');this.closest('picture').remove();"></picture>
         <figcaption class="kit-card__cap"><strong>Tenue extérieur</strong><span>Édition argent · accents orange</span></figcaption>
       </figure>
     </div>
@@ -738,23 +739,23 @@
 
     <div class="gallery-mosaic reveal">
       <figure class="g-tile g-tall">
-        <img src="assets/galerie/match-tir-hauteur.jpg" alt="Joueur du MBC La Montagne au shoot en suspension lors d'un match de basket à La Réunion" loading="lazy" decoding="async" width="900" height="1200">
+        <picture><source srcset="assets/galerie/match-tir-hauteur.webp" type="image/webp"><img src="assets/galerie/match-tir-hauteur.jpg" alt="Joueur du MBC La Montagne au shoot en suspension lors d'un match de basket à La Réunion" loading="lazy" decoding="async" width="900" height="1200"></picture>
         <figcaption>Le basket prend de la hauteur</figcaption>
       </figure>
       <figure class="g-tile g-huddle">
-        <img src="assets/galerie/equipe-cohesion.jpg" alt="Équipe de basket du MBC La Montagne soudée avant un match, saison à Saint-Denis 974" loading="lazy" decoding="async" width="1120" height="747">
+        <picture><source srcset="assets/galerie/equipe-cohesion.webp" type="image/webp"><img src="assets/galerie/equipe-cohesion.jpg" alt="Équipe de basket du MBC La Montagne soudée avant un match, saison à Saint-Denis 974" loading="lazy" decoding="async" width="1120" height="747"></picture>
         <figcaption>Ansanm avant le match</figcaption>
       </figure>
       <figure class="g-tile g-banner">
-        <img src="assets/galerie/match-banniere.jpg" alt="Match de basket de l'équipe de La Montagne, gymnase de Saint-Denis à La Réunion" loading="lazy" decoding="async" width="1120" height="747">
+        <picture><source srcset="assets/galerie/match-banniere.webp" type="image/webp"><img src="assets/galerie/match-banniere.jpg" alt="Match de basket de l'équipe de La Montagne, gymnase de Saint-Denis à La Réunion" loading="lazy" decoding="async" width="1120" height="747"></picture>
         <figcaption>Nout couleurs sur le terrain</figcaption>
       </figure>
       <figure class="g-tile g-shoot">
-        <img src="assets/galerie/match-shoot-lamontagne.jpg" alt="Joueur du MBC La Montagne au tir, maillot floqué La Montagne, basket Réunion 974" loading="lazy" decoding="async" width="840" height="1120">
+        <picture><source srcset="assets/galerie/match-shoot-lamontagne.webp" type="image/webp"><img src="assets/galerie/match-shoot-lamontagne.jpg" alt="Joueur du MBC La Montagne au tir, maillot floqué La Montagne, basket Réunion 974" loading="lazy" decoding="async" width="840" height="1120"></picture>
         <figcaption>Concentration au shoot</figcaption>
       </figure>
       <figure class="g-tile g-group">
-        <img src="assets/galerie/equipe-groupe.jpg" alt="Photo d'équipe des basketteurs du MBC La Montagne Basket Club, club de basket à Saint-Denis 974" loading="lazy" decoding="async" width="640" height="480">
+        <picture><source srcset="assets/galerie/equipe-groupe.webp" type="image/webp"><img src="assets/galerie/equipe-groupe.jpg" alt="Photo d'équipe des basketteurs du MBC La Montagne Basket Club, club de basket à Saint-Denis 974" loading="lazy" decoding="async" width="640" height="480"></picture>
         <figcaption>La famille MBC lé là</figcaption>
       </figure>
     </div>
@@ -1057,6 +1058,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202606-ui49" defer></script>
+<script src="script.js?v=202606-ui50" defer></script>
 </body>
 </html>
