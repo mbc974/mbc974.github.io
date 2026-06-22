@@ -5664,15 +5664,14 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
   background-image:
     radial-gradient(circle at 50% 50%, transparent 1.5px, #0a1426 0 8px, transparent 8px),
     radial-gradient(circle at 50% 50%, transparent 1.5px, #0a1426 0 8px, transparent 8px),
-    radial-gradient(circle at 50% 50%, #f00, transparent 60%),
-    radial-gradient(circle at 50% 50%, #ff0, transparent 60%),
-    radial-gradient(circle at 50% 50%, #0f0, transparent 60%),
-    radial-gradient(ellipse at 50% 50%, #00f, transparent 60%);
+    radial-gradient(circle at 50% 50%, #1B519E, transparent 60%),
+    radial-gradient(circle at 50% 50%, #E8822A, transparent 60%),
+    radial-gradient(circle at 50% 50%, #2f6fd6, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #D96A1B, transparent 60%);
   background-size:10px 17.32px,10px 17.32px,200% 200%,200% 200%,200% 200%,200% 17.32px;
-  animation:gdotsMove 30s linear infinite, gdotsHue 6s linear infinite}
+  animation:gdotsMove 30s linear infinite}
 @keyframes gdotsMove{
   from{background-position:0 0,5px 8.66px,800% 400%,1000% -400%,-1200% -600%,400% 17.32px}
   to{background-position:0 0,5px 8.66px,0 0,0 0,0 0,0 0}}
-@keyframes gdotsHue{from{filter:hue-rotate(0deg)}to{filter:hue-rotate(360deg)}}
 .parents>.wrap,.parents>.bg-word,.parents>.tarifs{position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.gradient-dots{animation:none}}
