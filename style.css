@@ -5356,23 +5356,22 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
    ============================================================ */
 /* la section staff élargit son conteneur pour laisser respirer les photos */
 .staff .wrap{max-width:min(95vw,1360px)}
-.team{display:flex;flex-direction:column;gap:2rem;width:100%;max-width:none;margin:1.6rem auto 0;align-items:center}
-.team__photos{display:flex;gap:1rem;flex:none;justify-content:center;max-width:100%}
-.team__col{display:flex;flex-direction:column;gap:1rem}
-.team__col--2{margin-top:clamp(56px,7vw,100px)}
-.team__col--3{margin-top:clamp(28px,3.5vw,50px)}
-.team__photo{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;flex:none;
+.team{--staff-tint:232,130,42;display:flex;flex-direction:column;gap:2rem;width:100%;max-width:none;margin:1.6rem auto 0;align-items:center} /* teinte staff : 232,130,42 = orange · bleu = 27,81,158 */
+.team__photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;flex:none;width:100%;max-width:clamp(560px,52vw,840px)}
+.team__col{display:flex;flex-direction:column;gap:1rem;margin-top:0}
+.team__photo{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;width:100%;isolation:isolate;
   background:#0b1626;border:1px solid rgba(191,210,228,.12);aspect-ratio:1 / 1.06;transition:opacity .4s,box-shadow .4s,border-color .4s}
-.team__col--1 .team__photo{width:clamp(170px,22vw,265px)}
-.team__col--2 .team__photo{width:clamp(190px,25vw,300px)}
-.team__col--3 .team__photo{width:clamp(180px,24vw,288px)}
 .team__photo .staff-card__media{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;display:grid;place-items:center}
 .team__photo .staff-card__media:not(.img-fallback)::after{display:none} /* retire le voile sombre hérité de l'ancienne carte */
 .team__photo .staff-card__media.img-fallback::after{opacity:1;background:none} /* label de secours lisible */
-@media (hover:none){.team__photo img{filter:grayscale(0) brightness(1)}} /* tactile (pas de survol) : photos en couleur */
 .team__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
-  filter:grayscale(1) brightness(.77);transition:filter .5s}
-.team__photo.is-active img{filter:grayscale(0) brightness(1)}
+  filter:grayscale(1) contrast(1.06) brightness(.96);transition:filter .5s}
+.team__photo::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(155deg,rgba(var(--staff-tint),.42),rgba(var(--staff-tint),.16) 72%);
+  mix-blend-mode:color;opacity:1;transition:opacity .5s}
+.team__photo.is-active img{filter:grayscale(0) contrast(1) brightness(1)}
+.team__photo.is-active::after{opacity:0}
+@media (hover:none){.team__photo img{filter:grayscale(0) brightness(1)}.team__photo::after{opacity:0}} /* tactile : couleur, pas de teinte */
 .team__photo.is-active{border-color:rgba(232,130,42,.5);box-shadow:0 16px 36px rgba(0,0,0,.5)}
 .team__photo.is-dim{opacity:.5}
 /* liste de noms */
