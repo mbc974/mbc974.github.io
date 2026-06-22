@@ -4932,7 +4932,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* ---- (2) Section dunk "Rejoindre le mouvement" ---- */
 .join{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#0a1426,#0d1a30)}
 .join__media{position:absolute;inset:0 0 0 auto;width:62%;max-width:1000px;z-index:0;pointer-events:none}
-.join__media img{width:100%;height:100%;object-fit:cover;object-position:62% 6%;display:block;
+.join__media img{width:100%;height:100%;object-fit:cover;object-position:58% 15%;display:block;
   /* la photo se dissout dans le fond réel -> aucune démarcation */
   -webkit-mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%);
           mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%)}
@@ -4964,7 +4964,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .join__btn:hover .btn__arrow{transform:translateX(5px)}
 @media (max-width:860px){
   .join__media{width:100%;max-width:none}
-  .join__media img{object-position:50% 7%;-webkit-mask-image:none;mask-image:none}
+  .join__media img{object-position:50% 14%;-webkit-mask-image:none;mask-image:none}
   .join__media::before{display:none}
   .join__media::after{background:linear-gradient(to top,#0a1426 12%,rgba(10,20,38,.82) 46%,rgba(10,20,38,.5) 78%,rgba(10,20,38,.38)),linear-gradient(95deg,rgba(10,20,38,.5),transparent 82%)}
   .join__inner{min-height:clamp(440px,88vw,580px);align-items:flex-end;padding-bottom:clamp(2rem,8vw,3rem)}
@@ -5592,3 +5592,39 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 /* 95 EUR mis en avant (argument cle) - plus gros PC + mobile */
 .essentiel-card__val--price{font-size:clamp(2.7rem,6.5vw,3.7rem)!important;letter-spacing:0!important}
 @media (max-width:559px){.essentiel-card__val--price{font-size:clamp(2.2rem,9vw,2.9rem)!important}}
+
+/* ============================================================
+   V66 — "Suivez le MBC" : visuel joueur en fondu premium (droite)
+   + liens reseaux en COLONNE (garcon deplace depuis "Pret a faire
+   partie"). Meme technique de fondu que .join__media.
+   ============================================================ */
+.social-spotlight{isolation:isolate}
+.social-spotlight__media{position:absolute;inset:0 0 0 auto;width:54%;max-width:880px;z-index:0;pointer-events:none}
+.social-spotlight__media img{width:100%;height:100%;object-fit:cover;object-position:52% 8%;display:block}
+.social-spotlight__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,var(--nuit-0),var(--nuit-2));
+  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 16%,rgba(0,0,0,.5) 34%,transparent 50%);
+          mask-image:linear-gradient(100deg,#000 0%,#000 16%,rgba(0,0,0,.5) 34%,transparent 50%)}
+.social-spotlight__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,var(--nuit-0),transparent 15%),linear-gradient(to top,var(--nuit-2),transparent 13%)}
+.social-spotlight__media.is-empty{display:none}
+.social-spotlight__inner{position:relative;z-index:2;min-height:clamp(440px,56vh,640px);justify-content:center}
+.social-spotlight__head{max-width:540px}
+.social-spotlight__body{max-width:480px}
+.social-spotlight__grid{display:flex;flex-direction:column;gap:.85rem;max-width:480px}
+@media (max-width:860px){
+  .social-spotlight__media{width:100%;max-width:none;opacity:.3}
+  .social-spotlight__media img{object-position:50% 8%}
+  .social-spotlight__media::before{-webkit-mask-image:none;mask-image:none;background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(16,27,48,.72))}
+  .social-spotlight__media::after{background:linear-gradient(to top,var(--nuit-0) 8%,rgba(7,13,24,.4) 60%,transparent)}
+  .social-spotlight__inner{min-height:0}
+  .social-spotlight__head,.social-spotlight__body,.social-spotlight__grid{max-width:none}
+}
+/* ---- Categories : note "filles bienvenues" (premium) ---- */
+.cat-mixite{display:flex;align-items:flex-start;gap:.7rem;margin-top:1.1rem;max-width:64ch;padding:.85rem 1.15rem;
+  border-radius:14px;border:1px solid rgba(232,130,42,.28);
+  background:linear-gradient(135deg,rgba(232,130,42,.1),rgba(27,81,158,.1));
+  font-family:var(--ff-cond);font-weight:600;font-size:clamp(.92rem,1.5vw,1.06rem);color:var(--bleu-glacier);line-height:1.45}
+.cat-mixite b{color:#fff;font-weight:700}
+.cat-mixite i{font-style:normal;color:var(--orange-vif);font-weight:700}
+.cat-mixite .ic{width:24px;height:24px;color:var(--orange-vif);flex:none;margin-top:.08rem}
