@@ -5474,19 +5474,39 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-copy .lead{color:rgba(219,232,244,.86)}
 /* chips premium "effet verre" (non cliquables) — propre et pro */
 /* ---- Stats adhésion : cartes ultra premium (plus grandes) ---- */
-.cine-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;list-style:none;margin:2rem 0;padding:0}
-.cine-stats li{position:relative;display:flex;flex-direction:column;gap:.4rem;padding:1.2rem 1.1rem 1.1rem;border-radius:var(--r-md);overflow:hidden;isolation:isolate;
-  background:linear-gradient(162deg,#16294a,#0b1729);
-  border:1px solid rgba(191,210,228,.14);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 16px 34px -16px rgba(3,7,15,.62);
-  transition:transform .45s var(--ease-spring),border-color .35s,box-shadow .4s}
-.cine-stats li::before{content:"";position:absolute;left:1.05rem;right:1.05rem;top:0;height:2px;background:var(--grad-orange);opacity:.85}
-.cine-stats li::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(78% 60% at 100% 0%,rgba(232,130,42,.14),transparent 60%)}
-.cine-stats li:hover{transform:translateY(-4px);border-color:rgba(232,130,42,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.11),0 22px 44px -18px rgba(217,106,27,.42)}
-.cine-stats b{font-family:var(--ff-display);font-size:clamp(2rem,3.4vw,2.6rem);line-height:1;letter-spacing:.4px;
-  background:linear-gradient(180deg,#ffffff,#c4d6ea);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#fff}
-.cine-stats span{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.78rem;line-height:1.25;color:var(--bleu-glacier);max-width:none}
-@media (max-width:520px){.cine-stats{gap:.55rem}.cine-stats li{padding:.95rem .8rem}.cine-stats b{font-size:1.7rem}.cine-stats span{font-size:.68rem}}
+/* ============================================================
+   V65 — .cine-stats : refonte "max waouah" (panel design).
+   Synthèse : tuile VERRE liquide + BORDURE AURORA conic
+   orange->bleu roi animée par l'ANGLE (@property, repli statique),
+   + profondeur éditoriale (spotlight haut + ghost-glow derrière le
+   chiffre héros). 100% CSS natif · tokens MBC · 3 colonnes desktop
+   ET mobile · aucun débordement.
+   ============================================================ */
+@property --cine-a{syntax:"<angle>";inherits:false;initial-value:0deg}
+.cine-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;list-style:none;margin:2rem 0;padding:0}
+.cine-stats li{position:relative;display:flex;flex-direction:column;justify-content:flex-end;gap:.45rem;min-width:0;padding:1.3rem 1.05rem 1.05rem;border-radius:var(--r-md);isolation:isolate;
+  background:radial-gradient(120% 80% at 100% 0%,rgba(27,81,158,.20),transparent 55%),linear-gradient(168deg,rgba(21,35,61,.74),rgba(7,13,24,.80));
+  -webkit-backdrop-filter:blur(7px) saturate(118%);backdrop-filter:blur(7px) saturate(118%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(7,13,24,.45),0 18px 36px -18px rgba(3,7,15,.70);
+  transition:transform .5s var(--ease-spring),box-shadow .45s var(--ease-out);will-change:transform}
+/* bordure aurora conic : on anime l'ANGLE (pas l'élément) -> le contour reste aligné aux bords */
+.cine-stats li::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1.5px;--cine-a:0deg;
+  background:conic-gradient(from var(--cine-a),var(--orange-vif) 0deg,var(--bleu-roi) 95deg,rgba(191,210,228,.25) 175deg,var(--orange-ballon) 255deg,var(--orange-vif) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.55;animation:cine-aurora 9s linear infinite;transition:opacity .45s var(--ease-out);pointer-events:none}
+/* profondeur éditoriale : spotlight haut + ghost-glow orange/bleu roi derrière le chiffre */
+.cine-stats li::after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(72% 56% at 50% -8%,rgba(255,255,255,.12),rgba(191,210,228,.04) 36%,transparent 64%),radial-gradient(78% 60% at 26% 42%,rgba(232,130,42,.16),transparent 60%),radial-gradient(80% 55% at 100% 0%,rgba(27,81,158,.14),transparent 62%),linear-gradient(180deg,rgba(255,255,255,.07),transparent 28%)}
+.cine-stats li:hover,.cine-stats li:focus-within{transform:translateY(-5px);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 1px rgba(7,13,24,.40),0 26px 48px -20px rgba(217,106,27,.40)}
+.cine-stats li:hover::before,.cine-stats li:focus-within::before{opacity:1;animation-duration:4.5s}
+.cine-stats b{position:relative;z-index:2;font-family:var(--ff-display);font-size:clamp(2rem,3.4vw,2.6rem);line-height:1;letter-spacing:.4px;
+  background:linear-gradient(180deg,#fff 0%,#dce7f4 55%,var(--bleu-glacier) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#fff;
+  text-shadow:0 2px 18px rgba(7,13,24,.45);filter:drop-shadow(0 8px 16px rgba(3,7,15,.45));transition:filter .45s var(--ease-out)}
+.cine-stats li:hover b,.cine-stats li:focus-within b{filter:drop-shadow(0 0 14px rgba(232,130,42,.45))}
+.cine-stats span{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.78rem;line-height:1.25;color:var(--bleu-glacier);max-width:none}
+@keyframes cine-aurora{to{--cine-a:360deg}}
+@media (max-width:520px){.cine-stats{gap:.5rem}.cine-stats li{padding:.95rem .7rem .85rem;gap:.3rem}.cine-stats li::before{padding:1.25px}.cine-stats b{font-size:clamp(1.5rem,7.2vw,1.95rem);letter-spacing:.2px}.cine-stats span{font-size:.66rem;letter-spacing:.04em;line-height:1.2}}
+@media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}.cine-stats li::before{animation:none;opacity:.7}.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
 /* --- scène / mockup --- */
