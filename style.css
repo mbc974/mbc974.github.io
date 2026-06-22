@@ -5673,5 +5673,5 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @keyframes gdotsMove{
   from{background-position:0 0,5px 8.66px,800% 400%,1000% -400%,-1200% -600%,400% 17.32px}
   to{background-position:0 0,5px 8.66px,0 0,0 0,0 0,0 0}}
-.parents>.wrap,.parents>.bg-word,.parents>.tarifs{position:relative;z-index:1}
+.section:has(>.gradient-dots)>*:not(.gradient-dots){position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.gradient-dots{animation:none}}
