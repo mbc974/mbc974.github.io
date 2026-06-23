@@ -5522,7 +5522,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-loader__num{position:relative;font-family:var(--ff-display);font-size:2.2rem;line-height:1;color:#fff}
 .cine-loader__lbl{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem;color:rgba(191,210,228,.72);white-space:nowrap}
 .cine-video{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:#050914;opacity:0;transition:opacity .6s ease}
-.cine-video video{width:100%;height:100%;object-fit:contain}
+.cine-video video{width:100%;height:100%;object-fit:cover;object-position:center}
 .cine-card.is-loaded .cine-loader{opacity:0;pointer-events:none}
 .cine-card.is-loaded .cine-video{opacity:1}
 /* --- badges flottants --- */
