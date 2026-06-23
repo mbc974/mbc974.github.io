@@ -629,9 +629,11 @@
     var p = video.play(); if (p && p.catch) p.catch(function () {});
     try { closeBtn.focus({ preventScroll: true }); } catch (e) { closeBtn.focus(); }
 
-    if (reduce) { overlay.classList.add('is-visible'); animating = false; return; }
+    if (reduce) { overlay.classList.add('is-visible'); phone.classList.add('is-flat'); animating = false; return; }
     var last = phone.getBoundingClientRect();
-    window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); });
+    /* is-flat lance le « dépliage » de l'écran jusqu'aux bords, en parallèle du FLIP :
+       le téléphone reste visible pendant le transit puis s'efface en plein écran. */
+    window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); phone.classList.add('is-flat'); });
     flip(first, last, 640, 'cubic-bezier(.16,1,.3,1)', function () {
       animating = false; clearPhone();
     });
@@ -640,7 +642,7 @@
   function restore() {
     if (placeholder && homeParent) { homeParent.insertBefore(phone, placeholder); placeholder.remove(); }
     placeholder = null; homeParent = null;
-    phone.classList.remove('is-fs');
+    phone.classList.remove('is-fs', 'is-flat');
     clearPhone();
     overlay.classList.remove('is-open', 'is-visible');
     document.body.classList.remove('cine-fs-lock');
@@ -653,6 +655,7 @@
     animating = true;
     try { video.pause(); } catch (e) {}
     overlay.classList.remove('is-visible');         /* le fond se referme */
+    phone.classList.remove('is-flat');              /* l'écran se ré-encadre en téléphone pendant le retour */
     if (reduce || !placeholder) { restore(); return; }
     /* le téléphone est en grand (transform identité) -> on l'anime vers sa place d'origine */
     var target = placeholder.getBoundingClientRect();

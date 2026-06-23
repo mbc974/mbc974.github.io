@@ -5549,14 +5549,26 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-fs.is-open{display:flex}
 .cine-fs.is-visible{opacity:1}
 body.cine-fs-lock{overflow:hidden}
-/* téléphone agrandi & centré dans l'overlay */
-.cine-phone.is-fs{position:relative;z-index:2;width:auto;height:min(92vh,calc(94vw * 580 / 280));max-width:94vw;margin:0;
+/* téléphone agrandi : on remplace le ratio téléphone par la taille du viewport
+   (le « dépliage » ci-dessous fait disparaître le cadre à la fin du transit) */
+.cine-phone.is-fs{position:relative;z-index:2;width:100vw;height:100vh;height:100dvh;max-width:none;aspect-ratio:auto;margin:0;
   box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 120px -22px rgba(0,0,0,.9)}
 /* la révélation vidéo dépend de .cine-card ; en plein écran le téléphone est
    re-parenté hors de la carte -> on force ici l'état « chargé » (sinon le
    loader « Chargement… 100% » resterait visible par-dessus la vidéo). */
 .cine-phone.is-fs .cine-loader{opacity:0!important;pointer-events:none}
 .cine-phone.is-fs .cine-video{opacity:1!important}
+/* « dépliage » plein écran (classe .is-flat ajoutée par script.js) : l'écran
+   pousse jusqu'aux bords, les coins se carrent, l'encoche disparaît -> à la fin
+   plus aucun téléphone visible, juste la vidéo. Pendant le transit, l'écran est
+   encore encadré (inset 7px + coins arrondis + encoche) -> on voit le téléphone. */
+.cine-phone__screen{transition:inset .6s cubic-bezier(.16,1,.3,1),border-radius .6s cubic-bezier(.16,1,.3,1),box-shadow .6s ease}
+.cine-phone__screen::after{transition:opacity .5s ease}
+.cine-phone__island{transition:opacity .45s ease}
+.cine-phone.is-flat .cine-phone__screen{inset:0;border-radius:0;box-shadow:none}
+.cine-phone.is-flat .cine-phone__screen::after{opacity:0}
+.cine-phone.is-flat .cine-phone__island{opacity:0}
+@media (prefers-reduced-motion:reduce){.cine-phone__screen,.cine-phone__screen::after,.cine-phone__island{transition:none}}
 /* garde la place du téléphone dans la carte pendant l'ouverture */
 .cine-phone-ph{flex:none;pointer-events:none}
 /* bouton fermer */
