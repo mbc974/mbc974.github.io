@@ -5682,3 +5682,20 @@ body.cine-fs-lock{overflow:hidden}
 .cat-mixite b{color:#fff;font-weight:700}
 .cat-mixite i{font-style:normal;color:var(--orange-vif);font-weight:700}
 .cat-mixite .ic{width:24px;height:24px;color:var(--orange-vif);flex:none;margin-top:.08rem}
+
+/* ---- Staff : nom + rôle visibles en overlay (E-E-A-T + réassurance, sans décalage de la mosaïque) ---- */
+.team__photo .team__cap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;gap:.15rem;
+  padding:1.7rem .85rem .7rem;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(7,13,24,.42) 45%,rgba(7,13,24,.88))}
+.team__name{font-family:var(--ff-display,inherit);text-transform:uppercase;letter-spacing:.4px;line-height:1;
+  color:#fff;font-size:clamp(.95rem,1.25vw,1.18rem)}
+.team__role{font-family:var(--ff-cond,inherit);font-weight:600;font-size:.78rem;line-height:1.15;color:var(--bleu-glacier,#cfe0f2)}
+@media (max-width:559px){.team__photo .team__cap{padding:1.25rem .7rem .55rem}.team__role{font-size:.72rem}}
+
+/* ---- Boutons : états désactivé / chargement (finition) ---- */
+.btn:disabled,.btn[aria-disabled="true"],.btn.is-loading{opacity:.55;cursor:not-allowed;pointer-events:none;box-shadow:none;filter:saturate(.7)}
+.btn.is-loading{position:relative;color:transparent!important}
+.btn.is-loading::after{content:"";position:absolute;top:50%;left:50%;width:1.1em;height:1.1em;margin:-.55em 0 0 -.55em;
+  border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:btnspin .6s linear infinite}
+@keyframes btnspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.btn.is-loading::after{animation:none}}

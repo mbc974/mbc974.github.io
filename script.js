@@ -299,16 +299,36 @@
   const form = document.getElementById('contactForm');
   const feedback = document.getElementById('formFeedback');
   if (form && feedback) {
+    const nomEl = form.nom, emailEl = form.email;
+    function setFieldError(el, on) {
+      if (!el) return;
+      if (on) { el.setAttribute('aria-invalid', 'true'); el.setAttribute('aria-describedby', 'formFeedback'); }
+      else { el.removeAttribute('aria-invalid'); el.removeAttribute('aria-describedby'); }
+    }
+    /* l'erreur se lève dès que l'utilisateur corrige le champ */
+    [nomEl, emailEl].forEach(function (el) {
+      if (el) el.addEventListener('input', function () { setFieldError(el, false); });
+    });
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       const nom = form.nom.value.trim();
       const email = form.email.value.trim();
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      setFieldError(nomEl, !nom);
+      setFieldError(emailEl, !emailOk);
       if (!nom || !emailOk) {
-        feedback.textContent = 'Merci de renseigner votre nom et un email valide.';
+        feedback.textContent = !nom
+          ? 'Merci d’indiquer votre nom et prénom.'
+          : 'Merci d’indiquer un email valide (ex. prenom@email.com).';
         feedback.className = 'form-feedback err';
+        feedback.setAttribute('role', 'alert');
+        feedback.setAttribute('aria-live', 'assertive');
+        const firstInvalid = !nom ? nomEl : emailEl;
+        if (firstInvalid && firstInvalid.focus) firstInvalid.focus();
         return;
       }
+      feedback.setAttribute('role', 'status');
+      feedback.setAttribute('aria-live', 'polite');
       const subject = encodeURIComponent('Contact MBC — ' + nom);
       const body = encodeURIComponent([
         'Nom : ' + nom, 'Email : ' + email,
