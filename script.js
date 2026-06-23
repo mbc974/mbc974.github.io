@@ -574,7 +574,7 @@
   document.body.appendChild(overlay);
 
   var isOpen = false, animating = false;
-  var placeholder = null, homeParent = null, lastFocus = null;
+  var placeholder = null, homeParent = null, lastFocus = null, flatTimer = null;
 
   function flip(first, last, dur, ease, onEnd) {
     var dx = first.left - last.left, dy = first.top - last.top;
@@ -633,13 +633,17 @@
     var last = phone.getBoundingClientRect();
     /* is-flat lance le « dépliage » de l'écran jusqu'aux bords, en parallèle du FLIP :
        le téléphone reste visible pendant le transit puis s'efface en plein écran. */
-    window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); phone.classList.add('is-flat'); });
-    flip(first, last, 640, 'cubic-bezier(.16,1,.3,1)', function () {
+    window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); });
+    /* dépliage DIFFÉRÉ (~44% du zoom) : on voit d'abord le téléphone grandir/s'approcher,
+       puis l'écran s'ouvre jusqu'aux bords pour finir en plein écran exactement quand le zoom se pose. */
+    flatTimer = window.setTimeout(function () { flatTimer = null; phone.classList.add('is-flat'); }, 480);
+    flip(first, last, 1080, 'cubic-bezier(.33,0,.2,1)', function () {
       animating = false; clearPhone();
     });
   }
 
   function restore() {
+    if (flatTimer) { window.clearTimeout(flatTimer); flatTimer = null; }
     if (placeholder && homeParent) { homeParent.insertBefore(phone, placeholder); placeholder.remove(); }
     placeholder = null; homeParent = null;
     phone.classList.remove('is-fs', 'is-flat');
@@ -653,6 +657,7 @@
   function close() {
     if (!isOpen || animating) return;
     animating = true;
+    if (flatTimer) { window.clearTimeout(flatTimer); flatTimer = null; }
     try { video.pause(); } catch (e) {}
     overlay.classList.remove('is-visible');         /* le fond se referme */
     phone.classList.remove('is-flat');              /* l'écran se ré-encadre en téléphone pendant le retour */
@@ -665,7 +670,7 @@
     phone.style.willChange = 'transform';
     phone.style.backfaceVisibility = 'hidden';
     phone.style.transformOrigin = 'top left';
-    phone.style.transition = 'transform 520ms cubic-bezier(.16,1,.3,1)';
+    phone.style.transition = 'transform 720ms cubic-bezier(.4,0,.2,1)';
     var called = false;
     var done = function (e) {
       if (e && (e.target !== phone || e.propertyName !== 'transform')) return;
@@ -674,7 +679,7 @@
       restore();
     };
     phone.addEventListener('transitionend', done);
-    window.setTimeout(done, 640);
+    window.setTimeout(done, 900);
     window.requestAnimationFrame(function () {
       phone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
     });
