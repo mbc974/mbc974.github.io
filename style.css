@@ -5552,6 +5552,11 @@ body.cine-fs-lock{overflow:hidden}
 /* téléphone agrandi & centré dans l'overlay */
 .cine-phone.is-fs{position:relative;z-index:2;width:auto;height:min(92vh,calc(94vw * 580 / 280));max-width:94vw;margin:0;
   box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 120px -22px rgba(0,0,0,.9)}
+/* la révélation vidéo dépend de .cine-card ; en plein écran le téléphone est
+   re-parenté hors de la carte -> on force ici l'état « chargé » (sinon le
+   loader « Chargement… 100% » resterait visible par-dessus la vidéo). */
+.cine-phone.is-fs .cine-loader{opacity:0!important;pointer-events:none}
+.cine-phone.is-fs .cine-video{opacity:1!important}
 /* garde la place du téléphone dans la carte pendant l'ouverture */
 .cine-phone-ph{flex:none;pointer-events:none}
 /* bouton fermer */
