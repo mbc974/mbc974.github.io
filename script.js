@@ -579,6 +579,8 @@
   function flip(first, last, dur, ease, onEnd) {
     var dx = first.left - last.left, dy = first.top - last.top;
     var sx = first.width / last.width, sy = first.height / last.height;
+    phone.style.willChange = 'transform';
+    phone.style.backfaceVisibility = 'hidden';
     phone.style.transformOrigin = 'top left';
     phone.style.transition = 'none';
     phone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
@@ -600,6 +602,7 @@
 
   function clearPhone() {
     phone.style.transition = ''; phone.style.transform = ''; phone.style.transformOrigin = '';
+    phone.style.willChange = ''; phone.style.backfaceVisibility = '';
   }
 
   function open() {
@@ -629,7 +632,7 @@
     if (reduce) { overlay.classList.add('is-visible'); animating = false; return; }
     var last = phone.getBoundingClientRect();
     window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); });
-    flip(first, last, 550, 'cubic-bezier(.22,.7,.3,1)', function () {
+    flip(first, last, 640, 'cubic-bezier(.16,1,.3,1)', function () {
       animating = false; clearPhone();
     });
   }
@@ -656,8 +659,10 @@
     var cur = phone.getBoundingClientRect();
     var dx = target.left - cur.left, dy = target.top - cur.top;
     var sx = target.width / cur.width, sy = target.height / cur.height;
+    phone.style.willChange = 'transform';
+    phone.style.backfaceVisibility = 'hidden';
     phone.style.transformOrigin = 'top left';
-    phone.style.transition = 'transform 420ms cubic-bezier(.4,0,.2,1)';
+    phone.style.transition = 'transform 520ms cubic-bezier(.16,1,.3,1)';
     var called = false;
     var done = function (e) {
       if (e && (e.target !== phone || e.propertyName !== 'transform')) return;
@@ -666,7 +671,7 @@
       restore();
     };
     phone.addEventListener('transitionend', done);
-    window.setTimeout(done, 570);
+    window.setTimeout(done, 640);
     window.requestAnimationFrame(function () {
       phone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
     });
