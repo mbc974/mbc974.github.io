@@ -4354,6 +4354,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
   }
 }
+/* mobile : 95 € encore plus grand dans « Votre enfant entre de bonnes mains » */
+@media (max-width:559px){.tarifs__price{font-size:5.4rem!important}}
 /* halo statique très doux derrière le prix (aucun mouvement) */
 .tarifs__main::before{
   content:"";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
