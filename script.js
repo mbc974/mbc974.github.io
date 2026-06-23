@@ -541,45 +541,142 @@
 })();
 
 /* ============================================================
-   Vidéo adhésion (mobile) : tap -> PLEIN ÉCRAN NATIF (100% écran,
-   UI du navigateur masquée) + lecture. À la fin, on quitte le plein
-   écran. Sur iOS le lecteur natif anime déjà le zoom vers/depuis le
-   plein écran ; sur Android la vidéo remplit tout l'écran.
+   Vidéo adhésion (mobile) : à la lecture, le téléphone « s'approche »
+   en zoom fluide (FLIP) jusqu'au plein écran, puis la vidéo joue en
+   grand dans un overlay. On re-parente le téléphone sur <body> pour
+   échapper au perspective/overflow de la carte. Fermeture : bouton ×,
+   tap sur le fond, Échap, ou fin de la vidéo. Desktop : lecture en
+   ligne inchangée. prefers-reduced-motion : ouverture instantanée.
    ============================================================ */
 (function () {
   'use strict';
   var card = document.getElementById('cineCard');
   if (!card) return;
+  var phone = document.getElementById('cinePhone');
   var video = card.querySelector('.adhesion-video__player');
-  if (!video) return;
+  if (!phone || !video) return;
 
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function isMobile() { return window.matchMedia('(max-width: 760px)').matches; }
-  function inFullscreen() {
-    return !!(document.fullscreenElement || document.webkitFullscreenElement || video.webkitDisplayingFullscreen);
-  }
-  function enterFullscreen() {
-    if (inFullscreen()) return;
-    var fn = video.requestFullscreen || video.webkitRequestFullscreen || video.webkitEnterFullscreen;
-    if (fn) { try { fn.call(video); } catch (e) {} }
-  }
-  function exitFullscreen() {
-    if (document.exitFullscreen && document.fullscreenElement) { try { document.exitFullscreen(); } catch (e) {} }
-    else if (document.webkitExitFullscreen && document.webkitFullscreenElement) { try { document.webkitExitFullscreen(); } catch (e) {} }
-    else if (video.webkitExitFullscreen && video.webkitDisplayingFullscreen) { try { video.webkitExitFullscreen(); } catch (e) {} }
+
+  /* overlay plein écran, créé une seule fois */
+  var overlay = document.createElement('div');
+  overlay.className = 'cine-fs';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Vidéo d’adhésion MBC en plein écran');
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'cine-fs__close';
+  closeBtn.setAttribute('aria-label', 'Fermer la vidéo');
+  closeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>';
+  overlay.appendChild(closeBtn);
+  document.body.appendChild(overlay);
+
+  var isOpen = false, animating = false;
+  var placeholder = null, homeParent = null, lastFocus = null;
+
+  function flip(first, last, dur, ease, onEnd) {
+    var dx = first.left - last.left, dy = first.top - last.top;
+    var sx = first.width / last.width, sy = first.height / last.height;
+    phone.style.transformOrigin = 'top left';
+    phone.style.transition = 'none';
+    phone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
+    phone.getBoundingClientRect(); /* reflow */
+    var called = false;
+    var done = function (e) {
+      if (e && (e.target !== phone || e.propertyName !== 'transform')) return;
+      if (called) return; called = true;
+      phone.removeEventListener('transitionend', done);
+      onEnd();
+    };
+    window.requestAnimationFrame(function () {
+      phone.style.transition = 'transform ' + dur + 'ms ' + ease;
+      phone.style.transform = 'translate(0,0) scale(1)';
+    });
+    phone.addEventListener('transitionend', done);
+    window.setTimeout(done, dur + 150);
   }
 
-  /* tap direct sur la vidéo (geste utilisateur) -> plein écran natif + lecture */
-  video.addEventListener('click', function () {
-    if (!isMobile() || inFullscreen()) return;
-    var p = video.play();
-    if (p && p.catch) p.catch(function () {});
-    enterFullscreen();
-  });
-  /* secours : si la lecture démarre via le bouton natif, on bascule en plein écran */
-  video.addEventListener('play', function () {
-    if (isMobile() && !inFullscreen()) enterFullscreen();
-  });
-  /* fin de la vidéo -> on quitte le plein écran (retour à la page) */
-  video.addEventListener('ended', exitFullscreen);
+  function clearPhone() {
+    phone.style.transition = ''; phone.style.transform = ''; phone.style.transformOrigin = '';
+  }
+
+  function open() {
+    if (isOpen || animating || !isMobile()) return;
+    isOpen = true; animating = true;
+    lastFocus = document.activeElement;
+    card.classList.add('is-loaded'); /* garantit la vidéo visible */
+
+    var first = phone.getBoundingClientRect();
+    placeholder = document.createElement('div');
+    placeholder.className = 'cine-phone-ph';
+    placeholder.style.width = first.width + 'px';
+    placeholder.style.height = first.height + 'px';
+    homeParent = phone.parentNode;
+    homeParent.insertBefore(placeholder, phone);
+
+    overlay.classList.add('is-open');               /* display:flex (opacité 0) */
+    overlay.insertBefore(phone, closeBtn.nextSibling);
+    document.body.classList.add('cine-fs-lock');
+    phone.classList.add('is-fs');
+    clearPhone();
+    overlay.getBoundingClientRect();                /* reflow : taille finale */
+
+    var p = video.play(); if (p && p.catch) p.catch(function () {});
+    try { closeBtn.focus({ preventScroll: true }); } catch (e) { closeBtn.focus(); }
+
+    if (reduce) { overlay.classList.add('is-visible'); animating = false; return; }
+    var last = phone.getBoundingClientRect();
+    window.requestAnimationFrame(function () { overlay.classList.add('is-visible'); });
+    flip(first, last, 550, 'cubic-bezier(.22,.7,.3,1)', function () {
+      animating = false; clearPhone();
+    });
+  }
+
+  function restore() {
+    if (placeholder && homeParent) { homeParent.insertBefore(phone, placeholder); placeholder.remove(); }
+    placeholder = null; homeParent = null;
+    phone.classList.remove('is-fs');
+    clearPhone();
+    overlay.classList.remove('is-open', 'is-visible');
+    document.body.classList.remove('cine-fs-lock');
+    animating = false; isOpen = false;
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  function close() {
+    if (!isOpen || animating) return;
+    animating = true;
+    try { video.pause(); } catch (e) {}
+    overlay.classList.remove('is-visible');         /* le fond se referme */
+    if (reduce || !placeholder) { restore(); return; }
+    /* le téléphone est en grand (transform identité) -> on l'anime vers sa place d'origine */
+    var target = placeholder.getBoundingClientRect();
+    var cur = phone.getBoundingClientRect();
+    var dx = target.left - cur.left, dy = target.top - cur.top;
+    var sx = target.width / cur.width, sy = target.height / cur.height;
+    phone.style.transformOrigin = 'top left';
+    phone.style.transition = 'transform 420ms cubic-bezier(.4,0,.2,1)';
+    var called = false;
+    var done = function (e) {
+      if (e && (e.target !== phone || e.propertyName !== 'transform')) return;
+      if (called) return; called = true;
+      phone.removeEventListener('transitionend', done);
+      restore();
+    };
+    phone.addEventListener('transitionend', done);
+    window.setTimeout(done, 570);
+    window.requestAnimationFrame(function () {
+      phone.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sx + ',' + sy + ')';
+    });
+  }
+
+  /* la lecture démarre (tap sur le bouton natif = geste utilisateur) -> ouverture */
+  video.addEventListener('play', function () { if (isMobile() && !isOpen) open(); });
+  video.addEventListener('ended', function () { if (isOpen) close(); });
+  closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) close(); });
 })();
 
