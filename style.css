@@ -5120,9 +5120,12 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .hero-offer__wa b{color:#fff;font-weight:700}
 .hero-offer__wa:hover{color:#fff}
 /* bandeau de réassurance parents */
-.parents-proof{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem .7rem;margin:1.4rem auto 0;max-width:820px;padding:0;list-style:none}
-.parents-proof li{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.74rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.42em .9em;background:rgba(191,210,228,.03)}
+/* 4 garanties alignées : grille 2×2 d'encarts de largeur égale (PC + tablette),
+   1 colonne sur petit mobile. Centré, uniforme -> alignement net partout. */
+.parents-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem .6rem;margin:1.4rem auto 0;max-width:600px;padding:0;list-style:none}
+.parents-proof li{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.74rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.42em .9em;background:rgba(191,210,228,.03)}
 .parents-proof li svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
+@media (max-width:520px){.parents-proof{grid-template-columns:1fr;max-width:340px}}
 
 /* ============================================================
    V45 — "Deck" de cartes empilées (adaptation NATIVE du composant
@@ -5509,6 +5512,8 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 @media (max-width:520px){.cine-stats{gap:.5rem}.cine-stats li{padding:.9rem .7rem;gap:.3rem}.cine-stats li::before{padding:1.25px}.cine-stats b{font-size:clamp(1.5rem,7.2vw,1.95rem);letter-spacing:.2px}.cine-stats span{font-size:.66rem;letter-spacing:.04em;line-height:1.2}}
 @media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}.cine-stats li::before{animation:none;opacity:.7}.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
+/* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
+@media (max-width:559px){.cine-actions{justify-content:center}}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
 /* --- scène / mockup --- */
 .cine-stage{position:relative;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
