@@ -5656,9 +5656,10 @@ body.cine-fs-lock{overflow:hidden}
 .social-spotlight__media{position:absolute;inset:0 0 0 auto;width:54%;max-width:880px;z-index:0;pointer-events:none}
 .social-spotlight__media img{width:100%;height:100%;object-fit:cover;object-position:52% 8%;display:block}
 .social-spotlight__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,var(--nuit-0),var(--nuit-2));
-  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 16%,rgba(0,0,0,.5) 34%,transparent 50%);
-          mask-image:linear-gradient(100deg,#000 0%,#000 16%,rgba(0,0,0,.5) 34%,transparent 50%)}
+  /* couleurs EXACTES du fond de section (3 paliers) -> le lavage se fond sans aucune ligne */
+  background:linear-gradient(180deg,var(--nuit-0),#0c1729 52%,var(--nuit-2));
+  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 22%,rgba(0,0,0,.62) 40%,rgba(0,0,0,.22) 52%,transparent 62%);
+          mask-image:linear-gradient(100deg,#000 0%,#000 22%,rgba(0,0,0,.62) 40%,rgba(0,0,0,.22) 52%,transparent 62%)}
 .social-spotlight__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(to bottom,var(--nuit-0),transparent 15%),linear-gradient(to top,var(--nuit-2),transparent 13%)}
 .social-spotlight__media.is-empty{display:none}
