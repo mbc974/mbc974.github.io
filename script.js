@@ -332,8 +332,8 @@
       const subject = encodeURIComponent('Contact MBC — ' + nom);
       const body = encodeURIComponent([
         'Nom : ' + nom, 'Email : ' + email,
-        'Téléphone : ' + (form.tel.value.trim() || '—'),
-        'Catégorie : ' + (form.cat.value || '—'), '', form.msg.value.trim()
+        'Téléphone : ' + ((form.tel && form.tel.value.trim()) || '—'),
+        'Catégorie : ' + ((form.cat && form.cat.value) || '—'), '', (form.msg && form.msg.value.trim()) || ''
       ].join('\n'));
       feedback.textContent = 'Votre logiciel de messagerie va s\u2019ouvrir pour finaliser l\u2019envoi…';
       feedback.className = 'form-feedback ok';
