@@ -5753,3 +5753,8 @@ body.cine-fs-lock{overflow:hidden}
   color:var(--txt-soft);font-size:.86rem;line-height:1.7}
 .seo-foot a{color:var(--orange-vif);font-weight:600}
 .seo-foot__links{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;justify-content:center;margin-bottom:.8rem}
+.footer__seo{margin:0 0 1.5rem;font-size:.82rem;line-height:1.9;color:var(--txt-soft)}
+.footer__seo b{display:block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.72rem;color:var(--bleu-glacier);margin-bottom:.3rem}
+.footer__seo a{color:var(--txt-soft)}
+.footer__seo a:hover{color:var(--orange-vif)}
