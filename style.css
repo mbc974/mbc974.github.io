@@ -5699,3 +5699,62 @@ body.cine-fs-lock{overflow:hidden}
   border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:btnspin .6s linear infinite}
 @keyframes btnspin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.btn.is-loading::after{animation:none}}
+
+/* ============================================================
+   AUDIT 2026-06 — Parents (phrase humaine) + Documents & garanties
+   ============================================================ */
+.parents-quote{margin:1.8rem auto 0;padding:1.3rem 1.6rem;border-left:4px solid var(--orange-vif);
+  border-radius:0 var(--radius) var(--radius) 0;
+  background:linear-gradient(100deg,rgba(232,130,42,.09),rgba(13,21,38,.18));max-width:62ch}
+.parents-quote p{font-family:var(--ff-cond);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.5rem);
+  line-height:1.4;color:var(--txt);margin:0}
+.parents-quote cite{display:block;margin-top:.7rem;font-style:normal;font-family:var(--ff-cond);
+  font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--orange-vif)}
+
+/* Documents & garanties — bandeau de confiance dans le footer */
+.footer__trust{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;list-style:none;
+  margin:0 0 1.6rem;padding:1.4rem 0 1.6rem;border-block:1px solid var(--line)}
+.footer__trust .footer__trust-h{flex:1 0 100%;margin:0 0 .3rem;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--bleu-glacier)}
+.footer__trust li{display:inline-flex;align-items:center;gap:.45em;
+  font-family:var(--ff-cond);font-weight:600;font-size:.8rem;letter-spacing:.02em;color:var(--txt-soft);
+  border:1px solid var(--line-strong);border-radius:999px;padding:.4em .9em;background:rgba(191,210,228,.03)}
+.footer__trust li svg{width:1.05em;height:1.05em;flex:none;color:var(--orange-vif)}
+.footer__trust li b{color:var(--txt);font-weight:700}
+.footer__trust a.footer__trust-link{color:var(--orange-vif);border-color:rgba(232,130,42,.4)}
+.footer__trust a.footer__trust-link:hover{background:rgba(232,130,42,.1)}
+
+/* ============================================================
+   AUDIT 2026-06 — Pages SEO locales (header/footer légers, sans JS)
+   ============================================================ */
+.seo-top{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;padding:.65rem clamp(16px,5vw,48px);
+  background:rgba(7,13,24,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.seo-top__brand{display:flex;align-items:center;gap:.6rem;font-family:var(--ff-display);
+  font-size:1.05rem;color:#fff;letter-spacing:.5px}
+.seo-top__brand img{width:42px;height:42px;object-fit:contain}
+.seo-top__nav{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.seo-top__nav a:not(.btn){font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.04em;font-size:.82rem;color:var(--txt-soft);padding:.4em .6em}
+.seo-top__nav a:not(.btn):hover{color:#fff}
+.seo-hero{position:relative;overflow:hidden;
+  background:radial-gradient(120% 90% at 82% -10%,rgba(27,81,158,.42),transparent 55%),
+             radial-gradient(80% 70% at 0% 110%,rgba(217,106,27,.22),transparent 55%),
+             linear-gradient(180deg,#091020,var(--nuit-0))}
+.seo-prose{max-width:72ch}
+.seo-prose p{color:var(--txt-soft);line-height:1.75;margin-bottom:1.05rem}
+.seo-prose h2{margin-top:2.4rem}
+.seo-prose h3{font-family:var(--ff-cond);font-weight:700;color:#fff;font-size:1.2rem;margin:1.6rem 0 .5rem}
+.seo-prose ul{margin:.6rem 0 1.4rem;padding-left:1.25rem;color:var(--txt-soft);line-height:1.7}
+.seo-prose ul li{margin-bottom:.4rem}
+.seo-prose a{color:var(--orange-vif);font-weight:600}
+.seo-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
+.seo-foot{border-top:1px solid var(--line);padding:2.2rem 0;margin-top:1rem;text-align:center;
+  color:var(--txt-soft);font-size:.86rem;line-height:1.7}
+.seo-foot a{color:var(--orange-vif);font-weight:600}
+.seo-foot__links{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;justify-content:center;margin-bottom:.8rem}
+.footer__seo{margin:0 0 1.5rem;font-size:.82rem;line-height:1.9;color:var(--txt-soft)}
+.footer__seo b{display:block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.72rem;color:var(--bleu-glacier);margin-bottom:.3rem}
+.footer__seo a{color:var(--txt-soft)}
+.footer__seo a:hover{color:var(--orange-vif)}

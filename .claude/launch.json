@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "mbc-static",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000"],
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".claude/static-server.ps1", "-Port", "8000"],
       "port": 8000
     }
   ]
