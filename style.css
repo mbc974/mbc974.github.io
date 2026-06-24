@@ -4949,7 +4949,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
           mask-image:linear-gradient(100deg,#000 0%,#000 17%,rgba(0,0,0,.5) 35%,transparent 51%)}
 .join__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
   /* fondu premium du bord droit (dissout le public dans le fond navy) + ancrage haut/bas (couleurs EXACTES du fond) */
-  background:linear-gradient(to left,#0a1426 0%,rgba(10,20,38,.78) 6%,rgba(10,20,38,.34) 15%,transparent 28%),
+  background:linear-gradient(to left,#0a1426 0%,#0a1426 11%,rgba(10,20,38,.42) 18%,transparent 24%),
              linear-gradient(to bottom,#0a1426,transparent 16%),
              linear-gradient(to top,#0d1a30,transparent 12%)}
 /* halos identité MBC (orange + bleu) */
