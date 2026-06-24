@@ -5704,7 +5704,7 @@ body.cine-fs-lock{overflow:hidden}
 /* ============================================================
    AUDIT 2026-06 — Parents (phrase humaine) + Documents & garanties
    ============================================================ */
-.parents-quote{margin:1.8rem auto 0;padding:1.3rem 1.6rem;border-left:4px solid var(--orange-vif);
+.parents-quote{margin:1.8rem auto 2.8rem;padding:1.3rem 1.6rem;border-left:4px solid var(--orange-vif);
   border-radius:0 var(--radius) var(--radius) 0;
   background:linear-gradient(100deg,rgba(232,130,42,.09),rgba(13,21,38,.18));max-width:62ch}
 .parents-quote p{font-family:var(--ff-cond);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.5rem);
