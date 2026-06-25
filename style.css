@@ -5514,7 +5514,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
 @media (max-width:559px){.cine-actions{justify-content:center}}
-.cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.6)}
+.cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.78)}
 /* --- scène / mockup --- */
 .cine-stage{position:relative;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
 .cine-phone{position:relative;width:clamp(244px,30vw,288px);aspect-ratio:280/580;border-radius:2.6rem;background:#111;transform-style:preserve-3d;transition:transform .5s var(--ease-out,ease);
@@ -5710,7 +5710,7 @@ body.cine-fs-lock{overflow:hidden}
 .parents-quote p{font-family:var(--ff-cond);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.5rem);
   line-height:1.4;color:var(--txt);margin:0}
 .parents-quote cite{display:block;margin-top:.7rem;font-style:normal;font-family:var(--ff-cond);
-  font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:var(--orange-vif)}
+  font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem;color:var(--orange-vif)}
 
 /* Documents & garanties — bandeau de confiance dans le footer */
 .footer__trust{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;list-style:none;
