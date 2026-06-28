@@ -5506,12 +5506,11 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,
 .cine-stats li:hover,.cine-stats li:focus-within{transform:translateY(-4px);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.35),0 30px 56px -24px rgba(217,106,27,.34)}
 .cine-stats li:hover::before,.cine-stats li:focus-within::before{background:linear-gradient(150deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 32%,rgba(232,130,42,.2) 70%,rgba(232,130,42,.45))}
-.cine-stats b{position:relative;z-index:2;display:inline-flex;align-items:baseline;gap:.14em;font-family:var(--ff-body);font-weight:600;font-size:clamp(2.05rem,3.4vw,2.6rem);line-height:1;letter-spacing:-.015em;
-  color:#fff;-webkit-text-fill-color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-/* suffixe affiné (€ · ans + · h) : plus petit, plus léger, en retrait — traitement tarifaire premium */
-.cine-stats b i{font-style:normal;font-weight:500;font-size:.46em;letter-spacing:.01em;color:rgba(216,228,242,.6);-webkit-text-fill-color:rgba(216,228,242,.6);text-shadow:none}
+/* chiffre : même silhouette condensée qu'avant mais allégée (Barlow Condensed 500, Anton n'a pas de graisse light) */
+.cine-stats b{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:500;font-size:clamp(2.05rem,3.4vw,2.6rem);line-height:1;letter-spacing:.3px;
+  color:#fff;-webkit-text-fill-color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.45),0 0 22px rgba(255,255,255,.12)}
 .cine-stats span{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;line-height:1.3;color:rgba(216,228,242,.74);max-width:none}
-@media (max-width:520px){.cine-stats{gap:.55rem}.cine-stats li{padding:1.05rem .65rem;gap:.4rem;border-radius:15px}.cine-stats b{font-size:clamp(1.7rem,7.6vw,2.05rem);letter-spacing:-.01em}.cine-stats span{font-size:.62rem;letter-spacing:.07em;line-height:1.25}}
+@media (max-width:520px){.cine-stats{gap:.55rem}.cine-stats li{padding:1.05rem .65rem;gap:.4rem;border-radius:15px}.cine-stats b{font-size:clamp(1.7rem,7.6vw,2.05rem);letter-spacing:.2px}.cine-stats span{font-size:.62rem;letter-spacing:.07em;line-height:1.25}}
 @media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
