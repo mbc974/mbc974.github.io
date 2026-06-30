@@ -6,6 +6,12 @@
       "runtimeExecutable": "powershell",
       "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".claude/static-server.ps1", "-Port", "8000"],
       "port": 8000
+    },
+    {
+      "name": "lotopei",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:/Users/ALEX/Documents/GitHub/LOTOPEI", "run", "dev"],
+      "port": 5173
     }
   ]
 }

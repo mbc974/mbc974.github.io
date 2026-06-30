@@ -507,9 +507,10 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .footer__social a:hover{transform:translateY(-3px);background:var(--grad-orange);color:#190f04;border-color:transparent}
 .footer__social svg{width:20px;height:20px}
 .footer__actions{display:flex;flex-direction:column;gap:.6rem;margin-top:.2rem}
-.footer__actions a{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.9rem;color:var(--txt-soft);transition:color .2s}
+.footer__actions a{display:inline-flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.9rem;color:var(--txt-soft);transition:color .22s var(--ease,ease),transform .28s var(--ease,ease)}
 .footer__actions a .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
-.footer__actions a:hover{color:var(--orange-vif)}
+.footer__actions a:hover,.footer__actions a:focus-visible{color:var(--orange-vif);transform:translateX(5px)}
+@media (prefers-reduced-motion:reduce){.footer__actions a{transition:color .2s}.footer__actions a:hover,.footer__actions a:focus-visible{transform:none}}
 
 /* ---- FFBB badge in stats ---- */
 .stat-cell .ffbb{font-family:var(--ff-display);font-size:clamp(1.6rem,5vw,2.4rem);letter-spacing:.04em}
