@@ -56,6 +56,39 @@
   --dimple-url:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAABTUlEQVR4nO3aMU7DUBRFwTgrYP+rZAemCShYRmkeUnz+TJdwRPNpeLrbvu8ft4dt2z5vB88/112vux9/QMvPA5/9FZx9r7tmBwDAoO34xav/i3XX6u5/RWefddfrHDriPHDcrwd+l6uL7n86AACGbN//FL/D1UU3392fP7z6ZbrrdQ4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHjn0BHngeNsshbpAAAYZJMV72yy4p1DR5wHjrPJWqgDAGCITVa8s8mKdw4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHjn0BHngeNsshbpAAAYZJMV72yy4p1DR5wHjrPJWqgDAGCITVa8s8mKdw4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHj3BYSzBjC1ykfuAAAAAElFTkSuQmCC');
 }
 
+/* ============================================================
+   THÈME CLAIR — variables (bascule via html[data-theme="light"])
+   Même charte : bleu nuit = encre, orange = accent, fonds bleu-glacier.
+   Les zones "îlots" (héro, vidéo, bandes photo, footer…) gardent
+   leurs tokens sombres — voir le bloc THÈME CLAIR en fin de fichier.
+   ============================================================ */
+html{color-scheme:dark}
+html[data-theme="light"]{
+  color-scheme:light;
+  --nuit-0:#EEF3F9;
+  --nuit-2:#E4EBF4;
+  --nuit-3:#FFFFFF;
+  --line:rgba(13,21,38,.10);
+  --line-strong:rgba(13,21,38,.22);
+  --txt:#0D1526;
+  --txt-soft:#46617E;
+  /* bleu glacier trop pâle comme texte sur blanc -> bleu acier AA (6.6:1) */
+  --bleu-glacier:#3A5F88;
+  /* orange vif illisible comme texte sur fond clair -> orange brûlé AA (5.1:1) ;
+     les dégradés/boutons gardent les oranges de la charte via les literals ci-dessous */
+  --orange-vif:#A84B08;
+  --grad-orange:linear-gradient(100deg,#D96A1B,#E8822A);
+  --grad-roi:linear-gradient(135deg,#1B519E,#0f3a73);
+  --grad-card:linear-gradient(168deg,#FFFFFF,#F2F6FC);
+  --e1:0 2px 10px rgba(13,38,76,.08);
+  --e2:0 12px 30px rgba(13,38,76,.10);
+  --e3:0 22px 56px rgba(13,38,76,.13);
+  --e4:0 36px 84px rgba(13,38,76,.16);
+  --glow-o:0 18px 46px rgba(217,106,27,.22);
+  --glow-b:0 18px 46px rgba(27,81,158,.20);
+  --bevel:inset 0 1px 0 rgba(255,255,255,.85),inset 0 0 0 1px rgba(13,38,76,.06);
+}
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:80px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -5768,3 +5801,233 @@ body.cine-fs-lock{overflow:hidden}
   letter-spacing:.12em;font-size:.72rem;color:var(--bleu-glacier);margin-bottom:.3rem}
 .footer__seo a{color:var(--txt-soft)}
 .footer__seo a:hover{color:var(--orange-vif)}
+
+/* ============================================================
+   THÈME CLAIR — surcharges (html[data-theme="light"])
+   Placé en fin de fichier : gagne toutes les guerres de cascade.
+   Principe : les variables re-déclarées en tête de fichier font 90 %
+   du travail ; ici on traite (1) les îlots qui RESTENT sombres,
+   (2) les couleurs sombres codées en dur hors variables.
+   ============================================================ */
+
+/* ---- Bouton bascule jour/nuit (stylé pour les 2 thèmes) ---- */
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;flex:none;border-radius:50%;cursor:pointer;background:rgba(191,210,228,.08);border:1px solid var(--line-strong);color:var(--txt);transition:transform .25s var(--ease-out),background .25s,border-color .25s,color .25s}
+.theme-toggle:hover{border-color:var(--orange-vif);color:var(--orange-vif);transform:rotate(15deg)}
+.theme-toggle:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.theme-toggle svg{width:20px;height:20px;flex:none}
+.theme-toggle .tt-moon{display:none}
+[data-theme="light"] .theme-toggle{background:rgba(13,21,38,.05)}
+[data-theme="light"] .theme-toggle .tt-sun{display:none}
+[data-theme="light"] .theme-toggle .tt-moon{display:block}
+.seo-top .theme-toggle{width:38px;height:38px;margin-left:.4rem}
+
+/* ---- Îlots conservés sombres : on re-épingle les tokens sombres.
+   Les custom properties héritant, tout leur contenu (textes glacier,
+   kickers orange, bordures, ombres) reste réglé pour fond sombre. ---- */
+[data-theme="light"] :is(.hero,.marquee,.editorial,.join,.cine-card,.cine-fs,.adhesion-video__player,.lightbox,.site-footer,.contact-info,.dons__card,.partner-card--dark,.g-tile,.cal-venue,.team__cap,.engage-poster,.nav-backdrop){
+  color-scheme:dark;
+  --nuit-0:#070d18;--nuit-2:#101b30;--nuit-3:#15233d;
+  --line:rgba(191,210,228,.12);--line-strong:rgba(191,210,228,.24);
+  --txt:#E7EEF6;--txt-soft:#9FB2C8;--bleu-glacier:#BFD2E4;--orange-vif:#E8822A;
+  --grad-orange:linear-gradient(100deg,var(--orange-ballon),#E8822A);
+  --grad-card:linear-gradient(168deg,var(--nuit-3),#0e1a2f);
+  --e1:0 2px 10px rgba(3,7,15,.34);--e2:0 12px 30px rgba(3,7,15,.42);--e3:0 22px 56px rgba(3,7,15,.48);--e4:0 36px 84px rgba(3,7,15,.56);
+  --glow-o:0 18px 46px rgba(217,106,27,.30);--glow-b:0 18px 46px rgba(27,81,158,.42);
+  --bevel:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(191,210,228,.04);
+}
+
+/* ---- Typo & éléments globaux ---- */
+[data-theme="light"] .h2{color:var(--bleu-nuit)}
+[data-theme="light"] :is(.editorial,.join,.cine-card) .h2{color:var(--blanc)}
+[data-theme="light"] .h2 .hl{color:var(--orange-ballon)}
+[data-theme="light"] :is(.editorial,.join,.cine-card) .h2 .hl{color:#E8822A}
+[data-theme="light"] .h2 .out{-webkit-text-stroke:2px rgba(217,106,27,.9)}
+[data-theme="light"] .logo-img{filter:drop-shadow(0 4px 14px rgba(13,21,38,.18))}
+[data-theme="light"] .brand:hover .logo-img{filter:drop-shadow(0 4px 12px rgba(13,21,38,.22)) drop-shadow(0 0 14px rgba(217,106,27,.25))}
+[data-theme="light"] .bg-word{color:rgba(13,21,38,.035)}
+[data-theme="light"] .skip-link{background:var(--grad-orange)}
+[data-theme="light"] .btn--ghost{color:var(--bleu-nuit)}
+[data-theme="light"] :is(.hero,.join,.cine-card,.editorial) .btn--ghost{color:var(--blanc)}
+[data-theme="light"] .btn--ghost.is-loading::after{border-color:rgba(13,21,38,.3);border-top-color:#0D1526}
+[data-theme="light"] .scroll-bar::after{animation-name:ballPulseLight}
+@keyframes ballPulseLight{
+  0%,100%{box-shadow:0 0 10px 2px rgba(217,106,27,.4),0 0 0 2px #FFFFFF}
+  50%{box-shadow:0 0 17px 5px rgba(217,106,27,.28),0 0 0 2px #FFFFFF}
+}
+
+/* ---- Header & navigation ---- */
+[data-theme="light"] .site-header{background:rgba(242,245,250,.6)}
+[data-theme="light"] .site-header.scrolled{background:rgba(255,255,255,.92);box-shadow:0 6px 24px rgba(13,21,38,.10)}
+[data-theme="light"] .nav a:hover{color:var(--bleu-nuit)}
+[data-theme="light"] .burger span{background:var(--bleu-nuit)}
+[data-theme="light"] .brand__sub{color:#0D1526!important}
+[data-theme="light"] .brand__sub2{color:rgba(13,21,38,.72)}
+[data-theme="light"] .brand__txt{border-left-color:rgba(13,21,38,.2)}
+[data-theme="light"] .nav-backdrop{background:rgba(13,21,38,.4)}
+@media (max-width:1180px){
+  [data-theme="light"] .nav{background:rgba(255,255,255,.98)}
+}
+@media (max-width:920px){
+  [data-theme="light"] .nav{background:rgba(255,255,255,.98)}
+}
+/* Bloc perf mobile (header opaque) — miroir clair */
+@media (max-width:760px){
+  [data-theme="light"] .site-header{background:rgba(242,245,250,.94)!important}
+}
+
+/* ---- Sections : lavages radiaux & fonds codés en dur ---- */
+[data-theme="light"] .essentiel{background:radial-gradient(60% 55% at 50% -8%,rgba(27,81,158,.08),transparent 60%),radial-gradient(55% 60% at 100% 105%,rgba(217,106,27,.06),transparent 62%),linear-gradient(180deg,#EDF2F9,#EEF3F9)!important}
+[data-theme="light"] .staff{background:radial-gradient(65% 75% at 88% -5%,rgba(27,81,158,.08),transparent 58%),linear-gradient(180deg,#EDF2F9,#EEF3F9)!important}
+[data-theme="light"] .partenaires{background:radial-gradient(60% 70% at 12% -5%,rgba(217,106,27,.06),transparent 58%),linear-gradient(180deg,#EEF3F9,#EDF2F9)!important}
+[data-theme="light"] .kits{background:radial-gradient(100% 120% at 14% 0,rgba(27,81,158,.08),transparent 55%),linear-gradient(180deg,var(--nuit-0),#E4EBF4 60%,var(--nuit-0))}
+[data-theme="light"] .gallery{background:linear-gradient(180deg,var(--nuit-0),#E7EDF5 50%,var(--nuit-0))!important}
+[data-theme="light"] .engagement{background:radial-gradient(80% 120% at 12% 10%,rgba(232,130,42,.08),transparent 52%),radial-gradient(90% 130% at 92% 20%,rgba(27,81,158,.08),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+[data-theme="light"] .parents{background:radial-gradient(80% 120% at 92% 0,rgba(27,81,158,.07),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+[data-theme="light"] .dons{background:radial-gradient(90% 140% at 50% 0,rgba(217,106,27,.10),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+[data-theme="light"] .social-spotlight{background:linear-gradient(180deg,var(--nuit-0),#E9EFF7 52%,var(--nuit-2))}
+[data-theme="light"] .social-spotlight__media::before{background:linear-gradient(180deg,var(--nuit-0),#E9EFF7 52%,var(--nuit-2))}
+@media (max-width:860px){
+  [data-theme="light"] .social-spotlight__media::before{background:linear-gradient(180deg,rgba(242,245,250,.55),rgba(233,239,247,.78))}
+  [data-theme="light"] .social-spotlight__media::after{background:linear-gradient(to top,var(--nuit-0) 8%,rgba(238,243,249,.4) 60%,transparent)}
+}
+
+/* ---- L'essentiel : cartes verre sombre -> panneaux blancs premium ---- */
+[data-theme="light"] .essentiel-card{
+  background:
+    radial-gradient(85% 65% at 94% -14%,rgba(232,130,42,.07),transparent 55%),
+    radial-gradient(85% 75% at -4% 112%,rgba(27,81,158,.07),transparent 60%),
+    linear-gradient(162deg,#FFFFFF 0%,#F7FAFD 48%,#EEF3F9 100%)!important;
+  border:1px solid rgba(13,21,38,.10)!important;
+  box-shadow:inset 0 1px 0 #FFFFFF,0 22px 50px -26px rgba(13,38,76,.20)!important}
+[data-theme="light"] .essentiel-card::before{background:radial-gradient(70% 55% at 100% 0%,rgba(27,81,158,.06),transparent 56%)}
+[data-theme="light"] .essentiel-card:hover{border-color:rgba(217,106,27,.5)!important;box-shadow:0 18px 46px rgba(13,38,76,.14),inset 0 0 0 1px rgba(217,106,27,.18)!important}
+[data-theme="light"] .essentiel-card__val{color:var(--bleu-nuit)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  [data-theme="light"] .essentiel-card__val{background-image:linear-gradient(180deg,#0D1526,#1B519E)}
+}
+[data-theme="light"] .essentiel-card__ico,[data-theme="light"] .kit-spon__ico{
+  background:radial-gradient(120% 120% at 30% 18%,rgba(232,130,42,.16),#FDF1E6 72%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 8px 22px rgba(13,38,76,.10)}
+
+/* ---- Catégories ---- */
+[data-theme="light"] .cat--featured{background:linear-gradient(168deg,#FFFFFF,#E9F0FA)}
+[data-theme="light"] .cat:hover,[data-theme="light"] .why:hover,[data-theme="light"] .fond-pillar:hover,[data-theme="light"] .staff-card:hover{box-shadow:0 14px 34px rgba(13,38,76,.14)}
+[data-theme="light"] .cat__num{color:rgba(13,21,38,.06)}
+[data-theme="light"] .cat--photo .cat__photo{background:linear-gradient(160deg,#DCE6F2,#BFD2E4)}
+[data-theme="light"] .cat--photo .cat__photo::after{background:linear-gradient(180deg,rgba(7,13,24,.30) 0,rgba(7,13,24,0) 26%,rgba(255,255,255,0) 52%,rgba(255,255,255,.62) 84%,rgba(255,255,255,.96) 100%)}
+[data-theme="light"] .cat--photo .cat__num{color:rgba(255,255,255,.55);text-shadow:0 2px 16px rgba(0,0,0,.55)}
+[data-theme="light"] .cat:hover .cat__num{color:rgba(217,106,27,.5);text-shadow:none}
+[data-theme="light"] .cat-mixite b{color:var(--bleu-nuit)}
+[data-theme="light"] .cat__meta{border-top-color:rgba(13,21,38,.1)}
+[data-theme="light"] .grid-fx__base{--gl:rgba(13,21,38,.45)}
+[data-theme="light"] .grid-fx__reveal{--gl:rgba(27,81,158,.5)}
+[data-theme="light"] .grid-fx__glow--orange{background:radial-gradient(circle,rgba(217,106,27,.16),transparent 70%)}
+[data-theme="light"] .grid-fx__glow--blue{background:radial-gradient(circle,rgba(27,81,158,.14),transparent 70%)}
+
+/* ---- Maillots ---- */
+[data-theme="light"] .kit-card{border-color:rgba(13,21,38,.12)}
+[data-theme="light"] .kit-card:hover{box-shadow:0 22px 48px rgba(13,38,76,.16),0 0 40px rgba(217,106,27,.10)}
+[data-theme="light"] .tilt3d.is-tilting{box-shadow:0 22px 48px rgba(13,38,76,.18)}
+[data-theme="light"] .kit-copy h3{color:var(--bleu-nuit)}
+[data-theme="light"] .kit-sw{box-shadow:inset 0 0 0 1px rgba(13,21,38,.18)}
+[data-theme="light"] .kit-spon{background:linear-gradient(168deg,#FFFFFF,#F2F6FC) padding-box,linear-gradient(150deg,rgba(217,106,27,.5),rgba(27,81,158,.28) 58%,rgba(13,21,38,.08)) border-box!important;box-shadow:var(--e2)!important}
+[data-theme="light"] .kit-spon b{color:var(--bleu-nuit)}
+
+/* ---- Calendrier ---- */
+[data-theme="light"] .cal2-table{box-shadow:0 16px 40px rgba(13,38,76,.12)}
+[data-theme="light"] .cal2 .cday{color:var(--txt)!important}
+[data-theme="light"] .cal2-row--head{color:#fff}
+[data-theme="light"] .cal2-row--head .cday{color:#fff!important}
+[data-theme="light"] .cal2-row:not(.cal2-row--head):hover .ctime{text-shadow:none}
+@media (max-width:760px){
+  [data-theme="light"] .cal2-row{background:linear-gradient(168deg,#FFFFFF,#EDF2F8)!important}
+}
+
+/* ---- Staff ---- */
+[data-theme="light"] .team__photo{background:linear-gradient(180deg,#FFFFFF,#EDF2F8);border-color:rgba(13,21,38,.12);box-shadow:0 18px 40px -20px rgba(13,38,76,.18)}
+[data-theme="light"] .team__photo:hover{box-shadow:0 40px 72px -26px rgba(13,38,76,.25),0 0 60px -18px rgba(217,106,27,.22)}
+
+/* ---- Suivez le MBC (réseaux sociaux) ---- */
+[data-theme="light"] .social-card{background:linear-gradient(150deg,#FFFFFF,#EDF2F9)}
+[data-theme="light"] .social-card__body strong{color:var(--bleu-nuit)}
+[data-theme="light"] .social-card:hover .social-card__go,[data-theme="light"] .social-card:focus-visible .social-card__go{color:var(--bleu-nuit)}
+
+/* ---- Parents (piliers, FAQ, étapes) ---- */
+[data-theme="light"] .p-pillar h3{color:var(--bleu-nuit)}
+[data-theme="light"] .p-pillar__ico{background:radial-gradient(130% 120% at 28% 16%,rgba(232,130,42,.20),#E8EFF8 70%),linear-gradient(160deg,#FFFFFF,#EDF2F9);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 12px 26px -10px rgba(13,38,76,.16)}
+[data-theme="light"] .p-pillar:hover .p-pillar__ico{box-shadow:inset 0 1px 0 #fff,0 16px 32px -10px rgba(217,106,27,.35)}
+[data-theme="light"] .faq__title{color:var(--bleu-nuit)}
+[data-theme="light"] .faq__item{background:#FFFFFF}
+[data-theme="light"] .faq__item summary{color:var(--bleu-nuit)}
+[data-theme="light"] .step h3{color:var(--bleu-nuit)}
+[data-theme="light"] .impact li{background:#FFFFFF}
+[data-theme="light"] .parents-proof li{background:#FFFFFF}
+[data-theme="light"] .parents-quote{background:linear-gradient(100deg,rgba(232,130,42,.1),rgba(27,81,158,.07))}
+
+/* ---- Bénévoles / engagement ---- */
+[data-theme="light"] .engage-card{background:linear-gradient(160deg,#FFFFFF,#F0F4FA);box-shadow:0 14px 34px rgba(13,38,76,.12)}
+[data-theme="light"] .engage-card::before{background:radial-gradient(circle,rgba(232,130,42,.12),transparent 68%)}
+[data-theme="light"] .engage-card--mission::before{background:radial-gradient(circle,rgba(27,81,158,.14),transparent 68%)}
+[data-theme="light"] .engage-card h3{color:var(--bleu-nuit)}
+[data-theme="light"] .engage-benefits b,[data-theme="light"] .engage-roles b{color:var(--bleu-nuit)}
+[data-theme="light"] .engage-missions li{background:rgba(13,21,38,.04)}
+[data-theme="light"] .engage-poster{box-shadow:0 14px 30px rgba(13,38,76,.14)}
+[data-theme="light"] .engage-poster:hover,[data-theme="light"] .engage-poster:focus-visible{box-shadow:0 20px 44px rgba(13,38,76,.18)}
+[data-theme="light"] .engage-poster:focus-visible{outline-color:rgba(27,81,158,.55)}
+[data-theme="light"] .solidaire{background:rgba(27,81,158,.05)}
+[data-theme="light"] .solidaire__bar{background:rgba(13,21,38,.10)}
+[data-theme="light"] .solidaire__title,[data-theme="light"] .solidaire__count b{color:var(--bleu-nuit)}
+[data-theme="light"] .dons__fiscal b{color:var(--bleu-nuit)}
+
+/* ---- Sponsors & packs ---- */
+[data-theme="light"] .sponsors-wall{background:radial-gradient(48% 42% at 50% 10%,rgba(232,130,42,.05),transparent 70%),radial-gradient(60% 60% at 50% 58%,rgba(27,81,158,.05),transparent 72%)}
+[data-theme="light"] .sponsors-wall__title{color:var(--bleu-nuit)}
+[data-theme="light"] .sponsor-card{background:linear-gradient(168deg,rgba(255,255,255,.85),rgba(242,246,252,.75)) padding-box,linear-gradient(150deg,rgba(217,106,27,.45),rgba(27,81,158,.35) 55%,rgba(13,21,38,.10)) border-box;box-shadow:var(--e2)}
+[data-theme="light"] .sponsor-card:hover{box-shadow:var(--e3),0 24px 50px rgba(217,106,27,.12)}
+[data-theme="light"] .sponsor-card__name{color:var(--bleu-nuit)}
+[data-theme="light"] .sponsor-card__plate{box-shadow:inset 0 0 0 1px rgba(13,21,38,.08),0 6px 16px rgba(13,38,76,.10)}
+@media (max-width:760px){
+  [data-theme="light"] .sponsor-card{background:linear-gradient(168deg,#FFFFFF,#F2F6FC) padding-box,linear-gradient(150deg,rgba(217,106,27,.45),rgba(27,81,158,.35) 55%,rgba(13,21,38,.10)) border-box}
+}
+[data-theme="light"] .why-spon__item,[data-theme="light"] .pack{background:linear-gradient(168deg,#FFFFFF,#F4F7FB) padding-box,linear-gradient(150deg,rgba(217,106,27,.5),rgba(27,81,158,.3) 58%,rgba(13,21,38,.10)) border-box!important;box-shadow:var(--e2)!important}
+[data-theme="light"] .why-spon__item:hover,[data-theme="light"] .pack:hover{box-shadow:var(--e3),0 24px 50px rgba(217,106,27,.12)!important}
+[data-theme="light"] .why-spon__item::after,[data-theme="light"] .pack::before{background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(217,106,27,.10),transparent 60%)}
+[data-theme="light"] .sponsor-pack.pack--feat{background:linear-gradient(168deg,#FFF4E8,#FFFFFF) padding-box,linear-gradient(150deg,#D96A1B,rgba(217,106,27,.55) 58%,rgba(27,81,158,.3)) border-box!important;box-shadow:0 26px 60px rgba(217,106,27,.16),var(--e2)!important}
+[data-theme="light"] .sponsor-pack.pack--feat:hover{box-shadow:0 32px 70px rgba(217,106,27,.22),var(--e3)!important}
+[data-theme="light"] .sponsor-pack.pack--feat .pack__tag{box-shadow:0 8px 20px rgba(217,106,27,.35),0 0 0 4px #FFFFFF!important}
+[data-theme="light"] .pack__price{color:var(--bleu-nuit)}
+[data-theme="light"] .packs__note b{color:var(--bleu-nuit)}
+[data-theme="light"] .partners-subtitle{color:var(--bleu-nuit)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  [data-theme="light"] .why-spon__big{background-image:linear-gradient(180deg,#E8822A,#C75F14)}
+}
+
+/* ---- Tarifs ---- */
+[data-theme="light"] .tarifs{background:linear-gradient(168deg,#FFFFFF,#F4F7FB);box-shadow:0 18px 44px rgba(13,38,76,.12),0 0 0 1px rgba(217,106,27,.22) inset!important}
+[data-theme="light"] .tarifs__price{filter:drop-shadow(0 4px 14px rgba(217,106,27,.18))}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  [data-theme="light"] .tarifs__price{background-image:linear-gradient(180deg,#E8822A,#D96A1B 46%,#A84E0E)}
+}
+[data-theme="light"] .tarifs__main::before{background:radial-gradient(circle,rgba(217,106,27,.08),transparent 70%)}
+[data-theme="light"] .tarifs__rest b,[data-theme="light"] .tarifs__rest p b{color:var(--bleu-nuit)}
+
+/* ---- Galerie (tuiles photo : intérieur sombre conservé, cadre adouci) ---- */
+[data-theme="light"] .g-tile{border-color:rgba(13,21,38,.14)!important;box-shadow:0 12px 32px rgba(13,38,76,.14),var(--bevel)!important}
+[data-theme="light"] .gallery-cta__txt{color:var(--bleu-roi)}
+
+/* ---- Contact / formulaires ---- */
+[data-theme="light"] input,[data-theme="light"] select,[data-theme="light"] textarea{background:#FFFFFF}
+[data-theme="light"] .form-feedback.err{color:#C0392B}
+[data-theme="light"] .ffbb-wordmark,[data-theme="light"] .stat-badge{background:rgba(13,21,38,.04)}
+
+/* ---- Page adhésion ---- */
+[data-theme="light"] .adh-step{background:#FFFFFF}
+[data-theme="light"] .adh-step__txt b{color:var(--bleu-nuit)}
+[data-theme="light"] .adh-prepare__title{color:var(--bleu-nuit)}
+
+/* ---- Pages SEO locales ---- */
+[data-theme="light"] .seo-top{background:rgba(242,245,250,.92)}
+[data-theme="light"] .seo-top__brand{color:var(--bleu-nuit)}
+[data-theme="light"] .seo-top__nav a:not(.btn):hover{color:var(--bleu-nuit)}
+[data-theme="light"] .seo-prose h3{color:var(--bleu-nuit)}
+[data-theme="light"] .seo-hero{background:radial-gradient(120% 90% at 82% -10%,rgba(27,81,158,.12),transparent 55%),radial-gradient(80% 70% at 0% 110%,rgba(217,106,27,.08),transparent 55%),linear-gradient(180deg,#E7EEF8,var(--nuit-0))}

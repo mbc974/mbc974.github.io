@@ -8,7 +8,8 @@
 <meta name="author" content="MBC La Montagne Basket Club">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#0D1526">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="dark light">
+<script>(function(){try{if(localStorage.getItem('mbc-theme')==='light'){document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content','#EEF3F9')}}catch(e){}})()</script>
 <meta name="geo.region" content="RE">
 <meta name="geo.placename" content="La Montagne, Saint-Denis, La Réunion">
 <link rel="canonical" href="https://mbc974.com/sponsor-club-basket-reunion/">
@@ -39,7 +40,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
-<link rel="stylesheet" href="/style.css?v=202606-ui78">
+<link rel="stylesheet" href="/style.css?v=202607-light1">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Sponsor d'un club de basket à La Réunion — MBC La Montagne Basket Club","url":"https://mbc974.com/sponsor-club-basket-reunion/","inLanguage":"fr","description":"Devenir sponsor ou partenaire du MBC La Montagne Basket Club à La Réunion : visibilité, formules et contact.","isPartOf":{"@type":"WebSite","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
@@ -59,7 +60,8 @@
     <a href="/#partenaires">Partenaires</a>
     <a href="/#contact">Contact</a>
     <a href="/#contact" class="btn btn--primary">Devenir partenaire</a>
-  </nav>
+    <button class="theme-toggle" type="button" aria-label="Changer de thème" onclick="var h=document.documentElement,l=h.getAttribute('data-theme')!=='light';if(l){h.setAttribute('data-theme','light')}else{h.removeAttribute('data-theme')}try{localStorage.setItem('mbc-theme',l?'light':'dark')}catch(e){}"><svg class="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg><svg class="tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg></button>
+</nav>
 </header>
 
 <main id="contenu">

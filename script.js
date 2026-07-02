@@ -713,3 +713,31 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) close(); });
 })();
 
+/* ============================================================
+   Thème clair / sombre — bouton #themeToggle dans le header.
+   Le choix est mémorisé (localStorage) et appliqué sans flash
+   par le mini-script inline du <head>.
+   ============================================================ */
+(function () {
+  'use strict';
+  var btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  var root = document.documentElement;
+  var meta = document.querySelector('meta[name="theme-color"]');
+
+  function apply(light, save) {
+    if (light) root.setAttribute('data-theme', 'light');
+    else root.removeAttribute('data-theme');
+    if (meta) meta.setAttribute('content', light ? '#EEF3F9' : '#0D1526');
+    btn.setAttribute('aria-pressed', String(light));
+    btn.setAttribute('aria-label', light ? 'Activer le thème sombre' : 'Activer le thème clair');
+    if (save) { try { localStorage.setItem('mbc-theme', light ? 'light' : 'dark'); } catch (e) {} }
+  }
+
+  /* synchronise l'état du bouton avec le thème déjà appliqué par le <head> */
+  apply(root.getAttribute('data-theme') === 'light', false);
+  btn.addEventListener('click', function () {
+    apply(root.getAttribute('data-theme') !== 'light', true);
+  });
+})();
+
