@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Bannière MBC 300x100 — V1 Nuit Premium</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@500;600;700&display=swap">
+<style>
+  /* Canvas = 3000 x 1000 px → 300 x 100 cm (1px = 1mm) */
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:3000px;height:1000px;overflow:hidden}
+  body{
+    font-family:'Barlow',sans-serif;
+    background:
+      radial-gradient(1400px 900px at 12% 40%, rgba(27,81,158,.55), transparent 60%),
+      radial-gradient(1600px 1000px at 88% 10%, rgba(217,106,27,.28), transparent 55%),
+      linear-gradient(115deg,#0D1526 0%, #0f1c38 55%, #0D1526 100%);
+    color:#fff;position:relative;
+  }
+  /* Lignes de terrain (cercle central) */
+  .court{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .court .circle{position:absolute;border:6px solid rgba(191,210,228,.10);border-radius:50%}
+  .c1{width:1500px;height:1500px;left:-500px;top:-250px}
+  .c2{width:1100px;height:1100px;left:-300px;top:-50px}
+  .c3{width:1900px;height:1900px;right:-700px;bottom:-1150px;border-color:rgba(232,130,42,.10)}
+  .court .line{position:absolute;width:6px;height:100%;left:2300px;top:0;background:rgba(191,210,228,.07);transform:skewX(-14deg)}
+  /* Bande diagonale orange à droite */
+  .slash{position:absolute;top:-100px;bottom:140px;right:-260px;width:560px;
+    background:linear-gradient(180deg,#E8822A,#D96A1B);transform:skewX(-14deg);opacity:.14}
+  .slash2{position:absolute;top:-100px;bottom:140px;right:-380px;width:60px;
+    background:#E8822A;transform:skewX(-14deg);opacity:.35}
+
+  .main{position:absolute;top:0;left:0;right:0;height:760px;display:flex;align-items:center;padding:0 70px;gap:70px}
+
+  .logo-wrap{flex:0 0 auto;position:relative;display:flex;align-items:center;justify-content:center}
+  .logo-glow{position:absolute;width:760px;height:760px;border-radius:50%;
+    background:radial-gradient(circle, rgba(191,210,228,.22), rgba(27,81,158,.10) 55%, transparent 70%)}
+  .logo-wrap img{width:600px;height:600px;object-fit:contain;position:relative;
+    filter:drop-shadow(0 20px 60px rgba(0,0,0,.55))}
+
+  .text{flex:1 1 auto;min-width:0}
+  .kicker{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.2em;font-size:38px;color:#BFD2E4;margin-bottom:26px;white-space:nowrap}
+  .kicker b{color:#E8822A}
+  h1{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:.92;letter-spacing:2px}
+  h1 .l1{display:block;font-size:225px;color:#fff;text-shadow:0 14px 70px rgba(0,0,0,.6)}
+  h1 .l2{display:flex;align-items:center;gap:40px;font-size:225px;
+    background:linear-gradient(92deg,#E8822A,#D96A1B);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .yr{font-family:'Anton',sans-serif;font-size:80px;color:#0D1526;background:#BFD2E4;
+    padding:12px 30px 8px;border-radius:16px;letter-spacing:3px;line-height:1;flex:0 0 auto;
+    -webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:#0D1526}
+  .chips{display:flex;gap:26px;margin-top:44px;flex-wrap:nowrap}
+  .chip{font-family:'Barlow Condensed',sans-serif;font-weight:600;text-transform:uppercase;
+    letter-spacing:.08em;font-size:44px;padding:16px 32px;border-radius:14px;
+    border:3px solid rgba(191,210,228,.45);color:#E7EEF6;white-space:nowrap}
+  .chip--hot{border-color:#E8822A;background:rgba(232,130,42,.14);color:#fff}
+  .chip--hot b{color:#E8822A}
+
+  .cta{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:28px;margin-right:40px;position:relative}
+  .cta__lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.26em;font-size:44px;color:#BFD2E4}
+  .cta__box{font-family:'Anton',sans-serif;font-size:118px;letter-spacing:2px;color:#190f04;
+    background:linear-gradient(180deg,#E8822A,#D96A1B);padding:34px 54px 26px;border-radius:22px;
+    box-shadow:0 24px 80px rgba(217,106,27,.45);line-height:1;text-transform:uppercase}
+  .cta__soc{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:40px;
+    letter-spacing:.1em;color:#E7EEF6;text-transform:uppercase}
+  .cta__soc b{color:#E8822A}
+
+  /* Bandeau partenaires */
+  .partners{position:absolute;left:0;right:0;bottom:0;height:240px;
+    background:rgba(255,255,255,.055);border-top:5px solid #E8822A;
+    display:flex;align-items:center;padding:0 70px;gap:44px;backdrop-filter:blur(2px)}
+  .partners__lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.22em;font-size:44px;color:#BFD2E4;line-height:1.25;flex:0 0 auto}
+  .partners__lbl b{display:block;color:#E8822A;font-size:52px}
+  .plates{display:flex;flex:1 1 auto;gap:40px;justify-content:space-evenly;align-items:center}
+  .plate{background:#fff;border-radius:20px;height:186px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+    padding:16px 36px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  .plate img{height:150px;width:auto;max-width:480px;object-fit:contain}
+</style>
+</head>
+<body>
+  <div class="court">
+    <div class="circle c1"></div><div class="circle c2"></div><div class="circle c3"></div>
+    <div class="line"></div>
+  </div>
+  <div class="slash"></div><div class="slash2"></div>
+
+  <div class="main">
+    <div class="logo-wrap">
+      <div class="logo-glow"></div>
+      <img src="../../assets/logos/mbc-logo.png" alt="MBC La Montagne Basket Club">
+    </div>
+    <div class="text">
+      <p class="kicker">La Montagne Basket Club · <b>Saint-Denis — La Réunion</b> · Club affilié FFBB</p>
+      <h1>
+        <span class="l1">Inscriptions</span>
+        <span class="l2">Ouvertes <span class="yr">2026 / 2027</span></span>
+      </h1>
+      <div class="chips">
+        <span class="chip">Baby Basket → Seniors</span>
+        <span class="chip">Filles &amp; Garçons</span>
+        <span class="chip chip--hot">Licence <b>95 €</b> — FFBB &amp; assurance incluses</span>
+      </div>
+    </div>
+    <div class="cta">
+      <span class="cta__lbl">Je m'inscris sur</span>
+      <span class="cta__box">mbc974.com</span>
+      <span class="cta__soc"><b>@mbc974.re</b> · Facebook · Instagram · TikTok</span>
+    </div>
+  </div>
+
+  <div class="partners">
+    <p class="partners__lbl">Nos<b>Partenaires</b></p>
+    <div class="plates">
+      <div class="plate"><img src="./logos/sponsor-agitateurs-midi-trim.png" alt="Les Agitateurs du Midi"></div>
+      <div class="plate"><img src="./logos/sponsor-cpa-paysage-trim.png" alt="CPA Paysage"></div>
+      <div class="plate"><img src="./logos/sponsor-saint-francois-trim.png" alt="Association Saint-François d'Assise"></div>
+      <div class="plate"><img src="./logos/sponsor-resto-chen-trim.png" alt="Resto Chen"></div>
+      <div class="plate"><img src="./logos/sponsor-oxysom-trim.png" alt="Oxysom"></div>
+    </div>
+  </div>
+</body>
+</html>

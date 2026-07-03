@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Bannière MBC 300x100 — V2 Bleu Roi</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@500;600;700&display=swap">
+<style>
+  /* Canvas = 3000 x 1000 px → 300 x 100 cm (1px = 1mm) */
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:3000px;height:1000px;overflow:hidden}
+  body{
+    font-family:'Barlow',sans-serif;
+    background:
+      radial-gradient(1800px 1100px at 80% -20%, rgba(232,130,42,.30), transparent 55%),
+      linear-gradient(120deg,#1B519E 0%, #143c78 45%, #0D1526 100%);
+    color:#fff;position:relative;
+  }
+  /* Halftone + lignes terrain */
+  .dots{position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.14) 5px, transparent 6px);
+    background-size:56px 56px;
+    -webkit-mask-image:linear-gradient(100deg, transparent 55%, #000 92%);
+    mask-image:linear-gradient(100deg, transparent 55%, #000 92%)}
+  .court{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+  .arc{position:absolute;border:7px solid rgba(255,255,255,.10);border-radius:50%}
+  .a1{width:1700px;height:1700px;left:-620px;bottom:-900px}
+  .a2{width:1300px;height:1300px;left:-420px;bottom:-700px;border-color:rgba(232,130,42,.22)}
+  .a3{width:2000px;height:2000px;right:-800px;top:-1350px}
+
+  .main{position:absolute;top:0;left:0;right:0;height:745px;display:flex;align-items:center;padding:0 80px;gap:80px}
+
+  .logo-wrap{flex:0 0 auto;position:relative;display:flex;align-items:center;justify-content:center}
+  .logo-ring{position:absolute;width:620px;height:620px;border-radius:50%;
+    background:radial-gradient(circle, rgba(255,255,255,.16), transparent 65%);
+    border:10px solid rgba(232,130,42,.55)}
+  .logo-wrap img{width:520px;height:520px;object-fit:contain;position:relative;
+    filter:drop-shadow(0 22px 60px rgba(0,0,0,.5))}
+
+  .text{flex:1 1 auto;min-width:0}
+  .badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.14em;font-size:40px;color:#0D1526;background:#BFD2E4;border-radius:999px;
+    padding:12px 40px;margin-bottom:22px;white-space:nowrap}
+  h1{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:2px}
+  h1 .l1{display:block;font-size:116px;color:#fff;margin-bottom:8px}
+  h1 .l2{display:block;font-size:240px;color:#E8822A;text-shadow:0 16px 80px rgba(0,0,0,.45)}
+  h1 .l3{display:block;font-size:240px;color:#fff}
+  .sub{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:46px;letter-spacing:.04em;
+    text-transform:uppercase;color:#E7EEF6;margin-top:24px;white-space:nowrap}
+  .sub b{color:#E8822A;font-weight:700}
+  .sub .sep{color:rgba(191,210,228,.7);padding:0 16px}
+
+  .cta{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:28px;margin-right:30px}
+  .cta__season{font-family:'Anton',sans-serif;font-size:78px;color:#fff;letter-spacing:4px;line-height:1;
+    border:6px solid rgba(255,255,255,.5);border-radius:20px;padding:20px 34px 14px}
+  .cta__box{font-family:'Anton',sans-serif;font-size:110px;letter-spacing:2px;color:#190f04;
+    background:linear-gradient(180deg,#E8822A,#D96A1B);padding:32px 50px 24px;border-radius:24px;
+    box-shadow:0 26px 90px rgba(0,0,0,.5);line-height:1;text-transform:uppercase}
+  .cta__soc{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:38px;
+    letter-spacing:.12em;color:#BFD2E4;text-transform:uppercase}
+  .cta__soc b{color:#fff}
+
+  /* Bandeau partenaires — fond blanc */
+  .partners{position:absolute;left:0;right:0;bottom:0;height:255px;background:#fff;
+    display:flex;align-items:center;padding:0 80px;gap:50px}
+  .partners::before{content:"";position:absolute;top:-14px;left:0;right:0;height:14px;
+    background:linear-gradient(90deg,#E8822A,#D96A1B)}
+  .partners__lbl{font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.2em;font-size:44px;color:#46617E;line-height:1.25;flex:0 0 auto}
+  .partners__lbl b{display:block;color:#0D1526;font-size:54px}
+  .plates{display:flex;flex:1 1 auto;gap:50px;align-items:center;justify-content:space-evenly}
+  .plates img{height:175px;width:auto;max-width:520px;object-fit:contain}
+</style>
+</head>
+<body>
+  <div class="dots"></div>
+  <div class="court">
+    <div class="arc a1"></div><div class="arc a2"></div><div class="arc a3"></div>
+  </div>
+
+  <div class="main">
+    <div class="logo-wrap">
+      <div class="logo-ring"></div>
+      <img src="../../assets/logos/mbc-logo.png" alt="MBC La Montagne Basket Club">
+    </div>
+    <div class="text">
+      <span class="badge">La Montagne · Saint-Denis · La Réunion</span>
+      <h1>
+        <span class="l1">Rejoins le club !</span>
+        <span class="l2">Inscriptions</span>
+        <span class="l3">ouvertes</span>
+      </h1>
+      <p class="sub">Baby Basket → Seniors<span class="sep">•</span>Filles &amp; Garçons<span class="sep">•</span>Licence <b>95 €</b> — FFBB &amp; assurance incluses</p>
+    </div>
+    <div class="cta">
+      <span class="cta__season">Saison 2026 / 2027</span>
+      <span class="cta__box">mbc974.com</span>
+      <span class="cta__soc"><b>@mbc974.re</b> · Facebook · Instagram · TikTok</span>
+    </div>
+  </div>
+
+  <div class="partners">
+    <p class="partners__lbl">Nos<b>Partenaires</b></p>
+    <div class="plates">
+      <img src="./logos/sponsor-agitateurs-midi-trim.png" alt="Les Agitateurs du Midi">
+      <img src="./logos/sponsor-cpa-paysage-trim.png" alt="CPA Paysage">
+      <img src="./logos/sponsor-saint-francois-trim.png" alt="Association Saint-François d'Assise">
+      <img src="./logos/sponsor-resto-chen-trim.png" alt="Resto Chen">
+      <img src="./logos/sponsor-oxysom-trim.png" alt="Oxysom">
+    </div>
+  </div>
+</body>
+</html>
