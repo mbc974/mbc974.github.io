@@ -17,18 +17,35 @@
   const backdrop = document.getElementById('navBackdrop');
   function setNav(open) {
     if (!burger || !nav) return;
+    var wasOpen = navOpen;
     navOpen = Boolean(open);
     nav.classList.toggle('open', navOpen);
     if (backdrop) backdrop.classList.toggle('show', navOpen);
     burger.setAttribute('aria-expanded', String(navOpen));
     burger.setAttribute('aria-label', navOpen ? 'Fermer le menu' : 'Ouvrir le menu');
     syncBodyLock();
+    /* Accessibilité clavier : focus sur le premier lien à l'ouverture,
+       retour du focus au burger à la fermeture (si le focus était dans le menu). */
+    if (navOpen) {
+      var first = nav.querySelector('a');
+      if (first) first.focus();
+    } else if (wasOpen && document.activeElement && nav.contains(document.activeElement)) {
+      burger.focus();
+    }
   }
   if (burger && nav) {
     burger.addEventListener('click', function () { setNav(!nav.classList.contains('open')); });
     nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
     if (backdrop) backdrop.addEventListener('click', function () { setNav(false); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && navOpen) setNav(false); });
+    /* Piège de focus léger : Tab reste dans le menu mobile ouvert (burger + liens) */
+    document.addEventListener('keydown', function (e) {
+      if (!navOpen || e.key !== 'Tab') return;
+      var items = [burger].concat(Array.prototype.slice.call(nav.querySelectorAll('a')));
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
     window.addEventListener('resize', function () { if (window.innerWidth > 1180) setNav(false); });
   }
 
@@ -733,3 +750,25 @@
 })();
 
 
+
+/* ============================================================
+   Mesure d'audience (préparée, inactive tant que l'analytics
+   n'est pas activé dans le <head> — voir commentaire ANALYTICS
+   de index.html). Aucun cookie, aucun envoi si Plausible absent.
+   ============================================================ */
+(function () {
+  'use strict';
+  function track(name) {
+    if (typeof window.plausible === 'function') window.plausible(name);
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var h = a.href || '';
+    if (h.indexOf('yapla.com') !== -1) track(h.indexOf('campaign') !== -1 ? 'Don Yapla' : 'Inscription Yapla');
+    else if (h.indexOf('wa.me') !== -1) track('WhatsApp');
+    else if (h.indexOf('DOSSIER-PARTENARIAT') !== -1) track('Dossier sponsor');
+  }, true);
+  var form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', function () { track('Formulaire contact'); });
+})();

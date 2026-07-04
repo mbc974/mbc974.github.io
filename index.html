@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>MBC La Montagne Basket Club — Club de basket à La Montagne, Saint-Denis (Réunion)</title>
-<meta name="description" content="MBC La Montagne Basket Club : club de basket à La Montagne, Saint-Denis (La Réunion). Découvrez la vidéo d'adhésion 2026-2027 et réservez votre licence FFBB pour le Baby Basket, les jeunes ou les Seniors.">
+<title>MBC La Montagne Basket Club — Basket à Saint-Denis (974)</title>
+<meta name="description" content="Club de basket à La Montagne, Saint-Denis (La Réunion). Filles et garçons dès 3 ans, licence FFBB 95 €. Pré-inscriptions 2026/2027 ouvertes.">
 <meta name="author" content="MBC La Montagne Basket Club">
 <meta name="google-site-verification" content="V90YtBOaXKF2ll7aadVa-w_NOaY_VGTjqlsSxJT-JWE">
 <meta name="theme-color" content="#0D1526">
@@ -48,12 +48,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap"></noscript>
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
-<link rel="preload" as="image" href="assets/videos/promo-adhesion-2026-2027-poster.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=202607-urgent1">
+<!-- Preload recentré sur l'élément LCP réel : l'image du hero (le poster vidéo, sous la ligne de
+     flottaison et en preload="none", n'a pas besoin d'être préchargé). -->
+<link rel="preload" as="image" href="assets/images/joueur-dribble.webp" type="image/webp" fetchpriority="high">
+<link rel="stylesheet" href="style.css?v=202607-seo2">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
 <!-- Google Business Profile : dès que la fiche GBP officielle du club est disponible, remplacer la valeur
@@ -164,16 +166,17 @@
 }
 </script>
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"BreadcrumbList",
-  "itemListElement":[
-    {"@type":"ListItem","position":1,"name":"Accueil","item":"https://mbc974.com/"},
-    {"@type":"ListItem","position":2,"name":"Adhésion 2026/2027","item":"https://mbc974.com/adhesion.html"}
-  ]
-}
-</script>
+<!-- BreadcrumbList supprimé : le fil « Accueil > Adhésion » déclaré ici décrivait une autre page
+     que la page courante (non conforme aux guidelines Google). Celui d'adhesion.html reste en place. -->
+
+<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
+     1) Créer un compte sur https://plausible.io (ou une instance Umami auto-hébergée).
+     2) Décommenter la ligne ci-dessous (Plausible) — les clics sortants (Yapla, WhatsApp, sponsors)
+        et les téléchargements (dossier partenaire PDF) seront suivis automatiquement.
+     Les événements personnalisés (Inscription Yapla, Don Yapla, WhatsApp, Dossier sponsor,
+     Formulaire contact) sont déjà préparés dans script.js et s'activeront tout seuls.
+<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
+-->
 </head>
 <body>
 
@@ -193,6 +196,7 @@
     <a href="#staff">L'équipe</a>
     <a href="#parents">Parents</a>
     <a href="#engagement">Bénévoles</a>
+    <a href="#dons">Soutenir</a>
     <a href="#partenaires">Sponsors</a>
     <a href="#contact">Contact</a>
     <a href="adhesion.html" class="nav__cta">Je m'inscris</a>
@@ -230,7 +234,7 @@
       <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
       <h1 class="hero__headline hero__headline-fixed reveal-fade">Le basket prend de la hauteur</h1>
       <p class="hero__subtitle reveal-fade"><span lang="rcf">Ansanm nou lé pli for</span></p>
-      <p class="hero__sub reveal-fade d2">Le nouveau club de basket de La Montagne — une saison fondatrice pour toutes les générations.</p>
+      <p class="hero__sub reveal-fade d2">Le nouveau club de basket de La Montagne, à Saint-Denis de La Réunion — filles et garçons, dès 3 ans.</p>
       <div class="hero-offer reveal-fade d3">
         <p class="hero-offer__label">Pré-inscriptions ouvertes</p>
         <p class="hero-offer__txt">Baby Basket, jeunes, loisirs et seniors — réserve ta place pour la saison 2026/2027.</p>
@@ -260,7 +264,7 @@
     <header class="sec-head sec-head--center reveal">
       <p class="kicker kicker--center">Pré-inscriptions 2026 / 2027</p>
       <h2 class="h2" id="essentielTitle">L'essentiel <span class="hl">en un coup d'œil</span></h2>
-      <p class="sec-head__sub" style="margin-inline:auto">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le club de basket de La Montagne, à Saint-Denis (974).</p>
+      <p class="sec-head__sub" style="margin-inline:auto">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le <a href="club-basket-la-montagne/" style="color:inherit;text-decoration:underline">club de basket de La Montagne</a>, à Saint-Denis (974).</p>
     </header>
 
     <ul class="essentiel-grid reveal" aria-label="Informations essentielles pour la pré-inscription au MBC">
@@ -348,6 +352,9 @@
                      puis remplacer le fichier au même chemin assets/videos/promo-adhesion-2026-2027.mp4 (aucun changement de code). -->
                 <video class="adhesion-video__player" controls preload="none" playsinline poster="assets/videos/promo-adhesion-2026-2027-poster.webp" aria-label="Vidéo officielle d'adhésion MBC La Montagne Basket Club saison 2026-2027">
                   <source src="assets/videos/promo-adhesion-2026-2027.mp4" type="video/mp4">
+                  <!-- SOUS-TITRES (accessibilité) : créer le fichier WebVTT assets/videos/promo-adhesion-2026-2027.fr.vtt
+                       (transcrire les paroles de la vidéo), puis décommenter la ligne suivante :
+                  <track src="assets/videos/promo-adhesion-2026-2027.fr.vtt" kind="captions" srclang="fr" label="Français" default> -->
                   Votre navigateur ne peut pas lire cette vidéo. <a href="assets/videos/promo-adhesion-2026-2027.mp4">Télécharger la vidéo d'adhésion MBC 2026-2027</a>.
                 </video>
               </div>
@@ -356,7 +363,10 @@
         </figure>
       </div>
     </div>
-    <p class="sr-only">Résumé de la vidéo : le MBC La Montagne Basket Club invite les enfants, les jeunes, les seniors et les familles de La Montagne à rejoindre la saison 2026-2027. La licence inclut l'affiliation FFBB et l'assurance. Les pré-inscriptions se font en ligne.</p>
+    <details class="faq__item" style="max-width:72ch;margin:1rem auto 0">
+      <summary>Lire le résumé de la vidéo (texte)</summary>
+      <p>Le MBC La Montagne Basket Club invite les enfants, les jeunes, les seniors et les familles de La Montagne à rejoindre la saison 2026-2027. La licence inclut l'affiliation FFBB et l'assurance. Les pré-inscriptions se font en ligne.</p>
+    </details>
   </div>
 </section>
 
@@ -386,7 +396,7 @@
       <p class="kicker">Pour tous les âges</p>
       <h2 class="h2">Trouve <span class="hl">ta place</span><br>sur le parquet</h2>
       <p class="sec-head__sub">De 3 ans aux Seniors, chaque catégorie a son créneau, son ambiance et ses objectifs.</p>
-      <p class="cat-mixite"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="17.5" cy="8" r="2.5"/><path d="M3.5 21c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5M15 21c.2-2.4 1.5-4.4 3.3-5.2"/></svg> <span><b>Filles &amp; garçons, bienvenue à toutes et tous</b> — jusqu'en U13, le MBC engage des équipes filles <i>et</i> garçons. Le basket féminin a toute sa place au club.</span></p>
+      <p class="cat-mixite"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="17.5" cy="8" r="2.5"/><path d="M3.5 21c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5M15 21c.2-2.4 1.5-4.4 3.3-5.2"/></svg> <span><b>Filles &amp; garçons, bienvenue à toutes et tous</b> — jusqu'en U13, le MBC engage des équipes filles <i>et</i> garçons. Le basket féminin a toute sa place au club. En savoir plus sur <a href="basket-enfant-saint-denis/" style="color:inherit;text-decoration:underline">le basket pour enfant à Saint-Denis</a>.</span></p>
     </header>
     <div class="cat-grid">
       <article class="cat cat--photo reveal reveal--scale">
@@ -396,7 +406,7 @@
           <span class="cat__num">01</span><span class="cat__age">3 — 6 ans</span>
         </figure>
         <h3>Baby Basket</h3>
-        <p class="cat__desc">L'éveil par le jeu : motricité, équilibre et premiers paniers, dans la bonne humeur.</p>
+        <p class="cat__desc">L'éveil par le jeu : motricité, équilibre et premiers paniers, dans la bonne humeur. <a href="baby-basket-la-reunion/" style="color:inherit;text-decoration:underline">Le Baby Basket en détail</a>.</p>
         <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Samedi · 09h00 – 10h00</p>
         <a href="adhesion.html" class="cat__link">Je m'inscris →</a>
       </article>
@@ -561,7 +571,7 @@
       </div>
       <div class="tarifs__rest">
         <p><b>Un seul tarif, tout compris.</b> Du Baby Basket aux Seniors, loisir comme compétition : <b>même prix pour tous</b>, licence FFBB et assurance incluses. Le basket reste accessible à toute la famille.</p>
-        <div class="tarifs__chips" aria-label="Catégories incluses dans le tarif unique">
+        <div class="tarifs__chips" role="group" aria-label="Catégories incluses dans le tarif unique">
           <span>Baby</span><span>École</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
         </div>
         <a href="adhesion.html" class="btn btn--ghost">Je m'inscris · saison 2026/2027</a>
@@ -870,7 +880,7 @@
     <div class="dons__card reveal reveal--r">
       <p class="big">Faites grandir<br>un club —<br>et des enfants</p>
       <p>Chaque euro va au terrain : matériel, licences, encadrement, déplacements. Rien ne se perd en route, tout revient au club et au quartier.</p>
-      <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je fais un don</a>
+      <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je fais un don<span class="sr-only"> — plateforme sécurisée Yapla (nouvel onglet)</span></a>
       <span class="dons__card-note">Paiement 100 % sécurisé · Confirmation par e-mail</span>
     </div>
   </div>
@@ -882,7 +892,7 @@
     <header class="sec-head reveal">
       <p class="kicker">Partenariat local</p>
       <h2 class="h2">Votre marque au cœur <span class="hl">du basket à La Montagne</span></h2>
-      <p class="sec-head__sub">Entreprises, commerçants, mécènes et institutions : soutenez un club familial, formateur et visible, dès sa saison fondatrice 2026-2027. Un partenariat péi, utile et proprement valorisé.</p>
+      <p class="sec-head__sub">Entreprises, commerçants, mécènes et institutions : soutenez un club familial, formateur et visible, dès sa saison fondatrice 2026-2027. Un partenariat péi, utile et proprement valorisé. <a href="sponsor-club-basket-reunion/" style="color:inherit;text-decoration:underline">Pourquoi sponsoriser un club de basket à La Réunion&nbsp;?</a></p>
     </header>
 
     <div class="partner-intro reveal">
@@ -1037,7 +1047,7 @@
           <a class="info-line" href="mailto:contact@mbc974.com"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><span class="info-line__lbl">Email</span><span class="info-line__val">contact@mbc974.com</span></span></a>
           <a class="info-line" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20les%20inscriptions%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 32 32" fill="currentColor" style="color:#25D366" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg><span><span class="info-line__lbl">WhatsApp</span><span class="info-line__val">Réponse rapide</span></span></a>
           <div class="info-line"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><span class="info-line__lbl">Où nous trouver</span><span class="info-line__val">Gymnase de La Montagne<br>Chemin des Bauhinias<br>97417 Saint-Denis · La Réunion</span></span></div>
-          <div class="socials" aria-label="Réseaux sociaux">
+          <div class="socials" role="group" aria-label="Réseaux sociaux">
             <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener">Facebook</a>
             <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener">Instagram</a>
             <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener">TikTok</a>
@@ -1072,13 +1082,13 @@
       </div>
       <div class="footer__col">
         <h4>Le club</h4>
-        <a href="#categories">Catégories</a><a href="#maillots">Maillots</a><a href="#calendrier">Calendrier</a><a href="#galerie">Galerie</a><a href="#staff">L'équipe</a><a href="#engagement">Bénévoles</a><a href="adhesion.html">Adhésion 2026/2027</a>
+        <a href="#categories">Catégories</a><a href="#maillots">Maillots</a><a href="#calendrier">Calendrier</a><a href="#faq">FAQ parents</a><a href="#galerie">Galerie</a><a href="#staff">L'équipe</a><a href="#engagement">Bénévoles</a><a href="adhesion.html">Adhésion 2026/2027</a>
       </div>
       <div class="footer__col">
         <h4>Agir</h4>
         <div class="footer__actions">
           <a href="adhesion.html"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adhésion</a>
-          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg>Faire un don</a>
+          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg>Faire un don<span class="sr-only"> — Yapla (nouvel onglet)</span></a>
           <a href="#contact"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Contact</a>
         </div>
       </div>
@@ -1137,6 +1147,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202607-urgent1" defer></script>
+<script src="script.js?v=202607-seo2" defer></script>
 </body>
 </html>
