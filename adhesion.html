@@ -47,7 +47,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap"></noscript>
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=202607-dark">
+<link rel="stylesheet" href="style.css?v=202607-urgent1">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -104,11 +104,17 @@
     <a href="index.html#engagement">Bénévoles</a>
     <a href="index.html#partenaires">Sponsors</a>
     <a href="index.html#contact">Contact</a>
-    <a href="adhesion.html" class="nav__cta" aria-current="page">Adhésion</a>
+    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="nav__cta">Je m'inscris<span class="sr-only"> — inscription en ligne sur Yapla (nouvel onglet)</span></a>
   </nav>
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
 </header>
 <div class="nav-backdrop" id="navBackdrop"></div>
+
+<!-- ===== Floating mobile CTA — pointe directement vers l'inscription Yapla ===== -->
+<a class="float-cta" id="floatCta" href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener">
+  <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+  Finaliser mon inscription sur Yapla<span class="sr-only"> (nouvel onglet)</span>
+</a>
 
 <main id="contenu">
 <section class="section adhesion-page">
@@ -118,6 +124,12 @@
       <h1 class="h2">Adhésion MBC<br><span class="hl">Saison 2026 / 2027</span></h1>
       <p class="sec-head__sub" style="margin-inline:auto">L'inscription officielle au MBC se fait via notre espace sécurisé Yapla. Avant de finaliser votre inscription, voici les informations essentielles à préparer.</p>
     </header>
+
+    <!-- CTA principal remonté en haut de page : l'action d'inscription doit être visible dès l'arrivée, sans scroll -->
+    <div class="essentiel-cta reveal" style="margin-top:1.6rem;margin-bottom:1.2rem">
+      <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Finaliser mon inscription officielle sur Yapla<span class="sr-only"> (nouvel onglet)</span></a>
+      <a href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20avant%20de%20finaliser%20mon%20inscription%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener" class="btn btn--ghost btn--lg"><svg class="ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg> Une question avant l'inscription&nbsp;?</a>
+    </div>
 
     <ul class="essentiel-grid reveal" aria-label="Informations clés de l'adhésion MBC">
       <li class="essentiel-card">
@@ -182,7 +194,7 @@
       <details class="faq__item"><summary>La licence est-elle incluse&nbsp;?</summary><p>Oui, la licence FFBB et l'assurance sont incluses dans le tarif de 95 €.</p></details>
       <details class="faq__item"><summary>Que se passe-t-il après l'inscription&nbsp;?</summary><p>Le club revient vers vous sous 48 h pour confirmer les prochaines étapes.</p></details>
     </div>
-    <p class="adh-note">Paiement 100 % sécurisé via Yapla · Licence FFBB &amp; assurance incluses · Sans engagement.</p>
+    <p class="adh-note">Paiement 100 % sécurisé via Yapla · Licence FFBB &amp; assurance incluses · Séance d'essai possible avant validation définitive.</p>
     <p class="adh-back"><a href="index.html">← Retour à l'accueil</a></p>
   </div>
 </section>
@@ -224,6 +236,8 @@
       <li class="footer__trust-h">Documents &amp; garanties</li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>Association <b>loi 1901</b></li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Club affilié <b>FFBB</b></li>
+      <!-- FFBB : quand le numéro d'affiliation officiel est connu, compléter la ligne ci-dessus en
+           « Club affilié <b>FFBB</b> · n° <b>XXXXXXX</b> » (ne rien publier avant confirmation du numéro). -->
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>Licence &amp; <b>assurance incluses</b></li>
       <li>RNA <b>W9R1011179</b></li>
       <li>SIREN <b>104 461 124</b></li>
@@ -237,6 +251,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=202607-dark" defer></script>
+<script src="script.js?v=202607-urgent1" defer></script>
 </body>
 </html>

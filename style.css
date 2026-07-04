@@ -104,6 +104,8 @@ a{color:inherit;text-decoration:none}
 .site-header{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.6rem clamp(18px,5vw,48px);background:rgba(7,13,24,.35);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:background .3s,border-color .3s,transform .4s var(--ease)}
 .site-header.scrolled{background:rgba(7,13,24,.92);border-bottom-color:var(--line);box-shadow:0 6px 30px rgba(0,0,0,.5)}
 .site-header.hide{transform:translateY(-100%)}
+/* Accessibilité clavier : le header masqué au scroll réapparaît dès qu'un de ses liens reçoit le focus */
+.site-header.hide:focus-within{transform:none}
 .brand{display:flex;align-items:center;gap:.8rem}
 .brand .logo-img{width:100px;height:60px}
 .brand__txt{display:flex;flex-direction:column;line-height:1}

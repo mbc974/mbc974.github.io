@@ -335,7 +335,37 @@
         'Téléphone : ' + ((form.tel && form.tel.value.trim()) || '—'),
         'Catégorie : ' + ((form.cat && form.cat.value) || '—'), '', (form.msg && form.msg.value.trim()) || ''
       ].join('\n'));
-      feedback.textContent = 'Votre logiciel de messagerie va s\u2019ouvrir pour finaliser l\u2019envoi…';
+      const waHref = 'https://wa.me/262692556458?text=' + body;
+      const altLinks = '<a href="' + waHref + '" target="_blank" rel="noopener">WhatsApp</a> ou par email : ' +
+        '<a href="mailto:contact@mbc974.com">contact@mbc974.com</a>';
+
+      /* Envoi réel si un endpoint (Formspree / Web3Forms) est renseigné dans data-endpoint sur le <form>.
+         Tant que data-endpoint est vide, on reste sur le repli mailto ci-dessous. */
+      const endpoint = (form.getAttribute('data-endpoint') || '').trim();
+      if (endpoint && window.fetch) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+        feedback.textContent = 'Envoi en cours…';
+        feedback.className = 'form-feedback';
+        fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+          .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            feedback.textContent = 'Merci ! Votre demande a bien été envoyée — le club vous répond sous 48 h.';
+            feedback.className = 'form-feedback ok';
+            form.reset();
+          })
+          .catch(function () {
+            feedback.innerHTML = 'L\u2019envoi a échoué. Contactez-nous directement sur ' + altLinks + '.';
+            feedback.className = 'form-feedback err';
+          })
+          .then(function () { if (submitBtn) submitBtn.disabled = false; });
+        return;
+      }
+
+      /* Repli mailto — message honnête : l'ouverture d'une messagerie n'est pas garantie,
+         on affiche donc systématiquement les alternatives directes (WhatsApp / email). */
+      feedback.innerHTML = 'Votre messagerie va s\u2019ouvrir pour finaliser l\u2019envoi. ' +
+        'Si elle ne s\u2019ouvre pas, contactez-nous directement sur ' + altLinks + '.';
       feedback.className = 'form-feedback ok';
       window.location.href = 'mailto:contact@mbc974.com?subject=' + subject + '&body=' + body;
     });
@@ -499,34 +529,23 @@
 })();
 
 /* ============================================================
-   Carte cinématique "La licence MBC" : chargement 0->100% qui révèle
-   la vidéo officielle + reflet/parallaxe à la souris (sans GSAP).
+   Carte cinématique "La licence MBC" : la vidéo apparaît en fondu
+   (transition CSS .cine-video) à l'entrée dans le viewport, + reflet/
+   parallaxe à la souris (sans GSAP). L'ancienne jauge « 0→100 % »
+   était factice (aucun chargement réel, vidéo en preload="none") :
+   supprimée au profit d'une révélation honnête.
    ============================================================ */
 (function () {
   'use strict';
   var card = document.getElementById('cineCard');
   if (!card) return;
-  var pctEl = document.getElementById('cinePct');
-  var ringFg = card.querySelector('.cine-ring__fg');
   var phone = document.getElementById('cinePhone');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DASH = 390, started = false;
+  var started = false;
 
   function runLoad() {
     if (started) return; started = true;
-    if (reduce) {
-      if (pctEl) pctEl.textContent = '100';
-      if (ringFg) ringFg.style.strokeDashoffset = '0';
-      card.classList.add('is-loaded');
-      return;
-    }
-    var pct = 0;
-    var iv = window.setInterval(function () {
-      pct = Math.min(100, pct + 2);
-      if (pctEl) pctEl.textContent = pct;
-      if (ringFg) ringFg.style.strokeDashoffset = (DASH * (1 - pct / 100)).toFixed(1);
-      if (pct >= 100) { window.clearInterval(iv); card.classList.add('is-loaded'); }
-    }, 44);
+    card.classList.add('is-loaded'); /* fondu .6s géré par le CSS (.cine-card.is-loaded .cine-video) */
   }
 
   // déclenchement fiable au défilement (l'IO peut être throttlé hors écran)

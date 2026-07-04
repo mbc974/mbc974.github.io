@@ -53,9 +53,12 @@
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
 <link rel="preload" as="image" href="assets/videos/promo-adhesion-2026-2027-poster.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=202607-dark">
+<link rel="stylesheet" href="style.css?v=202607-urgent1">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.hero .reveal-up .word{opacity:1!important;transform:none!important}</style></noscript>
 
+<!-- Google Business Profile : dès que la fiche GBP officielle du club est disponible, remplacer la valeur
+     "hasMap" du bloc JSON-LD ci-dessous (et le lien carte de la section contact) par l'URL de la fiche
+     (format https://maps.google.com/?cid=XXXXXXX). Ne rien modifier tant que la fiche n'est pas confirmée. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -330,24 +333,19 @@
             <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
             <a href="#parents" class="btn btn--ghost btn--lg">En savoir plus</a>
           </div>
-          <p class="cine-note">Nout quartier, nout basket : places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
+          <p class="cine-note">Nout kartié, nout basket : places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
         </div>
 
         <figure class="cine-stage">
           <div class="cine-phone" id="cinePhone">
             <span class="cine-phone__island" aria-hidden="true"><i></i></span>
             <div class="cine-phone__screen">
-              <div class="cine-loader" id="cineLoader" aria-hidden="true">
-                <div class="cine-loader__ring">
-                  <svg class="cine-ring" viewBox="0 0 180 180" aria-hidden="true">
-                    <circle class="cine-ring__bg" cx="90" cy="90" r="62"></circle>
-                    <circle class="cine-ring__fg" cx="90" cy="90" r="62"></circle>
-                  </svg>
-                  <span class="cine-loader__num"><b id="cinePct">0</b>%</span>
-                </div>
-                <span class="cine-loader__lbl">Chargement de la vidéo…</span>
-              </div>
+              <!-- L'ancienne jauge « Chargement… 0→100 % » était factice (aucun chargement réel,
+                   vidéo en preload="none") : supprimée au profit d'un simple fondu d'apparition. -->
               <div class="cine-video">
+                <!-- NOTE TECHNIQUE — la vidéo pèse ~15 Mo : à ré-encoder à 4-5 Mo avant la communication officielle, ex. :
+                     ffmpeg -i promo-adhesion-2026-2027.mp4 -vf scale=720:1280 -c:v libx264 -crf 27 -preset slow -c:a aac -b:a 96k sortie.mp4
+                     puis remplacer le fichier au même chemin assets/videos/promo-adhesion-2026-2027.mp4 (aucun changement de code). -->
                 <video class="adhesion-video__player" controls preload="none" playsinline poster="assets/videos/promo-adhesion-2026-2027-poster.webp" aria-label="Vidéo officielle d'adhésion MBC La Montagne Basket Club saison 2026-2027">
                   <source src="assets/videos/promo-adhesion-2026-2027.mp4" type="video/mp4">
                   Votre navigateur ne peut pas lire cette vidéo. <a href="assets/videos/promo-adhesion-2026-2027.mp4">Télécharger la vidéo d'adhésion MBC 2026-2027</a>.
@@ -570,7 +568,7 @@
       </div>
     </div>
 
-    <div class="faq reveal">
+    <div class="faq reveal" id="faq">
       <h3 class="faq__title">Les questions que se posent les parents</h3>
       <details class="faq__item"><summary>À partir de quel âge mon enfant peut-il commencer&nbsp;?</summary><p>Dès 3 ans avec le Baby Basket. Chaque catégorie, du Baby aux Seniors, a son créneau et son approche adaptés à l'âge.</p></details>
       <details class="faq__item"><summary>Il n'a jamais joué au basket, est-ce un problème&nbsp;?</summary><p>Aucunement&nbsp;: la grande majorité de nos jeunes débutent. On apprend les bases ensemble, dans la bonne humeur, sans pression.</p></details>
@@ -891,7 +889,7 @@
       <div>
         <span class="partner-intro__eyebrow">Devenez partenaire fondateur · Saison 2026/2027</span>
         <h3>Un projet de quartier, une visibilité réelle, un impact mesurable.</h3>
-        <p>Le MBC rassemble enfants, parents, bénévoles et supporters autour d'un cadre sportif positif. Devenir partenaire, c'est soutenir le basket local tout en associant votre image à un club sérieux, identifiable et actif sur le terrain. Ansamn, on fait monter La Montagne.</p>
+        <p>Le MBC rassemble enfants, parents, bénévoles et supporters autour d'un cadre sportif positif. Devenir partenaire, c'est soutenir le basket local tout en associant votre image à un club sérieux, identifiable et actif sur le terrain. Ansanm, on fait monter La Montagne.</p>
       </div>
       <div class="partner-intro__actions">
         <button type="button" class="btn btn--primary btn--lg" data-lightbox-src="assets/images/one-page-partenaire.avif" data-lightbox-fallback="assets/images/one-page-partenaire.jpg" data-lightbox-alt="One-page partenaire MBC La Montagne Basket Club">Voir le one-page partenaire</button>
@@ -993,7 +991,14 @@
       <p class="sec-head__sub">Laissez-nous vos coordonnées ou venez nous rencontrer au Gymnase de La Montagne.</p>
     </header>
     <div class="contact__grid">
-      <form class="contact-form reveal reveal--l" id="contactForm" novalidate>
+      <!-- ENVOI DU FORMULAIRE : par défaut, repli « mailto » (ouvre la messagerie du visiteur — peut échouer
+           si aucune messagerie n'est configurée). Pour un envoi fiable, créer un formulaire gratuit sur
+           https://formspree.io ou https://web3forms.com puis renseigner l'URL dans data-endpoint ci-dessous, ex. :
+           data-endpoint="https://formspree.io/f/VOTRE_ID"
+           (Web3Forms : ajouter en plus <input type="hidden" name="access_key" value="VOTRE_CLE"> dans le formulaire.)
+           Le script (script.js, bloc « Contact form ») bascule automatiquement sur l'envoi réel dès que
+           data-endpoint est rempli. Ne pas inventer de clé. -->
+      <form class="contact-form reveal reveal--l" id="contactForm" data-endpoint="" novalidate>
         <div class="field"><label for="nom">Nom et prénom</label><input type="text" id="nom" name="nom" autocomplete="name" required></div>
         <div class="field-row">
           <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" required></div>
@@ -1039,6 +1044,8 @@
           </div>
         </div>
         <div class="contact-map">
+          <!-- Google Business Profile : remplacer si besoin cette carte générique par l'embed de la fiche GBP
+               officielle du club une fois disponible (Maps > fiche établissement > Partager > Intégrer une carte). -->
           <iframe title="Carte — Gymnase de La Montagne, Saint-Denis, La Réunion" src="https://www.google.com/maps?q=Gymnase%20de%20La%20Montagne%2C%20Saint-Denis%2C%20La%20R%C3%A9union&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen></iframe>
         </div>
       </aside>
@@ -1085,6 +1092,9 @@
       <li class="footer__trust-h">Documents &amp; garanties</li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>Association <b>loi 1901</b></li>
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Club affilié <b>FFBB</b></li>
+      <!-- FFBB : quand le numéro d'affiliation officiel est connu, compléter la ligne ci-dessus en
+           « Club affilié <b>FFBB</b> · n° <b>XXXXXXX</b> », le reporter dans les mentions légales ci-dessous
+           et dans le bloc JSON-LD "identifier" du <head>. Ne pas inventer de numéro. -->
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>Licence &amp; <b>assurance incluses</b></li>
       <li>RNA <b>W9R1011179</b></li>
       <li>SIREN <b>104 461 124</b></li>
@@ -1103,6 +1113,7 @@
       <div class="footer-legal__body">
         <p><b>Éditeur —</b> MBC, La Montagne Basket Club, association loi 1901 à but non lucratif. Activités au Gymnase de La Montagne, Chemin des Bauhinias, 97417 Saint-Denis, La Réunion. Contact : <a href="mailto:contact@mbc974.com">contact@mbc974.com</a> · <a href="tel:+262692556458">0692 55 64 58</a>. Directeur de la publication : le Président du MBC.</p>
         <p><b>Immatriculation —</b> Association loi 1901 · RNA : W9R1011179 · SIREN : 104 461 124.</p>
+        <p><b>Affiliation sportive —</b> club affilié à la Fédération Française de BasketBall (FFBB).<!-- FFBB : ajouter ici « · N° d'affiliation : XXXXXXX » dès que le numéro officiel est connu. --></p>
         <p><b>Hébergement —</b> site statique hébergé via GitHub Pages (GitHub, Inc.), domaine mbc974.com.</p>
         <p><b>Confidentialité (RGPD) —</b> les données transmises via le formulaire de contact ou la pré-inscription servent uniquement à traiter votre demande liée au MBC. Elles ne sont ni revendues ni cédées à des tiers. Conformément au RGPD, vous pouvez demander l'accès, la rectification ou la suppression de vos données à tout moment à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>.</p>
         <p><b>Propriété —</b> les contenus, visuels et le logo du MBC sont la propriété du club. Les logos des partenaires restent la propriété de leurs détenteurs respectifs.</p>
@@ -1126,6 +1137,6 @@
   </div>
 </div>
 
-<script src="script.js?v=202607-dark" defer></script>
+<script src="script.js?v=202607-urgent1" defer></script>
 </body>
 </html>
