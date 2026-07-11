@@ -1,25 +1,33 @@
 {
+  "id": "/",
   "name": "MBC La Montagne Basket Club",
   "short_name": "MBC974",
-  "description": "Club de basket à La Montagne, Saint-Denis, La Réunion.",
+  "description": "Club de basket à La Montagne, Saint-Denis, La Réunion. Adhésion, actus et infos du club.",
   "lang": "fr",
-  "start_url": "/",
+  "dir": "ltr",
+  "categories": ["sports", "education"],
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#0D1526",
   "theme_color": "#0D1526",
   "icons": [
+    { "src": "assets/icons/favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
     {
-      "src": "assets/icons/favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
+      "name": "S'inscrire au club",
+      "short_name": "Adhésion",
+      "description": "Adhésion MBC saison 2026/2027",
+      "url": "/adhesion.html?source=pwa-shortcut"
     },
     {
-      "src": "assets/icons/favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
+      "name": "Nous contacter",
+      "short_name": "Contact",
+      "url": "/#contact"
     }
   ]
 }

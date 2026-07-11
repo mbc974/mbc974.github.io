@@ -765,10 +765,27 @@
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
     var h = a.href || '';
-    if (h.indexOf('yapla.com') !== -1) track(h.indexOf('campaign') !== -1 ? 'Don Yapla' : 'Inscription Yapla');
+    if (h.indexOf('yapla.com') !== -1) {
+      track(h.indexOf('authentication') !== -1 ? 'Connexion espace membre'
+          : h.indexOf('campaign') !== -1 ? 'Don Yapla'
+          : 'Inscription Yapla');
+    }
     else if (h.indexOf('wa.me') !== -1) track('WhatsApp');
     else if (h.indexOf('DOSSIER-PARTENARIAT') !== -1) track('Dossier sponsor');
   }, true);
   var form = document.getElementById('contactForm');
   if (form) form.addEventListener('submit', function () { track('Formulaire contact'); });
+})();
+
+/* ============================================================
+   PWA — enregistrement du service worker (/sw.js).
+   Rend le site installable sur l'écran d'accueil + consultable
+   hors-ligne. Silencieux : aucune erreur visible si indisponible.
+   ============================================================ */
+(function () {
+  'use strict';
+  if (!('serviceWorker' in navigator)) return;
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js').catch(function () {});
+  });
 })();
