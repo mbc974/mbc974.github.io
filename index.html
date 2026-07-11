@@ -692,6 +692,7 @@
     </div>
 
     <p class="cal-note reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> Les créneaux peuvent évoluer en cours de saison — contactez-nous pour confirmer celui de votre catégorie.</p>
+    <p class="cal-note reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4h8v3a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5v1a3 3 0 0 0 3 3M16 5h3v1a3 3 0 0 1-3 3M9 20h6M12 13v3"/></svg> <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener" style="color:var(--orange-vif);font-weight:600">Résultats, classement &amp; calendrier officiels du club sur la FFBB</a><span class="sr-only"> (nouvel onglet)</span> — mis à jour automatiquement pendant la saison.</p>
   </div>
 </section>
 
@@ -1010,7 +1011,12 @@
            (Web3Forms : ajouter en plus <input type="hidden" name="access_key" value="VOTRE_CLE"> dans le formulaire.)
            Le script (script.js, bloc « Contact form ») bascule automatiquement sur l'envoi réel dès que
            data-endpoint est rempli. Ne pas inventer de clé. -->
-      <form class="contact-form reveal reveal--l" id="contactForm" data-endpoint="" novalidate>
+      <form class="contact-form reveal reveal--l" id="contactForm" data-endpoint="https://api.web3forms.com/submit" novalidate>
+        <!-- Envoi réel via Web3Forms (gratuit) : les demandes arrivent par email sur la boîte du club. -->
+        <input type="hidden" name="access_key" value="9a7e4740-9da2-4e21-ba88-2ade2e67f43b">
+        <input type="hidden" name="subject" value="Nouveau message — site MBC974">
+        <input type="hidden" name="from_name" value="Site MBC — La Montagne Basket Club">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
         <div class="field"><label for="nom">Nom et prénom</label><input type="text" id="nom" name="nom" autocomplete="name" required></div>
         <div class="field-row">
           <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" autocomplete="email" required></div>
@@ -1130,6 +1136,7 @@
         <p><b>Affiliation sportive —</b> club affilié à la Fédération Française de BasketBall (FFBB).<!-- FFBB : ajouter ici « · N° d'affiliation : XXXXXXX » dès que le numéro officiel est connu. --></p>
         <p><b>Hébergement —</b> site statique hébergé via GitHub Pages (GitHub, Inc.), domaine mbc974.com.</p>
         <p><b>Confidentialité (RGPD) —</b> les données transmises via le formulaire de contact ou la pré-inscription servent uniquement à traiter votre demande liée au MBC. Elles ne sont ni revendues ni cédées à des tiers. Conformément au RGPD, vous pouvez demander l'accès, la rectification ou la suppression de vos données à tout moment à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>.</p>
+        <p><b>Droit à l'image —</b> des photos et vidéos prises lors des activités, entraînements et matchs peuvent être diffusées sur ce site et les réseaux sociaux du MBC pour illustrer la vie du club. Pour les mineurs, cette diffusion est subordonnée à l'autorisation des représentants légaux, recueillie lors de l'adhésion. Toute personne concernée (ou son représentant légal) peut s'opposer à la diffusion de son image ou demander le retrait d'un contenu à tout moment à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>.</p>
         <p><b>Propriété —</b> les contenus, visuels et le logo du MBC sont la propriété du club. Les logos des partenaires restent la propriété de leurs détenteurs respectifs.</p>
       </div>
     </details>
