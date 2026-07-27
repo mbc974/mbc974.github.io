@@ -3105,26 +3105,36 @@ body.cine-fs-lock{overflow:hidden}
 .seo-prose figure{margin-inline:auto}
 .seo-prose figcaption{font-family:var(--ff-body)}
 /* ============================================================
-   V68 — Header : lockup premium « MBC 974 / La Montagne »
-   Anton pour la marque, 974 en dégradé orange, sous-titre
-   grand espacement bleu glacier, filet séparateur en dégradé.
+   V69 — Header : lockup « Lö Mahaveli » ultra premium
+   Boîte logo au ratio réel de l'écusson 360x370 (gaps optiques
+   égaux autour du filet), MBC 974 en Anton, 974 en dégradé
+   drapeau réunionnais (ciel -> pivot crème -> or -> volcan),
+   LA MONTAGNE quasi blanc co-large avec la ligne 1 (centrage
+   optique par largeurs égales, letter-spacing traînant annulé),
+   filet argent hairline éclairé au centre. Zéro glow au repos.
    ============================================================ */
-.brand{gap:1.1rem}
-.brand__txt{gap:.34rem;min-height:46px;padding-left:1.1rem!important;border-left:0!important}
-.brand__txt::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:112%;border-radius:2px;
-  background:linear-gradient(180deg,transparent,var(--orange-vif) 32%,rgba(191,210,228,.6) 72%,transparent)}
-.brand__sub{font-family:var(--ff-display)!important;font-weight:400!important;font-size:1.52rem!important;
-  letter-spacing:.085em!important;line-height:.9!important;color:#fff!important;text-shadow:none!important}
-.brand__num{color:var(--orange-vif)}
+.brand{gap:.875rem}
+.brand .logo-img{width:52px;height:53px}
+.brand__txt{gap:.2rem;min-height:40px;padding-left:.875rem!important;border-left:0!important}
+.brand__txt::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:40px;opacity:.85;transition:opacity .3s ease;
+  background:linear-gradient(180deg,rgba(191,210,228,0) 0%,rgba(191,210,228,.45) 30%,rgba(255,255,255,.75) 50%,rgba(191,210,228,.45) 70%,rgba(191,210,228,0) 100%)}
+.brand__sub{font-family:var(--ff-display)!important;font-weight:400!important;font-size:1.55rem!important;
+  letter-spacing:.09em!important;line-height:1!important;color:#fff!important;margin-right:-.09em;text-shadow:none!important}
+.brand__num{color:var(--orange-vif);filter:drop-shadow(0 1px 1px rgba(7,13,24,.45));transition:filter .3s ease}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
-.brand__num{background:linear-gradient(115deg,var(--orange-vif) 15%,#f6a95c 55%,var(--orange-ballon));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,#F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 }
-.brand__sub2{font-family:var(--ff-cond);font-weight:600;font-size:.68rem;letter-spacing:.44em;
-  text-transform:uppercase;color:var(--bleu-glacier);line-height:1;opacity:1}
-.brand:hover .brand__num{filter:brightness(1.18) drop-shadow(0 0 10px rgba(232,130,42,.45))}
+.brand__sub2{font-family:var(--ff-cond);font-weight:600;font-size:.7rem;letter-spacing:.39em;margin-right:-.39em;
+  text-transform:uppercase;color:#F4F7FB;line-height:1;opacity:1;transition:color .3s ease}
+.brand:hover .brand__num{filter:brightness(1.07) drop-shadow(0 1px 1px rgba(7,13,24,.45))}
+.brand:hover .brand__txt::before{opacity:1}
+.brand:hover .brand__sub2{color:#fff}
+@media (prefers-reduced-motion:reduce){.brand__num,.brand__sub2,.brand__txt::before{transition:none!important}}
 @media (max-width:560px){
-.brand{gap:.8rem}
-.brand__txt{min-height:38px;padding-left:.8rem!important;gap:.24rem}
-.brand__sub{font-size:1.16rem!important;letter-spacing:.07em!important}
-.brand__sub2{font-size:.6rem;letter-spacing:.28em}
+.brand{gap:.7rem}
+.brand .logo-img{width:41px;height:42px}
+.brand__txt{min-height:32px;padding-left:.7rem!important;gap:.16rem}
+.brand__txt::before{height:31px}
+.brand__sub{font-size:1.24rem!important;letter-spacing:.09em!important}
+.brand__sub2{font-size:.6rem;letter-spacing:.33em;margin-right:-.33em}
 }
