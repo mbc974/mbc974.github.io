@@ -3104,3 +3104,27 @@ body.cine-fs-lock{overflow:hidden}
 /* Figures ajoutées sur les pages SEO */
 .seo-prose figure{margin-inline:auto}
 .seo-prose figcaption{font-family:var(--ff-body)}
+/* ============================================================
+   V68 — Header : lockup premium « MBC 974 / La Montagne »
+   Anton pour la marque, 974 en dégradé orange, sous-titre
+   grand espacement bleu glacier, filet séparateur en dégradé.
+   ============================================================ */
+.brand{gap:1.1rem}
+.brand__txt{gap:.34rem;min-height:46px;padding-left:1.1rem!important;border-left:0!important}
+.brand__txt::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:2px;height:112%;border-radius:2px;
+  background:linear-gradient(180deg,transparent,var(--orange-vif) 32%,rgba(191,210,228,.6) 72%,transparent)}
+.brand__sub{font-family:var(--ff-display)!important;font-weight:400!important;font-size:1.52rem!important;
+  letter-spacing:.085em!important;line-height:.9!important;color:#fff!important;text-shadow:none!important}
+.brand__num{color:var(--orange-vif)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+.brand__num{background:linear-gradient(115deg,var(--orange-vif) 15%,#f6a95c 55%,var(--orange-ballon));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+}
+.brand__sub2{font-family:var(--ff-cond);font-weight:600;font-size:.68rem;letter-spacing:.44em;
+  text-transform:uppercase;color:var(--bleu-glacier);line-height:1;opacity:1}
+.brand:hover .brand__num{filter:brightness(1.18) drop-shadow(0 0 10px rgba(232,130,42,.45))}
+@media (max-width:560px){
+.brand{gap:.8rem}
+.brand__txt{min-height:38px;padding-left:.8rem!important;gap:.24rem}
+.brand__sub{font-size:1.16rem!important;letter-spacing:.07em!important}
+.brand__sub2{font-size:.6rem;letter-spacing:.28em}
+}
