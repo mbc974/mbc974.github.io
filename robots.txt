@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /print/
 
 Sitemap: https://mbc974.com/sitemap.xml

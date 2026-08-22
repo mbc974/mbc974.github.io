@@ -379,7 +379,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .cal2-mini{margin-left:auto;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;color:var(--bleu-glacier);display:inline-flex;align-items:center;gap:.5em;cursor:pointer;background:none;border:1px solid var(--line-strong);padding:.5em 1em;border-radius:99px;min-height:44px;transition:border-color .2s,color .2s}
 .cal2-mini:hover{border-color:var(--orange-vif);color:var(--orange-vif)}
 .cal2-mini .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
-@media (max-width:760px){.cal2-row--head{display:none}
+@media (max-width:900px){.cal2-row--head{display:none}
 .cal2-table{background:transparent;border:0;box-shadow:none;overflow:visible}
 .cal2-row{grid-template-columns:1fr;gap:.55rem;background:var(--nuit-3)!important;border:1px solid var(--line);border-radius:14px;margin-bottom:.9rem;padding:1.3rem 1.4rem}
 .cal2-row span{display:flex;justify-content:space-between;align-items:center;gap:1rem}
@@ -1162,7 +1162,7 @@ section[id]{scroll-margin-top:92px}
 /* ---- 3. CALENDRIER · refonte mobile "carte scannable < 3 s" ---- */
 /* Le JOUR devient un bandeau d'en-tête coloré ; les infos s'alignent
    en lignes libellé→valeur parfaitement lisibles. */
-@media (max-width:760px){.cal2-table{display:flex !important;flex-direction:column;gap:.9rem}
+@media (max-width:900px){.cal2-table{display:flex !important;flex-direction:column;gap:.9rem}
 .cal2-row{grid-template-columns:1fr !important;
     gap:0 !important;
     padding:0 !important;
@@ -3310,3 +3310,21 @@ body.cine-fs-lock{overflow:hidden}
 .cal2 .cact > *{min-width:0}
 .cal2 .cact__note{flex:1 0 100%}
 .cal2-row span{min-width:0}
+
+/* ============================================================
+   V74 — Calendrier mobile : jour et horaire sur le même bandeau
+   Une carte = un créneau. Fusionner « Lundi » et « 17h30 – 19h00 »
+   se lit mieux et fait gagner une ligne sur chacune des 8 cartes.
+   ============================================================ */
+@media (max-width:900px){
+  .cal2-row{grid-template-columns:auto 1fr!important;align-items:stretch}
+  .cal2-row .cday{grid-column:1;grid-row:1;order:0;padding-right:.7rem!important}
+  .cal2-row .ctime{grid-column:2;grid-row:1;order:0;
+    display:flex!important;align-items:center;justify-content:flex-end!important;
+    background:var(--grad-roi);color:#fff!important;
+    border-top:0!important;padding:.78rem 1.15rem .78rem 0!important;
+    font-size:1.02rem!important;letter-spacing:.01em}
+  .cal2-row .ctime::before{display:none!important}
+  .cal2-row--match .ctime{background:var(--grad-orange);color:#190f04!important}
+  .cal2-row span:not(.cday):not(.ctime){grid-column:1 / -1}
+}
