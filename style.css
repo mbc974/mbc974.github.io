@@ -3129,3 +3129,184 @@ body.cine-fs-lock{overflow:hidden}
 .brand__sub{font-size:1.24rem!important;letter-spacing:.09em!important}
 .brand__sub2{font-size:.66rem;letter-spacing:.28em;margin-right:-.28em}
 }
+
+/* ============================================================
+   V70 — Orientation adhérent (2026-08)
+   Objectif : qu'un parent sache en 3 secondes quelle formule
+   choisir dans le tunnel Yapla. Année de naissance + nom exact
+   de la formule, portés par la carte catégorie existante.
+   ============================================================ */
+.cat__born{position:relative;z-index:1;margin:.1rem 0 .55rem;
+  font-family:var(--ff-cond);font-weight:600;font-size:.95rem;letter-spacing:.02em;
+  color:var(--bleu-glacier)}
+.cat__pick{position:relative;z-index:1;display:flex;flex-direction:column;gap:.12rem;
+  margin:0 0 1.1rem;padding:.6rem .8rem;border-radius:var(--r-sm);
+  background:rgba(27,81,158,.16);border:1px solid rgba(191,210,228,.14)}
+.cat__pick span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.66rem;color:var(--txt-soft)}
+.cat__pick b{font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1.25;color:var(--blanc)}
+.cat--photo .cat__age--free{background:linear-gradient(135deg,#3F8F4E,#2E6E3A);color:#F2FBF4}
+.cat__meta{margin-bottom:.9rem}
+
+/* note de bas de grille — le filet de sécurité « je ne sais pas quelle catégorie » */
+.cat-foot{position:relative;z-index:2;display:flex;gap:.7rem;align-items:flex-start;
+  max-width:74ch;margin:1.8rem auto 0;padding:1rem 1.2rem;
+  border:1px solid var(--line);border-radius:var(--r-md);background:rgba(16,27,48,.55);
+  font-size:.95rem;line-height:1.6;color:var(--txt-soft)}
+.cat-foot .ic{width:1.25em;height:1.25em;flex:none;margin-top:.15em;color:var(--orange-vif)}
+.cat-foot a{color:var(--orange-vif);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.categories .essentiel-cta{margin-top:1.6rem}
+
+/* ---- Ce que couvrent les 95 € : liste inclus / non inclus ---- */
+.covers{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:1.4rem 0 0}
+.covers__col{border:1px solid var(--line);border-radius:var(--r-md);padding:1.3rem 1.4rem;background:var(--grad-card)}
+.covers__col h3{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  font-size:1.02rem;color:var(--blanc);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+.covers__col h3 .ic{width:1.15em;height:1.15em;flex:none}
+.covers__col--in{border-color:rgba(63,143,78,.4)}
+.covers__col--in h3 .ic{color:#5FBF74}
+.covers__col--out h3 .ic{color:var(--txt-soft)}
+.covers ul{list-style:none;display:grid;gap:.6rem}
+.covers li{position:relative;padding-left:1.5rem;font-size:.96rem;line-height:1.55;color:var(--txt-soft)}
+.covers li::before{position:absolute;left:0;top:0;font-weight:700}
+.covers__col--in li::before{content:"✓";color:#5FBF74}
+.covers__col--out li::before{content:"–";color:var(--txt-soft)}
+.covers li b{color:var(--txt)}
+.covers__note{margin-top:1.1rem;font-size:.92rem;line-height:1.6;color:var(--txt-soft)}
+.covers__note b{color:var(--txt)}
+
+/* ---- Parcours licence FFBB : ce qui se passe après le paiement ---- */
+.licence-path{counter-reset:lp;display:grid;gap:.9rem;margin:1.4rem 0 0;list-style:none}
+.licence-path li{counter-increment:lp;position:relative;padding:1.05rem 1.3rem 1.05rem 3.9rem;
+  border:1px solid var(--line);border-radius:var(--r-md);background:rgba(16,27,48,.55)}
+.licence-path li::before{content:counter(lp);position:absolute;left:1.15rem;top:1rem;
+  width:2rem;height:2rem;display:grid;place-items:center;border-radius:50%;
+  font-family:var(--ff-display);font-size:1.05rem;line-height:1;
+  background:var(--grad-orange);color:#190f04}
+.licence-path b{display:block;font-family:var(--ff-cond);font-weight:700;font-size:1.1rem;
+  letter-spacing:.01em;color:var(--blanc);margin-bottom:.2rem}
+.licence-path span{display:block;font-size:.95rem;line-height:1.6;color:var(--txt-soft)}
+.licence-path .lp-who{display:inline-block;margin-top:.45rem;font-family:var(--ff-cond);font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;font-size:.66rem;padding:.22em .7em;border-radius:99px;
+  border:1px solid var(--line-strong);color:var(--bleu-glacier)}
+.licence-path .lp-who--club{border-color:rgba(27,81,158,.55);background:rgba(27,81,158,.18)}
+.licence-path .lp-who--vous{border-color:rgba(232,130,42,.5);background:rgba(232,130,42,.12);color:#F3C79A}
+
+/* ---- Bandeau « soutenir le club » : 3 portes vers les pages dédiées ---- */
+.support-band{display:grid;gap:1.1rem;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));margin-top:1.6rem}
+.support-card{display:flex;flex-direction:column;gap:.55rem;padding:1.6rem 1.5rem;
+  border:1px solid var(--line);border-radius:var(--r-lg);background:var(--grad-card);
+  box-shadow:var(--e2),var(--bevel);
+  transition:transform .4s var(--ease-spring),border-color .35s,box-shadow .4s}
+.support-card:hover{transform:translateY(-6px);border-color:rgba(232,130,42,.4);box-shadow:var(--e3),var(--bevel)}
+.support-card__ico{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;
+  color:var(--orange-vif);background:rgba(232,130,42,.12);border:1px solid rgba(232,130,42,.28)}
+.support-card__ico .ic{width:24px;height:24px}
+.support-card h3{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  font-size:1.25rem;color:var(--blanc)}
+.support-card p{flex:1;font-size:.96rem;line-height:1.6;color:var(--txt-soft)}
+.support-card a{align-self:flex-start;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:.9rem;color:var(--orange-vif);min-height:44px;display:inline-flex;
+  align-items:center;gap:.4em;transition:gap .25s,color .25s}
+.support-card a:hover{gap:.8em;color:#fff}
+
+/* ---- Tableau d'orientation (page adhésion) ---- */
+.year-table{width:100%;border-collapse:collapse;margin-top:1.2rem;font-size:.96rem}
+.year-table caption{text-align:left;color:var(--txt-soft);font-size:.92rem;margin-bottom:.7rem}
+.year-table th,.year-table td{text-align:left;padding:.75rem .9rem;border-bottom:1px solid var(--line)}
+.year-table thead th{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.09em;
+  font-size:.74rem;color:var(--bleu-glacier);border-bottom-color:var(--line-strong)}
+.year-table tbody tr:hover{background:rgba(27,81,158,.10)}
+.year-table td:first-child{font-family:var(--ff-cond);font-weight:700;color:var(--blanc);white-space:nowrap}
+.year-table td:last-child{color:var(--txt)}
+.year-table__wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+@media (max-width:640px){
+  .year-table,.year-table tbody,.year-table tr,.year-table td{display:block;width:100%}
+  .year-table thead{display:none}
+  .year-table tr{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:.7rem;padding:.5rem .2rem}
+  .year-table td{border:0;padding:.35rem .9rem;display:flex;gap:.8rem;justify-content:space-between;align-items:baseline}
+  .year-table td::before{content:attr(data-label);font-family:var(--ff-cond);font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--txt-soft);flex:none}
+  .year-table td:last-child{text-align:right}
+}
+
+@media (max-width:560px){
+  .cat__pick{padding:.55rem .75rem}
+  .cat-foot{padding:.9rem 1rem;font-size:.92rem}
+  .licence-path li{padding:.95rem 1rem .95rem 3.5rem}
+  .licence-path li::before{left:.9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .support-card{transition:none!important}
+  .support-card:hover{transform:none!important}
+}
+
+/* ============================================================
+   V71 — Page adhésion : blocs d'explication + note "match"
+   ============================================================ */
+.adh-block{margin:2.6rem 0 0;padding:1.8rem 1.7rem;border:1px solid var(--line);
+  border-radius:var(--r-lg);background:var(--grad-card);box-shadow:var(--e1),var(--bevel)}
+.adh-block__lead{margin-top:.4rem;font-size:1.02rem;line-height:1.7;color:var(--txt-soft);max-width:74ch}
+.adh-block__lead b{color:var(--txt)}
+.adh-block .adh-prepare__title{margin-bottom:.3rem}
+.adh-block .licence-path{margin-top:1.2rem}
+@media (max-width:560px){.adh-block{padding:1.4rem 1.1rem;border-radius:var(--r-md)}}
+
+/* créneau « match » = réservation de salle, pas un match hebdomadaire garanti */
+.cact__note{display:block;margin-top:.3rem;font-family:var(--ff-cond);font-weight:500;font-style:normal;
+  font-size:.78rem;line-height:1.35;letter-spacing:.01em;color:var(--txt-soft)}
+
+/* La section "soutenir" reprend le fond des anciennes sections engagement/dons */
+.section.soutenir .sponsors-wall{margin-top:2.6rem}
+
+/* ============================================================
+   V72 — Compacité mobile (2026-08)
+   La page d'accueil mesurait 32 500 px sur un iPhone : ~38 écrans.
+   On resserre les blocs les plus coûteux (cartes catégories,
+   mosaïque galerie, pied de page) sans rien retirer au contenu.
+   ============================================================ */
+@media (max-width:640px){
+  /* --- Cartes catégories : photo plus basse, gouttières resserrées --- */
+  .cat-grid{gap:1rem}
+  .cat{padding:0 1.15rem 1.15rem!important;min-height:0}
+  .cat--photo .cat__photo{height:132px;margin:0 -1.15rem 1rem}
+  .cat h3{font-size:1.45rem;margin:.1rem 0 .05rem}
+  .cat__born{font-size:.88rem;margin:0 0 .4rem}
+  .cat__desc{min-height:0;font-size:.94rem;line-height:1.5}
+  .cat__meta{margin:.85rem 0 .75rem;padding-top:.75rem;font-size:.88rem}
+  .cat__pick{margin-bottom:.75rem;padding:.5rem .7rem}
+  .cat__pick b{font-size:.94rem}
+  .cat__link{min-height:44px;padding-block:.25em;font-size:.88rem}
+  .cat__num{font-size:3rem!important}
+
+  /* --- Galerie : 2 colonnes plutôt qu'un empilement de 5 tuiles --- */
+  .gallery-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+  .gallery-mosaic .g-tile{height:190px;margin:0}
+  .gallery-mosaic .g-tile img{width:100%;height:100%;object-fit:cover}
+  .gallery-mosaic .g-tile:first-child{grid-column:1 / -1;height:230px}
+
+  /* --- Pied de page : colonnes de liens sur 2 colonnes --- */
+  .footer__top{gap:1.4rem}
+  .footer__col{min-width:0}
+  .footer__col h4{margin-bottom:.5rem}
+  .footer__brand .small{font-size:.88rem;line-height:1.55}
+  .footer__bottom{gap:.5rem;padding-top:1.1rem}
+  .footer__trust{gap:.4rem .8rem}
+}
+
+/* Sous 430 px, les deux colonnes de liens du footer tiennent encore */
+@media (max-width:640px) and (min-width:360px){
+  .footer__top{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+  .footer__brand{grid-column:1 / -1}
+}
+
+/* ============================================================
+   V73 — Correctif : la mention « créneau réservé » ajoutée dans
+   la colonne Activité était un item flex qui refusait de rétrécir
+   et élargissait la ligne au-delà du viewport (360 px).
+   La note passe désormais toujours à la ligne, sous le badge.
+   ============================================================ */
+.cal2 .cact{flex-wrap:wrap}
+.cal2 .cact > *{min-width:0}
+.cal2 .cact__note{flex:1 0 100%}
+.cal2-row span{min-width:0}
