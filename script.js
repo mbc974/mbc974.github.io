@@ -789,3 +789,52 @@
     navigator.serviceWorker.register('/sw.js').catch(function () {});
   });
 })();
+
+/* ============================================================
+   Micro-parallaxe du mot de fond « KARTIÉ » (section quartier).
+   Relative à la traversée de la SECTION, pas au scrollY global :
+   l'amplitude reste bornée à ±12 px quelle que soit la hauteur
+   de la page. Désactivée au clavier/réduction de mouvement et
+   sous 900 px de large.
+   ============================================================ */
+(function () {
+  var word = document.querySelector('.lp-word');
+  if (!word) return;
+  var section = word.closest('.local-proof');
+  if (!section) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!window.matchMedia('(min-width: 900px)').matches) return;
+
+  var AMPLITUDE = 12;   /* soit 24 px sur toute la traversee */
+  var ticking = false;
+  var visible = false;
+
+  function update() {
+    var r = section.getBoundingClientRect();
+    var span = r.height + window.innerHeight;
+    if (span > 0) {
+      /* -1 quand la section arrive par le bas, +1 quand elle sort par le haut */
+      var p = 1 - ((r.bottom) / span) * 2;
+      if (p < -1) p = -1; else if (p > 1) p = 1;
+      word.style.setProperty('--lp-shift', (p * AMPLITUDE).toFixed(1) + 'px');
+    }
+    ticking = false;
+  }
+  function onScroll() {
+    if (!visible || ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+  /* on ne calcule que si la section est a l'ecran */
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      visible = entries[0].isIntersecting;
+      if (visible) update();
+    }, { rootMargin: '120px' }).observe(section);
+  } else {
+    visible = true;
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();
