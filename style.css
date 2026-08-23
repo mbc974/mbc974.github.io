@@ -3368,3 +3368,72 @@ body.cine-fs-lock{overflow:hidden}
   .lp-grid{grid-template-columns:1fr 1.45fr;gap:3rem}
   .lp-facts{margin-top:1.7rem}
 }
+
+/* ============================================================
+   V76 — Hero : hiérarchie des trois actions
+   « Faire une séance d'essai » passait à la ligne par simple
+   retour à la ligne flex, aligné à gauche : ça se lisait comme
+   un débordement. On passe la rangée en grille : les deux
+   premiers boutons en ligne 1, l'essai centré sous les deux,
+   séparé par un filet dégradé qui rend la 2e rangée voulue.
+   ============================================================ */
+@media (min-width:769px){
+  .hero-offer__btns{
+    display:grid;
+    grid-template-columns:auto auto;
+    justify-content:start;
+    align-items:stretch;
+    gap:14px;
+    flex-wrap:nowrap;
+  }
+  .hero-offer__main{grid-column:1;grid-row:1}
+  .hero-offer__browse{grid-column:2;grid-row:1}
+  .hero-offer__trial{
+    grid-column:1 / -1;
+    grid-row:2;
+    justify-self:center;
+    margin-top:6px;
+  }
+  /* filet de séparation : centré sur la largeur des deux boutons du dessus */
+  .hero-offer__trial::before{
+    content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+    width:min(300px,86%);height:1px;pointer-events:none;
+    background:linear-gradient(90deg,transparent,rgba(191,210,228,.26),transparent);
+  }
+}
+
+/* --- Traitement du bouton d'essai : 2e action réelle, pas un lien de nav --- */
+.hero-offer__trial{
+  overflow:visible;                       /* le filet déborde du bouton */
+  border-color:rgba(232,130,42,.34);
+  background:linear-gradient(180deg,rgba(232,130,42,.11),rgba(232,130,42,.035));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+  letter-spacing:.07em;
+}
+.hero-offer__trial .ic{width:1.1em;height:1.1em;color:#25D366;flex:none;
+  transition:transform .3s var(--ease-spring)}
+.hero-offer__trial:hover{
+  border-color:rgba(232,130,42,.62);
+  background:linear-gradient(180deg,rgba(232,130,42,.2),rgba(232,130,42,.07));
+  box-shadow:0 16px 32px -14px rgba(232,130,42,.6),inset 0 1px 0 rgba(255,255,255,.11);
+  transform:translateY(-2px);
+}
+.hero-offer__trial:hover .ic{transform:scale(1.12)}
+.hero-offer__trial:active{transform:translateY(0)}
+
+/* « Voir les catégories » reste un lien de navigation : on l'allège d'un cran
+   pour que l'œil lise inscription > essai > parcourir. */
+.hero-offer__browse{color:var(--bleu-glacier);border-color:rgba(191,210,228,.2)}
+.hero-offer__browse:hover{color:#fff;border-color:var(--line-strong)}
+
+@media (max-width:768px){
+  /* en colonne, des largeurs egales se lisent comme un empilement voulu ;
+     la hierarchie passe par la couleur et le poids, pas par la largeur. */
+  .hero-offer__btns > .btn{width:100%}
+  .hero-offer__trial::before{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
+  .hero-offer__trial:hover{transform:none!important}
+  .hero-offer__trial:hover .ic{transform:none!important}
+}
