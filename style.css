@@ -3515,3 +3515,127 @@ body.cine-fs-lock{overflow:hidden}
   .cat-rail{gap:.35rem .7rem;margin-bottom:1rem;padding-bottom:.7rem}
   .cat-rail__s{margin-left:0;flex-basis:100%}
 }
+
+/* ============================================================
+   V79 — Rythme éditorial : surfaces claires, effets calmés
+   ------------------------------------------------------------
+   Le site était intégralement en bleu nuit : le bleu et l'orange
+   n'avaient plus d'impact faute de zones neutres autour. On
+   alterne désormais chapitres sombres (émotion, sport, photo) et
+   chapitres clairs (information : tarif, créneaux, parents,
+   encadrement, partenaires).
+   Le HERO est hors de portée par construction : la recalibration
+   des tokens est scopée à `main > .section`, or le hero est
+   `main > .hero`. Seul --r-lg le concernait, il garde sa valeur.
+   ============================================================ */
+
+/* ---- A. Rayons et ombres recalibrés (hors Hero) ---- */
+main > .section, .site-footer{
+  --radius:12px;
+  --r-xs:8px; --r-sm:10px; --r-md:12px; --r-lg:16px;
+  /* ombres nettement plus discrètes : on structure par le contraste,
+     la bordure et l'espace, pas par des halos flottants. */
+  --e1:0 1px 2px rgba(3,7,15,.18);
+  --e2:0 4px 12px rgba(3,7,15,.20);
+  --e3:0 10px 24px rgba(3,7,15,.24);
+  --e4:0 18px 38px rgba(3,7,15,.28);
+  --glow-o:0 6px 16px rgba(217,106,27,.18);
+  --glow-b:0 6px 16px rgba(27,81,158,.20);
+}
+
+/* ---- B. Chapitres clairs ---- */
+.section--light{
+  /* encres : contrastes vérifiés (15.1 / 6.2 / 16.8 sur #F4F6FA) */
+  --txt:#16202F;
+  --txt-soft:#4E5D72;
+  --blanc:#0C1626;
+  --bleu-glacier:#3D5876;
+  /* l'orange de marque tombe à 2.5:1 en texte sur fond clair : illisible.
+     On l'assombrit pour le TEXTE (5.2:1) et on restitue l'orange d'origine
+     pour les REMPLISSAGES, qui gardent ainsi la couleur exacte du club. */
+  --orange-vif:#A84E0B;
+  --grad-orange:linear-gradient(100deg,#D96A1B,#E8822A);
+  --line:rgba(13,21,38,.11);
+  --line-strong:rgba(13,21,38,.20);
+  --nuit-0:#EAEEF5; --nuit-2:#EDF1F7; --nuit-3:#FFFFFF;
+  --grad-card:linear-gradient(180deg,#FFFFFF,#FAFBFD);
+  --e1:0 1px 2px rgba(16,32,58,.06);
+  --e2:0 3px 10px rgba(16,32,58,.08);
+  --e3:0 8px 20px rgba(16,32,58,.10);
+  --e4:0 16px 34px rgba(16,32,58,.12);
+  --bevel:inset 0 0 0 1px rgba(13,21,38,.05);
+  --glow-o:0 4px 14px rgba(217,106,27,.16);
+  --glow-b:0 4px 14px rgba(27,81,158,.14);
+  background:#F4F6FA !important;
+  color:var(--txt);
+}
+/* le filigrane typographique était blanc à 4,5 % : invisible sur fond clair */
+.section--light .bg-word{color:rgba(13,21,38,.045)}
+/* filet de séparation adapté au fond clair */
+.section--light + .section::before,
+.section--light::before{background:linear-gradient(90deg,transparent,rgba(13,21,38,.12) 22%,rgba(13,21,38,.12) 78%,transparent)}
+
+/* ---- C. Composants qui codaient leur fond en dur ---- */
+.section--light .cat2-row,
+.section--light .cal2-row{background:#FFFFFF !important;
+  box-shadow:var(--e1),var(--bevel)}
+.section--light .cal2-table{box-shadow:var(--e2)}
+.section--light .faq__item,
+.section--light .essentiel-card,
+.section--light .p-pillar,
+.section--light .tarifs,
+.section--light .lp-facts li{background:#FFFFFF}
+.section--light .parents-quote{background:#FFFFFF;border-color:var(--line)}
+.section--light .cat-foot{background:#FFFFFF}
+.section--light .support-card{background:var(--grad-card)}
+.section--light .sponsor-card__plate{background:#FFFFFF;border-color:var(--line)}
+
+/* ---- D. Halos décoratifs : coupés sur fond clair ---- */
+.section--light .grid-fx,
+.section--light .staff::before,
+.section--light [class*="__glow"]{display:none}
+
+/* ============================================================
+   V80 — Correctifs de contraste des chapitres clairs
+   Douze composants codaient leur couleur en dur (#fff) au lieu
+   d'utiliser --blanc : ils devenaient invisibles sur fond clair.
+   Relevé par balayage automatique du contraste, pas à l'œil.
+   ============================================================ */
+.section--light .essentiel-card__val,
+.section--light .cal-venue__name,
+.section--light .p-pillar h3,
+.section--light .tarifs__rest b,
+.section--light .faq__title,
+.section--light .faq__item summary,
+.section--light .team__name,
+.section--light .sponsors-wall__title,
+.section--light .sponsor-card__name,
+.section--light .cat-rail__t{color:var(--blanc)}
+
+/* le bandeau d'en-tête du tableau garde son bleu : le blanc y est correct */
+.section--light .cal2-row--head{background:var(--grad-roi) !important;color:#fff}
+.section--light .cal2-row--head span{color:#fff}
+/* colonne « jour » : encre sur le tableau clair (desktop)… */
+.section--light .cal2 .cday{color:var(--blanc)}
+/* …mais blanc sur le bandeau bleu des cartes mobiles */
+@media (max-width:900px){
+  .section--light .cal2-row .cday{color:#fff !important}
+  .section--light .cal2-row .ctime{color:#fff !important}
+}
+/* badge « Notre salle » : l'orange assombri tombait à 3.4:1 sous le texte
+   quasi noir — on lui rend l'orange de marque, qui remonte à 5.4:1 */
+.section--light .cal-venue__tag{background:var(--grad-orange);color:#190f04}
+.section--light .badge-match{background:var(--grad-orange);color:#190f04}
+
+/* la légende du staff repasse en encre sur le fond clair */
+.section--light .team__role{color:var(--txt-soft)}
+.section--light .sponsor-card__badge{color:var(--txt-soft)}
+
+/* ---- Arrondis : les derniers rayons codés en dur rejoignent l'échelle ----
+   8-16 px pour les cartes. Le mockup de téléphone garde ses ~40 px : un
+   téléphone a réellement des coins de ce rayon. Le Hero n'est pas concerné. */
+main > .section .essentiel-card{border-radius:12px}
+main > .section .cat{border-radius:14px}
+main > .section .cine-card,
+main > .section .cine-card__sheen{border-radius:16px}
+main > .section .adhesion-video__player{border-radius:14px}
