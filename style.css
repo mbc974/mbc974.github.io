@@ -3487,3 +3487,77 @@ body.cine-fs-lock{overflow:hidden}
   .lp-stage img{transition:none!important}
   .lp-stage:hover img{transform:none!important}
 }
+
+/* ============================================================
+   V78 — Passe « finition » (2026-08)
+   Trois défauts de rythme, pas trois effets de plus :
+   1. les en-têtes de section alternaient entre centrés et calés
+      à gauche d'une section à l'autre — la page ne se posait
+      jamais sur un axe. Tout est centré désormais.
+   2. rien ne séparait deux sections : un filet fin donne la
+      cadence sans ajouter de bruit.
+   3. les 8 cartes catégories se lisaient à la file : elles sont
+      regroupées en rails d'âge, un visiteur repère son groupe.
+   ============================================================ */
+
+/* ---- 1. Un seul axe pour tous les en-têtes ---- */
+.section > .wrap > .sec-head,
+.section > .wrap > .cal-wrap > .sec-head,
+.section .cal-wrap > .sec-head{margin-inline:auto;text-align:center}
+.section .sec-head .kicker{justify-content:center}
+.section .sec-head__sub{margin-inline:auto}
+/* les blocs riches restent lisibles : texte à gauche dans un bloc centré */
+.sec-head .cat-mixite,
+.sec-head .parents-proof{text-align:left}
+.sec-head .parents-proof{justify-content:center}
+.sec-head .cat-mixite{margin-inline:auto}
+
+/* ---- 2. Filet de séparation entre sections ---- */
+.section + .section::before,
+.marquee + .section::before{content:"";position:absolute;top:0;left:50%;
+  transform:translateX(-50%);width:min(var(--wrap),88%);height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(191,210,228,.15) 22%,rgba(191,210,228,.15) 78%,transparent)}
+
+/* ---- 3. Rails d'âge dans les catégories ---- */
+.cat-group{position:relative;z-index:2}
+.cat-group + .cat-group{margin-top:clamp(2.2rem,4vw,3.2rem)}
+.cat-rail{display:flex;align-items:baseline;flex-wrap:wrap;gap:.5rem .9rem;
+  margin:0 0 1.25rem;padding-bottom:.85rem;border-bottom:1px solid var(--line)}
+.cat-rail__n{font-family:var(--ff-display);font-size:1.05rem;line-height:1;
+  color:var(--orange-vif);letter-spacing:.04em;flex:none}
+.cat-rail__t{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.3rem,2.6vw,1.75rem);line-height:1;letter-spacing:.02em;color:var(--blanc)}
+.cat-rail__s{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:.72rem;color:var(--txt-soft);margin-left:auto;
+  padding-bottom:.1em}
+/* auto-fit et non auto-fill : un groupe de deux cartes occupe toute la largeur
+   au lieu de laisser une colonne vide. */
+.cat-group .cat-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+/* la carte « sans jouer » clôt le parcours : format large, pas une 9e vignette */
+@media (min-width:760px){
+  /* Grille et non flex-direction:row : la carte a sept enfants directs, un
+     flex row les alignait tous cote a cote et les poussait hors du cadre.
+     Ici la photo occupe la colonne 1 sur toute la hauteur, le reste s'empile
+     en colonne 2. */
+  .cat--wide{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);
+    /* lignes explicites indispensables : sans elles, grid-row:1/-1 se resout
+       en 1/2 (la grille implicite n'a qu'une ligne declaree), la photo
+       n'occupait que la 1re rangee et l'etirait a sa hauteur intrinseque. */
+    grid-template-rows:repeat(6,auto);
+    column-gap:1.9rem;align-content:start;
+    padding:0 1.9rem 0 0 !important;min-height:0}
+  .cat--wide > .cat__photo{grid-column:1;grid-row:1 / -1;height:100%;margin:0}
+  .cat--wide > *:not(.cat__photo){grid-column:2}
+  .cat--wide > h4{margin-top:1.7rem}
+  .cat--wide > .cat__link{margin-bottom:1.7rem}
+  .cat--wide .cat__desc{min-height:0}
+  .cat--wide .cat__num{font-size:3.2rem}
+  /* le halo de survol injecte par script.js doit couvrir toute la carte,
+     pas seulement la colonne de texte ou la grille l'aurait place */
+  .cat--wide > .spotglow__fx{grid-column:1 / -1;grid-row:1 / -1}
+}
+@media (max-width:560px){
+  .cat-rail{gap:.35rem .7rem;margin-bottom:1rem;padding-bottom:.7rem}
+  .cat-rail__s{margin-left:0;flex-basis:100%}
+}
