@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-v2';
+const CACHE = 'mbc-66a88f4a-46bc55a8';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,8 +13,8 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=202608-refonte',
-  '/script.js?v=202608-refonte',
+  '/style.css?v=66a88f4a',
+  '/script.js?v=46bc55a8',
   '/assets/logos/mbc-logo.webp',
   '/assets/icons/favicon.png',
   '/assets/images/joueur-dribble-900.webp'
@@ -58,8 +58,27 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Ressources statiques (CSS, JS, images, polices…) : stale-while-revalidate
-  // → affichage instantané depuis le cache, mise à jour en tâche de fond.
+  // Feuille de style et script : RÉSEAU D'ABORD.
+  // En stale-while-revalidate, un visiteur recevait le HTML du jour avec la CSS
+  // de la veille — donc une mise en page cassée jusqu'au rechargement suivant.
+  // Ces deux fichiers sont petits : on préfère quelques millisecondes de réseau
+  // à un rendu faux. Le cache reste le filet en cas de coupure.
+  if (/\.(css|js)(\?|$)/.test(url.pathname + url.search)) {
+    e.respondWith(
+      fetch(req).then(function (res) {
+        if (res && res.status === 200 && res.type === 'basic') {
+          var copy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        }
+        return res;
+      }).catch(function () { return caches.match(req); })
+    );
+    return;
+  }
+
+  // Images, polices, médias : stale-while-revalidate.
+  // Ce sont des fichiers lourds et versionnés par leur nom : servir la copie
+  // locale immédiatement est ici le bon compromis.
   e.respondWith(
     caches.match(req).then(function (cached) {
       var network = fetch(req).then(function (res) {
