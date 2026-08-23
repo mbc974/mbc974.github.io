@@ -3639,3 +3639,41 @@ main > .section .cat{border-radius:14px}
 main > .section .cine-card,
 main > .section .cine-card__sheen{border-radius:16px}
 main > .section .adhesion-video__player{border-radius:14px}
+
+/* ============================================================
+   V81 — Staff : présentation institutionnelle
+   Les six visuels etaient des affiches reseaux sociaux : nom et
+   fonction incrustes dans l'image, logo en surimpression, rayons,
+   et un swoosh Nike bien visible alors que l'equipementier officiel
+   du club est InPlay. Les portraits sont recadres tete-epaules et
+   la legende redevient du vrai texte HTML sous la photo.
+   ============================================================ */
+.staff .team{display:block;margin-top:1.6rem}
+.staff .team__photos{display:grid;gap:clamp(.9rem,1.8vw,1.5rem);
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));max-width:none}
+.staff .team__photo{display:flex;flex-direction:column;margin:0;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  background:#FFFFFF;box-shadow:var(--e1);
+  transition:border-color .3s var(--ease-out),box-shadow .3s var(--ease-out)}
+.staff .team__photo:hover{transform:none;border-color:rgba(13,21,38,.18);box-shadow:var(--e2)}
+.staff .team__photo .staff-card__media{aspect-ratio:520/668;width:100%}
+.staff .team__photo .staff-card__media img{width:100%;height:100%;object-fit:cover;
+  object-position:center 12%;transition:none}
+.staff .team__photo .staff-card__media::after{display:none}
+/* legende sous la photo, plus en surimpression */
+.staff .team__cap{position:static;display:flex;flex-direction:column;gap:.15rem;
+  padding:.8rem .9rem .95rem;background:none;text-align:left}
+.staff .team__name{font-family:var(--ff-cond);font-weight:700;font-size:1.05rem;
+  line-height:1.2;letter-spacing:.01em;color:var(--blanc)}
+.staff .team__role{font-family:var(--ff-body);font-weight:400;font-size:.86rem;
+  line-height:1.35;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
+/* le script attenue les autres portraits au survol : trop demonstratif
+   pour une section institutionnelle, on neutralise sans toucher au JS */
+.staff .team__photo.is-dim,
+.staff .team__photo.is-active{opacity:1;filter:none;transform:none}
+@media (max-width:560px){
+  .staff .team__photos{grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+  .staff .team__cap{padding:.65rem .7rem .8rem}
+  .staff .team__name{font-size:.98rem}
+  .staff .team__role{font-size:.8rem}
+}
