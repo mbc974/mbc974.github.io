@@ -2426,52 +2426,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 }
 @media (prefers-reduced-motion:reduce){.hero__photo{transition:none;transform:none;opacity:1}
 }
-/* ---- (2) Section dunk "Rejoindre le mouvement" ---- */
-.join{position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(180deg,#0a1426,#0d1a30)}
-.join__media{position:absolute;inset:0 0 0 auto;width:62%;max-width:1000px;z-index:0;pointer-events:none}
-.join__media img{width:100%;height:100%;object-fit:cover;object-position:58% 30%;display:block;
-  /* la photo se dissout dans le fond réel -> aucune démarcation */
-  -webkit-mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%);
-          mask-image:linear-gradient(100deg,transparent 2%,rgba(0,0,0,.24) 15%,rgba(0,0,0,.58) 30%,rgba(0,0,0,.85) 44%,#000 56%)}
-.join__media.is-empty{background:radial-gradient(80% 90% at 80% 28%,rgba(27,81,158,.45),transparent 70%)}
-.join__media.is-empty img{display:none}
-.join__media.is-empty::after{background:linear-gradient(95deg,#0a1426 14%,rgba(10,20,38,.5) 44%,transparent 78%)}
-/* fallback : overlay plus léger sans photo */
-/* overlay navy->transparent : fond la photo + garde le texte lisible à gauche */
-.join__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  /* LAVAGE = couleur EXACTE du fond de section, opaque à gauche : la photo fond sans aucune marche ni ligne */
-  background:linear-gradient(180deg,#0a1426,#0d1a30);
-  -webkit-mask-image:linear-gradient(100deg,#000 0%,#000 17%,rgba(0,0,0,.5) 35%,transparent 51%);
-          mask-image:linear-gradient(100deg,#000 0%,#000 17%,rgba(0,0,0,.5) 35%,transparent 51%)}
-.join__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  /* fondu premium du bord droit (dissout le public dans le fond navy) + ancrage haut/bas (couleurs EXACTES du fond) */
-  background:linear-gradient(to left,#0a1426 0%,#0a1426 15%,rgba(10,20,38,.4) 20%,transparent 25%),
-             linear-gradient(to bottom,#0a1426,transparent 16%),
-             linear-gradient(to top,#0d1a30,transparent 12%)}
-/* halos identité MBC (orange + bleu) */
-.join::before{content:"";position:absolute;top:-14%;right:6%;width:42vw;height:42vw;max-width:560px;max-height:560px;z-index:1;pointer-events:none;
-  background:radial-gradient(circle,rgba(232,130,42,.26),transparent 64%);filter:blur(8px)}
-.join::after{content:"";position:absolute;bottom:-20%;left:-6%;width:40vw;height:40vw;max-width:520px;max-height:520px;z-index:1;pointer-events:none;
-  background:radial-gradient(circle,rgba(27,81,158,.26),transparent 66%);filter:blur(10px)}
-.join__inner{position:relative;z-index:2;min-height:clamp(420px,52vh,600px);display:flex;align-items:center;padding-block:clamp(3rem,7vw,6rem)}
-.join__copy{max-width:560px}
-.join .h2{text-shadow:0 4px 24px rgba(0,0,0,.5)}
-.join__lead{margin:1.1rem 0 0;max-width:46ch;color:var(--glacier,#BFD2E4);font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.6}
-.join__cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.9rem}
-.join__btn{box-shadow:0 14px 38px rgba(217,106,27,.42);gap:.5em}
-.join__btn .btn__arrow{width:1.05em;height:1.05em;margin-left:.1em;transition:transform .25s var(--ease,ease)}
-.join__btn:hover .btn__arrow{transform:translateX(5px)}
-@media (max-width:860px){.join__media{width:100%;max-width:none}
-/* mobile : on décale la joueuse vers la droite + un peu vers le haut pour
-     dégager son visage du texte (le scale crée le débordement nécessaire au translate) */
-.join__media img{object-position:50% 30%;transform:scale(1.2) translate(9%,-6%);transform-origin:center;-webkit-mask-image:none;mask-image:none}
-.join__media::before{display:none}
-.join__media::after{background:linear-gradient(to top,#0a1426 12%,rgba(10,20,38,.82) 46%,rgba(10,20,38,.5) 78%,rgba(10,20,38,.38)),linear-gradient(95deg,rgba(10,20,38,.5),transparent 82%)}
-.join__inner{min-height:clamp(440px,88vw,580px);align-items:flex-end;padding-bottom:clamp(2rem,8vw,3rem)}
-.join__copy{max-width:none}
-.join__cta{width:100%}
-.join__cta .btn{flex:1 1 auto;justify-content:center;text-align:center}
-}
 /* ============================================================
    V38 — Effet "cascade" sur liens (adapté de TextReveal / 21st.dev → CSS+JS natif)
    Appliqué aux liens de la colonne "Agir" du footer (Adhésion · Faire un don · Contact).
@@ -2960,7 +2914,7 @@ body.cine-fs-lock{overflow:hidden}
 /* ============================================================
    V66 — "Suivez le MBC" : visuel joueur en fondu premium (droite)
    + liens reseaux en COLONNE (garcon deplace depuis "Pret a faire
-   partie"). Meme technique de fondu que .join__media.
+   partie"). Fondu lateral par masque, comme le visuel de la section "Suivez le MBC".
    ============================================================ */
 .social-spotlight{isolation:isolate}
 .social-spotlight__media{position:absolute;inset:0 0 0 auto;width:54%;max-width:880px;z-index:0;pointer-events:none}
