@@ -3677,3 +3677,64 @@ main > .section .adhesion-video__player{border-radius:14px}
   .staff .team__name{font-size:.98rem}
   .staff .team__role{font-size:.8rem}
 }
+
+/* ============================================================
+   V82 — Discipline du mouvement
+   Le systeme d'apparition melangeait entrees laterales gauche ET
+   droite, zooms et translations verticales, sur 800 ms. A l'usage,
+   plusieurs mouvements concurrents par ecran pendant qu'on essaie
+   de lire. Regle retenue : opacite + une seule translation
+   verticale courte, identique partout.
+   Scope `main > .section` : le hero (.reveal-fade) n'est pas concerne.
+   ============================================================ */
+main > .section .reveal,
+main > .section .reveal--l,
+main > .section .reveal--r,
+main > .section .reveal--scale{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .52s var(--ease-out),transform .52s var(--ease-out);
+}
+main > .section .reveal.in,
+main > .section .reveal--l.in,
+main > .section .reveal--r.in,
+main > .section .reveal--scale.in{opacity:1;transform:none}
+
+/* ---- Partenaires : une vitrine, pas un bandeau qui defile ----
+   §24 : les sponsors sont valorises, pas utilises comme decoration.
+   Le defilement continu concurrencait le seul marquee legitime du
+   site (le bandeau de valeurs) et rendait les logos illisibles. */
+.sponsors-marquee{overflow:visible}
+.sponsors-marquee__track{
+  animation:none !important;
+  width:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:clamp(.8rem,2vw,1.6rem);
+  padding-block:.4rem;
+  will-change:auto;
+}
+/* la seconde serie n'existait que pour boucler le defilement */
+.sponsors-marquee__track > [aria-hidden="true"]{display:none}
+.sponsor-card{transition:border-color .25s var(--ease-out),transform .25s var(--ease-out)}
+.sponsor-card:hover{transform:translateY(-2px)}
+.sponsor-card__plate{box-shadow:none}
+/* taille optique homogene : les logos n'ont pas tous le meme cadrage */
+.sponsor-card__plate img{max-height:56px;width:auto;margin-inline:auto;object-fit:contain}
+
+@media (prefers-reduced-motion:reduce){
+  main > .section .reveal,
+  main > .section .reveal--l,
+  main > .section .reveal--r,
+  main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
+  .sponsor-card:hover{transform:none !important}
+}
+
+/* ---- Un seul mouvement continu sur la page ----
+   Restaient en boucle infinie hors hero : la trame animee derriere les
+   cartes categories, la pulsation de l'encoche du mockup telephone et le
+   coeur du pied de page. Trois mouvements de fond pendant qu'on lit.
+   Le seul marquee conserve est le bandeau de valeurs (§23). */
+main > .section .grid-fx__layer{animation:none !important}
+main > .section .cine-phone__island i{animation:none !important}
+.site-footer .sig-heart{animation:none !important}
