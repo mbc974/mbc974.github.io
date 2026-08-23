@@ -3333,43 +3333,6 @@ body.cine-fs-lock{overflow:hidden}
 }
 
 /* ============================================================
-   V75 — « Le MBC dans son quartier » (inauguration août 2026)
-   Preuve d'ancrage local : photos réelles, texte factuel.
-   Deux colonnes sur desktop, empilement sur mobile.
-   ============================================================ */
-.local-proof{position:relative;overflow:hidden}
-.lp-grid{display:grid;gap:2rem;align-items:center;grid-template-columns:1fr}
-.lp-copy .lead{margin:.5rem 0 1rem}
-.lp-txt{color:var(--txt-soft);line-height:1.72;margin-bottom:1rem;max-width:60ch}
-.lp-facts{list-style:none;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.4rem}
-.lp-facts li{display:flex;flex-direction:column;gap:.1rem;padding:.65rem 1rem;
-  border:1px solid var(--line);border-radius:var(--r-sm);background:rgba(16,27,48,.55)}
-.lp-facts b{font-family:var(--ff-cond);font-weight:700;font-size:.98rem;color:var(--blanc);letter-spacing:.01em}
-.lp-facts span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.1em;font-size:.68rem;color:var(--txt-soft)}
-
-.lp-media{display:grid;gap:1rem;grid-template-columns:1fr}
-.lp-shot{position:relative;margin:0;overflow:hidden;border-radius:var(--r-lg);
-  border:1px solid var(--line);box-shadow:var(--e2),var(--bevel)}
-.lp-shot img{display:block;width:100%;height:auto}
-.lp-shot::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(to top,rgba(7,13,24,.86),rgba(7,13,24,.10) 46%,transparent 66%)}
-.lp-shot figcaption{position:absolute;left:1rem;right:1rem;bottom:.9rem;z-index:2;
-  font-family:var(--ff-cond);font-weight:600;font-size:.86rem;line-height:1.35;color:#fff}
-.lp-shot figcaption::before{content:"";display:inline-block;width:18px;height:2px;
-  background:var(--orange-vif);vertical-align:middle;margin-right:.5em}
-
-@media (min-width:760px){
-  .lp-media{grid-template-columns:1.35fr 1fr;align-items:start}
-  .lp-shot--portrait img{height:100%;object-fit:cover}
-  .lp-shot--portrait{height:100%}
-}
-@media (min-width:1040px){
-  .lp-grid{grid-template-columns:1fr 1.45fr;gap:3rem}
-  .lp-facts{margin-top:1.7rem}
-}
-
-/* ============================================================
    V76 — Hero : hiérarchie des trois actions
    « Faire une séance d'essai » passait à la ligne par simple
    retour à la ligne flex, aligné à gauche : ça se lisait comme
@@ -3436,4 +3399,91 @@ body.cine-fs-lock{overflow:hidden}
   .hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
   .hero-offer__trial:hover{transform:none!important}
   .hero-offer__trial:hover .ic{transform:none!important}
+}
+
+/* ============================================================
+   V77 — « Le MBC dans son quartier » (inauguration août 2026)
+   Refonte de la mise en page. La version précédente entassait
+   deux photos d'orientations différentes dans une colonne
+   étroite : composition agitée, la photo forte écrasée.
+   Ici : en-tête centré comme les autres sections, l'image forte
+   en pleine largeur avec sa légende incrustée, puis le récit et
+   la photo de groupe côte à côte.
+   ============================================================ */
+.local-proof{position:relative;overflow:hidden}
+
+/* ---- L'image forte, pleine largeur ---- */
+.lp-stage{position:relative;margin:1.8rem 0 0;overflow:hidden;
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--e3),var(--bevel);isolation:isolate}
+.lp-stage img{display:block;width:100%;
+  /* 62 % et non 50 % : la maire est basse dans le cadre. A 46 %, la bande
+     visible s'arretait a 0,73 et coupait le ballon et le geste de tir. */
+  height:clamp(240px,30vw,430px);object-fit:cover;object-position:center 62%;
+  transition:transform .8s var(--ease-out)}
+.lp-stage:hover img{transform:scale(1.03)}
+.lp-stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(7,13,24,.92) 0,rgba(7,13,24,.42) 26%,rgba(7,13,24,0) 58%)}
+.lp-stage__cap{position:absolute;left:0;right:0;bottom:0;z-index:2;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.55rem .9rem;
+  padding:1.1rem 1.5rem 1.15rem}
+.lp-stage__tag{flex:none;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.68rem;color:#190f04;
+  background:var(--grad-orange);padding:.3em .8em;border-radius:99px}
+.lp-stage__txt{font-family:var(--ff-cond);font-weight:600;font-size:1.02rem;
+  line-height:1.35;color:#fff;text-shadow:0 1px 12px rgba(7,13,24,.7)}
+
+/* ---- Récit + photo de groupe ---- */
+.lp-below{display:grid;gap:1.6rem;grid-template-columns:1fr;margin-top:1.6rem}
+.lp-txt{color:var(--txt-soft);line-height:1.75;margin-bottom:.95rem;max-width:62ch}
+.lp-txt--lead{font-size:1.1rem;line-height:1.65;color:var(--txt)}
+.lp-txt--lead span[lang]{color:var(--orange-vif);font-style:italic}
+
+/* signature discrète : une ligne, pas trois pavés — les mêmes repères
+   figurent déjà dans le hero et le pied de page. */
+.lp-sign{display:flex;flex-wrap:wrap;gap:.4rem .9rem;margin-top:1.5rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:.7rem;color:var(--txt-soft)}
+.lp-sign span{display:inline-flex;align-items:center}
+.lp-sign span + span::before{content:"";width:4px;height:4px;border-radius:50%;
+  background:var(--orange-vif);margin-right:.9rem;opacity:.85}
+
+.lp-aside{position:relative;margin:0;overflow:hidden;
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  box-shadow:var(--e2),var(--bevel)}
+.lp-aside img{display:block;width:100%;height:clamp(260px,42vw,340px);
+  object-fit:cover;object-position:center 22%}
+.lp-aside::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(7,13,24,.9) 0,rgba(7,13,24,.15) 44%,transparent 66%)}
+.lp-aside figcaption{position:absolute;left:1.1rem;right:1.1rem;bottom:.95rem;z-index:2;
+  font-family:var(--ff-cond);font-weight:600;font-size:.86rem;line-height:1.35;color:#fff}
+.lp-aside figcaption::before{content:"";display:inline-block;width:18px;height:2px;
+  background:var(--orange-vif);vertical-align:middle;margin-right:.55em}
+
+@media (min-width:900px){
+  /* align-items:start + hauteur bornee : sans cela la photo portrait etirait
+     la rangee a 574 px face a 242 px de texte, laissant un grand vide. */
+  .lp-below{grid-template-columns:1.5fr 1fr;gap:2.6rem;align-items:start}
+  .lp-aside{align-self:start}
+  .lp-aside img{height:clamp(280px,24vw,340px)}
+  .lp-stage__cap{padding:1.3rem 1.9rem 1.4rem}
+}
+/* Entre 640 et 899 px, .lp-below est encore sur une colonne : la photo
+   portrait se retrouvait dans un cadre large et bas (676x322), qui coupait
+   les visages du groupe. On la borne et on la centre pour lui garder un
+   cadrage proche du portrait. */
+@media (min-width:640px) and (max-width:899px){
+  /* largeur explicite : avec max-width + marges auto, l'element de grille
+     perdait le stretch et se reduisait a 245 px (la largeur intrinseque de
+     l'image a cette hauteur). */
+  .lp-aside{width:min(100%,380px);margin-inline:auto}
+}
+@media (max-width:560px){
+  .lp-stage__cap{padding:.95rem 1.1rem 1rem;gap:.45rem .6rem}
+  .lp-stage__txt{font-size:.95rem}
+  .lp-txt--lead{font-size:1.04rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .lp-stage img{transition:none!important}
+  .lp-stage:hover img{transform:none!important}
 }
