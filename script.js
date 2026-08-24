@@ -872,7 +872,9 @@
 
   var bandeau = document.getElementById('mxNext');
   if (!bandeau) return;
-  var opp = next.row.querySelector('.mx-opp');
+  // le nom seul : .mx-opp porte aussi le sigle, masque en CSS mais bien
+  // present dans le textContent (on lisait « Sainte-SuzanneBC2S »)
+  var opp = next.row.querySelector('.mx-opp__n');
   var dom = next.row.classList.contains('mx-row--dom');
   var fmt;
   try {

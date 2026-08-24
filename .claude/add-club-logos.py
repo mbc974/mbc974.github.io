@@ -40,6 +40,7 @@ suffit a detacher sa case du bleu nuit de la section.
 """
 import io
 import os
+import re
 import sys
 from collections import Counter, deque
 
@@ -50,7 +51,11 @@ DEST = 'assets/logos/clubs/'
 PLANCHE = 'planche-logos.png'
 EXTS = ('.png', '.jpg', '.jpeg', '.webp')
 
-TRAVAIL = 512    # resolution de travail : la sortie plafonne a 192 px
+# La case fait 72 px : le 144 sert les ecrans 2x, le 288 les 3x.
+CASE = 72
+TAILLES = (288, 144)
+
+TRAVAIL = 640    # resolution de travail, au-dessus de la plus grande sortie
 TOL = 58         # tolerance couleur du detourage (distance RGB)
 MARGE = 1.10     # respiration autour du logo une fois recadre
 
@@ -267,49 +272,113 @@ def preparer(chemin, decouper):
 
 def ecrire(slug, rgba):
     os.makedirs(DEST, exist_ok=True)
-    for taille in (192, 96):
+    grande = max(TAILLES)
+    for taille in TAILLES:
         r = rgba.resize((taille, taille), Image.LANCZOS)
-        nom = '%s%s%s.webp' % (DEST, slug, '' if taille == 192 else '-96')
+        nom = '%s%s%s.webp' % (DEST, slug,
+                               '' if taille == grande else '-%d' % taille)
         r.save(nom, 'WEBP', quality=90, method=6)
     return os.path.getsize('%s%s.webp' % (DEST, slug)) // 1024
 
 
-def planche(rendus):
-    """Controle visuel : le logo detoure sur damier, puis la case telle
-    qu'elle s'affichera (plaque blanche, coins arrondis) sur le bleu nuit."""
-    from PIL import ImageDraw
-    case, pas, marge = 160, 190, 24
-    img = Image.new('RGB', (marge * 2 + pas * len(rendus), 470), (16, 27, 48))
-    d = ImageDraw.Draw(img)
+def balisage(slug):
+    """Case d'un logo adverse, avec repli sur le sigle si l'image manque."""
+    petite = min(TAILLES)
+    return ('<span class="mx-crest mx-crest--logo">'
+            '<img src="assets/logos/clubs/{s}-{p}.webp" '
+            'srcset="assets/logos/clubs/{s}-{p}.webp {p}w, '
+            'assets/logos/clubs/{s}.webp {g}w" sizes="{c}px" alt="" '
+            'width="{g}" height="{g}" loading="lazy" decoding="async" '
+            'onerror="this.closest(\'.mx-crest\').className='
+            '\'mx-crest mx-crest--sigle\';'
+            'this.closest(\'.mx-crest\').textContent=\'{S}\'">'
+            '</span>').format(s=slug, S=slug.upper(), p=petite,
+                              g=max(TAILLES), c=CASE)
 
-    damier = Image.new('RGB', (case, case), (208, 208, 208))
-    dd = ImageDraw.Draw(damier)
-    for y in range(0, case, 16):
-        for x in range(0, case, 16):
-            if (x // 16 + y // 16) % 2:
-                dd.rectangle([x, y, x + 15, y + 15], fill=(246, 246, 246))
+
+ECH = 3          # les cases sont dessinees a l'echelle 3 pour etre jugeables
+DOMICILE = ('sbbc', 'smb2', 'picks3')   # J3, J6, J7
+
+
+def case_rendue(rgba, taille, radius, pad, bordure, degrade, anneau=None,
+                ombre=None):
+    """Reproduit une case du calendrier avec ses valeurs CSS reelles."""
+    from PIL import ImageDraw, ImageFilter
+    t, r, p = taille * ECH, radius * ECH, pad * ECH
+    marge = 26
+    hors = Image.new('RGBA', (t + marge * 2, t + marge * 2), (0, 0, 0, 0))
+
+    if ombre:
+        dy, flou, alpha = ombre
+        oc = Image.new('RGBA', hors.size, (0, 0, 0, 0))
+        ImageDraw.Draw(oc).rounded_rectangle(
+            [marge, marge + dy * ECH, marge + t, marge + t + dy * ECH],
+            radius=r, fill=(3, 8, 18, alpha))
+        hors = Image.alpha_composite(hors, oc.filter(
+            ImageFilter.GaussianBlur(flou * ECH / 2.)))
+
+    plaque = Image.new('RGBA', (t, t), degrade[0] + (255,))
+    if degrade[0] != degrade[1]:
+        pd = ImageDraw.Draw(plaque)
+        for y in range(t):
+            k = y / float(t - 1)
+            pd.line([(0, y), (t, y)], fill=tuple(
+                int(degrade[0][i] + (degrade[1][i] - degrade[0][i]) * k)
+                for i in range(3)))
+    masque = Image.new('L', (t, t), 0)
+    ImageDraw.Draw(masque).rounded_rectangle([0, 0, t - 1, t - 1],
+                                             radius=r, fill=255)
+    plaque.putalpha(masque)
+
+    inner = rgba.resize((t - 2 * p, t - 2 * p), Image.LANCZOS)
+    plaque.paste(inner, (p, p), inner)
+    pd = ImageDraw.Draw(plaque)
+    pd.rounded_rectangle([0, 0, t - 1, t - 1], radius=r, outline=bordure,
+                         width=max(1, ECH))
+    hors.paste(plaque, (marge, marge), plaque)
+    if anneau:   # box-shadow 0 0 0 2px : l'anneau est exterieur a la case
+        ad = ImageDraw.Draw(hors)
+        e = 2 * ECH
+        ad.rounded_rectangle([marge - e, marge - e, marge + t + e - 1,
+                              marge + t + e - 1], radius=r + e,
+                             outline=anneau, width=e)
+    return hors
+
+
+def planche(rendus):
+    """Controle visuel : la case d'avant et celle d'aujourd'hui, cote a cote,
+    dessinees avec les valeurs CSS reelles et posees sur le bleu nuit de la
+    section — le but etant de juger la lisibilite, pas le logo isole."""
+    from PIL import ImageDraw
+    col, marge, haut = 72 * ECH + 44, 30, 540
+    img = Image.new('RGB', (marge * 2 + col * len(rendus), haut), (16, 27, 48))
+    d = ImageDraw.Draw(img)
+    for y in range(haut):     # le fond degrade de la section
+        k = y / float(haut - 1)
+        d.line([(0, y), (img.width, y)], fill=(int(16 - 9 * k),
+                                               int(27 - 14 * k),
+                                               int(48 - 24 * k)))
 
     for i, (slug, rgba) in enumerate(rendus):
-        x = marge + i * pas
-        grand = rgba.resize((case, case), Image.LANCZOS)
-        v = damier.copy()
-        v.paste(grand, (0, 0), grand)
-        img.paste(v, (x, 40))
+        cx = marge + i * col + col // 2
+        avant = case_rendue(rgba, 40, 10, 3, (191, 210, 228, 56),
+                            ((255, 255, 255), (255, 255, 255)))
+        img.paste(avant, (cx - avant.width // 2, 44), avant)
 
-        # la case reelle agrandie 4x : 40px, radius 10, padding 3, plaque #fff
-        plaque = Image.new('RGBA', (case, case), (0, 0, 0, 0))
-        pd = ImageDraw.Draw(plaque)
-        pd.rounded_rectangle([0, 0, case - 1, case - 1], radius=40,
-                             fill=(255, 255, 255, 255),
-                             outline=(191, 210, 228, 150), width=4)
-        inner = rgba.resize((case - 24, case - 24), Image.LANCZOS)
-        plaque.paste(inner, (12, 12), inner)
-        img.paste(plaque, (x, 260), plaque)
+        dom = slug in DOMICILE
+        apres = case_rendue(
+            rgba, 72, 18, 6,
+            (255, 214, 178, 191) if dom else (255, 255, 255, 158),
+            ((255, 255, 255), (234, 240, 247)),
+            anneau=(232, 130, 42, 122) if dom else None,
+            ombre=(10, 22, 140))
+        img.paste(apres, (cx - apres.width // 2, 236), apres)
+        d.text((cx - 18, 208), slug, fill=(200, 215, 235))
 
-        d.text((x, 232), slug, fill=(200, 215, 235))
-    d.text((marge, 14), 'detoure  (damier = transparent)', fill=(200, 215, 235))
-    d.text((marge, 430), 'la case reelle, 40 px, agrandie 4x',
-           fill=(140, 160, 186))
+    d.text((marge, 18), 'AVANT  —  case 40 px', fill=(150, 170, 196))
+    d.text((marge, 500), 'APRES  —  case 72 px, plaque degradee, ombre '
+           'portee, anneau orange sur les matchs a domicile (J3, J6, J7)',
+           fill=(232, 130, 42))
     img.save(PLANCHE)
     return PLANCHE
 
@@ -349,24 +418,30 @@ def main():
     s = io.open('index.html', encoding='utf-8').read()
     n = 0
     for slug in faits:
-        sigle = slug.upper()
+        # cas 1 : la case porte encore le sigle
         ancien = ('<span class="mx-crest mx-crest--sigle" aria-hidden="true">'
-                  '%s</span>' % sigle)
-        # la case fait 40 px : le 96 couvre les ecrans 1x et 2x, le 192 le 3x
-        nouveau = ('<span class="mx-crest mx-crest--logo">'
-                   '<img src="assets/logos/clubs/{s}-96.webp" '
-                   'srcset="assets/logos/clubs/{s}-96.webp 96w, '
-                   'assets/logos/clubs/{s}.webp 192w" sizes="40px" alt="" '
-                   'width="192" height="192" loading="lazy" decoding="async" '
-                   'onerror="this.closest(\'.mx-crest\').className='
-                   '\'mx-crest mx-crest--sigle\';'
-                   'this.closest(\'.mx-crest\').textContent=\'{S}\'">'
-                   '</span>').format(s=slug, S=sigle)
+                  '%s</span>' % slug.upper())
         if ancien in s:
-            s = s.replace(ancien, nouveau)
+            s = s.replace(ancien, balisage(slug))
             n += 1
+            continue
+        # cas 2 : la case a deja un logo, on regenere son balisage pour
+        # qu'un changement de taille se propage sans retoucher le HTML
+        motif = re.compile(
+            r'<span class="mx-crest mx-crest--logo">\s*<img[^>]*?'
+            r'logos/clubs/%s[-.][^>]*?>\s*</span>' % re.escape(slug))
+        s, k = motif.subn(balisage(slug), s)
+        n += k
     io.open('index.html', 'w', encoding='utf-8', newline='\n').write(s)
-    print('\n  %d ecussons remplaces par un logo' % n)
+    print('\n  %d cases mises a jour' % n)
+
+    # les rendus d'une taille precedente n'ont plus de reference
+    for f in sorted(os.listdir(DEST)):
+        garde = ['%s.webp' % g for g in faits]
+        garde += ['%s-%d.webp' % (g, min(TAILLES)) for g in faits]
+        if f not in garde:
+            os.remove(DEST + f)
+            print('  retire : %s' % f)
     os.system(sys.executable + ' .claude/bump-assets.py')
     return 0
 

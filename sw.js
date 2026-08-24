@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-98bc909c-60249446';
+const CACHE = 'mbc-981288ad-c565fd42';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,8 +13,8 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=98bc909c',
-  '/script.js?v=60249446',
+  '/style.css?v=981288ad',
+  '/script.js?v=c565fd42',
   '/assets/logos/mbc-logo.webp',
   '/assets/icons/favicon.png',
   '/assets/images/joueur-dribble-900.webp'

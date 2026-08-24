@@ -3769,13 +3769,17 @@ main > .section .cine-phone__island i{animation:none !important}
    balisage, et .claude/add-club-logos.py pour la préparation
    des fichiers).
    ============================================================ */
-.mx-duel{grid-area:duel;display:inline-flex;align-items:center;gap:.45rem;flex:none}
+.mx-duel{grid-area:duel;display:inline-flex;align-items:center;gap:.7rem;flex:none}
 .mx-crest{display:grid;place-items:center;flex:none;
-  width:40px;height:40px;border-radius:10px;overflow:hidden}
-.mx-crest--mbc{background:rgba(255,255,255,.06);border:1px solid rgba(191,210,228,.20);padding:3px}
+  width:72px;height:72px;border-radius:18px;overflow:hidden;
+  transition:transform .35s var(--ease)}
+.mx-row:hover .mx-crest{transform:translateY(-2px)}
+.mx-crest--mbc{padding:5px;border:1px solid rgba(191,210,228,.30);
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
+  box-shadow:0 8px 20px rgba(3,8,18,.45)}
 .mx-crest--mbc img{width:100%;height:100%;object-fit:contain}
 .mx-crest--sigle{background:rgba(16,27,48,.85);border:1px solid rgba(191,210,228,.20);
-  font-family:var(--ff-cond);font-weight:700;font-size:.68rem;letter-spacing:.04em;
+  font-family:var(--ff-cond);font-weight:700;font-size:1rem;letter-spacing:.04em;
   color:#C3D2E2;text-align:center;line-height:1}
 .mx-vs{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   font-size:.64rem;letter-spacing:.1em;color:#6E839C;flex:none}
@@ -3804,22 +3808,35 @@ main > .section .cine-phone__island i{animation:none !important}
 @media (max-width:819px){
   .mx-row{grid-template-columns:auto auto 1fr;
     grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
+  .mx-crest{width:64px;height:64px;border-radius:16px}
   .mx-duel{justify-self:start}
   .mx-side{justify-self:start;align-self:center}
   .mx-meta{justify-content:flex-end;text-align:right}
 }
 @media (max-width:520px){
-  .mx-crest{width:34px;height:34px;border-radius:9px}
-  .mx-crest--sigle{font-size:.6rem}
+  .mx-crest{width:56px;height:56px;border-radius:14px}
+  .mx-crest--logo{padding:4px}
+  .mx-crest--sigle{font-size:.78rem}
+  .mx-duel{gap:.5rem}
   .mx-opp__n{font-size:1rem}
   .mx-row{gap:.35rem .7rem}
 }
 
 /* ---- Logos des clubs adverses ----
-   Plaque blanche systematique : les logos fournis ont des fonds tres
+   Plaque claire systematique : les logos fournis ont des fonds tres
    differents (bleu vif pour Sainte-Suzanne, marine pour Picks, blanc pour
    MTG). Une plaque neutre leur donne le meme poids optique et evite qu'un
-   logo sombre disparaisse sur le bleu nuit de la section. */
-.mx-crest--logo{background:#fff;border:1px solid rgba(191,210,228,.22);padding:3px}
+   logo sombre disparaisse sur le bleu nuit de la section.
+
+   L'ombre portee et le lisere clair ne sont pas decoratifs : sans eux, les
+   logos pales (Saint-Benoit, Sainte-Marie) se fondaient dans leur propre
+   plaque et la case entiere passait pour un carre blanc vide. */
+.mx-crest--logo{padding:6px;border:1px solid rgba(255,255,255,.62);
+  background:linear-gradient(180deg,#FFF,#EAF0F7);
+  box-shadow:0 10px 22px rgba(3,8,18,.55),inset 0 1px 0 rgba(255,255,255,.9)}
 .mx-crest--logo img{width:100%;height:100%;object-fit:contain;display:block}
-.mx-row--dom .mx-crest--logo{border-color:rgba(232,130,42,.28)}
+.mx-row--dom .mx-crest--logo{border-color:rgba(255,214,178,.75);
+  box-shadow:0 10px 22px rgba(3,8,18,.55),0 0 0 2px rgba(232,130,42,.48),
+    inset 0 1px 0 rgba(255,255,255,.9)}
+.mx-row--dom .mx-crest--mbc{box-shadow:0 8px 20px rgba(3,8,18,.45),
+  0 0 0 2px rgba(232,130,42,.38)}
