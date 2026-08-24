@@ -3809,6 +3809,11 @@ main > .section .cine-phone__island i{animation:none !important}
   .mx-row{grid-template-columns:auto auto 1fr;
     grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
   .mx-crest{width:64px;height:64px;border-radius:16px}
+  /* .mx-side est declare grid-area:opp plus haut, heritage d'une mise en
+     page ou le badge s'empilait sous le nom. Seul le palier >=820px le
+     replacait : en dessous, le badge se posait PAR-DESSUS le nom du club
+     (« Saint-Benoit » disparaissait derriere « A DOMICILE »). */
+  .mx-side{grid-area:side;align-self:center}
   .mx-duel{justify-self:start}
   .mx-side{justify-self:start;align-self:center}
   .mx-meta{justify-content:flex-end;text-align:right}
