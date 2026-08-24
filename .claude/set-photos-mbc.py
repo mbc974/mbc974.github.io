@@ -30,7 +30,7 @@ EXTS = ('.jpg', '.jpeg', '.png', '.webp')
 
 # fractions de la hauteur d'origine conservees pour le duo :
 # du haut du cliche jusqu'au bassin, jambes exclues.
-HAUT, BAS = 0.04, 0.62
+HAUT, BAS = 0.03, 0.53
 # la transmission garde sa verticalite, on retire seulement un peu de ciel
 T_HAUT, T_BAS = 0.10, 1.00
 
