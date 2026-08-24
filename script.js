@@ -888,3 +888,28 @@
     (opp ? ', face à ' + opp.textContent.trim() : '') + '.';
   bandeau.hidden = false;
 })();
+
+/* ============================================================
+   Postes bénévoles des matchs à domicile
+   ------------------------------------------------------------
+   Le compteur du résumé est calculé à partir de la liste, jamais
+   saisi à la main : il ne peut donc pas la contredire quand un
+   poste est pourvu. Sans JS, le résumé reste « Postes bénévoles »,
+   la liste étant de toute façon lisible une fois dépliée.
+   ============================================================ */
+(function () {
+  var blocs = document.querySelectorAll('.mx-roles');
+  Array.prototype.forEach.call(blocs, function (d) {
+    var etat = d.querySelector('.mx-roles__etat');
+    var total = d.querySelectorAll('.mx-poste').length;
+    if (!etat || !total) return;
+    var libres = d.querySelectorAll('.mx-poste__v--libre').length;
+    if (libres === 0) {
+      etat.textContent = 'équipe complète';
+      etat.className = 'mx-roles__etat is-complet';
+    } else {
+      etat.textContent = libres + ' poste' + (libres > 1 ? 's' : '') +
+        ' à pourvoir';
+    }
+  });
+})();

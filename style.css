@@ -3803,11 +3803,15 @@ main > .section .cine-phone__island i{animation:none !important}
 @media (min-width:820px){
   .mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto auto;
     grid-template-areas:"j date duel opp side meta";gap:0 1.3rem}
+  .mx-row--dom{grid-template-areas:"j date duel opp side meta"
+    ". roles roles roles roles roles"}
   .mx-side{justify-self:end;align-self:center}
 }
 @media (max-width:819px){
   .mx-row{grid-template-columns:auto auto 1fr;
     grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
+  .mx-row--dom{grid-template-areas:"j date duel" "j opp opp" "j side meta"
+    "roles roles roles"}
   .mx-crest{width:64px;height:64px;border-radius:16px}
   /* .mx-side est declare grid-area:opp plus haut, heritage d'une mise en
      page ou le badge s'empilait sous le nom. Seul le palier >=820px le
@@ -3845,3 +3849,61 @@ main > .section .cine-phone__island i{animation:none !important}
     inset 0 1px 0 rgba(255,255,255,.9)}
 .mx-row--dom .mx-crest--mbc{box-shadow:0 8px 20px rgba(3,8,18,.45),
   0 0 0 2px rgba(232,130,42,.38)}
+
+/* ---- Postes bénévoles des matchs à domicile ----
+   Replié par défaut : la ligne reste d'abord un calendrier. Seules les
+   rencontres à domicile portent ce bloc, d'où la zone « roles » ajoutée
+   sur .mx-row--dom uniquement — l'ajouter à toutes les lignes aurait
+   creusé un vide sous chaque match à l'extérieur. */
+.mx-roles{grid-area:roles;margin:.7rem 0 .1rem;
+  border:1px solid rgba(232,130,42,.22);border-radius:var(--r-sm);
+  background:rgba(232,130,42,.05)}
+.mx-roles__s{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+  padding:.55rem .85rem;cursor:pointer;list-style:none;
+  font-family:var(--ff-cond);font-weight:700;font-size:.82rem;
+  letter-spacing:.06em;text-transform:uppercase;color:#E3B07C}
+.mx-roles__s::-webkit-details-marker{display:none}
+.mx-roles__s::after{content:"";width:.5rem;height:.5rem;flex:none;
+  border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  transform:rotate(45deg) translate(-2px,-2px);transition:transform .25s var(--ease)}
+.mx-roles[open] .mx-roles__s::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.mx-roles__s:hover{color:var(--orange-vif)}
+.mx-roles__s:focus-visible{outline:2px solid var(--orange-vif);outline-offset:2px}
+.mx-roles__lab{margin-right:auto}
+.mx-roles__etat{font-size:.74rem;letter-spacing:.04em;color:#9FB2C8;
+  text-transform:none;font-weight:600}
+.mx-roles__etat.is-complet{color:#7FD1A0}
+.mx-roles__l{list-style:none;margin:0;padding:0 .85rem .2rem;
+  display:grid;gap:.3rem}
+.mx-poste{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap;
+  padding:.4rem 0;border-top:1px solid rgba(191,210,228,.10);
+  font-family:var(--ff-cond);font-size:.95rem}
+.mx-poste__r{color:#B8C9DC;margin-right:auto}
+.mx-poste__v{font-weight:700;color:var(--blanc)}
+.mx-poste__v--libre{color:#E3B07C;font-weight:600;font-style:italic}
+.mx-roles__cta{margin:.2rem 0 0;padding:.6rem .85rem .75rem;
+  font-size:.84rem;line-height:1.5;color:var(--txt-soft);
+  border-top:1px solid rgba(191,210,228,.10)}
+.mx-roles__cta a{color:var(--orange-vif)}
+
+/* ---- L'affiche officielle, à télécharger et partager ---- */
+.affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
+  margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
+  border-radius:var(--r-lg);background:var(--grad-card)}
+/* width explicite, et non max-width : en justify-self:start la largeur du
+   lien suit son contenu, or l'image la reclame en retour — les deux
+   s'annulaient et la vignette tombait a 0. */
+.affiche__vue{display:block;justify-self:start;width:min(320px,100%);
+  border-radius:var(--r-md);overflow:hidden;
+  border:1px solid rgba(191,210,228,.18);
+  box-shadow:0 18px 40px rgba(3,8,18,.55);
+  transition:transform .4s var(--ease)}
+.affiche__vue:hover{transform:translateY(-4px)}
+.affiche__vue img{display:block;width:100%;height:auto}
+.affiche__t{font-family:var(--ff-display);font-size:1.55rem;line-height:1.1;
+  margin:.2rem 0 .5rem;color:var(--blanc)}
+.affiche__d{margin:0 0 1.1rem;color:var(--txt-soft);max-width:48ch}
+.affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
+@media (min-width:760px){
+  .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}
+}
