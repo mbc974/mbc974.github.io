@@ -1683,16 +1683,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    La source fait 900 px de large ; le conteneur est plafonné pour qu'elle
    ne soit pas agrandie sur les grands écrans. */
 .ess__photo{position:absolute;top:0;right:0;bottom:0;margin:0;z-index:0;
-  width:min(62%,880px);pointer-events:none}
+  width:min(62%,880px);pointer-events:none;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.06) 8%,
+    rgba(0,0,0,.22) 16%,rgba(0,0,0,.45) 24%,rgba(0,0,0,.68) 31%,
+    rgba(0,0,0,.88) 37%,#000 44%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.06) 8%,
+    rgba(0,0,0,.22) 16%,rgba(0,0,0,.45) 24%,rgba(0,0,0,.68) 31%,
+    rgba(0,0,0,.88) 37%,#000 44%)}
 .ess__photo img{width:100%;height:100%;object-fit:cover;
-  object-position:52% 32%;filter:saturate(.88) contrast(1.03) brightness(.92)}
+  object-position:52% 32%;filter:saturate(.96) contrast(1.02)}
 /* un seul effet, mais précis : la photo s'efface vers le texte et sous les
    pieds. Pas de flou, pas de vignette supplémentaire. */
 .ess__photo::after{content:"";position:absolute;inset:0;background:
-  linear-gradient(90deg,#070d18 4%,rgba(7,13,24,.93) 36%,
-    rgba(7,13,24,.42) 64%,rgba(7,13,24,.04) 100%),
-  linear-gradient(180deg,rgba(7,13,24,.30) 0%,rgba(7,13,24,.02) 40%,
-    rgba(16,27,48,.55) 100%)}
+  linear-gradient(180deg,rgba(7,13,24,.16) 0%,transparent 34%,
+    rgba(16,27,48,.44) 100%)}
 
 .ess__in{position:relative;z-index:2}
 .ess__head{max-width:34rem}
