@@ -1639,7 +1639,105 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    V14 "CONVERSION" — bloc L'essentiel + CTA mobile safe-area
    ============================================================ */
 /* ---- L'essentiel : infos rapides juste après le hero ---- */
-.essentiel{position:relative;overflow:hidden;background:radial-gradient(90% 130% at 50% -10%,rgba(27,81,158,.28),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
+/* ============================================================
+   V89 — L'essentiel : campagne de pré-inscription
+   ------------------------------------------------------------
+   Six cartes identiques donnaient le même poids à six informations très
+   inégales. La section devient éditoriale : une photo réelle du club,
+   trois statistiques portées par la seule typographie, et les arguments
+   restants en bande basse.
+
+   La grille de cartes reste définie plus haut dans ce fichier :
+   adhesion.html s'en sert encore, on ne la supprime donc pas.
+
+   L'orange ne sert qu'à trois choses ici : « en un coup d'œil », le prix,
+   et le bouton d'inscription.
+   ============================================================ */
+.ess{position:relative;overflow:hidden;isolation:isolate;padding-bottom:0;
+  background:linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
+    var(--nuit-2) 100%)}
+
+/* ---- la photo : cadrée à droite, jamais étirée ----
+   La source fait 900 px de large ; le conteneur est plafonné pour qu'elle
+   ne soit pas agrandie sur les grands écrans. */
+.ess__photo{position:absolute;top:0;right:0;bottom:0;margin:0;z-index:0;
+  width:min(52%,880px);pointer-events:none}
+.ess__photo img{width:100%;height:100%;object-fit:cover;
+  object-position:74% 40%;filter:saturate(.88) contrast(1.03) brightness(.92)}
+/* un seul effet, mais précis : la photo s'efface vers le texte et sous les
+   pieds. Pas de flou, pas de vignette supplémentaire. */
+.ess__photo::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,#070d18 4%,rgba(7,13,24,.95) 34%,
+    rgba(7,13,24,.62) 66%,rgba(7,13,24,.38) 100%),
+  linear-gradient(180deg,rgba(7,13,24,.40) 0%,rgba(7,13,24,.06) 38%,
+    rgba(16,27,48,.68) 100%)}
+
+.ess__in{position:relative;z-index:2}
+.ess__head{max-width:34rem}
+.ess__sub{margin:.95rem 0 0;max-width:42ch;color:var(--txt-soft);
+  font-size:1.02rem;line-height:1.6}
+.ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-thickness:1px}
+.ess__sub a:hover{color:var(--orange-vif)}
+
+/* ---- les trois chiffres : pas de carte, la typographie suffit ---- */
+.ess-stats{display:flex;flex-wrap:wrap;margin:clamp(2rem,4vw,2.6rem) 0 0;
+  padding:0}
+.ess-stat{padding:0 clamp(1.1rem,2.6vw,2.1rem);
+  border-left:1px solid rgba(191,210,228,.18)}
+.ess-stat:first-child{padding-left:0;border-left:0}
+.ess-stat__v{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.95rem,4.4vw,3rem);line-height:.92;color:var(--blanc);
+  letter-spacing:.005em}
+.ess-stat:first-child .ess-stat__v{color:var(--orange-vif)}
+.ess-stat__l{margin:.62rem 0 0;font-family:var(--ff-cond);font-weight:600;
+  font-size:.95rem;line-height:1.3;color:var(--bleu-glacier)}
+.ess-stat__x{display:block;margin-top:.14rem;font-weight:500;
+  font-size:.88rem;color:var(--txt-soft)}
+
+.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;
+  margin-top:clamp(2rem,4vw,2.6rem)}
+
+/* ---- bande basse : les arguments secondaires, sur une seule ligne ---- */
+.ess__band{position:relative;z-index:2;
+  margin-top:clamp(2.6rem,5vw,3.8rem);
+  border-top:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(10,20,36,.86),rgba(16,27,48,.96))}
+.ess-plus{list-style:none;display:grid;grid-template-columns:1fr;
+  gap:.85rem 2.2rem;margin:0 auto;padding:1.2rem 0}
+.ess-plus__i{display:flex;align-items:baseline;gap:.62rem;flex-wrap:wrap}
+.ess-plus__i .ic{width:1.1rem;height:1.1rem;flex:none;
+  color:var(--orange-vif);opacity:.82;transform:translateY(.16rem)}
+.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1rem;
+  color:var(--blanc)}
+.ess-plus__i span{font-size:.89rem;color:var(--txt-soft)}
+
+@media (min-width:900px){
+  /* le texte s'arrête avant la photo au lieu de courir dessous */
+  .ess__in{padding-right:clamp(1rem,7vw,5rem)}
+  .ess-plus{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media (max-width:899px){
+  /* la photo passe en bandeau haut : elle reste présente, mais ne se
+     glisse plus derrière le texte, où le contraste serait fragile */
+  .ess{padding-top:0}
+  .ess__photo{position:relative;width:auto;
+    height:clamp(190px,40vw,290px);margin-bottom:clamp(1.7rem,5vw,2.4rem)}
+  .ess__photo::after{background:linear-gradient(180deg,
+    rgba(7,13,24,.20) 0%,rgba(7,13,24,.52) 58%,var(--nuit-0) 98%)}
+  .ess__head{max-width:none}
+  .ess__cta .btn{flex:1 1 100%;justify-content:center}
+}
+
+@media (max-width:560px){
+  .ess-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem 0}
+  .ess-stat{padding:0 0 0 1.1rem}
+  .ess-stat:nth-child(odd){padding-left:0;border-left:0}
+  .ess-stat:last-child{grid-column:1 / -1;padding:1.2rem 0 0;border-left:0;
+    border-top:1px solid rgba(191,210,228,.18)}
+}
+
 .essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
 .essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .essentiel-card::after{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad-orange);opacity:.85;transform:scaleY(.4);transform-origin:top;transition:transform .4s var(--ease-out)}
