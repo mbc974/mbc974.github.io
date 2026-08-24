@@ -3813,3 +3813,12 @@ main > .section .cine-phone__island i{animation:none !important}
   .mx-opp__n{font-size:1rem}
   .mx-row{gap:.35rem .7rem}
 }
+
+/* ---- Logos des clubs adverses ----
+   Plaque blanche systematique : les logos fournis ont des fonds tres
+   differents (bleu vif pour Sainte-Suzanne, marine pour Picks, blanc pour
+   MTG). Une plaque neutre leur donne le meme poids optique et evite qu'un
+   logo sombre disparaisse sur le bleu nuit de la section. */
+.mx-crest--logo{background:#fff;border:1px solid rgba(191,210,228,.22);padding:3px}
+.mx-crest--logo img{width:100%;height:100%;object-fit:contain;display:block}
+.mx-row--dom .mx-crest--logo{border-color:rgba(232,130,42,.28)}
