@@ -55,8 +55,7 @@
 html{color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:80px}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
-}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{font-family:var(--ff-body);background:var(--nuit-0);color:var(--txt);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
@@ -125,8 +124,7 @@ a{color:inherit;text-decoration:none}
 .marquee__track span::after{content:"●";font-size:.5em;color:rgba(0,0,0,.4)}
 .marquee--roi .marquee__track span::after{color:rgba(255,255,255,.5)}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.marquee__track{animation:none}
-}
+@media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 /* ---------------- HERO ---------------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:7rem 0 5rem;overflow:hidden;background:radial-gradient(120% 80% at 80% -10%,rgba(27,81,158,.55),transparent 55%),radial-gradient(90% 70% at -8% 115%,rgba(217,106,27,.28),transparent 52%),linear-gradient(180deg,#091020,var(--nuit-0))}
 .hero__texture{position:absolute;inset:0;background-image:var(--dimple-url);opacity:.5;pointer-events:none;mix-blend-mode:screen}
@@ -143,13 +141,11 @@ a{color:inherit;text-decoration:none}
 .hero .reveal-fade{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease) .35s,transform .7s var(--ease) .35s}
 .hero .reveal-fade.d2{transition-delay:.5s}
 .hero .reveal-fade.d3{transition-delay:.65s}
-@media (prefers-reduced-motion:reduce){.hero .reveal-fade{transform:none!important;opacity:1!important}
-}
+@media (prefers-reduced-motion:reduce){.hero .reveal-fade{transform:none!important;opacity:1!important}}
 /* ---------------- Section base ---------------- */
 .section{position:relative;padding:clamp(4.5rem,10vw,8rem) 0}
 @supports (content-visibility:auto){.section{content-visibility:auto;contain-intrinsic-size:900px}
-.section.contact{contain-intrinsic-size:760px}
-}
+.section.contact{contain-intrinsic-size:760px}}
 .sec-head{max-width:64ch;margin-bottom:clamp(2.4rem,5vw,3.6rem)}
 .sec-head--center{margin-inline:auto;text-align:center}
 .sec-head__sub{font-size:1.1rem;margin-top:.9rem;color:var(--txt-soft)}
@@ -231,8 +227,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 /* premium : liens de colonnes (Le club / Contact) -> glissé doux + orange (cible cliquable pleine largeur conservée) */
 .footer__col>a{transition:color .2s var(--ease,ease),transform .26s var(--ease,ease)}
 .footer__col>a:hover,.footer__col>a:focus-visible{color:var(--orange-vif);transform:translateX(5px)}
-@media (prefers-reduced-motion:reduce){.footer__col>a:hover,.footer__col>a:focus-visible{transform:none}
-}
+@media (prefers-reduced-motion:reduce){.footer__col>a:hover,.footer__col>a:focus-visible{transform:none}}
 .footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 0}
 .footer__legal{font-size:.72rem;letter-spacing:.02em;color:var(--txt-soft);opacity:.72}
 .footer__hand{font-family:var(--ff-cond);letter-spacing:.1em;text-transform:uppercase;font-size:.82rem;color:var(--bleu-glacier)}
@@ -245,21 +240,17 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .reveal--scale{transform:scale(.92)}
 .reveal--scale.in{transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}
-.hero__scroll span{animation:none}
-}
+.hero__scroll span{animation:none}}
 /* ---------------- Responsive ---------------- */
 @media (min-width:820px){.contact__grid{grid-template-columns:1.35fr .95fr}
-.footer__top{grid-template-columns:1.5fr 1fr 1fr 1.1fr}
-}
+.footer__top{grid-template-columns:1.5fr 1fr 1fr 1.1fr}}
 @media (max-width:920px){.nav{position:fixed;inset:0 0 0 auto;width:min(82vw,340px);flex-direction:column;justify-content:flex-start;align-items:stretch;gap:.3rem;padding:5.5rem 1.4rem 2rem;background:rgba(6,11,20,.98);backdrop-filter:blur(16px);border-left:1px solid var(--line);transform:translateX(105%);transition:transform .4s var(--ease);z-index:90}
 .nav.open{transform:none}
 .nav a{font-size:1.15rem;padding:.8em 1em;border-bottom:1px solid var(--line)}
 .nav__cta{margin:.8rem 0 0;text-align:center}
 .burger{display:flex}
-.brand .logo-img{width:82px;height:50px}
-}
-@media (max-width:680px){.field-row{grid-template-columns:1fr}
-}
+.brand .logo-img{width:82px;height:50px}}
+@media (max-width:680px){.field-row{grid-template-columns:1fr}}
 /* ============================================================
    V4 "MARQUE INSTITUTIONNELLE" — ajouts
    ============================================================ */
@@ -270,8 +261,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .float-cta{position:fixed;left:50%;bottom:16px;transform:translateX(-50%) translateY(140%);z-index:95;display:none;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;padding:.95em 1.6em;border-radius:99px;background:var(--grad-orange);color:#190f04;box-shadow:0 12px 34px rgba(217,106,27,.5);transition:transform .4s var(--ease);width:calc(100% - 32px);max-width:420px;justify-content:center}
 .float-cta.show{transform:translateX(-50%) translateY(0)}
 .float-cta .ic{width:1.1em;height:1.1em}
-@media (max-width:920px){.float-cta{display:inline-flex}
-}
+@media (max-width:920px){.float-cta{display:inline-flex}}
 /* ---- Counters band ---- */
 /* ---- Editorial full-width visual sections ---- */
 /* themed backgrounds (graphic, photo-ready) */
@@ -284,8 +274,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .dons__card .big{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.8rem,5vw,2.6rem);color:#fff;line-height:.95;position:relative;z-index:1}
 .dons__card p{color:rgba(255,255,255,.85);margin:.8rem 0 1.6rem;position:relative;z-index:1}
 .dons__card .btn{position:relative;z-index:1}
-@media (min-width:820px){.dons__inner{grid-template-columns:1.15fr .85fr;align-items:center}
-}
+@media (min-width:820px){.dons__inner{grid-template-columns:1.15fr .85fr;align-items:center}}
 /* ---- Partenaires tiers ---- */
 /* ============================================================
    V5 "FRANCHISE" — photos réelles, staff, recrutement, lightbox
@@ -325,8 +314,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .footer__actions a .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
 .footer__actions a:hover,.footer__actions a:focus-visible{color:var(--orange-vif);transform:translateX(5px)}
 @media (prefers-reduced-motion:reduce){.footer__actions a{transition:color .2s}
-.footer__actions a:hover,.footer__actions a:focus-visible{transform:none}
-}
+.footer__actions a:hover,.footer__actions a:focus-visible{transform:none}}
 /* ---- FFBB badge in stats ---- */
 /* ============================================================
    V6 "COHÉRENCE & CORRECTIONS"
@@ -335,61 +323,140 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .brand__txt{display:flex;align-items:center;white-space:nowrap}
 .brand__sub{font-family:var(--ff-cond);font-weight:700;font-size:1.02rem;letter-spacing:.05em;text-transform:uppercase;color:var(--blanc);line-height:1.1}
 @media (max-width:560px){.brand__sub{font-size:.92rem}
-.brand .logo-img{width:74px;height:46px}
-}
-@media (max-width:400px){.brand__sub{display:none}
-}
+.brand .logo-img{width:74px;height:46px}}
+@media (max-width:400px){.brand__sub{display:none}}
 /* ---- Image fallback (anti-broken) ---- */
 .img-fallback{background:linear-gradient(135deg,var(--nuit-3),var(--bleu-roi));position:relative}
 .img-fallback::after{content:attr(data-fallback);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem;color:var(--bleu-glacier)}
 /* ---- Staff : grille centrée, 3 par ligne desktop ---- */
 .staff-grid{grid-template-columns:1fr;max-width:340px;margin-inline:auto}
-@media (min-width:560px){.staff-grid{grid-template-columns:repeat(2,1fr);max-width:720px}
-}
-@media (min-width:920px){.staff-grid{grid-template-columns:repeat(3,1fr);max-width:none}
-}
+@media (min-width:560px){.staff-grid{grid-template-columns:repeat(2,1fr);max-width:720px}}
+@media (min-width:920px){.staff-grid{grid-template-columns:repeat(3,1fr);max-width:none}}
 .staff-card__media{aspect-ratio:3/4}
 .staff-card__media img{object-position:center 18%}
 /* ---- Pourquoi : 5 blocs centrés sur une ligne ---- */
 /* ---- Calendrier HTML premium (remplace l'image) ---- */
-.cal2{position:relative;z-index:2;margin-top:.5rem}
-.cal2-table{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--nuit-3);box-shadow:0 24px 60px rgba(0,0,0,.4)}
-.cal2-row{display:grid;grid-template-columns:1.1fr 1.2fr 2fr 1.4fr 1.7fr;align-items:center;gap:1rem;padding:1.15rem 1.5rem;border-bottom:1px solid var(--line);transition:background .2s}
-.cal2-row:last-child{border-bottom:0}
-.cal2-row:not(.cal2-row--head):hover{background:rgba(27,81,158,.16)}
-.cal2-row--head{background:var(--grad-roi);font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;color:#fff}
-.cal2-row--head span{display:flex;align-items:center;gap:.5em}
-.cal2-row--head .ic{width:1.05em;height:1.05em;opacity:.92}
-.cal2 .cday{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#fff;font-size:1.02rem}
-.cal2 .ctime{font-family:var(--ff-cond);font-weight:600;color:var(--orange-vif);font-size:1rem}
-.cal2 .ccat{color:var(--txt);font-size:.95rem}
-.cal2 .ccat b{color:var(--orange-vif);font-weight:700}
-.cal2 .cact{display:flex;align-items:center;gap:.5em}
-.cal2 .cact .ic{width:1.1em;height:1.1em;flex:none;color:var(--bleu-glacier)}
-.cal2 .cact em{font-style:normal;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.84rem;color:var(--txt-soft)}
-.cal2 .badge-match{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.8rem;color:#190f04;background:var(--grad-orange);padding:.22em .8em;border-radius:99px}
-.cal2 .cloc{display:flex;align-items:center;gap:.5em;color:var(--txt-soft);font-size:.92rem}
-.cal2 .cloc .ic{width:1.05em;height:1.05em;flex:none;color:var(--orange-vif);opacity:.85}
-.cal2-row--match{background:rgba(217,106,27,.07)}
-.cal2-foot{display:flex;flex-wrap:wrap;align-items:center;gap:1.4rem;margin-top:1.4rem}
-.cal2-legend{display:flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.8rem;color:var(--txt-soft)}
-.cal2-legend .dot{width:12px;height:12px;border-radius:4px}
-.cal2-legend .dot--train{background:var(--ardoise);border:1px solid var(--line-strong)}
-.cal2-legend .dot--match{background:var(--grad-orange)}
-.cal2-mini{margin-left:auto;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;color:var(--bleu-glacier);display:inline-flex;align-items:center;gap:.5em;cursor:pointer;background:none;border:1px solid var(--line-strong);padding:.5em 1em;border-radius:99px;min-height:44px;transition:border-color .2s,color .2s}
-.cal2-mini:hover{border-color:var(--orange-vif);color:var(--orange-vif)}
-.cal2-mini .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
-@media (max-width:900px){.cal2-row--head{display:none}
-.cal2-table{background:transparent;border:0;box-shadow:none;overflow:visible}
-.cal2-row{grid-template-columns:1fr;gap:.55rem;background:var(--nuit-3)!important;border:1px solid var(--line);border-radius:14px;margin-bottom:.9rem;padding:1.3rem 1.4rem}
-.cal2-row span{display:flex;justify-content:space-between;align-items:center;gap:1rem}
-.cal2-row span::before{content:attr(data-label);font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.68rem;color:var(--orange-vif)}
-.cal2 .cday{font-size:1.2rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;margin-bottom:.2rem}
-.cal2 .cday::before{align-self:center}
-.cal2-row--match{border-color:rgba(232,130,42,.4)}
-.cal2-foot{flex-direction:column;align-items:flex-start;gap:.8rem}
-.cal2-mini{margin-left:0}
+/* ============================================================
+   V88 — Planning hebdomadaire, groupé par jour
+   ------------------------------------------------------------
+   Remplace un tableau de cinq colonnes où chaque information portait le
+   même poids et où le nom du jour se répétait à chaque ligne.
+
+   Hiérarchie : JOUR → HORAIRE → CATÉGORIE → LIEU.
+   L'orange ne sert plus qu'aux horaires et aux créneaux de match ; le
+   reste vit en blanc et gris bleuté, ce qui lui rend sa valeur d'accent.
+   Écrit en mobile d'abord : le vertical est la mise en page de base, les
+   colonnes n'apparaissent que lorsqu'il y a la place.
+   ============================================================ */
+.pl{position:relative;z-index:2;margin-top:.5rem;display:grid;gap:.8rem}
+
+/* ---- la journée : une surface, un titre, ses créneaux ---- */
+.pl-jour{border:1px solid var(--line);border-radius:var(--r-lg);
+  background:var(--nuit-3);overflow:hidden}
+.pl-jour__n{margin:0;padding:.92rem 1.15rem;
+  font-family:var(--ff-display);font-size:1.1rem;line-height:1;
+  letter-spacing:.045em;text-transform:uppercase;color:var(--blanc);
+  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))}
+.pl-jour__l{list-style:none;margin:0;padding:0}
+
+.pl-slot{display:grid;gap:.6rem;grid-template-areas:"h" "qui" "ou";
+  padding:1.05rem 1.15rem 1.15rem;
+  border-top:1px solid rgba(191,210,228,.085)}
+.pl-jour__l > li:first-child{border-top:0}
+
+/* ---- l'horaire : la première chose qu'on vient chercher ---- */
+.pl .pl-slot__h{grid-area:h;margin:0;display:flex;align-items:center;gap:.55rem;
+  font-family:var(--ff-cond);font-weight:700;font-size:1.34rem;line-height:1;
+  color:var(--orange-vif);white-space:nowrap;
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.pl-slot__tiret{width:.9rem;height:2px;flex:none;border-radius:2px;
+  background:rgba(232,130,42,.45)}
+
+/* ---- pour qui ---- */
+.pl-slot__qui{grid-area:qui;min-width:0}
+.pl-slot__cats{margin:0;display:flex;align-items:center;flex-wrap:wrap;
+  gap:.42rem .55rem}
+.pl-chip{display:inline-flex;align-items:center;
+  font-family:var(--ff-cond);font-weight:700;font-size:.83rem;line-height:1;
+  letter-spacing:.05em;text-transform:uppercase;color:#DDE8F4;
+  background:rgba(191,210,228,.10);border:1px solid rgba(191,210,228,.22);
+  padding:.44em .68em;border-radius:8px}
+.pl-slot__age{font-size:.87rem;color:var(--txt-soft)}
+.pl .pl-slot__note{margin:.45rem 0 0;font-size:.83rem;line-height:1.5;
+  color:var(--txt-soft);max-width:52ch}
+
+/* ---- où ---- */
+.pl .pl-slot__ou{grid-area:ou;margin:0;display:flex;align-items:center;gap:.45em;
+  font-size:.88rem;color:#8FA5BF}
+.pl-slot__ou .ic{width:1.05em;height:1.05em;flex:none;
+  color:var(--orange-vif);opacity:.5}
+/* le lieu qui sort du gymnase remonte en contraste : c'est l'exception
+   qu'il faut repérer, pas la règle */
+.pl .pl-slot--ailleurs .pl-slot__ou{color:#CBD9E8}
+.pl .pl-slot--ailleurs .pl-slot__ou .ic{opacity:.9}
+
+/* ---- marqueurs : seules les exceptions sont nommées ----
+   « Entraînement » valait pour sept créneaux sur neuf et n'apporte rien ;
+   ne restent visibles que le loisir mixte et les matchs. */
+.pl-tag{display:inline-flex;align-items:center;gap:.4em;
+  font-family:var(--ff-cond);font-weight:700;font-size:.86rem;line-height:1;
+  letter-spacing:.045em;text-transform:uppercase;color:#1B0E03;
+  background:var(--grad-orange);padding:.46em .7em;border-radius:8px}
+.pl-tag .ic{width:1.05em;height:1.05em}
+.pl-tag--doux{color:#EFB784;background:rgba(232,130,42,.10);
+  border:1px solid rgba(232,130,42,.30)}
+
+.pl-slot--match{background:rgba(217,106,27,.05);
+  box-shadow:inset 3px 0 0 var(--orange-vif)}
+
+/* ---- pied : l'affiche officielle ---- */
+.pl-pied{display:flex;justify-content:flex-end;margin-top:.2rem}
+.pl-btn{display:inline-flex;align-items:center;justify-content:center;
+  gap:.55em;width:100%;min-height:46px;cursor:pointer;
+  font-family:var(--ff-cond);font-weight:600;font-size:.85rem;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--bleu-glacier);
+  background:none;border:1px solid var(--line-strong);border-radius:99px;
+  padding:.6em 1.2em}
+.pl-btn .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
+.pl-btn:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+
+/* ---- l'horaire et le groupe tiennent côte à côte ---- */
+@media (min-width:620px){
+  .pl-slot{grid-template-columns:auto minmax(0,1fr);
+    grid-template-areas:"h qui" "ou ou";align-items:center;gap:.55rem 1.5rem;
+    padding:1.1rem 1.35rem}
+  .pl .pl-slot__ou{padding-left:.1rem}
+  .pl-btn{width:auto}
 }
+
+/* ---- le jour passe en colonne, le créneau tient sur une ligne ---- */
+@media (min-width:900px){
+  .pl-jour{display:grid;grid-template-columns:9.6rem minmax(0,1fr)}
+  .pl-jour__n{border-bottom:0;border-right:1px solid var(--line);
+    padding:1.5rem 1.2rem;font-size:1.2rem}
+  .pl-slot{grid-template-columns:11.4rem minmax(0,1fr) auto;
+    grid-template-areas:"h qui ou";gap:.5rem 1.6rem;padding:1.2rem 1.5rem}
+  .pl .pl-slot__ou{padding-left:0;justify-content:flex-end;text-align:right}
+}
+
+/* ---- micro-interactions : présentes, jamais démonstratives ---- */
+@media (hover:hover){
+  .pl-jour{transition:border-color .22s var(--ease-out)}
+  .pl-jour:hover{border-color:rgba(191,210,228,.22)}
+  .pl-slot{transition:background .2s var(--ease-out)}
+  .pl-slot:hover{background:rgba(27,81,158,.13)}
+  .pl-slot--match:hover{background:rgba(217,106,27,.09)}
+  .pl-btn{transition:border-color .2s var(--ease-out),
+    color .2s var(--ease-out),background .2s var(--ease-out)}
+  .pl-btn:hover{border-color:rgba(232,130,42,.55);color:var(--orange-vif);
+    background:rgba(232,130,42,.06)}
+}
+@media (prefers-reduced-motion:reduce){
+  .pl-jour,.pl-slot,.pl-btn{transition:none}
+}
+
+
 /* ============================================================
    V7 "FINITION AGENCE" — polish final
    ============================================================ */
@@ -402,8 +469,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .footer__social{margin-top:1.8rem;padding-top:1.6rem;border-top:1px solid var(--line)}
 /* ---- 6/7. Polish général : rythme, alignements, respiration ---- */
 /* Rythme vertical homogène entre sections (desktop plus aéré) */
-@media (min-width:980px){.section{padding-block:clamp(5rem,7vw,7.5rem)}
-}
+@media (min-width:980px){.section{padding-block:clamp(5rem,7vw,7.5rem)}}
 /* Titres de section : largeur d'air homogène + interligne maîtrisée */
 .sec-head{margin-inline:auto}
 .sec-head--center{margin-inline:auto}
@@ -429,8 +495,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* Évite tout texte "compressé" : interlignes minimales garanties */
 .lead,.sec-head__sub,.cat__desc{line-height:1.55}
 /* Hero : un peu plus de respiration sous le sous-titre sur desktop */
-@media (min-width:980px){.hero__sub{margin-bottom:.4rem}
-}
+@media (min-width:980px){.hero__sub{margin-bottom:.4rem}}
 /* Section headers : centrage cohérent des kickers centrés */
 .kicker--center{justify-content:center}
 /* Partenaires : slots de hauteur régulière */
@@ -447,8 +512,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* ---- Stats band : rythme vertical homogène (cellules de même hauteur) ---- */
 /* ---- Section rhythm : respiration desktop homogène ---- */
 @media (min-width:1100px){.section{padding-block:clamp(5.5rem,8vw,8rem)}
-.sec-head{margin-bottom:3.4rem}
-}
+.sec-head{margin-bottom:3.4rem}}
 /* ---- Boutons : cohérence stricte (hauteur, rayon) ---- */
 .btn{border-radius:8px;line-height:1.1}
 .btn--lg{font-size:1.12rem;padding:1.05em 2.1em}
@@ -458,8 +522,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .footer__social{margin-top:1.8rem;padding-top:1.6rem;border-top:1px solid var(--line)}
 .footer__brand p.small{margin-bottom:.2rem}
 /* ---- Marquee : éviter l'effet "compressé" sur mobile ---- */
-@media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 .5rem}
-}
+@media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 .5rem}}
 /* ---- Hero actions : grille parfaitement symétrique ---- */
 .action-card{height:100%;min-height:252px;justify-content:flex-start}
 .action-card .btn{margin-top:auto;align-self:stretch;width:100%}
@@ -479,8 +542,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   background:var(--orange-vif);transform:translateX(-50%);
   animation:scrollDot 1.8s var(--ease) infinite;}
 @keyframes scrollDot{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}70%{opacity:1;transform:translate(-50%,12px)}100%{opacity:0;transform:translate(-50%,14px)}}
-@media (prefers-reduced-motion:reduce){.hero__scroll span::before{animation:none;top:14px}
-}
+@media (prefers-reduced-motion:reduce){.hero__scroll span::before{animation:none;top:14px}}
 /* ---- 3. Compteurs : badge transparent uniforme sous chaque chiffre ---- */
 /* la cellule FFBB garde son wordmark, on aligne juste les hauteurs */
 /* ---- 4. Recrutement : composition graphique à gauche (plus de vide) ---- */
@@ -501,8 +563,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .dons__card{padding:clamp(2rem,4vw,2.8rem)}
 .dons__card .big{margin-bottom:.4rem}
 @media (min-width:820px){.dons__inner{gap:3rem;align-items:stretch}
-.dons__card{display:flex;flex-direction:column;justify-content:center}
-}
+.dons__card{display:flex;flex-direction:column;justify-content:center}}
 /* recr mini-court + season badge spacing */
 /* ============================================================
    V9 "READY TO DROP" — assets, sponsors, social, pourquoi
@@ -584,17 +645,14 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .social-card--instagram .social-card__icon{background:linear-gradient(135deg,#F58529,#DD2A7B 52%,#8134AF);box-shadow:0 10px 24px rgba(221,42,123,.42),inset 0 1px 0 rgba(255,255,255,.28)}
 .social-card--tiktok{--brand:rgba(37,244,238,.2);--brandline:rgba(254,44,85,.6);--brandglow:rgba(254,44,85,.45)}
 .social-card--tiktok .social-card__icon{background:linear-gradient(135deg,#25F4EE,#0b0b0b 46%,#FE2C55);box-shadow:0 10px 24px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.22)}
-@media (min-width:880px){.social-spotlight__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}
-}
+@media (min-width:880px){.social-spotlight__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}}
 @media (prefers-reduced-motion:reduce){.social-card,.social-card__icon,.social-card__go{transition:none}
-.social-card:hover,.social-card:focus-visible{transform:none}
-}
+.social-card:hover,.social-card:focus-visible{transform:none}}
 @media (max-width:560px){.social-card{min-height:0;padding:.95rem 1.05rem;gap:.9rem;border-radius:15px}
 .social-card__icon{width:48px;height:48px}
 .social-card__icon svg{width:24px;height:24px}
 .social-card__body strong{font-size:1.18rem}
-.social-card__go{width:36px;height:36px}
-}
+.social-card__go{width:36px;height:36px}}
 /* ---- Sponsors premium ---- */
 /* ---- Pourquoi rejoindre : respiration premium ---- */
 .social-card{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);}
@@ -618,10 +676,8 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   background:none!important;
   animation:none!important;}
 .hero__scroll-label::before{display:none!important}
-@media (min-width:900px){.hero__scroll{bottom:1.55rem}
-}
-@media (max-height:760px) and (min-width:900px){.hero__scroll{bottom:.9rem}
-}
+@media (min-width:900px){.hero__scroll{bottom:1.55rem}}
+@media (max-height:760px) and (min-width:900px){.hero__scroll{bottom:.9rem}}
 /* Les badges chiffres deviennent de vrais boutons de navigation */
 /* Section engagement : bénévoles + service civique */
 .engagement{position:relative;
@@ -735,11 +791,9 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 @media (min-width:880px){.engage-grid{grid-template-columns:1fr 1fr}
 .engage-card{grid-template-columns:1.05fr .78fr;align-items:center}
 .engage-card--mission{grid-template-columns:1fr 1.08fr}
-.engage-card--mission .engage-poster{order:2}
-}
+.engage-card--mission .engage-poster{order:2}}
 @media (max-width:560px){.engage-card__actions{display:grid}
-.engage-card__actions .btn{width:100%}
-}
+.engage-card__actions .btn{width:100%}}
 /* Pourquoi rejoindre : un visuel de parcours + cartes plus denses */
 /* Le menu bascule plus tôt : la nav contient maintenant 8 entrées + CTA,
    on évite tout rognage du bouton sur les largeurs intermédiaires (laptops). */
@@ -748,8 +802,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .nav a{font-size:1.15rem;padding:.8em 1em;border-bottom:1px solid var(--line)}
 .nav__cta{margin:.8rem 0 0;text-align:center}
 .burger{display:flex}
-.brand .logo-img{width:82px;height:50px}
-}
+.brand .logo-img{width:82px;height:50px}}
 /* === PATCH MBC — Sponsors premium uniformisés === */
 /* ============================================================
    V12 "DIRECTION ARTISTIQUE — STUDIO FINISH"
@@ -777,8 +830,7 @@ body{text-rendering:optimizeLegibility}
 .nav a:not(.nav__cta){position:relative}
 .nav a:not(.nav__cta)::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.32em;height:2px;border-radius:2px;background:var(--grad-orange);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out)}
 .nav a:not(.nav__cta):hover::after{transform:scaleX(1)}
-@media (max-width:1080px){.nav a:not(.nav__cta)::after{display:none}
-}
+@media (max-width:1080px){.nav a:not(.nav__cta)::after{display:none}}
 /* ---- Marquee : fondu sur les bords (effet ruban pro) ---- */
 .marquee{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 /* ---- Barre de progression : un peu plus fine et nette ---- */
@@ -800,8 +852,7 @@ body{text-rendering:optimizeLegibility}
 /* Titre : balayage premium sur la ligne accent */
 
 /* Eyebrow : pastille subtile au lieu d'un simple texte */
-@media (prefers-reduced-motion:reduce){.hero__halo::before{animation:none}
-}
+@media (prefers-reduced-motion:reduce){.hero__halo::before{animation:none}}
 /* ============================================================
    SYSTÈME DE CARTES — un seul langage visuel partout
    (mêmes ombres, même profondeur, même logique de survol)
@@ -832,8 +883,6 @@ body{text-rendering:optimizeLegibility}
 /* ============================================================
    CALENDRIER — lignes plus lisibles + accent match
    ============================================================ */
-.cal2-row--match{box-shadow:inset 3px 0 0 var(--orange-vif)}
-.cal2-table{box-shadow:var(--e3)}
 /* ============================================================
    ÉDITORIAL / DONS / CONTACT — finitions
    ============================================================ */
@@ -864,10 +913,8 @@ body{text-rendering:optimizeLegibility}
 .p-pillar .ic{width:34px;height:34px;color:var(--orange-vif)}
 .p-pillar h3{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.03em;font-size:1.1rem;color:#fff}
 .p-pillar p{color:var(--txt-soft);font-size:.94rem;line-height:1.55}
-@media(min-width:640px){.parents-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(min-width:1040px){.parents-grid{grid-template-columns:repeat(4,1fr)}
-}
+@media(min-width:640px){.parents-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.parents-grid{grid-template-columns:repeat(4,1fr)}}
 .faq{max-width:840px;margin-inline:auto}
 .faq__title{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.6rem,3.4vw,2.4rem);color:#fff;letter-spacing:.5px;text-align:center;margin-bottom:1.3rem}
 .faq__item{border:1px solid var(--line);border-radius:var(--r-sm);background:rgba(191,210,228,.03);margin-bottom:.7rem;overflow:hidden;transition:border-color .25s,background .25s}
@@ -910,11 +957,9 @@ body{text-rendering:optimizeLegibility}
 .pack ul{list-style:none;display:grid;gap:.55rem}
 .pack ul li{position:relative;padding-left:1.5rem;color:var(--txt-soft);font-size:.91rem;line-height:1.4}
 .pack ul li::before{content:"✓";position:absolute;left:0;color:var(--orange-vif);font-weight:800}
-@media(min-width:620px){.packs-grid{grid-template-columns:repeat(2,1fr)}
-}
+@media(min-width:620px){.packs-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1080px){.packs-grid{grid-template-columns:repeat(5,1fr);align-items:stretch}
-.pack--feat{transform:translateY(-10px)}
-}
+.pack--feat{transform:translateY(-10px)}}
 .partners-cta__btns{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
 /* ---- Crédibilité / institutions ---- */
 /* ---- Tarifs (parents) ---- */
@@ -930,15 +975,13 @@ body{text-rendering:optimizeLegibility}
 @media(min-width:680px){.tarifs{grid-template-columns:auto 1fr;gap:2.2rem}
 .tarifs__main{padding-bottom:0;padding-right:2.2rem;border-bottom:0;border-right:1px solid var(--line)}
 .tarifs__rest{text-align:left}
-.tarifs__rest .btn{align-self:flex-start}
-}
+.tarifs__rest .btn{align-self:flex-start}}
 /* ---- Contreparties sponsors soumises à condition ---- */
 .pack ul li em{font-style:normal;display:block;margin-top:.1rem;font-size:.78em;line-height:1.3;color:var(--txt-soft);opacity:.8}
 /* ---- Nav horizontale resserrée (>=1181px) pour loger 8 entrées + CTA ---- */
 @media(min-width:1181px){.nav{gap:.04rem}
 .nav a{font-size:.86rem;padding:.5em .62em;letter-spacing:.03em}
-.nav__cta{margin-left:.4rem;padding:.5em .95em}
-}
+.nav__cta{margin-left:.4rem;padding:.5em .95em}}
 /* ============================================================
    V14 "FINAL PREMIUM PASS" — hero, staff, bénévoles, sponsors,
    modal partenaire et responsive Netlify-ready.
@@ -952,8 +995,7 @@ body{text-rendering:optimizeLegibility}
   width:100%;
   padding-inline:1.25rem;
   text-align:center;}
-@media (max-width:679px){.action-card{min-height:auto}
-}
+@media (max-width:679px){.action-card{min-height:auto}}
 /* Footer : signature discrète */
 .footer__bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .footer__hand{justify-self:end}
@@ -966,8 +1008,7 @@ body{text-rendering:optimizeLegibility}
   color:rgba(191,210,228,.62);}
 .footer__signature span{color:var(--orange-vif)}
 @media (max-width:700px){.footer__bottom{grid-template-columns:1fr;text-align:center;justify-items:center}
-.footer__hand{justify-self:center}
-}
+.footer__hand{justify-self:center}}
 /* Staff : photos plus compactes, légende premium et ratio homogène */
 .staff-grid{max-width:1080px;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -977,12 +1018,9 @@ body{text-rendering:optimizeLegibility}
 .staff-card__media img{object-position:center top}
 .staff-card__media::after{opacity:.28;
   background:linear-gradient(180deg,transparent 60%,rgba(7,13,24,.78));}
-@media (min-width:760px){.staff-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-}
-@media (min-width:1120px){.staff-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
-}
-@media (max-width:420px){.staff-grid{grid-template-columns:1fr;max-width:280px}
-}
+@media (min-width:760px){.staff-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1120px){.staff-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media (max-width:420px){.staff-grid{grid-template-columns:1fr;max-width:280px}}
 /* Mot du président : cohérent avec la nouvelle direction staff */
 /* Tarif unique */
 .tarifs__chips{display:flex;flex-wrap:wrap;gap:.45rem}
@@ -1015,11 +1053,9 @@ body{text-rendering:optimizeLegibility}
 .engage-card--mission .engage-poster img{object-fit:contain;background:#f4f7fb}
 @media (min-width:900px){.engage-grid{grid-template-columns:1fr}
 .engage-card{grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:2rem}
-.engage-card--mission{grid-template-columns:minmax(0,1fr) minmax(360px,500px)}
-}
+.engage-card--mission{grid-template-columns:minmax(0,1fr) minmax(360px,500px)}}
 @media (max-width:560px){.engage-card h3{max-width:12ch}
-.engage-poster{max-height:520px}
-}
+.engage-poster{max-height:520px}}
 /* Pourquoi : plus de respiration et badge Respect décollé */
 /* Sponsors : nouvelle conversion, offres et logo wall premium */
 .partner-intro{display:grid;
@@ -1053,14 +1089,11 @@ body{text-rendering:optimizeLegibility}
   line-height:1.7;}
 .partner-intro__actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:flex-start}
 @media(min-width:900px){.partner-intro{grid-template-columns:1.05fr .95fr}
-.partner-intro__actions{justify-content:flex-end}
-}
+.partner-intro__actions{justify-content:flex-end}}
 .packs-grid--four{grid-template-columns:1fr}
-@media(min-width:700px){.packs-grid--four{grid-template-columns:repeat(2,1fr)}
-}
+@media(min-width:700px){.packs-grid--four{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1080px){.packs-grid--four{grid-template-columns:repeat(4,1fr)}
-.packs-grid--four .pack--feat{transform:translateY(-10px)}
-}
+.packs-grid--four .pack--feat{transform:translateY(-10px)}}
 .sponsor-pack{min-height:100%;overflow:hidden}
 .sponsor-pack::after{content:"";
   position:absolute;
@@ -1122,8 +1155,7 @@ body{text-rendering:optimizeLegibility}
 .lightbox__close{top:1rem;right:.8rem;width:42px;height:42px}
 .lightbox__toolbar{left:.8rem;right:4rem;transform:none;justify-content:center}
 .lightbox__toolbar button{min-width:34px;height:34px}
-.lightbox__toolbar span{min-width:46px}
-}
+.lightbox__toolbar span{min-width:46px}}
 /* Anti-débordement : les éléments décoratifs et le menu fermé ne créent plus de scroll horizontal. */
 html,body{max-width:100%;overflow-x:hidden}
 section[id]{scroll-margin-top:92px}
@@ -1131,8 +1163,7 @@ section[id]{scroll-margin-top:92px}
 .marquee__track{will-change:transform}
 .bg-word{max-width:100vw;overflow:hidden;contain:paint}
 @media(max-width:1180px){.nav{display:flex;transform:translateX(105%);visibility:hidden;pointer-events:none}
-.nav.open{transform:none;visibility:visible;pointer-events:auto}
-}
+.nav.open{transform:none;visibility:visible;pointer-events:auto}}
 /* ============================================================
    V15 "PASS AGENCE PREMIUM" — audit final & optimisation
    ------------------------------------------------------------
@@ -1155,56 +1186,14 @@ section[id]{scroll-margin-top:92px}
 /* Sur petits écrans / faibles hauteurs, le visiteur scrolle naturellement :
    on masque la molette pour libérer le bas du hero et le crédit. */
 @media (max-width:760px){.hero__scroll{display:none !important}
-.hero__inner{padding-bottom:1.2rem}
-}
-@media (max-height:720px){.hero__scroll{display:none !important}
-}
+.hero__inner{padding-bottom:1.2rem}}
+@media (max-height:720px){.hero__scroll{display:none !important}}
 /* ---- 3. CALENDRIER · refonte mobile "carte scannable < 3 s" ---- */
 /* Le JOUR devient un bandeau d'en-tête coloré ; les infos s'alignent
    en lignes libellé→valeur parfaitement lisibles. */
-@media (max-width:900px){.cal2-table{display:flex !important;flex-direction:column;gap:.9rem}
-.cal2-row{grid-template-columns:1fr !important;
-    gap:0 !important;
-    padding:0 !important;
-    margin:0 !important;
-    border:1px solid var(--line) !important;
-    border-radius:16px !important;
-    overflow:hidden;
-    background:linear-gradient(168deg,var(--nuit-3),#0e1a2f) !important;
-    box-shadow:var(--e1),var(--bevel);}
+@media (max-width:900px){
 /* Bandeau JOUR */
-.cal2-row .cday{order:-1;
-    display:flex !important;
-    align-items:center;
-    gap:.6rem;
-    background:var(--grad-roi);
-    color:#fff !important;
-    font-size:1.18rem !important;
-    letter-spacing:.05em;
-    padding:.78rem 1.15rem !important;
-    margin:0 !important;
-    border:0 !important;}
-.cal2-row .cday::before{content:"" !important;display:none !important}
-.cal2-row--match .cday{background:var(--grad-orange);color:#190f04 !important}
-/* Lignes d'information */
-.cal2-row span:not(.cday){display:flex !important;
-    align-items:center;
-    justify-content:flex-start !important;
-    gap:.7rem;
-    padding:.6rem 1.15rem !important;
-    border-top:1px solid var(--line);}
-.cal2-row span:not(.cday)::before{flex:none;
-    min-width:80px;
-    font-family:var(--ff-cond);
-    font-weight:700;
-    text-transform:uppercase;
-    letter-spacing:.08em;
-    font-size:.72rem;
-    color:var(--orange-vif);}
-.cal2 .ctime{font-size:1.14rem !important}
-.cal2 .cact .ic,.cal2 .cloc .ic{width:1.05em;height:1.05em}
-.cal2 .badge-match{font-size:.82rem}
-}
+/* Lignes d'information */}
 /* ---- 4. POURQUOI · badges propres et alignés sur mobile ---- */
 /* On retire les pastilles flottantes (décoratives, sources de
    chevauchement) au profit des metrics alignés ; spacing premium. */
@@ -1227,10 +1216,8 @@ section[id]{scroll-margin-top:92px}
   box-shadow:0 10px 26px rgba(217,106,27,.6),0 0 0 4px rgba(13,21,38,.85) !important;
   z-index:5;}
 .sponsor-pack.pack--feat .pack__tag::before{content:"★ ";color:#190f04}
-@media(min-width:1080px){.packs-grid--four .pack--feat{transform:translateY(-14px)}
-}
-@media(max-width:1079px){.sponsor-pack.pack--feat{transform:none}
-}
+@media(min-width:1080px){.packs-grid--four .pack--feat{transform:translateY(-14px)}}
+@media(max-width:1079px){.sponsor-pack.pack--feat{transform:none}}
 /* ---- 7. SPONSORS · mur de logos premium (style club pro) ---- */
 /* Cartes verre sombre homogènes, logos normalisés monochrome→couleur
    au survol (signature Apple/Nike/Stripe), respiration et hover net. */
@@ -1238,8 +1225,7 @@ section[id]{scroll-margin-top:92px}
 /* ---- 8. FOOTER · le crédit "Made with ❤️ by Alex" ne disparaît plus ---- */
 /* Le bouton flottant (mobile, fixé en bas) recouvrait la signature.
    On réserve l'espace nécessaire pour qu'elle reste toujours visible. */
-@media (max-width:920px){.site-footer{padding-bottom:104px}
-}
+@media (max-width:920px){.site-footer{padding-bottom:104px}}
 .footer__signature{position:relative;z-index:2}
 /* ---- 9. Micro-finitions · accessibilité & cohérence ---- */
 /* Focus visibles homogènes sur tous les éléments interactifs. */
@@ -1265,8 +1251,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* ---- Nav · resserrement pour absorber le lien "Maillots" ---- */
 @media (min-width:1181px){.nav a{font-size:.85rem;padding:.5em .62em}
-.nav__cta{margin-left:.35rem}
-}
+.nav__cta{margin-left:.35rem}}
 /* ============================================================
    2. SECTION MAILLOTS — charte & identité
    ============================================================ */
@@ -1274,8 +1259,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     radial-gradient(100% 120% at 14% 0,rgba(27,81,158,.22),transparent 55%),
     linear-gradient(180deg,var(--nuit-0),#0a1424 60%,var(--nuit-0));}
 .kits-grid{display:grid;gap:1.4rem;grid-template-columns:1fr;align-items:center;margin-top:1.4rem}
-@media(min-width:920px){.kits-grid{grid-template-columns:1fr 1.05fr 1fr;gap:1.6rem}
-}
+@media(min-width:920px){.kits-grid{grid-template-columns:1fr 1.05fr 1fr;gap:1.6rem}}
 .kit-card{position:relative;
   display:flex;flex-direction:column;align-items:center;
   padding:1.2rem 1.2rem 1rem;
@@ -1299,16 +1283,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .kit-card__cap span{font-size:.82rem;color:#46566c}
 .kit-card.img-fallback{min-height:360px}
 .kit-copy{text-align:center}
-@media(min-width:920px){.kit-copy{text-align:left}
-}
+@media(min-width:920px){.kit-copy{text-align:left}}
 .kit-copy__eyebrow{display:inline-block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.16em;font-size:.78rem;color:var(--orange-vif);margin-bottom:.5rem;}
 .kit-copy h3{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.7rem,4.2vw,2.5rem);color:#fff;line-height:1;margin:.2rem 0 .9rem}
 .kit-copy h3 .hl{color:var(--orange-vif)}
 .kit-copy p{color:var(--txt-soft);line-height:1.65;font-size:1rem}
 .kit-palette{list-style:none;display:flex;flex-wrap:wrap;gap:.85rem;justify-content:center;margin:1.3rem 0}
-@media(min-width:920px){.kit-palette{justify-content:flex-start}
-}
+@media(min-width:920px){.kit-palette{justify-content:flex-start}}
 .kit-palette li{display:flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;color:var(--bleu-glacier)}
 .kit-sw{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
 .kit-sw--line{box-shadow:inset 0 0 0 1px rgba(13,21,38,.3)}
@@ -1318,8 +1300,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .kit-spon .ic{width:1.4em;height:1.4em;flex:none;color:var(--orange-vif);margin-top:.05em}
 .kit-spon b{color:#fff}
 .kit-copy__cta{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.3rem}
-@media(min-width:920px){.kit-copy__cta{justify-content:flex-start}
-}
+@media(min-width:920px){.kit-copy__cta{justify-content:flex-start}}
 /* ============================================================
    3. SECTION GALERIE — "Sur le terrain"
    ============================================================ */
@@ -1336,8 +1317,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-tile figcaption::before{content:"";display:inline-block;width:18px;height:2px;background:var(--orange-vif);vertical-align:middle;margin-right:.5em}
 .g-tile:hover img{transform:scale(1.06)}
 .g-tall{min-height:330px}
-@media(prefers-reduced-motion:reduce){.g-tile:hover img{transform:none}
-}
+@media(prefers-reduced-motion:reduce){.g-tile:hover img{transform:none}}
 @media(min-width:680px){.gallery-mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:192px;
     grid-template-areas:"tall huddle" "tall banner" "shoot group" "init init";}
 .g-tile{min-height:0}
@@ -1346,11 +1326,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-banner{grid-area:banner}
 .g-shoot{grid-area:shoot}
 .g-group{grid-area:group}
-.g-init{grid-area:init}
-}
+.g-init{grid-area:init}}
 @media(min-width:980px){.gallery-mosaic{grid-auto-rows:226px;grid-template-columns:repeat(4,1fr);
-    grid-template-areas:"tall huddle huddle banner" "tall shoot group group" "init init init init";}
-}
+    grid-template-areas:"tall huddle huddle banner" "tall shoot group group" "init init init init";}}
 .gallery-cta{margin-top:1.9rem;text-align:center}
 .gallery-cta__txt{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--bleu-glacier);font-size:1.05rem;margin-bottom:1rem}
 .gallery-cta__btns{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
@@ -1416,8 +1394,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .footer__legal{justify-self:start}
 @media(max-width:700px){.footer__bottom{grid-template-columns:1fr !important}
 .footer__mini-logo{justify-self:center}
-.footer__legal{justify-self:center}
-}
+.footer__legal{justify-self:center}}
 /* ============================================================
    V18 "DERNIERE PASSE" — corrections captures client
    ------------------------------------------------------------
@@ -1437,8 +1414,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .kit-spon{max-width:430px;
   margin-inline:auto;}
 .kit-copy__cta .btn{min-width:min(100%,238px);}
-@media(min-width:920px){.kit-copy__cta{justify-content:center !important}
-}
+@media(min-width:920px){.kit-copy__cta{justify-content:center !important}}
 /* Carte licence : bouton centre et rendu plus premium. */
 .tarifs{max-width:780px !important;
   margin-inline:auto;
@@ -1459,8 +1435,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   box-shadow:0 24px 56px rgba(217,106,27,.36),inset 0 1px 0 rgba(255,255,255,.22) !important;}
 @media(min-width:680px){.tarifs__rest{align-items:center !important;
     text-align:center !important;}
-.tarifs__rest .btn{align-self:center !important}
-}
+.tarifs__rest .btn{align-self:center !important}}
 /* Mot du president : pas de doublon photo, une vraie citation forte. */
 /* Territoire : plus simple, plus lisible, avec orange MBC. */
 /* Formules partenaires : MVP mis en avant, mais aligne avec les autres. */
@@ -1468,8 +1443,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .packs-grid--four .pack--feat,.sponsor-pack.pack--feat{transform:none !important;}
 .sponsor-pack.pack--feat{box-shadow:0 18px 48px rgba(3,7,15,.34),0 0 0 1px rgba(232,130,42,.52),0 0 34px rgba(232,130,42,.14) !important;}
 .sponsor-pack.pack--feat .pack__tag{top:-13px;}
-@media(min-width:1080px){.packs-grid--four .pack--feat{transform:none !important}
-}
+@media(min-width:1080px){.packs-grid--four .pack--feat{transform:none !important}}
 /* Sponsors : suppression du bandeau sombre, logos sur scene propre. */
 /* ============================================================
    V19 "LOGOS SPONSORS" — taille desktop + finesse multi-supports
@@ -1493,15 +1467,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   gap:.45rem !important;}
 @media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}
 .action-card{min-height:196px !important;
-    padding:1.12rem 1.16rem !important;}
-}
+    padding:1.12rem 1.16rem !important;}}
 @media(max-width:680px){.hero{padding-top:5rem !important;
     padding-bottom:1.2rem !important;}
 .hero__sub{font-size:1rem !important;
     line-height:1.42 !important;}
 .action-card{min-height:auto !important;
-    padding:1.08rem 1.05rem !important;}
-}
+    padding:1.08rem 1.05rem !important;}}
 /* ============================================================
    V21 "VIDEO ADHESION" — intégration premium + SEO-friendly
    ============================================================ */
@@ -1552,8 +1524,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(max-width:640px){.adhesion-video__frame{border-radius:28px;
     padding:9px;}
 .adhesion-video__player{border-radius:20px;
-    max-height:68vh;}
-}
+    max-height:68vh;}}
 /* ============================================================
    V9 "FINITION PRO" — header lockup, chiffres, encarts, 3D
    ============================================================ */
@@ -1566,8 +1537,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:560px){.brand .logo-img{width:64px;height:40px}
 .brand__txt{padding-left:.7rem;gap:.08rem}
 .brand__sub{font-size:.98rem!important}
-.brand__sub2{font-size:.56rem;letter-spacing:.28em}
-}
+.brand__sub2{font-size:.56rem;letter-spacing:.28em}}
 /* ---- 3. Compteurs : chiffres plus grands & impactants ---- */
 /* halo permanent léger derrière les chiffres pour les faire ressortir */
 /* ---- 2. Encarts 95 € / 3 ans / 48 h : rendu premium (anti-pâté) ---- */
@@ -1582,8 +1552,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   opacity:0;transition:opacity .3s;mix-blend-mode:overlay;z-index:3;}
 .tilt3d.is-tilting .tilt3d__shine{opacity:1}
 @media (prefers-reduced-motion:reduce){.tilt3d{transform:none!important}
-.tilt3d .tilt3d__shine{display:none}
-}
+.tilt3d .tilt3d__shine{display:none}}
 /* ============================================================
    V13 "IMPACT" — animations plus vives, plus premium, plus profondes
    (toutes les règles ci-dessous surchargent volontairement les
@@ -1605,8 +1574,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (min-width:760px) and (prefers-reduced-motion:no-preference){.reveal{filter:blur(6px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-pop),filter .7s var(--ease-out)}
 .reveal.in{filter:blur(0)}
 .reveal--l,.reveal--r,.reveal--scale{filter:blur(6px)}
-.reveal--l.in,.reveal--r.in,.reveal--scale.in{filter:blur(0)}
-}
+.reveal--l.in,.reveal--r.in,.reveal--scale.in{filter:blur(0)}}
 /* ---- Hero : entrée plus dynamique + halo "vivant" ---- */
 .hero .reveal-fade{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s var(--ease-out) .35s,transform .7s var(--ease-pop) .35s}
 .hero.in .reveal-fade{opacity:1;transform:none}
@@ -1650,8 +1618,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .nav a:not(.nav__cta)::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.25em;height:2px;background:var(--grad-orange);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-pop)}
 .nav a:not(.nav__cta):hover::after{transform:scaleX(1)}
 /* ---- Calendrier : lignes plus réactives ---- */
-.cal2-row:not(.cal2-row--head){transition:background .25s,transform .25s var(--ease-out)}
-.cal2-row:not(.cal2-row--head):hover{transform:translateX(6px)}
 /* ---- Engagement / partenaires / sponsors : lift cohérent ---- */
 .partner-slot{transition:transform .35s var(--ease-pop),border-color .3s,background .3s}
 .partner-slot:hover{transform:translateY(-5px) scale(1.03)}
@@ -1667,9 +1633,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (prefers-reduced-motion:reduce){.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
 .hero .reveal-fade{transform:none!important;opacity:1!important;transition:none!important}
 .hero__halo,.hero__glow,.float-cta.show{animation:none!important}
-.cat,.action-card,.kit-card,.brand,.nav__cta,.btn,.partner-slot,.engage-card,.p-pillar,.cal2-row{transition:none!important}
-.cat:hover,.action-card:hover,.kit-card:hover,.brand:hover,.partner-slot:hover{transform:none!important}
-}
+.cat,.action-card,.kit-card,.brand,.nav__cta,.btn,.partner-slot,.engage-card,.p-pillar{transition:none!important}
+.cat:hover,.action-card:hover,.kit-card:hover,.brand:hover,.partner-slot:hover{transform:none!important}}
 /* ============================================================
    V14 "CONVERSION" — bloc L'essentiel + CTA mobile safe-area
    ============================================================ */
@@ -1684,10 +1649,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-card__val{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.5rem,4.5vw,2rem);line-height:1;color:#fff;letter-spacing:.5px}
 .essentiel-card__lbl{font-family:var(--ff-cond);font-weight:500;font-size:.95rem;line-height:1.4;color:var(--bleu-glacier)}
 .essentiel-cta{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2rem}
-@media (min-width:560px){.essentiel-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media (min-width:900px){.essentiel-grid{grid-template-columns:repeat(3,1fr)}
-}
+@media (min-width:560px){.essentiel-grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:900px){.essentiel-grid{grid-template-columns:repeat(3,1fr)}}
 /* ---- CTA flottant mobile : respect des safe areas (encoche / barre home iPhone) ---- */
 .float-cta{bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 /* ============================================================
@@ -1718,8 +1681,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (prefers-reduced-motion:no-preference){.packs.in .packs-grid--four .pack{animation:sigFadeIn .5s var(--ease-out) backwards}
 .packs.in .packs-grid--four .pack:nth-child(2){animation-delay:.09s}
 .packs.in .packs-grid--four .pack:nth-child(3){animation-delay:.18s}
-.packs.in .packs-grid--four .pack:nth-child(4){animation-delay:.27s}
-}
+.packs.in .packs-grid--four .pack:nth-child(4){animation-delay:.27s}}
 @keyframes sigFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 @keyframes sigFadeIn{from{opacity:0}to{opacity:1}}
 /* MVP : badge "Populaire" qui respire légèrement (scale → pas de conflit avec son box-shadow !important) */
@@ -1727,12 +1689,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @keyframes mvpPulse{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.07)}}
 /* ---- 6. Galerie matchday : légende qui remonte (souris fine uniquement) ---- */
 @media (hover:hover) and (pointer:fine){.g-tile figcaption{transform:translateY(8px);opacity:.86;transition:transform .4s var(--ease-pop),opacity .4s}
-.g-tile:hover figcaption{transform:translateY(0);opacity:1}
-}
+.g-tile:hover figcaption{transform:translateY(0);opacity:1}}
 /* ---- 7. Calendrier scoreboard : horaires alignés + highlight orange au survol ---- */
-.cal2 .ctime{font-variant-numeric:tabular-nums;transition:color .25s,text-shadow .25s}
-.cal2-row:not(.cal2-row--head):hover .ctime{text-shadow:0 0 14px rgba(232,130,42,.55)}
-.cal2-row:not(.cal2-row--head):hover .cday{color:var(--orange-vif)}
 /* ---- 8. CTA flottant mobile : reflet "app native" toutes les ~12 s (bref, non permanent) ---- */
 .float-cta{overflow:hidden}
 .float-cta::after{content:"";position:absolute;top:0;left:0;width:42%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-180%) skewX(-18deg);pointer-events:none}
@@ -1743,23 +1701,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    (le reflet du CTA flottant reste actif : c'est l'animation "app native"
    voulue sur mobile, et elle est brève + compositor-friendly) */
 @media (max-width:759px){.hero__halo,.hero__glow{animation:none}
-.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag{animation:none}
-}
+.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag{animation:none}}
 /* ---- a11y : neutralise toutes les nouvelles animations si prefers-reduced-motion ---- */
 @media (prefers-reduced-motion:reduce){.hero.in::before,.kit-card:hover::before,.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag,.float-cta.show::after,.packs.in .packs-grid--four .pack{animation:none!important}
 .hero::before,.kit-card::before,.kit-card__season::after,.float-cta::after{display:none}
-.g-tile figcaption{transform:none!important;opacity:1!important}
-}
+.g-tile figcaption{transform:none!important;opacity:1!important}}
 /* ============================================================
    V16 "VITRINE" — staff agrandi, logos sponsors agrandis,
    cascades (galerie / L'essentiel) + interactions curseur premium
    ============================================================ */
 /* ---- Staff : cartes & photos agrandies (surtout mobile / tablette) ---- */
 .staff-grid{max-width:480px}
-@media (min-width:560px){.staff-grid{grid-template-columns:repeat(2,1fr);max-width:880px;gap:1.5rem}
-}
-@media (min-width:980px){.staff-grid{grid-template-columns:repeat(3,1fr);max-width:1200px;gap:1.7rem}
-}
+@media (min-width:560px){.staff-grid{grid-template-columns:repeat(2,1fr);max-width:880px;gap:1.5rem}}
+@media (min-width:980px){.staff-grid{grid-template-columns:repeat(3,1fr);max-width:1200px;gap:1.7rem}}
 /* ---- Sponsors & mécènes : logos nettement plus grands ---- */
 /* ---- Cascade d'apparition : galerie matchday + L'essentiel ---- */
 @media (prefers-reduced-motion:no-preference){.gallery-mosaic.in .g-tile{animation:sigFadeIn .6s var(--ease-out) backwards}
@@ -1772,11 +1726,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-grid.in .essentiel-card:nth-child(3){animation-delay:.12s}
 .essentiel-grid.in .essentiel-card:nth-child(4){animation-delay:.18s}
 .essentiel-grid.in .essentiel-card:nth-child(5){animation-delay:.24s}
-.essentiel-grid.in .essentiel-card:nth-child(6){animation-delay:.3s}
-}
+.essentiel-grid.in .essentiel-card:nth-child(6){animation-delay:.3s}}
 /* ---- Scroll-ball : légère pulsation "dribble" (desktop) ---- */
-@media (min-width:760px) and (prefers-reduced-motion:no-preference){.scroll-bar::after{animation:ballPulse 2.4s ease-in-out infinite}
-}
+@media (min-width:760px) and (prefers-reduced-motion:no-preference){.scroll-bar::after{animation:ballPulse 2.4s ease-in-out infinite}}
 @keyframes ballPulse{0%,100%{box-shadow:0 0 10px 2px rgba(232,130,42,.7),0 0 0 2px rgba(7,13,24,.55)}50%{box-shadow:0 0 17px 5px rgba(232,130,42,.92),0 0 0 2px rgba(7,13,24,.55)}}
 /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop, JS pose --bx/--by) ---- */
 .btn--primary,.btn--roi{--bx:50%;--by:50%}
@@ -1785,8 +1737,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- Hero crest : retour fluide après le parallaxe souris ---- */
 /* ---- a11y : neutralise les nouveaux effets si prefers-reduced-motion ---- */
 @media (prefers-reduced-motion:reduce){.gallery-mosaic.in .g-tile,.essentiel-grid.in .essentiel-card,.scroll-bar::after{animation:none!important}
-.btn--primary::before,.btn--roi::before{display:none}
-}
+.btn--primary::before,.btn--roi::before{display:none}}
 /* ============================================================
    PERF MOBILE (≤760px) — HÉRO ALLÉGÉ POUR UN SCROLL FLUIDE
    Sur GPU mobile, ces effets sont les plus coûteux :
@@ -1813,8 +1764,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* 1 ombre au lieu de 3 */
 /* Petits flous de fond plus bas dans la page : allégés aussi */
 .g-tile figcaption{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(7,13,24,.82)!important}
-.kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-}
+.kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
 /* ---- Hero : une seule carte d'action (pré-inscription) → centrée ---- */
 /* ---- Bénévoles : mini-missions concrètes (léger, sans blur ni animation) ---- */
 .engage-missions{list-style:none;display:grid;gap:.5rem;margin:0 0 1.1rem}
@@ -1829,8 +1779,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .brand__sub{font-family:var(--ff-cond)!important;font-weight:700!important;font-size:1.06rem!important;letter-spacing:.04em!important;text-transform:uppercase;color:#fff!important;line-height:1!important;text-shadow:none!important}
 .brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bleu-glacier);line-height:1;opacity:.85}
 @media (max-width:560px){.brand__sub{font-size:.95rem!important}
-.brand__sub2{font-size:.5rem;letter-spacing:.26em}
-}
+.brand__sub2{font-size:.5rem;letter-spacing:.26em}}
 /* ---- 2. L'essentiel : icônes en pastille premium (au lieu d'icônes nues) ---- */
 .essentiel-card__ic{width:46px;height:46px;padding:10px;border-radius:13px;color:var(--orange-vif);background:linear-gradient(150deg,rgba(232,130,42,.16),rgba(27,81,158,.10));border:1px solid rgba(232,130,42,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:transform .4s var(--ease-pop),box-shadow .4s,border-color .4s}
 .essentiel-card:hover .essentiel-card__ic{transform:translateY(-2px) scale(1.06);border-color:rgba(232,130,42,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 20px rgba(217,106,27,.28)}
@@ -1891,8 +1840,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-card:hover .essentiel-card__ico::before{transform:rotate(38deg);filter:brightness(1.4)}
 /* ---- ENCARTS ADHÉSION : chiffres XL ---- */
 /* texte dégradé sur les valeurs de L'essentiel (navigateurs compatibles) */
-@supports ((-webkit-background-clip:text) or (background-clip:text)){.essentiel-card__val{background:linear-gradient(180deg,#ffffff,#c4d6ea);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){.essentiel-card__val{background:linear-gradient(180deg,#ffffff,#c4d6ea);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
 /* ---- CARTE SPONSOR MAILLOT ---- */
 .kit-spon{display:flex!important;align-items:center!important;gap:1.1rem!important;padding:1.3rem 1.4rem!important;text-align:left!important}
 .kit-spon::before{display:none!important}
@@ -1901,8 +1849,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .kit-spon__txt span{color:var(--txt-soft);font-size:.92rem;line-height:1.5}
 /* ---- a11y : neutralise les survols/anneaux animés ---- */
 @media (prefers-reduced-motion:reduce){.essentiel-card:hover{transform:none!important}
-.essentiel-card:hover .essentiel-card__ico,.essentiel-card:hover .essentiel-card__ico::before{transform:none!important;filter:none!important}
-}
+.essentiel-card:hover .essentiel-card__ico,.essentiel-card:hover .essentiel-card__ico::before{transform:none!important;filter:none!important}}
 /* ============================================================
    V20 "FINITIONS" — signature, header, CTA, unités, fonds
    ============================================================ */
@@ -1910,8 +1857,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .footer__signature .sig-heart{display:inline-block;transform-origin:center;animation:sigBeat 2.6s ease-in-out infinite}
 @keyframes sigBeat{0%,100%{transform:scale(1)}8%{transform:scale(1.3)}16%{transform:scale(1)}24%{transform:scale(1.22)}32%{transform:scale(1)}}
 .footer__signature .sig-name{font-weight:800;color:var(--orange-vif);transition:filter .3s,letter-spacing .3s}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){.footer__signature .sig-name{background:linear-gradient(100deg,var(--orange-vif),#7aa7e0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){.footer__signature .sig-name{background:linear-gradient(100deg,var(--orange-vif),#7aa7e0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
 .footer__signature:hover .sig-name{filter:brightness(1.25) drop-shadow(0 0 10px rgba(232,130,42,.45));letter-spacing:.02em}
 .footer__signature:hover .sig-heart{animation-duration:1s}
 /* ---- B. Header : écart symétrique de part et d'autre de la barre ---- */
@@ -1930,8 +1876,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .brand .logo-img{width:42px;height:42px}
 .brand__txt{min-height:31px;padding-left:.72rem!important;gap:.13rem}
 .brand__sub{font-size:.9rem!important;letter-spacing:.06em!important}
-.brand__sub2{font-size:.49rem;letter-spacing:.18em}
-}
+.brand__sub2{font-size:.49rem;letter-spacing:.18em}}
 /* ---- C. CTA pré-inscription : nettement plus gros (ça saute aux yeux) ---- */
 .btn--lg{font-size:clamp(1.18rem,1.9vw,1.42rem)!important;padding:1.1em 2.3em!important}
 .action-card .btn--primary{font-size:clamp(1.15rem,1.7vw,1.32rem);padding:1.12em 2em;letter-spacing:.04em}
@@ -1953,8 +1898,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   radial-gradient(60% 80% at 92% 92%,rgba(27,81,158,.28),transparent 58%),
   linear-gradient(180deg,var(--nuit-0),#0b1626)!important}
 /* ---- a11y : cœur figé si mouvement réduit ---- */
-@media (prefers-reduced-motion:reduce){.footer__signature .sig-heart{animation:none!important}
-}
+@media (prefers-reduced-motion:reduce){.footer__signature .sig-heart{animation:none!important}}
 /* ============================================================
    V21 "DYNAMIQUE" — why-spon & formules vivantes (spotlight
    curseur), mur sponsors agrandi & réagencé.
@@ -1985,8 +1929,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ----- MUR SPONSORS & MÉCÈNES : logos plus grands, réagencés ----- */
 /* a11y : survols/anneaux figés si mouvement réduit */
 @media (prefers-reduced-motion:reduce){.pack:hover{transform:none!important}
-.pack::before{display:none}
-}
+.pack::before{display:none}}
 /* ============================================================
    V22 "SPONSORS PRO" — refonte du mur sponsors
    Cartes glassmorphism sombre + "logo plate" claire (lisibilité
@@ -2030,17 +1973,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .sponsors-wall.in .sponsor-card:nth-child(2){animation-delay:.07s}
 .sponsors-wall.in .sponsor-card:nth-child(3){animation-delay:.14s}
 .sponsors-wall.in .sponsor-card:nth-child(4){animation-delay:.21s}
-.sponsors-wall.in .sponsor-card:nth-child(5){animation-delay:.28s}
-}
+.sponsors-wall.in .sponsor-card:nth-child(5){animation-delay:.28s}}
 /* Mobile : pas de backdrop-filter (perf), fond plus opaque, grille confortable */
 @media (max-width:760px){.sponsor-card{-webkit-backdrop-filter:none;backdrop-filter:none;background:
     linear-gradient(168deg,rgba(20,34,60,.92),rgba(9,15,28,.95)) padding-box,
-    linear-gradient(150deg,rgba(232,130,42,.45),rgba(27,81,158,.4) 55%,rgba(191,210,228,.12)) border-box}
-}
+    linear-gradient(150deg,rgba(232,130,42,.45),rgba(27,81,158,.4) 55%,rgba(191,210,228,.12)) border-box}}
 /* a11y */
 @media (prefers-reduced-motion:reduce){.sponsors-wall.in .sponsor-card{animation:none!important}
-.sponsor-card:hover,.sponsor-card:hover .sponsor-card__plate img{transform:none!important}
-}
+.sponsor-card:hover,.sponsor-card:hover .sponsor-card__plate img{transform:none!important}}
 /* ============================================================
    V23 — RGPD formulaire + mentions légales / confidentialité
    ============================================================ */
@@ -2068,11 +2008,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   color:var(--orange-vif);
   filter:drop-shadow(0 6px 22px rgba(232,130,42,.32));}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){.tarifs__price{background:linear-gradient(180deg,#F6A862,#E8822A 46%,#C75F14);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
-}
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}}
 /* mobile : 95 € encore plus grand dans « Votre enfant entre de bonnes mains » */
-@media (max-width:559px){.tarifs__price{font-size:6.4rem!important}
-}
+@media (max-width:559px){.tarifs__price{font-size:6.4rem!important}}
 /* halo statique très doux derrière le prix (aucun mouvement) */
 .tarifs__main::before{content:"";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
   width:160px;height:160px;border-radius:50%;z-index:0;pointer-events:none;
@@ -2085,8 +2023,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .tarifs__rest p b{color:#fff}
 .tarifs__chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:0}
 @media (min-width:680px){.tarifs__rest{text-align:center!important;align-items:center!important}
-.tarifs__rest .btn{align-self:center!important}
-}
+.tarifs__rest .btn{align-self:center!important}}
 /* ============================================================
    V25 — Page Adhésion (/adhesion.html) — réutilise les classes
    existantes, très peu de CSS dédié.
@@ -2108,8 +2045,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* indice « lien externe » discret, accolé au nom du partenaire */
 .sponsor-card__name::after{content:"↗";display:inline-block;margin-left:.35em;color:var(--bleu-glacier);opacity:.55;transition:transform .3s var(--ease-out),color .3s,opacity .3s}
 .sponsor-card:hover .sponsor-card__name::after,.sponsor-card:focus-visible .sponsor-card__name::after{color:var(--orange-vif);opacity:1;transform:translate(2px,-2px)}
-@media (max-width:560px){.sponsor-card{flex:0 1 150px}
-}
+@media (max-width:560px){.sponsor-card{flex:0 1 150px}}
 /* ============================================================
    V27 — Encart visibilité sponsors + bloc licences solidaires
    + mention équipementier (discrète)
@@ -2168,8 +2104,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Fallback sans JS : seul le 1er slogan s'affiche, la scène s'ajuste à lui. */
 /* JS actif : carrousel vertical (slide + fade), phrase centrée v+h. */
 /* Accessibilité : pas de mouvement si l'utilisateur le demande. */
-@media (prefers-reduced-motion:reduce){.hero__pill-dot::after{animation:none}
-}
+@media (prefers-reduced-motion:reduce){.hero__pill-dot::after{animation:none}}
 /* ============================================================
    V30 — HERO : micro-animation lumineuse "aurora" MBC (CSS natif)
    Inspiration "AuroraBackground" mais SANS React/Tailwind : on ne rajoute
@@ -2206,12 +2141,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
 }
 /* Mobile : effet encore plus discret + blur allégé (perf). */
-@media (max-width:768px){.hero-light-motion .hero__lightmotion{opacity:.32;filter:blur(24px)}
-}
+@media (max-width:768px){.hero-light-motion .hero__lightmotion{opacity:.32;filter:blur(24px)}}
 /* Accessibilité : aucune animation si mouvement réduit. */
 @media (prefers-reduced-motion:reduce){.hero-light-motion .hero__lightmotion{animation:none}
-.hero-light-motion .hero__halo{animation:none}
-}
+.hero-light-motion .hero__halo{animation:none}}
 /* (V32 "React/Spline island" retirée — résidu Vite mort : aucun /src/main.tsx,
    #hero-spline-root jamais monté. Voir nettoyage 202606.) */
 /* ============================================================
@@ -2286,13 +2219,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero-offer__proof li::before{content:"";width:.42em;height:.42em;border-radius:50%;background:var(--orange-vif);flex:none}
 /* Watermark géant : texture de fond très discrète (plus de Spline). */
 /* ---- Desktop ≥ 1024 : contenu centré agrandi ---- */
-@media (min-width:1024px){.hero--split .hero__content{max-width:880px}
-}
+@media (min-width:1024px){.hero--split .hero__content{max-width:880px}}
 /* ---- Mobile : bouton principal pleine largeur, facile au pouce ---- */
 @media (max-width:680px){.hero-offer{padding:1.35rem 1.15rem;max-width:none}
 .hero-offer__btns .btn--cta{width:100%}
-.btn--xl{min-height:62px;font-size:1.05rem;padding-inline:1.2em}
-}
+.btn--xl{min-height:62px;font-size:1.05rem;padding-inline:1.2em}}
 /* ============================================================
    V34 — Polish 202606 : rotator hors du H1 + timeline/FAQ adhésion
    ============================================================ */
@@ -2311,10 +2242,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ============================================================
    V35 — HERO FX : effet lumineux premium "projecteur de terrain"
    Inspiration 21st.dev recréée 100% en CSS natif (pas de React/canvas).
-   Calque décoratif derrière le contenu, concentré en haut/centre,
-   couleurs MBC (bleu électrique + orange ballon + blanc doux).
+   Calque décoratif derrière le contenu,concentré en haut/centre,couleurs MBC (bleu électrique + orange ballon + blanc doux).
    ---- RÉGLAGES RAPIDES ----
-   • Intensité globale : .hero-fx { opacity } (def. 1)
+   • Intensité globale : .hero-fx{ opacity } (def. 1)
    • Ambiance : .hero-fx__glow { opacity (intensité) / radial-gradient (zones+couleurs) / filter:blur (diffusion) }
    • Faisceaux : .hero-fx__beams { opacity } · vitesse : animation 22s
    • Grille : .hero-fx__grid { opacity / background-size }
@@ -2356,11 +2286,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Mobile : effet allégé (perf) — pas de faisceaux conic, grille + halo réduits */
 @media (max-width:760px){.hero-fx{height:60%}
 .hero-fx__grid{background-size:34px 34px;opacity:.32}
-.hero-fx__glow{filter:blur(30px) saturate(1.22);opacity:.5}
-}
+.hero-fx__glow{filter:blur(30px) saturate(1.22);opacity:.5}}
 /* Accessibilité : pas d'animation si mouvement réduit */
-@media (prefers-reduced-motion:reduce){.hero-fx__glow{animation:none}
-}
+@media (prefers-reduced-motion:reduce){.hero-fx__glow{animation:none}}
 /* ============================================================
    V36 — HERO premium : titre massif · sous-titre punchy · CTA fort
    · relief montagne stylisé. Surcharge ciblée (appended → gagne).
@@ -2386,8 +2314,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Watermark logo : encore plus subtil (simple texture de fond). */
 /* Mobile : titre/sous-titre lisibles, montagne plus basse. */
 @media (max-width:680px){.hero__headline-fixed{font-size:clamp(2.3rem,8.5vw,3.2rem) !important;line-height:.94}
-.hero__subtitle{font-size:clamp(1.3rem,6vw,1.9rem)}
-}
+.hero__subtitle{font-size:clamp(1.3rem,6vw,1.9rem)}}
 /* ===================================================================
    V37 — Visuels premium joueurs
    (1) Hero : photo joueur dribble en accent à droite
@@ -2422,10 +2349,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero.in .hero__photo{opacity:.5}
 .hero__photo img{object-position:50% 16%}
 .hero__photo::before{opacity:.5}
-.hero__photo::after{background:linear-gradient(to top,rgba(7,13,24,.72),rgba(7,13,24,.34) 50%,rgba(7,13,24,.72))}
-}
-@media (prefers-reduced-motion:reduce){.hero__photo{transition:none;transform:none;opacity:1}
-}
+.hero__photo::after{background:linear-gradient(to top,rgba(7,13,24,.72),rgba(7,13,24,.34) 50%,rgba(7,13,24,.72))}}
+@media (prefers-reduced-motion:reduce){.hero__photo{transition:none;transform:none;opacity:1}}
 /* ============================================================
    V38 — Effet "cascade" sur liens (adapté de TextReveal / 21st.dev → CSS+JS natif)
    Appliqué aux liens de la colonne "Agir" du footer (Adhésion · Faire un don · Contact).
@@ -2441,8 +2366,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* déclenchement au survol/focus du lien (la couleur orange vient déjà de .footer__actions a:hover) */
 .footer__actions a:hover .cascade-link__c,.footer__actions a:focus-visible .cascade-link__c{transform:translateY(-1em)}
 .footer__actions a:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:3px}
-@media (prefers-reduced-motion:reduce){.cascade-link__c{transition:none;transform:none!important;text-shadow:none}
-}
+@media (prefers-reduced-motion:reduce){.cascade-link__c{transition:none;transform:none!important;text-shadow:none}}
 /* ============================================================
    V39 — HERO split-screen : contenu aligné à GAUCHE (desktop)
    Texte + CTA à gauche · joueur (.hero__photo) à droite · mobile recentré.
@@ -2467,15 +2391,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero-offer{max-width:520px;margin-top:32px;padding:28px 32px}
 .hero-offer__label,.hero-offer__txt{text-align:left}
 .hero-offer__btns{justify-content:flex-start;gap:14px}
-.hero-offer__proof{justify-content:flex-start}
-}
+.hero-offer__proof{justify-content:flex-start}}
 /* Grands écrans (>1440px) : on recentre la photo joueur avec le contenu dans une
    zone ~1440px (composition compacte, plus de vide au milieu) + fondu du bord droit. */
 @media (min-width:981px){.hero--split .hero__photo{right:max(0px, calc((100vw - 1440px) / 2));
     -webkit-mask-image:linear-gradient(to left,transparent 0%,rgba(0,0,0,.22) 7%,rgba(0,0,0,.7) 15%,#000 24%,#000 40%,rgba(0,0,0,.82) 56%,transparent 86%),linear-gradient(to top,transparent 0%,#000 16%);
     mask-image:linear-gradient(to left,transparent 0%,rgba(0,0,0,.22) 7%,rgba(0,0,0,.7) 15%,#000 24%,#000 40%,rgba(0,0,0,.82) 56%,transparent 86%),linear-gradient(to top,transparent 0%,#000 16%);
-    -webkit-mask-composite:source-in;mask-composite:intersect;}
-}
+    -webkit-mask-composite:source-in;mask-composite:intersect;}}
 /* Mobile (<768px) : hero recentré, CTA pleine largeur, boutons empilés/centrés */
 @media (max-width:768px){.hero--split .hero__content{align-items:center;text-align:center;max-width:none;margin-left:0;margin-inline:auto}
 .hero--split .hero__pill{align-self:center}
@@ -2486,11 +2408,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero-offer__label,.hero-offer__txt{text-align:center}
 .hero-offer__btns{flex-direction:column;align-items:center;justify-content:center;gap:12px}
 .hero-offer__main{width:100%}
-.hero-offer__proof{justify-content:center}
-}
+.hero-offer__proof{justify-content:center}}
 /* Mobile/tablette (photo en fond) : pas de filigrane logo + joueur plus perceptible derrière le texte/CTA */
-@media (max-width:980px){.hero.in .hero__photo{opacity:.5}
-}
+@media (max-width:980px){.hero.in .hero__photo{opacity:.5}}
 /* ============================================================
    V40 — Calendrier : bannière "salle" (photo du Gymnase de La Montagne)
    Réglages : hauteur (.cal-venue img height) · cadrage (object-position) · overlay (.cal-venue::after)
@@ -2523,8 +2443,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @keyframes sponsorsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.sponsors-marquee{overflow:visible;-webkit-mask-image:none;mask-image:none}
 .sponsors-marquee__track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
-.sponsors-marquee__track [aria-hidden="true"]{display:none}
-}
+.sponsors-marquee__track [aria-hidden="true"]{display:none}}
 /* ============================================================
    V42 — Formules partenaires : finition "pricing" (description + CTA par carte)
    Adapté du composant Pricing (shadcn) → CSS natif. Le toggle mensuel/annuel +
@@ -2549,8 +2468,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .parents-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem .6rem;margin:1.4rem auto 0;max-width:600px;padding:0;list-style:none}
 .parents-proof li{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.74rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.42em .9em;background:rgba(191,210,228,.03)}
 .parents-proof li svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
-@media (max-width:520px){.parents-proof{grid-template-columns:1fr;max-width:340px}
-}
+@media (max-width:520px){.parents-proof{grid-template-columns:1fr;max-width:340px}}
 /* ============================================================
    V45 — "Deck" de cartes empilées (adaptation NATIVE du composant
    display-cards, sans React/Tailwind) pour "La licence MBC".
@@ -2567,7 +2485,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    Cœur pulsant + 6 nœuds en rotation ; clic = pause + fiche centrale.
    Mobile = liste lisible.
    ============================================================ */
-
 
 
 /* mobile : on déplie en liste lisible (une orbite au doigt n'a pas de sens) */
@@ -2616,8 +2533,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .team__photos{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;overflow:visible;width:100%;max-width:none}
 .team__col{display:contents}
 .team__col--2,.team__col--3{margin-top:0}
-.team__photo{width:auto!important}
-}
+.team__photo{width:auto!important}}
 /* ============================================================
    V50 — Spotlight glow MBC autour des cartes (adaptation NATIVE de
    spotlight-card, sans React). Liseré lumineux bleu->orange qui suit
@@ -2641,10 +2557,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   -webkit-mask-composite:xor;mask-composite:exclude;
   filter:brightness(1.35) saturate(1.15)}
 .spotglow:hover>.spotglow__fx{opacity:1}
-@media (prefers-reduced-motion:reduce){.spotglow>.spotglow__fx{transition:none}
-}
-@media (hover:none){.spotglow>.spotglow__fx{display:none}
-}
+@media (prefers-reduced-motion:reduce){.spotglow>.spotglow__fx{transition:none}}
+@media (hover:none){.spotglow>.spotglow__fx{display:none}}
 /* ===== V55 — Cartes catégories : rendu plus premium / pro ===== */
 .cat-grid{gap:1.5rem}
 .cat{padding:2.1rem 1.8rem 1.7rem!important;border-radius:20px}
@@ -2682,8 +2596,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-card:hover::before{opacity:1;transform:scale(1.12)}
 .essentiel-card:hover::after{transform:scaleX(1);opacity:1}
 @media (prefers-reduced-motion:reduce){.essentiel-card,.essentiel-card::before,.essentiel-card::after{transition:none}
-.essentiel-card:hover{transform:none!important}
-}
+.essentiel-card:hover{transform:none!important}}
 /* ===== V64 — "L'essentiel" sur MOBILE : carte premium horizontale (icône | valeur + libellé) =====
    En 1 colonne (<560px) la pile verticale paraissait plate. Layout horizontal pro :
    pastille conic à gauche (centrée), valeur en gradient + libellé à droite, filet orange visible. */
@@ -2699,8 +2612,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-card__val{grid-column:2;grid-row:1;align-self:end;font-size:1.5rem !important;margin:0}
 .essentiel-card__lbl{grid-column:2;grid-row:2;align-self:start;font-size:.85rem !important;line-height:1.34}
 /* filet orange visible d'office (pas de survol sur tactile) */
-.essentiel-card::after{transform:scaleX(1) !important;opacity:.6 !important;left:1.25rem;right:1.25rem}
-}
+.essentiel-card::after{transform:scaleX(1) !important;opacity:.6 !important;left:1.25rem;right:1.25rem}}
 /* ============================================================
    V51 — Grille infinie animée (adaptation NATIVE de the-infinite-grid,
    sans React/framer-motion) en fond de "Sur le terrain" (#galerie).
@@ -2720,10 +2632,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .grid-fx__glow{position:absolute;border-radius:50%;filter:blur(90px)}
 .grid-fx__glow--orange{right:-12%;top:-18%;width:38%;height:48%;background:radial-gradient(circle,rgba(232,130,42,.45),transparent 70%)}
 .grid-fx__glow--blue{left:-12%;bottom:-20%;width:38%;height:48%;background:radial-gradient(circle,rgba(27,107,255,.4),transparent 70%)}
-@media (prefers-reduced-motion:reduce){.grid-fx__layer{animation:none}
-}
-@media (hover:none){.grid-fx__reveal{display:none}
-}
+@media (prefers-reduced-motion:reduce){.grid-fx__layer{animation:none}}
+@media (hover:none){.grid-fx__reveal{display:none}}
 /* ============================================================
    V52 — Carte cinématique "La licence MBC" (adaptation NATIVE de
    cinematic-landing-hero, sans GSAP/React). Carte bleu nuit premium
@@ -2742,8 +2652,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cine-card__sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:6;mix-blend-mode:screen;
   background:radial-gradient(700px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(255,255,255,.06),transparent 42%)}
 .cine-grid{position:relative;z-index:2;display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:center}
-@media (min-width:880px){.cine-grid{grid-template-columns:1.04fr .96fr}
-}
+@media (min-width:880px){.cine-grid{grid-template-columns:1.04fr .96fr}}
 /* --- colonne texte --- */
 .cine-copy .kicker{color:var(--orange-vif)}
 .cine-copy .lead{color:rgba(219,232,244,.86)}
@@ -2785,15 +2694,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cine-stats li{padding:1.05rem .65rem;gap:.4rem;border-radius:15px}
 .cine-stats__ic{width:24px;height:24px}
 .cine-stats b{font-size:clamp(.84rem,3.3vw,1rem);letter-spacing:.03em}
-.cine-stats span{font-size:.72rem;letter-spacing:.07em;line-height:1.25}
-}
+.cine-stats span{font-size:.72rem;letter-spacing:.07em;line-height:1.25}}
 @media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}
-.cine-stats li:hover,.cine-stats li:focus-within{transform:none}
-}
+.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
-@media (max-width:559px){.cine-actions{justify-content:center}
-}
+@media (max-width:559px){.cine-actions{justify-content:center}}
 .cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.78)}
 /* --- scène / mockup --- */
 .cine-stage{position:relative;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
@@ -2809,10 +2715,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* --- badges flottants --- */
 @keyframes cinePulse{0%,100%{opacity:1}50%{opacity:.35}}
 @media (prefers-reduced-motion:reduce){.cine-phone__island i{animation:none}
-.cine-phone{transition:none}
-}
-@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}
-}
+.cine-phone{transition:none}}
+@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}}
 /* ============================================================
    V67 — Le téléphone « s'approche » jusqu'au plein écran (mobile).
    L'overlay + .is-fs sont pilotés par script.js (FLIP). Le téléphone
@@ -2843,8 +2747,7 @@ body.cine-fs-lock{overflow:hidden}
 .cine-phone.is-flat .cine-phone__screen{inset:0;border-radius:0;box-shadow:none}
 .cine-phone.is-flat .cine-phone__screen::after{opacity:0}
 .cine-phone.is-flat .cine-phone__island{opacity:0}
-@media (prefers-reduced-motion:reduce){.cine-phone__screen,.cine-phone__screen::after,.cine-phone__island{transition:none}
-}
+@media (prefers-reduced-motion:reduce){.cine-phone__screen,.cine-phone__screen::after,.cine-phone__island{transition:none}}
 /* garde la place du téléphone dans la carte pendant l'ouverture */
 .cine-phone-ph{flex:none;pointer-events:none}
 /* bouton fermer */
@@ -2854,8 +2757,7 @@ body.cine-fs-lock{overflow:hidden}
 .cine-fs__close svg{width:22px;height:22px}
 .cine-fs__close:hover{background:rgba(255,255,255,.24)}
 .cine-fs__close:active{transform:scale(.92)}
-@media (prefers-reduced-motion:reduce){.cine-fs{transition:none}
-}
+@media (prefers-reduced-motion:reduce){.cine-fs{transition:none}}
 /* ============================================================
    V47 — Cartes catégories avec photo (bandeau haut premium)
    Photo en haut de chaque carte (n° + âge en surimpression),
@@ -2883,8 +2785,7 @@ body.cine-fs-lock{overflow:hidden}
   background:linear-gradient(135deg,#E8822A,#D96A1B);border-color:transparent;color:#190f04;
   box-shadow:0 6px 18px rgba(217,106,27,.42),0 0 0 1px rgba(255,255,255,.12)}
 .cat--photo h3{margin-top:0}
-@media (max-width:560px){.cat--photo .cat__photo{height:clamp(150px,44vw,180px)}
-}
+@media (max-width:560px){.cat--photo .cat__photo{height:clamp(150px,44vw,180px)}}
 /* ============================================================
    V58 — Piliers "Parents" : icônes ultra premium (chip + anneau conic)
    ============================================================ */
@@ -2903,14 +2804,12 @@ body.cine-fs-lock{overflow:hidden}
 .p-pillar:hover .p-pillar__ico{transform:translateY(-2px) scale(1.06);box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 32px -10px rgba(217,106,27,.5)}
 .p-pillar:hover .p-pillar__ico::before{transform:rotate(140deg);filter:brightness(1.25)}
 @media (prefers-reduced-motion:reduce){.p-pillar__ico,.p-pillar__ico::before{transition:none}
-.p-pillar:hover .p-pillar__ico{transform:none}
-}
+.p-pillar:hover .p-pillar__ico{transform:none}}
 /* 95 EUR mis en avant (argument cle) - plus gros PC + mobile */
 .essentiel-card__val--price{font-size:clamp(2.7rem,6.5vw,3.7rem)!important;letter-spacing:0!important}
 /* mobile : le 95 € de « L'essentiel » reste à la même taille que les autres encarts
    (le grand 95 € reste réservé à la section « Votre enfant entre de bonnes mains ») */
-@media (max-width:559px){.essentiel-card__val--price{font-size:1.5rem!important}
-}
+@media (max-width:559px){.essentiel-card__val--price{font-size:1.5rem!important}}
 /* ============================================================
    V66 — "Suivez le MBC" : visuel joueur en fondu premium (droite)
    + liens reseaux en COLONNE (garcon deplace depuis "Pret a faire
@@ -2936,8 +2835,7 @@ body.cine-fs-lock{overflow:hidden}
 .social-spotlight__media::before{-webkit-mask-image:none;mask-image:none;background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(16,27,48,.72))}
 .social-spotlight__media::after{background:linear-gradient(to top,var(--nuit-0) 8%,rgba(7,13,24,.4) 60%,transparent)}
 .social-spotlight__inner{min-height:0}
-.social-spotlight__head,.social-spotlight__body,.social-spotlight__grid{max-width:none}
-}
+.social-spotlight__head,.social-spotlight__body,.social-spotlight__grid{max-width:none}}
 /* ---- Categories : note "filles bienvenues" (premium) ---- */
 .cat-mixite{display:flex;align-items:flex-start;gap:.7rem;margin-top:1.1rem;max-width:64ch;padding:.85rem 1.15rem;
   border-radius:14px;border:1px solid rgba(232,130,42,.28);
@@ -2954,8 +2852,7 @@ body.cine-fs-lock{overflow:hidden}
   color:#fff;font-size:clamp(.95rem,1.25vw,1.18rem)}
 .team__role{font-family:var(--ff-cond,inherit);font-weight:600;font-size:.78rem;line-height:1.15;color:var(--bleu-glacier,#cfe0f2)}
 @media (max-width:559px){.team__photo .team__cap{padding:1.25rem .7rem .55rem}
-.team__role{font-size:.72rem}
-}
+.team__role{font-size:.72rem}}
 /* ---- Boutons : états désactivé / chargement (finition) ---- */
 .btn:disabled,.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;pointer-events:none;box-shadow:none;filter:saturate(.7)}
 
@@ -3029,11 +2926,9 @@ body.cine-fs-lock{overflow:hidden}
 .parents-proof li{font-size:.8rem}
 .cat__age{font-size:.8rem}
 /* Sous-titre du logo header : lisible aussi sur petits écrans */
-@media (max-width:560px){.brand__sub2{font-size:.62rem;letter-spacing:.18em}
-}
+@media (max-width:560px){.brand__sub2{font-size:.62rem;letter-spacing:.18em}}
 /* Boutons de zoom de la lightbox : zone tactile 44px sur mobile */
-@media (max-width:560px){.lightbox__toolbar button{min-width:44px;height:44px}
-}
+@media (max-width:560px){.lightbox__toolbar button{min-width:44px;height:44px}}
 /* Bandeaux défilants : pause au toucher (WCAG 2.2.2) — la pause au survol souris existe déjà */
 .marquee:active .marquee__track,.sponsors-marquee:active .sponsors-marquee__track{animation-play-state:paused}
 /* Header des pages SEO locales : responsive propre sous 680px */
@@ -3042,11 +2937,9 @@ body.cine-fs-lock{overflow:hidden}
 .seo-top__brand img{width:34px;height:34px}
 .seo-top__nav{gap:.1rem}
 .seo-top__nav a:not(.btn){font-size:.86rem;padding:.4em .5em;min-height:44px;display:inline-flex;align-items:center}
-.seo-top__nav .btn{min-height:42px;padding:.5em .95em}
-}
+.seo-top__nav .btn{min-height:42px;padding:.5em .95em}}
 /* Très petits écrans : on garde Accueil + Contact + le CTA, le lien intermédiaire est masqué */
-@media (max-width:430px){.seo-top__nav a:not(.btn):nth-child(2){display:none}
-}
+@media (max-width:430px){.seo-top__nav a:not(.btn):nth-child(2){display:none}}
 /* Figures ajoutées sur les pages SEO */
 .seo-prose figure{margin-inline:auto}
 .seo-prose figcaption{font-family:var(--ff-body)}
@@ -3068,8 +2961,7 @@ body.cine-fs-lock{overflow:hidden}
   letter-spacing:.09em!important;line-height:1!important;color:#fff!important;margin-right:-.09em;text-shadow:none!important}
 .brand__num{color:var(--orange-vif);filter:drop-shadow(0 1px 1px rgba(7,13,24,.45));transition:filter .3s ease}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
-.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,#F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-}
+.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,#F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
 .brand__sub2{font-family:var(--ff-cond);font-weight:600;font-size:.7rem;letter-spacing:.39em;margin-right:-.39em;
   text-transform:uppercase;color:#F4F7FB;line-height:1;opacity:1;transition:color .3s ease}
 .brand:hover .brand__num{filter:brightness(1.07) drop-shadow(0 1px 1px rgba(7,13,24,.45))}
@@ -3082,8 +2974,7 @@ body.cine-fs-lock{overflow:hidden}
 .brand__txt{min-height:32px;padding-left:.7rem!important;gap:.16rem}
 .brand__txt::before{height:31px}
 .brand__sub{font-size:1.24rem!important;letter-spacing:.09em!important}
-.brand__sub2{font-size:.66rem;letter-spacing:.28em;margin-right:-.28em}
-}
+.brand__sub2{font-size:.66rem;letter-spacing:.28em;margin-right:-.28em}}
 
 /* ============================================================
    V70 — Orientation adhérent (2026-08)
@@ -3182,19 +3073,16 @@ body.cine-fs-lock{overflow:hidden}
   .year-table td{border:0;padding:.35rem .9rem;display:flex;gap:.8rem;justify-content:space-between;align-items:baseline}
   .year-table td::before{content:attr(data-label);font-family:var(--ff-cond);font-weight:600;
     text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--txt-soft);flex:none}
-  .year-table td:last-child{text-align:right}
-}
+  .year-table td:last-child{text-align:right}}
 
 @media (max-width:560px){
   .cat__pick{padding:.55rem .75rem}
   .cat-foot{padding:.9rem 1rem;font-size:.92rem}
   .licence-path li{padding:.95rem 1rem .95rem 3.5rem}
-  .licence-path li::before{left:.9rem}
-}
+  .licence-path li::before{left:.9rem}}
 @media (prefers-reduced-motion:reduce){
   .support-card{transition:none!important}
-  .support-card:hover{transform:none!important}
-}
+  .support-card:hover{transform:none!important}}
 
 /* ============================================================
    V71 — Page adhésion : blocs d'explication + note "match"
@@ -3248,14 +3136,12 @@ body.cine-fs-lock{overflow:hidden}
   .footer__col h4{margin-bottom:.5rem}
   .footer__brand .small{font-size:.88rem;line-height:1.55}
   .footer__bottom{gap:.5rem;padding-top:1.1rem}
-  .footer__trust{gap:.4rem .8rem}
-}
+  .footer__trust{gap:.4rem .8rem}}
 
 /* Sous 430 px, les deux colonnes de liens du footer tiennent encore */
 @media (max-width:640px) and (min-width:360px){
   .footer__top{display:grid;grid-template-columns:1fr 1fr;align-items:start}
-  .footer__brand{grid-column:1 / -1}
-}
+  .footer__brand{grid-column:1 / -1}}
 
 /* ============================================================
    V73 — Correctif : la mention « créneau réservé » ajoutée dans
@@ -3263,28 +3149,6 @@ body.cine-fs-lock{overflow:hidden}
    et élargissait la ligne au-delà du viewport (360 px).
    La note passe désormais toujours à la ligne, sous le badge.
    ============================================================ */
-.cal2 .cact{flex-wrap:wrap}
-.cal2 .cact > *{min-width:0}
-.cal2 .cact__note{flex:1 0 100%}
-.cal2-row span{min-width:0}
-
-/* ============================================================
-   V74 — Calendrier mobile : jour et horaire sur le même bandeau
-   Une carte = un créneau. Fusionner « Lundi » et « 17h30 – 19h00 »
-   se lit mieux et fait gagner une ligne sur chacune des 8 cartes.
-   ============================================================ */
-@media (max-width:900px){
-  .cal2-row{grid-template-columns:auto 1fr!important;align-items:stretch}
-  .cal2-row .cday{grid-column:1;grid-row:1;order:0;padding-right:.7rem!important}
-  .cal2-row .ctime{grid-column:2;grid-row:1;order:0;
-    display:flex!important;align-items:center;justify-content:flex-end!important;
-    background:var(--grad-roi);color:#fff!important;
-    border-top:0!important;padding:.78rem 1.15rem .78rem 0!important;
-    font-size:1.02rem!important;letter-spacing:.01em}
-  .cal2-row .ctime::before{display:none!important}
-  .cal2-row--match .ctime{background:var(--grad-orange);color:#190f04!important}
-  .cal2-row span:not(.cday):not(.ctime){grid-column:1 / -1}
-}
 
 /* ============================================================
    V76 — Hero : hiérarchie des trois actions
@@ -3316,8 +3180,7 @@ body.cine-fs-lock{overflow:hidden}
     content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
     width:min(300px,86%);height:1px;pointer-events:none;
     background:linear-gradient(90deg,transparent,rgba(191,210,228,.26),transparent);
-  }
-}
+  }}
 
 /* --- Traitement du bouton d'essai : 2e action réelle, pas un lien de nav --- */
 .hero-offer__trial{
@@ -3347,13 +3210,11 @@ body.cine-fs-lock{overflow:hidden}
   /* en colonne, des largeurs egales se lisent comme un empilement voulu ;
      la hierarchie passe par la couleur et le poids, pas par la largeur. */
   .hero-offer__btns > .btn{width:100%}
-  .hero-offer__trial::before{display:none}
-}
+  .hero-offer__trial::before{display:none}}
 @media (prefers-reduced-motion:reduce){
   .hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
   .hero-offer__trial:hover{transform:none!important}
-  .hero-offer__trial:hover .ic{transform:none!important}
-}
+  .hero-offer__trial:hover .ic{transform:none!important}}
 
 /* ============================================================
    V78 — Passe « finition » (2026-08)
@@ -3368,20 +3229,16 @@ body.cine-fs-lock{overflow:hidden}
    ============================================================ */
 
 /* ---- 1. Un seul axe pour tous les en-têtes ---- */
-.section > .wrap > .sec-head,
-.section > .wrap > .cal-wrap > .sec-head,
-.section .cal-wrap > .sec-head{margin-inline:auto;text-align:center}
+.section > .wrap > .sec-head,.section > .wrap > .cal-wrap > .sec-head,.section .cal-wrap > .sec-head{margin-inline:auto;text-align:center}
 .section .sec-head .kicker{justify-content:center}
 .section .sec-head__sub{margin-inline:auto}
 /* les blocs riches restent lisibles : texte à gauche dans un bloc centré */
-.sec-head .cat-mixite,
-.sec-head .parents-proof{text-align:left}
+.sec-head .cat-mixite,.sec-head .parents-proof{text-align:left}
 .sec-head .parents-proof{justify-content:center}
 .sec-head .cat-mixite{margin-inline:auto}
 
 /* ---- 2. Filet de séparation entre sections ---- */
-.section + .section::before,
-.marquee + .section::before{content:"";position:absolute;top:0;left:50%;
+.section + .section::before,.marquee + .section::before{content:"";position:absolute;top:0;left:50%;
   transform:translateX(-50%);width:min(var(--wrap),88%);height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(191,210,228,.15) 22%,rgba(191,210,228,.15) 78%,transparent)}
 
@@ -3422,12 +3279,10 @@ body.cine-fs-lock{overflow:hidden}
   .cat--wide .cat__num{font-size:3.2rem}
   /* le halo de survol injecte par script.js doit couvrir toute la carte,
      pas seulement la colonne de texte ou la grille l'aurait place */
-  .cat--wide > .spotglow__fx{grid-column:1 / -1;grid-row:1 / -1}
-}
+  .cat--wide > .spotglow__fx{grid-column:1 / -1;grid-row:1 / -1}}
 @media (max-width:560px){
   .cat-rail{gap:.35rem .7rem;margin-bottom:1rem;padding-bottom:.7rem}
-  .cat-rail__s{margin-left:0;flex-basis:100%}
-}
+  .cat-rail__s{margin-left:0;flex-basis:100%}}
 
 /* ============================================================
    V79 — Rayons et ombres recalibrés
@@ -3440,7 +3295,7 @@ body.cine-fs-lock{overflow:hidden}
    ============================================================ */
 
 /* ---- A. Rayons et ombres recalibrés (hors Hero) ---- */
-main > .section, .site-footer{
+main > .section,.site-footer{
   --radius:12px;
   --r-xs:8px; --r-sm:10px; --r-md:12px; --r-lg:16px;
   /* ombres nettement plus discrètes : on structure par le contraste,
@@ -3458,8 +3313,7 @@ main > .section, .site-footer{
    téléphone a réellement des coins de ce rayon. Le Hero n'est pas concerné. */
 main > .section .essentiel-card{border-radius:12px}
 main > .section .cat{border-radius:14px}
-main > .section .cine-card,
-main > .section .cine-card__sheen{border-radius:16px}
+main > .section .cine-card,main > .section .cine-card__sheen{border-radius:16px}
 main > .section .adhesion-video__player{border-radius:14px}
 
 /* ============================================================
@@ -3471,18 +3325,12 @@ main > .section .adhesion-video__player{border-radius:14px}
    verticale courte, identique partout.
    Scope `main > .section` : le hero (.reveal-fade) n'est pas concerne.
    ============================================================ */
-main > .section .reveal,
-main > .section .reveal--l,
-main > .section .reveal--r,
-main > .section .reveal--scale{
+main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{
   opacity:0;
   transform:translateY(24px);
   transition:opacity .52s var(--ease-out),transform .52s var(--ease-out);
 }
-main > .section .reveal.in,
-main > .section .reveal--l.in,
-main > .section .reveal--r.in,
-main > .section .reveal--scale.in{opacity:1;transform:none}
+main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal--r.in,main > .section .reveal--scale.in{opacity:1;transform:none}
 
 /* ---- Partenaires : une vitrine, pas un bandeau qui defile ----
    §24 : les sponsors sont valorises, pas utilises comme decoration.
@@ -3507,12 +3355,8 @@ main > .section .reveal--scale.in{opacity:1;transform:none}
 .sponsor-card__plate img{max-height:56px;width:auto;margin-inline:auto;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){
-  main > .section .reveal,
-  main > .section .reveal--l,
-  main > .section .reveal--r,
-  main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
-  .sponsor-card:hover{transform:none !important}
-}
+main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
+  .sponsor-card:hover{transform:none !important}}
 
 /* ---- Un seul mouvement continu sur la page ----
    Restaient en boucle infinie hors hero : la trame animee derriere les
@@ -3580,8 +3424,7 @@ main > .section .cine-phone__island i{animation:none !important}
     grid-template-areas:"kicker kicker" "title stand"}
   .lp-kicker{grid-area:kicker;margin-bottom:1.1rem}
   .lp-title{grid-area:title}
-  .lp-standfirst{grid-area:stand;padding-bottom:.45rem}
-}
+  .lp-standfirst{grid-area:stand;padding-bottom:.45rem}}
 
 /* ---- Image d'ancrage ---- */
 .lp-stage{position:relative;margin:0;overflow:hidden;border-radius:14px;
@@ -3630,14 +3473,11 @@ main > .section .cine-phone__island i{animation:none !important}
   .lp-below{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
     column-gap:clamp(2.2rem,4.5vw,4rem);align-items:start}
   /* le portrait descend légèrement sous la ligne du texte : décalage voulu */
-  .lp-aside{margin-top:clamp(1.5rem,3vw,3rem)}
-}
+  .lp-aside{margin-top:clamp(1.5rem,3vw,3rem)}}
 
 /* ---- Micro-interaction : desktop et souris uniquement ---- */
 @media (hover:hover) and (min-width:900px){
-  .lp-stage:hover img,
-  .lp-aside:hover img{transform:scale(1.012)}
-}
+.lp-stage:hover img,.lp-aside:hover img{transform:scale(1.012)}}
 
 /* ---- Apparition échelonnée : manchette, image, puis double page ---- */
 .local-proof .lp-stage.reveal{transition-delay:.09s}
@@ -3647,15 +3487,13 @@ main > .section .cine-phone__island i{animation:none !important}
 @media (max-width:959px){
   .lp-head{margin-bottom:var(--lp-gap-m)}
   .local-proof .lp-standfirst{max-width:46ch}
-  .lp-aside{margin-top:0}
-}
+  .lp-aside{margin-top:0}}
 /* En colonne unique large (tablette), le portrait 4:5 pleine largeur faisait
    879 px de haut et ecrasait la composition : on le borne et on le centre. */
 @media (min-width:641px) and (max-width:959px){
   .lp-aside{width:min(100%,460px);margin-inline:auto}
   .lp-aside figcaption{justify-content:center;text-align:center}
-  .lp-word{font-size:clamp(7rem,15vw,11rem);color:rgba(199,219,244,.03)}
-}
+  .lp-word{font-size:clamp(7rem,15vw,11rem);color:rgba(199,219,244,.03)}}
 @media (max-width:640px){
   .lp-word{display:none}          /* jamais de débordement sur petit écran */
   .lp-title{font-size:clamp(2.3rem,10.5vw,3.2rem)}
@@ -3667,16 +3505,13 @@ main > .section .cine-phone__island i{animation:none !important}
   .lp-stage img{aspect-ratio:4/3}
   .lp-stage__txt{font-size:.95rem}
   .lp-aside picture{border-radius:12px}
-  .lp-sign{font-size:.8rem;letter-spacing:.1em}
-}
+  .lp-sign{font-size:.8rem;letter-spacing:.1em}}
 
 @media (prefers-reduced-motion:reduce){
   .lp-word{transform:none !important}
   .lp-stage img,.lp-aside img{transition:none !important}
   .lp-stage:hover img,.lp-aside:hover img{transform:none !important}
-  .local-proof .lp-stage.reveal,
-  .local-proof .lp-below .reveal{transition-delay:0s !important}
-}
+.local-proof .lp-stage.reveal,.local-proof .lp-below .reveal{transition-delay:0s !important}}
 
 /* ============================================================
    V84 — Calendrier des matchs (championnat PRM, zone Nord)
@@ -3747,16 +3582,14 @@ main > .section .cine-phone__island i{animation:none !important}
     grid-template-areas:"j date side opp meta"}
   .mx-side{grid-area:side}
   .mx-meta{grid-area:meta;justify-content:flex-end;text-align:right;flex-direction:column;gap:.1rem}
-  .mx-opp{font-size:1.2rem}
-}
+  .mx-opp{font-size:1.2rem}}
 @media (max-width:560px){
   .mx-row{gap:.3rem .8rem;padding:.95rem .2rem}
   .mx-date{min-width:56px;padding:.45rem .35rem}
   .mx-date__n{font-size:1.35rem}
   .mx-opp{font-size:1.02rem}
   .mx-meta{font-size:.82rem}
-  .mx-j{font-size:.82rem;min-width:1.9em}
-}
+  .mx-j{font-size:.82rem;min-width:1.9em}}
 @media (prefers-reduced-motion:reduce){.mx-row{transition:none}}
 
 /* ============================================================
@@ -3805,8 +3638,7 @@ main > .section .cine-phone__island i{animation:none !important}
     grid-template-areas:"j date duel opp side meta";gap:0 1.3rem}
   .mx-row--dom{grid-template-areas:"j date duel opp side meta"
     ". roles roles roles roles roles"}
-  .mx-side{justify-self:end;align-self:center}
-}
+  .mx-side{justify-self:end;align-self:center}}
 @media (max-width:819px){
   .mx-row{grid-template-columns:auto auto 1fr;
     grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
@@ -3820,16 +3652,14 @@ main > .section .cine-phone__island i{animation:none !important}
   .mx-side{grid-area:side;align-self:center}
   .mx-duel{justify-self:start}
   .mx-side{justify-self:start;align-self:center}
-  .mx-meta{justify-content:flex-end;text-align:right}
-}
+  .mx-meta{justify-content:flex-end;text-align:right}}
 @media (max-width:520px){
   .mx-crest{width:56px;height:56px;border-radius:14px}
   .mx-crest--logo{padding:4px}
   .mx-crest--sigle{font-size:.78rem}
   .mx-duel{gap:.5rem}
   .mx-opp__n{font-size:1rem}
-  .mx-row{gap:.35rem .7rem}
-}
+  .mx-row{gap:.35rem .7rem}}
 
 /* ---- Logos des clubs adverses ----
    Plaque claire systematique : les logos fournis ont des fonds tres
@@ -3905,5 +3735,4 @@ main > .section .cine-phone__island i{animation:none !important}
 .affiche__d{margin:0 0 1.1rem;color:var(--txt-soft);max-width:48ch}
 .affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 @media (min-width:760px){
-  .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}
-}
+  .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
