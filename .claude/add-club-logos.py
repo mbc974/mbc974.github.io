@@ -8,7 +8,12 @@ Téléchargements, avec exactement ces noms (png, jpg ou webp) :
     bcd3.png     Basket Club Dionysien       (volcan)
     sbbc.png     Saint-Benoît Basket Club    (ballon bleu clair)
     mtg.png      Association MTG Basketball  (tigre)
-    bjssr.png    JS Sainte-Rosienne          (une seule des deux variantes)
+    bjssr.png    JS Sainte-Rosienne          (variante AVEC le ballon de basket
+                                              et le volcan : "JEUNESSE SPORTIVE
+                                              SAINTE ROSIENNE" en arc au-dessus,
+                                              "BASKET CLUB" en dessous.
+                                              PAS le rond bleu "Pays des Laves",
+                                              qui ne porte pas de ballon.)
     smb2.png     Sainte-Marie Basket         (silhouettes)
     picks3.png   Picks La Possession         (dodo)
 
