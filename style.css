@@ -3898,3 +3898,5 @@ main > .section .cine-phone__island i{animation:none !important}
    photo remonte, et n'ajoute aucune nappe par-dessus le cliche. */
 .ess__head,.ess-stats,.ess-plus{
   text-shadow:0 1px 3px rgba(7,13,24,.9),0 2px 18px rgba(7,13,24,.75)}
+/* les notes du calendrier s'alignent sur le planning, pas sur le wrap */
+.cal-wrap .cal-note{max-width:940px;margin-inline:auto}
