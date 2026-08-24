@@ -913,3 +913,53 @@
     }
   });
 })();
+
+/* ============================================================
+   Planning — filtre par catégorie
+   ------------------------------------------------------------
+   Masque les créneaux hors sélection, puis les journées qui se
+   retrouvent vides, et réaccorde le compteur de chaque journée.
+   Pas de rechargement, pas de modification de l'URL : le filtre
+   est un confort de lecture, pas un état à partager.
+   Sans JS, tout le planning reste affiché — les boutons, eux,
+   sont retirés puisqu'ils ne feraient rien.
+   ============================================================ */
+(function () {
+  var pl = document.querySelector('.pl');
+  if (!pl) return;
+  var zone = pl.querySelector('.pl-filtres');
+  var boutons = pl.querySelectorAll('.pl-f');
+  var creneaux = pl.querySelectorAll('.pl-slot');
+  var jours = pl.querySelectorAll('.pl-jour');
+  var aucun = pl.querySelector('.pl-aucun');
+  if (!zone || !boutons.length || !creneaux.length) return;
+
+  function appliquer(cat) {
+    var visibles = 0;
+    Array.prototype.forEach.call(creneaux, function (c) {
+      var liste = ' ' + (c.getAttribute('data-cat') || '') + ' ';
+      var ok = cat === 'tous' || liste.indexOf(' ' + cat + ' ') !== -1;
+      c.hidden = !ok;
+      if (ok) visibles++;
+    });
+    Array.prototype.forEach.call(jours, function (j) {
+      var n = j.querySelectorAll('.pl-slot:not([hidden])').length;
+      j.hidden = n === 0;
+      var cpt = j.querySelector('.pl-jour__n2');
+      if (cpt) cpt.textContent = n + (n > 1 ? ' créneaux' : ' créneau');
+    });
+    if (aucun) aucun.hidden = visibles !== 0;
+  }
+
+  Array.prototype.forEach.call(boutons, function (b) {
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(boutons, function (x) {
+        x.classList.remove('is-on');
+        x.setAttribute('aria-pressed', 'false');
+      });
+      b.classList.add('is-on');
+      b.setAttribute('aria-pressed', 'true');
+      appliquer(b.getAttribute('data-cat'));
+    });
+  });
+})();

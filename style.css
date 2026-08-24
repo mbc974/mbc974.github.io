@@ -337,123 +337,145 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 /* ---- Pourquoi : 5 blocs centrés sur une ligne ---- */
 /* ---- Calendrier HTML premium (remplace l'image) ---- */
 /* ============================================================
-   V88 — Planning hebdomadaire, groupé par jour
+   V90 — Planning hebdomadaire, seconde version
    ------------------------------------------------------------
-   Remplace un tableau de cinq colonnes où chaque information portait le
-   même poids et où le nom du jour se répétait à chaque ligne.
+   La V88 échouait sur la lisibilité : le jour mangeait une colonne de
+   154 px, l'horaire et le lieu se retrouvaient à 750 px l'un de l'autre,
+   et les textes tombaient à 13 px sur des surfaces trop proches du fond.
 
-   Hiérarchie : JOUR → HORAIRE → CATÉGORIE → LIEU.
-   L'orange ne sert plus qu'aux horaires et aux créneaux de match ; le
-   reste vit en blanc et gris bleuté, ce qui lui rend sa valeur d'accent.
-   Écrit en mobile d'abord : le vertical est la mise en page de base, les
-   colonnes n'apparaissent que lorsqu'il y a la place.
+   Ici : le jour devient un en-tête, la ligne est plafonnée à 940 px pour
+   que l'œil ne traverse pas la page, les créneaux sont des surfaces
+   franchement plus claires que le fond, et rien ne descend sous 14 px.
+
+   Code couleur, trois valeurs et pas une de plus — bleu entraînement,
+   orange match, turquoise loisir. La couleur ne porte jamais seule
+   l'information : chaque pastille est doublée de son libellé écrit.
    ============================================================ */
-.pl{position:relative;z-index:2;margin-top:.5rem;display:grid;gap:.8rem}
+.pl{position:relative;z-index:2;max-width:940px;margin:.5rem auto 0}
+.pl [hidden]{display:none!important}
 
-/* ---- la journée : une surface, un titre, ses créneaux ---- */
-.pl-jour{border:1px solid var(--line);border-radius:var(--r-lg);
-  background:var(--nuit-3);overflow:hidden}
-.pl-jour__n{margin:0;padding:.92rem 1.15rem;
-  font-family:var(--ff-display);font-size:1.1rem;line-height:1;
-  letter-spacing:.045em;text-transform:uppercase;color:var(--blanc);
-  border-bottom:1px solid var(--line);
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.012))}
-.pl-jour__l{list-style:none;margin:0;padding:0}
+/* ---- en-tête : titre + accès à l'affiche ---- */
+.pl-top{display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;margin-bottom:1.15rem}
+.pl-top__t{margin:0;font-family:var(--ff-display);font-size:1.2rem;
+  line-height:1;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--blanc)}
+.pl-affiche{display:inline-flex;align-items:center;gap:.5em;cursor:pointer;
+  font-family:var(--ff-cond);font-weight:600;font-size:.92rem;
+  letter-spacing:.04em;color:var(--bleu-glacier);background:none;
+  border:1px solid var(--line-strong);border-radius:99px;
+  padding:.5em 1.05em;min-height:42px}
+.pl-affiche .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
+.pl-affiche:focus-visible{outline:2px solid var(--orange-vif);
+  outline-offset:3px}
 
-.pl-slot{display:grid;gap:.6rem;grid-template-areas:"h" "qui" "ou";
-  padding:1.05rem 1.15rem 1.15rem;
-  border-top:1px solid rgba(191,210,228,.085)}
-.pl-jour__l > li:first-child{border-top:0}
+/* ---- filtres ---- */
+.pl-filtres{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
+  margin-bottom:1.5rem}
+.pl-filtres__lab{font-family:var(--ff-cond);font-weight:600;font-size:.95rem;
+  color:var(--txt-soft)}
+.pl-filtres__l{display:flex;gap:.45rem;flex-wrap:wrap}
+.pl-f{font-family:var(--ff-cond);font-weight:700;font-size:.96rem;
+  line-height:1;color:#C7D6E7;background:rgba(255,255,255,.055);
+  border:1px solid rgba(191,210,228,.22);border-radius:99px;
+  padding:.68em 1.05em;min-height:44px;cursor:pointer}
+.pl-f.is-on{background:var(--grad-orange);color:#1B0E03;
+  border-color:transparent}
+.pl-f:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+.pl .pl-aucun{margin:0 0 1.4rem;font-size:.98rem;color:var(--bleu-glacier)}
 
-/* ---- l'horaire : la première chose qu'on vient chercher ---- */
-.pl .pl-slot__h{grid-area:h;margin:0;display:flex;align-items:center;gap:.55rem;
+/* ---- la journée : un en-tête de rangée, pas une colonne ---- */
+.pl-jour + .pl-jour{margin-top:1.7rem}
+.pl-jour__n{display:flex;align-items:baseline;gap:.85rem;margin:0 0 .75rem;
+  font-family:var(--ff-display);font-size:1.4rem;line-height:1;
+  text-transform:uppercase;letter-spacing:.03em;color:var(--blanc)}
+.pl-jour__n2{font-family:var(--ff-cond);font-weight:600;font-size:.95rem;
+  text-transform:none;letter-spacing:0;color:var(--txt-soft)}
+.pl-jour__n::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(191,210,228,.26),transparent)}
+.pl-jour__l{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+
+/* ---- un créneau : une surface qui se détache vraiment ---- */
+.pl-slot{display:grid;gap:.62rem;padding:1.1rem 1.15rem;
+  background:#203457;border:1px solid rgba(191,210,228,.24);
+  border-radius:var(--r-sm)}
+
+.pl .pl-slot__h{margin:0;display:flex;align-items:center;gap:.42rem;
   font-family:var(--ff-cond);font-weight:700;font-size:1.34rem;line-height:1;
   color:var(--orange-vif);white-space:nowrap;
   font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
-.pl-slot__tiret{width:.9rem;height:2px;flex:none;border-radius:2px;
-  background:rgba(232,130,42,.45)}
+.pl-slot__sep{color:rgba(232,130,42,.6);font-weight:500}
 
-/* ---- pour qui ---- */
-.pl-slot__qui{grid-area:qui;min-width:0}
-.pl-slot__cats{margin:0;display:flex;align-items:center;flex-wrap:wrap;
-  gap:.42rem .55rem}
+.pl-slot__cats{margin:0;display:flex;flex-wrap:wrap;gap:.4rem}
 .pl-chip{display:inline-flex;align-items:center;
-  font-family:var(--ff-cond);font-weight:700;font-size:.83rem;line-height:1;
-  letter-spacing:.05em;text-transform:uppercase;color:#DDE8F4;
-  background:rgba(191,210,228,.10);border:1px solid rgba(191,210,228,.22);
-  padding:.44em .68em;border-radius:8px}
-.pl-slot__age{font-size:.87rem;color:var(--txt-soft)}
-.pl .pl-slot__note{margin:.45rem 0 0;font-size:.83rem;line-height:1.5;
-  color:var(--txt-soft);max-width:52ch}
+  font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1;
+  color:var(--blanc);background:rgba(255,255,255,.10);
+  border:1px solid rgba(191,210,228,.26);padding:.4em .74em;
+  border-radius:8px}
 
-/* ---- où ---- */
-.pl .pl-slot__ou{grid-area:ou;margin:0;display:flex;align-items:center;gap:.45em;
-  font-size:.88rem;color:#8FA5BF}
-.pl-slot__ou .ic{width:1.05em;height:1.05em;flex:none;
-  color:var(--orange-vif);opacity:.5}
-/* le lieu qui sort du gymnase remonte en contraste : c'est l'exception
-   qu'il faut repérer, pas la règle */
-.pl .pl-slot--ailleurs .pl-slot__ou{color:#CBD9E8}
-.pl .pl-slot--ailleurs .pl-slot__ou .ic{opacity:.9}
+.pl .pl-slot__nat{margin:0;display:flex;align-items:center;gap:.5rem;
+  flex-wrap:wrap;font-family:var(--ff-cond);font-size:1rem;line-height:1.25}
+.pl-slot__nat b{font-weight:600;color:#EAF1F9}
+.pl-dot{width:.6rem;height:.6rem;border-radius:50%;flex:none}
+.pl-slot--train .pl-dot{background:#5B9BE8}
+.pl-slot--loisir .pl-dot{background:#46C7B8}
+.pl-slot--match .pl-dot{background:var(--orange-vif)}
+.pl-slot__prec{flex-basis:100%;font-size:.9rem;color:var(--bleu-glacier)}
 
-/* ---- marqueurs : seules les exceptions sont nommées ----
-   « Entraînement » valait pour sept créneaux sur neuf et n'apporte rien ;
-   ne restent visibles que le loisir mixte et les matchs. */
-.pl-tag{display:inline-flex;align-items:center;gap:.4em;
-  font-family:var(--ff-cond);font-weight:700;font-size:.86rem;line-height:1;
-  letter-spacing:.045em;text-transform:uppercase;color:#1B0E03;
-  background:var(--grad-orange);padding:.46em .7em;border-radius:8px}
-.pl-tag .ic{width:1.05em;height:1.05em}
-.pl-tag--doux{color:#EFB784;background:rgba(232,130,42,.10);
-  border:1px solid rgba(232,130,42,.30)}
+/* le match : reconnaissable sans devenir un aplat orange */
+.pl-slot--match{border-color:rgba(232,130,42,.45);
+  background:linear-gradient(90deg,rgba(217,106,27,.18),#203457 42%)}
+.pl-slot--match .pl-slot__nat b{color:#FFD7AE;font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;font-size:.98rem}
 
-.pl-slot--match{background:rgba(217,106,27,.05);
-  box-shadow:inset 3px 0 0 var(--orange-vif)}
+/* ---- le lieu : un lien, pas un texte gris ---- */
+.pl-slot__ou{display:inline-flex;align-items:center;gap:.45rem;
+  border-radius:9px;text-decoration:none;color:#CFDDEC;font-size:1rem;
+  padding:.5rem .65rem;background:rgba(255,255,255,.05);
+  border:1px solid rgba(191,210,228,.14);justify-self:start}
+.pl-slot__pin{width:1.05rem;height:1.05rem;flex:none;
+  color:var(--orange-vif);opacity:.8}
+.pl-slot__nom{font-weight:600}
+.pl-slot__go{font-family:var(--ff-cond);font-weight:700;font-size:.84rem;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--orange-vif)}
+.pl-slot__fl{width:.92rem;height:.92rem;flex:none;color:var(--orange-vif)}
+.pl-slot__ou:focus-visible{outline:2px solid var(--orange-vif);
+  outline-offset:2px}
 
-/* ---- pied : l'affiche officielle ---- */
-.pl-pied{display:flex;justify-content:flex-end;margin-top:.2rem}
-.pl-btn{display:inline-flex;align-items:center;justify-content:center;
-  gap:.55em;width:100%;min-height:46px;cursor:pointer;
-  font-family:var(--ff-cond);font-weight:600;font-size:.85rem;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--bleu-glacier);
-  background:none;border:1px solid var(--line-strong);border-radius:99px;
-  padding:.6em 1.2em}
-.pl-btn .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
-.pl-btn:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+.pl .pl-note{margin:1.6rem 0 0;padding-left:.95rem;font-size:.94rem;
+  line-height:1.6;color:var(--bleu-glacier);
+  border-left:2px solid rgba(232,130,42,.45)}
+.pl-note b{color:#FFD7AE;font-weight:600}
 
-/* ---- l'horaire et le groupe tiennent côte à côte ---- */
-@media (min-width:620px){
-  .pl-slot{grid-template-columns:auto minmax(0,1fr);
-    grid-template-areas:"h qui" "ou ou";align-items:center;gap:.55rem 1.5rem;
-    padding:1.1rem 1.35rem}
-  .pl .pl-slot__ou{padding-left:.1rem}
-  .pl-btn{width:auto}
+/* ---- desktop : les quatre données sur une ligne, sans les éloigner ---- */
+@media (min-width:880px){
+  .pl-slot{grid-template-columns:10.2rem minmax(0,13.5rem) minmax(0,11rem)
+    minmax(0,1fr);align-items:center;gap:0 1.15rem;padding:1rem 1.2rem}
+  .pl-slot__ou{justify-self:end;background:none;border-color:transparent;
+    padding:.42rem .55rem;margin-right:-.55rem}
+  /* « Itinéraire » se révèle au survol : la flèche suffit à signaler le
+     lien au repos, le mot encombrerait les neuf lignes */
+  .pl-slot__go{opacity:0}
 }
 
-/* ---- le jour passe en colonne, le créneau tient sur une ligne ---- */
-@media (min-width:900px){
-  .pl-jour{display:grid;grid-template-columns:9.6rem minmax(0,1fr)}
-  .pl-jour__n{border-bottom:0;border-right:1px solid var(--line);
-    padding:1.5rem 1.2rem;font-size:1.2rem}
-  .pl-slot{grid-template-columns:11.4rem minmax(0,1fr) auto;
-    grid-template-areas:"h qui ou";gap:.5rem 1.6rem;padding:1.2rem 1.5rem}
-  .pl .pl-slot__ou{padding-left:0;justify-content:flex-end;text-align:right}
-}
-
-/* ---- micro-interactions : présentes, jamais démonstratives ---- */
+/* ---- interactions : présentes, discrètes ---- */
 @media (hover:hover){
-  .pl-jour{transition:border-color .22s var(--ease-out)}
-  .pl-jour:hover{border-color:rgba(191,210,228,.22)}
-  .pl-slot{transition:background .2s var(--ease-out)}
-  .pl-slot:hover{background:rgba(27,81,158,.13)}
-  .pl-slot--match:hover{background:rgba(217,106,27,.09)}
-  .pl-btn{transition:border-color .2s var(--ease-out),
-    color .2s var(--ease-out),background .2s var(--ease-out)}
-  .pl-btn:hover{border-color:rgba(232,130,42,.55);color:var(--orange-vif);
-    background:rgba(232,130,42,.06)}
+  .pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{
+    transition:background .2s var(--ease-out),border-color .2s var(--ease-out),
+    color .2s var(--ease-out),opacity .2s var(--ease-out)}
+  .pl-slot:hover{background:#27406A;border-color:rgba(191,210,228,.36)}
+  .pl-slot--match:hover{background:linear-gradient(90deg,
+    rgba(217,106,27,.24),#27406A 42%)}
+  .pl-slot__ou:hover{background:rgba(255,255,255,.09);color:var(--blanc)}
+  .pl-slot__ou:hover .pl-slot__go{opacity:1}
+  .pl-f:hover{border-color:rgba(232,130,42,.55);color:var(--blanc)}
+  .pl-f.is-on:hover{color:#1B0E03}
+  .pl-affiche:hover{border-color:rgba(232,130,42,.6);color:var(--orange-vif)}
 }
+/* sans survol possible, le mot reste affiché */
+@media (hover:none){.pl-slot__go{opacity:1}}
 @media (prefers-reduced-motion:reduce){
-  .pl-jour,.pl-slot,.pl-btn{transition:none}
+  .pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{transition:none}
 }
 
 
@@ -3834,3 +3856,11 @@ main > .section .cine-phone__island i{animation:none !important}
 .affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 @media (min-width:760px){
   .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
+/* le lien Maps sous la photo : qui regarde la salle peut lancer l'itinéraire */
+.cal-venue__map{display:inline-flex;align-items:center;gap:.4em;margin-top:.55rem;
+  font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--orange-vif);text-decoration:none;
+  transition:color .2s var(--ease-out)}
+.cal-venue__map svg{width:.95em;height:.95em}
+.cal-venue__map:hover{color:#FFD7AE}
+.cal-venue__map:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
