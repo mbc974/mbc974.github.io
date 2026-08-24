@@ -8,6 +8,12 @@
       "port": 8000
     },
     {
+      "name": "mbc-static-8010",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".claude/static-server.ps1", "-Port", "8010"],
+      "port": 8010
+    },
+    {
       "name": "lotopei",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "C:/Users/ALEX/Documents/GitHub/LOTOPEI", "run", "dev"],

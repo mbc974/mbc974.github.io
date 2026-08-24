@@ -3764,9 +3764,10 @@ main > .section .cine-phone__island i{animation:none !important}
    ------------------------------------------------------------
    Les sigles sont ceux de l'article 2 du Règlement Sportif
    Particulier (MTG, BCD3, BJSSR, BC2S, MBC, PICKS3, SBBC, SMB2).
-   Aucun logo d'adversaire n'est repris : la FFBB sert un
-   defaultLogo.svg pour ces clubs, il n'existe pas de source
-   fiable. Le balisage accepte un <img> à la place d'un sigle.
+   Les huit clubs de la poule ont désormais leur logo ; le sigle
+   reste le repli si une image manque (voir le onerror du
+   balisage, et .claude/add-club-logos.py pour la préparation
+   des fichiers).
    ============================================================ */
 .mx-duel{grid-area:duel;display:inline-flex;align-items:center;gap:.45rem;flex:none}
 .mx-crest{display:grid;place-items:center;flex:none;

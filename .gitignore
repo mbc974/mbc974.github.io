@@ -3,3 +3,5 @@ dist/
 .vite/
 .pnpm-store/
 *.local
+planche-logos.png
+__pycache__/
