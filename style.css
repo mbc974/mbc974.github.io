@@ -3758,3 +3758,58 @@ main > .section .cine-phone__island i{animation:none !important}
   .mx-j{font-size:.82rem;min-width:1.9em}
 }
 @media (prefers-reduced-motion:reduce){.mx-row{transition:none}}
+
+/* ============================================================
+   V85 — Rencontres : écussons et accentuation domicile/extérieur
+   ------------------------------------------------------------
+   Les sigles sont ceux de l'article 2 du Règlement Sportif
+   Particulier (MTG, BCD3, BJSSR, BC2S, MBC, PICKS3, SBBC, SMB2).
+   Aucun logo d'adversaire n'est repris : la FFBB sert un
+   defaultLogo.svg pour ces clubs, il n'existe pas de source
+   fiable. Le balisage accepte un <img> à la place d'un sigle.
+   ============================================================ */
+.mx-duel{grid-area:duel;display:inline-flex;align-items:center;gap:.45rem;flex:none}
+.mx-crest{display:grid;place-items:center;flex:none;
+  width:40px;height:40px;border-radius:10px;overflow:hidden}
+.mx-crest--mbc{background:rgba(255,255,255,.06);border:1px solid rgba(191,210,228,.20);padding:3px}
+.mx-crest--mbc img{width:100%;height:100%;object-fit:contain}
+.mx-crest--sigle{background:rgba(16,27,48,.85);border:1px solid rgba(191,210,228,.20);
+  font-family:var(--ff-cond);font-weight:700;font-size:.68rem;letter-spacing:.04em;
+  color:#C3D2E2;text-align:center;line-height:1}
+.mx-vs{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  font-size:.64rem;letter-spacing:.1em;color:#6E839C;flex:none}
+
+/* le nom complet reste la reference ; le sigle n'apparait qu'en petit ecran */
+.mx-opp__n{display:block;font-weight:700}
+.mx-opp__s{display:none}
+
+/* ---- Domicile / extérieur : la distinction devient immédiate ---- */
+.mx-side{font-size:.66rem;letter-spacing:.14em;padding:.28em .8em}
+.mx-row--ext{box-shadow:inset 2px 0 0 rgba(191,210,228,.22)}
+.mx-row--ext .mx-side{color:#A9BDD4;border-color:rgba(191,210,228,.28);
+  background:rgba(191,210,228,.06)}
+.mx-row--dom{box-shadow:inset 4px 0 0 var(--orange-vif);
+  background:linear-gradient(90deg,rgba(217,106,27,.10),rgba(217,106,27,.02) 42%,transparent 70%)}
+.mx-row--dom:hover{background:linear-gradient(90deg,rgba(217,106,27,.16),rgba(217,106,27,.04) 42%,transparent 70%)}
+.mx-row--dom .mx-crest--mbc{border-color:rgba(232,130,42,.45);background:rgba(232,130,42,.10)}
+.mx-row--dom .mx-lieu{color:#E3B07C}
+.mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
+
+@media (min-width:820px){
+  .mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto auto;
+    grid-template-areas:"j date duel opp side meta";gap:0 1.3rem}
+  .mx-side{justify-self:end;align-self:center}
+}
+@media (max-width:819px){
+  .mx-row{grid-template-columns:auto auto 1fr;
+    grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
+  .mx-duel{justify-self:start}
+  .mx-side{justify-self:start;align-self:center}
+  .mx-meta{justify-content:flex-end;text-align:right}
+}
+@media (max-width:520px){
+  .mx-crest{width:34px;height:34px;border-radius:9px}
+  .mx-crest--sigle{font-size:.6rem}
+  .mx-opp__n{font-size:1rem}
+  .mx-row{gap:.35rem .7rem}
+}
