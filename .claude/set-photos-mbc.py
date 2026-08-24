@@ -30,29 +30,32 @@ EXTS = ('.jpg', '.jpeg', '.png', '.webp')
 
 # fractions de la hauteur d'origine conservees pour le duo :
 # du haut du cliche jusqu'au bassin, jambes exclues.
-HAUT, BAS = 0.06, 0.66
+HAUT, BAS = 0.04, 0.62
 # la transmission garde sa verticalite, on retire seulement un peu de ciel
 T_HAUT, T_BAS = 0.10, 1.00
 
-LARGEURS = (1600, 1100, 700)
+LARGEURS = (1400, 1000, 640)
 
 
 def trouver(base):
-    for e in EXTS:
-        p = SRC + base + e
-        if os.path.exists(p):
-            return p
+    # on accepte le nom avec ou sans tiret : essentiel-duo / essentielduo
+    for nom in (base, base.replace('-', '')):
+        for e in EXTS:
+            p = SRC + nom + e
+            if os.path.exists(p):
+                return p
     return None
 
 
 def sortir(im, nom, essai):
     """Ecrit les trois largeurs en webp, plus un jpg de repli."""
     tailles = []
-    for larg in LARGEURS:
-        if larg > im.width:
-            continue
+    # la plus grande largeur retenue ne depasse jamais la source : sans ce
+    # garde-fou, une source de 1200 px ne produisait aucun fichier principal.
+    dispo = sorted({min(l, im.width) for l in LARGEURS}, reverse=True)
+    for larg in dispo:
         r = im.resize((larg, round(im.height * larg / im.width)), Image.LANCZOS)
-        suff = '' if larg == max(LARGEURS) or larg == im.width else '-%d' % larg
+        suff = '' if larg == dispo[0] else '-%d' % larg
         chemin = '%s%s%s.webp' % (DEST, nom, suff)
         if not essai:
             r.save(chemin, 'WEBP', quality=82, method=6)
