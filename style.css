@@ -3677,3 +3677,84 @@ main > .section .cine-phone__island i{animation:none !important}
   .local-proof .lp-stage.reveal,
   .local-proof .lp-below .reveal{transition-delay:0s !important}
 }
+
+/* ============================================================
+   V84 — Calendrier des matchs (championnat PRM, zone Nord)
+   ------------------------------------------------------------
+   Une liste de rencontres, pas des cartes : la date porte la
+   composition, l'orange ne marque que les matchs à domicile.
+   Source : calendrier officiel LRBB du 21/08/2026.
+   ============================================================ */
+.matchs{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#0B1322,#0D1526 60%,#0A1120)}
+.mx{margin-top:1.8rem}
+.mx-list{list-style:none;margin:0;padding:0;
+  border-top:1px solid rgba(191,210,228,.12)}
+
+.mx-row{display:grid;align-items:center;gap:.25rem 1.1rem;
+  grid-template-columns:auto auto 1fr;
+  grid-template-areas:"j date opp" "j date meta";
+  padding:1.05rem .35rem;
+  border-bottom:1px solid rgba(191,210,228,.12);
+  transition:background .25s var(--ease-out)}
+.mx-row:hover{background:rgba(27,81,158,.10)}
+
+.mx-j{grid-area:j;font-family:var(--ff-display);font-size:.92rem;line-height:1;
+  color:#6E839C;letter-spacing:.04em;min-width:2.1em}
+/* pastille de date : le repère visuel de la ligne */
+.mx-date{grid-area:date;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:.05rem;min-width:64px;padding:.5rem .45rem;
+  border:1px solid rgba(191,210,228,.16);border-radius:10px;
+  background:rgba(16,27,48,.55)}
+.mx-date__d{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.62rem;color:#8FA5BF}
+.mx-date__n{font-family:var(--ff-display);font-size:1.5rem;line-height:1;color:var(--blanc)}
+.mx-date__m{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.62rem;color:#8FA5BF}
+
+.mx-side{grid-area:opp;justify-self:start;align-self:end;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.13em;font-size:.64rem;color:#8FA5BF;
+  border:1px solid rgba(191,210,228,.22);border-radius:99px;padding:.2em .7em}
+.mx-side--dom{color:#190f04;background:var(--grad-orange);border-color:transparent}
+.mx-opp{grid-area:opp;align-self:center;
+  font-family:var(--ff-cond);font-weight:700;font-size:1.12rem;line-height:1.25;
+  color:var(--blanc)}
+.mx-meta{grid-area:meta;display:flex;flex-wrap:wrap;gap:.2rem .8rem;
+  font-family:var(--ff-cond);font-weight:600;font-size:.86rem;color:#93A8C0}
+.mx-h{color:#B8C9DC}
+.mx-lieu{position:relative;padding-left:.9rem}
+.mx-lieu::before{content:"";position:absolute;left:0;top:.55em;width:4px;height:4px;
+  border-radius:50%;background:rgba(191,210,228,.45)}
+
+/* domicile : un liseré orange à gauche, rien de plus */
+.mx-row--dom{box-shadow:inset 3px 0 0 var(--orange-vif)}
+.mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
+
+/* rencontre déjà jouée : on l'atténue sans la cacher (classe posée en JS) */
+.mx-row.is-past{opacity:.42}
+/* prochaine rencontre */
+.mx-row.is-next{background:rgba(27,81,158,.16)}
+.mx-next{margin:0 0 1.1rem;font-family:var(--ff-cond);font-weight:600;
+  font-size:.92rem;letter-spacing:.02em;color:#B8C9DC}
+.mx-next b{color:var(--orange-vif);font-weight:700}
+
+@media (min-width:820px){
+  .mx-row{grid-template-columns:auto auto minmax(0,1fr) auto;
+    grid-template-areas:"j date opp meta";gap:0 1.4rem;padding:1.15rem .5rem}
+  .mx-side{grid-area:auto;justify-self:start;align-self:center;order:0}
+  .mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto;
+    grid-template-areas:"j date side opp meta"}
+  .mx-side{grid-area:side}
+  .mx-meta{grid-area:meta;justify-content:flex-end;text-align:right;flex-direction:column;gap:.1rem}
+  .mx-opp{font-size:1.2rem}
+}
+@media (max-width:560px){
+  .mx-row{gap:.3rem .8rem;padding:.95rem .2rem}
+  .mx-date{min-width:56px;padding:.45rem .35rem}
+  .mx-date__n{font-size:1.35rem}
+  .mx-opp{font-size:1.02rem}
+  .mx-meta{font-size:.82rem}
+  .mx-j{font-size:.82rem;min-width:1.9em}
+}
+@media (prefers-reduced-motion:reduce){.mx-row{transition:none}}

@@ -838,3 +838,51 @@
   window.addEventListener('resize', onScroll, { passive: true });
   update();
 })();
+
+/* ============================================================
+   Calendrier des matchs : repère la prochaine rencontre et
+   atténue celles déjà jouées. Les dates restent en dur dans le
+   HTML (site statique, aucune source dynamique) : le script ne
+   fait que les situer par rapport à aujourd'hui.
+   ============================================================ */
+(function () {
+  var list = document.querySelector('.mx-list');
+  if (!list) return;
+  var rows = Array.prototype.slice.call(list.querySelectorAll('.mx-row[data-date]'));
+  if (!rows.length) return;
+
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var next = null;
+
+  rows.forEach(function (row) {
+    var d = new Date(row.getAttribute('data-date') + 'T20:30:00');
+    if (isNaN(d)) return;
+    var fin = new Date(d.getTime());
+    fin.setHours(23, 59, 59, 999);
+    if (fin < today) {
+      row.classList.add('is-past');
+    } else if (!next) {
+      next = { row: row, date: d };
+    }
+  });
+
+  if (!next) return;
+  next.row.classList.add('is-next');
+
+  var bandeau = document.getElementById('mxNext');
+  if (!bandeau) return;
+  var opp = next.row.querySelector('.mx-opp');
+  var dom = next.row.classList.contains('mx-row--dom');
+  var fmt;
+  try {
+    fmt = next.date.toLocaleDateString('fr-FR',
+      { weekday: 'long', day: 'numeric', month: 'long' });
+  } catch (e) {
+    fmt = next.row.getAttribute('data-date');
+  }
+  bandeau.innerHTML = 'Prochaine rencontre — <b>' + fmt + '</b>, 20h30, ' +
+    (dom ? 'au Gymnase de La Montagne' : 'en déplacement') +
+    (opp ? ', face à ' + opp.textContent.trim() : '') + '.';
+  bandeau.hidden = false;
+})();
