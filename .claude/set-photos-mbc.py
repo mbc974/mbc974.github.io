@@ -22,7 +22,7 @@ import io
 import os
 import sys
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 
 SRC = 'C:/Users/ALEX/Downloads/'
 DEST = 'assets/images/'
@@ -66,11 +66,36 @@ def sortir(im, nom, essai):
     return tailles
 
 
-def preparer(chemin, haut, bas):
+# zones des deux joueurs dans le cliche recadre, en fractions :
+# (x0, x1, y0, y1). Tout ce qui est hors de ces formes part au flou.
+SUJETS = [(.085, .445, .27, 1.0), (.505, .915, .29, 1.0)]
+FLOU = 13
+
+
+def profondeur(im):
+    """Floute l'arriere-plan, garde les sujets nets, transition douce."""
+    masque = Image.new('L', im.size, 0)
+    d = ImageDraw.Draw(masque)
+    for x0, x1, y0, y1 in SUJETS:
+        d.rounded_rectangle([im.width * x0, im.height * y0,
+                             im.width * x1, im.height * y1],
+                            radius=int(im.width * .04), fill=255)
+    masque = masque.filter(ImageFilter.GaussianBlur(im.width * .022))
+    # le flou seul laissait quelques silhouettes lisibles : on assombrit
+    # aussi le fond, ce qui acheve de les fondre dans le decor.
+    fond = im.filter(ImageFilter.GaussianBlur(FLOU))
+    fond = ImageEnhance.Brightness(fond).enhance(.72)
+    fond = ImageEnhance.Color(fond).enhance(.80)
+    return Image.composite(im, fond, masque)
+
+
+def preparer(chemin, haut, bas, flouter=False):
     im = Image.open(chemin)
     im = im.convert('RGB')
     y0, y1 = int(im.height * haut), int(im.height * bas)
     im = im.crop((0, y0, im.width, y1))
+    if flouter:
+        im = profondeur(im)
     return im
 
 
@@ -82,15 +107,15 @@ def main():
     if not essai:
         os.makedirs(DEST, exist_ok=True)
 
-    jobs = [('essentiel-duo', 'mbc-duo-terrain', HAUT, BAS),
-            ('transmission', 'mbc-transmission', T_HAUT, T_BAS)]
+    jobs = [('essentiel-duo', 'mbc-duo-terrain', HAUT, BAS, True),
+            ('transmission', 'mbc-transmission', T_HAUT, T_BAS, False)]
     manquants = []
-    for base, nom, h, b in jobs:
+    for base, nom, h, b, flou in jobs:
         p = trouver(base)
         if not p:
             manquants.append(base)
             continue
-        im = preparer(p, h, b)
+        im = preparer(p, h, b, flou)
         src = Image.open(p)
         print('  %-16s %dx%d  ->  cadre %dx%d (%.2f)'
               % (base, src.width, src.height, im.width, im.height,

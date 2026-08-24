@@ -1747,8 +1747,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--grad-orange);border-radius:2px}
 
 @media (min-width:900px){
-  /* le texte s'arrête avant la photo au lieu de courir dessous */
-  .ess__in{padding-right:clamp(1rem,7vw,5rem)}
+  /* même calage que .hero--split .hero__content, pour que les deux
+     sections partagent exactement la même marge de gauche */
+  .ess__in{max-width:none;margin-inline:0;padding-left:0;
+    margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2));
+    padding-right:clamp(1rem,7vw,5rem)}
   .ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
     padding-top:1.5rem;border-top:1px solid rgba(191,210,228,.16)}
   .ess__head{max-width:44rem}
