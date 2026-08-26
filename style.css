@@ -1693,9 +1693,28 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 8%,#000 18%)}
 .ess__photo img{width:100%;height:100%;object-fit:cover;
   object-position:40% 30%;filter:saturate(.96) contrast(1.02)}
-/* un seul effet, mais précis : la photo s'efface vers le texte et sous les
-   pieds. Pas de flou, pas de vignette supplémentaire. */
+/* La photo s'efface vers le texte et sous les pieds. Pas de flou, pas de
+   vignette supplémentaire — mais trois voiles, et une seule raison : le
+   texte passe DEVANT la photo.
+   Le cliché précédent était flouté et assombri à 72 %, il faisait écran
+   tout seul. Celui-ci est net, et le tableau blanc y est très clair :
+   mesuré sur la page, « À La Montagne, Saint-Denis » tombait à 1,11:1 et
+   « 2 lieux » à 2,77:1. Illisible.
+   Le voile gauche est volontairement LÉGER : au-dessus de la ligne des
+   chiffres il n'y a que « 2 lieux », en blanc 44 px, qui se contente de
+   peu. Le gros du travail est fait par l'ellipse ancrée en bas à gauche,
+   là où le texte descend vraiment sur la photo.
+   Cette ellipse (62 % x 68 %) est calibrée sur quatre points mesurés :
+   elle couvre « À La Montagne » (x 20 %, y 55 %) et la ligne de notes
+   (x 31 %, y 67 %), et s'arrête AVANT les consignes écrites du tableau
+   (x 45 %, y 62 %) et avant la tête des joueurs (x 12 %, y 33 %). C'est
+   ce qui permet de lire le texte sans effacer ni le plan de match ni le
+   joueur de gauche. Le troisième voile est l'ancien fondu haut/pieds. */
 .ess__photo::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(6,11,20,.42) 0%,rgba(6,11,20,.36) 18%,
+    rgba(6,11,20,.22) 26%,rgba(6,11,20,0) 34%),
+  radial-gradient(62% 68% at 0% 100%,rgba(6,11,20,.94) 0%,
+    rgba(6,11,20,.90) 55%,rgba(6,11,20,.80) 76%,rgba(6,11,20,0) 92%),
   linear-gradient(180deg,rgba(7,13,24,.16) 0%,transparent 34%,
     rgba(16,27,48,.44) 100%)}
 
