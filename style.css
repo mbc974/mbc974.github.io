@@ -4424,17 +4424,40 @@ main > .section .cine-phone__island i{animation:none !important}
    premier reste ouvert et les autres restent lisibles (l'attribut
    hidden est retire par le script, pas ajoute).
    ============================================================ */
-.age{margin:clamp(1.8rem,4vw,2.6rem) 0 0;padding:clamp(1.2rem,3vw,1.7rem) 0 0;
-  border-top:1px solid var(--line)}
+/* La trame animee de la section est bien SOUS le contenu (z-index 0 contre 1
+   sur .categories>.wrap) — mais le selecteur etait entierement transparent :
+   le quadrillage orange defilait a travers, juste derriere les libelles, et
+   se rallumait sous le curseur. On lui pose donc son propre sol.
+   Pas une carte : un voile aux bords fondus, qui reprend exactement le bleu
+   de la section (--nuit-2) et s'efface vers la droite et vers le bas. */
+.age{position:relative;margin:clamp(1.8rem,4vw,2.6rem) 0 0;
+  padding:clamp(1.2rem,3vw,1.7rem) 0 0;border-top:1px solid var(--line)}
+.age::before{content:"";position:absolute;z-index:-1;pointer-events:none;
+  inset:0 -1.6rem -1.2rem -1.6rem;
+  background:
+    linear-gradient(180deg,rgba(16,27,48,.96) 0%,rgba(16,27,48,.94) 72%,
+      rgba(16,27,48,.80) 100%);
+  /* Le fondu ne mord que sur le debordement (~2 % de chaque cote) : une
+     premiere version s'effacait sur les 28 % de droite et laissait la trame
+     reapparaitre derriere la colonne « Formule ». Bords doux, couverture
+     pleine sur le contenu. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 3.5%,#000 96.5%,transparent 100%),
+    linear-gradient(180deg,#000 0%,#000 91%,transparent 100%);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  mask-image:linear-gradient(90deg,transparent 0%,#000 3.5%,#000 96.5%,transparent 100%),
+    linear-gradient(180deg,#000 0%,#000 91%,transparent 100%)}
 .age__q{margin:0 0 .9rem;font-family:var(--ff-cond);font-weight:700;
   font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-vif)}
 .age__tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.15rem}
 .age__tab{font:inherit;font-family:var(--ff-cond);font-weight:700;font-size:.9rem;
   letter-spacing:.05em;text-transform:uppercase;color:var(--bleu-glacier);
   padding:.62em 1.05em;border:1px solid var(--line-strong);border-radius:99px;
-  background:transparent;cursor:pointer;
+  /* fond plein plutot que transparent : sinon la trame defile a l'interieur
+     meme de la pastille et le libelle devient illisible au survol. */
+  background:rgba(11,19,35,.82);cursor:pointer;
   transition:color .2s,border-color .2s,background .2s}
-.age__tab:hover{color:var(--blanc);border-color:rgba(232,130,42,.5)}
+.age__tab:hover{color:var(--blanc);border-color:rgba(232,130,42,.5);
+  background:rgba(20,33,58,.9)}
 .age__tab:focus-visible{outline:2px solid var(--orange-vif);outline-offset:2px}
 .age__tab.is-on{color:#190f04;background:var(--grad-orange);border-color:transparent}
 
