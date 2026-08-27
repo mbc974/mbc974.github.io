@@ -3428,7 +3428,11 @@ body.cine-fs-lock{overflow:hidden}
 .cat__pick span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.12em;font-size:.66rem;color:var(--txt-soft)}
 .cat__pick b{font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1.25;color:var(--blanc)}
-.cat--photo .cat__age--free{background:linear-gradient(135deg,#3F8F4E,#2E6E3A);color:#F2FBF4}
+/* WCAG AA : le vert clair du degrade tombait a 3,79:1 avec #F2FBF4 sur du
+   texte de 13 px (seuil 4,5). Le degrade est assombri d'un cran — la
+   teinte reste la meme, le badge reste vert « gratuit », et le pire des
+   deux arrets passe a 5,00:1. */
+.cat--photo .cat__age--free{background:linear-gradient(135deg,#2F7A3E,#215832);color:#F2FBF4}
 .cat__meta{margin-bottom:.9rem}
 
 /* note de bas de grille — le filet de sécurité « je ne sais pas quelle catégorie » */
