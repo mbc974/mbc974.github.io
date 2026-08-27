@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/joueur-dribble-900.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/joueur-dribble-640.webp 640w, assets/images/joueur-dribble-900.webp 900w, assets/images/joueur-dribble.webp 1280w"
       imagesizes="(max-width:900px) 104vw, 46vw">
-<link rel="stylesheet" href="style.css?v=8a7572be">
+<link rel="stylesheet" href="style.css?v=1c73666c">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -816,7 +816,44 @@
       <p class="sec-head__sub" style="margin-inline:auto">L'équipe seniors du MBC dispute la Pré-Régionale Masculine, zone Nord. Sept rencontres pour la première phase, toutes le vendredi à 20h30 — dont quatre à domicile, au Gymnase de La Montagne.</p>
     </header>
 
-    <div class="mx reveal">
+
+    <!-- L'affiche du match d'ouverture. Elle ne redit pas ce qu'elle contient
+         déjà : le texte à côté ne porte que l'essentiel (qui, quand, où) et
+         deux actions. Le bloc s'efface tout seul après la rencontre — voir
+         data-match-date, traité dans script.js. -->
+    <aside class="nx reveal" id="prochain-match" data-match-date="2026-09-11"
+           aria-labelledby="nxTitle">
+      <div class="nx__media">
+        <span class="nx__ghost" aria-hidden="true"></span>
+        <a class="nx__poster" href="assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg"
+           target="_blank" rel="noopener"
+           aria-label="Voir l'affiche du match MBC contre Sainte-Suzanne en grand (nouvel onglet)">
+          <img src="assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp"
+               srcset="assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp 480w, assets/affiches/mbc-premier-match-sainte-suzanne-2026-600.webp 600w, assets/affiches/mbc-premier-match-sainte-suzanne-2026-720.webp 720w, assets/affiches/mbc-premier-match-sainte-suzanne-2026.webp 1080w"
+               sizes="(min-width:900px) 340px, min(78vw,340px)"
+               alt="Affiche du premier match de la saison 2026/2027 : MBC La Montagne contre Sainte-Suzanne, le 11 septembre 2026 à 20h30 au Gymnase de La Montagne."
+               width="1080" height="1350" loading="lazy" decoding="async"
+               onerror="this.onerror=null;this.srcset='';this.src='assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg'">
+        </a>
+      </div>
+      <div class="nx__body">
+        <p class="kicker nx__kicker">Prochain rendez-vous</p>
+        <h3 class="nx__t" id="nxTitle">MBC <em>vs</em> Sainte-Suzanne</h3>
+        <p class="nx__when">
+          <time datetime="2026-09-11T20:30">Vendredi 11 septembre 2026 &middot; 20h30</time>
+        </p>
+        <p class="nx__where">Gymnase de La Montagne
+          <span>Chemin des Bauhinias &middot; 97417 Saint-Denis</span>
+        </p>
+        <p class="nx__free">Entrée libre &middot; première journée de Pré-Régionale</p>
+        <p class="nx__a">
+          <a class="btn btn--primary" href="#mx-liste">Voir le calendrier</a>
+          <a class="btn btn--ghost" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers le Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a>
+        </p>
+      </div>
+    </aside>
+
+    <div class="mx reveal" id="mx-liste">
       <p class="mx-next" id="mxNext" hidden></p>
       <ol class="mx-list">
         <!-- calendrier:lignes -->
@@ -1592,6 +1629,6 @@
   </div>
 </div>
 
-<script src="script.js?v=2b14a68d" defer></script>
+<script src="script.js?v=b6f93f43" defer></script>
 </body>
 </html>

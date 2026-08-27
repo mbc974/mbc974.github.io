@@ -840,6 +840,25 @@
 })();
 
 /* ============================================================
+   Affiche « prochain rendez-vous » : elle s'efface d'elle-meme
+   ------------------------------------------------------------
+   Le bloc annonce UNE rencontre precise. Passee cette date il
+   deviendrait faux, et personne ne pense a retirer un bloc dans
+   une page de 1500 lignes. Il porte donc sa propre date de
+   peremption dans data-match-date : le lendemain, il disparait
+   et le calendrier juste en dessous prend le relais.
+   ============================================================ */
+(function () {
+  var bloc = document.getElementById('prochain-match');
+  if (!bloc) return;
+  var d = bloc.getAttribute('data-match-date');
+  if (!d) return;
+  var fin = new Date(d + 'T23:59:59');
+  if (isNaN(fin)) return;
+  if (fin < new Date()) bloc.hidden = true;
+})();
+
+/* ============================================================
    Calendrier des matchs : repère la prochaine rencontre et
    atténue celles déjà jouées. Les dates restent en dur dans le
    HTML (site statique, aucune source dynamique) : le script ne

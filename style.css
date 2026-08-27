@@ -3985,6 +3985,98 @@ main > .section .cine-phone__island i{animation:none !important}
   color:var(--blanc);margin:0;text-align:center}
 .mx-format .licence-path{margin-top:1.15rem}
 
+
+/* ============================================================
+   PROCHAIN RENDEZ-VOUS — l'affiche du match d'ouverture
+   ------------------------------------------------------------
+   Une affiche, pas une carte. Le fond reste le bleu nuit de la
+   section : ni panneau arrondi, ni verre depoli. Ce qui donne la
+   profondeur, c'est le decalage des plans —
+     .nx__ghost   une copie floutee et agrandie, posee en arriere
+     .nx__poster  l'affiche nette, inclinee de 1,4deg
+   L'inclinaison est volontairement sous les 2deg : au-dela, le
+   grain de l'affiche crenele sur les bords en rendu ecran.
+   Le halo orange est a .07 d'opacite. Il ne doit pas se voir :
+   il doit juste empecher l'affiche de flotter dans le vide.
+   ============================================================ */
+.nx{position:relative;display:grid;grid-template-columns:1fr;
+  gap:clamp(1.5rem,4vw,2.2rem);align-items:center;
+  margin:clamp(1.8rem,4vw,2.6rem) 0 clamp(2rem,5vw,3rem);
+  padding:clamp(1.4rem,3.5vw,2.2rem) 0;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* le filet orange qui amorce le bloc, comme le kicker des sections */
+.nx::before{content:"";position:absolute;top:-1px;left:0;width:clamp(3rem,12%,6rem);
+  height:1px;background:var(--grad-orange)}
+
+.nx__media{position:relative;justify-self:center;
+  width:min(78vw,340px);isolation:isolate}
+
+/* le plan arriere : meme affiche, floutee, decalee. C'est elle qui
+   cree la profondeur, pas une ombre portee de 60px. */
+.nx__ghost{position:absolute;inset:0;z-index:0;border-radius:var(--r-md);
+  background:url("assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp")
+    center/cover no-repeat;
+  transform:rotate(-3.2deg) translate(-3.5%,2.5%) scale(1.045);
+  filter:blur(17px) saturate(.85);opacity:.34;pointer-events:none}
+
+/* le halo orange — tres faible, large, sans bord net */
+.nx__media::after{content:"";position:absolute;z-index:-1;
+  inset:-14% -12% -16%;pointer-events:none;
+  background:radial-gradient(58% 46% at 50% 52%,
+    rgba(232,130,42,.07) 0%,rgba(232,130,42,.035) 46%,rgba(232,130,42,0) 78%)}
+
+.nx__poster{position:relative;z-index:1;display:block;
+  border-radius:var(--r-md);overflow:hidden;
+  border:1px solid rgba(191,210,228,.20);
+  box-shadow:0 14px 34px rgba(3,8,18,.52),0 2px 8px rgba(3,8,18,.4);
+  transform:rotate(1.4deg);
+  transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
+.nx__poster img{display:block;width:100%;height:auto}
+
+/* ---- le texte : il ne redit pas l'affiche ---- */
+.nx__kicker{margin:0 0 .55rem}
+.nx__t{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.6rem,4.6vw,2.35rem);line-height:1.04;letter-spacing:.005em;
+  color:var(--blanc);margin:0 0 .75rem}
+.nx__t em{font-style:normal;color:var(--orange-vif);
+  font-size:.62em;vertical-align:.12em;margin:0 .12em;letter-spacing:.04em}
+.nx__when{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:clamp(1rem,2.4vw,1.15rem);letter-spacing:.045em;
+  text-transform:uppercase;color:var(--bleu-glacier)}
+.nx__where{margin:0 0 .55rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;color:var(--blanc)}
+.nx__where span{display:block;margin-top:.2rem;font-weight:500;font-size:.9rem;
+  letter-spacing:0;text-transform:none;color:var(--txt-soft)}
+.nx__free{margin:0 0 1.15rem;font-size:.9rem;color:var(--txt-soft)}
+.nx__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
+
+/* ---- desktop : l'affiche a gauche, le texte respire a droite ---- */
+@media (min-width:900px){
+  .nx{grid-template-columns:340px minmax(0,1fr);gap:clamp(2.2rem,4vw,3.4rem);
+    align-items:center}
+  .nx__media{justify-self:start}
+  /* la profondeur ne se revele qu'au survol, et de quelques pixels */
+  .nx__poster:hover{transform:rotate(.6deg) translateY(-6px);
+    box-shadow:0 22px 48px rgba(3,8,18,.58),0 3px 10px rgba(3,8,18,.42)}
+}
+
+/* ---- mobile : l'affiche entiere, jamais rognee, jamais inclinee ----
+   Une inclinaison sur un ecran de 375 px mange les coins de l'affiche
+   et rend la date moins lisible. Sous 900 px on la pose bien a plat. */
+@media (max-width:899px){
+  .nx__poster{transform:none}
+  .nx__ghost{transform:translate(-2.5%,2%) scale(1.05);filter:blur(14px);opacity:.28}
+  .nx__body{text-align:left}
+  .nx__a .btn{flex:1 1 auto;justify-content:center}
+}
+
+/* Pas d'animation d'apparition propre : .reveal (opacite + 34px) porte deja
+   le bloc entier. En ajouter une seconde sur .nx__media faisait un double
+   mouvement, exactement le genre de surcharge a eviter ici. */
+/* le bloc disparait une fois la rencontre jouee (script.js) */
+.nx[hidden]{display:none}
+
 /* ---- L'affiche officielle, à télécharger et partager ---- */
 .affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
   margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
