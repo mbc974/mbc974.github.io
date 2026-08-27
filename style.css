@@ -2230,12 +2230,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   transition:transform .4s var(--ease-pop),box-shadow .4s var(--ease-out),border-color .35s;}
 .sponsor-card:hover{transform:translateY(-8px);border-color:rgba(232,130,42,.55);box-shadow:var(--e3),0 24px 50px rgba(217,106,27,.16)}
 /* Logo plate : zone claire dédiée → lisibilité maximale, zéro filtre */
+/* La plaque a ete resserree : les fichiers logos portaient jusqu'a 74 % de
+   blanc cuit dedans (Oxysom n'occupait que 26 % de la largeur de son propre
+   PNG). Les sources sont maintenant detourees, et le rembourrage passe de
+   1,1rem a 0,6rem — les logos occupent enfin la plaque.
+   Les sources gardent leur canal alpha, MAIS trois d'entre elles (Agitateurs,
+   Saint-Francois, Oxysom) contiennent un rectangle blanc OPAQUE dans leur
+   artwork. Sur un degrade #fff -> #eef2f7 ce rectangle se voyait en liseré
+   des que le logo remplissait la plaque. Le fond est donc blanc plat : le
+   degrade ne valait pas ce defaut. */
 .sponsor-card__plate{display:grid;place-items:center;width:100%;aspect-ratio:16/10;
-  padding:1.1rem 1.2rem;border-radius:14px;
-  background:linear-gradient(180deg,#ffffff,#eef2f7);
+  padding:.6rem .7rem;border-radius:14px;
+  background:#fff;
   box-shadow:inset 0 0 0 1px rgba(13,21,38,.07),0 6px 16px rgba(3,7,15,.32);}
 .sponsor-card__plate picture{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-.sponsor-card__plate img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:none!important;transition:transform .4s var(--ease-pop)}
+.sponsor-card__plate img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;filter:none!important;transition:transform .4s var(--ease-pop)}
 .sponsor-card:hover .sponsor-card__plate img{transform:scale(1.05)}
 /* Nom + badge */
 .sponsor-card__meta{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;padding:0 .3rem}
@@ -3625,8 +3634,22 @@ main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal
 .sponsor-card{transition:border-color .25s var(--ease-out),transform .25s var(--ease-out)}
 .sponsor-card:hover{transform:translateY(-2px)}
 .sponsor-card__plate{box-shadow:none}
-/* taille optique homogene : les logos n'ont pas tous le meme cadrage */
-.sponsor-card__plate img{max-height:56px;width:auto;margin-inline:auto;object-fit:contain}
+/* Le plafond de 56 px existait parce que les fichiers logos n'avaient pas
+   le meme cadrage : chacun portait sa propre marge blanche, et brider la
+   hauteur etait le seul moyen de les faire paraitre de taille voisine.
+   Les sources sont desormais detourees au plus juste, donc c'est la plaque
+   qui donne l'echelle : tous les logos butent sur la meme hauteur utile et
+   l'homogeneite est obtenue sans les rapetisser. */
+/* La plaque gardait « aspect-ratio:16/10 » tant que son contenu tenait
+   dedans ; des que le logo detoure devenait plus haut, elle grandissait et
+   les plaques prenaient 89, 118 ou 140 px selon le sponsor. On sort donc
+   l'image du flux : la plaque tient sa hauteur du seul aspect-ratio, et le
+   logo se pose dedans en object-fit:contain. */
+.sponsor-card__plate{position:relative;padding:0}
+.sponsor-card__plate picture{position:absolute;inset:.62rem .72rem;
+  width:auto;height:auto;display:flex;align-items:center;justify-content:center}
+.sponsor-card__plate img{width:100%;height:100%;max-width:100%;max-height:100%;
+  margin-inline:auto;object-fit:contain}
 
 @media (prefers-reduced-motion:reduce){
 main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
