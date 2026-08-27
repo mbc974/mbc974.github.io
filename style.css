@@ -1853,9 +1853,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    une equerre fine, decalee — une ligne d'architecte, pas un halo. */
 .ess__photo{position:absolute;right:clamp(1.5rem,4vw,4.5rem);
   top:50%;translate:0 -50%;margin:0;z-index:1;
-  width:min(38%,420px);aspect-ratio:3/4;
+  /* Elle etait plafonnee a 420 px : sur un ecran de 1920 elle ne pesait plus
+     que 22 % de la largeur et 48 % de la hauteur de la section, avec 298 px
+     de vide au-dessus et en dessous. Elle occupe maintenant un tiers de la
+     largeur et plus des trois quarts de la hauteur — elle ancre la colonne
+     de droite au lieu d'y flotter. La hauteur est pilotee par la section,
+     pas par le ratio : le cadre reste plein quel que soit le texte. */
+  /* Ratio naturel, pas de hauteur imposee : en 600x880 le cadre etait plus
+     etroit que la source et rognait 9 % de la largeur — soit la premiere
+     lettre d'« ANSANM NOU LE PLI FOR » et la derniere d'« EN LER ». Ces
+     devises sont l'identite du club, on ne les coupe pas. La largeur
+     compense la hauteur perdue. */
+  width:min(36%,640px);aspect-ratio:3/4;
   border-radius:18px;
-  box-shadow:0 28px 64px rgba(3,8,18,.62),0 3px 12px rgba(3,8,18,.45)}
+  box-shadow:0 34px 78px rgba(3,8,18,.66),0 4px 14px rgba(3,8,18,.48)}
 /* l'image, dans le cadre */
 .ess__photo img{width:100%;height:100%;object-fit:cover;object-position:center 42%;
   border-radius:inherit;display:block;
@@ -1977,16 +1988,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .ess__head{max-width:44rem}
   .ess-stats,.ess-plus{max-width:44rem}
 }
-/* Entre 900 et 1099 px la photo reste empilee au-dessus : a cette largeur,
-   lui reserver 38 % ecraserait les trois chiffres sur deux lignes. */
-@media (min-width:1100px){
-  /* la colonne de texte s'arrete avant le cadre : le tirage n'est plus un
-     fond, plus rien ne passe dessus. */
-  .ess__in{padding-right:calc(min(38%,420px) + clamp(3rem,7vw,7rem))}
+/* Sous 1300 px la photo reste empilee au-dessus : en colonne, lui reserver
+   36 % ferait tomber la colonne de texte sous 640 px et casserait les trois
+   chiffres sur deux lignes. Seuil verifie a la mesure, pas au jugé. */
+@media (min-width:1300px){
+  /* La colonne de texte s'arrete avant le cadre. width:auto est
+     indispensable : .wrap impose width:100%, et combine a la marge gauche
+     la boite depassait de 240 px a droite — la reserve calculee ci-dessous
+     tombait alors hors de l'ecran et le texte repassait sous la photo. */
+  .ess__in{width:auto;
+    padding-right:calc(min(36%,640px) + clamp(3.5rem,7vw,7.5rem))}
   .ess__head,.ess-stats,.ess-plus,.ess-proof{max-width:40rem}
 }
 
-@media (max-width:1099px){
+@media (max-width:1299px){
   /* La photo repasse dans le flux, au-dessus du texte, toujours encadree.
      Plus de masque : c'est un tirage, il a des bords nets. */
   .ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
@@ -2003,7 +2018,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Placee APRES le bloc ci-dessus : a 900-1099 px, .ess__in prend la marge
    large du desktop et non le padding du .wrap. La photo doit suivre la meme,
    sinon elle demarre 29 px avant le texte. */
-@media (min-width:900px) and (max-width:1099px){
+@media (min-width:900px) and (max-width:1299px){
   /* meme marche de gauche que .ess__in, pour que photo et texte partagent
      la meme ligne de depart. */
   .ess__photo{margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}
