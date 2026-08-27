@@ -1803,13 +1803,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ne soit pas agrandie sur les grands écrans. */
 .ess__photo{position:absolute;top:auto;right:0;bottom:0;margin:0;z-index:0;
   width:min(64%,900px);height:min(100%,820px);pointer-events:none;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.46) 1.5%,
-    rgba(0,0,0,.86) 4%,rgba(0,0,0,.97) 6.5%,#000 9%),
-    linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 8%,#000 18%);
+  /* Fondu en courbe smoothstep, 13 paliers.
+     L'ancien fondu vertical n'avait que 3 paliers (0 -> .55 a 8% -> 1 a 18%) :
+     la pente changeait brutalement a 8%, et ce coude se lisait comme une
+     bande horizontale juste au-dessus du joueur de gauche. Une smoothstep
+     a pente nulle aux deux extremites n'a aucun coude, donc aucune bande.
+     Le fondu vertical est aussi allonge (18% -> 24%) et s'acheve avant les
+     cheveux du joueur, qui commencent a 28,7% du cadre. */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.02) 0.83%,rgba(0,0,0,0.074) 1.67%,rgba(0,0,0,0.156) 2.5%,rgba(0,0,0,0.259) 3.33%,rgba(0,0,0,0.376) 4.17%,rgba(0,0,0,0.5) 5%,rgba(0,0,0,0.624) 5.83%,rgba(0,0,0,0.741) 6.67%,rgba(0,0,0,0.844) 7.5%,rgba(0,0,0,0.926) 8.33%,rgba(0,0,0,0.98) 9.17%,#000 10%),
+    linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.02) 2%,rgba(0,0,0,0.074) 4%,rgba(0,0,0,0.156) 6%,rgba(0,0,0,0.259) 8%,rgba(0,0,0,0.376) 10%,rgba(0,0,0,0.5) 12%,rgba(0,0,0,0.624) 14%,rgba(0,0,0,0.741) 16%,rgba(0,0,0,0.844) 18%,rgba(0,0,0,0.926) 20%,rgba(0,0,0,0.98) 22%,#000 24%);
   -webkit-mask-composite:source-in;mask-composite:intersect;
-  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.46) 1.5%,
-    rgba(0,0,0,.86) 4%,rgba(0,0,0,.97) 6.5%,#000 9%),
-    linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 8%,#000 18%)}
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.02) 0.83%,rgba(0,0,0,0.074) 1.67%,rgba(0,0,0,0.156) 2.5%,rgba(0,0,0,0.259) 3.33%,rgba(0,0,0,0.376) 4.17%,rgba(0,0,0,0.5) 5%,rgba(0,0,0,0.624) 5.83%,rgba(0,0,0,0.741) 6.67%,rgba(0,0,0,0.844) 7.5%,rgba(0,0,0,0.926) 8.33%,rgba(0,0,0,0.98) 9.17%,#000 10%),
+    linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.02) 2%,rgba(0,0,0,0.074) 4%,rgba(0,0,0,0.156) 6%,rgba(0,0,0,0.259) 8%,rgba(0,0,0,0.376) 10%,rgba(0,0,0,0.5) 12%,rgba(0,0,0,0.624) 14%,rgba(0,0,0,0.741) 16%,rgba(0,0,0,0.844) 18%,rgba(0,0,0,0.926) 20%,rgba(0,0,0,0.98) 22%,#000 24%)}
 .ess__photo img{width:100%;height:100%;object-fit:cover;
   object-position:40% 30%;filter:saturate(.96) contrast(1.02)}
 /* La photo s'efface vers le texte et sous les pieds. Pas de flou, pas de
