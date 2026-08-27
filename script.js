@@ -59,7 +59,7 @@
 
   /* Masque le bouton flottant dès que le footer est visible, afin de
      ne jamais recouvrir le crédit / la signature en bas de page. */
-  const footerEl = document.querySelector('.site-footer');
+  const footerEl = document.querySelector('.site-footer, .seo-foot');
   if (footerEl && floatCta && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
       footerVisible = entries[0].isIntersecting;
@@ -770,9 +770,29 @@
           : h.indexOf('campaign') !== -1 ? 'Don Yapla'
           : 'Inscription Yapla');
     }
-    else if (h.indexOf('wa.me') !== -1) track('WhatsApp');
+    // WhatsApp : on distingue la demande d'essai du simple contact, ce sont
+    // deux intentions tres differentes cote conversion.
+    else if (h.indexOf('wa.me') !== -1) {
+      track(/essai/i.test(decodeURIComponent(h)) ? 'WhatsApp essai' : 'WhatsApp');
+    }
     else if (h.indexOf('DOSSIER-PARTENARIAT') !== -1) track('Dossier sponsor');
+    else if (h.indexOf('tel:') === 0) track('Appel telephone');
+    else if (h.indexOf('mailto:') === 0) track('E-mail');
+    else if (/maps\.(app\.)?goo|google\.[a-z.]+\/maps/.test(h)) track('Itineraire Maps');
+    else if (/\.ics(\?|$)/.test(h)) track('Ajout agenda');
+    else if (/\/adhesion\.html/.test(h)) track('Je m inscris');
   }, true);
+
+  // Chargement de la carte : mesure si la facade sert vraiment.
+  var mf = document.getElementById('mapFacade');
+  if (mf) mf.addEventListener('click', function () { track('Carte chargee'); }, { once: true });
+
+  // Selecteur d'age : quelle tranche interesse les visiteurs ?
+  var ageBox = document.getElementById('age-selector');
+  if (ageBox) ageBox.addEventListener('click', function (e) {
+    var t = e.target && e.target.closest ? e.target.closest('.age__tab') : null;
+    if (t) track('Selecteur age');
+  });
   var form = document.getElementById('contactForm');
   if (form) form.addEventListener('submit', function () { track('Formulaire contact'); });
 })();
@@ -840,6 +860,78 @@
 })();
 
 /* ============================================================
+   Selecteur d'age
+   ------------------------------------------------------------
+   Les six panneaux sont dans le HTML : sans JS, le premier est
+   ouvert et les autres restent lisibles. Le script ne fait que
+   basculer l'affichage, avec la navigation clavier attendue
+   d'un groupe d'onglets (fleches, Home, Fin).
+   ============================================================ */
+(function () {
+  var box = document.getElementById('age-selector');
+  if (!box) return;
+  var tabs = [].slice.call(box.querySelectorAll('.age__tab'));
+  var panels = [].slice.call(box.querySelectorAll('.age__panel'));
+  if (!tabs.length || tabs.length !== panels.length) return;
+
+  tabs.forEach(function (t, i) { t.setAttribute('tabindex', i === 0 ? '0' : '-1'); });
+
+  function show(i, focus) {
+    tabs.forEach(function (t, k) {
+      var on = k === i;
+      t.classList.toggle('is-on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');
+      panels[k].hidden = !on;
+      panels[k].classList.toggle('is-on', on);
+    });
+    if (focus) tabs[i].focus();
+  }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { show(i); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if (k === 'Home') n = 0;
+      else if (k === 'End') n = tabs.length - 1;
+      if (n === null) return;
+      e.preventDefault();
+      show(n, true);
+    });
+  });
+})();
+
+/* ============================================================
+   Carte : injection a la demande
+   ------------------------------------------------------------
+   L'iframe Google Maps n'est creee qu'au clic sur la facade.
+   Avant : ~700 Ko de scripts tiers et des cookies Google poses
+   a chaque visite pour une carte que peu de gens manipulent.
+   ============================================================ */
+(function () {
+  var f = document.getElementById('mapFacade');
+  if (!f) return;
+  f.addEventListener('click', function () {
+    var url = f.getAttribute('data-embed');
+    if (!url) return;
+    var wrap = f.parentNode;
+    var fr = document.createElement('iframe');
+    fr.title = 'Carte — Gymnase de La Montagne, Saint-Denis, La Réunion';
+    fr.src = url;
+    fr.loading = 'lazy';
+    fr.referrerPolicy = 'no-referrer-when-downgrade';
+    fr.setAttribute('allowfullscreen', '');
+    fr.setAttribute('sandbox',
+      'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms');
+    wrap.classList.add('is-loaded');
+    f.replaceWith(fr);
+    try { fr.focus(); } catch (e) {}
+  }, { once: true });
+})();
+
+/* ============================================================
    Affiche « prochain rendez-vous » : elle s'efface d'elle-meme
    ------------------------------------------------------------
    Le bloc annonce UNE rencontre precise. Passee cette date il
@@ -853,9 +945,29 @@
   if (!bloc) return;
   var d = bloc.getAttribute('data-match-date');
   if (!d) return;
+  var coup = new Date(d + 'T20:30:00');
   var fin = new Date(d + 'T23:59:59');
   if (isNaN(fin)) return;
-  if (fin < new Date()) bloc.hidden = true;
+
+  var now = new Date();
+  if (fin < now) {
+    // La rencontre est passee. Le bloc s'efface plutot que d'annoncer
+    // un match qui a eu lieu. Le jour ou le club voudra afficher un
+    // resultat, il suffira de passer data-state a "result" et de mettre
+    // le score dans .nx__body : la structure ne bouge pas.
+    if (bloc.getAttribute('data-state') !== 'result') bloc.hidden = true;
+    return;
+  }
+
+  // Compteur J-XX : un simple reperage, pas un chrono anime.
+  var cd = document.getElementById('nxCountdown');
+  if (!cd || isNaN(coup)) return;
+  var jour = 864e5;
+  var a = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var b = new Date(coup.getFullYear(), coup.getMonth(), coup.getDate());
+  var n = Math.round((b - a) / jour);
+  if (n > 0 && n <= 60) { cd.textContent = 'J–' + n; cd.hidden = false; }
+  else if (n === 0) { cd.textContent = "C'est ce soir"; cd.hidden = false; }
 })();
 
 /* ============================================================

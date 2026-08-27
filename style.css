@@ -213,6 +213,101 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .socials a:hover{background:var(--orange-vif);border-color:var(--orange-vif);color:#190f04}
 .contact-map{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--nuit-3);min-height:260px}
 .contact-map iframe{display:block;width:100%;height:100%;min-height:260px;border:0;filter:grayscale(.3) contrast(1.05)}
+
+
+
+/* ---- Chiffres de visibilite (page sponsor) ----
+   Trois nombres, une precision sous chacun. La precision n'est pas une
+   note de bas de page : elle est dans le bloc, parce que « 1 130 » sans
+   « apparitions, pas personnes » serait trompeur pour un annonceur. */
+.vis-stats{display:grid;grid-template-columns:1fr;gap:0;margin:1.4rem 0 .9rem;padding:0}
+.vis-stat{position:relative;padding:1.15rem 0;display:grid;
+  grid-template-columns:minmax(5.5rem,auto) minmax(0,1fr);gap:.2rem 1.15rem;align-items:baseline}
+.vis-stat + .vis-stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;
+  background:linear-gradient(90deg,rgba(191,210,228,.26),rgba(191,210,228,.08) 55%,transparent)}
+.vis-stat__v{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.8rem,5vw,2.5rem);line-height:1;color:var(--orange-vif)}
+.vis-stat__u{font-size:.5em;vertical-align:.75em;margin-left:.05em}
+.vis-stat__l{margin:0;font-family:var(--ff-cond);font-weight:700;font-size:.95rem;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--blanc);line-height:1.3}
+.vis-stat__l span{display:block;margin-top:.35rem;font-family:var(--ff-body);font-weight:400;
+  font-size:.86rem;letter-spacing:0;text-transform:none;color:var(--txt-soft);line-height:1.5}
+.vis-src{font-size:.82rem;line-height:1.55;color:var(--txt-soft);
+  padding-top:.9rem;border-top:1px solid var(--line)}
+@media (min-width:760px){
+  .vis-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 1.8rem}
+  .vis-stat{grid-template-columns:1fr;padding:0;gap:.5rem}
+  .vis-stat + .vis-stat::before{left:-.9rem;right:auto;top:0;bottom:0;width:1px;height:auto;
+    background:linear-gradient(180deg,rgba(191,210,228,.24),rgba(191,210,228,.06) 70%,transparent)}
+}
+
+/* ---- Le lien vers l'equipe, sous la citation ----
+   La citation etait signee « L'equipe encadrante » sans qu'on puisse aller
+   voir qui c'est. Un parent qui confie son enfant veut des visages. */
+.parents-quote__who{display:inline-flex;align-items:center;gap:.5em;margin-top:1rem;
+  font-family:var(--ff-cond);font-weight:700;font-size:.86rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--orange-vif);text-decoration:none;
+  transition:color .2s var(--ease-out),gap .25s var(--ease-out)}
+.parents-quote__who .btn__arrow{width:1.05em;height:1.05em}
+.parents-quote__who:hover{color:#FFD7AE;gap:.75em}
+.parents-quote__who:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+
+/* ---- Ligne d'identite : une signature, pas une banniere ----
+   Quatre faits verifiables, en petit, separes par des points. Aucun cadre,
+   aucun fond : ce sont des mentions legales rendues rassurantes, pas un
+   bandeau institutionnel de plus. */
+.trustline{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.05rem;
+  margin:1.2rem 0 0;padding-top:1rem;border-top:1px solid var(--line);
+  font-family:var(--ff-cond);font-weight:600;font-size:.72rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--txt-soft)}
+.trustline span{display:inline-flex;align-items:center;gap:1.05rem}
+.trustline span:not(:last-child)::after{content:"";width:3px;height:3px;
+  border-radius:50%;background:currentColor;opacity:.55}
+
+/* ---- Facade de carte : on ne charge Google qu'a la demande ----
+   Une iframe Maps coute ~700 Ko de scripts tiers et pose des cookies des
+   le chargement de la page, meme derriere loading="lazy" (qui ne fait que
+   retarder, pas eviter). Le bouton ci-dessous a l'allure d'une carte et
+   n'injecte l'iframe qu'au clic. */
+.map-facade{position:relative;display:block;width:100%;min-height:260px;
+  padding:1.2rem;border:0;border-radius:var(--radius);overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 30% 20%,rgba(27,81,158,.30),transparent 62%),
+    linear-gradient(160deg,var(--nuit-3),var(--nuit-0));
+  cursor:pointer;text-align:left;font:inherit;color:var(--txt);
+  transition:border-color .3s var(--ease-out)}
+.map-facade::after{content:"";position:absolute;inset:0;border-radius:inherit;
+  border:1px solid var(--line);pointer-events:none;transition:border-color .3s}
+.map-facade:hover::after,.map-facade:focus-visible::after{border-color:rgba(232,130,42,.5)}
+.map-facade:focus-visible{outline:2px solid var(--orange-vif);outline-offset:2px}
+/* la trame : evoque un plan sans charger quoi que ce soit */
+.map-facade__grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(191,210,228,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(191,210,228,.10) 1px,transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 45%,#000,transparent 100%);
+  mask-image:radial-gradient(70% 60% at 50% 45%,#000,transparent 100%)}
+.map-facade__pin{position:absolute;top:50%;left:50%;translate:-50% -76%;
+  width:2.6rem;height:2.6rem;color:var(--orange-vif);
+  filter:drop-shadow(0 6px 16px rgba(3,8,18,.7))}
+.map-facade__pin svg{width:100%;height:100%}
+.map-facade__txt{position:absolute;left:1.2rem;right:1.2rem;bottom:3.5rem;
+  display:flex;flex-direction:column;gap:.15rem}
+.map-facade__txt b{font-family:var(--ff-cond);font-weight:700;font-size:1rem;
+  letter-spacing:.04em;text-transform:uppercase;color:var(--blanc)}
+.map-facade__txt span{font-size:.86rem;color:var(--txt-soft)}
+.map-facade__cta{position:absolute;left:1.2rem;bottom:1.5rem;
+  display:inline-flex;align-items:center;gap:.45em;
+  font-family:var(--ff-cond);font-weight:700;font-size:.86rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--orange-vif)}
+.map-facade__cta::before{content:"";width:1.4rem;height:1px;background:var(--grad-orange)}
+.map-facade__note{position:absolute;left:1.2rem;right:1.2rem;bottom:.55rem;
+  font-size:.7rem;line-height:1.3;color:var(--txt-soft);opacity:.75}
+/* une fois chargee, l'iframe prend toute la place */
+.contact-map.is-loaded{min-height:260px}
+.contact-map.is-loaded iframe{display:block;width:100%;height:100%;min-height:260px;
+  border:0;filter:grayscale(.3) contrast(1.05)}
+
 /* ---------------- FOOTER ---------------- */
 .site-footer{position:relative;background:#050a13;border-top:1px solid var(--line);padding-top:3.2rem}
 /* fine ligne d'accent orange en haut du footer (cadrage premium discret) */
@@ -258,10 +353,34 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .hero__halo{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(80vw,720px);height:min(80vw,720px);border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(27,81,158,.35),transparent 62%);filter:blur(10px)}
 .hero__halo::after{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(217,106,27,.22),transparent 60%)}
 /* ---- Sticky pre-inscription floating button (mobile) ---- */
-.float-cta{position:fixed;left:50%;bottom:16px;transform:translateX(-50%) translateY(140%);z-index:95;display:none;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:1rem;padding:.95em 1.6em;border-radius:99px;background:var(--grad-orange);color:#190f04;box-shadow:0 12px 34px rgba(217,106,27,.5);transition:transform .4s var(--ease);width:calc(100% - 32px);max-width:420px;justify-content:center}
+/* ---- Barre CTA mobile : deux intentions ----
+   Un seul bouton « Je m'inscris » ne parlait qu'a ceux qui avaient deja
+   decide. La moitie gauche s'adresse a ceux qui hesitent : c'est la que
+   se joue la conversion. Elle reste compacte (48 px de haut) et respecte
+   la barre home des iPhone via env(safe-area-inset-bottom). */
+.float-cta{position:fixed;left:50%;bottom:16px;
+  transform:translateX(-50%) translateY(150%);z-index:95;display:none;
+  width:calc(100% - 24px);max-width:460px;
+  border-radius:99px;overflow:hidden;isolation:isolate;
+  background:rgba(9,15,28,.92);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(191,210,228,.16);
+  box-shadow:0 14px 38px rgba(3,8,18,.6);
+  transition:transform .4s var(--ease)}
 .float-cta.show{transform:translateX(-50%) translateY(0)}
-.float-cta .ic{width:1.1em;height:1.1em}
-@media (max-width:920px){.float-cta{display:inline-flex}}
+.float-cta__b{flex:1 1 0;min-width:0;display:inline-flex;align-items:center;
+  justify-content:center;gap:.45em;padding:.9em .6em;
+  font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.05em;
+  text-transform:uppercase;text-decoration:none;white-space:nowrap;
+  transition:background .25s var(--ease-out)}
+.float-cta__b .ic{width:1.05em;height:1.05em;flex:none}
+.float-cta__b--alt{color:var(--txt);border-right:1px solid rgba(191,210,228,.14)}
+.float-cta__b--alt:hover,.float-cta__b--alt:focus-visible{background:rgba(191,210,228,.08)}
+.float-cta__b--main{color:#190f04;background:var(--grad-orange)}
+.float-cta__b:focus-visible{outline:2px solid var(--orange-vif);outline-offset:-3px}
+@media (max-width:920px){.float-cta{display:flex}}
+/* sous 340 px on garde les icones et on reduit le texte plutot que de casser */
+@media (max-width:340px){.float-cta__b{font-size:.82rem;padding:.95em .4em}}
 /* ---- Counters band ---- */
 /* ---- Editorial full-width visual sections ---- */
 /* themed backgrounds (graphic, photo-ready) */
@@ -1650,7 +1769,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- Pulse CTA flottant mobile : respiration légère ---- */
 .float-cta{transition:transform .45s var(--ease-pop),box-shadow .35s}
 .float-cta.show{animation:floatCtaIn .5s var(--ease-pop)}
-@keyframes floatCtaIn{0%{transform:translateX(-50%) translateY(140%)}100%{transform:translateX(-50%) translateY(0)}}
+@keyframes floatCtaIn{0%{transform:translateX(-50%) translateY(150%)}100%{transform:translateX(-50%) translateY(0)}}
 /* ---- Garde-fou accessibilité : tout reste statique si demandé ---- */
 @media (prefers-reduced-motion:reduce){.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
 .hero .reveal-fade{transform:none!important;opacity:1!important;transition:none!important}
@@ -1966,10 +2085,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-tile:hover figcaption{transform:translateY(0);opacity:1}}
 /* ---- 7. Calendrier scoreboard : horaires alignés + highlight orange au survol ---- */
 /* ---- 8. CTA flottant mobile : reflet "app native" toutes les ~12 s (bref, non permanent) ---- */
-.float-cta{overflow:hidden}
-.float-cta::after{content:"";position:absolute;top:0;left:0;width:42%;height:100%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-180%) skewX(-18deg);pointer-events:none}
-.float-cta.show::after{animation:ctaShine 12s ease-in-out 4s infinite}
-@keyframes ctaShine{0%,90%{transform:translateX(-180%) skewX(-18deg)}97%,100%{transform:translateX(320%) skewX(-18deg)}}
+/* Le reflet en boucle sur la barre CTA a ete retire : animation permanente
+   en bas d'ecran, et depuis que la barre a deux moities il balayait aussi
+   la partie sombre. La barre se signale en arrivant, ca suffit. */
 /* ---- 10. Micro-typo : "100 %" insécable (ne se coupe jamais en fin de ligne) ---- */
 /* ---- 9. Perf mobile : aucun effet permanent lourd sous 760px ----
    (le reflet du CTA flottant reste actif : c'est l'animation "app native"
@@ -1977,8 +2095,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:759px){.hero__halo,.hero__glow{animation:none}
 .kit-card__season::after,.sponsor-pack.pack--feat .pack__tag{animation:none}}
 /* ---- a11y : neutralise toutes les nouvelles animations si prefers-reduced-motion ---- */
-@media (prefers-reduced-motion:reduce){.hero.in::before,.kit-card:hover::before,.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag,.float-cta.show::after,.packs.in .packs-grid--four .pack{animation:none!important}
-.hero::before,.kit-card::before,.kit-card__season::after,.float-cta::after{display:none}
+@media (prefers-reduced-motion:reduce){.hero.in::before,.kit-card:hover::before,.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag,.packs.in .packs-grid--four .pack{animation:none!important}
+.hero::before,.kit-card::before,.kit-card__season::after{display:none}
 .g-tile figcaption{transform:none!important;opacity:1!important}}
 /* ============================================================
    V16 "VITRINE" — staff agrandi, logos sponsors agrandis,
@@ -4136,7 +4254,14 @@ main > .section .cine-phone__island i{animation:none !important}
   font-size:1rem;letter-spacing:.04em;text-transform:uppercase;color:var(--blanc)}
 .nx__where span{display:block;margin-top:.2rem;font-weight:500;font-size:.9rem;
   letter-spacing:0;text-transform:none;color:var(--txt-soft)}
-.nx__free{margin:0 0 1.15rem;font-size:.9rem;color:var(--txt-soft)}
+.nx__tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:0 0 1.15rem}
+.nx__tag{display:inline-flex;align-items:center;font-family:var(--ff-cond);
+  font-weight:700;font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--bleu-glacier);border:1px solid var(--line-strong);
+  border-radius:99px;padding:.34em .8em}
+.nx__tag--free{color:#8FE0B0;border-color:rgba(143,224,176,.34)}
+.nx__tag--d{color:#190f04;background:var(--grad-orange);border-color:transparent}
+.nx__tag[hidden]{display:none}
 .nx__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 
 /* ---- desktop : l'affiche a gauche, le texte respire a droite ---- */
@@ -4252,6 +4377,58 @@ main > .section .cine-phone__island i{animation:none !important}
 @media (prefers-reduced-motion:reduce){
   .begin__ph img{transition:none}
   .begin__ph:hover img{transform:none}
+}
+
+
+/* ============================================================
+   Selecteur d'age — « quel age a le joueur ? »
+   ------------------------------------------------------------
+   La question que se pose tout parent qui arrive sur le site.
+   Six onglets, un panneau. Pas de modale, pas de librairie, et
+   surtout : les six panneaux sont DANS le HTML. Sans JS, le
+   premier reste ouvert et les autres restent lisibles (l'attribut
+   hidden est retire par le script, pas ajoute).
+   ============================================================ */
+.age{margin:clamp(1.8rem,4vw,2.6rem) 0 0;padding:clamp(1.2rem,3vw,1.7rem) 0 0;
+  border-top:1px solid var(--line)}
+.age__q{margin:0 0 .9rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange-vif)}
+.age__tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.15rem}
+.age__tab{font:inherit;font-family:var(--ff-cond);font-weight:700;font-size:.9rem;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--bleu-glacier);
+  padding:.62em 1.05em;border:1px solid var(--line-strong);border-radius:99px;
+  background:transparent;cursor:pointer;
+  transition:color .2s,border-color .2s,background .2s}
+.age__tab:hover{color:var(--blanc);border-color:rgba(232,130,42,.5)}
+.age__tab:focus-visible{outline:2px solid var(--orange-vif);outline-offset:2px}
+.age__tab.is-on{color:#190f04;background:var(--grad-orange);border-color:transparent}
+
+.age__panel[hidden]{display:none}
+.age__cat{margin:0 0 .85rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .7rem}
+.age__cat-l{font-family:var(--ff-cond);font-weight:700;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--txt-soft)}
+.age__cat b{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.3rem,3.4vw,1.75rem);line-height:1;color:var(--blanc)}
+.age__cat-n{font-size:.88rem;color:var(--txt-soft)}
+.age__facts{list-style:none;margin:0 0 1.05rem;padding:0;display:grid;gap:.55rem;
+  grid-template-columns:1fr}
+.age__facts li{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:.2rem .8rem;
+  align-items:baseline}
+.age__facts span{font-family:var(--ff-cond);font-weight:700;font-size:.72rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--txt-soft)}
+.age__facts b{font-weight:600;font-size:.95rem;line-height:1.35;color:var(--txt)}
+.age__a{display:flex;flex-wrap:wrap;gap:.6rem;margin:0}
+
+@media (min-width:700px){
+  .age__facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem 1.4rem}
+  .age__facts li{grid-template-columns:1fr;gap:.15rem}
+}
+@media (max-width:520px){
+  /* les onglets deviennent une grille : six pastilles alignees valent mieux
+     qu'une ligne qui se casse n'importe ou. */
+  .age__tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}
+  .age__tab{padding:.68em .4em;font-size:.82rem;text-align:center}
+  .age__a .btn{flex:1 1 100%;justify-content:center}
 }
 
 /* ---- Transmission : la photo qui ouvre les catégories jeunes ----

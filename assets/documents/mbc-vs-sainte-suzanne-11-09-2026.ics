@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MBC La Montagne Basket Club//mbc974.com//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:mbc-prm-j1-2026-09-11@mbc974.com
+DTSTAMP:20260827T120000Z
+DTSTART:20260911T163000Z
+DTEND:20260911T190000Z
+SUMMARY:MBC La Montagne - Sainte-Suzanne (Pre-Regionale Masculine)
+LOCATION:Gymnase de La Montagne, Chemin des Bauhinias, 97417 Saint-Denis, La Reunion
+DESCRIPTION:Premiere journee de Pre-Regionale Masculine. Entree libre. Calendrier complet : https://mbc974.com/#matchs
+URL:https://mbc974.com/#matchs
+END:VEVENT
+END:VCALENDAR

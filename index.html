@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/joueur-dribble-900.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/joueur-dribble-640.webp 640w, assets/images/joueur-dribble-900.webp 900w, assets/images/joueur-dribble.webp 1280w"
       imagesizes="(max-width:900px) 104vw, 46vw">
-<link rel="stylesheet" href="style.css?v=ec22623e">
+<link rel="stylesheet" href="style.css?v=e13c63d4">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -403,11 +403,19 @@
 </header>
 <div class="nav-backdrop" id="navBackdrop"></div>
 
-<!-- ===== Floating mobile CTA ===== -->
-<a class="float-cta" id="floatCta" href="adhesion.html">
-  <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-  Je m'inscris · saison 2026/2027
-</a>
+<!-- Barre CTA mobile : deux intentions, pas une. « Je m'inscris » seul
+     ne servait pas ceux qui hesitent encore — or c'est la majorite.
+     Elle se retire pres du pied de page (voir script.js). -->
+<div class="float-cta" id="floatCta" role="group" aria-label="Actions rapides">
+  <a class="float-cta__b float-cta__b--alt" href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20MBC%20avant%20de%20m%27inscrire." target="_blank" rel="noopener">
+    <svg class="ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8z"/></svg>
+    Une question
+  </a>
+  <a class="float-cta__b float-cta__b--main" href="adhesion.html">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+    Je m'inscris
+  </a>
+</div>
 
 <main id="contenu">
 
@@ -717,6 +725,100 @@
       </div>
     </div>
 
+
+    <!-- Sélecteur d'âge : la question n°1 des parents, résolue en un clic.
+         Pas de modale, pas de librairie : six boutons, un panneau qui change.
+         Sans JS, le panneau du premier age reste visible et les six liens restent atteignables — le contenu est déjà dans le HTML. -->
+    <div class="age reveal" id="age-selector">
+      <p class="age__q" id="ageQ">Quel âge a le joueur&nbsp;?</p>
+      <div class="age__tabs" role="tablist" aria-labelledby="ageQ">
+        <button type="button" role="tab" class="age__tab is-on" aria-selected="true"  aria-controls="age-p-1" id="age-t-1">3&ndash;6 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-2" id="age-t-2">7&ndash;10 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-3" id="age-t-3">11&ndash;12 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-4" id="age-t-4">13&ndash;14 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-5" id="age-t-5">15&ndash;17 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-6" id="age-t-6">Adulte</button>
+      </div>
+      <div class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Baby Basket</b><span class="age__cat-n">nés de 2020 à 2023</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Samedi 09h00 – 10h00</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>Baby Basket 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="baby-basket-la-reunion/">Le Baby Basket</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20essayer%20le%20Baby%20Basket%20%C3%A0%20mon%20enfant%20n%C3%A9%20en%20..." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-2" aria-labelledby="age-t-2" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>École de Basket</b><span class="age__cat-n">nés de 2016 à 2019</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Samedi 10h00 – 11h30</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>École de Basket 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="ecole-de-basket-saint-denis/">L'école de basket</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20pour%20inscrire%20mon%20enfant%20%C3%A0%20l%27%C3%A9cole%20de%20basket%20du%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-3" aria-labelledby="age-t-3" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U13</b><span class="age__cat-n">nés en 2014 et 2015</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>U13 Compétition 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U13%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-4" aria-labelledby="age-t-4" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U15</b><span class="age__cat-n">nés en 2012 et 2013</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>U15 Compétition 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U15%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-5" aria-labelledby="age-t-5" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U18</b><span class="age__cat-n">nés de 2009 à 2011</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 20h30 &amp; mercredi 19h00</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>U18 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket jeune</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20un%20joueur%20n%C3%A9%20en%20...%20au%20MBC%20%28cat%C3%A9gorie%20U18%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-6" aria-labelledby="age-t-6" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Seniors ou Loisirs</b><span class="age__cat-n">dès 16 ans</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 20h30, mercredi 19h00 ou 20h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>Senior Compétition ou Basket Loisirs</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-adulte-loisirs-saint-denis/">Basket adulte &amp; loisirs</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20en%20basket%20adulte%20au%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+    </div>
+
     <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Un doute sur la catégorie&nbsp;? Donnez-nous l'année de naissance, on confirme avec vous avant l'inscription — <a href="https://wa.me/262692556458?text=Bonjour%2C%20quelle%20cat%C3%A9gorie%20pour%20un%20enfant%20n%C3%A9%20en%20...%20%3F" target="_blank" rel="noopener">par WhatsApp</a> ou depuis le <a href="#contact">formulaire de contact</a>.</span></p>
 
     <div class="essentiel-cta reveal">
@@ -871,7 +973,7 @@
          deux actions. Le bloc s'efface tout seul après la rencontre — voir
          data-match-date, traité dans script.js. -->
     <aside class="nx reveal" id="prochain-match" data-match-date="2026-09-11"
-           aria-labelledby="nxTitle">
+           data-state="upcoming" aria-labelledby="nxTitle">
       <div class="nx__media">
         <span class="nx__ghost" aria-hidden="true"></span>
         <a class="nx__poster" href="assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg"
@@ -886,7 +988,7 @@
         </a>
       </div>
       <div class="nx__body">
-        <p class="kicker nx__kicker">Prochain rendez-vous</p>
+        <p class="kicker nx__kicker" id="nxKicker">Prochain rendez-vous</p>
         <h3 class="nx__t" id="nxTitle">MBC <em>vs</em> Sainte-Suzanne</h3>
         <p class="nx__when">
           <time datetime="2026-09-11T20:30">Vendredi 11 septembre 2026 &middot; 20h30</time>
@@ -894,10 +996,15 @@
         <p class="nx__where">Gymnase de La Montagne
           <span>Chemin des Bauhinias &middot; 97417 Saint-Denis</span>
         </p>
-        <p class="nx__free">Entrée libre &middot; première journée de Pré-Régionale</p>
+        <p class="nx__tags">
+          <span class="nx__tag nx__tag--free">Entrée libre</span>
+          <span class="nx__tag">Pré-Régionale &middot; J1</span>
+          <span class="nx__tag nx__tag--d" id="nxCountdown" hidden></span>
+        </p>
         <p class="nx__a">
           <a class="btn btn--primary" href="#mx-liste">Voir le calendrier</a>
           <a class="btn btn--ghost" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers le Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a>
+          <a class="btn btn--ghost" href="assets/documents/mbc-vs-sainte-suzanne-11-09-2026.ics" download>Ajouter à mon agenda<span class="sr-only"> (fichier .ics)</span></a>
         </p>
       </div>
     </aside>
@@ -1084,45 +1191,22 @@
 </section>
 
 <!-- ===== Parcours licence — ce qui se passe après le paiement ===== -->
+<!-- Le parcours de licence en 5 etapes vivait ici ET sur /adhesion.html,
+     mot pour mot. Il reste sur la page adhesion, où il est à sa place :
+     on ne lit ce detail qu'une fois décidé. La home garde la reponse a
+     l'inquiétude réelle (« j'ai payé, où est ma licence ? ») et renvoie. -->
 <section class="section parcours" id="parcours" aria-labelledby="parcoursTitle">
   <span class="bg-word" style="top:6%;right:-3%" aria-hidden="true">LICENCE</span>
   <div class="wrap">
     <header class="sec-head sec-head--center reveal">
       <p class="kicker kicker--center">Après votre inscription</p>
       <h2 class="h2" id="parcoursTitle">De l'inscription <span class="hl">à la licence FFBB</span></h2>
-      <p class="sec-head__sub" style="margin-inline:auto">Payer en ligne, c'est votre adhésion au club. La licence FFBB, elle, est créée juste après, avec vous. Voilà l'ordre des choses — pour qu'aucune famille ne se demande «&nbsp;j'ai payé, où est ma licence&nbsp;?&nbsp;».</p>
+      <p class="sec-head__sub" style="margin-inline:auto">Payer en ligne, c'est votre adhésion au club. La licence FFBB, elle, est créée juste après, avec vous&nbsp;: le club prépare la demande, la fédération vous envoie votre e-Licence, puis elle est validée. Comptez quelques jours &mdash; personne n'est laissé sans nouvelle.</p>
     </header>
-    <ol class="licence-path reveal">
-      <li>
-        <b>Vous vous inscrivez et réglez 95 €</b>
-        <span>En ligne sur Yapla. Confirmation de paiement immédiate par e-mail, place réservée dans votre catégorie.</span>
-        <span class="lp-who lp-who--vous">Vous</span>
-      </li>
-      <li>
-        <b>Le club prépare votre demande de licence</b>
-        <span>Le MBC enregistre l'adhésion dans FBI, l'outil officiel de la FFBB, et confirme votre catégorie sous 48&nbsp;h.</span>
-        <span class="lp-who lp-who--club">Le club</span>
-      </li>
-      <li>
-        <b>Vous recevez l'e-mail officiel de la FFBB</b>
-        <span>Avec un lien personnel vers votre formulaire e-Licence. Pensez à regarder dans les courriers indésirables.</span>
-        <span class="lp-who lp-who--vous">Vous</span>
-      </li>
-      <li>
-        <b>Vous complétez votre e-Licence</b>
-        <span>Identité, photo, éléments de santé et justificatifs demandés. Tout se fait en ligne, depuis un téléphone.</span>
-        <span class="lp-who lp-who--vous">Vous</span>
-      </li>
-      <li>
-        <b>Le club contrôle, la licence est validée</b>
-        <span>Vous recevez votre licence au format PDF&nbsp;: vous êtes officiellement licencié pour la saison 2026/2027.</span>
-        <span class="lp-who lp-who--club">Le club &amp; la FFBB</span>
-      </li>
-    </ol>
-    <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Comptez plusieurs jours entre le paiement et la licence définitive&nbsp;: la validation passe par la fédération. Les 95&nbsp;€ couvrent l'adhésion, la licence FFBB et l'assurance — <a href="adhesion.html#tarif">le détail de ce qui est compris</a>.</span></p>
+    <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Les 95&nbsp;&euro; couvrent l'adhésion, la licence FFBB et l'assurance &mdash; <a href="adhesion.html#tarif">le détail de ce qui est compris</a>.</span></p>
     <div class="essentiel-cta reveal">
-      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-      <a href="adhesion.html#parcours" class="btn btn--ghost btn--lg">Le parcours en détail</a>
+      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris &middot; saison 2026/2027</a>
+      <a href="adhesion.html#parcours" class="btn btn--ghost btn--lg">Les 5 étapes en détail</a>
     </div>
   </div>
 </section>
@@ -1147,11 +1231,17 @@
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 12h12M9 7v10M15 7v10"/></svg>Séance d'essai possible</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H8l-4 3z"/></svg>Parents bienvenus &amp; infos régulières</li>
       </ul>
+      <p class="trustline reveal" aria-label="Identité officielle du club">
+        <span>Affilié FFBB</span><span>Association loi 1901</span><span>Saint-Denis &middot; 974</span><span>Saison 2026/2027</span>
+      </p>
     </header>
 
     <blockquote class="parents-quote reveal">
       <p>« Chaque enfant doit pouvoir repartir de l'entraînement avec le sourire, le sentiment d'avoir progressé et l'envie de revenir. C'est ça, notre vrai objectif. »</p>
       <cite>— L'équipe encadrante du MBC</cite>
+      <a class="parents-quote__who" href="#staff">Découvrir l'équipe qui encadre votre enfant
+        <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </blockquote>
 
     <div class="parents-grid">
@@ -1577,10 +1667,25 @@
           </div>
         </div>
         <div class="contact-map">
-          <!-- La fiche Google Business Profile est liée juste au-dessus (cid=11137921175543905570).
-               L'embed ci-dessous reste la carte générique du gymnase — remplaçable si besoin par l'embed
-               de la fiche (Maps > fiche > Partager > Intégrer une carte). -->
-          <iframe title="Carte — Gymnase de La Montagne, Saint-Denis, La Réunion" src="https://www.google.com/maps?q=Gymnase%20de%20La%20Montagne%2C%20Saint-Denis%2C%20La%20R%C3%A9union&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-forms" allowfullscreen></iframe>
+          <!-- Façade : l'iframe Google n'est injectée qu'au clic. Chargée d'office,
+               elle apportait ~700 Ko de scripts tiers et les cookies Google à chaque
+               visite, pour une carte que presque personne ne manipule — le lien
+               « Itinéraire » juste au-dessus suffit dans la plupart des cas.
+               data-embed porte l'URL ; script.js fait le reste. -->
+          <button type="button" class="map-facade" id="mapFacade"
+                  data-embed="https://www.google.com/maps?q=Gymnase%20de%20La%20Montagne%2C%20Saint-Denis%2C%20La%20R%C3%A9union&amp;output=embed"
+                  aria-label="Afficher la carte interactive du Gymnase de La Montagne (charge un contenu Google Maps)">
+            <span class="map-facade__grid" aria-hidden="true"></span>
+            <span class="map-facade__pin" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+            </span>
+            <span class="map-facade__txt">
+              <b>Gymnase de La Montagne</b>
+              <span>Chemin des Bauhinias · 97417 Saint-Denis</span>
+            </span>
+            <span class="map-facade__cta">Charger la carte</span>
+            <span class="map-facade__note">Contenu Google Maps · chargé uniquement si vous le demandez</span>
+          </button>
         </div>
       </aside>
     </div>
@@ -1677,6 +1782,6 @@
   </div>
 </div>
 
-<script src="script.js?v=b6f93f43" defer></script>
+<script src="script.js?v=6f934943" defer></script>
 </body>
 </html>
