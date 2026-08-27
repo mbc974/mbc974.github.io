@@ -241,6 +241,52 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
     background:linear-gradient(180deg,rgba(191,210,228,.24),rgba(191,210,228,.06) 70%,transparent)}
 }
 
+
+/* ============================================================
+   Parents : la preuve a cote de la promesse
+   ------------------------------------------------------------
+   La citation du club tenait seule, et la photo qui l'aurait
+   appuyee dormait dans la galerie, noyee parmi six autres.
+   Les deux sont maintenant cote a cote : on lit ce que le club
+   dit vouloir faire, et on voit une seance ou il le fait.
+   Le cadre reprend exactement celui de « L'essentiel » — meme
+   rayon, meme filet, meme equerre orange decalee — pour que les
+   deux sections se repondent au lieu de s'ignorer.
+   ============================================================ */
+.pquote{display:grid;grid-template-columns:1fr;gap:clamp(1.4rem,3.5vw,2.2rem);
+  align-items:center;margin:clamp(1.9rem,4.5vw,2.8rem) 0 clamp(2.2rem,5vw,3.2rem)}
+
+.pquote__ph{position:relative;margin:0;border-radius:18px;
+  box-shadow:0 26px 60px rgba(3,8,18,.6),0 3px 12px rgba(3,8,18,.42)}
+.pquote__ph picture{display:block;border-radius:inherit;overflow:hidden}
+.pquote__ph img{display:block;width:100%;height:auto;border-radius:inherit;
+  border:1px solid rgba(191,210,228,.18);
+  filter:saturate(1.02) contrast(1.02)}
+/* l'equerre orange, comme sur le tirage de « L'essentiel » */
+.pquote__ph::before{content:"";position:absolute;z-index:-1;
+  top:-10px;left:-10px;width:34%;height:30%;
+  border-top:1px solid var(--orange-vif);border-left:1px solid var(--orange-vif);
+  border-top-left-radius:18px;opacity:.85;pointer-events:none}
+.pquote__ph::after{content:"";position:absolute;z-index:-1;
+  bottom:-10px;right:-10px;width:24%;height:22%;
+  border-bottom:1px solid rgba(191,210,228,.28);
+  border-right:1px solid rgba(191,210,228,.28);
+  border-bottom-right-radius:18px;pointer-events:none}
+/* la legende sort du cadre : elle appartient au texte, pas a l'image */
+.pquote__ph figcaption{margin-top:.85rem;display:flex;align-items:center;gap:.6rem;
+  font-family:var(--ff-cond);font-weight:700;font-size:.74rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--txt-soft)}
+.pquote__ph figcaption::before{content:"";width:1.5rem;height:1px;flex:none;
+  background:var(--grad-orange)}
+
+/* la citation perd sa largeur max : elle occupe sa colonne */
+.pquote .parents-quote{margin:0;max-width:none}
+
+@media (min-width:900px){
+  .pquote{grid-template-columns:minmax(0,52fr) minmax(0,48fr);
+    gap:clamp(2rem,4vw,3.2rem)}
+}
+
 /* ---- Le lien vers l'equipe, sous la citation ----
    La citation etait signee « L'equipe encadrante » sans qu'on puisse aller
    voir qui c'est. Un parent qui confie son enfant veut des visages. */
@@ -1460,16 +1506,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-tall{min-height:330px}
 @media(prefers-reduced-motion:reduce){.g-tile:hover img{transform:none}}
 @media(min-width:680px){.gallery-mosaic{grid-template-columns:1fr 1fr;grid-auto-rows:192px;
-    grid-template-areas:"tall huddle" "tall banner" "shoot group" "init init";}
+    grid-template-areas:"tall huddle" "tall banner" "shoot group";}
 .g-tile{min-height:0}
 .g-tall{grid-area:tall}
 .g-huddle{grid-area:huddle}
 .g-banner{grid-area:banner}
 .g-shoot{grid-area:shoot}
-.g-group{grid-area:group}
-.g-init{grid-area:init}}
+.g-group{grid-area:group}}
 @media(min-width:980px){.gallery-mosaic{grid-auto-rows:226px;grid-template-columns:repeat(4,1fr);
-    grid-template-areas:"tall huddle huddle banner" "tall shoot group group" "init init init init";}}
+    grid-template-areas:"tall huddle huddle banner" "tall shoot group group";}}
 .gallery-cta{margin-top:1.9rem;text-align:center}
 .gallery-cta__txt{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--bleu-glacier);font-size:1.05rem;margin-bottom:1rem}
 .gallery-cta__btns{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
@@ -3503,7 +3548,6 @@ body.cine-fs-lock{overflow:hidden}
   .gallery-mosaic .g-tile img{width:100%;height:100%;object-fit:cover}
   .gallery-mosaic .g-tile:first-child{grid-column:1 / -1;height:230px}
   /* la photo d'initiation est un plan large : pleine largeur sur mobile aussi */
-  .gallery-mosaic .g-init{grid-column:1 / -1;height:210px}
 
   /* --- Pied de page : colonnes de liens sur 2 colonnes --- */
   .footer__top{gap:1.4rem}
