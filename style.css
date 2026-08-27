@@ -1798,51 +1798,35 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   background:linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
     var(--nuit-2) 100%)}
 
-/* ---- la photo : cadrée à droite, jamais étirée ----
-   La source fait 900 px de large ; le conteneur est plafonné pour qu'elle
-   ne soit pas agrandie sur les grands écrans. */
-.ess__photo{position:absolute;top:auto;right:0;bottom:0;margin:0;z-index:0;
-  width:min(64%,900px);height:min(100%,820px);pointer-events:none;
-  /* Fondu en courbe smoothstep, 13 paliers.
-     L'ancien fondu vertical n'avait que 3 paliers (0 -> .55 a 8% -> 1 a 18%) :
-     la pente changeait brutalement a 8%, et ce coude se lisait comme une
-     bande horizontale juste au-dessus du joueur de gauche. Une smoothstep
-     a pente nulle aux deux extremites n'a aucun coude, donc aucune bande.
-     Le fondu vertical est aussi allonge (18% -> 24%) et s'acheve avant les
-     cheveux du joueur, qui commencent a 28,7% du cadre. */
-  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.02) 0.83%,rgba(0,0,0,0.074) 1.67%,rgba(0,0,0,0.156) 2.5%,rgba(0,0,0,0.259) 3.33%,rgba(0,0,0,0.376) 4.17%,rgba(0,0,0,0.5) 5%,rgba(0,0,0,0.624) 5.83%,rgba(0,0,0,0.741) 6.67%,rgba(0,0,0,0.844) 7.5%,rgba(0,0,0,0.926) 8.33%,rgba(0,0,0,0.98) 9.17%,#000 10%),
-    linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.02) 2%,rgba(0,0,0,0.074) 4%,rgba(0,0,0,0.156) 6%,rgba(0,0,0,0.259) 8%,rgba(0,0,0,0.376) 10%,rgba(0,0,0,0.5) 12%,rgba(0,0,0,0.624) 14%,rgba(0,0,0,0.741) 16%,rgba(0,0,0,0.844) 18%,rgba(0,0,0,0.926) 20%,rgba(0,0,0,0.98) 22%,#000 24%);
-  -webkit-mask-composite:source-in;mask-composite:intersect;
-  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,0.02) 0.83%,rgba(0,0,0,0.074) 1.67%,rgba(0,0,0,0.156) 2.5%,rgba(0,0,0,0.259) 3.33%,rgba(0,0,0,0.376) 4.17%,rgba(0,0,0,0.5) 5%,rgba(0,0,0,0.624) 5.83%,rgba(0,0,0,0.741) 6.67%,rgba(0,0,0,0.844) 7.5%,rgba(0,0,0,0.926) 8.33%,rgba(0,0,0,0.98) 9.17%,#000 10%),
-    linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.02) 2%,rgba(0,0,0,0.074) 4%,rgba(0,0,0,0.156) 6%,rgba(0,0,0,0.259) 8%,rgba(0,0,0,0.376) 10%,rgba(0,0,0,0.5) 12%,rgba(0,0,0,0.624) 14%,rgba(0,0,0,0.741) 16%,rgba(0,0,0,0.844) 18%,rgba(0,0,0,0.926) 20%,rgba(0,0,0,0.98) 22%,#000 24%)}
-.ess__photo img{width:100%;height:100%;object-fit:cover;
-  object-position:40% 30%;filter:saturate(.96) contrast(1.02)}
-/* La photo s'efface vers le texte et sous les pieds. Pas de flou, pas de
-   vignette supplémentaire — mais trois voiles, et une seule raison : le
-   texte passe DEVANT la photo.
-   Le cliché précédent était flouté et assombri à 72 %, il faisait écran
-   tout seul. Celui-ci est net, et le tableau blanc y est très clair :
-   mesuré sur la page, « À La Montagne, Saint-Denis » tombait à 1,11:1 et
-   « 2 lieux » à 2,77:1. Illisible.
-   Les deux voiles sont volontairement LÉGERS. Une première version les
-   poussait à .90 : le texte devenait lisible, mais le joueur de gauche
-   disparaissait dans le noir. Le contraste est donc déplacé sur le texte
-   lui-même (halo, plus bas) et la photo reste visible.
-   L'ellipse n'est PAS ancrée dans l'angle : à 30 % / 100 %, soit au milieu
-   de la ligne de notes, la seule chose qui descende vraiment sur la photo.
-   Ancrée dans l'angle, elle éteignait le maillot floqué GLAIN 2 (x 5-13 %,
-   y 65-80 %), sur lequel aucun texte ne passe. Elle s'arrête aussi avant
-   les consignes du tableau (x 45 %, y 62 %).
-   Le troisième voile est l'ancien fondu haut/pieds. */
-.ess__photo::after{content:"";position:absolute;inset:0;background:
-  radial-gradient(30% 13% at 16% 49%,rgba(6,11,20,.93) 0%,
-    rgba(6,11,20,.86) 54%,rgba(6,11,20,0) 100%),
-  linear-gradient(90deg,rgba(6,11,20,.17) 0%,rgba(6,11,20,.15) 16%,
-    rgba(6,11,20,.08) 26%,rgba(6,11,20,0) 34%),
-  radial-gradient(27% 55% at 38% 100%,rgba(6,11,20,.80) 0%,
-    rgba(6,11,20,.72) 46%,rgba(6,11,20,.44) 68%,rgba(6,11,20,0) 86%),
-  linear-gradient(180deg,rgba(7,13,24,.16) 0%,transparent 34%,
-    rgba(16,27,48,.44) 100%)}
+/* ---- La photo : un cadre, plus un fondu ----
+   Elle passait derriere le texte, effacee par un masque en degrade. Ce
+   fondu imposait deux servitudes : des voiles sombres et un halo sur chaque
+   lettre pour que le texte reste lisible par-dessus. Tout cela disparait.
+   La photo devient un tirage encadre, pose a droite, et le texte s'arrete
+   avant elle. Le cadre reprend le vocabulaire du site : angles arrondis,
+   filet clair de 1 px, ombre profonde et diffuse. Le seul accent orange est
+   une equerre fine, decalee — une ligne d'architecte, pas un halo. */
+.ess__photo{position:absolute;right:clamp(1.5rem,4vw,4.5rem);
+  top:50%;translate:0 -50%;margin:0;z-index:1;
+  width:min(38%,420px);aspect-ratio:3/4;
+  border-radius:18px;
+  box-shadow:0 28px 64px rgba(3,8,18,.62),0 3px 12px rgba(3,8,18,.45)}
+/* l'image, dans le cadre */
+.ess__photo img{width:100%;height:100%;object-fit:cover;object-position:center 42%;
+  border-radius:inherit;display:block;
+  border:1px solid rgba(191,210,228,.18);
+  filter:saturate(1.02) contrast(1.02)}
+/* l'equerre orange, decalee en haut a gauche */
+.ess__photo::before{content:"";position:absolute;z-index:-1;
+  top:-10px;left:-10px;width:38%;height:26%;
+  border-top:1px solid var(--orange-vif);border-left:1px solid var(--orange-vif);
+  border-top-left-radius:18px;opacity:.85;pointer-events:none}
+/* et son echo, en bas a droite */
+.ess__photo::after{content:"";position:absolute;z-index:-1;
+  bottom:-10px;right:-10px;width:26%;height:18%;
+  border-bottom:1px solid rgba(191,210,228,.28);
+  border-right:1px solid rgba(191,210,228,.28);
+  border-bottom-right-radius:18px;pointer-events:none}
 
 .ess__in{position:relative;z-index:2}
 
@@ -1925,32 +1909,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
 .ess-plus__i span{font-size:.9rem;line-height:1.4;color:var(--txt-soft)}
 
-/* ---- le halo : c'est LUI qui rend le texte lisible sur la photo ----
-   Ces libellés passent devant le cliché, dont le tableau blanc est très
-   clair. L'assombrissement de la photo entière marchait, mais il effaçait
-   le joueur de gauche. Le halo fait le même travail sur quelques pixels
-   autour des lettres : invisible sur le fond sombre à gauche, il ne se
-   révèle que là où il sert. Une couche serrée pour détacher la lettre,
-   deux plus larges pour éteindre les détails du tableau derrière.
-   À ne pas alléger sans remesurer : c'est la seule chose qui tienne
-   « À La Montagne, Saint-Denis » au-dessus du seuil. */
-.ess-stat__v,.ess-stat__l,.ess-stat__x,.ess-plus__i b,.ess-plus__i span{
-  text-shadow:0 1px 2px rgba(4,9,18,.96),0 0 7px rgba(4,9,18,.94),
-    0 0 17px rgba(4,9,18,.80),0 0 32px rgba(4,9,18,.58)}
-/* Les deux lignes secondaires sont les plus exposées : ce sont les plus
-   petites, et elles tombent pile sur le maillot blanc et sur le bord du
-   tableau. Halo plus serré et plus dense. Sans lui, « À La Montagne,
-   Saint-Denis » est à 1,6:1 ; avec, au-dessus de 5:1 même en supposant
-   le halo à moitié efficace. */
-.ess-stat__x,.ess-plus__i span{
-  text-shadow:0 1px 2px rgba(4,9,18,1),0 0 3px rgba(4,9,18,1),
-    0 0 6px rgba(4,9,18,.96),0 0 13px rgba(4,9,18,.84),
-    0 0 26px rgba(4,9,18,.60)}
-@media (max-width:899px){
-  /* en mobile la photo est un bandeau séparé : plus rien ne passe dessus */
-  .ess-stat__v,.ess-stat__l,.ess-stat__x,.ess-plus__i b,.ess-plus__i span{
-    text-shadow:none}
-}
+/* Le halo qui detachait chaque lettre a ete supprime : plus rien ne passe
+   devant la photo, donc plus rien a compenser. C'etait quatre ombres portees
+   empilees sur six blocs de texte. */
 
 .ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;
   margin-top:clamp(2rem,4vw,2.6rem)}
@@ -1971,28 +1932,36 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .ess__head{max-width:44rem}
   .ess-stats,.ess-plus{max-width:44rem}
 }
+/* Entre 900 et 1099 px la photo reste empilee au-dessus : a cette largeur,
+   lui reserver 38 % ecraserait les trois chiffres sur deux lignes. */
+@media (min-width:1100px){
+  /* la colonne de texte s'arrete avant le cadre : le tirage n'est plus un
+     fond, plus rien ne passe dessus. */
+  .ess__in{padding-right:calc(min(38%,420px) + clamp(3rem,7vw,7rem))}
+  .ess__head,.ess-stats,.ess-plus,.ess-proof{max-width:40rem}
+}
 
-@media (max-width:899px){
-  /* la photo passe en bandeau haut : elle reste présente, mais ne se
-     glisse plus derrière le texte, où le contraste serait fragile */
-  .ess{padding-top:0}
-  .ess__photo{position:relative;width:auto;
-    height:clamp(190px,40vw,290px);margin-bottom:clamp(1.7rem,5vw,2.4rem);
-    /* En desktop le fondu gauche a été raccourci pour dégager le joueur de
-       gauche, qui passe derrière la colonne de texte. En mobile la photo
-       est un bandeau plein cadre : rien ne passe devant, et c'est le bord
-       gauche du cliché — reste de banderole, silhouette de dos — qu'il faut
-       tenir dans le flou. On y garde donc le fondu long d'origine. */
-    -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.20) 4%,
-      rgba(0,0,0,.58) 10%,rgba(0,0,0,.86) 16%,#000 22%),
-      linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 8%,#000 18%);
-    mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.20) 4%,
-      rgba(0,0,0,.58) 10%,rgba(0,0,0,.86) 16%,#000 22%),
-      linear-gradient(180deg,transparent 0%,rgba(0,0,0,.55) 8%,#000 18%)}
-  .ess__photo::after{background:linear-gradient(180deg,
-    rgba(7,13,24,.20) 0%,rgba(7,13,24,.52) 58%,var(--nuit-0) 98%)}
+@media (max-width:1099px){
+  /* La photo repasse dans le flux, au-dessus du texte, toujours encadree.
+     Plus de masque : c'est un tirage, il a des bords nets. */
+  .ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
+  .ess__photo{position:static;translate:none;
+    width:min(100%,340px);aspect-ratio:3/4;
+    /* alignee sur la colonne de texte, pas centree : centree, elle flottait
+       au milieu pendant que tout le reste de la section restait a gauche. */
+    margin:0 auto clamp(1.9rem,5vw,2.6rem) clamp(18px,5vw,48px)}
+  .ess__photo::before{top:-8px;left:-8px}
+  .ess__photo::after{bottom:-8px;right:-8px}
   .ess__head{max-width:none}
   .ess__cta .btn{flex:1 1 100%;justify-content:center}
+}
+/* Placee APRES le bloc ci-dessus : a 900-1099 px, .ess__in prend la marge
+   large du desktop et non le padding du .wrap. La photo doit suivre la meme,
+   sinon elle demarre 29 px avant le texte. */
+@media (min-width:900px) and (max-width:1099px){
+  /* meme marche de gauche que .ess__in, pour que photo et texte partagent
+     la meme ligne de depart. */
+  .ess__photo{margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}
 }
 
 /* ---- sous 900 px : une seule langue de filets ----
@@ -4453,9 +4422,9 @@ main > .section .cine-phone__island i{animation:none !important}
 /* mobile : l'image d'abord, le texte ensuite */
 @media (max-width:899px){.transm__img{order:-1}}
 
-/* Le texte porte son propre contraste : une ombre douce suffit la ou la
-   photo remonte, et n'ajoute aucune nappe par-dessus le cliche. */
-.ess__head,.ess-stats,.ess-plus{
-  text-shadow:0 1px 3px rgba(7,13,24,.9),0 2px 18px rgba(7,13,24,.75)}
+/* L'ombre portee sur le texte de la section « L'essentiel » a ete retiree :
+   elle compensait la photo qui passait derriere. Le tirage etant desormais
+   encadre a droite, le texte est sur le bleu nuit uni — une ombre n'y ajoute
+   qu'un leger flou. */
 /* les notes du calendrier s'alignent sur le planning, pas sur le wrap */
 .cal-wrap .cal-note{max-width:940px;margin-inline:0}
