@@ -9,8 +9,8 @@ Les mesures (marges, hauteur et pas des lignes, teintes) ont ete relevees sur
 la premiere version de l'affiche pour que la mise a jour ne change QUE ce qui
 doit changer : le camp de chaque rencontre et le nombre de matchs a domicile.
 """
+import hashlib
 import io
-import math
 import os
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -204,9 +204,19 @@ def produire(mbc, base):
            font=f_pied1, fill=ORANGE_D)
     d.text((MARGE + 22, yp + 44), u'mbc974.com · @mbc974.re', font=f_pied2, fill=(126, 146, 170))
 
-    im.save(base + '.png', 'PNG', optimize=True)
+    # Le nom porte une empreinte du contenu. Sans elle, une affiche corrigee
+    # garderait son nom de fichier, et le service worker (qui sert les images
+    # en stale-while-revalidate « versionnees par leur nom ») continuerait de
+    # montrer l'ancienne a tout visiteur deja venu — donc les mauvais camps.
+    brut = io.BytesIO()
+    im.save(brut, 'PNG', optimize=True)
+    octets = brut.getvalue()
+    empreinte = hashlib.sha1(octets).hexdigest()[:8]
+    nom = '%s-%s' % (base, empreinte)
+
+    io.open(nom + '.png', 'wb').write(octets)
     for w in (1080, 720, 480):
         r = im.resize((w, int(H * w / float(L))), Image.LANCZOS)
         suff = '' if w == 1080 else '-%d' % w
-        r.save('%s%s.webp' % (base, suff), 'WEBP', quality=82, method=6)
-    return base + '.png'
+        r.save('%s%s.webp' % (nom, suff), 'WEBP', quality=82, method=6)
+    return os.path.basename(nom)

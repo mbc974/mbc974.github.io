@@ -162,6 +162,21 @@ COMPTES = (
 )
 
 
+# L'affiche porte une empreinte dans son nom (voir affiche-calendrier.py). Il
+# faut donc repointer ses six URL : la source, les trois crans du srcset et les
+# deux liens « telecharger » / « voir en grand ». Le motif tolere une empreinte
+# deja presente, pour que le script reste rejouable.
+# Attention : le nom propose au telechargement (attribut download) est
+# volontairement « calendrier-MBC-phase1-... » et non « calendrier-phase1-... ».
+# Sinon ce motif le reecrirait aussi, et le visiteur enregistrerait un fichier
+# nomme avec l'empreinte.
+AFFICHE_URL = re.compile(r'calendrier-phase1-2026-2027(?:-[0-9a-f]{8})?(-\d{3})?\.(png|webp)')
+
+
+def repointer_affiche(src, nouveau):
+    return AFFICHE_URL.sub(lambda m: '%s%s.%s' % (nouveau, m.group(1) or '', m.group(2)), src)
+
+
 def remplacer_compte(src, mot):
     for motif in COMPTES:
         src, n = motif.subn(lambda m: m.group(1) + mot + m.group(2), src, count=1)
@@ -207,12 +222,23 @@ def main():
     shutil.copyfile(pdf, ARCHIVE)
     print('  PDF archive -> %s' % ARCHIVE)
 
+    import glob
     import importlib.util
     spec = importlib.util.spec_from_file_location('aff', '.claude/affiche-calendrier.py')
     aff = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(aff)
-    aff.produire(mbc, AFFICHE)
-    print('  affiche regeneree -> %s.png (+ webp)' % AFFICHE)
+    anciens = set(glob.glob('assets/affiches/calendrier-phase1-2026-2027*'))
+    nouveau = aff.produire(mbc, AFFICHE)
+    print('  affiche regeneree -> %s.png (+ 3 webp)' % nouveau)
+
+    # repointer les six URL de l'affiche, puis retirer les fichiers orphelins
+    html = repointer_affiche(io.open('index.html', encoding='utf-8').read(), nouveau)
+    io.open('index.html', 'w', encoding='utf-8', newline='\n').write(html)
+    gardes = set(glob.glob('assets/affiches/%s*' % nouveau))
+    for vieux in sorted(anciens - gardes):
+        os.remove(vieux)
+        print('  retire -> %s' % vieux)
+
     print('\n  ne pas oublier : python .claude/bump-assets.py')
     return 0
 
