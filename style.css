@@ -1748,6 +1748,48 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-stat__x{display:block;margin-top:.34rem;font-weight:500;
   font-size:.9rem;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
 
+
+/* ---- La preuve : deuxieme niveau de lecture de la section ----
+   Volontairement modeste a cote des trois chiffres : ce n'est pas une
+   carte, c'est une photo posee sur le bleu nuit avec une legende a cote.
+   Le bord gauche de l'image se fond dans le fond (masque), un filet
+   orange 1px separe la photo de la legende. Pas de cadre blanc, pas
+   d'ombre large : la photo doit sembler imprimee sur la page. */
+.ess-proof{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);
+  align-items:center;gap:clamp(1rem,3vw,1.6rem);margin:clamp(1.7rem,4vw,2.3rem) 0 0;
+  padding-top:clamp(1.3rem,3vw,1.7rem);border-top:1px solid rgba(191,210,228,.14)}
+.ess-proof__ph{position:relative;width:min(38vw,150px);flex:none;
+  border-radius:var(--r-sm);overflow:hidden;
+  box-shadow:0 10px 26px rgba(3,8,18,.45);
+  /* le bord bas se fond vers le bleu nuit : l'image n'a pas de fin nette */
+  -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%);
+  mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%)}
+.ess-proof__ph img{display:block;width:100%;height:auto}
+/* le filet orange, cote legende */
+.ess-proof__cap{position:relative;padding-left:clamp(.9rem,2.4vw,1.25rem)}
+.ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
+  width:1px;background:linear-gradient(180deg,var(--orange-vif),
+    rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}
+.ess-proof__lab{margin:0 0 .4rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:.86rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--orange-vif)}
+.ess-proof__txt{margin:0 0 .45rem;font-size:.98rem;line-height:1.45;color:var(--txt)}
+.ess-proof__src{margin:0;font-size:.8rem;line-height:1.4;color:var(--txt-soft)}
+
+@media (min-width:900px){
+  .ess-proof{max-width:44rem}
+  .ess-proof__ph{width:150px}
+}
+@media (max-width:520px){
+  /* sous 520 px la photo passe au-dessus : a 120 px de large les visages
+     deviennent trop petits pour que la preuve fonctionne encore. */
+  .ess-proof{grid-template-columns:1fr;gap:1rem}
+  .ess-proof__ph{width:min(58vw,190px)}
+  .ess-proof__cap{padding-left:0;padding-top:.9rem}
+  .ess-proof__cap::before{left:0;top:0;bottom:auto;width:clamp(2.4rem,22%,4rem);height:1px;
+    background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}
+}
+
 /* ---- les trois arguments : une ligne, pas trois cartes de plus ---- */
 .ess-plus{list-style:none;display:grid;grid-template-columns:1fr;
   gap:.95rem 2rem;margin:clamp(1.9rem,3.6vw,2.4rem) 0 0;padding:0}
@@ -3659,11 +3701,34 @@ main > .section .cine-phone__island i{animation:none !important}
   .lp-standfirst{grid-area:stand;padding-bottom:.45rem}}
 
 /* ---- Image d'ancrage ---- */
-.lp-stage{position:relative;margin:0;overflow:hidden;border-radius:14px;
+.lp-stage{position:relative;overflow:hidden;border-radius:14px;
+  /* deborde de la colonne, jamais de l'ecran : la valeur est bornee a 46 px
+     et .wrap conserve sa propre marge de securite au-dela. */
+  margin:0 calc(-1 * min(3.2vw, 46px));
   border:1px solid rgba(191,210,228,.14);background:#0A1120;isolation:isolate;
   box-shadow:var(--e3)}
 .lp-stage img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;
+  /* le groupe occupe le bas du cadre : on ancre en bas pour garder les
+     silhouettes entieres et ne rogner que la charpente au-dessus. */
+  object-position:center 88%;
   transition:transform 1.1s cubic-bezier(.2,.6,.2,1)}
+/* en mobile le bandeau se redresse : a 375 px de large, un 16:9 reduit les
+   visages du groupe a quelques pixels. */
+@media (max-width:720px){
+  .lp-stage img{aspect-ratio:4/3;object-position:center 82%}
+}
+/* ---- micro-label editorial, en haut a gauche du bandeau ---- */
+.lp-stage__no{position:absolute;z-index:2;top:clamp(.8rem,2vw,1.3rem);
+  left:clamp(1rem,2.4vw,1.8rem);display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.66rem;color:#E7EEF6;
+  text-shadow:0 1px 3px rgba(4,9,18,.9),0 0 10px rgba(4,9,18,.7)}
+.lp-stage__no::before{content:"";width:clamp(1.4rem,3vw,2.2rem);height:1px;
+  background:var(--grad-orange);flex:none}
+/* le voile du haut : sans lui le label se perd sur la charpente claire */
+.lp-stage::before{content:"";position:absolute;inset:0 0 auto;height:34%;z-index:1;
+  pointer-events:none;background:linear-gradient(to bottom,
+    rgba(6,11,20,.62) 0,rgba(6,11,20,.22) 46%,rgba(6,11,20,0) 100%)}
 .lp-stage::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
   background:linear-gradient(to top,rgba(6,11,20,.80) 0,rgba(6,11,20,.28) 16%,rgba(6,11,20,0) 38%)}
 .lp-stage__cap{position:absolute;left:0;right:0;bottom:0;z-index:2;
@@ -4105,6 +4170,66 @@ main > .section .cine-phone__island i{animation:none !important}
 .cal-venue__map svg{width:.95em;height:.95em}
 .cal-venue__map:hover{color:#FFD7AE}
 .cal-venue__map:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+
+
+/* ============================================================
+   « Le basket commence ici » — la porte vers les pages enfants
+   ------------------------------------------------------------
+   La photo tient 57 % de la composition et n'est pas enfermee
+   dans une carte : un seul bord se fond vers le bleu nuit, du
+   cote du texte. Rien ne passe par-dessus les enfants.
+   Le seul detail orange est le filet du label — la photo est
+   deja tres bleue et tres coloree, la surcharger l'abimerait.
+   ============================================================ */
+.begin{position:relative;display:grid;grid-template-columns:1fr;
+  gap:clamp(1.3rem,3.5vw,2rem);align-items:center;
+  margin:clamp(2rem,5vw,3rem) 0 clamp(2.2rem,5vw,3.2rem)}
+.begin__ph{position:relative;border-radius:var(--r-md);overflow:hidden;
+  border:1px solid rgba(191,210,228,.12);
+  box-shadow:0 16px 40px rgba(3,8,18,.45)}
+.begin__ph img{display:block;width:100%;height:auto;
+  transition:transform .9s cubic-bezier(.2,.6,.2,1)}
+
+.begin__lab{display:inline-flex;align-items:center;gap:.6rem;margin:0 0 .7rem;
+  font-family:var(--ff-cond);font-weight:700;font-size:.8rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--orange-vif)}
+.begin__lab::before{content:"";width:1.9rem;height:1px;flex:none;
+  background:var(--grad-orange)}
+.begin__t{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.75rem,5vw,2.7rem);line-height:1.02;letter-spacing:.005em;
+  color:var(--blanc);margin:0 0 .7rem}
+.begin__d{margin:0 0 1.3rem;font-size:1.02rem;line-height:1.6;
+  color:var(--txt-soft);max-width:34ch}
+.begin__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0 0 .9rem}
+.begin__alt{margin:0;font-size:.9rem;color:var(--txt-soft)}
+.begin__alt a{color:var(--bleu-glacier);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-thickness:1px}
+.begin__alt a:hover{color:var(--orange-vif)}
+
+@media (min-width:900px){
+  .begin{grid-template-columns:57fr 43fr;gap:clamp(2rem,4vw,3.2rem)}
+  /* le fondu ne mange qu'un seul bord, celui qui touche le texte */
+  /* idem horizontalement : l'enfant le plus a droite touche 88 % de la
+     largeur, le fondu ne peut pas commencer avant. */
+  .begin__ph{-webkit-mask-image:linear-gradient(90deg,#000 89%,rgba(0,0,0,.7) 97%,rgba(0,0,0,.38) 100%);
+    mask-image:linear-gradient(90deg,#000 89%,rgba(0,0,0,.7) 97%,rgba(0,0,0,.38) 100%)}
+  /* profondeur au survol, desktop uniquement, quelques pixels */
+  .begin__ph:hover img{transform:scale(1.028)}
+}
+@media (max-width:899px){
+  /* le fondu passe en bas : sur un bandeau pleine largeur, un fondu
+     lateral rognerait les enfants du bord. */
+  /* Le fondu demarre a 93 % : le dernier enfant assis se termine a 84 % du
+     cadre, un fondu a 84 % lui mangeait les jambes. En dessous de 93 %, il
+     n'y a plus que le sol bleu du terrain. */
+  .begin__ph{-webkit-mask-image:linear-gradient(180deg,#000 93%,rgba(0,0,0,.72) 98%,rgba(0,0,0,.45) 100%);
+    mask-image:linear-gradient(180deg,#000 93%,rgba(0,0,0,.72) 98%,rgba(0,0,0,.45) 100%)}
+  .begin__a .btn{flex:1 1 auto;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .begin__ph img{transition:none}
+  .begin__ph:hover img{transform:none}
+}
 
 /* ---- Transmission : la photo qui ouvre les catégories jeunes ----
    Texte à côté, jamais par-dessus les personnes. */
