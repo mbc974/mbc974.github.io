@@ -1864,7 +1864,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      lettre d'« ANSANM NOU LE PLI FOR » et la derniere d'« EN LER ». Ces
      devises sont l'identite du club, on ne les coupe pas. La largeur
      compense la hauteur perdue. */
-  width:min(36%,640px);aspect-ratio:3/4;
+  width:min(38%,700px);aspect-ratio:3/4;
   border-radius:18px;
   box-shadow:0 34px 78px rgba(3,8,18,.66),0 4px 14px rgba(3,8,18,.48)}
 /* l'image, dans le cadre */
@@ -1887,8 +1887,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess__in{position:relative;z-index:2}
 
 .ess__head{max-width:34rem}
-.ess__sub{margin:.95rem 0 0;max-width:42ch;color:var(--txt-soft);
-  font-size:1.02rem;line-height:1.6}
+.ess__sub{margin:1.05rem 0 0;max-width:44ch;color:var(--txt-soft);
+  font-size:1.1rem;line-height:1.62}
 .ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
   text-underline-offset:3px;text-decoration-thickness:1px}
 .ess__sub a:hover{color:var(--orange-vif)}
@@ -1901,16 +1901,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-stat{padding:0 clamp(1.2rem,2.8vw,2.3rem);
   border-left:1px solid rgba(191,210,228,.20)}
 .ess-stat:first-child{padding-left:0;border-left:0}
-.ess-stat__ic{width:1.85rem;height:1.85rem;color:var(--orange-vif);
-  display:block;margin-bottom:.7rem}
+.ess-stat__ic{width:2.05rem;height:2.05rem;color:var(--orange-vif);
+  display:block;margin-bottom:.85rem}
 .ess-stat__v{font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(1.9rem,4.2vw,2.75rem);line-height:.95;color:var(--blanc);
-  letter-spacing:.005em}
+  font-size:clamp(2.1rem,3.2vw,3.9rem);line-height:.92;color:var(--blanc);
+  letter-spacing:-.005em}
 .ess-stat__l{margin:.55rem 0 0;font-family:var(--ff-cond);font-weight:700;
-  font-size:.97rem;line-height:1.28;letter-spacing:.03em;
-  text-transform:uppercase;color:var(--orange-vif);max-width:17ch}
+  font-size:1.02rem;line-height:1.26;letter-spacing:.035em;
+  text-transform:uppercase;color:var(--orange-vif);max-width:16ch}
 .ess-stat__x{display:block;margin-top:.34rem;font-weight:500;
-  font-size:.9rem;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
+  font-size:.93rem;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
 
 
 /* ---- La preuve : deuxieme niveau de lecture de la section ----
@@ -1922,7 +1922,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-proof{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);
   align-items:center;gap:clamp(1rem,3vw,1.6rem);margin:clamp(1.7rem,4vw,2.3rem) 0 0;
   padding-top:clamp(1.3rem,3vw,1.7rem);border-top:1px solid rgba(191,210,228,.14)}
-.ess-proof__ph{position:relative;width:min(38vw,150px);flex:none;
+.ess-proof__ph{position:relative;width:min(42vw,210px);flex:none;
   border-radius:var(--r-sm);overflow:hidden;
   box-shadow:0 10px 26px rgba(3,8,18,.45);
   /* le bord bas se fond vers le bleu nuit : l'image n'a pas de fin nette */
@@ -1934,15 +1934,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
   width:1px;background:linear-gradient(180deg,var(--orange-vif),
     rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}
-.ess-proof__lab{margin:0 0 .4rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:.86rem;letter-spacing:.11em;text-transform:uppercase;
+.ess-proof__lab{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:.92rem;letter-spacing:.11em;text-transform:uppercase;
   color:var(--orange-vif)}
-.ess-proof__txt{margin:0 0 .45rem;font-size:.98rem;line-height:1.45;color:var(--txt)}
+.ess-proof__txt{margin:0 0 .5rem;font-size:1.04rem;line-height:1.48;color:var(--txt)}
 .ess-proof__src{margin:0;font-size:.8rem;line-height:1.4;color:var(--txt-soft)}
 
 @media (min-width:900px){
   .ess-proof{max-width:44rem}
-  .ess-proof__ph{width:150px}
+  .ess-proof__ph{width:210px}
 }
 @media (max-width:520px){
   /* sous 520 px la photo passe au-dessus : a 120 px de large les visages
@@ -1959,9 +1959,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   gap:.95rem 2rem;margin:clamp(1.9rem,3.6vw,2.4rem) 0 0;padding:0}
 .ess-plus__i{display:grid;grid-template-columns:auto 1fr;
   gap:.15rem .7rem;align-items:start}
-.ess-plus__ic{width:1.3rem;height:1.3rem;color:var(--orange-vif);
+.ess-plus__ic{width:1.45rem;height:1.45rem;color:var(--orange-vif);
   grid-row:span 2;align-self:center}
-.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1rem;
+.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1.06rem;
   letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
 .ess-plus__i span{font-size:.9rem;line-height:1.4;color:var(--txt-soft)}
 
@@ -1997,8 +1997,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      la boite depassait de 240 px a droite — la reserve calculee ci-dessous
      tombait alors hors de l'ecran et le texte repassait sous la photo. */
   .ess__in{width:auto;
-    padding-right:calc(min(36%,640px) + clamp(3.5rem,7vw,7.5rem))}
-  .ess__head,.ess-stats,.ess-plus,.ess-proof{max-width:40rem}
+    padding-right:calc(min(38%,700px) + clamp(3rem,6.2vw,6.8rem))}
+  .ess__head,.ess-plus,.ess-proof{max-width:40rem}
+  /* 46rem : les trois tuiles mesurent 704 px une fois les chiffres agrandis. */
+  .ess-stats{max-width:46rem}
 }
 
 @media (max-width:1299px){
