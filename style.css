@@ -3919,6 +3919,18 @@ main > .section .cine-phone__island i{animation:none !important}
 .lp-stage__txt{font-family:var(--ff-cond);font-weight:600;
   font-size:clamp(.95rem,1.1vw,1.06rem);line-height:1.35;color:#F2F6FB}
 
+
+/* ---- Le plateau, hors basket ----
+   La section parle d'un equipement de quartier : cette image le montre
+   utilise autrement. Elle reste secondaire — cadree bas, sous le recit,
+   sans concurrencer la photo d'ancrage en haut de section. */
+.lp-live{margin:var(--lp-gap-m) 0 0;border-radius:var(--r-md);overflow:hidden;
+  border:1px solid var(--line);background:var(--nuit-3)}
+.lp-live img{display:block;width:100%;height:clamp(160px,22vw,240px);
+  object-fit:cover;object-position:center 42%}
+.lp-live figcaption{padding:.75rem .95rem .85rem;font-size:.86rem;line-height:1.45;
+  color:var(--txt-soft)}
+
 /* ---- Double page ---- */
 .lp-below{display:grid;gap:var(--lp-gap-m);margin-top:var(--lp-gap-l)}
 /* Corps de texte remonté d'un cran : 17,3 px en 1920, c'était petit pour un
@@ -4349,6 +4361,32 @@ main > .section .cine-phone__island i{animation:none !important}
 .affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 @media (min-width:760px){
   .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
+
+/* ---- Le second terrain : Ruisseau Blanc ----
+   Le chapo de la section annonce deux lieux depuis le debut, mais un seul
+   etait montre. Le pendant reprend exactement le composant .cal-venue —
+   meme cadre, meme legende en surimpression — pour que les deux salles se
+   lisent comme une paire, pas comme deux traitements differents. */
+.cal-venue--rb{margin-bottom:1rem}
+/* la scene est plus large que haute : on cadre un peu plus bas pour garder
+   le panier et la charpente. */
+.cal-venue--rb img{object-position:center 55%}
+
+/* ---- Les deux vues secondaires ---- */
+.cal-venue__more{display:grid;grid-template-columns:1fr;gap:1rem;margin:0 0 2rem}
+.cal-venue__more figure{margin:0;border-radius:var(--r-md);overflow:hidden;
+  border:1px solid var(--line);background:var(--nuit-3)}
+.cal-venue__more img{display:block;width:100%;height:clamp(150px,20vw,225px);
+  object-fit:cover}
+.cal-venue__more figcaption{display:flex;align-items:center;gap:.55rem;
+  padding:.7rem .9rem .8rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:.78rem;letter-spacing:.11em;text-transform:uppercase;color:var(--txt-soft)}
+.cal-venue__more figcaption::before{content:"";width:1.3rem;height:1px;flex:none;
+  background:var(--grad-orange)}
+@media (min-width:760px){
+  .cal-venue__more{grid-template-columns:1fr 1fr;gap:1.2rem}
+}
+
 /* le lien Maps sous la photo : qui regarde la salle peut lancer l'itinéraire */
 .cal-venue__map{display:inline-flex;align-items:center;gap:.4em;margin-top:.55rem;
   font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.04em;
