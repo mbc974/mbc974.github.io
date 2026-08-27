@@ -1,0 +1,19 @@
+{
+  "_lisez_moi": [
+    "Postes benevoles des matchs A DOMICILE, par date (AAAA-MM-JJ).",
+    "null = poste a pourvoir. Un nom = poste tenu ; il s'affiche tel quel sur le site.",
+    "Ce fichier existe pour que set-calendrier-prm.py puisse regenerer le calendrier",
+    "sans effacer les affectations reelles. Les dates absentes sont traitees comme",
+    "entierement a pourvoir. Les dates qui ne sont plus des matchs a domicile sont",
+    "ignorees, mais conservees ici : une derogation peut les y ramener.",
+    "L'eMarque est obligatoirement e-Marque V2 (article 8 du reglement)."
+  ],
+  "postes": ["Responsable de salle", "Chrono", "eMarque"],
+  "matchs": {
+    "2026-09-11": { "Responsable de salle": null, "Chrono": null, "eMarque": null },
+    "2026-10-02": { "Responsable de salle": null, "Chrono": "Matthieu A.", "eMarque": null },
+    "2026-10-09": { "Responsable de salle": null, "Chrono": null, "eMarque": null },
+    "2026-10-30": { "Responsable de salle": null, "Chrono": null, "eMarque": null },
+    "2026-11-06": { "Responsable de salle": null, "Chrono": null, "eMarque": null }
+  }
+}

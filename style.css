@@ -3913,6 +3913,17 @@ main > .section .cine-phone__island i{animation:none !important}
   border-top:1px solid rgba(191,210,228,.10)}
 .mx-roles__cta a{color:var(--orange-vif)}
 
+/* ---- Le format du championnat (trois phases) ----
+   La liste elle-même réutilise .licence-path : même mécanique de puces
+   numérotées, aucune raison d'en entretenir deux. Il ne manquait qu'un
+   titre intermédiaire, et une largeur qui ne fasse pas courir les lignes
+   sur toute la section. */
+.mx-format{max-width:56rem;margin:2.4rem auto 0}
+.mx-format__t{font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.35rem,3.2vw,1.8rem);line-height:1.1;letter-spacing:.01em;
+  color:var(--blanc);margin:0;text-align:center}
+.mx-format .licence-path{margin-top:1.15rem}
+
 /* ---- L'affiche officielle, à télécharger et partager ---- */
 .affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
   margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
