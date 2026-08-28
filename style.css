@@ -1947,8 +1947,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:520px){
   /* sous 520 px la photo passe au-dessus : a 120 px de large les visages
      deviennent trop petits pour que la preuve fonctionne encore. */
-  .ess-proof{grid-template-columns:1fr;gap:1rem}
-  .ess-proof__ph{width:min(58vw,190px)}
+  .ess-proof{grid-template-columns:1fr;gap:1rem;justify-items:center}
+  .ess-proof__ph{width:min(64vw,220px);justify-self:center}
+  /* le texte reste aligne a gauche : centrer un paragraphe nuit a la lecture,
+     seul le media se centre. */
+  .ess-proof__cap{justify-self:stretch}
   .ess-proof__cap{padding-left:0;padding-top:.9rem}
   .ess-proof__cap::before{left:0;top:0;bottom:auto;width:clamp(2.4rem,22%,4rem);height:1px;
     background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}
@@ -2009,9 +2012,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   .ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
   .ess__photo{position:static;translate:none;
     width:min(100%,340px);aspect-ratio:3/4;
-    /* alignee sur la colonne de texte, pas centree : centree, elle flottait
-       au milieu pendant que tout le reste de la section restait a gauche. */
-    margin:0 auto clamp(1.9rem,5vw,2.6rem) clamp(18px,5vw,48px)}
+    /* centrage exact : les deux marges etaient de 19 px et 16 px, la photo
+       tirait imperceptiblement a gauche. */
+    margin:0 auto clamp(1.9rem,5vw,2.6rem)}
   .ess__photo::before{top:-8px;left:-8px}
   .ess__photo::after{bottom:-8px;right:-8px}
   .ess__head{max-width:none}
