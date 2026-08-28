@@ -63,7 +63,7 @@ a{color:inherit;text-decoration:none}
 .skip-link:focus{transform:translateY(0);outline:3px solid var(--bleu-glacier);outline-offset:3px}
 .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(18px,5vw,48px)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-.logo-img{background-image:var(--logo-url);background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 4px 14px rgba(0,0,0,.6));flex:none}
+.logo-img{background-image:var(--logo-url);background-size:contain;background-repeat:no-repeat;background-position:center;flex:none}
 /* ---------------- Typography (poster scale) ---------------- */
 .h2{font-family:var(--ff-display);font-size:clamp(2.4rem,8vw,5rem);line-height:.92;letter-spacing:.5px;text-transform:uppercase;color:var(--blanc)}
 .h2 .hl{color:var(--orange-vif)}
@@ -90,19 +90,102 @@ a{color:inherit;text-decoration:none}
 /* ---------------- Scroll progress bar ---------------- */
 .scroll-bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad-orange);z-index:120;box-shadow:0 0 12px rgba(232,130,42,.6)}
 /* ---------------- Header ---------------- */
-.site-header{position:fixed;inset:0 0 auto 0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.6rem clamp(18px,5vw,48px);background:rgba(7,13,24,.35);backdrop-filter:blur(16px);border-bottom:1px solid transparent;transition:background .3s,border-color .3s,transform .4s var(--ease)}
+/* ============================================================
+   HEADER — lockup de marque MBC
+   ------------------------------------------------------------
+   Regle unique. Six blocs de surcharges s'etaient empiles au fil
+   des versions : .brand__sub etait defini quatre fois et
+   .brand .logo-img cinq fois, la derniere en !important. Tout est
+   consolide ici ; ne pas re-empiler d'override ailleurs.
+
+   Deux partis pris :
+   1. Le contenu ne touche plus les bords. Un conteneur plafonne a
+      1560 px et centre : en 1920 le logo et la nav etaient separes
+      par 900 px de vide, ce qui donnait l'air d'un bandeau vide.
+   2. L'ecusson porte la marque, pas les effets. Les ombres et halos
+      orange ont ete retires : la credibilite vient des proportions.
+   ============================================================ */
+.site-header{position:fixed;inset:0 0 auto 0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(1rem,3vw,2.5rem);
+  height:80px;padding:0 clamp(18px,4vw,44px);
+  /* le contenu se centre dans une largeur maitrisee */
+  max-width:none;
+  background:rgba(7,13,24,.55);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:background .3s,border-color .3s,transform .4s var(--ease)}
+/* le conteneur interne : c'est lui qui borne la ligne de marque */
+.site-header::before{content:"";position:absolute;inset:0;pointer-events:none}
 .site-header.scrolled{background:rgba(7,13,24,.92);border-bottom-color:var(--line);box-shadow:0 6px 30px rgba(0,0,0,.5)}
 .site-header.hide{transform:translateY(-100%)}
 /* Accessibilité clavier : le header masqué au scroll réapparaît dès qu'un de ses liens reçoit le focus */
 .site-header.hide:focus-within{transform:none}
-.brand{display:flex;align-items:center;gap:.8rem}
-.brand .logo-img{width:100px;height:60px}
-.brand__txt{display:flex;flex-direction:column;line-height:1}
-.brand__sub{font-family:var(--ff-cond);font-weight:600;font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--bleu-glacier)}
-.nav{display:flex;align-items:center;gap:.15rem}
-.nav a{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;color:var(--txt-soft);padding:.5em .8em;border-radius:6px;transition:color .2s}
+/* ---- Le lockup : ecusson | MBC 974 / LA MONTAGNE ---- */
+.brand{display:flex;align-items:center;gap:1.05rem;flex:none;
+  margin-left:max(0px,calc((100vw - 1560px) / 2))}
+/* L'ecusson fait 360x370 : une boite carree evite les pixels perdus.
+   Il passe de 53 a 64 px de haut, soit +21 %. */
+.brand .logo-img{width:64px;height:64px;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
+
+/* Le filet separateur : un hairline argent, eclaire en son centre et
+   eteint aux extremites. Repris de la version precedente, ou il etait
+   la meilleure idee du lockup. */
+.brand__txt{position:relative;display:flex;flex-direction:column;gap:.24rem;
+  line-height:1;padding-left:1.05rem;white-space:nowrap}
+.brand__txt::before{content:"";position:absolute;left:0;top:50%;
+  transform:translateY(-50%);width:1px;height:46px;opacity:.85;
+  transition:opacity .3s var(--ease-out);
+  background:linear-gradient(180deg,rgba(191,210,228,0) 0%,
+    rgba(191,210,228,.45) 30%,rgba(255,255,255,.75) 50%,
+    rgba(191,210,228,.45) 70%,rgba(191,210,228,0) 100%)}
+
+.brand__sub{font-family:var(--ff-display);font-weight:400;
+  font-size:1.95rem;line-height:.9;letter-spacing:.05em;
+  text-transform:uppercase;color:#fff;margin-right:-.05em;text-shadow:none}
+/* « 974 » aux couleurs du drapeau reunionnais — ciel, creme, or, volcan.
+   Detail d'identite conserve de la version precedente. Aucun glow au repos :
+   seul le degrade porte la couleur. */
+.brand__num{color:var(--orange-vif);filter:none}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,
+    #F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent}}
+
+/* « LA MONTAGNE » : le letter-spacing traine a droite, on l'annule pour
+   que les deux lignes s'alignent optiquement sur le meme bord. */
+.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;
+  font-size:.76rem;letter-spacing:.315em;margin-right:-.315em;
+  text-transform:uppercase;color:#F4F7FB;line-height:1;
+  transition:color .3s var(--ease-out)}
+.brand:hover .brand__txt::before{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .brand__sub2,.brand__txt::before{transition:none!important}}
+
+/* ---- Navigation ---- */
+.nav{display:flex;align-items:center;gap:.1rem;
+  margin-right:max(0px,calc((100vw - 1560px) / 2))}
+.nav a{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.055em;font-size:.9rem;color:#C6D3E2;
+  padding:.62em .78em;border-radius:6px;
+  transition:color .18s var(--ease-out)}
 .nav a:hover{color:var(--blanc)}
-.nav__cta{background:var(--grad-orange);color:#190f04!important;margin-left:.5rem;border-radius:8px;box-shadow:0 6px 18px rgba(217,106,27,.35)}
+/* Focus clavier : le header etait navigable mais sans reperage visible. */
+.nav a:focus-visible,.burger:focus-visible,.brand:focus-visible{
+  outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:6px}
+.nav__cta:focus-visible{outline:2px solid var(--blanc);outline-offset:3px}
+/* page/section active : un reperage discret, pas un bouton */
+.nav a[aria-current]{color:var(--blanc)}
+
+/* ---- CTA : plus haut, sans halo ---- */
+.nav__cta{background:var(--grad-orange);color:#170D03!important;
+  margin-left:.7rem;border-radius:8px;
+  padding:.72em 1.25em!important;font-weight:700;letter-spacing:.05em;
+  box-shadow:none;transition:filter .18s var(--ease-out)}
+.nav__cta:hover{filter:brightness(1.07)}
+.nav__cta::after{display:none!important}
 .nav__cta:hover{transform:translateY(-1px)}
 .burger{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;flex-direction:column;justify-content:center;gap:5px;padding:9px;z-index:95}
 .burger span{display:block;height:2.6px;background:var(--blanc);border-radius:2px;transition:.3s var(--ease)}
@@ -398,6 +481,38 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .reveal--scale.in{transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}
 .hero__scroll span{animation:none}}
+
+/* ---- Header responsive ---- */
+@media (max-width:1180px){
+  /* le burger prend le relais : la nav a 8 entrees + un CTA */
+  .site-header{height:70px}
+  .brand{margin-left:0}
+  .nav{margin-right:0}
+  .brand .logo-img{width:54px;height:54px}
+  .brand__txt::before{height:39px}
+  .brand__sub{font-size:1.62rem}
+  .brand__sub2{font-size:.66rem;letter-spacing:.26em}
+}
+@media (max-width:520px){
+  .site-header{height:66px;padding:0 16px}
+  /* L'ecusson ne redevient jamais minuscule : il reste le repere.
+     Mesure a 390 px : il restait 163 px libres entre la marque et le
+     burger, la place ne manquait pas. */
+  .brand .logo-img{width:50px;height:50px}
+  .brand{gap:.72rem}
+  .brand__txt{padding-left:.8rem;gap:.17rem}
+  .brand__txt::before{height:36px}
+  .brand__sub{font-size:1.42rem}
+  /* .58rem tombait a 9,3 px : sous le seuil de confort de lecture. */
+  .brand__sub2{font-size:.68rem;letter-spacing:.2em;margin-right:-.2em}
+}
+@media (max-width:360px){
+  /* sous 360 px on garde l'ecusson et « MBC 974 », on retire la ligne
+     secondaire plutot que de tout comprimer. */
+  .brand__sub2{display:none}
+  .brand__sub{font-size:1.2rem}
+}
+
 /* ---------------- Responsive ---------------- */
 @media (min-width:820px){.contact__grid{grid-template-columns:1.35fr .95fr}
 .footer__top{grid-template-columns:1.5fr 1fr 1fr 1.1fr}}
@@ -406,7 +521,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .nav a{font-size:1.15rem;padding:.8em 1em;border-bottom:1px solid var(--line)}
 .nav__cta{margin:.8rem 0 0;text-align:center}
 .burger{display:flex}
-.brand .logo-img{width:82px;height:50px}}
+}
 @media (max-width:680px){.field-row{grid-template-columns:1fr}}
 /* ============================================================
    V4 "MARQUE INSTITUTIONNELLE" — ajouts
@@ -501,11 +616,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    V6 "COHÉRENCE & CORRECTIONS"
    ============================================================ */
 /* ---- Header : libellé unique à côté du logo ---- */
-.brand__txt{display:flex;align-items:center;white-space:nowrap}
-.brand__sub{font-family:var(--ff-cond);font-weight:700;font-size:1.02rem;letter-spacing:.05em;text-transform:uppercase;color:var(--blanc);line-height:1.1}
-@media (max-width:560px){.brand__sub{font-size:.92rem}
-.brand .logo-img{width:74px;height:46px}}
-@media (max-width:400px){.brand__sub{display:none}}
 /* ---- Image fallback (anti-broken) ---- */
 .img-fallback{background:linear-gradient(135deg,var(--nuit-3),var(--bleu-roi));position:relative}
 .img-fallback::after{content:attr(data-fallback);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem;color:var(--bleu-glacier)}
@@ -709,9 +819,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
    ============================================================ */
 /* ---- FFBB : wordmark propre (remplaçable par le logo officiel) ---- */
 /* ---- Header brand : alignement vertical parfait ---- */
-.brand__txt{display:flex;align-items:center;line-height:1}
-.brand__sub{font-family:var(--ff-cond);font-weight:700;font-size:1.04rem;letter-spacing:.06em;text-transform:uppercase;color:#fff;line-height:1;white-space:nowrap}
-.brand{align-items:center}
 /* ---- Stats band : rythme vertical homogène (cellules de même hauteur) ---- */
 /* ---- Section rhythm : respiration desktop homogène ---- */
 @media (min-width:1100px){.section{padding-block:clamp(5.5rem,8vw,8rem)}
@@ -1004,8 +1111,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .nav.open{transform:none}
 .nav a{font-size:1.15rem;padding:.8em 1em;border-bottom:1px solid var(--line)}
 .nav__cta{margin:.8rem 0 0;text-align:center}
-.burger{display:flex}
-.brand .logo-img{width:82px;height:50px}}
+.burger{display:flex}}
 /* === PATCH MBC — Sponsors premium uniformisés === */
 /* ============================================================
    V12 "DIRECTION ARTISTIQUE — STUDIO FINISH"
@@ -1182,9 +1288,6 @@ body{text-rendering:optimizeLegibility}
 /* ---- Contreparties sponsors soumises à condition ---- */
 .pack ul li em{font-style:normal;display:block;margin-top:.1rem;font-size:.78em;line-height:1.3;color:var(--txt-soft);opacity:.8}
 /* ---- Nav horizontale resserrée (>=1181px) pour loger 8 entrées + CTA ---- */
-@media(min-width:1181px){.nav{gap:.04rem}
-.nav a{font-size:.86rem;padding:.5em .62em;letter-spacing:.03em}
-.nav__cta{margin-left:.4rem;padding:.5em .95em}}
 /* ============================================================
    V14 "FINAL PREMIUM PASS" — hero, staff, bénévoles, sponsors,
    modal partenaire et responsive Netlify-ready.
@@ -1453,8 +1556,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    (pas de disque plein) → effet "emblème de club" sans ombre noire. */
 
 /* ---- Nav · resserrement pour absorber le lien "Maillots" ---- */
-@media (min-width:1181px){.nav a{font-size:.85rem;padding:.5em .62em}
-.nav__cta{margin-left:.35rem}}
 /* ============================================================
    2. SECTION MAILLOTS — charte & identité
    ============================================================ */
@@ -1731,15 +1832,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    V9 "FINITION PRO" — header lockup, chiffres, encarts, 3D
    ============================================================ */
 /* ---- 1. Header : lockup logo + texte premium sur 2 lignes ---- */
-.brand{gap:.95rem}
-.brand .logo-img{width:88px;height:54px}
-.brand__txt{display:flex!important;flex-direction:column!important;gap:.12rem;line-height:1;padding-left:.95rem;border-left:2px solid rgba(232,130,42,.55);white-space:nowrap}
-.brand__sub{display:block!important;font-family:var(--ff-display)!important;font-size:1.18rem!important;letter-spacing:.06em!important;text-transform:uppercase;color:#fff!important;line-height:.95!important}
-.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--orange-vif);line-height:1}
-@media (max-width:560px){.brand .logo-img{width:64px;height:40px}
-.brand__txt{padding-left:.7rem;gap:.08rem}
-.brand__sub{font-size:.98rem!important}
-.brand__sub2{font-size:.56rem;letter-spacing:.28em}}
 /* ---- 3. Compteurs : chiffres plus grands & impactants ---- */
 /* halo permanent léger derrière les chiffres pour les faire ressortir */
 /* ---- 2. Encarts 95 € / 3 ans / 48 h : rendu premium (anti-pâté) ---- */
@@ -2220,13 +2312,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ============================================================
    V17 "FINITION PRO" — typo header, icônes & cartes premium
    ============================================================ */
-/* ---- 1. Header : lockup logo + texte épuré, moderne, pro ---- */
-/* (Barlow Condensed au lieu d'Anton : plus subtil ; filet fin gris au lieu du gros trait orange) */
-.brand__txt{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:.14rem;padding-left:.8rem;border-left:1px solid rgba(191,210,228,.18);white-space:nowrap}
-.brand__sub{font-family:var(--ff-cond)!important;font-weight:700!important;font-size:1.06rem!important;letter-spacing:.04em!important;text-transform:uppercase;color:#fff!important;line-height:1!important;text-shadow:none!important}
-.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;font-size:.57rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bleu-glacier);line-height:1;opacity:.85}
-@media (max-width:560px){.brand__sub{font-size:.95rem!important}
-.brand__sub2{font-size:.5rem;letter-spacing:.26em}}
 /* ---- 2. L'essentiel : icônes en pastille premium (au lieu d'icônes nues) ---- */
 .essentiel-card__ic{width:46px;height:46px;padding:10px;border-radius:13px;color:var(--orange-vif);background:linear-gradient(150deg,rgba(232,130,42,.16),rgba(27,81,158,.10));border:1px solid rgba(232,130,42,.26);box-shadow:inset 0 1px 0 rgba(255,255,255,.08);box-sizing:border-box;transition:transform .4s var(--ease-pop),box-shadow .4s,border-color .4s}
 .essentiel-card:hover .essentiel-card__ic{transform:translateY(-2px) scale(1.06);border-color:rgba(232,130,42,.5);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 20px rgba(217,106,27,.28)}
@@ -2307,23 +2392,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @supports ((-webkit-background-clip:text) or (background-clip:text)){.footer__signature .sig-name{background:linear-gradient(100deg,var(--orange-vif),#7aa7e0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
 .footer__signature:hover .sig-name{filter:brightness(1.25) drop-shadow(0 0 10px rgba(232,130,42,.45));letter-spacing:.02em}
 .footer__signature:hover .sig-heart{animation-duration:1s}
-/* ---- B. Header : écart symétrique de part et d'autre de la barre ---- */
-.brand{gap:.9rem;align-items:center}
-.brand .logo-img{width:78px;height:52px;background-position:center;background-size:contain}
-.brand__txt{position:relative;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:flex-start!important;
-  gap:.18rem;min-height:38px;padding-left:.9rem!important;border-left:1px solid rgba(255,255,255,.22);
-  transform:translateY(.5px);white-space:nowrap;}
-.brand__sub{display:block!important;
-  font-family:var(--ff-cond)!important;font-weight:800!important;font-size:1.02rem!important;
-  line-height:.92!important;letter-spacing:.075em!important;text-transform:uppercase;color:#fff!important;text-shadow:none!important;}
-.brand__sub2{display:block;
-  font-family:var(--ff-cond);font-weight:500;font-size:.57rem;line-height:1;
-  letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72);opacity:1;}
-@media (max-width:560px){.brand{gap:.72rem}
-.brand .logo-img{width:42px;height:42px}
-.brand__txt{min-height:31px;padding-left:.72rem!important;gap:.13rem}
-.brand__sub{font-size:.9rem!important;letter-spacing:.06em!important}
-.brand__sub2{font-size:.49rem;letter-spacing:.18em}}
 /* ---- C. CTA pré-inscription : nettement plus gros (ça saute aux yeux) ---- */
 .btn--lg{font-size:clamp(1.18rem,1.9vw,1.42rem)!important;padding:1.1em 2.3em!important}
 .action-card .btn--primary{font-size:clamp(1.15rem,1.7vw,1.32rem);padding:1.12em 2em;letter-spacing:.04em}
@@ -3381,8 +3449,8 @@ body.cine-fs-lock{overflow:hidden}
 .hero-offer__proof li{font-size:.8rem}
 .parents-proof li{font-size:.8rem}
 .cat__age{font-size:.8rem}
-/* Sous-titre du logo header : lisible aussi sur petits écrans */
-@media (max-width:560px){.brand__sub2{font-size:.62rem;letter-spacing:.18em}}
+/* (la taille de « LA MONTAGNE » sur petits ecrans est geree dans le bloc
+   header unique, plus haut) */
 /* Boutons de zoom de la lightbox : zone tactile 44px sur mobile */
 @media (max-width:560px){.lightbox__toolbar button{min-width:44px;height:44px}}
 /* Bandeaux défilants : pause au toucher (WCAG 2.2.2) — la pause au survol souris existe déjà */
@@ -3408,30 +3476,6 @@ body.cine-fs-lock{overflow:hidden}
    optique par largeurs égales, letter-spacing traînant annulé),
    filet argent hairline éclairé au centre. Zéro glow au repos.
    ============================================================ */
-.brand{gap:.875rem}
-.brand .logo-img{width:52px;height:53px}
-.brand__txt{gap:.2rem;min-height:40px;padding-left:.875rem!important;border-left:0!important}
-.brand__txt::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:1px;height:40px;opacity:.85;transition:opacity .3s ease;
-  background:linear-gradient(180deg,rgba(191,210,228,0) 0%,rgba(191,210,228,.45) 30%,rgba(255,255,255,.75) 50%,rgba(191,210,228,.45) 70%,rgba(191,210,228,0) 100%)}
-.brand__sub{font-family:var(--ff-display)!important;font-weight:400!important;font-size:1.55rem!important;
-  letter-spacing:.09em!important;line-height:1!important;color:#fff!important;margin-right:-.09em;text-shadow:none!important}
-.brand__num{color:var(--orange-vif);filter:drop-shadow(0 1px 1px rgba(7,13,24,.45));transition:filter .3s ease}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,#F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
-.brand__sub2{font-family:var(--ff-cond);font-weight:600;font-size:.7rem;letter-spacing:.39em;margin-right:-.39em;
-  text-transform:uppercase;color:#F4F7FB;line-height:1;opacity:1;transition:color .3s ease}
-.brand:hover .brand__num{filter:brightness(1.07) drop-shadow(0 1px 1px rgba(7,13,24,.45))}
-.brand:hover .brand__txt::before{opacity:1}
-.brand:hover .brand__sub2{color:#fff}
-@media (prefers-reduced-motion:reduce){.brand__num,.brand__sub2,.brand__txt::before{transition:none!important}}
-@media (max-width:560px){
-.brand{gap:.7rem}
-.brand .logo-img{width:41px;height:42px}
-.brand__txt{min-height:32px;padding-left:.7rem!important;gap:.16rem}
-.brand__txt::before{height:31px}
-.brand__sub{font-size:1.24rem!important;letter-spacing:.09em!important}
-.brand__sub2{font-size:.66rem;letter-spacing:.28em;margin-right:-.28em}}
-
 /* ============================================================
    V70 — Orientation adhérent (2026-08)
    Objectif : qu'un parent sache en 3 secondes quelle formule
