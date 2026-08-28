@@ -1631,6 +1631,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-tile{border-color:rgba(191,210,228,.16) !important;
   background:#07101d;
   box-shadow:0 18px 48px rgba(3,7,15,.42),var(--bevel) !important;}
+/* Teinte de marque : en « screen » a .7 elle relevait les noirs et lavait les
+   photos (aspect terne). Reduite, elle redevient un accent et non un voile. */
 .g-tile::before{content:"";
   position:absolute;
   inset:0;
@@ -1639,17 +1641,21 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     linear-gradient(135deg,rgba(232,130,42,.18),transparent 32%),
     radial-gradient(70% 70% at 80% 10%,rgba(27,81,158,.2),transparent 58%);
   mix-blend-mode:screen;
-  opacity:.7;
+  opacity:.26;
   pointer-events:none;
   transition:opacity .45s var(--ease-out);}
+/* Le degrade du bas ne sert qu'a asseoir la legende — et celle-ci a deja sa
+   propre pastille opaque. Il est donc allege, et le voile lateral permanent
+   (qui assombrissait les deux bords sur TOUTE la hauteur) est supprime. */
 .g-tile::after{z-index:1;
-  background:
-    linear-gradient(to top,rgba(7,13,24,.86),rgba(7,13,24,.16) 50%,transparent 72%),
-    linear-gradient(90deg,rgba(7,13,24,.24),transparent 32%,rgba(7,13,24,.22)) !important;}
-.g-tile img{filter:saturate(1.1) contrast(1.08) brightness(.9);
-  transform-origin:center;}
-.g-tile:hover img{filter:saturate(1.16) contrast(1.08) brightness(1)}
-.g-tile:hover::before{opacity:1}
+  background:linear-gradient(to top,rgba(7,13,24,.62),rgba(7,13,24,.10) 38%,transparent 58%) !important;}
+/* Photos de gymnase : lumiere plate et sous-exposee a la prise de vue. On
+   remonte la luminosite, on recreuse le contraste et on sature un peu. */
+.g-tile img{filter:brightness(1.1) contrast(1.14) saturate(1.2);
+  transform-origin:center;
+  transition:transform .6s var(--ease-out),filter .45s var(--ease-out);}
+.g-tile:hover img{filter:brightness(1.18) contrast(1.18) saturate(1.28)}
+.g-tile:hover::before{opacity:.45}
 .g-tile figcaption{z-index:2;
   width:max-content;
   max-width:calc(100% - 2rem);
