@@ -107,7 +107,7 @@
     reveals.forEach(function (el) {
       const parent = el.parentElement;
       if (parent && (parent.classList.contains('cat-grid') ||
-                     parent.classList.contains('staff-grid') || parent.classList.contains('engage-grid') ||
+                     parent.classList.contains('engage-grid') ||
                      parent.classList.contains('fondatrice__pillars'))) {
         const idx = Array.prototype.indexOf.call(parent.children, el);
         el.style.transitionDelay = Math.min(idx, 6) * 90 + 'ms';
@@ -458,27 +458,154 @@
 
 
 /* ============================================================
-   Team showcase "L'équipe MBC" — survol synchronisé nom <-> photo
-   (adaptation native de team-showcase — pas de React)
+   Roster "L'équipe MBC" — rail horizontal du staff
+   ------------------------------------------------------------
+   Le défilement lui-même est NATIF (overflow-x + CSS scroll-snap) : il
+   fonctionne au doigt, au trackpad, à la molette shift et au clavier même
+   si ce script ne s'exécute pas. On n'ajoute ici que ce que le CSS ne sait
+   pas faire : le drag à la souris, les deux flèches précédent / suivant et
+   la barre de progression. Aucun autoplay — l'utilisateur pilote.
    ============================================================ */
 (function () {
   'use strict';
-  var root = document.getElementById('teamShowcase');
-  if (!root) return;
-  var els = Array.prototype.slice.call(root.querySelectorAll('[data-m]'));
-  if (!els.length) return;
+  var vp   = document.getElementById('rosterViewport');
+  var bar  = document.getElementById('rosterBar');
+  var prev = document.getElementById('rosterPrev');
+  var next = document.getElementById('rosterNext');
+  if (!vp || !bar || !prev || !next) return;
 
-  function set(active) {
-    els.forEach(function (el) {
-      var m = el.getAttribute('data-m');
-      el.classList.toggle('is-active', !!active && m === active);
-      el.classList.toggle('is-dim', !!active && m !== active);
+  var track = vp.querySelector('.roster__track');
+  var items = track ? Array.prototype.slice.call(track.children) : [];
+  if (items.length < 2) return;
+
+  // flèches + barre restent invisibles tant que ce module n'a pas démarré
+  var section = vp.closest ? vp.closest('.staff') : null;
+  if (section) section.classList.add('roster-ready');
+
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var behavior = reduce ? 'auto' : 'smooth';
+
+  function maxScroll() { return vp.scrollWidth - vp.clientWidth; }
+
+  // Position de défilement qui amène chaque carte au bord du rail. Mesurée au
+  // pixel réel (les largeurs sont fractionnaires : calc() sur une fraction de
+  // carte), sinon un multiple de « largeur + gouttière » dérive de 1 à 2 px.
+  function offsets() {
+    var pad = parseFloat(getComputedStyle(vp).paddingLeft) || 0;
+    var origin = vp.getBoundingClientRect().left + pad;
+    var sl = vp.scrollLeft;
+    var max = maxScroll();
+    return items.map(function (el) {
+      return Math.max(0, Math.min(max, sl + (el.getBoundingClientRect().left - origin)));
     });
   }
-  els.forEach(function (el) {
-    el.addEventListener('mouseenter', function () { set(el.getAttribute('data-m')); });
+  function nearestIndex(list) {
+    var sl = vp.scrollLeft, best = 0, bd = Infinity;
+    for (var i = 0; i < list.length; i++) {
+      var d = Math.abs(list[i] - sl);
+      if (d < bd) { bd = d; best = i; }
+    }
+    return best;
+  }
+  function goToIndex(i) {
+    var list = offsets();
+    i = Math.max(0, Math.min(list.length - 1, i));
+    vp.scrollTo({ left: list[i], behavior: behavior });
+  }
+
+  /* ---- barre de progression + état désactivé des flèches ---- */
+  var raf = null, railW = 0, thumbW = 0;
+
+  function setDisabled(btn, state) {
+    if (btn.disabled === state) return;
+    // ne pas laisser le focus clavier tomber dans le vide en fin de rail
+    if (state && document.activeElement === btn) {
+      (btn === prev ? next : prev).focus();
+    }
+    btn.disabled = state;
+  }
+
+  function paint() {
+    var max = maxScroll();
+    var p = max > 1 ? Math.min(1, Math.max(0, vp.scrollLeft / max)) : 0;
+    bar.style.transform = 'translateX(' + ((railW - thumbW) * p).toFixed(1) + 'px)';
+    setDisabled(prev, p <= 0.002);
+    setDisabled(next, p >= 0.998);
+  }
+
+  function measure() {
+    railW = bar.parentNode.clientWidth;
+    // longueur du curseur = part du rail visible, avec un minimum lisible
+    var ratio = vp.scrollWidth > 0 ? vp.clientWidth / vp.scrollWidth : 1;
+    thumbW = Math.round(railW * Math.max(0.16, Math.min(1, ratio)));
+    bar.style.width = thumbW + 'px';
+    paint();
+  }
+
+  vp.addEventListener('scroll', function () {
+    if (raf) return;
+    raf = window.requestAnimationFrame(function () { raf = null; paint(); });
+  }, { passive: true });
+
+  /* ---- flèches + clavier ---- */
+  function go(dir) { goToIndex(nearestIndex(offsets()) + dir); }
+  prev.addEventListener('click', function () { go(-1); });
+  next.addEventListener('click', function () { go(1); });
+
+  vp.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); vp.scrollTo({ left: 0, behavior: behavior }); }
+    else if (e.key === 'End') { e.preventDefault(); vp.scrollTo({ left: maxScroll(), behavior: behavior }); }
   });
-  root.addEventListener('mouseleave', function () { set(null); });
+
+  /* ---- drag à la souris (le tactile garde le scroll natif, plus fluide) ---- */
+  var dragging = false, moved = false, startX = 0, startLeft = 0, pid = null;
+
+  vp.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'touch' || e.button !== 0) return;
+    if (maxScroll() < 1) return;
+    dragging = true; moved = false;
+    startX = e.clientX; startLeft = vp.scrollLeft; pid = e.pointerId;
+    vp.classList.add('is-dragging');
+  });
+
+  vp.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - startX;
+    if (!moved) {
+      if (Math.abs(dx) < 3) return;   // simple clic : on ne détourne rien
+      moved = true;
+      try { vp.setPointerCapture(pid); } catch (err) {}
+    }
+    e.preventDefault();
+    vp.scrollLeft = startLeft - dx;
+  });
+
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    vp.classList.remove('is-dragging');
+    if (pid !== null) { try { vp.releasePointerCapture(pid); } catch (err) {} pid = null; }
+    if (!moved) return;
+    // le snap CSS vient d'être réactivé : on cale nous-mêmes sur la carte la
+    // plus proche pour que l'arrêt soit net plutôt que subi.
+    goToIndex(nearestIndex(offsets()));
+  }
+  vp.addEventListener('pointerup', endDrag);
+  vp.addEventListener('pointercancel', endDrag);
+  vp.addEventListener('lostpointercapture', endDrag);
+  // pas de fantôme de drag natif sur les portraits
+  vp.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  /* ---- mesures ---- */
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(function () { measure(); }).observe(vp);
+  } else {
+    window.addEventListener('resize', measure);
+  }
+  window.addEventListener('load', measure);
+  measure();
 })();
 
 /* ============================================================
