@@ -287,6 +287,22 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
     gap:clamp(2rem,4vw,3.2rem)}
 }
 
+
+/* ---- Respiration dans la section Parents ----
+   534 mots pour une seule image : c'etait le bloc narratif le plus dense du
+   site. Cette bande separe les quatre piliers du tarif et illustre le type
+   d'equipement dont parle le pilier « Securite & assurance ». */
+.p-venue{margin:clamp(1.8rem,4vw,2.6rem) 0 clamp(1.6rem,3.5vw,2.2rem);
+  border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);
+  background:var(--nuit-3);box-shadow:var(--e1)}
+.p-venue img{display:block;width:100%;height:clamp(170px,24vw,280px);
+  object-fit:cover;object-position:center 52%}
+.p-venue figcaption{display:flex;align-items:center;gap:.6rem;
+  padding:.8rem 1rem .9rem;font-family:var(--ff-cond);font-weight:700;
+  font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--txt-soft)}
+.p-venue figcaption::before{content:"";width:1.4rem;height:1px;flex:none;
+  background:var(--grad-orange)}
+
 /* ---- Le lien vers l'equipe, sous la citation ----
    La citation etait signee « L'equipe encadrante » sans qu'on puisse aller
    voir qui c'est. Un parent qui confie son enfant veut des visages. */
@@ -4374,21 +4390,6 @@ main > .section .cine-phone__island i{animation:none !important}
 /* la scene est plus large que haute : on cadre un peu plus bas pour garder
    le panier et la charpente. */
 .cal-venue--rb img{object-position:center 55%}
-
-/* ---- Les deux vues secondaires ---- */
-.cal-venue__more{display:grid;grid-template-columns:1fr;gap:1rem;margin:0 0 2rem}
-.cal-venue__more figure{margin:0;border-radius:var(--r-md);overflow:hidden;
-  border:1px solid var(--line);background:var(--nuit-3)}
-.cal-venue__more img{display:block;width:100%;height:clamp(150px,20vw,225px);
-  object-fit:cover}
-.cal-venue__more figcaption{display:flex;align-items:center;gap:.55rem;
-  padding:.7rem .9rem .8rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:.78rem;letter-spacing:.11em;text-transform:uppercase;color:var(--txt-soft)}
-.cal-venue__more figcaption::before{content:"";width:1.3rem;height:1px;flex:none;
-  background:var(--grad-orange)}
-@media (min-width:760px){
-  .cal-venue__more{grid-template-columns:1fr 1fr;gap:1.2rem}
-}
 
 /* le lien Maps sous la photo : qui regarde la salle peut lancer l'itinéraire */
 .cal-venue__map{display:inline-flex;align-items:center;gap:.4em;margin-top:.55rem;
