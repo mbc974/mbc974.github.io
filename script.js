@@ -527,10 +527,14 @@
 
   function paint() {
     var max = maxScroll();
-    var p = max > 1 ? Math.min(1, Math.max(0, vp.scrollLeft / max)) : 0;
+    // Sur grand écran les six cartes tiennent sur la ligne : il n'y a plus rien
+    // à faire défiler, donc plus de raison d'afficher flèches ni barre.
+    var scrollable = max > 2;
+    if (section) section.classList.toggle('roster-static', !scrollable);
+    var p = scrollable ? Math.min(1, Math.max(0, vp.scrollLeft / max)) : 0;
     bar.style.transform = 'translateX(' + ((railW - thumbW) * p).toFixed(1) + 'px)';
-    setDisabled(prev, p <= 0.002);
-    setDisabled(next, p >= 0.998);
+    setDisabled(prev, !scrollable || p <= 0.002);
+    setDisabled(next, !scrollable || p >= 0.998);
   }
 
   function measure() {

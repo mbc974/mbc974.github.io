@@ -3064,13 +3064,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .team__photo .staff-card__media.img-fallback{display:grid;place-items:center}
 .team__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
 
-/* ---- Legende nom + role gravee en bas de la photo (E-E-A-T + reassurance) ---- */
-.team__cap{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-direction:column;gap:.15rem;
-  padding:1.7rem .85rem .7rem;pointer-events:none;
-  background:linear-gradient(180deg,transparent,rgba(7,13,24,.42) 45%,rgba(7,13,24,.88))}
+/* ---- Legende nom + role, SOUS la photo ----
+   Elle etait posee en surimpression sur le bas du portrait. A six cartes sur
+   la ligne les visuels retrecissent et la legende tombait pile sur le bandeau
+   de fonction grave dans l'illustration : les deux textes se mangeaient. Sous
+   la photo, la fonction reste lisible a toutes les tailles et le portrait
+   n'est plus recouvert. */
+.team__cap{display:flex;flex-direction:column;gap:.14rem;
+  padding:.72rem .8rem .85rem;
+  border-top:1px solid rgba(191,210,228,.09)}
 .team__name{font-family:var(--ff-display,inherit);text-transform:uppercase;letter-spacing:.4px;line-height:1;
-  color:#fff;font-size:clamp(1rem,1.3vw,1.28rem)}
-.team__role{font-family:var(--ff-cond,inherit);font-weight:600;font-size:.82rem;line-height:1.15;color:var(--bleu-glacier,#cfe0f2)}
+  color:#fff;font-size:clamp(.95rem,1.15vw,1.24rem)}
+.team__role{font-family:var(--ff-cond,inherit);font-weight:600;font-size:clamp(.76rem,.72vw,.9rem);
+  line-height:1.2;color:var(--bleu-glacier,#cfe0f2);text-wrap:balance}
 
 /* ---- Barre de progression fine (preferee aux points de pagination) ---- */
 .roster__progress{position:relative;height:3px;border-radius:999px;overflow:hidden;
@@ -3080,18 +3086,29 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .roster__bar{position:absolute;inset-block:0;left:0;width:25%;border-radius:999px;
   background:var(--grad-orange);will-change:transform}
 
-/* ---- Combien de cartes a l'ecran ---- */
+/* ---- Combien de cartes a l'ecran ----
+   Regle de base : on doit voir TOUTE l'equipe au premier regard. Des que les
+   six tiennent sur la ligne (>=1240 px) on les affiche toutes, sans debord et
+   sans defilement : les fleches et la barre s'effacent d'elles-memes puisqu'il
+   n'y a plus rien a faire defiler (.roster-static, pose par script.js).
+   En dessous, le rail reprend la main avec une carte suivante qui depasse. */
 @media (min-width:560px){.roster__viewport{--roster-cards:1.7}}
 @media (min-width:760px){.roster__viewport{--roster-cards:2.35}}
-@media (min-width:1000px){.roster__viewport{--roster-cards:2.9}}
-@media (min-width:1280px){.roster__viewport{--roster-cards:3.5}}
+@media (min-width:1000px){.roster__viewport{--roster-cards:3.4}}
+@media (min-width:1240px){.roster__viewport{--roster-cards:6;
+  --roster-gap:clamp(.55rem,.85vw,1.05rem);
+  --roster-bleed:0px}}
+/* grands ecrans : le conteneur du staff s'elargit pour que six portraits
+   gardent une taille confortable (l'en-tete reste cale sur ses 64ch centres) */
+@media (min-width:1500px){.staff .wrap{max-width:min(94vw,1680px)}}
+/* rien a faire defiler : on retire les commandes plutot que de les laisser mortes */
+.staff.roster-static .roster__nav,
+.staff.roster-static .roster__progress{visibility:hidden;opacity:0}
 
 /* petit mobile : le swipe suffit, les fleches disparaissent */
 @media (max-width:559px){.sec-head__row{grid-template-columns:1fr}
 .sec-head__row .h2{grid-column:1}
-.roster__nav{display:none}
-.team__cap{padding:1.25rem .7rem .55rem}
-.team__role{font-size:.75rem}}
+.roster__nav{display:none}}
 
 @media (prefers-reduced-motion:reduce){.roster__viewport{scroll-behavior:auto}
 .team__photo{transition:border-color .2s}
