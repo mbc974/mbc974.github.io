@@ -141,7 +141,14 @@ Il n'y a pas de CI. Les contrôles se font en local :
 node --check script.js                 # syntaxe JS
 python -c "s=open('style.css',encoding='utf-8').read(); print(s.count('{'), s.count('}'))"
 python -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
+python .claude/verifier-jsonld.py      # données structurées, les 13 pages
 ```
+
+`verifier-jsonld.py` doit sortir **0 erreur, 0 avertissement**. Il contrôle, hors ligne, ce
+que Search Console reprocherait ensuite : JSON-LD qui parse, images et fichiers réellement
+présents dans le dépôt, ancres `#match-…` qui existent vraiment dans la page, propriétés
+recommandées par Google sur chaque `SportsEvent`, ids HTML non dupliqués, entité club unique.
+Il ne remplace pas le Rich Results Test, qui seul fait foi.
 
 Puis, sur le serveur local, vérifier page par page : HTTP 200, un seul `<h1>`, JSON-LD qui parse,
 aucun débordement horizontal en 320 / 375 / 768 / 1024 / 1440 / 1920 px, aucune erreur console.

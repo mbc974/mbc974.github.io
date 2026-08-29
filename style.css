@@ -4197,6 +4197,17 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-row--dom{box-shadow:inset 3px 0 0 var(--orange-vif)}
 .mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
 
+/* Le score d'une rencontre jouée. Il n'apparaît que si la LRBB l'a publié dans
+   son PDF : tant que la ligne de résultat vaut « ... ... », le générateur
+   n'écrit rien (voir .claude/lire-calendrier-prm.py). Ce bloc est donc inerte
+   tant qu'aucun match n'a été joué — il évite d'avoir à retoucher la feuille
+   le soir du premier résultat. */
+.mx-score{font-variant-numeric:tabular-nums;font-weight:700;color:var(--blanc);
+  letter-spacing:.02em}
+.mx-score__s{opacity:.5;margin:0 .18em}
+.mx-score--v{color:#7BD88F}
+.mx-score--d{color:#E58A8A}
+
 /* rencontre déjà jouée : on l'atténue sans la cacher (classe posée en JS) */
 .mx-row.is-past{opacity:.42}
 /* prochaine rencontre */
