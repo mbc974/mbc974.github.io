@@ -3478,7 +3478,7 @@ body.cine-fs-lock{overflow:hidden}
 .seo-prose h3{font-family:var(--ff-cond);font-weight:700;color:#fff;font-size:1.2rem;margin:1.6rem 0 .5rem}
 .seo-prose ul{margin:.6rem 0 1.4rem;padding-left:1.25rem;color:var(--txt-soft);line-height:1.7}
 .seo-prose ul li{margin-bottom:.4rem}
-.seo-prose a{color:var(--orange-vif);font-weight:600}
+.seo-prose a:not(.btn){color:var(--orange-vif);font-weight:600}
 .seo-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.6rem}
 .seo-foot{border-top:1px solid var(--line);padding:2.2rem 0;margin-top:1rem;text-align:center;
   color:var(--txt-soft);font-size:.86rem;line-height:1.7}
