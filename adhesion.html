@@ -46,8 +46,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap"></noscript>
 
-<link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp" fetchpriority="high">
-<link rel="stylesheet" href="style.css?v=5c5fac9d">
+<link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
+<link rel="stylesheet" href="style.css?v=022716a4">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -58,7 +58,7 @@
   "url": "https://mbc974.com/adhesion.html",
   "description": "Informations essentielles pour adhérer au MBC La Montagne Basket Club, saison 2026/2027 : tarif, public, lieux, délais et documents à préparer.",
   "inLanguage": "fr",
-  "isPartOf": {"@type": "WebSite", "name": "MBC La Montagne Basket Club", "url": "https://mbc974.com/"},
+  "isPartOf": {"@type": "WebSite", "@id": "https://mbc974.com/#website", "name": "MBC La Montagne Basket Club", "url": "https://mbc974.com/"},
   "about": {"@type": "SportsClub", "@id": "https://mbc974.com/#club", "name": "MBC La Montagne Basket Club", "url": "https://mbc974.com/"}
 }
 </script>
@@ -98,18 +98,19 @@
 
 <!-- ===== Header ===== -->
 <header class="site-header" id="top">
-  <a href="index.html" class="brand" aria-label="Accueil MBC La Montagne Basket Club">
-    <span class="logo-img" role="img" aria-label="Logo MBC La Montagne Basket Club"></span>
+  <a href="/" class="brand">
+    <span class="logo-img" aria-hidden="true"></span>
     <span class="brand__txt"><span class="brand__sub">MBC&nbsp;<span class="brand__num">974</span></span><span class="brand__sub2">La Montagne</span></span>
+    <span class="sr-only"> — retour à l'accueil</span>
   </a>
   <nav class="nav" id="nav" aria-label="Navigation principale">
-    <a href="index.html#categories">Catégories</a>
-    <a href="index.html#calendrier">Créneaux</a>
-    <a href="index.html#parents">Parents</a>
-    <a href="index.html#staff">L'équipe</a>
-    <a href="index.html#soutenir">Soutenir</a>
-    <a href="index.html#contact">Contact</a>
-    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent</a>
+    <a href="/#categories">Catégories</a>
+    <a href="/#calendrier">Créneaux</a>
+    <a href="/#parents">Parents</a>
+    <a href="/#staff">L'équipe</a>
+    <a href="/#soutenir">Soutenir</a>
+    <a href="/#contact">Contact</a>
+    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> (nouvel onglet)</span></a>
     <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="nav__cta">Je m'inscris<span class="sr-only"> — inscription en ligne sur Yapla (nouvel onglet)</span></a>
   </nav>
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
@@ -134,7 +135,7 @@
     <!-- CTA principal remonté en haut de page : l'action d'inscription doit être visible dès l'arrivée, sans scroll -->
     <div class="essentiel-cta reveal" style="margin-top:1.6rem;margin-bottom:1.2rem">
       <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je m'inscris sur Yapla<span class="sr-only"> (nouvel onglet)</span></a>
-      <a href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20avant%20de%20finaliser%20mon%20inscription%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener" class="btn btn--ghost btn--lg">Une question avant l'inscription&nbsp;?</a>
+      <a href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20avant%20de%20finaliser%20mon%20inscription%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener" class="btn btn--ghost btn--lg">Une question avant l'inscription&nbsp;?<span class="sr-only"> — WhatsApp (nouvel onglet)</span></a>
     </div>
 
     <ul class="essentiel-grid reveal" aria-label="Informations clés de l'adhésion MBC">
@@ -215,12 +216,12 @@
           </tbody>
         </table>
       </div>
-      <p class="covers__note"><b>Vous hésitez entre deux lignes&nbsp;?</b> À partir de 16 ans, le choix entre <i>Senior Compétition</i> et <i>Basket Loisirs</i> dépend de votre envie&nbsp;: championnat le week-end, ou basket plaisir en semaine. Un jeune né en 2009 ou 2010 relève de l'U18&nbsp;; il peut aussi jouer en Seniors selon son niveau et la validation du coach. Dans le doute, <a href="https://wa.me/262692556458?text=Bonjour%2C%20quelle%20formule%20choisir%20pour%20une%20personne%20n%C3%A9e%20en%20...%20%3F" target="_blank" rel="noopener">demandez-nous par WhatsApp</a><span class="sr-only"> (nouvel onglet)</span> avant de payer.</p>
+      <p class="covers__note"><b>Vous hésitez entre deux lignes&nbsp;?</b> À partir de 16 ans, le choix entre <i>Senior Compétition</i> et <i>Basket Loisirs</i> dépend de votre envie&nbsp;: championnat le week-end, ou basket plaisir en semaine. Un jeune né en 2009 ou 2010 relève de l'U18&nbsp;; il peut aussi jouer en Seniors selon son niveau et la validation du coach. Dans le doute, <a href="https://wa.me/262692556458?text=Bonjour%2C%20quelle%20formule%20choisir%20pour%20une%20personne%20n%C3%A9e%20en%20...%20%3F" target="_blank" rel="noopener">demandez-nous par WhatsApp<span class="sr-only"> (nouvel onglet)</span></a> avant de payer.</p>
     </div>
 
     <div class="essentiel-cta reveal">
       <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je m'inscris sur Yapla<span class="sr-only"> (nouvel onglet)</span></a>
-      <a href="index.html#contact" class="btn btn--ghost btn--lg">J'ai une question avant d'inscrire</a>
+      <a href="/#contact" class="btn btn--ghost btn--lg">J'ai une question avant d'inscrire</a>
     </div>
 
     <!-- ===== Le parcours réel : Yapla puis e-Licence FFBB ===== -->
@@ -271,7 +272,7 @@
 
     <div class="essentiel-cta reveal">
       <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary btn--lg">Je m'inscris sur Yapla<span class="sr-only"> (nouvel onglet)</span></a>
-      <a href="index.html#calendrier" class="btn btn--ghost btn--lg">Revoir les créneaux</a>
+      <a href="/#calendrier" class="btn btn--ghost btn--lg">Revoir les créneaux</a>
     </div>
     <p class="adh-reassure reveal" style="text-align:center;margin-top:1rem;font-size:.92rem;color:var(--txt-soft)">
       Paiement sécurisé via Yapla · confirmation du club sous 48&nbsp;h · club affilié FFBB n° REU0974104</p>
@@ -281,12 +282,12 @@
       <details class="faq__item"><summary>Dois-je payer la licence FFBB en plus des 95&nbsp;€&nbsp;?</summary><p><b>Non.</b> La licence FFBB et l'assurance qui va avec sont comprises dans les 95 €. Le club ne vous demandera aucun autre règlement pour la licence. Seules les <b>garanties d'assurance complémentaires</b> proposées par la fédération pendant la demande de licence sont payantes — et elles sont facultatives.</p></details>
       <details class="faq__item"><summary>J'ai payé, pourquoi n'ai-je pas encore ma licence&nbsp;?</summary><p>C'est normal. Le paiement sur Yapla enregistre votre adhésion au club ; la licence FFBB est créée ensuite, via la procédure e-Licence. Vous recevrez un e-mail de la FFBB avec un lien personnel à compléter, puis le club et la fédération valident. Comptez plusieurs jours. <a href="#parcours">Voir les 5 étapes détaillées</a>.</p></details>
       <details class="faq__item"><summary>Mon enfant a 12 ans, quelle formule dois-je choisir&nbsp;?</summary><p>Regardez son <b>année de naissance</b>, pas son âge : né en 2014 ou 2015, c'est U13 Compétition. Né en 2016, c'est encore l'École de Basket. <a href="#formules">Le tableau complet est juste ici</a>, et en cas de doute on confirme avec vous avant le paiement.</p></details>
-      <details class="faq__item"><summary>Puis-je faire une séance d'essai&nbsp;?</summary><p>Oui, selon les créneaux disponibles, avant de vous engager. Contactez le club par <a href="https://wa.me/262692556458" target="_blank" rel="noopener">WhatsApp</a> ou depuis le <a href="index.html#contact">formulaire de contact</a> pour convenir d'une date.</p></details>
+      <details class="faq__item"><summary>Puis-je faire une séance d'essai&nbsp;?</summary><p>Oui, selon les créneaux disponibles, avant de vous engager. Contactez le club par <a href="https://wa.me/262692556458" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (nouvel onglet)</span></a> ou depuis le <a href="/#contact">formulaire de contact</a> pour convenir d'une date.</p></details>
       <details class="faq__item"><summary>Je veux aider le club sans jouer, est-ce payant&nbsp;?</summary><p>Non : l'adhésion <b>Dirigeant / Bénévole 2026/2027</b> est gratuite. Vous rejoignez officiellement le club et vous êtes couvert dans le cadre de vos missions. Choisissez simplement cette formule dans le tunnel Yapla.</p></details>
       <details class="faq__item"><summary>Mon enfant n'a jamais joué au basket, puis-je l'inscrire&nbsp;?</summary><p>Oui, sans hésiter : la grande majorité de nos jeunes débutent. On apprend les bases ensemble, sans pression, dès 3 ans avec le Baby Basket.</p></details>
     </div>
     <p class="adh-note">Paiement 100 % sécurisé via Yapla · Licence FFBB &amp; assurance incluses · Séance d'essai possible avant de vous engager.</p>
-    <p class="adh-back"><a href="index.html">← Retour à l'accueil</a></p>
+    <p class="adh-back"><a href="/">← Retour à l'accueil</a></p>
   </div>
 </section>
 </main>
@@ -297,29 +298,29 @@
     <div class="footer__top">
       <div class="footer__brand">
         <span class="logo-img" role="img" aria-label="Logo MBC La Montagne Basket Club"></span>
-        <p class="footer__tag">La Montagne en lér&nbsp;!</p>
-        <p class="small">Le club de basket de La Montagne, Saint-Denis. Nout kartié, nout basket : passion, respect, solidarité, engagement. Club affilié FFBB.</p>
-        <div class="footer__social" aria-label="Réseaux sociaux">
-          <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
-          <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
-          <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
+        <p class="footer__tag"><span lang="rcf">La Montagne en lér</span>&nbsp;!</p>
+        <p class="small">Le club de basket de La Montagne, Saint-Denis. <span lang="rcf">Nout kartié, nout basket</span> : passion, respect, solidarité, engagement. Club affilié FFBB.</p>
+        <div class="footer__social" role="group" aria-label="Réseaux sociaux">
+          <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener" aria-label="Facebook (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
+          <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="TikTok (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
         </div>
       </div>
       <div class="footer__col">
-        <h4>Le club</h4>
-        <a href="index.html#categories">Catégories</a><a href="index.html#calendrier">Créneaux</a><a href="index.html#galerie">Galerie</a><a href="index.html#staff">L'équipe</a><a href="club-basket-la-montagne/">Le club</a><a href="benevoles/">Devenir bénévole</a><a href="adhesion.html">Adhésion 2026/2027</a>
+        <h3>Le club</h3>
+        <a href="/#categories">Catégories</a><a href="/#calendrier">Créneaux</a><a href="/#galerie">Galerie</a><a href="/#staff">L'équipe</a><a href="club-basket-la-montagne/">Le club</a><a href="benevoles/">Devenir bénévole</a><a href="adhesion.html">Adhésion 2026/2027</a>
       </div>
       <div class="footer__col">
-        <h4>Agir</h4>
+        <h3>Agir</h3>
         <div class="footer__actions">
           <a href="adhesion.html"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Adhésion</a>
-          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg> Faire un don</a>
-          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg> Espace adhérent</a>
-          <a href="index.html#contact"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Contact</a>
+          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/campaign-15777" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg> Faire un don<span class="sr-only"> (nouvel onglet)</span></a>
+          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg> Espace adhérent<span class="sr-only"> (nouvel onglet)</span></a>
+          <a href="/#contact"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Contact</a>
         </div>
       </div>
       <div class="footer__col">
-        <h4>Contact</h4>
+        <h3>Contact</h3>
         <a href="tel:+262692556458">0692 55 64 58</a><a href="mailto:contact@mbc974.com">contact@mbc974.com</a>
         <p>Gymnase de La Montagne<br>Chemin des Bauhinias<br>97417 Saint-Denis · La Réunion</p>
       </div>
@@ -331,7 +332,7 @@
       <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>Licence &amp; <b>assurance incluses</b></li>
       <li>RNA <b>W9R1011179</b></li>
       <li>SIREN <b>104 461 124</b></li>
-      <li><a class="footer__trust-link" href="index.html#legal">Mentions légales &amp; RGPD</a></li>
+      <li><a class="footer__trust-link" href="/#legal">Mentions légales &amp; RGPD</a></li>
       <li><a class="footer__trust-link" href="confidentialite/">Politique de confidentialité</a></li>
     </ul>
     <nav class="footer__seo" aria-label="Le basket près de chez vous">
@@ -350,6 +351,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=9d0dd85f" defer></script>
+<script src="script.js?v=30abf9d3" defer></script>
 </body>
 </html>

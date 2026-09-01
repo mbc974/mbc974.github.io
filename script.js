@@ -106,59 +106,12 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
     reveals.forEach(function (el) {
       const parent = el.parentElement;
-      if (parent && (parent.classList.contains('cat-grid') ||
-                     parent.classList.contains('engage-grid') ||
-                     parent.classList.contains('fondatrice__pillars'))) {
+      if (parent && parent.classList.contains('cat-grid')) {
         const idx = Array.prototype.indexOf.call(parent.children, el);
         el.style.transitionDelay = Math.min(idx, 6) * 90 + 'ms';
       }
       io.observe(el);
     });
-  }
-
-  /* ---- Cascade text (lien animé : chaque lettre révèle une copie au survol) ---- */
-  Array.prototype.forEach.call(document.querySelectorAll('[data-cascade]'), function (el) {
-    const text = (el.getAttribute('data-cascade-text') || el.textContent || '').trim();
-    if (!text) return;
-    el.setAttribute('aria-label', text);
-    let chars;
-    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
-      chars = Array.from(new Intl.Segmenter('fr', { granularity: 'grapheme' }).segment(text), function (s) { return s.segment; });
-    } else {
-      chars = Array.prototype.slice.call(text);
-    }
-    const inner = document.createElement('span');
-    inner.className = 'cascade-link__inner';
-    inner.setAttribute('aria-hidden', 'true');
-    chars.forEach(function (ch, i) {
-      const c = document.createElement('span');
-      c.className = 'cascade-link__c';
-      c.style.setProperty('--i', String(i));
-      c.textContent = (ch === ' ') ? ' ' : ch;
-      inner.appendChild(c);
-    });
-    el.textContent = '';
-    el.appendChild(inner);
-  });
-
-  /* ---- Parallax ---- */
-  const layers = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
-  /* Parallax désactivé sur mobile (perf + évite tout effet de profondeur lourd au scroll tactile) */
-  const allowParallax = window.matchMedia('(min-width: 760px)').matches;
-  if (layers.length && !reduceMotion && allowParallax) {
-    let ticking = false;
-    function applyParallax() {
-      const y = window.scrollY;
-      layers.forEach(function (el) {
-        const speed = parseFloat(el.getAttribute('data-parallax')) || 0;
-        el.style.transform = 'translate3d(0,' + (y * speed).toFixed(1) + 'px,0)';
-      });
-      ticking = false;
-    }
-    window.addEventListener('scroll', function () {
-      if (!ticking) { window.requestAnimationFrame(applyParallax); ticking = true; }
-    }, { passive: true });
-    applyParallax();
   }
 
   /* ---- Counters (numeric only) ---- */
@@ -395,42 +348,12 @@
     if (y > 2026) legal.textContent = legal.textContent.replace('© 2026', '© 2026–' + y);
   }
 
-  /* ---- 3D tilt on jersey cards (mouse-reactive) ---- */
-  const tiltCards = document.querySelectorAll('.kit-card');
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  if (tiltCards.length && finePointer && !reduceMotion) {
-    const MAX = 12; // deg
-    tiltCards.forEach(function (card) {
-      card.classList.add('tilt3d');
-      // shine overlay
-      const shine = document.createElement('span');
-      shine.className = 'tilt3d__shine';
-      card.appendChild(shine);
-      let raf = null;
 
-      card.addEventListener('pointermove', function (e) {
-        const r = card.getBoundingClientRect();
-        const px = (e.clientX - r.left) / r.width;   // 0..1
-        const py = (e.clientY - r.top) / r.height;   // 0..1
-        const rx = (0.5 - py) * (MAX * 2);
-        const ry = (px - 0.5) * (MAX * 2);
-        if (raf) cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(function () {
-          card.style.transform =
-            'perspective(1000px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) scale(1.02)';
-          shine.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
-          shine.style.setProperty('--my', (py * 100).toFixed(1) + '%');
-        });
-      });
-      card.addEventListener('pointerenter', function () { card.classList.add('is-tilting'); });
-      card.addEventListener('pointerleave', function () {
-        card.classList.remove('is-tilting');
-        if (raf) cancelAnimationFrame(raf);
-        card.style.transform = '';
-      });
-    });
-  }
-
+  /* ---- Marquee : pause au tap (WCAG 2.2.2 — le hook .is-paused vit dans style.css) ---- */
+  Array.prototype.forEach.call(document.querySelectorAll('.marquee'), function (m) {
+    m.addEventListener('click', function () { m.classList.toggle('is-paused'); });
+  });
 
   /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop uniquement) ---- */
   if (finePointer && !reduceMotion) {
@@ -620,10 +543,10 @@
   'use strict';
   if (window.matchMedia('(hover:none)').matches) return;
   // Tous les éléments rectangulaires qui reçoivent le liseré lumineux.
-  var SEL = '.essentiel-card,.hero-offer,.cine-card,.recr__visual,.cat,.tarifs,.cal-venue,' +
-            '.dons__card,.impact li,.dons__fiscal,.solidaire,.partner-intro,.visi,.contact-form,.contact-info,' +
-            '.action-card,.engage-card,.pack,.p-pillar,.social-card,.kit-spon,.kit-card,' +
-            '.team__photo,.sponsor-card,.partner-slot,.adhesion-video__frame,.btn--ghost';
+  var SEL = '.essentiel-card,.hero-offer,.cine-card,.cat,.tarifs,.cal-venue,' +
+            '.solidaire,.visi,.contact-form,.contact-info,' +
+            '.pack,.p-pillar,.social-card,' +
+            '.team__photo,.sponsor-card,.btn--ghost';
   var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
   if (!targets.length) return;
   // glow = élément enfant injecté (pas de pseudo -> aucun conflit, marche partout)
@@ -877,7 +800,19 @@
   video.addEventListener('ended', function () { if (isOpen) close(); });
   closeBtn.addEventListener('click', close);
   overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (!isOpen) return;
+    if (e.key === 'Escape') { close(); return; }
+    /* Piège Tab : même pattern que la lightbox — le focus reste dans l'overlay. */
+    if (e.key === 'Tab') {
+      var focusables = Array.prototype.slice.call(
+        overlay.querySelectorAll('button,video,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'));
+      if (!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 })();
 
 

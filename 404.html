@@ -23,14 +23,15 @@
     font-weight:800;text-transform:uppercase;letter-spacing:.5px;text-decoration:none;
     padding:.9rem 2rem;border-radius:999px;box-shadow:0 12px 30px rgba(217,106,27,.4);transition:transform .2s}
   a.btn:hover{transform:translateY(-2px)}
+  a.btn:focus-visible{outline:3px solid var(--glacier);outline-offset:3px}
   .lost-links{display:flex;flex-wrap:wrap;gap:.5rem .9rem;justify-content:center;margin:1.8rem auto 0;max-width:30rem}
-  .lost-links a{color:var(--glacier);text-decoration:none;font-size:.9rem;
-    border-bottom:1px solid rgba(255,255,255,.22);padding-bottom:1px;transition:color .2s,border-color .2s}
+  .lost-links a{color:var(--glacier);text-decoration:none;font-size:.9rem;padding-block:.35em;
+    border-bottom:1px solid rgba(255,255,255,.22);transition:color .2s,border-color .2s}
   .lost-links a:hover,.lost-links a:focus-visible{color:#fff;border-bottom-color:#fff}
 </style>
 </head>
 <body>
-  <div class="box">
+  <main class="box">
     <img src="/assets/logos/mbc-logo.webp" alt="MBC La Montagne Basket Club" width="360" height="370" onerror="this.onerror=null;this.src='/assets/logos/mbc-logo.png'">
     <h1>404</h1>
     <p class="lead">Balle perdue&nbsp;!</p>
@@ -46,7 +47,7 @@
       <a href="/club-basket-la-montagne/">Le club</a>
       <a href="/#contact">Contact</a>
     </nav>
-  </div>
+  </main>
 <script>if('serviceWorker'in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}</script>
 </body>
 </html>

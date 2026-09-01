@@ -2,6 +2,15 @@
    MBC — LA MONTAGNE BASKET CLUB · V3 "CAMPAGNE"
    Mini-site de marque sportive · 100% graphique · mobile-first
    ============================================================ */
+/* ---- Replis métriquement ajustés (anti-CLS du swap de polices) ----
+   size-adjust MESURÉ dans le navigateur (largeur des textes réels du site
+   rendus dans chaque police, canvas measureText) — les xAvgCharWidth des
+   OS/2 étaient trompeurs ; ascent/descent dérivés des hhea des TTF réels.
+   Résultat : le texte en repli occupe (quasi) la même place qu'en Anton /
+   Barlow, le chargement des polices Google ne décale plus la page. ---- */
+@font-face{font-family:'Anton Fallback';src:local('Impact');size-adjust:94.69%;ascent-override:124.24%;descent-override:34.76%;line-gap-override:0%}
+@font-face{font-family:'Barlow Condensed Fallback';src:local('Arial');size-adjust:70.15%;ascent-override:142.55%;descent-override:28.51%;line-gap-override:0%}
+@font-face{font-family:'Barlow Fallback';src:local('Arial');size-adjust:94.76%;ascent-override:105.53%;descent-override:21.11%;line-gap-override:0%}
 :root{--bleu-nuit:#0D1526;
   --bleu-roi:#1B519E;
   --orange-ballon:#D96A1B;
@@ -23,16 +32,14 @@
   --grad-card:linear-gradient(168deg,var(--nuit-3),#0e1a2f);
   --grad-fire:linear-gradient(120deg,#E8822A,#D96A1B 55%,#1B519E);
 
-  --ff-display:'Anton',Impact,sans-serif;
-  --ff-cond:'Barlow Condensed','Arial Narrow',sans-serif;
-  --ff-body:'Barlow','Arial',sans-serif;
+  --ff-display:'Anton','Anton Fallback',Impact,sans-serif;
+  --ff-cond:'Barlow Condensed','Barlow Condensed Fallback','Arial Narrow',sans-serif;
+  --ff-body:'Barlow','Barlow Fallback','Arial',sans-serif;
 
-  --wrap:1200px;
+  --wrap:1220px;
   --ease:cubic-bezier(.22,.61,.36,1);
-  --radius:18px;
 
   /* ---- V12 · Système de design (rayons, élévation, ressorts) ---- */
-  --r-xs:10px;
   --r-sm:14px;
   --r-md:18px;
   --r-lg:24px;
@@ -43,7 +50,6 @@
   --e1:0 2px 10px rgba(3,7,15,.34);
   --e2:0 12px 30px rgba(3,7,15,.42);
   --e3:0 22px 56px rgba(3,7,15,.48);
-  --e4:0 36px 84px rgba(3,7,15,.56);
   /* halos premium (survols, accents) */
   --glow-o:0 18px 46px rgba(217,106,27,.30);
   --glow-b:0 18px 46px rgba(27,81,158,.42);
@@ -128,7 +134,6 @@ a{color:inherit;text-decoration:none}
    Il passe de 53 a 64 px de haut, soit +21 %. */
 .brand .logo-img{width:64px;height:64px;
   filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
-
 /* Le filet separateur : un hairline argent, eclaire en son centre et
    eteint aux extremites. Repris de la version precedente, ou il etait
    la meilleure idee du lockup. */
@@ -140,7 +145,6 @@ a{color:inherit;text-decoration:none}
   background:linear-gradient(180deg,rgba(191,210,228,0) 0%,
     rgba(191,210,228,.45) 30%,rgba(255,255,255,.75) 50%,
     rgba(191,210,228,.45) 70%,rgba(191,210,228,0) 100%)}
-
 .brand__sub{font-family:var(--ff-display);font-weight:400;
   font-size:1.95rem;line-height:.9;letter-spacing:.05em;
   text-transform:uppercase;color:#fff;margin-right:-.05em;text-shadow:none}
@@ -148,12 +152,10 @@ a{color:inherit;text-decoration:none}
    Detail d'identite conserve de la version precedente. Aucun glow au repos :
    seul le degrade porte la couleur. */
 .brand__num{color:var(--orange-vif);filter:none}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,
+@supports ((-webkit-background-clip:text) or (background-clip:text)){.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,
     #F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);
     -webkit-background-clip:text;background-clip:text;
     -webkit-text-fill-color:transparent;color:transparent}}
-
 /* « LA MONTAGNE » : le letter-spacing traine a droite, on l'annule pour
    que les deux lignes s'alignent optiquement sur le meme bord. */
 .brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;
@@ -161,9 +163,7 @@ a{color:inherit;text-decoration:none}
   text-transform:uppercase;color:#F4F7FB;line-height:1;
   transition:color .3s var(--ease-out)}
 .brand:hover .brand__txt::before{opacity:1}
-@media (prefers-reduced-motion:reduce){
-  .brand__sub2,.brand__txt::before{transition:none!important}}
-
+@media (prefers-reduced-motion:reduce){.brand__sub2,.brand__txt::before{transition:none!important}}
 /* ---- Navigation ---- */
 .nav{display:flex;align-items:center;gap:.1rem;
   margin-right:max(0px,calc((100vw - 1560px) / 2))}
@@ -178,7 +178,6 @@ a{color:inherit;text-decoration:none}
 .nav__cta:focus-visible{outline:2px solid var(--blanc);outline-offset:3px}
 /* page/section active : un reperage discret, pas un bouton */
 .nav a[aria-current]{color:var(--blanc)}
-
 /* ---- CTA : plus haut, sans halo ---- */
 .nav__cta{background:var(--grad-orange);color:#170D03!important;
   margin-left:.7rem;border-radius:8px;
@@ -196,16 +195,12 @@ a{color:inherit;text-decoration:none}
 .nav-backdrop.show{opacity:1;visibility:visible}
 /* ---------------- Marquee ---------------- */
 .marquee{position:relative;overflow:hidden;background:var(--grad-orange);padding:.7rem 0;border-block:2px solid rgba(0,0,0,.15)}
-.marquee--roi{background:var(--bleu-roi)}
 .marquee__track{display:inline-flex;white-space:nowrap;will-change:transform;animation:marq 26s linear infinite}
-.marquee--rev .marquee__track{animation-direction:reverse}
 .marquee:hover .marquee__track{animation-play-state:paused}
 /* Pause au tap (accessibilité WCAG 2.2.2 — mobile/tactile, voir script.js) */
 .marquee.is-paused .marquee__track,.sponsors-marquee.is-paused .sponsors-marquee__track{animation-play-state:paused}
 .marquee__track span{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.1rem,3vw,1.7rem);letter-spacing:.04em;color:#190f04;padding:0 .7rem;display:inline-flex;align-items:center;gap:.85rem}
-.marquee--roi .marquee__track span{color:#fff}
 .marquee__track span::after{content:"●";font-size:.5em;color:rgba(0,0,0,.4)}
-.marquee--roi .marquee__track span::after{color:rgba(255,255,255,.5)}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
 /* ---------------- HERO ---------------- */
@@ -237,7 +232,7 @@ a{color:inherit;text-decoration:none}
 /* ---------------- CATEGORIES (poster cards) ---------------- */
 .categories{position:relative;background:var(--nuit-2);overflow:hidden}
 .cat-grid{position:relative;z-index:2;display:grid;gap:1.3rem;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
-.cat{position:relative;border:1px solid var(--line);border-radius:var(--radius);background:var(--grad-card);padding:2rem 1.8rem 1.8rem;overflow:hidden;display:flex;flex-direction:column;min-height:300px;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
+.cat{position:relative;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);padding:2rem 1.8rem 1.8rem;overflow:hidden;display:flex;flex-direction:column;min-height:300px;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
 .cat__num{position:absolute;right:1rem;top:.4rem;font-family:var(--ff-display);font-size:5rem;line-height:1;color:rgba(255,255,255,.04);z-index:0}
 .cat::before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(27,81,158,.45),transparent 70%);transition:transform .5s var(--ease)}
 .cat:hover{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:0 26px 56px rgba(0,0,0,.5)}
@@ -260,17 +255,12 @@ a{color:inherit;text-decoration:none}
 /* ---------------- POURQUOI ---------------- */
 /* ---------------- PARTENAIRES ---------------- */
 .partenaires{position:relative;background:linear-gradient(180deg,var(--nuit-0),var(--nuit-2));overflow:hidden}
-.partner-slot{aspect-ratio:16/8;display:flex;align-items:center;justify-content:center;border:1px dashed var(--line-strong);border-radius:14px;background:rgba(191,210,228,.03);transition:border-color .3s,background .3s,transform .3s}
-.partner-slot:hover{border-color:var(--orange-vif);background:rgba(232,130,42,.05);transform:translateY(-3px)}
-.partner-slot span{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--txt-soft)}
-.partners-cta{margin-top:2.2rem}
 /* ---------------- CTA BAND ---------------- */
 /* fond STRICTEMENT uniforme horizontalement (aucune variation gauche/droite) -> aucune ligne verticale possible ; haut #0b1626 = bas exact de .partenaires (frontière haute invisible) */
-
 /* ---------------- CONTACT ---------------- */
 .contact{position:relative;background:var(--nuit-2);overflow:hidden}
 .contact__grid{position:relative;z-index:2;display:grid;gap:2rem;grid-template-columns:1fr}
-.contact-form{background:var(--grad-card);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(1.6rem,4vw,2.5rem)}
+.contact-form{background:var(--grad-card);border:1px solid var(--line);border-radius:var(--r-md);padding:clamp(1.6rem,4vw,2.5rem)}
 .field{margin-bottom:1.1rem}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 label{display:block;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;color:var(--bleu-glacier);margin-bottom:.45rem}
@@ -282,7 +272,7 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .form-feedback.ok{color:var(--orange-vif)}
 .form-feedback.err{color:#ff8a8a}
 .contact-aside{display:flex;flex-direction:column;gap:1.4rem}
-.contact-info{background:var(--grad-roi);border-radius:var(--radius);padding:clamp(1.5rem,4vw,2.2rem);position:relative;overflow:hidden}
+.contact-info{background:var(--grad-roi);border-radius:var(--r-md);padding:clamp(1.5rem,4vw,2.2rem);position:relative;overflow:hidden}
 .contact-info::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(232,130,42,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none}
 .contact-info h3{font-family:var(--ff-display);text-transform:uppercase;color:var(--blanc);font-size:1.7rem;margin-bottom:1.2rem;letter-spacing:.5px;position:relative;z-index:1}
 .info-line{display:flex;align-items:flex-start;gap:.85rem;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.14);position:relative;z-index:1}
@@ -294,11 +284,8 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .socials{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem;position:relative;z-index:1}
 .socials a{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;padding:.45em .9em;border:1px solid rgba(255,255,255,.25);border-radius:99px;transition:background .2s,border-color .2s}
 .socials a:hover{background:var(--orange-vif);border-color:var(--orange-vif);color:#190f04}
-.contact-map{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--nuit-3);min-height:260px}
+.contact-map{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:var(--nuit-3);min-height:260px}
 .contact-map iframe{display:block;width:100%;height:100%;min-height:260px;border:0;filter:grayscale(.3) contrast(1.05)}
-
-
-
 /* ---- Chiffres de visibilite (page sponsor) ----
    Trois nombres, une precision sous chacun. La precision n'est pas une
    note de bas de page : elle est dans le bloc, parce que « 1 130 » sans
@@ -317,14 +304,10 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
   font-size:.86rem;letter-spacing:0;text-transform:none;color:var(--txt-soft);line-height:1.5}
 .vis-src{font-size:.82rem;line-height:1.55;color:var(--txt-soft);
   padding-top:.9rem;border-top:1px solid var(--line)}
-@media (min-width:760px){
-  .vis-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 1.8rem}
-  .vis-stat{grid-template-columns:1fr;padding:0;gap:.5rem}
-  .vis-stat + .vis-stat::before{left:-.9rem;right:auto;top:0;bottom:0;width:1px;height:auto;
-    background:linear-gradient(180deg,rgba(191,210,228,.24),rgba(191,210,228,.06) 70%,transparent)}
-}
-
-
+@media (min-width:760px){.vis-stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:0 1.8rem}
+.vis-stat{grid-template-columns:1fr;padding:0;gap:.5rem}
+.vis-stat + .vis-stat::before{left:-.9rem;right:auto;top:0;bottom:0;width:1px;height:auto;
+    background:linear-gradient(180deg,rgba(191,210,228,.24),rgba(191,210,228,.06) 70%,transparent)}}
 /* ============================================================
    Parents : la preuve a cote de la promesse
    ------------------------------------------------------------
@@ -338,7 +321,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    ============================================================ */
 .pquote{display:grid;grid-template-columns:1fr;gap:clamp(1.4rem,3.5vw,2.2rem);
   align-items:center;margin:clamp(1.9rem,4.5vw,2.8rem) 0 clamp(2.2rem,5vw,3.2rem)}
-
 .pquote__ph{position:relative;margin:0;border-radius:18px;
   box-shadow:0 26px 60px rgba(3,8,18,.6),0 3px 12px rgba(3,8,18,.42)}
 .pquote__ph picture{display:block;border-radius:inherit;overflow:hidden}
@@ -361,16 +343,10 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
   text-transform:uppercase;color:var(--txt-soft)}
 .pquote__ph figcaption::before{content:"";width:1.5rem;height:1px;flex:none;
   background:var(--grad-orange)}
-
 /* la citation perd sa largeur max : elle occupe sa colonne */
 .pquote .parents-quote{margin:0;max-width:none}
-
-@media (min-width:900px){
-  .pquote{grid-template-columns:minmax(0,52fr) minmax(0,48fr);
-    gap:clamp(2rem,4vw,3.2rem)}
-}
-
-
+@media (min-width:900px){.pquote{grid-template-columns:minmax(0,52fr) minmax(0,48fr);
+    gap:clamp(2rem,4vw,3.2rem)}}
 /* ---- Respiration dans la section Parents ----
    534 mots pour une seule image : c'etait le bloc narratif le plus dense du
    site. Cette bande separe les quatre piliers du tarif et illustre le type
@@ -385,7 +361,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
   font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--txt-soft)}
 .p-venue figcaption::before{content:"";width:1.4rem;height:1px;flex:none;
   background:var(--grad-orange)}
-
 /* ---- Le lien vers l'equipe, sous la citation ----
    La citation etait signee « L'equipe encadrante » sans qu'on puisse aller
    voir qui c'est. Un parent qui confie son enfant veut des visages. */
@@ -396,7 +371,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .parents-quote__who .btn__arrow{width:1.05em;height:1.05em}
 .parents-quote__who:hover{color:#FFD7AE;gap:.75em}
 .parents-quote__who:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
-
 /* ---- Ligne d'identite : une signature, pas une banniere ----
    Quatre faits verifiables, en petit, separes par des points. Aucun cadre,
    aucun fond : ce sont des mentions legales rendues rassurantes, pas un
@@ -408,14 +382,13 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .trustline span{display:inline-flex;align-items:center;gap:1.05rem}
 .trustline span:not(:last-child)::after{content:"";width:3px;height:3px;
   border-radius:50%;background:currentColor;opacity:.55}
-
 /* ---- Facade de carte : on ne charge Google qu'a la demande ----
    Une iframe Maps coute ~700 Ko de scripts tiers et pose des cookies des
    le chargement de la page, meme derriere loading="lazy" (qui ne fait que
    retarder, pas eviter). Le bouton ci-dessous a l'allure d'une carte et
    n'injecte l'iframe qu'au clic. */
 .map-facade{position:relative;display:block;width:100%;min-height:260px;
-  padding:1.2rem;border:0;border-radius:var(--radius);overflow:hidden;
+  padding:1.2rem;border:0;border-radius:var(--r-md);overflow:hidden;
   background:
     radial-gradient(120% 90% at 30% 20%,rgba(27,81,158,.30),transparent 62%),
     linear-gradient(160deg,var(--nuit-3),var(--nuit-0));
@@ -452,7 +425,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .contact-map.is-loaded{min-height:260px}
 .contact-map.is-loaded iframe{display:block;width:100%;height:100%;min-height:260px;
   border:0;filter:grayscale(.3) contrast(1.05)}
-
 /* ---------------- FOOTER ---------------- */
 .site-footer{position:relative;background:#050a13;border-top:1px solid var(--line);padding-top:3.2rem}
 /* fine ligne d'accent orange en haut du footer (cadrage premium discret) */
@@ -481,38 +453,30 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .reveal--scale.in{transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}
 .hero__scroll span{animation:none}}
-
 /* ---- Header responsive ---- */
-@media (max-width:1180px){
-  /* le burger prend le relais : la nav a 8 entrees + un CTA */
-  .site-header{height:70px}
-  .brand{margin-left:0}
-  .nav{margin-right:0}
-  .brand .logo-img{width:54px;height:54px}
-  .brand__txt::before{height:39px}
-  .brand__sub{font-size:1.62rem}
-  .brand__sub2{font-size:.66rem;letter-spacing:.26em}
-}
-@media (max-width:520px){
-  .site-header{height:66px;padding:0 16px}
-  /* L'ecusson ne redevient jamais minuscule : il reste le repere.
+@media (max-width:1180px){/* le burger prend le relais : la nav a 8 entrees + un CTA */
+.site-header{height:70px}
+.brand{margin-left:0}
+.nav{margin-right:0}
+.brand .logo-img{width:54px;height:54px}
+.brand__txt::before{height:39px}
+.brand__sub{font-size:1.62rem}
+.brand__sub2{font-size:.66rem;letter-spacing:.26em}}
+@media (max-width:520px){.site-header{height:66px;padding:0 16px}
+/* L'ecusson ne redevient jamais minuscule : il reste le repere.
      Mesure a 390 px : il restait 163 px libres entre la marque et le
      burger, la place ne manquait pas. */
-  .brand .logo-img{width:50px;height:50px}
-  .brand{gap:.72rem}
-  .brand__txt{padding-left:.8rem;gap:.17rem}
-  .brand__txt::before{height:36px}
-  .brand__sub{font-size:1.42rem}
-  /* .58rem tombait a 9,3 px : sous le seuil de confort de lecture. */
-  .brand__sub2{font-size:.68rem;letter-spacing:.2em;margin-right:-.2em}
-}
-@media (max-width:360px){
-  /* sous 360 px on garde l'ecusson et « MBC 974 », on retire la ligne
+.brand .logo-img{width:50px;height:50px}
+.brand{gap:.72rem}
+.brand__txt{padding-left:.8rem;gap:.17rem}
+.brand__txt::before{height:36px}
+.brand__sub{font-size:1.42rem}
+/* .58rem tombait a 9,3 px : sous le seuil de confort de lecture. */
+.brand__sub2{font-size:.68rem;letter-spacing:.2em;margin-right:-.2em}}
+@media (max-width:360px){/* sous 360 px on garde l'ecusson et « MBC 974 », on retire la ligne
      secondaire plutot que de tout comprimer. */
-  .brand__sub2{display:none}
-  .brand__sub{font-size:1.2rem}
-}
-
+.brand__sub2{display:none}
+.brand__sub{font-size:1.2rem}}
 /* ---------------- Responsive ---------------- */
 @media (min-width:820px){.contact__grid{grid-template-columns:1.35fr .95fr}
 .footer__top{grid-template-columns:1.5fr 1fr 1fr 1.1fr}}
@@ -520,8 +484,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .nav.open{transform:none}
 .nav a{font-size:1.15rem;padding:.8em 1em;border-bottom:1px solid var(--line)}
 .nav__cta{margin:.8rem 0 0;text-align:center}
-.burger{display:flex}
-}
+.burger{display:flex}}
 @media (max-width:680px){.field-row{grid-template-columns:1fr}}
 /* ============================================================
    V4 "MARQUE INSTITUTIONNELLE" — ajouts
@@ -563,29 +526,12 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 /* themed backgrounds (graphic, photo-ready) */
 /* stylised mountain silhouette for La Montagne band */
 /* ---- Dons ---- */
-.dons{position:relative;overflow:hidden;background:radial-gradient(90% 140% at 50% 0,rgba(217,106,27,.4),transparent 55%),linear-gradient(180deg,var(--nuit-0),var(--nuit-2))}
-.dons__inner{position:relative;z-index:2;display:grid;gap:2.4rem;grid-template-columns:1fr}
-.dons__card{align-self:center;background:var(--grad-roi);border-radius:var(--radius);padding:clamp(1.8rem,4vw,2.6rem);text-align:center;position:relative;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4)}
-.dons__card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(255,255,255,.35),rgba(232,130,42,.55));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none}
-.dons__card .big{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.8rem,5vw,2.6rem);color:#fff;line-height:.95;position:relative;z-index:1}
-.dons__card p{color:rgba(255,255,255,.85);margin:.8rem 0 1.6rem;position:relative;z-index:1}
-.dons__card .btn{position:relative;z-index:1}
-@media (min-width:820px){.dons__inner{grid-template-columns:1.15fr .85fr;align-items:center}}
 /* ---- Partenaires tiers ---- */
 /* ============================================================
    V5 "FRANCHISE" — photos réelles, staff, recrutement, lightbox
    ============================================================ */
 /* ---- Hero V5 : texte pur + cartes action premium ---- */
-.action-card{position:relative;display:flex;flex-direction:column;gap:.6rem;padding:1.7rem 1.7rem;border-radius:18px;text-align:left;overflow:hidden;border:1px solid rgba(191,210,228,.18);background:linear-gradient(165deg,rgba(27,81,158,.22),rgba(13,21,38,.55));backdrop-filter:blur(10px);box-shadow:0 16px 40px rgba(0,0,0,.4);transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
-.action-card::before{content:"";position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(232,130,42,.3),transparent 70%);opacity:.8;transition:transform .4s var(--ease)}
-.action-card:hover{transform:translateY(-6px);border-color:rgba(232,130,42,.45);box-shadow:0 26px 56px rgba(0,0,0,.55)}
-.action-card:hover::before{transform:scale(1.5)}
-.action-card .btn{position:relative;z-index:1;margin-top:.4rem;align-self:flex-start}
 /* ---- Recrutement (flyer) ---- */
-.recr__visual{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line-strong);box-shadow:0 30px 70px rgba(0,0,0,.55);transition:transform .5s var(--ease)}
-.recr__visual::after{content:"";position:absolute;inset:0;border-radius:var(--radius);box-shadow:inset 0 0 0 1px rgba(232,130,42,.25),inset 0 0 70px rgba(217,106,27,.18);pointer-events:none}
-.recr__visual img{display:block;width:100%;height:auto;transition:transform .6s var(--ease)}
-.recr__visual:hover img{transform:scale(1.04)}
 /* ---- Calendrier visual immersif + lightbox ---- */
 .lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:2rem;background:rgba(4,8,16,.92);backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
 .lightbox.show{opacity:1;visibility:visible}
@@ -634,7 +580,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    ============================================================ */
 .pl{position:relative;z-index:2;max-width:940px;margin:.5rem 0 0}
 .pl [hidden]{display:none!important}
-
 /* ---- en-tête : titre + accès à l'affiche ---- */
 .pl-top{display:flex;align-items:center;justify-content:space-between;
   gap:1rem;flex-wrap:wrap;margin-bottom:1.15rem}
@@ -649,7 +594,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .pl-affiche .ic{width:1.05em;height:1.05em;color:var(--orange-vif)}
 .pl-affiche:focus-visible{outline:2px solid var(--orange-vif);
   outline-offset:3px}
-
 /* ---- filtres ---- */
 .pl-filtres{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;
   margin-bottom:1.5rem}
@@ -664,7 +608,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
   border-color:transparent}
 .pl-f:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
 .pl .pl-aucun{margin:0 0 1.4rem;font-size:.98rem;color:var(--bleu-glacier)}
-
 /* ---- la journée : un en-tête de rangée, pas une colonne ---- */
 .pl-jour + .pl-jour{margin-top:1.7rem}
 .pl-jour__n{display:flex;align-items:baseline;gap:.85rem;margin:0 0 .75rem;
@@ -675,25 +618,21 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .pl-jour__n::after{content:"";flex:1;height:1px;
   background:linear-gradient(90deg,rgba(191,210,228,.26),transparent)}
 .pl-jour__l{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
-
 /* ---- un créneau : une surface qui se détache vraiment ---- */
 .pl-slot{display:grid;gap:.62rem;padding:1.1rem 1.15rem;
   background:#203457;border:1px solid rgba(191,210,228,.24);
   border-radius:var(--r-sm)}
-
 .pl .pl-slot__h{margin:0;display:flex;align-items:center;gap:.42rem;
   font-family:var(--ff-cond);font-weight:700;font-size:1.34rem;line-height:1;
   color:var(--orange-vif);white-space:nowrap;
   font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
 .pl-slot__sep{color:rgba(232,130,42,.6);font-weight:500}
-
 .pl-slot__cats{margin:0;display:flex;flex-wrap:wrap;gap:.4rem}
 .pl-chip{display:inline-flex;align-items:center;
   font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1;
   color:var(--blanc);background:rgba(255,255,255,.10);
   border:1px solid rgba(191,210,228,.26);padding:.4em .74em;
   border-radius:8px}
-
 .pl .pl-slot__nat{margin:0;display:flex;align-items:center;gap:.5rem;
   flex-wrap:wrap;font-family:var(--ff-cond);font-size:1rem;line-height:1.25}
 .pl-slot__nat b{font-weight:600;color:#EAF1F9}
@@ -702,13 +641,11 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .pl-slot--loisir .pl-dot{background:#46C7B8}
 .pl-slot--match .pl-dot{background:var(--orange-vif)}
 .pl-slot__prec{flex-basis:100%;font-size:.9rem;color:var(--bleu-glacier)}
-
 /* le match : reconnaissable sans devenir un aplat orange */
 .pl-slot--match{border-color:rgba(232,130,42,.45);
   background:linear-gradient(90deg,rgba(217,106,27,.18),#203457 42%)}
 .pl-slot--match .pl-slot__nat b{color:#FFD7AE;font-weight:700;
   text-transform:uppercase;letter-spacing:.04em;font-size:.98rem}
-
 /* ---- le lieu : un lien, pas un texte gris ---- */
 .pl-slot__ou{display:inline-flex;align-items:center;gap:.45rem;
   border-radius:9px;text-decoration:none;color:#CFDDEC;font-size:1rem;
@@ -722,50 +659,37 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .pl-slot__fl{width:.92rem;height:.92rem;flex:none;color:var(--orange-vif)}
 .pl-slot__ou:focus-visible{outline:2px solid var(--orange-vif);
   outline-offset:2px}
-
 .pl .pl-note{margin:1.6rem 0 0;padding-left:.95rem;font-size:.94rem;
   line-height:1.6;color:var(--bleu-glacier);
   border-left:2px solid rgba(232,130,42,.45)}
 .pl-note b{color:#FFD7AE;font-weight:600}
-
 /* ---- desktop : les quatre données sur une ligne, sans les éloigner ---- */
-@media (min-width:880px){
-  .pl-slot{grid-template-columns:10.2rem minmax(0,13.5rem) minmax(0,11rem)
+@media (min-width:880px){.pl-slot{grid-template-columns:10.2rem minmax(0,13.5rem) minmax(0,11rem)
     minmax(0,1fr);align-items:center;gap:0 1.15rem;padding:1rem 1.2rem}
-  .pl-slot__ou{justify-self:end;background:none;border-color:transparent;
+.pl-slot__ou{justify-self:end;background:none;border-color:transparent;
     padding:.42rem .55rem;margin-right:-.55rem}
-  /* « Itinéraire » se révèle au survol : la flèche suffit à signaler le
+/* « Itinéraire » se révèle au survol : la flèche suffit à signaler le
      lien au repos, le mot encombrerait les neuf lignes */
-  .pl-slot__go{opacity:0}
-}
-
+.pl-slot__go{opacity:0}}
 /* ---- interactions : présentes, discrètes ---- */
-@media (hover:hover){
-  .pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{
+@media (hover:hover){.pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{
     transition:background .2s var(--ease-out),border-color .2s var(--ease-out),
     color .2s var(--ease-out),opacity .2s var(--ease-out)}
-  .pl-slot:hover{background:#27406A;border-color:rgba(191,210,228,.36)}
-  .pl-slot--match:hover{background:linear-gradient(90deg,
+.pl-slot:hover{background:#27406A;border-color:rgba(191,210,228,.36)}
+.pl-slot--match:hover{background:linear-gradient(90deg,
     rgba(217,106,27,.24),#27406A 42%)}
-  .pl-slot__ou:hover{background:rgba(255,255,255,.09);color:var(--blanc)}
-  .pl-slot__ou:hover .pl-slot__go{opacity:1}
-  .pl-f:hover{border-color:rgba(232,130,42,.55);color:var(--blanc)}
-  .pl-f.is-on:hover{color:#1B0E03}
-  .pl-affiche:hover{border-color:rgba(232,130,42,.6);color:var(--orange-vif)}
-}
+.pl-slot__ou:hover{background:rgba(255,255,255,.09);color:var(--blanc)}
+.pl-slot__ou:hover .pl-slot__go{opacity:1}
+.pl-f:hover{border-color:rgba(232,130,42,.55);color:var(--blanc)}
+.pl-f.is-on:hover{color:#1B0E03}
+.pl-affiche:hover{border-color:rgba(232,130,42,.6);color:var(--orange-vif)}}
 /* sans survol possible, le mot reste affiché */
 @media (hover:none){.pl-slot__go{opacity:1}}
-@media (prefers-reduced-motion:reduce){
-  .pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{transition:none}
-}
-
-
+@media (prefers-reduced-motion:reduce){.pl-slot,.pl-f,.pl-affiche,.pl-slot__ou{transition:none}}
 /* ============================================================
    V7 "FINITION AGENCE" — polish final
    ============================================================ */
 /* ---- 3. Hero : cartes CTA parfaitement symétriques ---- */
-.action-card{height:100%;min-height:248px;justify-content:flex-start;gap:.55rem}
-.action-card .btn{margin-top:auto;align-self:stretch;width:100%}
 /* ---- 2. FFBB badge dans les stats ---- */
 /* ---- 5. Footer : aération réseaux + hiérarchie ---- */
 .footer__brand p.small{margin-bottom:0}
@@ -777,7 +701,7 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .sec-head{margin-inline:auto}
 .sec-head--center{margin-inline:auto}
 /* Cartes : ombres / bordures / transitions unifiées (mêmes tokens partout) */
-.cat,.action-card,.contact-form,.partner-slot{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);}
+.cat,.contact-form{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);}
 .cat:hover{box-shadow:0 22px 50px rgba(0,0,0,.45)}
 /* Boutons : hauteur de frappe homogène (line-height stable) */
 .btn{line-height:1.1}
@@ -802,7 +726,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* Section headers : centrage cohérent des kickers centrés */
 .kicker--center{justify-content:center}
 /* Partenaires : slots de hauteur régulière */
-.partner-slot{min-height:96px}
 /* Editorial (La Montagne) : padding vertical plus généreux */
 /* ============================================================
    V7 "POLISH AGENCE" — finition
@@ -817,15 +740,13 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .btn{border-radius:8px;line-height:1.1}
 .btn--lg{font-size:1.12rem;padding:1.05em 2.1em}
 /* ---- Cartes : ombres / bordures / transitions unifiées ---- */
-.cat,.action-card,.contact-form,.partner-slot,.dons__card{transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
+.cat,.contact-form{transition:transform .35s var(--ease),border-color .35s,box-shadow .35s}
 /* ---- Footer : aération réseaux (déjà espacé) + base ---- */
 .footer__social{margin-top:1.8rem;padding-top:1.6rem;border-top:1px solid var(--line)}
 .footer__brand p.small{margin-bottom:.2rem}
 /* ---- Marquee : éviter l'effet "compressé" sur mobile ---- */
 @media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 .5rem}}
 /* ---- Hero actions : grille parfaitement symétrique ---- */
-.action-card{height:100%;min-height:252px;justify-content:flex-start}
-.action-card .btn{margin-top:auto;align-self:stretch;width:100%}
 /* ============================================================
    V8 "FINITION PREMIUM" — passe ciblée
    ============================================================ */
@@ -854,10 +775,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* ---- 7. Pourquoi : aération, line-height, hiérarchie ---- */
 /* ---- 9. Éditorial La Montagne : lisibilité texte sur fond ---- */
 /* ---- 10. Dons : équilibre texte / carte, lisibilité usages ---- */
-.dons__card{padding:clamp(2rem,4vw,2.8rem)}
-.dons__card .big{margin-bottom:.4rem}
-@media (min-width:820px){.dons__inner{gap:3rem;align-items:stretch}
-.dons__card{display:flex;flex-direction:column;justify-content:center}}
 /* recr mini-court + season badge spacing */
 /* ============================================================
    V9 "READY TO DROP" — assets, sponsors, social, pourquoi
@@ -980,114 +897,14 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
              radial-gradient(90% 130% at 92% 20%,rgba(27,81,158,.46),transparent 55%),
              linear-gradient(180deg,var(--nuit-0),#0d182b 58%,var(--nuit-2));}
 .engagement .wrap{position:relative;z-index:2}
-.engage-grid{display:grid;
-  grid-template-columns:1fr;
-  gap:1.3rem;}
-.engage-card{position:relative;
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:1fr;
-  gap:1.4rem;
-  padding:clamp(1.25rem,3vw,2rem);
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:linear-gradient(160deg,rgba(21,35,61,.94),rgba(8,15,28,.96));
-  box-shadow:0 24px 58px rgba(0,0,0,.38);
-  min-height:100%;}
-.engage-card::before{content:"";
-  position:absolute;
-  inset:-35% -20% auto auto;
-  width:260px;
-  height:260px;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(232,130,42,.28),transparent 68%);
-  pointer-events:none;}
-.engage-card--mission::before{background:radial-gradient(circle,rgba(27,81,158,.38),transparent 68%)}
-.engage-card__copy{position:relative;
-  z-index:2;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;}
-.engage-card__eyebrow{display:inline-flex;
-  align-self:flex-start;
-  margin-bottom:.9rem;
-  padding:.34em .82em;
-  border-radius:999px;
-  background:rgba(232,130,42,.12);
-  border:1px solid rgba(232,130,42,.28);
-  color:var(--orange-vif);
-  font-family:var(--ff-cond);
-  font-weight:700;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  font-size:.76rem;}
-.engage-card h3{max-width:13ch;
-  font-family:var(--ff-display);
-  text-transform:uppercase;
-  color:#fff;
-  font-size:clamp(2rem,5vw,3.4rem);
-  line-height:.92;
-  letter-spacing:.02em;}
-.engage-card p{max-width:48ch;
-  margin-top:1rem;
-  color:var(--txt-soft);
-  font-size:1.02rem;
-  line-height:1.65;}
-.engage-card__actions{display:flex;
-  flex-wrap:wrap;
-  gap:.8rem;
-  margin-top:1.5rem;}
-.engage-card__actions .btn{font-size:.98rem}
-.engage-poster{position:relative;
-  z-index:2;
-  width:100%;
-  border:0;
-  padding:0;
-  overflow:hidden;
-  border-radius:14px;
-  background:var(--nuit-3);
-  cursor:pointer;
-  aspect-ratio:4/5;
-  box-shadow:0 22px 45px rgba(0,0,0,.42);
-  transform:translateY(0);
-  transition:transform .35s var(--ease),box-shadow .35s var(--ease);}
-.engage-poster--wide{aspect-ratio:16/10}
-.engage-poster picture{display:block;
-  width:100%;
-  height:100%;}
-.engage-poster img{width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center top;
-  transition:transform .55s var(--ease),filter .35s var(--ease);}
-.engage-poster span{position:absolute;
-  left:1rem;
-  right:1rem;
-  bottom:1rem;
-  display:inline-flex;
-  justify-content:center;
-  padding:.62em .9em;
-  border-radius:999px;
-  background:rgba(7,13,24,.82);
-  border:1px solid rgba(191,210,228,.2);
-  color:#fff;
-  font-family:var(--ff-cond);
-  font-weight:700;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  font-size:.78rem;
-  backdrop-filter:blur(8px);}
-.engage-poster:hover,.engage-poster:focus-visible{transform:translateY(-6px);
-  box-shadow:0 32px 68px rgba(0,0,0,.54);}
-.engage-poster:hover img,.engage-poster:focus-visible img{transform:scale(1.045);filter:saturate(1.05)}
-.engage-poster:focus-visible{outline:3px solid rgba(191,210,228,.55);
-  outline-offset:4px;}
-@media (min-width:880px){.engage-grid{grid-template-columns:1fr 1fr}
-.engage-card{grid-template-columns:1.05fr .78fr;align-items:center}
-.engage-card--mission{grid-template-columns:1fr 1.08fr}
-.engage-card--mission .engage-poster{order:2}}
-@media (max-width:560px){.engage-card__actions{display:grid}
-.engage-card__actions .btn{width:100%}}
+
+
+
+
+
+
+
+
 /* Pourquoi rejoindre : un visuel de parcours + cartes plus denses */
 /* Le menu bascule plus tôt : la nav contient maintenant 8 entrées + CTA,
    on évite tout rognage du bouton sur les largeurs intermédiaires (laptops). */
@@ -1106,9 +923,8 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* ---- Base : sélection, rendu, défilement ---- */
 ::selection{background:var(--orange-vif);color:#190f04}
 body{text-rendering:optimizeLegibility}
-:root{--wrap:1220px}
 /* ---- Typographie : équilibre des lignes (anti-veuves) ---- */
-.h2,.engage-card h3{text-wrap:balance}
+.h2{text-wrap:balance}
 .lead,.sec-head__sub,.hero__sub,.social-spotlight__sub{text-wrap:pretty}
 .h2{letter-spacing:.3px}
 .sec-head__sub{color:var(--txt-soft);max-width:60ch}
@@ -1143,17 +959,16 @@ body{text-rendering:optimizeLegibility}
 @keyframes heroSpin{to{transform:rotate(360deg)}}
 /* Écusson : socle lumineux plus net */
 /* Titre : balayage premium sur la ligne accent */
-
 /* Eyebrow : pastille subtile au lieu d'un simple texte */
 @media (prefers-reduced-motion:reduce){.hero__halo::before{animation:none}}
 /* ============================================================
    SYSTÈME DE CARTES — un seul langage visuel partout
    (mêmes ombres, même profondeur, même logique de survol)
    ============================================================ */
-.cat,.action-card,.social-card,.engage-card,.dons__card,.contact-info{box-shadow:var(--e2),var(--bevel);}
-.cat:hover,.social-card:hover,.action-card:hover{box-shadow:var(--e3),0 0 0 1px rgba(232,130,42,.18),var(--bevel);}
+.cat,.social-card,.contact-info{box-shadow:var(--e2),var(--bevel);}
+.cat:hover,.social-card:hover{box-shadow:var(--e3),0 0 0 1px rgba(232,130,42,.18),var(--bevel);}
 /* Lift homogène et "ressort" léger sur toutes les cartes interactives */
-.cat,.action-card,.social-card,.engage-poster{transition:transform .4s var(--ease-spring),border-color .35s var(--ease-out),box-shadow .4s var(--ease-out),filter .35s var(--ease-out),background .35s var(--ease-out);}
+.cat,.social-card{transition:transform .4s var(--ease-spring),border-color .35s var(--ease-out),box-shadow .4s var(--ease-out),filter .35s var(--ease-out),background .35s var(--ease-out);}
 /* ============================================================
    SPONSORS — mur premium : surface unique, zone de sécurité
    identique, monochrome au repos → couleur au survol.
@@ -1166,10 +981,7 @@ body{text-rendering:optimizeLegibility}
    transparent rogné proprement par overflow:hidden de la carte. */
 /* Nom du sponsor : conservé pour l'accessibilité/SEO, masqué visuellement */
 /* Appel partenaire : bloc final centré et qualitatif */
-.partners-cta{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center}
-.partners-cta__txt{margin:0;color:var(--bleu-glacier);font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.92rem}
-@media (max-width:720px){/* mobile : couleur directe (pas de survol) */
-}
+
 /* ============================================================
    STATS BAND — chiffres plus "trophée"
    ============================================================ */
@@ -1224,21 +1036,8 @@ body{text-rendering:optimizeLegibility}
 .engage-benefits li{position:relative;padding-left:1.7rem;color:var(--txt);font-size:.96rem;line-height:1.45}
 .engage-benefits li::before{content:"✓";position:absolute;left:.1rem;top:-.02em;color:var(--orange-vif);font-weight:800;font-size:1.05em}
 .engage-benefits b{color:#fff}
-.engage-roles{font-size:.92rem;color:var(--txt-soft);line-height:1.55;margin-bottom:.2rem}
-.engage-roles b{color:#fff}
 /* ---- Dons : impact concret + argument fiscal ---- */
-.dons__intro{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bleu-glacier);margin:.2rem 0 1rem;font-size:.86rem}
-.impact{list-style:none;display:grid;gap:.7rem;margin-bottom:1.4rem}
-.impact li{display:flex;align-items:center;gap:1rem;padding:.75rem .9rem;border:1px solid var(--line);border-radius:var(--r-sm);background:rgba(191,210,228,.03);transition:border-color .25s,transform .25s var(--ease-out)}
-.impact li:hover{border-color:rgba(232,130,42,.4);transform:translateX(3px)}
-.impact__amt{flex:none;min-width:66px;text-align:center;font-family:var(--ff-display);font-size:1.4rem;color:#190f04;background:var(--grad-orange);border-radius:8px;padding:.18em .35em;line-height:1.15}
-.impact__txt{color:var(--txt);font-size:.98rem;line-height:1.4}
-.dons__fiscal{display:flex;align-items:flex-start;gap:.6rem;padding:1rem 1.1rem;border:1px solid rgba(232,130,42,.35);border-radius:var(--r-sm);background:rgba(232,130,42,.08);color:var(--txt);font-size:.95rem;line-height:1.5}
-.dons__fiscal svg{width:1.5em;height:1.5em;flex:none;color:var(--orange-vif);margin-top:.05em}
-.dons__fiscal b{color:#fff}
-.dons__card-note{display:block;margin-top:1rem;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.74rem;color:rgba(255,255,255,.82);position:relative;z-index:1}
 /* ---- Sponsors : pourquoi nous + formules chiffrées ---- */
-.partners-subtitle{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.6rem,3.4vw,2.4rem);color:#fff;letter-spacing:.5px;margin:2.8rem 0 1.4rem;text-align:center}
 .packs{margin-top:1.4rem}
 .packs-grid{display:grid;gap:1rem;grid-template-columns:1fr}
 .pack{position:relative;display:flex;flex-direction:column;padding:1.8rem 1.5rem 1.6rem;border:1px solid var(--line);border-radius:var(--r-lg);background:var(--grad-card);box-shadow:var(--e2),var(--bevel)}
@@ -1253,7 +1052,7 @@ body{text-rendering:optimizeLegibility}
 @media(min-width:620px){.packs-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1080px){.packs-grid{grid-template-columns:repeat(5,1fr);align-items:stretch}
 .pack--feat{transform:translateY(-10px)}}
-.partners-cta__btns{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center}
+
 /* ---- Crédibilité / institutions ---- */
 /* ---- Tarifs (parents) ---- */
 .tarifs{display:grid;gap:1.2rem;grid-template-columns:1fr;align-items:center;max-width:840px;margin:0 auto 2.2rem;padding:1.6rem 1.8rem;border:1px solid rgba(232,130,42,.3);border-radius:var(--r-lg);background:linear-gradient(168deg,rgba(21,35,61,.94),rgba(10,19,35,.98));box-shadow:var(--e2),var(--bevel)}
@@ -1277,15 +1076,6 @@ body{text-rendering:optimizeLegibility}
    modal partenaire et responsive Netlify-ready.
    ============================================================ */
 /* Hero : CTA alignés + écusson fondu dans le fond */
-.action-card{display:grid;
-  grid-template-rows:auto auto minmax(4.8rem,1fr) auto auto;
-  min-height:286px;}
-.action-card .btn{min-height:58px;
-  align-self:stretch;
-  width:100%;
-  padding-inline:1.25rem;
-  text-align:center;}
-@media (max-width:679px){.action-card{min-height:auto}}
 /* Footer : signature discrète */
 .footer__bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .footer__hand{justify-self:end}
@@ -1317,57 +1107,12 @@ body{text-rendering:optimizeLegibility}
   letter-spacing:.08em;
   font-size:.74rem;}
 /* Bénévoles : affiches mieux intégrées, cartes plus modernes */
-.engage-grid{max-width:1120px;
-  margin-inline:auto;
-  gap:1.6rem;}
-.engage-card{border-radius:24px;
-  padding:clamp(1.35rem,3.5vw,2.3rem);
-  background:linear-gradient(155deg,rgba(24,40,70,.96),rgba(7,13,24,.98));}
-.engage-card h3{max-width:15ch;font-size:clamp(2rem,4.8vw,3.2rem)}
-.engage-card p{font-size:1rem;line-height:1.75}
-.engage-poster{border:1px solid rgba(191,210,228,.14);
-  border-radius:18px;
-  background:#07101d;}
-.engage-card--mission .engage-poster img{object-fit:contain;background:#f4f7fb}
-@media (min-width:900px){.engage-grid{grid-template-columns:1fr}
-.engage-card{grid-template-columns:minmax(0,1fr) minmax(280px,360px);gap:2rem}
-.engage-card--mission{grid-template-columns:minmax(0,1fr) minmax(360px,500px)}}
-@media (max-width:560px){.engage-card h3{max-width:12ch}
-.engage-poster{max-height:520px}}
+
 /* Pourquoi : plus de respiration et badge Respect décollé */
 /* Sponsors : nouvelle conversion, offres et logo wall premium */
-.partner-intro{display:grid;
-  gap:1.5rem;
-  align-items:center;
-  padding:clamp(1.5rem,4vw,2.4rem);
-  border:1px solid rgba(232,130,42,.24);
-  border-radius:24px;
-  background:radial-gradient(75% 120% at 90% 0,rgba(232,130,42,.18),transparent 55%),linear-gradient(160deg,rgba(21,35,61,.94),rgba(7,13,24,.98));
-  box-shadow:var(--e3),var(--bevel);}
-.partner-intro__eyebrow{display:inline-flex;
-  margin-bottom:.85rem;
-  padding:.36em .9em;
-  border-radius:999px;
-  background:var(--grad-orange);
-  color:#190f04;
-  font-family:var(--ff-cond);
-  font-weight:800;
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  font-size:.74rem;}
-.partner-intro h3{max-width:16ch;
-  font-family:var(--ff-display);
-  text-transform:uppercase;
-  color:#fff;
-  font-size:clamp(2rem,5vw,3.45rem);
-  line-height:.93;}
-.partner-intro p{max-width:58ch;
-  margin-top:1rem;
-  color:var(--txt-soft);
-  line-height:1.7;}
-.partner-intro__actions{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:flex-start}
-@media(min-width:900px){.partner-intro{grid-template-columns:1.05fr .95fr}
-.partner-intro__actions{justify-content:flex-end}}
+
+
+
 .packs-grid--four{grid-template-columns:1fr}
 @media(min-width:700px){.packs-grid--four{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1080px){.packs-grid--four{grid-template-columns:repeat(4,1fr)}
@@ -1457,9 +1202,6 @@ section[id]{scroll-margin-top:92px}
    socle lumineux bleu+orange qui fond proprement le liseré du logo
    dans le fond nocturne et le met davantage en valeur. */
 /* CTA hero : davantage d'impact (relief + halo orienté action) */
-.action-card .btn--primary{box-shadow:0 14px 34px rgba(217,106,27,.42),inset 0 1px 0 rgba(255,255,255,.25);}
-.action-card .btn--primary:hover{transform:translateY(-2px);
-  box-shadow:0 20px 48px rgba(217,106,27,.55),inset 0 1px 0 rgba(255,255,255,.3);}
 /* ---- 2. HERO · indicateur "Découvrir" : plus de chevauchement mobile ---- */
 /* Sur petits écrans / faibles hauteurs, le visiteur scrolle naturellement :
    on masque la molette pour libérer le bas du hero et le crédit. */
@@ -1469,9 +1211,6 @@ section[id]{scroll-margin-top:92px}
 /* ---- 3. CALENDRIER · refonte mobile "carte scannable < 3 s" ---- */
 /* Le JOUR devient un bandeau d'en-tête coloré ; les infos s'alignent
    en lignes libellé→valeur parfaitement lisibles. */
-@media (max-width:900px){
-/* Bandeau JOUR */
-/* Lignes d'information */}
 /* ---- 4. POURQUOI · badges propres et alignés sur mobile ---- */
 /* On retire les pastilles flottantes (décoratives, sources de
    chevauchement) au profit des metrics alignés ; spacing premium. */
@@ -1526,7 +1265,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- 1. HERO · écusson renforcé : anneau-emblème lumineux ---- */
 /* Contour conique bleu/orange en rotation lente, masqué en anneau
    (pas de disque plein) → effet "emblème de club" sans ombre noire. */
-
 /* ---- Nav · resserrement pour absorber le lien "Maillots" ---- */
 /* ============================================================
    2. SECTION MAILLOTS — charte & identité
@@ -1534,49 +1272,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .kits{background:
     radial-gradient(100% 120% at 14% 0,rgba(27,81,158,.22),transparent 55%),
     linear-gradient(180deg,var(--nuit-0),#0a1424 60%,var(--nuit-0));}
-.kits-grid{display:grid;gap:1.4rem;grid-template-columns:1fr;align-items:center;margin-top:1.4rem}
-@media(min-width:920px){.kits-grid{grid-template-columns:1fr 1.05fr 1fr;gap:1.6rem}}
-.kit-card{position:relative;
-  display:flex;flex-direction:column;align-items:center;
-  padding:1.2rem 1.2rem 1rem;
-  border:1px solid rgba(191,210,228,.16);
-  border-radius:var(--r-lg);
-  overflow:hidden;
-  /* fond calé sur la teinte du rendu (#D6DDE3) → fondu invisible */
-  background:radial-gradient(120% 92% at 50% 4%,#e8edf2,#d6dde3 66%,#c6ced8);
-  box-shadow:var(--e2),var(--bevel);
-  transition:transform .4s var(--ease-out),box-shadow .4s;}
-.kit-card:hover{transform:translateY(-6px);box-shadow:var(--e3)}
-.kit-card picture{display:block;width:100%}
-.kit-card img{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 26px rgba(7,13,24,.26))}
-.kit-card__tag{position:absolute;top:1rem;left:1rem;z-index:2;
-  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;
-  font-size:.72rem;color:#fff;background:var(--grad-roi);
-  padding:.42em 1.05em;border-radius:999px;box-shadow:var(--e1);}
-.kit-card__tag--alt{background:var(--grad-orange);color:#190f04}
-.kit-card__cap{margin-top:.7rem;text-align:center}
-.kit-card__cap strong{display:block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#0D1526;font-size:1.04rem}
-.kit-card__cap span{font-size:.82rem;color:#46566c}
-.kit-card.img-fallback{min-height:360px}
-.kit-copy{text-align:center}
-@media(min-width:920px){.kit-copy{text-align:left}}
-.kit-copy__eyebrow{display:inline-block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.16em;font-size:.78rem;color:var(--orange-vif);margin-bottom:.5rem;}
-.kit-copy h3{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.7rem,4.2vw,2.5rem);color:#fff;line-height:1;margin:.2rem 0 .9rem}
-.kit-copy h3 .hl{color:var(--orange-vif)}
-.kit-copy p{color:var(--txt-soft);line-height:1.65;font-size:1rem}
-.kit-palette{list-style:none;display:flex;flex-wrap:wrap;gap:.85rem;justify-content:center;margin:1.3rem 0}
-@media(min-width:920px){.kit-palette{justify-content:flex-start}}
-.kit-palette li{display:flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.78rem;color:var(--bleu-glacier)}
-.kit-sw{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.16)}
-.kit-sw--line{box-shadow:inset 0 0 0 1px rgba(13,21,38,.3)}
-.kit-spon{display:flex;align-items:flex-start;gap:.6rem;margin-top:.4rem;
-  padding:.95rem 1.05rem;border:1px solid rgba(232,130,42,.32);border-radius:var(--r-sm);
-  background:rgba(232,130,42,.08);color:var(--txt);font-size:.93rem;line-height:1.5;text-align:left;}
-.kit-spon .ic{width:1.4em;height:1.4em;flex:none;color:var(--orange-vif);margin-top:.05em}
-.kit-spon b{color:#fff}
-.kit-copy__cta{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.3rem}
-@media(min-width:920px){.kit-copy__cta{justify-content:flex-start}}
+
+
+
+
+
+
+
+
+
 /* ============================================================
    3. SECTION GALERIE — "Sur le terrain"
    ============================================================ */
@@ -1690,12 +1394,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero__inner{position:relative;
   z-index:8 !important;}
 /* Couleurs du MBC : actions parfaitement centrees. */
-.kit-copy{text-align:center;}
-.kit-palette,.kit-copy__cta{justify-content:center !important;}
-.kit-spon{max-width:430px;
-  margin-inline:auto;}
-.kit-copy__cta .btn{min-width:min(100%,238px);}
-@media(min-width:920px){.kit-copy__cta{justify-content:center !important}}
+
+
+
 /* Carte licence : bouton centre et rendu plus premium. */
 .tarifs{max-width:780px !important;
   margin-inline:auto;
@@ -1743,18 +1444,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero__sub{max-width:43ch !important;
   font-size:clamp(1rem,1.55vw,1.18rem) !important;
   line-height:1.45 !important;}
-.action-card{min-height:218px !important;
-  padding:1.35rem 1.35rem !important;
-  gap:.45rem !important;}
-@media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}
-.action-card{min-height:196px !important;
-    padding:1.12rem 1.16rem !important;}}
+@media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}}
 @media(max-width:680px){.hero{padding-top:5rem !important;
     padding-bottom:1.2rem !important;}
 .hero__sub{font-size:1rem !important;
-    line-height:1.42 !important;}
-.action-card{min-height:auto !important;
-    padding:1.08rem 1.05rem !important;}}
+    line-height:1.42 !important;}}
 /* ============================================================
    V21 "VIDEO ADHESION" — intégration premium + SEO-friendly
    ============================================================ */
@@ -1773,26 +1467,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   line-height:.8;
   color:rgba(255,255,255,.028);
   pointer-events:none;}
-.adhesion-video__frame{position:relative;
-  border:1px solid rgba(191,210,228,.2);
-  border-radius:34px;
-  padding:12px;
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02)),
-    linear-gradient(155deg,rgba(21,35,61,.92),rgba(7,13,24,.98));
-  box-shadow:
-    0 30px 80px rgba(0,0,0,.45),
-    0 0 46px rgba(27,81,158,.22),
-    0 0 30px rgba(232,130,42,.1),
-    inset 0 1px 0 rgba(255,255,255,.08);}
-.adhesion-video__frame::before{content:"";
-  position:absolute;
-  inset:-18px;
-  z-index:-1;
-  border-radius:46px;
-  background:radial-gradient(circle at 50% 12%,rgba(232,130,42,.24),transparent 56%);
-  filter:blur(18px);
-  opacity:.8;}
 .adhesion-video__player{display:block;
   width:100%;
   aspect-ratio:9/16;
@@ -1802,9 +1476,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   background:#050b14;
   object-fit:cover;
   box-shadow:0 0 0 1px rgba(255,255,255,.06);}
-@media(max-width:640px){.adhesion-video__frame{border-radius:28px;
-    padding:9px;}
-.adhesion-video__player{border-radius:20px;
+@media(max-width:640px){.adhesion-video__player{border-radius:20px;
     max-height:68vh;}}
 /* ============================================================
    V9 "FINITION PRO" — header lockup, chiffres, encarts, 3D
@@ -1814,24 +1486,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* halo permanent léger derrière les chiffres pour les faire ressortir */
 /* ---- 2. Encarts 95 € / 3 ans / 48 h : rendu premium (anti-pâté) ---- */
 /* ---- 4. Maillots : tilt 3D au survol / mouvement souris ---- */
-.kit-card,[class*="maillot"][class*="card"]{transform-style:preserve-3d;
-  transition:transform .25s var(--ease),box-shadow .35s var(--ease);
-  will-change:transform;}
-.tilt3d{transform-style:preserve-3d;transition:transform .12s ease-out,box-shadow .35s var(--ease);will-change:transform}
-.tilt3d.is-tilting{box-shadow:0 30px 70px rgba(0,0,0,.5)}
-.tilt3d .tilt3d__shine{position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,40%),rgba(255,255,255,.18),transparent 55%);
-  opacity:0;transition:opacity .3s;mix-blend-mode:overlay;z-index:3;}
-.tilt3d.is-tilting .tilt3d__shine{opacity:1}
-@media (prefers-reduced-motion:reduce){.tilt3d{transform:none!important}
-.tilt3d .tilt3d__shine{display:none}}
+
 /* ============================================================
    V13 "IMPACT" — animations plus vives, plus premium, plus profondes
    (toutes les règles ci-dessous surchargent volontairement les
    versions précédentes pour intensifier le rendu existant)
    ============================================================ */
-:root{--ease-pop:cubic-bezier(.22,1.42,.36,1);
-  --ease-snap:cubic-bezier(.16,.9,.18,1.18);}
+:root{--ease-pop:cubic-bezier(.22,1.42,.36,1);}
 /* ---- Reveal au scroll : profondeur (translate + scale partout, blur réservé desktop) ---- */
 .reveal{opacity:0;
   transform:translateY(42px) scale(.98);
@@ -1868,17 +1529,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cat::before{transition:transform .6s var(--ease-pop),opacity .4s}
 .cat:hover::before{transform:scale(2.1)}
 /* ---- Action cards (hero) : lift plus marqué ---- */
-.action-card{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
-.action-card:hover{transform:translateY(-9px) scale(1.015);box-shadow:0 32px 64px rgba(0,0,0,.5)}
-.action-card::before{transition:transform .5s var(--ease-pop)}
-.action-card:hover::before{transform:scale(1.85)}
-.action-card .btn--primary,.action-card .btn--roi{transition:transform .3s var(--ease-pop)}
-.action-card:hover .btn--primary,.action-card:hover .btn--roi{transform:translateY(-2px)}
 /* ---- Maillots : tilt 3D plus expressif + glow au survol ---- */
-.kit-card{transition:transform .5s var(--ease-pop),box-shadow .5s var(--ease-out)}
-.kit-card:hover{box-shadow:0 30px 70px rgba(0,0,0,.5),0 0 60px rgba(217,106,27,.18)}
-.kit-card img{transition:transform .7s var(--ease-pop)}
-.kit-card:hover img{transform:scale(1.06)}
 /* ---- Logo : réaction au survol du header ---- */
 .brand{transition:transform .3s var(--ease-pop)}
 .brand:hover{transform:scale(1.035)}
@@ -1889,9 +1540,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .nav a:not(.nav__cta):hover::after{transform:scaleX(1)}
 /* ---- Calendrier : lignes plus réactives ---- */
 /* ---- Engagement / partenaires / sponsors : lift cohérent ---- */
-.partner-slot{transition:transform .35s var(--ease-pop),border-color .3s,background .3s}
-.partner-slot:hover{transform:translateY(-5px) scale(1.03)}
-.engage-card,.p-pillar{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
+.p-pillar{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .p-pillar:hover{transform:translateY(-7px)}
 /* ---- Marquee : un poil plus vif sans devenir agressif ---- */
 .marquee__track{animation-duration:36s}
@@ -1903,8 +1552,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (prefers-reduced-motion:reduce){.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
 .hero .reveal-fade{transform:none!important;opacity:1!important;transition:none!important}
 .hero__halo,.hero__glow,.float-cta.show{animation:none!important}
-.cat,.action-card,.kit-card,.brand,.nav__cta,.btn,.partner-slot,.engage-card,.p-pillar{transition:none!important}
-.cat:hover,.action-card:hover,.kit-card:hover,.brand:hover,.partner-slot:hover{transform:none!important}}
+.cat,.brand,.nav__cta,.btn,.p-pillar{transition:none!important}
+.cat:hover,.brand:hover{transform:none!important}}
 /* ============================================================
    V14 "CONVERSION" — bloc L'essentiel + CTA mobile safe-area
    ============================================================ */
@@ -1926,7 +1575,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess{position:relative;overflow:hidden;isolation:isolate;
   background:linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
     var(--nuit-2) 100%)}
-
 /* ---- La photo : un cadre, plus un fondu ----
    Elle passait derriere le texte, effacee par un masque en degrade. Ce
    fondu imposait deux servitudes : des voiles sombres et un halo sur chaque
@@ -1967,16 +1615,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   border-bottom:1px solid rgba(191,210,228,.28);
   border-right:1px solid rgba(191,210,228,.28);
   border-bottom-right-radius:18px;pointer-events:none}
-
 .ess__in{position:relative;z-index:2}
-
 .ess__head{max-width:34rem}
 .ess__sub{margin:1.05rem 0 0;max-width:44ch;color:var(--txt-soft);
   font-size:1.1rem;line-height:1.62}
 .ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
   text-underline-offset:3px;text-decoration-thickness:1px}
 .ess__sub a:hover{color:var(--orange-vif)}
-
 /* ---- les trois chiffres ----
    La valeur en blanc, le libellé en orange : l'œil accroche le chiffre,
    la couleur nomme ce qu'il désigne. Pas de carte, des filets suffisent. */
@@ -1995,8 +1640,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   text-transform:uppercase;color:var(--orange-vif);max-width:16ch}
 .ess-stat__x{display:block;margin-top:.34rem;font-weight:500;
   font-size:.93rem;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
-
-
 /* ---- La preuve : deuxieme niveau de lecture de la section ----
    Volontairement modeste a cote des trois chiffres : ce n'est pas une
    carte, c'est une photo posee sur le bleu nuit avec une legende a cote.
@@ -2023,24 +1666,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   color:var(--orange-vif)}
 .ess-proof__txt{margin:0 0 .5rem;font-size:1.04rem;line-height:1.48;color:var(--txt)}
 .ess-proof__src{margin:0;font-size:.8rem;line-height:1.4;color:var(--txt-soft)}
-
-@media (min-width:900px){
-  .ess-proof{max-width:44rem}
-  .ess-proof__ph{width:210px}
-}
-@media (max-width:520px){
-  /* sous 520 px la photo passe au-dessus : a 120 px de large les visages
+@media (min-width:900px){.ess-proof{max-width:44rem}
+.ess-proof__ph{width:210px}}
+@media (max-width:520px){/* sous 520 px la photo passe au-dessus : a 120 px de large les visages
      deviennent trop petits pour que la preuve fonctionne encore. */
-  .ess-proof{grid-template-columns:1fr;gap:1rem;justify-items:center}
-  .ess-proof__ph{width:min(64vw,220px);justify-self:center}
-  /* le texte reste aligne a gauche : centrer un paragraphe nuit a la lecture,
+.ess-proof{grid-template-columns:1fr;gap:1rem;justify-items:center}
+.ess-proof__ph{width:min(64vw,220px);justify-self:center}
+/* le texte reste aligne a gauche : centrer un paragraphe nuit a la lecture,
      seul le media se centre. */
-  .ess-proof__cap{justify-self:stretch}
-  .ess-proof__cap{padding-left:0;padding-top:.9rem}
-  .ess-proof__cap::before{left:0;top:0;bottom:auto;width:clamp(2.4rem,22%,4rem);height:1px;
-    background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}
-}
-
+.ess-proof__cap{justify-self:stretch}
+.ess-proof__cap{padding-left:0;padding-top:.9rem}
+.ess-proof__cap::before{left:0;top:0;bottom:auto;width:clamp(2.4rem,22%,4rem);height:1px;
+    background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}}
 /* ---- les trois arguments : une ligne, pas trois cartes de plus ---- */
 .ess-plus{list-style:none;display:grid;grid-template-columns:1fr;
   gap:.95rem 2rem;margin:clamp(1.9rem,3.6vw,2.4rem) 0 0;padding:0}
@@ -2051,111 +1688,93 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1.06rem;
   letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
 .ess-plus__i span{font-size:.9rem;line-height:1.4;color:var(--txt-soft)}
-
 /* Le halo qui detachait chaque lettre a ete supprime : plus rien ne passe
    devant la photo, donc plus rien a compenser. C'etait quatre ombres portees
    empilees sur six blocs de texte. */
-
 .ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;
   margin-top:clamp(2rem,4vw,2.6rem)}
-
 /* le trait qui ouvre le sur-titre, comme sur la maquette */
 .ess__kicker{display:flex;align-items:center;gap:.85rem}
 .ess__kicker::before{content:"";width:2.1rem;height:2px;flex:none;
   background:var(--grad-orange);border-radius:2px}
-
-@media (min-width:900px){
-  /* même calage que .hero--split .hero__content, pour que les deux
+@media (min-width:900px){/* même calage que .hero--split .hero__content, pour que les deux
      sections partagent exactement la même marge de gauche */
-  .ess__in{max-width:none;margin-inline:0;padding-left:0;
+.ess__in{max-width:none;margin-inline:0;padding-left:0;
     margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2));
     padding-right:clamp(1rem,7vw,5rem)}
-  .ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
+.ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
     padding-top:1.5rem;border-top:1px solid rgba(191,210,228,.16)}
-  .ess__head{max-width:44rem}
-  .ess-stats,.ess-plus{max-width:44rem}
-}
+.ess__head{max-width:44rem}
+.ess-stats,.ess-plus{max-width:44rem}}
 /* Sous 1300 px la photo reste empilee au-dessus : en colonne, lui reserver
    36 % ferait tomber la colonne de texte sous 640 px et casserait les trois
    chiffres sur deux lignes. Seuil verifie a la mesure, pas au jugé. */
-@media (min-width:1300px){
-  /* La colonne de texte s'arrete avant le cadre. width:auto est
+@media (min-width:1300px){/* La colonne de texte s'arrete avant le cadre. width:auto est
      indispensable : .wrap impose width:100%, et combine a la marge gauche
      la boite depassait de 240 px a droite — la reserve calculee ci-dessous
      tombait alors hors de l'ecran et le texte repassait sous la photo. */
-  .ess__in{width:auto;
+.ess__in{width:auto;
     padding-right:calc(min(38%,700px) + clamp(3rem,6.2vw,6.8rem))}
-  .ess__head,.ess-plus,.ess-proof{max-width:40rem}
-  /* 46rem : les trois tuiles mesurent 704 px une fois les chiffres agrandis. */
-  .ess-stats{max-width:46rem}
-}
-
-@media (max-width:1299px){
-  /* La photo repasse dans le flux, au-dessus du texte, toujours encadree.
+.ess__head,.ess-plus,.ess-proof{max-width:40rem}
+/* 46rem : les trois tuiles mesurent 704 px une fois les chiffres agrandis. */
+.ess-stats{max-width:46rem}}
+@media (max-width:1299px){/* La photo repasse dans le flux, au-dessus du texte, toujours encadree.
      Plus de masque : c'est un tirage, il a des bords nets. */
-  .ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
-  .ess__photo{position:static;translate:none;
+.ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
+.ess__photo{position:static;translate:none;
     width:min(100%,340px);aspect-ratio:3/4;
     /* centrage exact : les deux marges etaient de 19 px et 16 px, la photo
        tirait imperceptiblement a gauche. */
     margin:0 auto clamp(1.9rem,5vw,2.6rem)}
-  .ess__photo::before{top:-8px;left:-8px}
-  .ess__photo::after{bottom:-8px;right:-8px}
-  .ess__head{max-width:none}
-  .ess__cta .btn{flex:1 1 100%;justify-content:center}
-}
+.ess__photo::before{top:-8px;left:-8px}
+.ess__photo::after{bottom:-8px;right:-8px}
+.ess__head{max-width:none}
+.ess__cta .btn{flex:1 1 100%;justify-content:center}}
 /* Placee APRES le bloc ci-dessus : a 900-1099 px, .ess__in prend la marge
    large du desktop et non le padding du .wrap. La photo doit suivre la meme,
    sinon elle demarre 29 px avant le texte. */
-@media (min-width:900px) and (max-width:1299px){
-  /* meme marche de gauche que .ess__in, pour que photo et texte partagent
+@media (min-width:900px) and (max-width:1299px){/* meme marche de gauche que .ess__in, pour que photo et texte partagent
      la meme ligne de depart. */
-  .ess__photo{margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}
-}
-
+.ess__photo{margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}}
 /* ---- sous 900 px : une seule langue de filets ----
    Les tuiles s'empilent, l'icône passe dans un rail à gauche, et les
    lignes sont séparées par un filet horizontal qui s'estompe vers la
    droite. Jamais de trait vertical isolé : c'est ce mélange d'orientations
    qui faisait bricolage. Le même filet sert au bloc « .ess-plus », pour
    que les deux listes se lisent comme un seul tableau. */
-@media (max-width:899px){
-  .ess-stats{display:grid;grid-template-columns:1fr;gap:0;
+@media (max-width:899px){.ess-stats{display:grid;grid-template-columns:1fr;gap:0;
     margin-top:clamp(1.8rem,5vw,2.4rem)}
-  .ess-stat{position:relative;display:grid;
+.ess-stat{position:relative;display:grid;
     grid-template-columns:2.15rem minmax(0,1fr);
     column-gap:.95rem;align-items:center;
     padding:1.15rem 0;border-left:0}
-  .ess-stat:first-child{padding-top:0}
-  .ess-stat:last-child{padding-bottom:0}
-  .ess-stat + .ess-stat::before{content:"";position:absolute;
+.ess-stat:first-child{padding-top:0}
+.ess-stat:last-child{padding-bottom:0}
+.ess-stat + .ess-stat::before{content:"";position:absolute;
     left:0;right:0;top:0;height:1px;
     background:linear-gradient(90deg,rgba(191,210,228,.26) 0%,
       rgba(191,210,228,.13) 46%,rgba(191,210,228,.04) 78%,transparent 100%)}
-  .ess-stat__ic{grid-row:span 2;align-self:center;
+.ess-stat__ic{grid-row:span 2;align-self:center;
     width:1.7rem;height:1.7rem;margin:0}
-  .ess-stat__v{align-self:end;font-size:clamp(1.75rem,7.4vw,2.15rem)}
-  .ess-stat__l{align-self:start;margin-top:.28rem;max-width:none}
-  .ess-stat__x{margin-top:.26rem}
-
-  /* le second bloc reprend exactement le même filet */
-  .ess-plus{gap:0;margin-top:clamp(1.6rem,4.5vw,2.1rem);
+.ess-stat__v{align-self:end;font-size:clamp(1.75rem,7.4vw,2.15rem)}
+.ess-stat__l{align-self:start;margin-top:.28rem;max-width:none}
+.ess-stat__x{margin-top:.26rem}
+/* le second bloc reprend exactement le même filet */
+.ess-plus{gap:0;margin-top:clamp(1.6rem,4.5vw,2.1rem);
     padding-top:1.15rem;position:relative}
-  .ess-plus::before{content:"";position:absolute;left:0;right:0;top:0;
+.ess-plus::before{content:"";position:absolute;left:0;right:0;top:0;
     height:1px;background:linear-gradient(90deg,rgba(191,210,228,.26) 0%,
       rgba(191,210,228,.13) 46%,rgba(191,210,228,.04) 78%,transparent 100%)}
-  .ess-plus__i{position:relative;
+.ess-plus__i{position:relative;
     grid-template-columns:2.15rem minmax(0,1fr);gap:.15rem .95rem;
     padding:.95rem 0}
-  .ess-plus__i:first-child{padding-top:0}
-  .ess-plus__i:last-child{padding-bottom:0}
-  .ess-plus__i + .ess-plus__i::before{content:"";position:absolute;
+.ess-plus__i:first-child{padding-top:0}
+.ess-plus__i:last-child{padding-bottom:0}
+.ess-plus__i + .ess-plus__i::before{content:"";position:absolute;
     left:0;right:0;top:0;height:1px;
     background:linear-gradient(90deg,rgba(191,210,228,.18) 0%,
       rgba(191,210,228,.08) 52%,transparent 88%)}
-  .ess-plus__ic{width:1.35rem;height:1.35rem;justify-self:center}
-}
-
+.ess-plus__ic{width:1.35rem;height:1.35rem;justify-self:center}}
 .essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
 .essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .essentiel-card::after{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad-orange);opacity:.85;transform:scaleY(.4);transform-origin:top;transition:transform .4s var(--ease-out)}
@@ -2186,12 +1805,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* le CTA "Je veux m'inscrire" s'anime dès le survol de toute la carte (l'aiguille avance) */
 .cat:hover .cat__link{gap:.85em}
 /* ---- 4. Maillots : reflet diagonal au survol + badge saison animé ---- */
-.kit-card{position:relative}
-.kit-card::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.30) 49%,transparent 58%);transform:translateX(-120%);opacity:0;transition:opacity .25s}
-.kit-card:hover::before{opacity:1;animation:kitSheen 1.05s var(--ease-out) 1}
 @keyframes kitSheen{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-.kit-card__season{position:absolute;top:1rem;right:1rem;z-index:3;overflow:hidden;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.62rem;color:var(--bleu-glacier);background:rgba(7,13,24,.5);border:1px solid rgba(191,210,228,.22);padding:.36em .8em;border-radius:999px;backdrop-filter:blur(6px)}
-.kit-card__season::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.45) 50%,transparent 58%);transform:translateX(-130%);animation:seasonShine 7s ease-in-out 2.5s infinite}
+
+
 @keyframes seasonShine{0%,84%{transform:translateX(-130%)}93%,100%{transform:translateX(130%)}}
 /* ---- 5. Sponsors : mur premium — cascade des logos & des formules ---- */
 @media (prefers-reduced-motion:no-preference){.packs.in .packs-grid--four .pack{animation:sigFadeIn .5s var(--ease-out) backwards}
@@ -2216,10 +1832,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    (le reflet du CTA flottant reste actif : c'est l'animation "app native"
    voulue sur mobile, et elle est brève + compositor-friendly) */
 @media (max-width:759px){.hero__halo,.hero__glow{animation:none}
-.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag{animation:none}}
+.sponsor-pack.pack--feat .pack__tag{animation:none}}
 /* ---- a11y : neutralise toutes les nouvelles animations si prefers-reduced-motion ---- */
-@media (prefers-reduced-motion:reduce){.hero.in::before,.kit-card:hover::before,.kit-card__season::after,.sponsor-pack.pack--feat .pack__tag,.packs.in .packs-grid--four .pack{animation:none!important}
-.hero::before,.kit-card::before,.kit-card__season::after{display:none}
+@media (prefers-reduced-motion:reduce){.hero.in::before,.sponsor-pack.pack--feat .pack__tag,.packs.in .packs-grid--four .pack{animation:none!important}
+.hero::before{display:none}
 .g-tile figcaption{transform:none!important;opacity:1!important}}
 /* ============================================================
    V16 "VITRINE" — staff agrandi, logos sponsors agrandis,
@@ -2271,16 +1887,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero__texture{display:none!important}
 /* mix-blend-mode:screen */
 /* pas de calque GPU forcé (parallax off sur mobile) */
-.action-card{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:linear-gradient(165deg,rgba(24,46,86,.94),rgba(11,18,33,.97))!important}
 /* 1 ombre au lieu de 3 */
 /* Petits flous de fond plus bas dans la page : allégés aussi */
 .g-tile figcaption{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(7,13,24,.82)!important}
-.kit-card__season{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}
+}
 /* ---- Hero : une seule carte d'action (pré-inscription) → centrée ---- */
 /* ---- Bénévoles : mini-missions concrètes (léger, sans blur ni animation) ---- */
-.engage-missions{list-style:none;display:grid;gap:.5rem;margin:0 0 1.1rem}
-.engage-missions li{display:flex;flex-wrap:wrap;align-items:baseline;gap:.45rem .7rem;font-size:.94rem;color:var(--txt);line-height:1.4;padding:.55rem .8rem;border-radius:var(--r-sm);background:rgba(191,210,228,.04);border-left:2px solid rgba(232,130,42,.55)}
-.engage-missions__t{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:var(--orange-vif);white-space:nowrap}
+
 /* ============================================================
    V17 "FINITION PRO" — typo header, icônes & cartes premium
    ============================================================ */
@@ -2291,18 +1904,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- 3. Cartes 95 € / 3 ans + / 48 h : rendu premium ---- */
 /* ---- 4. Stats : FFBB plus imposant (doit frapper au défilement) ---- */
 /* ---- 6. Carte « logo sponsor sur le maillot » : premium (icône en pastille) ---- */
-.kit-spon{gap:.9rem!important;padding:1.15rem 1.25rem!important;border:1px solid rgba(232,130,42,.28)!important;border-radius:16px!important;background:linear-gradient(150deg,rgba(232,130,42,.12),rgba(13,21,38,.6))!important;box-shadow:var(--e1),inset 0 1px 0 rgba(255,255,255,.05)!important}
-.kit-spon .ic{width:40px!important;height:40px!important;padding:9px;flex:none;border-radius:11px;color:var(--orange-vif);background:rgba(232,130,42,.16);border:1px solid rgba(232,130,42,.32);box-sizing:border-box;margin-top:0!important}
-.kit-spon b{display:block;color:#fff;margin-bottom:.15rem}
 /* ============================================================
    V18 — carte « logo sponsor sur le maillot » pro + nettoyage
    ============================================================ */
-.kit-spon{display:flex!important;align-items:flex-start!important;gap:1rem!important;margin-top:.4rem!important;padding:1.3rem 1.4rem!important;border:1px solid var(--line-strong)!important;border-radius:var(--r-md)!important;background:linear-gradient(158deg,rgba(24,40,70,.55),rgba(7,13,24,.9))!important;box-shadow:var(--e2),var(--bevel)!important;position:relative;overflow:hidden;text-align:left!important}
-.kit-spon::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--grad-orange);opacity:.85}
-.kit-spon .ic{width:42px!important;height:42px!important;padding:10px;flex:none;border-radius:12px;color:var(--orange-vif);background:rgba(232,130,42,.15);border:1px solid rgba(232,130,42,.3);box-sizing:border-box;margin:0!important}
-.kit-spon__txt{display:flex;flex-direction:column;gap:.3rem}
-.kit-spon b{display:block!important;color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1.05rem;letter-spacing:.01em;line-height:1.2;margin:0!important}
-.kit-spon__txt span{color:var(--txt-soft);font-size:.92rem;line-height:1.5}
+
+
 /* ---- Encarts adhésion : espace propre entre le chiffre et l'unité (95 € / 3 ans et + / 48 h) ---- */
 /* ============================================================
    V19 "SHOWCASE" — refonte premium : L'essentiel, encarts
@@ -2311,7 +1917,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    conic-gradient (mask-composite), profondeur multi-ombres.
    ============================================================ */
 /* ---- Bordure dégradée + profondeur (3 familles de cartes) ---- */
-.essentiel-card,.kit-spon{border:1px solid transparent!important;
+.essentiel-card{border:1px solid transparent!important;
   border-radius:18px!important;
   background:
     linear-gradient(168deg,rgba(22,38,66,.92),rgba(7,13,24,.97)) padding-box,
@@ -2319,16 +1925,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   box-shadow:var(--e2),inset 0 1px 0 rgba(255,255,255,.05)!important;
   position:relative;overflow:hidden;}
 /* ---- Anneau d'icône conic-gradient (mask-composite) ---- */
-.essentiel-card__ico,.kit-spon__ico{position:relative;flex:none;display:grid;place-items:center;
+.essentiel-card__ico{position:relative;flex:none;display:grid;place-items:center;
   width:56px;height:56px;border-radius:16px;color:var(--orange-vif);
   background:radial-gradient(120% 120% at 30% 18%,rgba(232,130,42,.22),rgba(13,21,38,.5) 72%);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 22px rgba(3,7,15,.4);}
-.essentiel-card__ico::before,.kit-spon__ico::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;
+.essentiel-card__ico::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;
   background:conic-gradient(from 130deg,rgba(232,130,42,.95),rgba(27,81,158,.75),rgba(232,130,42,.95));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
   pointer-events:none;transition:transform .55s var(--ease-out),filter .4s;}
-.essentiel-card__ico svg,.kit-spon__ico svg{position:relative;z-index:1;width:26px!important;height:26px!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;color:var(--orange-vif)}
+.essentiel-card__ico svg{position:relative;z-index:1;width:26px!important;height:26px!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important;color:var(--orange-vif)}
 /* ---- L'ESSENTIEL ---- */
 .essentiel-card{display:flex;flex-direction:column;align-items:flex-start;gap:.85rem;padding:1.7rem 1.5rem!important}
 .essentiel-card::after{display:none!important}
@@ -2346,11 +1952,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* texte dégradé sur les valeurs de L'essentiel (navigateurs compatibles) */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){.essentiel-card__val{background:linear-gradient(180deg,#ffffff,#c4d6ea);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}}
 /* ---- CARTE SPONSOR MAILLOT ---- */
-.kit-spon{display:flex!important;align-items:center!important;gap:1.1rem!important;padding:1.3rem 1.4rem!important;text-align:left!important}
-.kit-spon::before{display:none!important}
-.kit-spon .ic{width:26px!important;height:26px!important;padding:0!important;background:none!important;border:0!important;margin:0!important}
-.kit-spon b{display:block!important;color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1.06rem;letter-spacing:.01em;line-height:1.2;margin:0 0 .15rem!important}
-.kit-spon__txt span{color:var(--txt-soft);font-size:.92rem;line-height:1.5}
+
 /* ---- a11y : neutralise les survols/anneaux animés ---- */
 @media (prefers-reduced-motion:reduce){.essentiel-card:hover{transform:none!important}
 .essentiel-card:hover .essentiel-card__ico,.essentiel-card:hover .essentiel-card__ico::before{transform:none!important;filter:none!important}}
@@ -2366,7 +1968,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .footer__signature:hover .sig-heart{animation-duration:1s}
 /* ---- C. CTA pré-inscription : nettement plus gros (ça saute aux yeux) ---- */
 .btn--lg{font-size:clamp(1.18rem,1.9vw,1.42rem)!important;padding:1.1em 2.3em!important}
-.action-card .btn--primary{font-size:clamp(1.15rem,1.7vw,1.32rem);padding:1.12em 2em;letter-spacing:.04em}
 /* ---- E. Encarts adhésion : unité en blanc (pas d'orange sur € / ans et + / h) ---- */
 /* ---- E-bis. Encarts adhésion : disposition CENTRÉE premium (chiffre + accent + légende) ---- */
 /* accent orange court, centré, à la place de la barre pleine largeur */
@@ -2727,13 +2328,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    par défaut du paragraphe et on le rapproche du titre (titre + slogan liés). */
 /* pleine largeur : sinon la scène (mots en position:absolute) se réduit à 0 */
 /* Page adhésion : timeline "Comment s'inscrire" + FAQ (cartes centrées). */
-.adh-steps,.adh-faq{max-width:640px;margin:2.2rem auto 0}
-.adh-timeline{list-style:none;margin:1.1rem 0 0;padding:0;display:grid;gap:.7rem}
-.adh-step{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--line);border-radius:var(--r-md);background:rgba(191,210,228,.03)}
-.adh-step__num{flex:none;width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;font-family:var(--ff-display);font-size:1.05rem;color:#190f04;background:var(--grad-orange);box-shadow:0 6px 16px rgba(217,106,27,.35)}
-.adh-step__txt{display:flex;flex-direction:column;gap:.1rem;line-height:1.4}
-.adh-step__txt b{color:#fff;font-family:var(--ff-cond);font-weight:700;font-size:1rem}
-.adh-step__txt span{color:var(--txt-soft);font-size:.88rem}
+.adh-faq{max-width:640px;margin:2.2rem auto 0}
+
+
+
+
 .adh-faq .faq__item{margin-top:.6rem}
 /* ============================================================
    V35 — HERO FX : effet lumineux premium "projecteur de terrain"
@@ -2854,15 +2453,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    chaque lettre glisse vers le haut et révèle une copie orange (décalage var(--i)).
    Réglages : --cascade-dur (durée) · var(--i)*26ms (décalage) · couleur = currentColor (orange au survol).
    ============================================================ */
-.cascade-link__inner{display:inline-flex;overflow:hidden;height:1em;line-height:1;vertical-align:-.14em}
-.cascade-link__c{display:inline-block;position:relative;will-change:transform;
-  text-shadow:0 1em currentColor;             /* copie de la lettre 1em plus bas (révélée au survol) */
-  transition:transform var(--cascade-dur,260ms) cubic-bezier(.6,.01,.3,1);
-  transition-delay:calc(var(--i,0)*26ms);     /* cascade décalée lettre par lettre */}
 /* déclenchement au survol/focus du lien (la couleur orange vient déjà de .footer__actions a:hover) */
-.footer__actions a:hover .cascade-link__c,.footer__actions a:focus-visible .cascade-link__c{transform:translateY(-1em)}
 .footer__actions a:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:3px}
-@media (prefers-reduced-motion:reduce){.cascade-link__c{transition:none;transform:none!important;text-shadow:none}}
 /* ============================================================
    V39 — HERO split-screen : contenu aligné à GAUCHE (desktop)
    Texte + CTA à gauche · joueur (.hero__photo) à droite · mobile recentré.
@@ -2981,8 +2573,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    Cœur pulsant + 6 nœuds en rotation ; clic = pause + fiche centrale.
    Mobile = liste lisible.
    ============================================================ */
-
-
 /* mobile : on déplie en liste lisible (une orbite au doigt n'a pas de sens) */
 /* ============================================================
    V47 — Éventail de cartes (adaptation NATIVE de card-fan-carousel,
@@ -3012,7 +2602,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ============================================================ */
 /* la section staff elargit son conteneur pour laisser respirer les photos */
 .staff .wrap{max-width:min(95vw,1360px)}
-
 /* ---- En-tete : titre sur l'axe centre du site, fleches calees a droite ---- */
 .sec-head__row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem}
 .sec-head__row .h2{grid-column:2}
@@ -3028,7 +2617,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   border-color:rgba(232,130,42,.55);color:var(--orange-vif);transform:translateY(-1px)}
 .roster__btn:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
 .roster__btn:disabled{opacity:.3;cursor:default}
-
 /* ---- Le rail ---- */
 .roster{position:relative;margin-top:clamp(1.4rem,3vw,2.2rem)}
 /* --roster-bleed : le rail sort LEGEREMENT du conteneur a droite (aspect
@@ -3051,7 +2639,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .roster__viewport.is-dragging{cursor:grabbing;scroll-behavior:auto;scroll-snap-type:none;user-select:none}
 .roster__track{display:flex;gap:var(--roster-gap);list-style:none;margin:0;padding:0}
 .roster__track img{-webkit-user-drag:none;user-select:none}
-
 /* ---- La carte : largeur = fraction du rail, donc la suivante depasse toujours ---- */
 .team__photo{flex:0 0 min(380px,calc((100% - (var(--roster-cards) - 1) * var(--roster-gap)) / var(--roster-cards)));
   scroll-snap-align:start;
@@ -3069,7 +2656,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .team__photo .staff-card__media picture{display:block;width:100%;height:100%}
 .team__photo .staff-card__media.img-fallback{display:grid;place-items:center}
 .team__photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
-
 /* ---- Legende nom + role, SOUS la photo ----
    Elle etait posee en surimpression sur le bas du portrait. A six cartes sur
    la ligne les visuels retrecissent et la legende tombait pile sur le bandeau
@@ -3083,7 +2669,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   color:#fff;font-size:clamp(.95rem,1.15vw,1.24rem)}
 .team__role{font-family:var(--ff-cond,inherit);font-weight:600;font-size:clamp(.76rem,.72vw,.9rem);
   line-height:1.2;color:var(--bleu-glacier,#cfe0f2);text-wrap:balance}
-
 /* ---- Barre de progression fine (preferee aux points de pagination) ---- */
 .roster__progress{position:relative;height:3px;border-radius:999px;overflow:hidden;
   background:rgba(191,210,228,.13);margin-top:.5rem;
@@ -3091,7 +2676,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .staff.roster-ready .roster__progress{visibility:visible;opacity:1}
 .roster__bar{position:absolute;inset-block:0;left:0;width:25%;border-radius:999px;
   background:var(--grad-orange);will-change:transform}
-
 /* ---- Combien de cartes a l'ecran ----
    Regle de base : on doit voir TOUTE l'equipe au premier regard. Des que les
    six tiennent sur la ligne (>=1240 px) on les affiche toutes, sans debord et
@@ -3110,12 +2694,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* rien a faire defiler : on retire les commandes plutot que de les laisser mortes */
 .staff.roster-static .roster__nav,
 .staff.roster-static .roster__progress{visibility:hidden;opacity:0}
-
 /* petit mobile : le swipe suffit, les fleches disparaissent */
 @media (max-width:559px){.sec-head__row{grid-template-columns:1fr}
 .sec-head__row .h2{grid-column:1}
 .roster__nav{display:none}}
-
 @media (prefers-reduced-motion:reduce){.roster__viewport{scroll-behavior:auto}
 .team__photo{transition:border-color .2s}
 .team__photo:hover{transform:none}
@@ -3432,12 +3014,11 @@ body.cine-fs-lock{overflow:hidden}
 .cat-mixite .ic{width:24px;height:24px;color:var(--orange-vif);flex:none;margin-top:.08rem}
 /* ---- Boutons : états désactivé / chargement (finition) ---- */
 .btn:disabled,.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;pointer-events:none;box-shadow:none;filter:saturate(.7)}
-
 /* ============================================================
    AUDIT 2026-06 — Parents (phrase humaine) + Documents & garanties
    ============================================================ */
 .parents-quote{margin:1.8rem auto 2.8rem;padding:1.3rem 1.6rem;border-left:4px solid var(--orange-vif);
-  border-radius:0 var(--radius) var(--radius) 0;
+  border-radius:0 var(--r-md) var(--r-md) 0;
   background:linear-gradient(100deg,rgba(232,130,42,.09),rgba(13,21,38,.18));max-width:62ch}
 .parents-quote p{font-family:var(--ff-cond);font-weight:600;font-size:clamp(1.15rem,2.4vw,1.5rem);
   line-height:1.4;color:var(--txt);margin:0}
@@ -3550,7 +3131,6 @@ body.cine-fs-lock{overflow:hidden}
    deux arrets passe a 5,00:1. */
 .cat--photo .cat__age--free{background:linear-gradient(135deg,#2F7A3E,#215832);color:#F2FBF4}
 .cat__meta{margin-bottom:.9rem}
-
 /* note de bas de grille — le filet de sécurité « je ne sais pas quelle catégorie » */
 .cat-foot{position:relative;z-index:2;display:flex;gap:.7rem;align-items:flex-start;
   max-width:74ch;margin:1.8rem auto 0;padding:1rem 1.2rem;
@@ -3559,7 +3139,6 @@ body.cine-fs-lock{overflow:hidden}
 .cat-foot .ic{width:1.25em;height:1.25em;flex:none;margin-top:.15em;color:var(--orange-vif)}
 .cat-foot a{color:var(--orange-vif);font-weight:600;text-decoration:underline;text-underline-offset:2px}
 .categories .essentiel-cta{margin-top:1.6rem}
-
 /* ---- Ce que couvrent les 95 € : liste inclus / non inclus ---- */
 .covers{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin:1.4rem 0 0}
 .covers__col{border:1px solid var(--line);border-radius:var(--r-md);padding:1.3rem 1.4rem;background:var(--grad-card)}
@@ -3577,7 +3156,6 @@ body.cine-fs-lock{overflow:hidden}
 .covers li b{color:var(--txt)}
 .covers__note{margin-top:1.1rem;font-size:.92rem;line-height:1.6;color:var(--txt-soft)}
 .covers__note b{color:var(--txt)}
-
 /* ---- Parcours licence FFBB : ce qui se passe après le paiement ---- */
 .licence-path{counter-reset:lp;display:grid;gap:.9rem;margin:1.4rem 0 0;list-style:none}
 .licence-path li{counter-increment:lp;position:relative;padding:1.05rem 1.3rem 1.05rem 3.9rem;
@@ -3594,7 +3172,6 @@ body.cine-fs-lock{overflow:hidden}
   border:1px solid var(--line-strong);color:var(--bleu-glacier)}
 .licence-path .lp-who--club{border-color:rgba(27,81,158,.55);background:rgba(27,81,158,.18)}
 .licence-path .lp-who--vous{border-color:rgba(232,130,42,.5);background:rgba(232,130,42,.12);color:#F3C79A}
-
 /* ---- Bandeau « soutenir le club » : 3 portes vers les pages dédiées ---- */
 .support-band{display:grid;gap:1.1rem;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));margin-top:1.6rem}
 .support-card{display:flex;flex-direction:column;gap:.55rem;padding:1.6rem 1.5rem;
@@ -3612,7 +3189,6 @@ body.cine-fs-lock{overflow:hidden}
   letter-spacing:.05em;font-size:.9rem;color:var(--orange-vif);min-height:44px;display:inline-flex;
   align-items:center;gap:.4em;transition:gap .25s,color .25s}
 .support-card a:hover{gap:.8em;color:#fff}
-
 /* ---- Tableau d'orientation (page adhésion) ---- */
 .year-table{width:100%;border-collapse:collapse;margin-top:1.2rem;font-size:.96rem}
 .year-table caption{text-align:left;color:var(--txt-soft);font-size:.92rem;margin-bottom:.7rem}
@@ -3623,24 +3199,19 @@ body.cine-fs-lock{overflow:hidden}
 .year-table td:first-child{font-family:var(--ff-cond);font-weight:700;color:var(--blanc);white-space:nowrap}
 .year-table td:last-child{color:var(--txt)}
 .year-table__wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-@media (max-width:640px){
-  .year-table,.year-table tbody,.year-table tr,.year-table td{display:block;width:100%}
-  .year-table thead{display:none}
-  .year-table tr{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:.7rem;padding:.5rem .2rem}
-  .year-table td{border:0;padding:.35rem .9rem;display:flex;gap:.8rem;justify-content:space-between;align-items:baseline}
-  .year-table td::before{content:attr(data-label);font-family:var(--ff-cond);font-weight:600;
+@media (max-width:640px){.year-table,.year-table tbody,.year-table tr,.year-table td{display:block;width:100%}
+.year-table thead{display:none}
+.year-table tr{border:1px solid var(--line);border-radius:var(--r-sm);margin-bottom:.7rem;padding:.5rem .2rem}
+.year-table td{border:0;padding:.35rem .9rem;display:flex;gap:.8rem;justify-content:space-between;align-items:baseline}
+.year-table td::before{content:attr(data-label);font-family:var(--ff-cond);font-weight:600;
     text-transform:uppercase;letter-spacing:.08em;font-size:.68rem;color:var(--txt-soft);flex:none}
-  .year-table td:last-child{text-align:right}}
-
-@media (max-width:560px){
-  .cat__pick{padding:.55rem .75rem}
-  .cat-foot{padding:.9rem 1rem;font-size:.92rem}
-  .licence-path li{padding:.95rem 1rem .95rem 3.5rem}
-  .licence-path li::before{left:.9rem}}
-@media (prefers-reduced-motion:reduce){
-  .support-card{transition:none!important}
-  .support-card:hover{transform:none!important}}
-
+.year-table td:last-child{text-align:right}}
+@media (max-width:560px){.cat__pick{padding:.55rem .75rem}
+.cat-foot{padding:.9rem 1rem;font-size:.92rem}
+.licence-path li{padding:.95rem 1rem .95rem 3.5rem}
+.licence-path li::before{left:.9rem}}
+@media (prefers-reduced-motion:reduce){.support-card{transition:none!important}
+.support-card:hover{transform:none!important}}
 /* ============================================================
    V71 — Page adhésion : blocs d'explication + note "match"
    ============================================================ */
@@ -3651,61 +3222,49 @@ body.cine-fs-lock{overflow:hidden}
 .adh-block .adh-prepare__title{margin-bottom:.3rem}
 .adh-block .licence-path{margin-top:1.2rem}
 @media (max-width:560px){.adh-block{padding:1.4rem 1.1rem;border-radius:var(--r-md)}}
-
 /* créneau « match » = réservation de salle, pas un match hebdomadaire garanti */
-.cact__note{display:block;margin-top:.3rem;font-family:var(--ff-cond);font-weight:500;font-style:normal;
-  font-size:.78rem;line-height:1.35;letter-spacing:.01em;color:var(--txt-soft)}
-
 /* La section "soutenir" reprend le fond des anciennes sections engagement/dons */
 .section.soutenir .sponsors-wall{margin-top:2.6rem}
-
 /* ============================================================
    V72 — Compacité mobile (2026-08)
    La page d'accueil mesurait 32 500 px sur un iPhone : ~38 écrans.
    On resserre les blocs les plus coûteux (cartes catégories,
    mosaïque galerie, pied de page) sans rien retirer au contenu.
    ============================================================ */
-@media (max-width:640px){
-  /* --- Cartes catégories : photo plus basse, gouttières resserrées --- */
-  .cat-grid{gap:1rem}
-  .cat{padding:0 1.15rem 1.15rem!important;min-height:0}
-  .cat--photo .cat__photo{height:132px;margin:0 -1.15rem 1rem}
-  .cat h3{font-size:1.45rem;margin:.1rem 0 .05rem}
-  .cat__born{font-size:.88rem;margin:0 0 .4rem}
-  .cat__desc{min-height:0;font-size:.94rem;line-height:1.5}
-  .cat__meta{margin:.85rem 0 .75rem;padding-top:.75rem;font-size:.88rem}
-  .cat__pick{margin-bottom:.75rem;padding:.5rem .7rem}
-  .cat__pick b{font-size:.94rem}
-  .cat__link{min-height:44px;padding-block:.25em;font-size:.88rem}
-  .cat__num{font-size:3rem!important}
-
-  /* --- Galerie : 2 colonnes plutôt qu'un empilement de 5 tuiles --- */
-  .gallery-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
-  .gallery-mosaic .g-tile{height:190px;margin:0}
-  .gallery-mosaic .g-tile img{width:100%;height:100%;object-fit:cover}
-  .gallery-mosaic .g-tile:first-child{grid-column:1 / -1;height:230px}
-  /* la photo d'initiation est un plan large : pleine largeur sur mobile aussi */
-
-  /* --- Pied de page : colonnes de liens sur 2 colonnes --- */
-  .footer__top{gap:1.4rem}
-  .footer__col{min-width:0}
-  .footer__col h4{margin-bottom:.5rem}
-  .footer__brand .small{font-size:.88rem;line-height:1.55}
-  .footer__bottom{gap:.5rem;padding-top:1.1rem}
-  .footer__trust{gap:.4rem .8rem}}
-
+@media (max-width:640px){/* --- Cartes catégories : photo plus basse, gouttières resserrées --- */
+.cat-grid{gap:1rem}
+.cat{padding:0 1.15rem 1.15rem!important;min-height:0}
+.cat--photo .cat__photo{height:132px;margin:0 -1.15rem 1rem}
+.cat h3{font-size:1.45rem;margin:.1rem 0 .05rem}
+.cat__born{font-size:.88rem;margin:0 0 .4rem}
+.cat__desc{min-height:0;font-size:.94rem;line-height:1.5}
+.cat__meta{margin:.85rem 0 .75rem;padding-top:.75rem;font-size:.88rem}
+.cat__pick{margin-bottom:.75rem;padding:.5rem .7rem}
+.cat__pick b{font-size:.94rem}
+.cat__link{min-height:44px;padding-block:.25em;font-size:.88rem}
+.cat__num{font-size:3rem!important}
+/* --- Galerie : 2 colonnes plutôt qu'un empilement de 5 tuiles --- */
+.gallery-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.gallery-mosaic .g-tile{height:190px;margin:0}
+.gallery-mosaic .g-tile img{width:100%;height:100%;object-fit:cover}
+.gallery-mosaic .g-tile:first-child{grid-column:1 / -1;height:230px}
+/* la photo d'initiation est un plan large : pleine largeur sur mobile aussi */
+/* --- Pied de page : colonnes de liens sur 2 colonnes --- */
+.footer__top{gap:1.4rem}
+.footer__col{min-width:0}
+.footer__col h4,.footer__col h3{margin-bottom:.5rem}
+.footer__brand .small{font-size:.88rem;line-height:1.55}
+.footer__bottom{gap:.5rem;padding-top:1.1rem}
+.footer__trust{gap:.4rem .8rem}}
 /* Sous 430 px, les deux colonnes de liens du footer tiennent encore */
-@media (max-width:640px) and (min-width:360px){
-  .footer__top{display:grid;grid-template-columns:1fr 1fr;align-items:start}
-  .footer__brand{grid-column:1 / -1}}
-
+@media (max-width:640px) and (min-width:360px){.footer__top{display:grid;grid-template-columns:1fr 1fr;align-items:start}
+.footer__brand{grid-column:1 / -1}}
 /* ============================================================
    V73 — Correctif : la mention « créneau réservé » ajoutée dans
    la colonne Activité était un item flex qui refusait de rétrécir
    et élargissait la ligne au-delà du viewport (360 px).
    La note passe désormais toujours à la ligne, sous le badge.
    ============================================================ */
-
 /* ============================================================
    V76 — Hero : hiérarchie des trois actions
    « Faire une séance d'essai » passait à la ligne par simple
@@ -3714,8 +3273,7 @@ body.cine-fs-lock{overflow:hidden}
    premiers boutons en ligne 1, l'essai centré sous les deux,
    séparé par un filet dégradé qui rend la 2e rangée voulue.
    ============================================================ */
-@media (min-width:769px){
-  .hero-offer__btns{
+@media (min-width:769px){.hero-offer__btns{
     display:grid;
     grid-template-columns:auto auto;
     justify-content:start;
@@ -3723,21 +3281,20 @@ body.cine-fs-lock{overflow:hidden}
     gap:14px;
     flex-wrap:nowrap;
   }
-  .hero-offer__main{grid-column:1;grid-row:1}
-  .hero-offer__browse{grid-column:2;grid-row:1}
-  .hero-offer__trial{
+.hero-offer__main{grid-column:1;grid-row:1}
+.hero-offer__browse{grid-column:2;grid-row:1}
+.hero-offer__trial{
     grid-column:1 / -1;
     grid-row:2;
     justify-self:center;
     margin-top:6px;
   }
-  /* filet de séparation : centré sur la largeur des deux boutons du dessus */
-  .hero-offer__trial::before{
+/* filet de séparation : centré sur la largeur des deux boutons du dessus */
+.hero-offer__trial::before{
     content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
     width:min(300px,86%);height:1px;pointer-events:none;
     background:linear-gradient(90deg,transparent,rgba(191,210,228,.26),transparent);
   }}
-
 /* --- Traitement du bouton d'essai : 2e action réelle, pas un lien de nav --- */
 .hero-offer__trial{
   overflow:visible;                       /* le filet déborde du bouton */
@@ -3756,22 +3313,17 @@ body.cine-fs-lock{overflow:hidden}
 }
 .hero-offer__trial:hover .ic{transform:scale(1.12)}
 .hero-offer__trial:active{transform:translateY(0)}
-
 /* « Voir les catégories » reste un lien de navigation : on l'allège d'un cran
    pour que l'œil lise inscription > essai > parcourir. */
 .hero-offer__browse{color:var(--bleu-glacier);border-color:rgba(191,210,228,.2)}
 .hero-offer__browse:hover{color:#fff;border-color:var(--line-strong)}
-
-@media (max-width:768px){
-  /* en colonne, des largeurs egales se lisent comme un empilement voulu ;
+@media (max-width:768px){/* en colonne, des largeurs egales se lisent comme un empilement voulu ;
      la hierarchie passe par la couleur et le poids, pas par la largeur. */
-  .hero-offer__btns > .btn{width:100%}
-  .hero-offer__trial::before{display:none}}
-@media (prefers-reduced-motion:reduce){
-  .hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
-  .hero-offer__trial:hover{transform:none!important}
-  .hero-offer__trial:hover .ic{transform:none!important}}
-
+.hero-offer__btns > .btn{width:100%}
+.hero-offer__trial::before{display:none}}
+@media (prefers-reduced-motion:reduce){.hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
+.hero-offer__trial:hover{transform:none!important}
+.hero-offer__trial:hover .ic{transform:none!important}}
 /* ============================================================
    V78 — Passe « finition » (2026-08)
    Trois défauts de rythme, pas trois effets de plus :
@@ -3783,7 +3335,6 @@ body.cine-fs-lock{overflow:hidden}
    3. les 8 cartes catégories se lisaient à la file : elles sont
       regroupées en rails d'âge, un visiteur repère son groupe.
    ============================================================ */
-
 /* ---- 1. Un seul axe pour tous les en-têtes ---- */
 .section > .wrap > .sec-head,.section > .wrap > .cal-wrap > .sec-head,.section .cal-wrap > .sec-head{margin-inline:auto;text-align:center}
 .section .sec-head .kicker{justify-content:center}
@@ -3792,12 +3343,10 @@ body.cine-fs-lock{overflow:hidden}
 .sec-head .cat-mixite,.sec-head .parents-proof{text-align:left}
 .sec-head .parents-proof{justify-content:center}
 .sec-head .cat-mixite{margin-inline:auto}
-
 /* ---- 2. Filet de séparation entre sections ---- */
 .section + .section::before,.marquee + .section::before{content:"";position:absolute;top:0;left:50%;
   transform:translateX(-50%);width:min(var(--wrap),88%);height:1px;pointer-events:none;
   background:linear-gradient(90deg,transparent,rgba(191,210,228,.15) 22%,rgba(191,210,228,.15) 78%,transparent)}
-
 /* ---- 3. Rails d'âge dans les catégories ---- */
 .cat-group{position:relative;z-index:2}
 .cat-group + .cat-group{margin-top:clamp(2.2rem,4vw,3.2rem)}
@@ -3813,33 +3362,29 @@ body.cine-fs-lock{overflow:hidden}
 /* auto-fit et non auto-fill : un groupe de deux cartes occupe toute la largeur
    au lieu de laisser une colonne vide. */
 .cat-group .cat-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-
 /* la carte « sans jouer » clôt le parcours : format large, pas une 9e vignette */
-@media (min-width:760px){
-  /* Grille et non flex-direction:row : la carte a sept enfants directs, un
+@media (min-width:760px){/* Grille et non flex-direction:row : la carte a sept enfants directs, un
      flex row les alignait tous cote a cote et les poussait hors du cadre.
      Ici la photo occupe la colonne 1 sur toute la hauteur, le reste s'empile
      en colonne 2. */
-  .cat--wide{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);
+.cat--wide{display:grid;grid-template-columns:minmax(0,36%) minmax(0,1fr);
     /* lignes explicites indispensables : sans elles, grid-row:1/-1 se resout
        en 1/2 (la grille implicite n'a qu'une ligne declaree), la photo
        n'occupait que la 1re rangee et l'etirait a sa hauteur intrinseque. */
     grid-template-rows:repeat(6,auto);
     column-gap:1.9rem;align-content:start;
     padding:0 1.9rem 0 0 !important;min-height:0}
-  .cat--wide > .cat__photo{grid-column:1;grid-row:1 / -1;height:100%;margin:0}
-  .cat--wide > *:not(.cat__photo){grid-column:2}
-  .cat--wide > h4{margin-top:1.7rem}
-  .cat--wide > .cat__link{margin-bottom:1.7rem}
-  .cat--wide .cat__desc{min-height:0}
-  .cat--wide .cat__num{font-size:3.2rem}
-  /* le halo de survol injecte par script.js doit couvrir toute la carte,
+.cat--wide > .cat__photo{grid-column:1;grid-row:1 / -1;height:100%;margin:0}
+.cat--wide > *:not(.cat__photo){grid-column:2}
+.cat--wide > h4{margin-top:1.7rem}
+.cat--wide > .cat__link{margin-bottom:1.7rem}
+.cat--wide .cat__desc{min-height:0}
+.cat--wide .cat__num{font-size:3.2rem}
+/* le halo de survol injecte par script.js doit couvrir toute la carte,
      pas seulement la colonne de texte ou la grille l'aurait place */
-  .cat--wide > .spotglow__fx{grid-column:1 / -1;grid-row:1 / -1}}
-@media (max-width:560px){
-  .cat-rail{gap:.35rem .7rem;margin-bottom:1rem;padding-bottom:.7rem}
-  .cat-rail__s{margin-left:0;flex-basis:100%}}
-
+.cat--wide > .spotglow__fx{grid-column:1 / -1;grid-row:1 / -1}}
+@media (max-width:560px){.cat-rail{gap:.35rem .7rem;margin-bottom:1rem;padding-bottom:.7rem}
+.cat-rail__s{margin-left:0;flex-basis:100%}}
 /* ============================================================
    V79 — Rayons et ombres recalibrés
    ------------------------------------------------------------
@@ -3849,21 +3394,17 @@ body.cine-fs-lock{overflow:hidden}
    construction : le scope est `main > .section`, or le hero est
    `main > .hero`. Seul --r-lg le concernait, il garde sa valeur.
    ============================================================ */
-
 /* ---- A. Rayons et ombres recalibrés (hors Hero) ---- */
 main > .section,.site-footer{
-  --radius:12px;
-  --r-xs:8px; --r-sm:10px; --r-md:12px; --r-lg:16px;
+  --r-sm:10px; --r-md:12px; --r-lg:16px;
   /* ombres nettement plus discrètes : on structure par le contraste,
      la bordure et l'espace, pas par des halos flottants. */
   --e1:0 1px 2px rgba(3,7,15,.18);
   --e2:0 4px 12px rgba(3,7,15,.20);
   --e3:0 10px 24px rgba(3,7,15,.24);
-  --e4:0 18px 38px rgba(3,7,15,.28);
   --glow-o:0 6px 16px rgba(217,106,27,.18);
   --glow-b:0 6px 16px rgba(27,81,158,.20);
 }
-
 /* ---- Arrondis : les derniers rayons codés en dur rejoignent l'échelle ----
    8-16 px pour les cartes. Le mockup de téléphone garde ses ~40 px : un
    téléphone a réellement des coins de ce rayon. Le Hero n'est pas concerné. */
@@ -3871,7 +3412,6 @@ main > .section .essentiel-card{border-radius:12px}
 main > .section .cat{border-radius:14px}
 main > .section .cine-card,main > .section .cine-card__sheen{border-radius:16px}
 main > .section .adhesion-video__player{border-radius:14px}
-
 /* ============================================================
    V82 — Discipline du mouvement
    Le systeme d'apparition melangeait entrees laterales gauche ET
@@ -3887,7 +3427,6 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
   transition:opacity .52s var(--ease-out),transform .52s var(--ease-out);
 }
 main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal--r.in,main > .section .reveal--scale.in{opacity:1;transform:none}
-
 /* ---- Partenaires : une vitrine, pas un bandeau qui defile ----
    §24 : les sponsors sont valorises, pas utilises comme decoration.
    Le defilement continu concurrencait le seul marquee legitime du
@@ -3923,11 +3462,8 @@ main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal
   width:auto;height:auto;display:flex;align-items:center;justify-content:center}
 .sponsor-card__plate img{width:100%;height:100%;max-width:100%;max-height:100%;
   margin-inline:auto;object-fit:contain}
-
-@media (prefers-reduced-motion:reduce){
-main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
-  .sponsor-card:hover{transform:none !important}}
-
+@media (prefers-reduced-motion:reduce){main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
+.sponsor-card:hover{transform:none !important}}
 /* ---- Un seul mouvement continu sur la page ----
    Restaient en boucle infinie hors hero : la trame animee derriere les
    cartes categories, la pulsation de l'encoche du mockup telephone et le
@@ -3936,7 +3472,6 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
 main > .section .grid-fx__layer{animation:none !important}
 main > .section .cine-phone__island i{animation:none !important}
 .site-footer .sig-heart{animation:none !important}
-
 /* ============================================================
    V83 — « Le MBC dans son quartier » : mini-reportage éditorial
    ------------------------------------------------------------
@@ -3963,7 +3498,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .local-proof::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
   background:radial-gradient(130% 100% at 50% 45%,transparent 58%,rgba(4,8,16,.34) 100%)}
 .lp-wrap{position:relative;z-index:2}
-
 /* ---- Le mot de fond : volontairement débordant et masqué par la
    composition, jamais simplement coupé par le bord de l'écran ---- */
 .lp-word{position:absolute;z-index:0;pointer-events:none;user-select:none;
@@ -3973,7 +3507,6 @@ main > .section .cine-phone__island i{animation:none !important}
   color:rgba(199,219,244,.038);
   transform:translate3d(0,var(--lp-shift,0px),0);
   will-change:transform}
-
 /* ---- Manchette ---- */
 .lp-head{display:grid;gap:var(--lp-gap-s) 0;margin-bottom:var(--lp-gap-m)}
 .local-proof .lp-kicker{display:inline-flex;align-items:center;gap:.85rem;margin:0 0 .9rem;
@@ -3987,15 +3520,12 @@ main > .section .cine-phone__island i{animation:none !important}
 .lp-title .hl{color:var(--orange-vif)}
 .local-proof .lp-standfirst{margin:0;color:var(--lp-ink);
   font-size:clamp(1.1rem,1.45vw,1.32rem);line-height:1.6;max-width:38ch}
-
-@media (min-width:960px){
-  .lp-head{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+@media (min-width:960px){.lp-head{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
     column-gap:clamp(2rem,4vw,3.6rem);align-items:end;
     grid-template-areas:"kicker kicker" "title stand"}
-  .lp-kicker{grid-area:kicker;margin-bottom:1.1rem}
-  .lp-title{grid-area:title}
-  .lp-standfirst{grid-area:stand;padding-bottom:.45rem}}
-
+.lp-kicker{grid-area:kicker;margin-bottom:1.1rem}
+.lp-title{grid-area:title}
+.lp-standfirst{grid-area:stand;padding-bottom:.45rem}}
 /* ---- Image d'ancrage ---- */
 .lp-stage{position:relative;overflow:hidden;border-radius:14px;
   /* deborde de la colonne, jamais de l'ecran : la valeur est bornee a 46 px
@@ -4010,9 +3540,7 @@ main > .section .cine-phone__island i{animation:none !important}
   transition:transform 1.1s cubic-bezier(.2,.6,.2,1)}
 /* en mobile le bandeau se redresse : a 375 px de large, un 16:9 reduit les
    visages du groupe a quelques pixels. */
-@media (max-width:720px){
-  .lp-stage img{aspect-ratio:4/3;object-position:center 82%}
-}
+@media (max-width:720px){.lp-stage img{aspect-ratio:4/3;object-position:center 82%}}
 /* ---- micro-label editorial, en haut a gauche du bandeau ---- */
 .lp-stage__no{position:absolute;z-index:2;top:clamp(.8rem,2vw,1.3rem);
   left:clamp(1rem,2.4vw,1.8rem);display:inline-flex;align-items:center;gap:.6rem;
@@ -4034,8 +3562,6 @@ main > .section .cine-phone__island i{animation:none !important}
   letter-spacing:.16em;font-size:.66rem;color:var(--orange-vif)}
 .lp-stage__txt{font-family:var(--ff-cond);font-weight:600;
   font-size:clamp(.95rem,1.1vw,1.06rem);line-height:1.35;color:#F2F6FB}
-
-
 /* ---- Le plateau, hors basket ----
    La section parle d'un equipement de quartier : cette image le montre
    utilise autrement. Elle reste secondaire — cadree bas, sous le recit,
@@ -4046,7 +3572,6 @@ main > .section .cine-phone__island i{animation:none !important}
   object-fit:cover;object-position:center 42%}
 .lp-live figcaption{padding:.75rem .95rem .85rem;font-size:.86rem;line-height:1.45;
   color:var(--txt-soft)}
-
 /* ---- Double page ---- */
 .lp-below{display:grid;gap:var(--lp-gap-m);margin-top:var(--lp-gap-l)}
 /* Corps de texte remonté d'un cran : 17,3 px en 1920, c'était petit pour un
@@ -4058,7 +3583,6 @@ main > .section .cine-phone__island i{animation:none !important}
   margin-bottom:1.45rem}
 /* seule ponctuation forte du paragraphe : l'orange reste rare */
 .lp-creole{color:var(--orange-vif);font-style:italic;white-space:nowrap}
-
 .local-proof .lp-sign{display:flex;flex-wrap:wrap;gap:.35rem .85rem;margin:var(--lp-gap-m) 0 0;
   padding-top:1.1rem;border-top:1px solid rgba(191,210,228,.12);
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
@@ -4066,7 +3590,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .lp-sign span{display:inline-flex;align-items:center}
 .lp-sign span + span::before{content:"";width:4px;height:4px;border-radius:50%;
   background:var(--orange-vif);margin-right:.85rem;opacity:.9}
-
 .lp-aside{position:relative;margin:0;align-self:start}
 .lp-aside picture{display:block;position:relative;overflow:hidden;border-radius:14px;
   border:1px solid rgba(191,210,228,.14);isolation:isolate;box-shadow:var(--e2)}
@@ -4076,9 +3599,7 @@ main > .section .cine-phone__island i{animation:none !important}
   font-family:var(--ff-cond);font-weight:600;font-size:1rem;line-height:1.4;color:#9DB2CB}
 .lp-aside__n{flex:none;font-family:var(--ff-display);font-size:.9rem;
   color:var(--orange-vif);letter-spacing:.04em}
-
-@media (min-width:960px){
-  /* 7 / 5 : le récit tient la gauche, le portrait tient la droite.
+@media (min-width:960px){/* 7 / 5 : le récit tient la gauche, le portrait tient la droite.
      Le décalage vers le bas du portrait a été retiré, et pour une raison
      mesurée : en 1920, le texte faisait 308 px de haut contre 648 px pour
      la photo. Il flottait en haut d'une colonne à moitié vide, et 365 px
@@ -4088,62 +3609,53 @@ main > .section .cine-phone__island i{animation:none !important}
      centre son contenu : le haut et le bas tombent sur ceux de la photo,
      le récit se pose au milieu. Le filet dans la gouttière donne à voir
      cet alignement au lieu de le laisser deviner. */
-  .lp-below{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
+.lp-below{grid-template-columns:minmax(0,7fr) minmax(0,5fr);
     column-gap:clamp(2.2rem,4.5vw,4rem);align-items:start}
-  .lp-copy{align-self:stretch;display:flex;flex-direction:column;
+.lp-copy{align-self:stretch;display:flex;flex-direction:column;
     justify-content:center;position:relative;
     padding-right:clamp(1.8rem,3.4vw,3rem)}
-  /* Le filet est un dégradé, pas un trait plein : il s'éteint en haut et en
+/* Le filet est un dégradé, pas un trait plein : il s'éteint en haut et en
      bas, sinon il ressemble à une bordure de tableau et coupe la page en
      deux au lieu de relier les deux colonnes. */
-  .lp-copy::after{content:"";position:absolute;top:0;bottom:0;right:0;width:1px;
+.lp-copy::after{content:"";position:absolute;top:0;bottom:0;right:0;width:1px;
     background:linear-gradient(180deg,rgba(191,210,228,0) 0%,
       rgba(191,210,228,.22) 24%,rgba(191,210,228,.22) 76%,
       rgba(191,210,228,0) 100%)}
-  /* center, et non start : entre 960 et ~1300 px le rapport s'inverse, le
+/* center, et non start : entre 960 et ~1300 px le rapport s'inverse, le
      récit devient plus haut que le portrait. Ancré en haut, la photo
      laisserait alors le même vide en bas — le défaut, simplement retourné. */
-  .lp-aside{margin-top:0;align-self:center}}
-
+.lp-aside{margin-top:0;align-self:center}}
 /* ---- Micro-interaction : desktop et souris uniquement ---- */
-@media (hover:hover) and (min-width:900px){
-.lp-stage:hover img,.lp-aside:hover img{transform:scale(1.012)}}
-
+@media (hover:hover) and (min-width:900px){.lp-stage:hover img,.lp-aside:hover img{transform:scale(1.012)}}
 /* ---- Apparition échelonnée : manchette, image, puis double page ---- */
 .local-proof .lp-stage.reveal{transition-delay:.09s}
 .local-proof .lp-below .reveal{transition-delay:.18s}
-
 /* ---- Mobile : recomposition, pas un simple empilement ---- */
-@media (max-width:959px){
-  .lp-head{margin-bottom:var(--lp-gap-m)}
-  .local-proof .lp-standfirst{max-width:46ch}
-  .lp-copy{display:block;padding-right:0}
-  .lp-aside{margin-top:0}}
+@media (max-width:959px){.lp-head{margin-bottom:var(--lp-gap-m)}
+.local-proof .lp-standfirst{max-width:46ch}
+.lp-copy{display:block;padding-right:0}
+.lp-aside{margin-top:0}}
 /* En colonne unique large (tablette), le portrait 4:5 pleine largeur faisait
    879 px de haut et ecrasait la composition : on le borne et on le centre. */
-@media (min-width:641px) and (max-width:959px){
-  .lp-aside{width:min(100%,460px);margin-inline:auto}
-  .lp-aside figcaption{justify-content:center;text-align:center}
-  .lp-word{font-size:clamp(7rem,15vw,11rem);color:rgba(199,219,244,.03)}}
-@media (max-width:640px){
-  .lp-word{display:none}          /* jamais de débordement sur petit écran */
-  .lp-title{font-size:clamp(2.3rem,10.5vw,3.2rem)}
-  .lp-kicker{letter-spacing:.22em;font-size:.72rem}
-  .lp-kicker::before{width:28px}
-  /* sur telephone, le cadre complet 4:3 a plus de presence qu'un
+@media (min-width:641px) and (max-width:959px){.lp-aside{width:min(100%,460px);margin-inline:auto}
+.lp-aside figcaption{justify-content:center;text-align:center}
+.lp-word{font-size:clamp(7rem,15vw,11rem);color:rgba(199,219,244,.03)}}
+@media (max-width:640px){.lp-word{display:none}
+/* jamais de débordement sur petit écran */
+.lp-title{font-size:clamp(2.3rem,10.5vw,3.2rem)}
+.lp-kicker{letter-spacing:.22em;font-size:.72rem}
+.lp-kicker::before{width:28px}
+/* sur telephone, le cadre complet 4:3 a plus de presence qu'un
      bandeau 16:9 de 198 px de haut */
-  .lp-stage{border-radius:12px}
-  .lp-stage img{aspect-ratio:4/3}
-  .lp-stage__txt{font-size:.95rem}
-  .lp-aside picture{border-radius:12px}
-  .lp-sign{font-size:.8rem;letter-spacing:.1em}}
-
-@media (prefers-reduced-motion:reduce){
-  .lp-word{transform:none !important}
-  .lp-stage img,.lp-aside img{transition:none !important}
-  .lp-stage:hover img,.lp-aside:hover img{transform:none !important}
+.lp-stage{border-radius:12px}
+.lp-stage img{aspect-ratio:4/3}
+.lp-stage__txt{font-size:.95rem}
+.lp-aside picture{border-radius:12px}
+.lp-sign{font-size:.8rem;letter-spacing:.1em}}
+@media (prefers-reduced-motion:reduce){.lp-word{transform:none !important}
+.lp-stage img,.lp-aside img{transition:none !important}
+.lp-stage:hover img,.lp-aside:hover img{transform:none !important}
 .local-proof .lp-stage.reveal,.local-proof .lp-below .reveal{transition-delay:0s !important}}
-
 /* ============================================================
    V84 — Calendrier des matchs (championnat PRM, zone Nord)
    ------------------------------------------------------------
@@ -4156,7 +3668,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx{margin-top:1.8rem}
 .mx-list{list-style:none;margin:0;padding:0;
   border-top:1px solid rgba(191,210,228,.12)}
-
 .mx-row{display:grid;align-items:center;gap:.25rem 1.1rem;
   grid-template-columns:auto auto 1fr;
   grid-template-areas:"j date opp" "j date meta";
@@ -4164,7 +3675,6 @@ main > .section .cine-phone__island i{animation:none !important}
   border-bottom:1px solid rgba(191,210,228,.12);
   transition:background .25s var(--ease-out)}
 .mx-row:hover{background:rgba(27,81,158,.10)}
-
 .mx-j{grid-area:j;font-family:var(--ff-display);font-size:.92rem;line-height:1;
   color:#6E839C;letter-spacing:.04em;min-width:2.1em}
 /* pastille de date : le repère visuel de la ligne */
@@ -4177,7 +3687,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-date__n{font-family:var(--ff-display);font-size:1.5rem;line-height:1;color:var(--blanc)}
 .mx-date__m{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.1em;font-size:.62rem;color:#8FA5BF}
-
 .mx-side{grid-area:opp;justify-self:start;align-self:end;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.13em;font-size:.64rem;color:#8FA5BF;
@@ -4192,11 +3701,9 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-lieu{position:relative;padding-left:.9rem}
 .mx-lieu::before{content:"";position:absolute;left:0;top:.55em;width:4px;height:4px;
   border-radius:50%;background:rgba(191,210,228,.45)}
-
 /* domicile : un liseré orange à gauche, rien de plus */
 .mx-row--dom{box-shadow:inset 3px 0 0 var(--orange-vif)}
 .mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
-
 /* Le score d'une rencontre jouée. Il n'apparaît que si la LRBB l'a publié dans
    son PDF : tant que la ligne de résultat vaut « ... ... », le générateur
    n'écrit rien (voir .claude/lire-calendrier-prm.py). Ce bloc est donc inerte
@@ -4207,7 +3714,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-score__s{opacity:.5;margin:0 .18em}
 .mx-score--v{color:#7BD88F}
 .mx-score--d{color:#E58A8A}
-
 /* rencontre déjà jouée : on l'atténue sans la cacher (classe posée en JS) */
 .mx-row.is-past{opacity:.42}
 /* prochaine rencontre */
@@ -4215,25 +3721,21 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-next{margin:0 0 1.1rem;font-family:var(--ff-cond);font-weight:600;
   font-size:.92rem;letter-spacing:.02em;color:#B8C9DC}
 .mx-next b{color:var(--orange-vif);font-weight:700}
-
-@media (min-width:820px){
-  .mx-row{grid-template-columns:auto auto minmax(0,1fr) auto;
+@media (min-width:820px){.mx-row{grid-template-columns:auto auto minmax(0,1fr) auto;
     grid-template-areas:"j date opp meta";gap:0 1.4rem;padding:1.15rem .5rem}
-  .mx-side{grid-area:auto;justify-self:start;align-self:center;order:0}
-  .mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto;
+.mx-side{grid-area:auto;justify-self:start;align-self:center;order:0}
+.mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto;
     grid-template-areas:"j date side opp meta"}
-  .mx-side{grid-area:side}
-  .mx-meta{grid-area:meta;justify-content:flex-end;text-align:right;flex-direction:column;gap:.1rem}
-  .mx-opp{font-size:1.2rem}}
-@media (max-width:560px){
-  .mx-row{gap:.3rem .8rem;padding:.95rem .2rem}
-  .mx-date{min-width:56px;padding:.45rem .35rem}
-  .mx-date__n{font-size:1.35rem}
-  .mx-opp{font-size:1.02rem}
-  .mx-meta{font-size:.82rem}
-  .mx-j{font-size:.82rem;min-width:1.9em}}
+.mx-side{grid-area:side}
+.mx-meta{grid-area:meta;justify-content:flex-end;text-align:right;flex-direction:column;gap:.1rem}
+.mx-opp{font-size:1.2rem}}
+@media (max-width:560px){.mx-row{gap:.3rem .8rem;padding:.95rem .2rem}
+.mx-date{min-width:56px;padding:.45rem .35rem}
+.mx-date__n{font-size:1.35rem}
+.mx-opp{font-size:1.02rem}
+.mx-meta{font-size:.82rem}
+.mx-j{font-size:.82rem;min-width:1.9em}}
 @media (prefers-reduced-motion:reduce){.mx-row{transition:none}}
-
 /* ============================================================
    V85 — Rencontres : écussons et accentuation domicile/extérieur
    ------------------------------------------------------------
@@ -4258,11 +3760,9 @@ main > .section .cine-phone__island i{animation:none !important}
   color:#C3D2E2;text-align:center;line-height:1}
 .mx-vs{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   font-size:.64rem;letter-spacing:.1em;color:#6E839C;flex:none}
-
 /* le nom complet reste la reference ; le sigle n'apparait qu'en petit ecran */
 .mx-opp__n{display:block;font-weight:700}
 .mx-opp__s{display:none}
-
 /* ---- Domicile / extérieur : la distinction devient immédiate ---- */
 .mx-side{font-size:.66rem;letter-spacing:.14em;padding:.28em .8em}
 .mx-row--ext{box-shadow:inset 2px 0 0 rgba(191,210,228,.22)}
@@ -4274,35 +3774,30 @@ main > .section .cine-phone__island i{animation:none !important}
 .mx-row--dom .mx-crest--mbc{border-color:rgba(232,130,42,.45);background:rgba(232,130,42,.10)}
 .mx-row--dom .mx-lieu{color:#E3B07C}
 .mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
-
-@media (min-width:820px){
-  .mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto auto;
+@media (min-width:820px){.mx-row{grid-template-columns:auto auto auto minmax(0,1fr) auto auto;
     grid-template-areas:"j date duel opp side meta";gap:0 1.3rem}
-  .mx-row--dom{grid-template-areas:"j date duel opp side meta"
+.mx-row--dom{grid-template-areas:"j date duel opp side meta"
     ". roles roles roles roles roles"}
-  .mx-side{justify-self:end;align-self:center}}
-@media (max-width:819px){
-  .mx-row{grid-template-columns:auto auto 1fr;
+.mx-side{justify-self:end;align-self:center}}
+@media (max-width:819px){.mx-row{grid-template-columns:auto auto 1fr;
     grid-template-areas:"j date duel" "j opp opp" "j side meta";gap:.4rem 1rem}
-  .mx-row--dom{grid-template-areas:"j date duel" "j opp opp" "j side meta"
+.mx-row--dom{grid-template-areas:"j date duel" "j opp opp" "j side meta"
     "roles roles roles"}
-  .mx-crest{width:64px;height:64px;border-radius:16px}
-  /* .mx-side est declare grid-area:opp plus haut, heritage d'une mise en
+.mx-crest{width:64px;height:64px;border-radius:16px}
+/* .mx-side est declare grid-area:opp plus haut, heritage d'une mise en
      page ou le badge s'empilait sous le nom. Seul le palier >=820px le
      replacait : en dessous, le badge se posait PAR-DESSUS le nom du club
      (« Saint-Benoit » disparaissait derriere « A DOMICILE »). */
-  .mx-side{grid-area:side;align-self:center}
-  .mx-duel{justify-self:start}
-  .mx-side{justify-self:start;align-self:center}
-  .mx-meta{justify-content:flex-end;text-align:right}}
-@media (max-width:520px){
-  .mx-crest{width:56px;height:56px;border-radius:14px}
-  .mx-crest--logo{padding:4px}
-  .mx-crest--sigle{font-size:.78rem}
-  .mx-duel{gap:.5rem}
-  .mx-opp__n{font-size:1rem}
-  .mx-row{gap:.35rem .7rem}}
-
+.mx-side{grid-area:side;align-self:center}
+.mx-duel{justify-self:start}
+.mx-side{justify-self:start;align-self:center}
+.mx-meta{justify-content:flex-end;text-align:right}}
+@media (max-width:520px){.mx-crest{width:56px;height:56px;border-radius:14px}
+.mx-crest--logo{padding:4px}
+.mx-crest--sigle{font-size:.78rem}
+.mx-duel{gap:.5rem}
+.mx-opp__n{font-size:1rem}
+.mx-row{gap:.35rem .7rem}}
 /* ---- Logos des clubs adverses ----
    Plaque claire systematique : les logos fournis ont des fonds tres
    differents (bleu vif pour Sainte-Suzanne, marine pour Picks, blanc pour
@@ -4321,7 +3816,6 @@ main > .section .cine-phone__island i{animation:none !important}
     inset 0 1px 0 rgba(255,255,255,.9)}
 .mx-row--dom .mx-crest--mbc{box-shadow:0 8px 20px rgba(3,8,18,.45),
   0 0 0 2px rgba(232,130,42,.38)}
-
 /* ---- Postes bénévoles des matchs à domicile ----
    Replié par défaut : la ligne reste d'abord un calendrier. Seules les
    rencontres à domicile portent ce bloc, d'où la zone « roles » ajoutée
@@ -4357,7 +3851,6 @@ main > .section .cine-phone__island i{animation:none !important}
   font-size:.84rem;line-height:1.5;color:var(--txt-soft);
   border-top:1px solid rgba(191,210,228,.10)}
 .mx-roles__cta a{color:var(--orange-vif)}
-
 /* ---- Le format du championnat (trois phases) ----
    La liste elle-même réutilise .licence-path : même mécanique de puces
    numérotées, aucune raison d'en entretenir deux. Il ne manquait qu'un
@@ -4368,8 +3861,6 @@ main > .section .cine-phone__island i{animation:none !important}
   font-size:clamp(1.35rem,3.2vw,1.8rem);line-height:1.1;letter-spacing:.01em;
   color:var(--blanc);margin:0;text-align:center}
 .mx-format .licence-path{margin-top:1.15rem}
-
-
 /* ============================================================
    PROCHAIN RENDEZ-VOUS — l'affiche du match d'ouverture
    ------------------------------------------------------------
@@ -4388,14 +3879,11 @@ main > .section .cine-phone__island i{animation:none !important}
   margin:clamp(1.8rem,4vw,2.6rem) 0 clamp(2rem,5vw,3rem);
   padding:clamp(1.4rem,3.5vw,2.2rem) 0;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-
 /* le filet orange qui amorce le bloc, comme le kicker des sections */
 .nx::before{content:"";position:absolute;top:-1px;left:0;width:clamp(3rem,12%,6rem);
   height:1px;background:var(--grad-orange)}
-
 .nx__media{position:relative;justify-self:center;
   width:min(78vw,340px);isolation:isolate}
-
 /* le plan arriere : meme affiche, floutee, decalee. C'est elle qui
    cree la profondeur, pas une ombre portee de 60px. */
 .nx__ghost{position:absolute;inset:0;z-index:0;border-radius:var(--r-md);
@@ -4403,13 +3891,11 @@ main > .section .cine-phone__island i{animation:none !important}
     center/cover no-repeat;
   transform:rotate(-3.2deg) translate(-3.5%,2.5%) scale(1.045);
   filter:blur(17px) saturate(.85);opacity:.34;pointer-events:none}
-
 /* le halo orange — tres faible, large, sans bord net */
 .nx__media::after{content:"";position:absolute;z-index:-1;
   inset:-14% -12% -16%;pointer-events:none;
   background:radial-gradient(58% 46% at 50% 52%,
     rgba(232,130,42,.07) 0%,rgba(232,130,42,.035) 46%,rgba(232,130,42,0) 78%)}
-
 .nx__poster{position:relative;z-index:1;display:block;
   border-radius:var(--r-md);overflow:hidden;
   border:1px solid rgba(191,210,228,.20);
@@ -4417,7 +3903,6 @@ main > .section .cine-phone__island i{animation:none !important}
   transform:rotate(1.4deg);
   transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
 .nx__poster img{display:block;width:100%;height:auto}
-
 /* ---- le texte : il ne redit pas l'affiche ---- */
 .nx__kicker{margin:0 0 .55rem}
 .nx__t{font-family:var(--ff-display);text-transform:uppercase;
@@ -4441,33 +3926,25 @@ main > .section .cine-phone__island i{animation:none !important}
 .nx__tag--d{color:#190f04;background:var(--grad-orange);border-color:transparent}
 .nx__tag[hidden]{display:none}
 .nx__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
-
 /* ---- desktop : l'affiche a gauche, le texte respire a droite ---- */
-@media (min-width:900px){
-  .nx{grid-template-columns:340px minmax(0,1fr);gap:clamp(2.2rem,4vw,3.4rem);
+@media (min-width:900px){.nx{grid-template-columns:340px minmax(0,1fr);gap:clamp(2.2rem,4vw,3.4rem);
     align-items:center}
-  .nx__media{justify-self:start}
-  /* la profondeur ne se revele qu'au survol, et de quelques pixels */
-  .nx__poster:hover{transform:rotate(.6deg) translateY(-6px);
-    box-shadow:0 22px 48px rgba(3,8,18,.58),0 3px 10px rgba(3,8,18,.42)}
-}
-
+.nx__media{justify-self:start}
+/* la profondeur ne se revele qu'au survol, et de quelques pixels */
+.nx__poster:hover{transform:rotate(.6deg) translateY(-6px);
+    box-shadow:0 22px 48px rgba(3,8,18,.58),0 3px 10px rgba(3,8,18,.42)}}
 /* ---- mobile : l'affiche entiere, jamais rognee, jamais inclinee ----
    Une inclinaison sur un ecran de 375 px mange les coins de l'affiche
    et rend la date moins lisible. Sous 900 px on la pose bien a plat. */
-@media (max-width:899px){
-  .nx__poster{transform:none}
-  .nx__ghost{transform:translate(-2.5%,2%) scale(1.05);filter:blur(14px);opacity:.28}
-  .nx__body{text-align:left}
-  .nx__a .btn{flex:1 1 auto;justify-content:center}
-}
-
+@media (max-width:899px){.nx__poster{transform:none}
+.nx__ghost{transform:translate(-2.5%,2%) scale(1.05);filter:blur(14px);opacity:.28}
+.nx__body{text-align:left}
+.nx__a .btn{flex:1 1 auto;justify-content:center}}
 /* Pas d'animation d'apparition propre : .reveal (opacite + 34px) porte deja
    le bloc entier. En ajouter une seconde sur .nx__media faisait un double
    mouvement, exactement le genre de surcharge a eviter ici. */
 /* le bloc disparait une fois la rencontre jouee (script.js) */
 .nx[hidden]{display:none}
-
 /* ---- L'affiche officielle, à télécharger et partager ---- */
 .affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
   margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
@@ -4486,9 +3963,7 @@ main > .section .cine-phone__island i{animation:none !important}
   margin:.2rem 0 .5rem;color:var(--blanc)}
 .affiche__d{margin:0 0 1.1rem;color:var(--txt-soft);max-width:48ch}
 .affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
-@media (min-width:760px){
-  .affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
-
+@media (min-width:760px){.affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
 /* ---- Le second terrain : Ruisseau Blanc ----
    Le chapo de la section annonce deux lieux depuis le debut, mais un seul
    etait montre. Le pendant reprend exactement le composant .cal-venue —
@@ -4498,7 +3973,6 @@ main > .section .cine-phone__island i{animation:none !important}
 /* la scene est plus large que haute : on cadre un peu plus bas pour garder
    le panier et la charpente. */
 .cal-venue--rb img{object-position:center 55%}
-
 /* le lien Maps sous la photo : qui regarde la salle peut lancer l'itinéraire */
 .cal-venue__map{display:inline-flex;align-items:center;gap:.4em;margin-top:.55rem;
   font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.04em;
@@ -4507,8 +3981,6 @@ main > .section .cine-phone__island i{animation:none !important}
 .cal-venue__map svg{width:.95em;height:.95em}
 .cal-venue__map:hover{color:#FFD7AE}
 .cal-venue__map:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
-
-
 /* ============================================================
    « Le basket commence ici » — la porte vers les pages enfants
    ------------------------------------------------------------
@@ -4526,7 +3998,6 @@ main > .section .cine-phone__island i{animation:none !important}
   box-shadow:0 16px 40px rgba(3,8,18,.45)}
 .begin__ph img{display:block;width:100%;height:auto;
   transition:transform .9s cubic-bezier(.2,.6,.2,1)}
-
 .begin__lab{display:inline-flex;align-items:center;gap:.6rem;margin:0 0 .7rem;
   font-family:var(--ff-cond);font-weight:700;font-size:.8rem;letter-spacing:.16em;
   text-transform:uppercase;color:var(--orange-vif)}
@@ -4542,33 +4013,24 @@ main > .section .cine-phone__island i{animation:none !important}
 .begin__alt a{color:var(--bleu-glacier);text-decoration:underline;
   text-underline-offset:3px;text-decoration-thickness:1px}
 .begin__alt a:hover{color:var(--orange-vif)}
-
-@media (min-width:900px){
-  .begin{grid-template-columns:57fr 43fr;gap:clamp(2rem,4vw,3.2rem)}
-  /* le fondu ne mange qu'un seul bord, celui qui touche le texte */
-  /* idem horizontalement : l'enfant le plus a droite touche 88 % de la
+@media (min-width:900px){.begin{grid-template-columns:57fr 43fr;gap:clamp(2rem,4vw,3.2rem)}
+/* le fondu ne mange qu'un seul bord, celui qui touche le texte */
+/* idem horizontalement : l'enfant le plus a droite touche 88 % de la
      largeur, le fondu ne peut pas commencer avant. */
-  .begin__ph{-webkit-mask-image:linear-gradient(90deg,#000 89%,rgba(0,0,0,.7) 97%,rgba(0,0,0,.38) 100%);
+.begin__ph{-webkit-mask-image:linear-gradient(90deg,#000 89%,rgba(0,0,0,.7) 97%,rgba(0,0,0,.38) 100%);
     mask-image:linear-gradient(90deg,#000 89%,rgba(0,0,0,.7) 97%,rgba(0,0,0,.38) 100%)}
-  /* profondeur au survol, desktop uniquement, quelques pixels */
-  .begin__ph:hover img{transform:scale(1.028)}
-}
-@media (max-width:899px){
-  /* le fondu passe en bas : sur un bandeau pleine largeur, un fondu
+/* profondeur au survol, desktop uniquement, quelques pixels */
+.begin__ph:hover img{transform:scale(1.028)}}
+@media (max-width:899px){/* le fondu passe en bas : sur un bandeau pleine largeur, un fondu
      lateral rognerait les enfants du bord. */
-  /* Le fondu demarre a 93 % : le dernier enfant assis se termine a 84 % du
+/* Le fondu demarre a 93 % : le dernier enfant assis se termine a 84 % du
      cadre, un fondu a 84 % lui mangeait les jambes. En dessous de 93 %, il
      n'y a plus que le sol bleu du terrain. */
-  .begin__ph{-webkit-mask-image:linear-gradient(180deg,#000 93%,rgba(0,0,0,.72) 98%,rgba(0,0,0,.45) 100%);
+.begin__ph{-webkit-mask-image:linear-gradient(180deg,#000 93%,rgba(0,0,0,.72) 98%,rgba(0,0,0,.45) 100%);
     mask-image:linear-gradient(180deg,#000 93%,rgba(0,0,0,.72) 98%,rgba(0,0,0,.45) 100%)}
-  .begin__a .btn{flex:1 1 auto;justify-content:center}
-}
-@media (prefers-reduced-motion:reduce){
-  .begin__ph img{transition:none}
-  .begin__ph:hover img{transform:none}
-}
-
-
+.begin__a .btn{flex:1 1 auto;justify-content:center}}
+@media (prefers-reduced-motion:reduce){.begin__ph img{transition:none}
+.begin__ph:hover img{transform:none}}
 /* ============================================================
    Selecteur d'age — « quel age a le joueur ? »
    ------------------------------------------------------------
@@ -4614,7 +4076,6 @@ main > .section .cine-phone__island i{animation:none !important}
   background:rgba(20,33,58,.9)}
 .age__tab:focus-visible{outline:2px solid var(--orange-vif);outline-offset:2px}
 .age__tab.is-on{color:#190f04;background:var(--grad-orange);border-color:transparent}
-
 .age__panel[hidden]{display:none}
 .age__cat{margin:0 0 .85rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem .7rem}
 .age__cat-l{font-family:var(--ff-cond);font-weight:700;font-size:.72rem;
@@ -4630,19 +4091,13 @@ main > .section .cine-phone__island i{animation:none !important}
   letter-spacing:.12em;text-transform:uppercase;color:var(--txt-soft)}
 .age__facts b{font-weight:600;font-size:.95rem;line-height:1.35;color:var(--txt)}
 .age__a{display:flex;flex-wrap:wrap;gap:.6rem;margin:0}
-
-@media (min-width:700px){
-  .age__facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem 1.4rem}
-  .age__facts li{grid-template-columns:1fr;gap:.15rem}
-}
-@media (max-width:520px){
-  /* les onglets deviennent une grille : six pastilles alignees valent mieux
+@media (min-width:700px){.age__facts{grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem 1.4rem}
+.age__facts li{grid-template-columns:1fr;gap:.15rem}}
+@media (max-width:520px){/* les onglets deviennent une grille : six pastilles alignees valent mieux
      qu'une ligne qui se casse n'importe ou. */
-  .age__tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}
-  .age__tab{padding:.68em .4em;font-size:.82rem;text-align:center}
-  .age__a .btn{flex:1 1 100%;justify-content:center}
-}
-
+.age__tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem}
+.age__tab{padding:.68em .4em;font-size:.82rem;text-align:center}
+.age__a .btn{flex:1 1 100%;justify-content:center}}
 /* ---- Transmission : la photo qui ouvre les catégories jeunes ----
    Texte à côté, jamais par-dessus les personnes. */
 .transm{display:grid;gap:1.5rem;align-items:center;margin:0 0 clamp(2rem,4vw,3rem)}
@@ -4654,15 +4109,23 @@ main > .section .cine-phone__island i{animation:none !important}
 .transm__d b{color:var(--bleu-glacier);font-weight:600}
 .transm__img{display:block;width:100%;height:auto;border-radius:var(--r-lg);
   border:1px solid var(--line)}
-@media (min-width:900px){
-  .transm{grid-template-columns:minmax(0,40%) minmax(0,60%);gap:clamp(2rem,4vw,3.2rem)}
-}
+@media (min-width:900px){.transm{grid-template-columns:minmax(0,40%) minmax(0,60%);gap:clamp(2rem,4vw,3.2rem)}}
 /* mobile : l'image d'abord, le texte ensuite */
 @media (max-width:899px){.transm__img{order:-1}}
-
 /* L'ombre portee sur le texte de la section « L'essentiel » a ete retiree :
    elle compensait la photo qui passait derriere. Le tirage etant desormais
    encadre a droite, le texte est sur le bleu nuit uni — une ombre n'y ajoute
    qu'un leger flou. */
 /* les notes du calendrier s'alignent sur le planning, pas sur le wrap */
 .cal-wrap .cal-note{max-width:940px;margin-inline:0}
+/* ============================================================
+   FINITIONS ACCESSIBILITÉ (audit 2026-09-01)
+   ------------------------------------------------------------
+   1. « Itinéraire » du planning : révélé au focus clavier comme au
+      survol, et éclairci sur fond hover #27406A (4,65:1, AA).
+   2. Les <summary> (FAQ, mentions légales) rejoignent le système
+      de focus du site au lieu de l'anneau navigateur par défaut.
+   ============================================================ */
+.pl-slot__ou:focus-visible .pl-slot__go{opacity:1}
+.pl-slot__ou:hover .pl-slot__go,.pl-slot__ou:focus-visible .pl-slot__go{color:#F09A4C}
+.faq__item summary:focus-visible,.footer-legal>summary:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:6px}
