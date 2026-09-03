@@ -127,43 +127,135 @@ a{color:inherit;text-decoration:none}
 .site-header.hide{transform:translateY(-100%)}
 /* Accessibilité clavier : le header masqué au scroll réapparaît dès qu'un de ses liens reçoit le focus */
 .site-header.hide:focus-within{transform:none}
-/* ---- Le lockup : ecusson | MBC 974 / LA MONTAGNE ---- */
-.brand{display:flex;align-items:center;gap:1.05rem;flex:none;
-  margin-left:max(0px,calc((100vw - 1560px) / 2))}
+/* ---- Le lockup : ecusson | MBC 974 / LA MONTAGNE ----------------
+   V91. Le lockup est un .cat-rail a l'echelle du header : petit mot
+   Anton ORANGE colle a un titre Anton BLANC, puis une sous-ligne
+   condensee traquee (cf. .cat-rail__n / .cat-rail__t, plus bas dans ce
+   fichier). Ce qui est cite du systeme vieillit mieux que ce qui est
+   invente : c'est la raison d'etre de chaque valeur ci-dessous.
+
+   Doctrine inchangee : l'ecusson porte la marque, pas les effets.
+   Ni glow, ni neon, ni ombre orange, ni animation au repos.
+
+   TROIS REGLES DE MAINTENANCE, a ne pas perdre :
+   1. Les --lk-* posees sur .brand sont les SEULS reglages. Les media
+      queries ne touchent qu'a elles ; ne pas re-empiler d'override.
+   2. margin-right DOIT rester l'exact oppose du letter-spacing, en em.
+      Ici c'est structurel (--lk-ls sert aux deux) : impossible a violer.
+      Le bug existait : l'ancienne ligne 464 posait letter-spacing:.26em
+      sans que le margin-right:-.315em de la regle de base suive — la
+      compensation etait fausse en production a ce palier.
+   3. JAMAIS de degrade vertical sur .brand__num. Le span est INLINE :
+      sa boite fait ~47 px de haut alors que l'encre des capitales Anton
+      n'en fait que ~23 (bande ~19 %-68 % de la boite). Les arrets a 0 %
+      et 100 % n'etaient donc PAS vus, et 7 arrets ecrases sur cette
+      bande lisaient comme un arc-en-ciel brouille.
+   ----------------------------------------------------------------- */
+.brand{display:flex;align-items:center;gap:var(--lk-gap);flex:none;
+  margin-left:max(0px,calc((100vw - 1560px) / 2));
+  /* Les sept seuls reglages du lockup. */
+  --lk-logo:64px;      /* ecusson */
+  --lk-gap:1.05rem;    /* pilote a la fois le gap ET le padding du texte */
+  --lk-1:1.95rem;      /* MBC 974 */
+  --lk-2:.82rem;       /* LA MONTAGNE */
+  --lk-track:.22em;    /* traque de la ligne 2 (plafond du site : .28em) */
+  --lk-lead:.2rem;     /* interligne des deux lignes */
+  --lk-rule:3px;       /* debord du filet, en haut et en bas du bloc */
+  --lk-num:var(--orange-vif)}  /* couleur du 974 — cf. echappatoire plus bas */
 /* L'ecusson fait 360x370 : une boite carree evite les pixels perdus.
-   Il passe de 53 a 64 px de haut, soit +21 %. */
-.brand .logo-img{width:64px;height:64px;
-  filter:drop-shadow(0 2px 8px rgba(0,0,0,.45))}
-/* Le filet separateur : un hairline argent, eclaire en son centre et
-   eteint aux extremites. Repris de la version precedente, ou il etait
-   la meilleure idee du lockup. */
-.brand__txt{position:relative;display:flex;flex-direction:column;gap:.24rem;
-  line-height:1;padding-left:1.05rem;white-space:nowrap}
-.brand__txt::before{content:"";position:absolute;left:0;top:50%;
-  transform:translateY(-50%);width:1px;height:46px;opacity:.85;
-  transition:opacity .3s var(--ease-out);
+   L'ombre de 8 px est ce qui le detache quand la photo du hero passe
+   claire derriere la barre translucide : elle ne doit pas etre reduite. */
+.brand .logo-img{width:var(--lk-logo);height:var(--lk-logo);
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.45));
+  transition:filter .3s var(--ease-out)}
+/* align-items:center EST la correction du centrage. En flex column la
+   valeur par defaut est stretch : la boite de « LA MONTAGNE » etait
+   etiree aux 116 px de « MBC 974 » et son texte, cale a gauche, laissait
+   18,6 px de trou visibles a droite. */
+.brand__txt{position:relative;display:flex;flex-direction:column;
+  align-items:center;gap:var(--lk-lead);line-height:1;
+  padding-left:var(--lk-gap);white-space:nowrap}
+/* Le filet separateur : hairline argent, eclaire en son centre et eteint
+   aux extremites. Le fichier le designait deja comme la meilleure idee du
+   lockup ; sa matiere est conservee telle quelle. Un filet ORANGE a ete
+   essaye puis ecarte : avec un 974 desormais en aplat orange, ca faisait
+   deux marques chaudes a 17 px l'une de l'autre dans un bloc de 130 px.
+   Seule la geometrie change : il ne se mesure plus en px mais epouse le
+   bloc de texte. Cela supprime les trois height:46/39/36px des media
+   queries ET corrige un defaut present avant : a 360 px la ligne 2
+   disparaissait mais le filet restait a 36 px autour d'un bloc de 17 px.
+   Le debord --lk-rule compense le line-height:.9 qui rogne la boite em
+   d'Anton ; c'est un reglage optique, pas une mesure. Il remonte a 8 px
+   sous 360 px, ou le bloc n'a plus qu'une ligne : 23 px de filet face a un
+   ecusson de 50 px faisaient trop court. */
+.brand__txt::before{content:"";position:absolute;left:0;
+  top:calc(var(--lk-rule) * -1);bottom:calc(var(--lk-rule) * -1);
+  width:1px;opacity:.85;transition:opacity .3s var(--ease-out);
   background:linear-gradient(180deg,rgba(191,210,228,0) 0%,
     rgba(191,210,228,.45) 30%,rgba(255,255,255,.75) 50%,
     rgba(191,210,228,.45) 70%,rgba(191,210,228,0) 100%)}
-.brand__sub{font-family:var(--ff-display);font-weight:400;
-  font-size:1.95rem;line-height:.9;letter-spacing:.05em;
-  text-transform:uppercase;color:#fff;margin-right:-.05em;text-shadow:none}
-/* « 974 » aux couleurs du drapeau reunionnais — ciel, creme, or, volcan.
-   Detail d'identite conserve de la version precedente. Aucun glow au repos :
-   seul le degrade porte la couleur. */
-.brand__num{color:var(--orange-vif);filter:none}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){.brand__num{background:linear-gradient(172deg,#8FC1F2 0%,#6FA9E6 28%,
-    #F2E3B2 36%,#FFD054 44%,#FFC12E 58%,#F0553F 74%,#E64435 100%);
-    -webkit-background-clip:text;background-clip:text;
-    -webkit-text-fill-color:transparent;color:transparent}}
-/* « LA MONTAGNE » : le letter-spacing traine a droite, on l'annule pour
-   que les deux lignes s'alignent optiquement sur le meme bord. */
-.brand__sub2{display:block;font-family:var(--ff-cond);font-weight:600;
-  font-size:.76rem;letter-spacing:.315em;margin-right:-.315em;
-  text-transform:uppercase;color:#F4F7FB;line-height:1;
+/* Ligne 1 — le nom. C'est elle qui fixe la mesure du bloc.
+   letter-spacing ajoute sa chasse APRES le dernier glyphe : la marge
+   negative de meme valeur ramene la largeur EXTERIEURE sur l'encre, donc
+   align-items:center centre l'encre et non la boite. Sans elle, l'encre
+   tomberait d'une demi-chasse a gauche. Les deux valeurs derivent de
+   --lk-ls : elles ne peuvent plus diverger. */
+.brand__sub{--lk-ls:.05em;
+  font-family:var(--ff-display);font-weight:400;
+  font-size:var(--lk-1);line-height:.9;
+  letter-spacing:var(--lk-ls);margin-right:calc(var(--lk-ls) * -1);
+  text-transform:uppercase;color:var(--blanc);text-shadow:none}
+/* « 974 » — aplat orange, exactement le traitement de .cat-rail__n. Le
+   numero de departement EST le marqueur reunionnais : la couleur n'avait
+   pas a le redire, et l'ecusson porte deja le bleu / blanc / orange.
+   Il reste le SEUL element colore du lockup : il gagne en distinction ce
+   qu'il perd en effet.
+   Les deux garde-fous ne sont pas decoratifs : background:none neutralise
+   tout reste de l'ancien @supports (y compris une feuille perimee
+   resservie par le service worker), et -webkit-text-fill-color:currentColor
+   interdit le retour du montage background-clip:text, qui rend le 974
+   INVISIBLE partout ou le clip ne peint pas — cas connu sous un ancetre
+   en backdrop-filter, ce qui est precisement notre header.
+   Echappatoire de contraste : si le 974 parait sourd sur la photo du hero,
+   une seule valeur a changer — .brand{--lk-num:#F0913A}. C'est un
+   logotype, exempte par WCAG 1.4.3, et c'est le « MBC » blanc qui porte
+   la lecture. */
+.brand__num{color:var(--lk-num);filter:none;
+  background:none;-webkit-text-fill-color:currentColor}
+/* Ligne 2 — le lieu. Meme mecanique de compensation que la ligne 1.
+   .315em sortait de l'echelle du site (plafond .28em sur .kicker) : .22em
+   y rentre, et le corps monte de .76 a .82rem — plus grosse et moins
+   ecartelee, donc plus lisible sur telephone.
+   word-spacing : a forte traque l'espace-mot ne vaut plus qu'environ 1,5
+   fois l'espace-lettre et « LA MONTAGNE » se met a lire « LAMONTAGNE ».
+   .06em redonne la coupure sans peser sur la largeur. */
+.brand__sub2{--lk-ls:var(--lk-track);
+  display:block;font-family:var(--ff-cond);font-weight:600;
+  font-size:var(--lk-2);
+  letter-spacing:var(--lk-ls);margin-right:calc(var(--lk-ls) * -1);
+  word-spacing:.06em;
+  text-transform:uppercase;color:#DCE7F3;line-height:1;
   transition:color .3s var(--ease-out)}
-.brand:hover .brand__txt::before{opacity:1}
-@media (prefers-reduced-motion:reduce){.brand__sub2,.brand__txt::before{transition:none!important}}
+/* Survol / focus : la grammaire du site (.cat__link:hover{color:#fff}).
+   Le filet s'allume, le lieu passe au blanc, l'ombre de l'ecusson se
+   creuse. Rien ne bouge, rien ne grossit, rien ne brille : le scale(1.035)
+   et le drop-shadow orange qui trainaient plus bas dans le fichier (ancien
+   bloc « Logo : reaction au survol du header ») ont ete supprimes, ils
+   contredisaient mot pour mot la doctrine ecrite en tete de ce bloc.
+   Le prefixe .site-header n'est pas cosmetique : il donne a ces regles
+   assez de specificite (0,3,0) pour battre un futur .brand:hover reintroduit
+   ailleurs par distraction. */
+.site-header .brand:hover,.site-header .brand:focus-visible{transform:none}
+.site-header .brand:hover .brand__txt::before,
+.site-header .brand:focus-visible .brand__txt::before{opacity:1}
+.site-header .brand:hover .brand__sub2,
+.site-header .brand:focus-visible .brand__sub2{color:var(--blanc)}
+.site-header .brand:hover .logo-img,
+.site-header .brand:focus-visible .logo-img{
+  filter:drop-shadow(0 3px 12px rgba(0,0,0,.6))}
+@media (prefers-reduced-motion:reduce){
+  .brand,.brand .logo-img,.brand__sub2,.brand__txt::before{
+    transition:none!important}}
 /* ---- Navigation ---- */
 .nav{display:flex;align-items:center;gap:.1rem;
   margin-right:max(0px,calc((100vw - 1560px) / 2))}
@@ -453,30 +545,39 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
 .reveal--scale.in{transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none}
 .hero__scroll span{animation:none}}
-/* ---- Header responsive ---- */
+/* ---- Header responsive ----
+   Le lockup ne se pilote que par les --lk-* declarees sur .brand.
+   Plus aucune hauteur de filet ici : .brand__txt::before epouse le bloc
+   de texte. Plus aucune surcharge de margin-right non plus : la
+   compensation de chasse derive de --lk-track — c'est exactement le bug
+   qui vivait ici, letter-spacing:.26em pose sans que le margin-right
+   de la regle de base suive.
+   Le rapport d'encre ligne 2 / ligne 1 vaut 81 % en desktop et a 1180 px ;
+   il monte a 87 % sous 520 px parce qu'on refuse de descendre le corps de
+   la ligne 2 sous le seuil de confort de lecture. La lisibilite passe
+   avant la constance du rapport. */
 @media (max-width:1180px){/* le burger prend le relais : la nav a 8 entrees + un CTA */
 .site-header{height:70px}
-.brand{margin-left:0}
-.nav{margin-right:0}
-.brand .logo-img{width:54px;height:54px}
-.brand__txt::before{height:39px}
-.brand__sub{font-size:1.62rem}
-.brand__sub2{font-size:.66rem;letter-spacing:.26em}}
+.brand{margin-left:0;--lk-logo:54px;--lk-1:1.62rem;--lk-2:.70rem;--lk-track:.20em}
+.nav{margin-right:0}}
 @media (max-width:520px){.site-header{height:66px;padding:0 16px}
 /* L'ecusson ne redevient jamais minuscule : il reste le repere.
-     Mesure a 390 px : il restait 163 px libres entre la marque et le
-     burger, la place ne manquait pas. */
-.brand .logo-img{width:50px;height:50px}
-.brand{gap:.72rem}
-.brand__txt{padding-left:.8rem;gap:.17rem}
-.brand__txt::before{height:36px}
-.brand__sub{font-size:1.42rem}
-/* .58rem tombait a 9,3 px : sous le seuil de confort de lecture. */
-.brand__sub2{font-size:.68rem;letter-spacing:.2em;margin-right:-.2em}}
-@media (max-width:360px){/* sous 360 px on garde l'ecusson et « MBC 974 », on retire la ligne
-     secondaire plutot que de tout comprimer. */
-.brand__sub2{display:none}
-.brand__sub{font-size:1.2rem}}
+     Le lockup fait 159 px de large ici ; a 390 px il reste ~155 px libres
+     entre la marque et le burger de 44 px. Le nom garde 1.42rem : le
+     faire grossir n'etait ni demande ni verifie contre le burger. */
+.brand{--lk-logo:50px;--lk-gap:.78rem;--lk-1:1.42rem;
+  /* .58rem tombait a 9,3 px : sous le seuil de confort. .68rem = 10,9 px. */
+  --lk-2:.68rem;--lk-track:.18em;--lk-lead:.16rem}}
+@media (max-width:360px){/* sous 360 px on retire la ligne secondaire de l'AFFICHAGE plutot que de
+     tout comprimer — mais pas de l'arbre d'accessibilite. display:none
+     retirait « La Montagne » du nom accessible du lien et de l'extraction
+     texte, soit le mot-cle SEO local n°1 du site, retire exactement sur la
+     largeur ou le trafic est mobile. On applique la recette .sr-only du
+     site (ligne 71). Le filet suit tout seul : il epouse le bloc, qui ne
+     fait plus qu'une ligne. */
+.brand{--lk-1:1.2rem;--lk-rule:8px}
+.brand__sub2{position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);border:0}}
 /* ---------------- Responsive ---------------- */
 @media (min-width:820px){.contact__grid{grid-template-columns:1.35fr .95fr}
 .footer__top{grid-template-columns:1.5fr 1fr 1fr 1.1fr}}
@@ -1530,10 +1631,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cat:hover::before{transform:scale(2.1)}
 /* ---- Action cards (hero) : lift plus marqué ---- */
 /* ---- Maillots : tilt 3D plus expressif + glow au survol ---- */
-/* ---- Logo : réaction au survol du header ---- */
-.brand{transition:transform .3s var(--ease-pop)}
-.brand:hover{transform:scale(1.035)}
-.brand:hover .logo-img{filter:drop-shadow(0 4px 14px rgba(0,0,0,.6)) drop-shadow(0 0 18px rgba(232,130,42,.35))}
 /* ---- Navigation desktop : soulignement dynamique ---- */
 .nav a:not(.nav__cta){position:relative}
 .nav a:not(.nav__cta)::after{content:"";position:absolute;left:.8em;right:.8em;bottom:.25em;height:2px;background:var(--grad-orange);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease-pop)}
