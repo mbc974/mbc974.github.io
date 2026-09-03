@@ -1771,18 +1771,31 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ligne, ce qui le rend continu. */
 @media (min-width:720px){
 .ess-stats{display:grid;grid-template-columns:2rem max-content minmax(0,1fr);
-    align-items:center;column-gap:clamp(1rem,2.2vw,1.7rem);max-width:46rem}
+    column-gap:clamp(1rem,2.2vw,1.7rem);max-width:46rem}
 .ess-stat{display:contents}
+/* Les trois cellules d'une meme ligne restent ETIREES (align-items garde sa
+   valeur par defaut, stretch) : leurs bords hauts coincident, donc les trois
+   filets se rejoignent en UN seul trait continu. Les centrer une a une —
+   ce que faisait la version precedente — posait chaque filet a la hauteur de
+   sa propre boite : trois segments a trois hauteurs differentes. Le contenu,
+   lui, se centre a l'interieur de chaque cellule. */
 .ess-stat__ic,.ess-stat__v,.ess-stat__l{
-    padding-block:clamp(1.05rem,2.1vw,1.5rem);
     border-top:1px solid rgba(191,210,228,.15)}
+.ess-stat__v,.ess-stat__l{padding-block:clamp(1.05rem,2.1vw,1.5rem)}
 .ess-stat:first-child>*{border-top:0;padding-top:0}
 .ess-stat:last-child>*{padding-bottom:0}
-.ess-stat__ic{grid-row:auto;width:1.85rem;height:1.85rem}
-.ess-stat__v{grid-column:2;align-self:center;white-space:nowrap;
+/* L'icone n'a ni hauteur fixe ni padding. box-sizing:border-box est global
+   (ligne 62) : height:1.85rem + padding-block:1.5rem donnait une boite de
+   CONTENU de hauteur nulle, et le dessin etait ecrase en un tiret orange.
+   Elle occupe donc toute la hauteur de la ligne et le viewBox s'y centre
+   seul (preserveAspectRatio par defaut), a sa largeur de 1.85rem. */
+.ess-stat__ic{grid-row:auto;width:1.85rem;height:100%;align-self:stretch}
+.ess-stat__v{grid-column:2;align-self:stretch;
+    display:flex;align-items:center;white-space:nowrap;
     font-size:clamp(2.1rem,3.4vw,3rem)}
-.ess-stat__l{grid-column:3;align-self:center;margin:0;
-    font-size:clamp(1rem,1.05vw,1.1rem)}
+.ess-stat__l{grid-column:3;align-self:stretch;
+    display:flex;flex-direction:column;justify-content:center;
+    margin:0;font-size:clamp(1rem,1.05vw,1.1rem)}
 .ess-stat__x{margin-top:.34rem}}
 
 /* ---- la barre de reassurance ----
@@ -1820,12 +1833,22 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   justify-items:start;gap:1rem;margin:0;
   padding-top:clamp(1.2rem,3.4vw,1.7rem);
   border-top:1px solid rgba(191,210,228,.14)}
-.ess-proof__ph{position:relative;width:min(56vw,220px);
+/* La photo etait cadree large : la maire n'occupait qu'un tiers de la
+   largeur, entre deux personnes qui ne sont pas le sujet, et a 172 px de
+   large on ne la reconnaissait pas. Deux gestes, pas un :
+   le bloc grandit (172 -> 252 px), et l'image est agrandie de 38 % autour
+   du point ou elle se trouve (34 % / 26 %), ce qui recadre par les bords
+   sans deplacer le sujet. La source fait 760 px : meme agrandie, il reste
+   550 px de source pour 252 px affiches, soit du 2,2x — aucun flou.
+   Le cadre passe en 4/5 : le format portrait de la source (0,80) laissait
+   du vide en bas une fois le sujet remonte. */
+.ess-proof__ph{position:relative;width:min(62vw,252px);aspect-ratio:4/5;
   border-radius:var(--r-sm);overflow:hidden;
   box-shadow:0 10px 26px rgba(3,8,18,.45);
-  -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%);
-  mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%)}
-.ess-proof__ph img{display:block;width:100%;height:auto}
+  -webkit-mask-image:linear-gradient(180deg,#000 78%,rgba(0,0,0,.55) 94%,rgba(0,0,0,.15) 100%);
+  mask-image:linear-gradient(180deg,#000 78%,rgba(0,0,0,.55) 94%,rgba(0,0,0,.15) 100%)}
+.ess-proof__ph img{display:block;width:100%;height:100%;object-fit:cover;
+  transform:scale(1.38);transform-origin:34% 26%}
 .ess-proof__cap{position:relative}
 .ess-proof__lab{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
   font-size:.92rem;letter-spacing:.11em;text-transform:uppercase;
@@ -1838,14 +1861,18 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (min-width:560px){
 .ess-proof{grid-template-columns:auto minmax(0,1fr);align-items:center;
     gap:clamp(1rem,3vw,1.5rem)}
-.ess-proof__ph{width:clamp(148px,16vw,172px)}
+.ess-proof__ph{width:clamp(190px,21vw,252px)}
 .ess-proof__cap{padding-left:clamp(.95rem,2.4vw,1.3rem)}
 .ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
     width:1px;background:linear-gradient(180deg,var(--orange-vif),
       rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}}
 
-/* ---- l'action ---- */
-.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem}
+/* ---- l'action ----
+   Centres : la bande de reassurance juste au-dessus est pleine largeur et
+   symetrique, deux boutons cales a gauche sous elle faisaient retomber la
+   composition d'un cote. En telephone ils passent pleine largeur, le
+   centrage n'a alors plus d'effet. */
+.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
 @media (max-width:719px){.ess__cta .btn{flex:1 1 100%;justify-content:center;
   /* « Je m'inscris · saison 2026/2027 » passait sur deux lignes a 375 px */
   padding-inline:1.1rem!important;font-size:1rem!important}}
