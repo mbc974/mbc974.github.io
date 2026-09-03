@@ -156,9 +156,17 @@ a{color:inherit;text-decoration:none}
   /* Les sept seuls reglages du lockup. */
   --lk-logo:64px;      /* ecusson */
   --lk-gap:1.05rem;    /* pilote a la fois le gap ET le padding du texte */
-  --lk-1:1.95rem;      /* MBC 974 */
-  --lk-2:.70rem;       /* LA MONTAGNE · SAINT-DENIS */
-  --lk-track:.13em;    /* traque de la ligne 2 (plafond du site : .28em) */
+  --lk-1:2.3rem;       /* MBC 974 — c'est LUI qui donne la mesure */
+  --lk-2:.66rem;       /* LA MONTAGNE · SAINT-DENIS */
+  --lk-track:.10em;    /* traque de la ligne 2. Reglee au compromis : sa
+                          largeur NATURELLE tombe 5 px sous celle du nom,
+                          soit 1,7 px de mou par espace-mot — invisible a la
+                          justification. La coller a 1 px du nom donnerait un
+                          rendu plus pur MAIS, pendant le chargement des
+                          polices (Impact est 5 % plus etroit qu'Anton), la
+                          sous-ligne depasserait le nom : 5 px de reserve,
+                          c'est exactement ce qu'il faut pour que le repli
+                          reste, lui aussi, dans la mesure. */
   --lk-lead:.2rem;     /* interligne des deux lignes */
   --lk-rule:3px;       /* debord du filet, en haut et en bas du bloc */
   --lk-num:var(--orange-vif)}  /* couleur du 974 — cf. echappatoire plus bas */
@@ -234,13 +242,31 @@ a{color:inherit;text-decoration:none}
    word-spacing : a forte traque l'espace-mot ne vaut plus qu'environ 1,5
    fois l'espace-lettre et les mots se recollent. .06em redonne la
    coupure sans peser sur la largeur. */
+/* Les deux lignes doivent faire EXACTEMENT la meme longueur. Figer des
+   corps qui tombent juste ne marcherait qu'avec Anton et Barlow Condensed
+   charges : au premier repli de police l'accord se defait. On procede donc
+   autrement — la ligne 1 est dimensionnee pour depasser la ligne 2 de
+   quelques pour cent, la ligne 2 est ETIREE sur cette largeur (align-self)
+   puis JUSTIFIEE : le moteur repartit le mou dans les trois espaces-mots
+   (« LA _ MONTAGNE _ · _ SAINT-DENIS »). Le bord droit tombe au pixel, quelle
+   que soit la police reellement utilisee.
+   La compensation de chasse joue toujours : la boite etiree fait
+   conteneur + chasse (marge negative), la ligne justifiee la remplit, et
+   l'encre s'arrete donc exactement sur le conteneur.
+   text-align:center reste la valeur de base — sans text-align-last (Safari
+   < 16), une ligne unique justifiee retomberait a gauche, ce qui rouvrirait
+   le defaut d'origine. Le @supports ne prend la main que si le navigateur
+   sait justifier la derniere ligne. */
 .brand__sub2{--lk-ls:var(--lk-track);
-  display:block;font-family:var(--ff-cond);font-weight:600;
+  display:block;align-self:stretch;text-align:center;
+  font-family:var(--ff-cond);font-weight:600;
   font-size:var(--lk-2);
   letter-spacing:var(--lk-ls);margin-right:calc(var(--lk-ls) * -1);
   word-spacing:.06em;
   text-transform:uppercase;color:#DCE7F3;line-height:1;
   transition:color .3s var(--ease-out)}
+@supports (text-align-last:justify){
+.brand__sub2{text-align:justify;text-align-last:justify}}
 /* Survol / focus : la grammaire du site (.cat__link:hover{color:#fff}).
    Le filet s'allume, le lieu passe au blanc, l'ombre de l'ecusson se
    creuse. Rien ne bouge, rien ne grossit, rien ne brille : le scale(1.035)
@@ -564,22 +590,23 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    CORPS (2,1 fois) qui tient le lockup a ces largeurs, pas la largeur. */
 @media (max-width:1180px){/* le burger prend le relais : la nav a 8 entrees + un CTA */
 .site-header{height:70px}
-/* Le nom remonte de 1.62 a 1.74rem : c'est desormais la ligne 2 qui donne
-   la mesure du bloc, donc l'agrandir ne coute pas un pixel de largeur, et
-   sans lui le nom se faisait deborder de 35 % par sa propre sous-ligne. */
-.brand{margin-left:0;--lk-logo:54px;--lk-1:1.74rem;--lk-2:.66rem;--lk-track:.10em}
+/* Le nom ne peut plus descendre librement : il fixe la mesure que la
+   sous-ligne vient remplir, et la sous-ligne a un plancher de lisibilite
+   (10,2 px). L'ecusson et les gouttieres se resserrent, le bloc de texte
+   reste presque constant : c'est le prix de deux lignes rigoureusement
+   egales. */
+.brand{margin-left:0;--lk-logo:54px;--lk-1:2.24rem;--lk-2:.64rem}
 .nav{margin-right:0}}
 @media (max-width:520px){.site-header{height:66px;padding:0 16px}
 /* L'ecusson ne redevient jamais minuscule : il reste le repere.
      Le lockup fait 159 px de large ici ; a 390 px il reste ~155 px libres
      entre la marque et le burger de 44 px. Le nom garde 1.42rem : le
      faire grossir n'etait ni demande ni verifie contre le burger. */
-.brand{--lk-logo:50px;--lk-gap:.78rem;--lk-1:1.56rem;
-  /* .58rem tombait a 9,3 px : sous le seuil de confort. .66rem = 10,6 px.
-     La traque descend a .08em : c'est le seul reglage qui reste pour
-     contenir les 25 caracteres a 200 px de lockup, soit 99 px d'air avant
-     le burger a 375 px de large. */
-  --lk-2:.66rem;--lk-track:.08em;--lk-lead:.16rem}}
+.brand{--lk-logo:50px;--lk-gap:.78rem;--lk-1:2.1rem;
+  /* .58rem tombait a 9,3 px : sous le seuil de confort. .64rem = 10,2 px,
+     plancher retenu. La traque tombe a .06em : c'est le dernier reglage
+     disponible pour tenir les 25 caracteres dans la mesure du nom. */
+  --lk-2:.64rem;--lk-track:.07em;--lk-lead:.16rem}}
 @media (max-width:360px){/* sous 360 px on retire la ligne secondaire de l'AFFICHAGE plutot que de
      tout comprimer — mais pas de l'arbre d'accessibilite. display:none
      retirait « La Montagne » du nom accessible du lien et de l'extraction
