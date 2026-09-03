@@ -3152,6 +3152,71 @@ body.cine-fs-lock{overflow:hidden}
    (le grand 95 € reste réservé à la section « Votre enfant entre de bonnes mains ») */
 @media (max-width:559px){.essentiel-card__val--price{font-size:1.5rem!important}}
 /* ============================================================
+   V92 — Fiche adhesion : cinq cases, aucune case orpheline
+   ------------------------------------------------------------
+   Cinq cases dans une grille de trois colonnes laissaient la sixieme
+   place vide : deux cases calees a gauche et un trou a droite que
+   rien ne justifiait. Centrer la derniere ligne n'aurait fait que
+   deplacer le probleme — deux cases flottant entre deux marges, sans
+   alignement avec la ligne du dessus.
+   La grille passe donc a SIX colonnes et les cases se repartissent
+   par empans, ce qui la referme exactement a chaque palier :
+     >=900 px : trois cases sur 2 colonnes, puis DEUX sur 3 colonnes
+     560-899  : deux colonnes, la cinquieme prend la ligne entiere
+     <560 px  : une colonne, aucune regle ne s'applique
+   Le rang du bas n'est pas un rattrapage de mise en page : ce sont
+   les deux faits de PROCEDURE (delai de reponse, seance d'essai) la
+   ou le rang du haut porte les faits d'IDENTITE (prix, formules,
+   lieux). Plus large et plus basse, la bande se lit comme un second
+   niveau — la hierarchie vient de la hauteur, pas de la largeur.
+
+   Les selecteurs sont volontairement conditionnes au NOMBRE de cases :
+   :nth-child(4):nth-last-child(2) ne matche que s'il y en a exactement
+   cinq. Le jour ou une sixieme case est ajoutee, ces regles cessent
+   d'elles-memes et la grille reprend 3 + 3 sans rien a defaire.
+   ============================================================ */
+/* --- 1. Fermer la grille : six colonnes, des empans. Rien d'autre. --- */
+@media (min-width:900px){
+.essentiel-grid{grid-template-columns:repeat(6,1fr)}
+.essentiel-grid>.essentiel-card{grid-column:span 2}
+.essentiel-grid>.essentiel-card:nth-child(4):nth-last-child(2),
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1){grid-column:span 3}}
+/* --- 2. Deux colonnes : seule la cinquieme est orpheline. --- */
+@media (min-width:560px) and (max-width:899px){
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1){grid-column:span 2}}
+/* --- 3. Mise en page en ligne des cases elargies — pastille, chiffre,
+       libelle — soit la grammaire des lignes .ess-stat de la page
+       d'accueil. Empilees, elles montaient a 276 px de haut contre 233 au
+       rang du dessus : la bande secondaire finissait plus lourde que le
+       rang principal, exactement l'inverse de ce qu'on veut. En ligne elle
+       retombe a 120 px et se lit comme un second niveau.
+       Le chiffre y descend de 2.2 a 1.7rem. Ce n'est pas cosmetique : a
+       2.2rem, « Seance d'essai » prenait 209 px des 496 de la case et il ne
+       restait que 105 px de libelle, soit trois lignes hachees (mesure a
+       1120 px). A 1.7rem il en prend 145 et le libelle repasse a 181 px.
+       La hierarchie y gagne deux fois — par la hauteur ET par le corps.
+       Seuil a 1120 px : en dessous, la case elargie n'a pas la place et le
+       contenu reste empile ; la grille, elle, est fermee des 900 px. --- */
+@media (min-width:1120px){
+.essentiel-grid>.essentiel-card:nth-child(4):nth-last-child(2),
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1){
+  flex-direction:row;align-items:center;gap:clamp(1.1rem,2.4vw,1.8rem)}
+.essentiel-grid>.essentiel-card:nth-child(4):nth-last-child(2) .essentiel-card__val,
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1) .essentiel-card__val{
+  font-size:clamp(1.4rem,1.8vw,1.7rem)!important;white-space:nowrap}
+.essentiel-grid>.essentiel-card:nth-child(4):nth-last-child(2) .essentiel-card__lbl,
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1) .essentiel-card__lbl{
+  flex:1;max-width:32ch}}
+/* La case pleine largeur du palier deux colonnes a toujours la place :
+   684 px mesures a 760 px de fenetre. */
+@media (min-width:560px) and (max-width:899px){
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1){
+  flex-direction:row;align-items:center;gap:clamp(1.1rem,2.4vw,1.8rem)}
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1) .essentiel-card__val{
+  font-size:clamp(1.4rem,1.8vw,1.7rem)!important;white-space:nowrap}
+.essentiel-grid>.essentiel-card:nth-child(5):nth-last-child(1) .essentiel-card__lbl{
+  flex:1;max-width:32ch}}
+/* ============================================================
    V66 — "Suivez le MBC" : visuel joueur en fondu premium (droite)
    + liens reseaux en COLONNE (garcon deplace depuis "Pret a faire
    partie"). Fondu lateral par masque, comme le visuel de la section "Suivez le MBC".
