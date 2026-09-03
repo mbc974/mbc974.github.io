@@ -1559,222 +1559,230 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ============================================================ */
 /* ---- L'essentiel : infos rapides juste après le hero ---- */
 /* ============================================================
-   V89 — L'essentiel : campagne de pré-inscription
+   V90 — L'essentiel : deux colonnes, une seule grammaire
    ------------------------------------------------------------
-   Six cartes identiques donnaient le même poids à six informations très
-   inégales. La section devient éditoriale : une photo réelle du club,
-   trois statistiques portées par la seule typographie, et les arguments
-   restants en bande basse.
+   V89 posait le tirage en absolu a droite et empilait quatre blocs
+   de rythmes differents dans la colonne restante. Mesure a 1350 px :
+   chaque chiffre n'avait plus que 200 px de large, le libelle
+   « Gymnase … Ruisseau Blanc » tombait sur quatre lignes, et la
+   colonne se terminait en escalier. En mobile, les six lignes
+   (trois chiffres + trois arguments) avaient exactement le meme
+   poids : plus rien ne se lisait « en un coup d'oeil ».
 
-   La grille de cartes reste définie plus haut dans ce fichier :
-   adhesion.html s'en sert encore, on ne la supprime donc pas.
+   La section devient une vraie grille :
+     colonne gauche  — titre, fiche technique, preuve calee en bas ;
+     colonne droite  — le tirage, dans le flux, plus en absolu ;
+     dessous         — deux bandes pleine largeur : la reassurance
+                       encadree, puis l'action.
+   Les chiffres passent en lignes alignees sur une colonne de largeur
+   commune (max-content partage par les trois lignes) : meme structure
+   du telephone au grand ecran, seule l'echelle change.
 
-   L'orange ne sert qu'à trois choses ici : « en un coup d'œil », le prix,
-   et le bouton d'inscription.
+   Trois materiaux, trois roles, pour qu'aucun bloc n'ait le poids de
+   son voisin : la typographie porte les chiffres, un filet separe les
+   lignes, un seul cadre leger tient la barre de reassurance.
+   L'orange ne sert qu'a designer : « en un coup d'oeil », les icones,
+   les libelles de la fiche, le bouton d'inscription.
    ============================================================ */
 .ess{position:relative;overflow:hidden;isolation:isolate;
-  background:linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
-    var(--nuit-2) 100%)}
-/* ---- La photo : un cadre, plus un fondu ----
-   Elle passait derriere le texte, effacee par un masque en degrade. Ce
-   fondu imposait deux servitudes : des voiles sombres et un halo sur chaque
-   lettre pour que le texte reste lisible par-dessus. Tout cela disparait.
-   La photo devient un tirage encadre, pose a droite, et le texte s'arrete
-   avant elle. Le cadre reprend le vocabulaire du site : angles arrondis,
-   filet clair de 1 px, ombre profonde et diffuse. Le seul accent orange est
-   une equerre fine, decalee — une ligne d'architecte, pas un halo. */
-.ess__photo{position:absolute;right:clamp(1.5rem,4vw,4.5rem);
-  top:50%;translate:0 -50%;margin:0;z-index:1;
-  /* Elle etait plafonnee a 420 px : sur un ecran de 1920 elle ne pesait plus
-     que 22 % de la largeur et 48 % de la hauteur de la section, avec 298 px
-     de vide au-dessus et en dessous. Elle occupe maintenant un tiers de la
-     largeur et plus des trois quarts de la hauteur — elle ancre la colonne
-     de droite au lieu d'y flotter. La hauteur est pilotee par la section,
-     pas par le ratio : le cadre reste plein quel que soit le texte. */
-  /* Ratio naturel, pas de hauteur imposee : en 600x880 le cadre etait plus
-     etroit que la source et rognait 9 % de la largeur — soit la premiere
-     lettre d'« ANSANM NOU LE PLI FOR » et la derniere d'« EN LER ». Ces
-     devises sont l'identite du club, on ne les coupe pas. La largeur
-     compense la hauteur perdue. */
-  width:min(38%,700px);aspect-ratio:3/4;
-  border-radius:18px;
+  /* deux lueurs tres basses (pas de filtre, pas de flou) : elles creusent
+     le fond derriere le tirage et sous le titre, sans halo visible. */
+  background:
+    radial-gradient(78% 46% at 82% 4%,rgba(27,81,158,.20),transparent 62%),
+    radial-gradient(64% 42% at -6% 96%,rgba(217,106,27,.10),transparent 60%),
+    linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
+      var(--nuit-2) 100%)}
+
+/* ---- la grille ----
+   En mobile tout s'empile ; .ess__lead se dissout (display:contents) pour
+   que le tirage vienne s'intercaler entre le titre et la fiche technique.
+   L'ordre de lecture est alors : promesse, photo, chiffres, garanties,
+   preuve, action. */
+.ess__in{position:relative;z-index:2;
+  display:grid;grid-template-columns:minmax(0,1fr);
+  row-gap:clamp(1.9rem,5vw,2.6rem)}
+.ess__lead{display:contents}
+.ess__head{order:1}
+.ess__photo{order:2}
+.ess-stats{order:3}
+.ess-plus{order:4}
+.ess-proof{order:5}
+.ess__cta{order:6}
+
+/* ---- le titre ---- */
+.ess__head{max-width:34rem}
+.ess__kicker{display:flex;align-items:center;gap:.85rem}
+.ess__kicker::before{content:"";width:2.1rem;height:2px;flex:none;
+  background:var(--grad-orange);border-radius:2px}
+.ess__sub{margin:1.05rem 0 0;max-width:46ch;color:var(--txt-soft);
+  font-size:clamp(1.04rem,1.05vw,1.16rem);line-height:1.62}
+.ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-thickness:1px}
+.ess__sub a:hover{color:var(--orange-vif)}
+
+/* ---- le tirage ----
+   Un cadre, pas un fond : angles arrondis, filet clair de 1 px, ombre
+   profonde et deux equerres fines decalees — une ligne d'architecte,
+   pas un halo. Le ratio 3/4 est celui de la source : on ne recadre pas,
+   les devises du club peintes sur la banniere ne se coupent pas. */
+.ess__photo{position:relative;margin:0;justify-self:center;z-index:1;
+  /* pleine largeur sur telephone, puis il suit l'espace disponible :
+     seul, au milieu d'une colonne de 835 px, un cadre de 420 px flottait. */
+  width:min(100%,max(420px,54vw));aspect-ratio:3/4;border-radius:18px;
   box-shadow:0 34px 78px rgba(3,8,18,.66),0 4px 14px rgba(3,8,18,.48)}
-/* l'image, dans le cadre */
 .ess__photo img{width:100%;height:100%;object-fit:cover;object-position:center 42%;
   border-radius:inherit;display:block;
   border:1px solid rgba(191,210,228,.18);
   filter:saturate(1.02) contrast(1.02)}
-/* l'equerre orange, decalee en haut a gauche */
 .ess__photo::before{content:"";position:absolute;z-index:-1;
   top:-10px;left:-10px;width:38%;height:26%;
   border-top:1px solid var(--orange-vif);border-left:1px solid var(--orange-vif);
   border-top-left-radius:18px;opacity:.85;pointer-events:none}
-/* et son echo, en bas a droite */
 .ess__photo::after{content:"";position:absolute;z-index:-1;
   bottom:-10px;right:-10px;width:26%;height:18%;
   border-bottom:1px solid rgba(191,210,228,.28);
   border-right:1px solid rgba(191,210,228,.28);
   border-bottom-right-radius:18px;pointer-events:none}
-.ess__in{position:relative;z-index:2}
-.ess__head{max-width:34rem}
-.ess__sub{margin:1.05rem 0 0;max-width:44ch;color:var(--txt-soft);
-  font-size:1.1rem;line-height:1.62}
-.ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
-  text-underline-offset:3px;text-decoration-thickness:1px}
-.ess__sub a:hover{color:var(--orange-vif)}
-/* ---- les trois chiffres ----
-   La valeur en blanc, le libellé en orange : l'œil accroche le chiffre,
-   la couleur nomme ce qu'il désigne. Pas de carte, des filets suffisent. */
-.ess-stats{display:flex;flex-wrap:wrap;margin:clamp(2rem,4vw,2.7rem) 0 0;
-  padding:0;gap:1.6rem 0}
-.ess-stat{padding:0 clamp(1.2rem,2.8vw,2.3rem);
-  border-left:1px solid rgba(191,210,228,.20)}
-.ess-stat:first-child{padding-left:0;border-left:0}
-.ess-stat__ic{width:2.05rem;height:2.05rem;color:var(--orange-vif);
-  display:block;margin-bottom:.85rem}
-.ess-stat__v{font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(2.1rem,3.2vw,3.9rem);line-height:.92;color:var(--blanc);
+
+/* ---- la fiche technique ----
+   Une ligne par information, un filet entre les lignes. Le chiffre en
+   blanc, le libelle en orange : l'oeil accroche le nombre, la couleur
+   nomme ce qu'il designe. Pas de carte. */
+.ess-stats{margin:0;padding:0}
+.ess-stat{display:grid;grid-template-columns:1.9rem minmax(0,1fr);
+  column-gap:1rem;align-items:center;padding:1.15rem 0;
+  border-top:1px solid rgba(191,210,228,.15)}
+.ess-stat:first-child{border-top:0;padding-top:0}
+.ess-stat:last-child{padding-bottom:0}
+.ess-stat__ic{grid-column:1;grid-row:span 2;align-self:center;
+  width:1.7rem;height:1.7rem;color:var(--orange-vif)}
+.ess-stat__v{grid-column:2;align-self:end;margin:0;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2rem,7.6vw,2.5rem);line-height:.92;color:var(--blanc);
   letter-spacing:-.005em}
-.ess-stat__l{margin:.55rem 0 0;font-family:var(--ff-cond);font-weight:700;
-  font-size:1.02rem;line-height:1.26;letter-spacing:.035em;
-  text-transform:uppercase;color:var(--orange-vif);max-width:16ch}
-.ess-stat__x{display:block;margin-top:.34rem;font-weight:500;
-  font-size:.93rem;letter-spacing:0;text-transform:none;color:var(--txt-soft)}
-/* ---- La preuve : deuxieme niveau de lecture de la section ----
-   Volontairement modeste a cote des trois chiffres : ce n'est pas une
-   carte, c'est une photo posee sur le bleu nuit avec une legende a cote.
-   Le bord gauche de l'image se fond dans le fond (masque), un filet
-   orange 1px separe la photo de la legende. Pas de cadre blanc, pas
-   d'ombre large : la photo doit sembler imprimee sur la page. */
-.ess-proof{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);
-  align-items:center;gap:clamp(1rem,3vw,1.6rem);margin:clamp(1.7rem,4vw,2.3rem) 0 0;
-  padding-top:clamp(1.3rem,3vw,1.7rem);border-top:1px solid rgba(191,210,228,.14)}
-.ess-proof__ph{position:relative;width:min(42vw,210px);flex:none;
+.ess-stat__l{grid-column:2;align-self:start;margin:.32rem 0 0;
+  font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1.26;
+  letter-spacing:.035em;text-transform:uppercase;color:var(--orange-vif)}
+.ess-stat__x{display:block;margin-top:.3rem;
+  font-family:var(--ff-body);font-weight:500;font-size:.92rem;line-height:1.45;
+  letter-spacing:0;text-transform:none;color:var(--txt-soft)}
+/* A partir de 720 px les trois lignes partagent une seule grille : le
+   chiffre passe a gauche du libelle, dans une colonne dont la largeur
+   est celle du plus long des trois (max-content). Les .ess-stat se
+   dissolvent pour que leurs cellules soient alignees entre elles ; le
+   filet horizontal est alors porte par les trois cellules d'une meme
+   ligne, ce qui le rend continu. */
+@media (min-width:720px){
+.ess-stats{display:grid;grid-template-columns:2rem max-content minmax(0,1fr);
+    align-items:center;column-gap:clamp(1rem,2.2vw,1.7rem);max-width:46rem}
+.ess-stat{display:contents}
+.ess-stat__ic,.ess-stat__v,.ess-stat__l{
+    padding-block:clamp(1.05rem,2.1vw,1.5rem);
+    border-top:1px solid rgba(191,210,228,.15)}
+.ess-stat:first-child>*{border-top:0;padding-top:0}
+.ess-stat:last-child>*{padding-bottom:0}
+.ess-stat__ic{grid-row:auto;width:1.85rem;height:1.85rem}
+.ess-stat__v{grid-column:2;align-self:center;white-space:nowrap;
+    font-size:clamp(2.1rem,3.4vw,3rem)}
+.ess-stat__l{grid-column:3;align-self:center;margin:0;
+    font-size:clamp(1rem,1.05vw,1.1rem)}
+.ess-stat__x{margin-top:.34rem}}
+
+/* ---- la barre de reassurance ----
+   Le seul bloc encadre de la section : un filet, un fond a peine plus
+   clair. C'est un contraste de matiere, pas de taille — il suffit a la
+   detacher des lignes de la fiche technique juste au-dessus, qui elles
+   ne sont posees sur rien. */
+.ess-plus{list-style:none;margin:0;display:grid;grid-template-columns:1fr;
+  padding:clamp(.9rem,3vw,1.2rem) clamp(1.05rem,3.4vw,1.5rem);
+  border:1px solid rgba(191,210,228,.14);border-radius:var(--r-md);
+  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.014));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055)}
+.ess-plus__i{display:grid;grid-template-columns:auto minmax(0,1fr);
+  gap:.12rem .75rem;align-items:start;padding:.72rem 0}
+.ess-plus__i + .ess-plus__i{border-top:1px solid rgba(191,210,228,.10)}
+.ess-plus__ic{width:1.4rem;height:1.4rem;color:var(--orange-vif);
+  grid-row:span 2;align-self:center}
+.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1.02rem;
+  letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
+.ess-plus__i span{font-size:.88rem;line-height:1.42;color:var(--txt-soft)}
+@media (min-width:720px){
+.ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
+    padding:clamp(1.1rem,2vw,1.5rem) clamp(1.3rem,2.4vw,1.9rem)}
+.ess-plus__i{padding:.15rem clamp(1.1rem,2.2vw,1.7rem)}
+.ess-plus__i:first-child{padding-left:0}
+.ess-plus__i:last-child{padding-right:0}
+.ess-plus__i + .ess-plus__i{border-top:0;
+    border-left:1px solid rgba(191,210,228,.13)}}
+
+/* ---- la preuve ----
+   Volontairement modeste a cote des chiffres : ce n'est pas une carte,
+   c'est une photo posee sur le bleu nuit, legende a cote. Le bas de
+   l'image se fond dans le fond, un filet orange separe les deux. */
+.ess-proof{position:relative;display:grid;grid-template-columns:1fr;
+  justify-items:start;gap:1rem;margin:0;
+  padding-top:clamp(1.2rem,3.4vw,1.7rem);
+  border-top:1px solid rgba(191,210,228,.14)}
+.ess-proof__ph{position:relative;width:min(56vw,220px);
   border-radius:var(--r-sm);overflow:hidden;
   box-shadow:0 10px 26px rgba(3,8,18,.45);
-  /* le bord bas se fond vers le bleu nuit : l'image n'a pas de fin nette */
   -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%);
   mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.15) 100%)}
 .ess-proof__ph img{display:block;width:100%;height:auto}
-/* le filet orange, cote legende */
-.ess-proof__cap{position:relative;padding-left:clamp(.9rem,2.4vw,1.25rem)}
-.ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
-  width:1px;background:linear-gradient(180deg,var(--orange-vif),
-    rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}
+.ess-proof__cap{position:relative}
 .ess-proof__lab{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
   font-size:.92rem;letter-spacing:.11em;text-transform:uppercase;
   color:var(--orange-vif)}
-.ess-proof__txt{margin:0 0 .5rem;font-size:1.04rem;line-height:1.48;color:var(--txt)}
-.ess-proof__src{margin:0;font-size:.8rem;line-height:1.4;color:var(--txt-soft)}
-@media (min-width:900px){.ess-proof{max-width:44rem}
-.ess-proof__ph{width:210px}}
-@media (max-width:520px){/* sous 520 px la photo passe au-dessus : a 120 px de large les visages
-     deviennent trop petits pour que la preuve fonctionne encore. */
-.ess-proof{grid-template-columns:1fr;gap:1rem;justify-items:center}
-.ess-proof__ph{width:min(64vw,220px);justify-self:center}
-/* le texte reste aligne a gauche : centrer un paragraphe nuit a la lecture,
-     seul le media se centre. */
-.ess-proof__cap{justify-self:stretch}
-.ess-proof__cap{padding-left:0;padding-top:.9rem}
-.ess-proof__cap::before{left:0;top:0;bottom:auto;width:clamp(2.4rem,22%,4rem);height:1px;
-    background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}}
-/* ---- les trois arguments : une ligne, pas trois cartes de plus ---- */
-.ess-plus{list-style:none;display:grid;grid-template-columns:1fr;
-  gap:.95rem 2rem;margin:clamp(1.9rem,3.6vw,2.4rem) 0 0;padding:0}
-.ess-plus__i{display:grid;grid-template-columns:auto 1fr;
-  gap:.15rem .7rem;align-items:start}
-.ess-plus__ic{width:1.45rem;height:1.45rem;color:var(--orange-vif);
-  grid-row:span 2;align-self:center}
-.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1.06rem;
-  letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
-.ess-plus__i span{font-size:.9rem;line-height:1.4;color:var(--txt-soft)}
-/* Le halo qui detachait chaque lettre a ete supprime : plus rien ne passe
-   devant la photo, donc plus rien a compenser. C'etait quatre ombres portees
-   empilees sur six blocs de texte. */
-.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;
-  margin-top:clamp(2rem,4vw,2.6rem)}
-/* le trait qui ouvre le sur-titre, comme sur la maquette */
-.ess__kicker{display:flex;align-items:center;gap:.85rem}
-.ess__kicker::before{content:"";width:2.1rem;height:2px;flex:none;
-  background:var(--grad-orange);border-radius:2px}
-@media (min-width:900px){/* même calage que .hero--split .hero__content, pour que les deux
-     sections partagent exactement la même marge de gauche */
-.ess__in{max-width:none;margin-inline:0;padding-left:0;
-    margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2));
-    padding-right:clamp(1rem,7vw,5rem)}
-.ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
-    padding-top:1.5rem;border-top:1px solid rgba(191,210,228,.16)}
-.ess__head{max-width:44rem}
-.ess-stats,.ess-plus{max-width:44rem}}
-/* Sous 1300 px la photo reste empilee au-dessus : en colonne, lui reserver
-   36 % ferait tomber la colonne de texte sous 640 px et casserait les trois
-   chiffres sur deux lignes. Seuil verifie a la mesure, pas au jugé. */
-@media (min-width:1300px){/* La colonne de texte s'arrete avant le cadre. width:auto est
-     indispensable : .wrap impose width:100%, et combine a la marge gauche
-     la boite depassait de 240 px a droite — la reserve calculee ci-dessous
-     tombait alors hors de l'ecran et le texte repassait sous la photo. */
-.ess__in{width:auto;
-    padding-right:calc(min(38%,700px) + clamp(3rem,6.2vw,6.8rem))}
-.ess__head,.ess-plus,.ess-proof{max-width:40rem}
-/* 46rem : les trois tuiles mesurent 704 px une fois les chiffres agrandis. */
-.ess-stats{max-width:46rem}}
-@media (max-width:1299px){/* La photo repasse dans le flux, au-dessus du texte, toujours encadree.
-     Plus de masque : c'est un tirage, il a des bords nets. */
-.ess{padding-top:clamp(2.2rem,6vw,3.4rem)}
-.ess__photo{position:static;translate:none;
-    width:min(100%,340px);aspect-ratio:3/4;
-    /* centrage exact : les deux marges etaient de 19 px et 16 px, la photo
-       tirait imperceptiblement a gauche. */
-    margin:0 auto clamp(1.9rem,5vw,2.6rem)}
-.ess__photo::before{top:-8px;left:-8px}
-.ess__photo::after{bottom:-8px;right:-8px}
+.ess-proof__txt{margin:0 0 .5rem;font-size:1.02rem;line-height:1.5;color:var(--txt)}
+.ess-proof__src{margin:0;font-size:.8rem;line-height:1.45;color:var(--txt-soft);
+  max-width:46ch}
+/* Des 560 px la photo passe a gauche de sa legende : a cette largeur elle
+   tient encore 150 px sans que les visages deviennent illisibles. */
+@media (min-width:560px){
+.ess-proof{grid-template-columns:auto minmax(0,1fr);align-items:center;
+    gap:clamp(1rem,3vw,1.5rem)}
+.ess-proof__ph{width:clamp(148px,16vw,172px)}
+.ess-proof__cap{padding-left:clamp(.95rem,2.4vw,1.3rem)}
+.ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
+    width:1px;background:linear-gradient(180deg,var(--orange-vif),
+      rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}}
+
+/* ---- l'action ---- */
+.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem}
+@media (max-width:719px){.ess__cta .btn{flex:1 1 100%;justify-content:center;
+  /* « Je m'inscris · saison 2026/2027 » passait sur deux lignes a 375 px */
+  padding-inline:1.1rem!important;font-size:1rem!important}}
+
+/* ---- calage horizontal ----
+   Meme marche de gauche que .hero--split .hero__content : les deux
+   sections qui se suivent partagent leur ligne de depart. La meme valeur
+   sert a droite, la composition reste centree au-dela de 1440 px. */
+@media (min-width:900px){
+.ess__in{width:auto;max-width:none;padding-inline:0;
+    margin-inline:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}}
+
+/* ---- les deux colonnes ----
+   1080 px : en dessous, reserver 44 % de la largeur au tirage ferait
+   tomber la colonne de texte sous 560 px et la fiche technique
+   repasserait en deux lignes par information. Seuil pris a la mesure. */
+@media (min-width:1080px){
+.ess__in{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);
+    column-gap:clamp(2.6rem,5vw,5.5rem);
+    row-gap:clamp(2.2rem,3.6vw,3.2rem)}
+.ess__lead{display:flex;flex-direction:column;grid-column:1;grid-row:1;
+    gap:clamp(1.9rem,3vw,2.8rem)}
 .ess__head{max-width:none}
-.ess__cta .btn{flex:1 1 100%;justify-content:center}}
-/* Placee APRES le bloc ci-dessus : a 900-1099 px, .ess__in prend la marge
-   large du desktop et non le padding du .wrap. La photo doit suivre la meme,
-   sinon elle demarre 29 px avant le texte. */
-@media (min-width:900px) and (max-width:1299px){/* meme marche de gauche que .ess__in, pour que photo et texte partagent
-     la meme ligne de depart. */
-.ess__photo{margin-left:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}}
-/* ---- sous 900 px : une seule langue de filets ----
-   Les tuiles s'empilent, l'icône passe dans un rail à gauche, et les
-   lignes sont séparées par un filet horizontal qui s'estompe vers la
-   droite. Jamais de trait vertical isolé : c'est ce mélange d'orientations
-   qui faisait bricolage. Le même filet sert au bloc « .ess-plus », pour
-   que les deux listes se lisent comme un seul tableau. */
-@media (max-width:899px){.ess-stats{display:grid;grid-template-columns:1fr;gap:0;
-    margin-top:clamp(1.8rem,5vw,2.4rem)}
-.ess-stat{position:relative;display:grid;
-    grid-template-columns:2.15rem minmax(0,1fr);
-    column-gap:.95rem;align-items:center;
-    padding:1.15rem 0;border-left:0}
-.ess-stat:first-child{padding-top:0}
-.ess-stat:last-child{padding-bottom:0}
-.ess-stat + .ess-stat::before{content:"";position:absolute;
-    left:0;right:0;top:0;height:1px;
-    background:linear-gradient(90deg,rgba(191,210,228,.26) 0%,
-      rgba(191,210,228,.13) 46%,rgba(191,210,228,.04) 78%,transparent 100%)}
-.ess-stat__ic{grid-row:span 2;align-self:center;
-    width:1.7rem;height:1.7rem;margin:0}
-.ess-stat__v{align-self:end;font-size:clamp(1.75rem,7.4vw,2.15rem)}
-.ess-stat__l{align-self:start;margin-top:.28rem;max-width:none}
-.ess-stat__x{margin-top:.26rem}
-/* le second bloc reprend exactement le même filet */
-.ess-plus{gap:0;margin-top:clamp(1.6rem,4.5vw,2.1rem);
-    padding-top:1.15rem;position:relative}
-.ess-plus::before{content:"";position:absolute;left:0;right:0;top:0;
-    height:1px;background:linear-gradient(90deg,rgba(191,210,228,.26) 0%,
-      rgba(191,210,228,.13) 46%,rgba(191,210,228,.04) 78%,transparent 100%)}
-.ess-plus__i{position:relative;
-    grid-template-columns:2.15rem minmax(0,1fr);gap:.15rem .95rem;
-    padding:.95rem 0}
-.ess-plus__i:first-child{padding-top:0}
-.ess-plus__i:last-child{padding-bottom:0}
-.ess-plus__i + .ess-plus__i::before{content:"";position:absolute;
-    left:0;right:0;top:0;height:1px;
-    background:linear-gradient(90deg,rgba(191,210,228,.18) 0%,
-      rgba(191,210,228,.08) 52%,transparent 88%)}
-.ess-plus__ic{width:1.35rem;height:1.35rem;justify-self:center}}
+.ess-stats{max-width:none}
+/* centre vertical : le tirage garde son ratio 3/4, la colonne de texte
+     reste plus haute que lui. L'air se repartit alors en haut et en bas
+     du cadre — il flotte, au lieu de laisser un trou sous lui. */
+.ess__photo{grid-column:2;grid-row:1;align-self:center;
+    width:100%;justify-self:stretch}
+.ess-plus{grid-column:1 / -1;grid-row:2}
+.ess__cta{grid-column:1 / -1;grid-row:3}
+/* la preuve se cale sur le bas de la colonne : elle finit alors a la
+     meme hauteur que le tirage, et les deux colonnes se tiennent. */
+.ess-proof{margin-top:auto}}
 .essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
 .essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .essentiel-card::after{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad-orange);opacity:.85;transform:scaleY(.4);transform-origin:top;transition:transform .4s var(--ease-out)}

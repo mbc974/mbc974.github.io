@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/joueur-dribble-900.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/joueur-dribble-640.webp 640w, assets/images/joueur-dribble-900.webp 900w, assets/images/joueur-dribble.webp 1280w"
       imagesizes="(max-width:900px) 104vw, 46vw">
-<link rel="stylesheet" href="style.css?v=022716a4">
+<link rel="stylesheet" href="style.css?v=6778ac8b">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -661,24 +661,28 @@
 </section>
 
 <!-- ===== L'essentiel — la campagne de pré-inscription ===== -->
+<!-- V90 — Deux colonnes reelles, plus de photo en absolu.
+     A gauche : le titre, la fiche technique (les trois chiffres en
+     lignes alignees) et la preuve, calee en bas de colonne. A droite :
+     le tirage, dans le flux. En bas, pleine largeur : la barre de
+     reassurance puis l'action. Meme structure du telephone au grand
+     ecran, seule l'echelle change. -->
 <section class="section ess" id="essentiel" aria-labelledby="essentielTitle">
-  <figure class="ess__photo">
-    <img src="assets/images/mbc-duo-terrain-la-montagne-420.webp"
-         srcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
-         sizes="(min-width:1842px) 700px, (min-width:1300px) 38vw, 340px"
-         alt="Deux joueurs du MBC de dos sur le terrain de La Montagne, maillots floqués GLAIN 2 et ALEX 1, face à la bannière du club : « Ansanm nou lé pli for », « La Montagne en lèr »."
-         width="1086" height="1448" loading="lazy" decoding="async"
-         onerror="this.onerror=null;this.srcset='';this.src='assets/images/mbc-duo-terrain-la-montagne.jpg'">
-  </figure>
-
   <div class="wrap ess__in">
-    <header class="ess__head reveal">
-      <p class="kicker ess__kicker">Pré-inscriptions 2026 / 2027</p>
-      <h2 class="h2" id="essentielTitle">L'essentiel <span class="hl">en un coup d'œil</span></h2>
-      <p class="ess__sub">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le <a href="club-basket-la-montagne/">MBC</a>, à Saint-Denis&nbsp;(974).</p>
-    </header>
 
-    <dl class="ess-stats reveal">
+    <!-- colonne de gauche (elle se dissout en mobile : voir .ess__lead) -->
+    <div class="ess__lead">
+      <header class="ess__head reveal">
+        <p class="kicker ess__kicker">Pré-inscriptions 2026 / 2027</p>
+        <h2 class="h2" id="essentielTitle">L'essentiel <span class="hl">en un coup d'œil</span></h2>
+        <p class="ess__sub">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le <a href="club-basket-la-montagne/">MBC</a>, à Saint-Denis&nbsp;(974).</p>
+      </header>
+
+      <!-- La fiche technique. Une ligne par information : le chiffre dans
+           une colonne de largeur commune (max-content partage par les trois
+           lignes), le libelle en face. Plus aucun libelle ne tombe sur
+           quatre lignes comme dans la version en trois colonnes. -->
+      <dl class="ess-stats reveal">
         <div class="ess-stat">
           <svg class="ess-stat__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 12.4 5.2A2 2 0 0 0 11 4.6H5a1 1 0 0 0-1 1v6a2 2 0 0 0 .6 1.4l8.2 8.2a2 2 0 0 0 2.8 0l5-5a2 2 0 0 0 0-2.8Z"/><circle cx="8.2" cy="8.8" r="1.25"/></svg>
           <dt class="ess-stat__v">95 €</dt>
@@ -692,38 +696,52 @@
         <div class="ess-stat">
           <svg class="ess-stat__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
           <dt class="ess-stat__v">2 lieux</dt>
-          <dd class="ess-stat__l">Gymnase de La Montagne &amp; Terrain Ruisseau Blanc<span class="ess-stat__x">À La Montagne, Saint-Denis</span></dd>
+          <dd class="ess-stat__l">Gymnase de La Montagne &amp; plateau de Ruisseau Blanc<span class="ess-stat__x">À La Montagne, Saint-Denis</span></dd>
         </div>
-    </dl>
+      </dl>
 
-    <ul class="ess-plus reveal">
-        <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg><b>Sous 48 h</b><span>Réponse après pré-inscription</span></li>
-        <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg><b>Séance d'essai</b><span>Testez un entraînement avant de décider</span></li>
-        <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3.6"/><path d="M8.5 11.1V18M6 14.6h5"/><circle cx="15" cy="15" r="3.6"/><path d="M17.5 12.5 21 9M21 9h-3.2M21 9v3.2"/></svg><b>Filles &amp; garçons</b><span>Toutes les pratiques sont ouvertes</span></li>
-    </ul>
+      <!-- Deuxième niveau de lecture de la section : après les chiffres, une
+           preuve. La photo n'est pas décorative, elle atteste que le club
+           existe pour de vrai et qu'il compte dans son quartier.
+           Aucune mention de partenariat : la Ville n'est pas présentée comme
+           un sponsor, seulement comme le cadre de la journee. La ligne de
+           credit nomme la personne au ballon : sans elle, la scene ne se
+           lisait pas. -->
+      <figure class="ess-proof reveal">
+        <div class="ess-proof__ph">
+          <picture>
+            <source srcset="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-400.webp 400w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-560.webp 560w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-760.webp 760w"
+                    sizes="(min-width:1080px) 172px, min(56vw,220px)" type="image/webp">
+            <img src="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc.jpg"
+                 alt="La maire de Saint-Denis, en maillot du MBC La Montagne Basket Club, s'apprête à tirer lors de l'inauguration du nouveau plateau sportif couvert."
+                 width="760" height="951" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="ess-proof__cap">
+          <p class="ess-proof__lab">Un club ancré à La Montagne</p>
+          <p class="ess-proof__txt">Le MBC participe au développement du basket de proximité à Saint-Denis.</p>
+          <p class="ess-proof__src">La maire de Saint-Denis, ballon en main, à l'inauguration du plateau sportif de Ruisseau Blanc — l'un des deux lieux où joue le club.</p>
+        </figcaption>
+      </figure>
+    </div>
 
-
-    <!-- Deuxième niveau de lecture de la section : après les chiffres, une
-         preuve. La photo n'est pas décorative, elle atteste que le club
-         existe pour de vrai et qu'il compte dans son quartier.
-         Aucune mention de partenariat : la Ville n'est pas présentée comme
-         un sponsor, seulement comme le cadre de la journee. -->
-    <figure class="ess-proof reveal">
-      <div class="ess-proof__ph">
-        <picture>
-          <source srcset="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-400.webp 400w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-560.webp 560w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-760.webp 760w"
-                  sizes="(min-width:900px) 260px, min(60vw,260px)" type="image/webp">
-          <img src="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc.jpg"
-               alt="La maire de Saint-Denis, en maillot du MBC La Montagne Basket Club, s'apprête à tirer lors de l'inauguration du nouveau plateau sportif couvert."
-               width="760" height="951" loading="lazy" decoding="async">
-        </picture>
-      </div>
-      <figcaption class="ess-proof__cap">
-        <p class="ess-proof__lab">Un club ancré à La Montagne</p>
-        <p class="ess-proof__txt">Le MBC participe au développement du basket de proximité à Saint-Denis.</p>
-        <p class="ess-proof__src">Inauguration du plateau sportif de Ruisseau Blanc &middot; Saint-Denis</p>
-      </figcaption>
+    <figure class="ess__photo reveal">
+      <img src="assets/images/mbc-duo-terrain-la-montagne-420.webp"
+           srcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
+           sizes="(min-width:1080px) 40vw, (min-width:780px) 56vw, min(92vw, 420px)"
+           alt="Deux joueurs du MBC de dos sur le terrain de La Montagne, maillots floqués GLAIN 2 et ALEX 1, face à la bannière du club : « Ansanm nou lé pli for », « La Montagne en lèr »."
+           width="1086" height="1448" loading="lazy" decoding="async"
+           onerror="this.onerror=null;this.srcset='';this.src='assets/images/mbc-duo-terrain-la-montagne.jpg'">
     </figure>
+
+    <!-- La barre de reassurance. Volontairement legere : un filet, un fond
+         a peine plus clair. C'est le seul bloc encadre de la section, ce qui
+         suffit a le distinguer des lignes de la fiche technique. -->
+    <ul class="ess-plus reveal">
+      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg><b>Sous 48 h</b><span>Réponse après pré-inscription</span></li>
+      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg><b>Séance d'essai</b><span>Testez un entraînement avant de décider</span></li>
+      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3.6"/><path d="M8.5 11.1V18M6 14.6h5"/><circle cx="15" cy="15" r="3.6"/><path d="M17.5 12.5 21 9M21 9h-3.2M21 9v3.2"/></svg><b>Filles &amp; garçons</b><span>Toutes les pratiques sont ouvertes</span></li>
+    </ul>
 
     <div class="ess__cta reveal">
       <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
