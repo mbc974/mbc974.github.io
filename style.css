@@ -154,11 +154,11 @@ a{color:inherit;text-decoration:none}
 .brand{display:flex;align-items:center;gap:var(--lk-gap);flex:none;
   margin-left:max(0px,calc((100vw - 1560px) / 2));
   /* Les sept seuls reglages du lockup. */
-  --lk-logo:64px;      /* ecusson */
+  --lk-logo:58px;      /* ecusson */
   --lk-gap:1.05rem;    /* pilote a la fois le gap ET le padding du texte */
-  --lk-1:2.3rem;       /* MBC 974 — c'est LUI qui donne la mesure */
-  --lk-2:.66rem;       /* LA MONTAGNE · SAINT-DENIS */
-  --lk-track:.10em;    /* traque de la ligne 2. Reglee au compromis : sa
+  --lk-1:2.15rem;      /* MBC 974 — c'est LUI qui donne la mesure */
+  --lk-2:.64rem;       /* LA MONTAGNE · SAINT-DENIS */
+  --lk-track:.08em;    /* traque de la ligne 2. Reglee au compromis : sa
                           largeur NATURELLE tombe 5 px sous celle du nom,
                           soit 1,7 px de mou par espace-mot — invisible a la
                           justification. La coller a 1 px du nom donnerait un
@@ -590,12 +590,12 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    CORPS (2,1 fois) qui tient le lockup a ces largeurs, pas la largeur. */
 @media (max-width:1180px){/* le burger prend le relais : la nav a 8 entrees + un CTA */
 .site-header{height:70px}
-/* Le nom ne peut plus descendre librement : il fixe la mesure que la
-   sous-ligne vient remplir, et la sous-ligne a un plancher de lisibilite
-   (10,2 px). L'ecusson et les gouttieres se resserrent, le bloc de texte
-   reste presque constant : c'est le prix de deux lignes rigoureusement
-   egales. */
-.brand{margin-left:0;--lk-logo:54px;--lk-1:2.24rem;--lk-2:.64rem}
+/* Seul l'ecusson se resserre. Le bloc de texte, lui, ne bouge pas : le nom
+   fixe la mesure que la sous-ligne vient remplir, et la sous-ligne a un
+   plancher de lisibilite (10,2 px) — baisser le nom ici casserait l'egalite
+   des deux lignes pour gagner 3 px de largeur dont personne n'a besoin, la
+   nav ayant deja laisse la place au burger. */
+.brand{margin-left:0;--lk-logo:51px}
 .nav{margin-right:0}}
 @media (max-width:520px){.site-header{height:66px;padding:0 16px}
 /* L'ecusson ne redevient jamais minuscule : il reste le repere.
