@@ -1744,8 +1744,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess__photo{order:2}
 .ess-stats{order:3}
 .ess-plus{order:4}
-.ess-proof{order:5}
-.ess__cta{order:6}
+.ess__cta{order:5}
 
 /* ---- le titre ---- */
 .ess__head{max-width:34rem}
@@ -1822,7 +1821,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    lui, se centre a l'interieur de chaque cellule. */
 .ess-stat__ic,.ess-stat__v,.ess-stat__l{
     border-top:1px solid rgba(191,210,228,.15)}
-.ess-stat__v,.ess-stat__l{padding-block:clamp(1.05rem,2.1vw,1.5rem)}
+/* La fiche technique est desormais seule sous le titre : les lignes
+   respirent davantage (24 -> 35 px de gouttiere verticale a 1350 px), ce qui
+   acheve d'aligner le bas de la colonne sur le bas du tirage. */
+.ess-stat__v,.ess-stat__l{padding-block:clamp(1.3rem,2.6vw,2.25rem)}
 .ess-stat:first-child>*{border-top:0;padding-top:0}
 .ess-stat:last-child>*{padding-bottom:0}
 /* L'icone n'a ni hauteur fixe ni padding. box-sizing:border-box est global
@@ -1866,48 +1868,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .ess-plus__i + .ess-plus__i{border-top:0;
     border-left:1px solid rgba(191,210,228,.13)}}
 
-/* ---- la preuve ----
-   Volontairement modeste a cote des chiffres : ce n'est pas une carte,
-   c'est une photo posee sur le bleu nuit, legende a cote. Le bas de
-   l'image se fond dans le fond, un filet orange separe les deux. */
-.ess-proof{position:relative;display:grid;grid-template-columns:1fr;
-  justify-items:start;gap:1rem;margin:0;
-  padding-top:clamp(1.2rem,3.4vw,1.7rem);
-  border-top:1px solid rgba(191,210,228,.14)}
-/* La photo etait cadree large : la maire n'occupait qu'un tiers de la
-   largeur, entre deux personnes qui ne sont pas le sujet, et a 172 px de
-   large on ne la reconnaissait pas. Deux gestes, pas un :
-   le bloc grandit (172 -> 252 px), et l'image est agrandie de 38 % autour
-   du point ou elle se trouve (34 % / 26 %), ce qui recadre par les bords
-   sans deplacer le sujet. La source fait 760 px : meme agrandie, il reste
-   550 px de source pour 252 px affiches, soit du 2,2x — aucun flou.
-   Le cadre passe en 4/5 : le format portrait de la source (0,80) laissait
-   du vide en bas une fois le sujet remonte. */
-.ess-proof__ph{position:relative;width:min(62vw,252px);aspect-ratio:4/5;
-  border-radius:var(--r-sm);overflow:hidden;
-  box-shadow:0 10px 26px rgba(3,8,18,.45);
-  -webkit-mask-image:linear-gradient(180deg,#000 78%,rgba(0,0,0,.55) 94%,rgba(0,0,0,.15) 100%);
-  mask-image:linear-gradient(180deg,#000 78%,rgba(0,0,0,.55) 94%,rgba(0,0,0,.15) 100%)}
-.ess-proof__ph img{display:block;width:100%;height:100%;object-fit:cover;
-  transform:scale(1.38);transform-origin:34% 26%}
-.ess-proof__cap{position:relative}
-.ess-proof__lab{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:.92rem;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--orange-vif)}
-.ess-proof__txt{margin:0 0 .5rem;font-size:1.02rem;line-height:1.5;color:var(--txt)}
-.ess-proof__src{margin:0;font-size:.8rem;line-height:1.45;color:var(--txt-soft);
-  max-width:46ch}
-/* Des 560 px la photo passe a gauche de sa legende : a cette largeur elle
-   tient encore 150 px sans que les visages deviennent illisibles. */
-@media (min-width:560px){
-.ess-proof{grid-template-columns:auto minmax(0,1fr);align-items:center;
-    gap:clamp(1rem,3vw,1.5rem)}
-.ess-proof__ph{width:clamp(190px,21vw,252px)}
-.ess-proof__cap{padding-left:clamp(.95rem,2.4vw,1.3rem)}
-.ess-proof__cap::before{content:"";position:absolute;left:0;top:.15em;bottom:.15em;
-    width:1px;background:linear-gradient(180deg,var(--orange-vif),
-      rgba(232,130,42,.35) 55%,rgba(232,130,42,0))}}
-
 /* ---- l'action ----
    Centres : la bande de reassurance juste au-dessus est pleine largeur et
    symetrique, deux boutons cales a gauche sous elle faisaient retomber la
@@ -1931,7 +1891,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    tomber la colonne de texte sous 560 px et la fiche technique
    repasserait en deux lignes par information. Seuil pris a la mesure. */
 @media (min-width:1080px){
-.ess__in{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);
+/* .72fr et non .9fr : sans le bloc preuve, la colonne de gauche a perdu
+     240 px et le tirage la depassait de 119 px. On ne comble pas un tel ecart
+     avec du remplissage — c'est le rapport des deux colonnes qui doit suivre.
+     La colonne de texte y gagne 65 px, ce qui fait tenir le libelle du
+     Gymnase sur une seule ligne. */
+.ess__in{grid-template-columns:minmax(0,1fr) minmax(0,.72fr);
     column-gap:clamp(2.6rem,5vw,5.5rem);
     row-gap:clamp(2.2rem,3.6vw,3.2rem)}
 .ess__lead{display:flex;flex-direction:column;grid-column:1;grid-row:1;
@@ -1945,9 +1910,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     width:100%;justify-self:stretch}
 .ess-plus{grid-column:1 / -1;grid-row:2}
 .ess__cta{grid-column:1 / -1;grid-row:3}
-/* la preuve se cale sur le bas de la colonne : elle finit alors a la
-     meme hauteur que le tirage, et les deux colonnes se tiennent. */
-.ess-proof{margin-top:auto}}
+}
 .essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
 .essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .essentiel-card::after{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad-orange);opacity:.85;transform:scaleY(.4);transform-origin:top;transition:transform .4s var(--ease-out)}
