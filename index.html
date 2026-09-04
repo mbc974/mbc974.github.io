@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
       imagesizes="(max-width:900px) 100vw, 48vw">
-<link rel="stylesheet" href="style.css?v=71ea0cbf">
+<link rel="stylesheet" href="style.css?v=af8e8558">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -980,10 +980,41 @@
       <p class="sec-head__sub">Les entraînements hebdomadaires du club, entre le Gymnase de La Montagne et le Terrain Ruisseau Blanc. Les lignes «&nbsp;match à domicile&nbsp;» sont des <b>réservations de salle</b> pour recevoir les rencontres&nbsp;: elles ne sont pas occupées toutes les semaines.</p>
     </header>
 
-    <p class="cal-lieux reveal">
-      <a class="cal-lieu" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Gymnase de La Montagne</b><span>Chemin des Bauhinias &middot; 97417<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span></span></a>
-      <a class="cal-lieu" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Terrain Ruisseau Blanc</b><span>Plateau couvert &middot; La Montagne<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span></span></a>
-    </p>
+    <ul class="cal-lieux reveal" aria-label="Les deux lieux de pratique du club">
+      <li>
+        <a class="cal-lieu" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer">
+          <span class="cal-lieu__ph">
+            <img src="assets/images/gymnase-la-montagne-clair.webp" alt="Intérieur du Gymnase de La Montagne, la salle du MBC, avec le logo du club au mur." width="1445" height="1088" loading="lazy" decoding="async"
+                 onerror="this.onerror=null;this.src='assets/images/gymnase-la-montagne-clair.jpg'">
+          </span>
+          <span class="cal-lieu__txt">
+            <b>Gymnase de La Montagne</b>
+            <span class="cal-lieu__adr">Chemin des Bauhinias &middot; 97417 Saint-Denis</span>
+            <span class="cal-lieu__tag">Salle couverte</span>
+          </span>
+          <svg class="cal-lieu__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          <span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span>
+        </a>
+      </li>
+      <li>
+        <a class="cal-lieu" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer">
+          <span class="cal-lieu__ph">
+            <img src="assets/images/ruisseau-blanc-terrain-640.webp"
+                 srcset="assets/images/ruisseau-blanc-terrain-640.webp 640w, assets/images/ruisseau-blanc-terrain-1000.webp 1000w"
+                 sizes="(min-width:760px) 190px, 34vw"
+                 alt="Le plateau multisports de Ruisseau Blanc : terrain de basket bleu sous une charpente bois couverte, à La Montagne." width="1445" height="963" loading="lazy" decoding="async"
+                 onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-terrain.jpg'">
+          </span>
+          <span class="cal-lieu__txt">
+            <b>Terrain Ruisseau Blanc</b>
+            <span class="cal-lieu__adr">La Montagne &middot; Saint-Denis (974)</span>
+            <span class="cal-lieu__tag">Plateau couvert, en plein air</span>
+          </span>
+          <svg class="cal-lieu__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          <span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span>
+        </a>
+      </li>
+    </ul>
 
     <div class="pl reveal">
       <div class="pl-top">
@@ -1452,13 +1483,13 @@
       </div>
 
       <figure class="lp-aside reveal">
-        <picture>
-          <source media="(max-width:640px)" srcset="assets/galerie/inauguration-plateau-officiels-500.webp" type="image/webp">
-          <source srcset="assets/galerie/inauguration-plateau-officiels.webp" type="image/webp">
-          <img src="assets/galerie/inauguration-plateau-officiels.jpg" width="760" height="1009" loading="lazy" decoding="async"
-               alt="Élus de la Ville de Saint-Denis et joueurs du MBC réunis lors de l'inauguration du nouveau plateau sportif couvert.">
-        </picture>
-        <figcaption><span class="lp-aside__n">02</span>Élus de la Ville et joueurs du MBC, le jour de l'inauguration.</figcaption>
+        <img src="assets/images/ruisseau-blanc-concert-quartier-600.webp"
+             srcset="assets/images/ruisseau-blanc-concert-quartier-600.webp 600w, assets/images/ruisseau-blanc-concert-quartier-900.webp 900w, assets/images/ruisseau-blanc-concert-quartier.webp 1300w"
+             sizes="(min-width:900px) 34vw, 100vw"
+             alt="Concert sur le plateau couvert de Ruisseau Blanc : un artiste au micro et un DJ sur scène sous le panier de basket, devant le public du quartier."
+             width="1300" height="866" loading="lazy" decoding="async"
+             onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-concert-quartier.jpg'">
+        <figcaption><span class="lp-aside__n">02</span>Le plateau ne sert pas qu&rsquo;au basket&nbsp;: le quartier s&rsquo;y retrouve aussi le soir.</figcaption>
       </figure>
     </div>
   </div>
@@ -1584,8 +1615,12 @@
         <figcaption>L'inauguration du plateau</figcaption>
       </figure>
       <figure class="g-tile g-gym">
-        <img src="assets/images/gymnase-la-montagne-clair.webp" alt="Intérieur du Gymnase de La Montagne, salle du MBC, avec le logo du club au mur et le terrain de basket" loading="lazy" decoding="async" width="1445" height="1088" onerror="this.onerror=null;this.src='assets/images/gymnase-la-montagne-clair.jpg'">
-        <figcaption>Notre salle, le Gymnase de La Montagne</figcaption>
+        <img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
+             srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
+             sizes="(min-width:900px) 33vw, 50vw"
+             alt="Le plateau couvert de Ruisseau Blanc ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne." loading="lazy" decoding="async" width="1300" height="866"
+             onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'">
+        <figcaption>Ruisseau Blanc, ouvert sur la mer</figcaption>
       </figure>
     </div>
 

@@ -5135,3 +5135,281 @@ h3.faq__title{
 @media (max-width:900px){
   .form-officiel,.pl .pl-note{font-size:1rem;line-height:1.55}
 }
+
+
+/* ============================================================================
+   V101 — PASSE DE FINITION
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. HERO — retrouver CLAIN dans l'ombre
+   ----------------------------------------------------------------------------
+   Diagnostic chiffre. La photo fait 3:4 et remplit exactement la largeur de sa
+   boite (recadrage vertical uniquement) : CLAIN, maillot blanc n° 2, occupe
+   17 a 42 % de cette largeur, centre a 29 %. A cet endroit s'empilaient :
+     - le masque herite (« to left, #000 32%, .8 54%, transparent 84% »)
+       qui n'y laissait que 0,35 d'opacite ;
+     - un voile ::after a 0,55.
+   Soit 16 % de visibilite : il disparaissait dans le noir.
+
+   Nouvelle mecanique, DEUX couches au lieu de trois, chacune avec un role :
+     a) un MASQUE sur la photo, qui la fond dans la page par la gauche ;
+     b) un VOILE sur le hero, cale sur la COLONNE DE TEXTE et non sur la photo.
+   Le voile de la photo est supprime : c'est lui qui noyait le sujet.
+   Beaucoup de paliers dans chaque degrade : c'est ce qui evite la bande.
+   Resultat vise a 1440 px : CLAIN passe de 16 % a ~85 % de visibilite.
+   --------------------------------------------------------------------------- */
+
+.hero__photo{
+  width:min(52%,720px);
+  -webkit-mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top, transparent 0%, rgba(0,0,0,.55) 8%, #000 18%);
+  mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top, transparent 0%, rgba(0,0,0,.55) 8%, #000 18%);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+
+/* Le voile de la photo disparait : la lisibilite est desormais assuree par
+   le voile de texte ci-dessous, qui n'atteint pas le sujet. */
+.hero__photo::after{display:none}
+
+/* Le voile de texte. Il est pose sur le hero, entre la photo (z-index 1) et
+   le contenu (z-index 3), et s'eteint avant d'atteindre les joueurs. */
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(96deg,
+    rgba(6,11,20,.95) 0%, rgba(6,11,20,.90) 18%, rgba(6,11,20,.74) 32%,
+    rgba(6,11,20,.46) 44%, rgba(6,11,20,.22) 55%, rgba(6,11,20,.08) 65%,
+    transparent 76%)}
+
+/* Filet de securite sur le titre : la ou il mord encore sur la photo, ce sont
+   ses propres contours qui le portent, pas un aplat sombre de plus. */
+.hero__h1,.hero__creole{text-shadow:0 2px 18px rgba(4,8,16,.55)}
+
+/* ---------------------------------------------------------------------------
+   2. CHIFFRES CLES — un survol, pas une animation
+   Au repos, rien ne change : « 95 € » seul est orange. Au survol d'un bloc,
+   son chiffre passe a l'orange et son filet superieur s'allume. Rien ne bouge
+   de plus de deux pixels, rien ne clignote.
+   --------------------------------------------------------------------------- */
+.keyfig__i{
+  transition:border-color .26s var(--ease-out), transform .26s var(--ease-out)}
+.keyfig__v,.keyfig__l,.keyfig__l span{
+  transition:color .26s var(--ease-out)}
+
+@media (hover:hover) and (pointer:fine){
+  .keyfig__i:hover{border-top-color:var(--orange-vif);transform:translateY(-2px)}
+  .keyfig__i:hover .keyfig__v{color:var(--orange-vif)}
+  .keyfig__i:hover .keyfig__l{color:var(--blanc)}
+  .keyfig__i:hover .keyfig__l span{color:var(--bleu-glacier)}
+}
+/* Au clavier, le meme etat, si un jour un lien vient s'y loger. */
+.keyfig__i:focus-within{border-top-color:var(--orange-vif)}
+.keyfig__i:focus-within .keyfig__v{color:var(--orange-vif)}
+
+/* ---------------------------------------------------------------------------
+   4. LES DEUX LIEUX — vignette + nom + nature + itineraire
+   --------------------------------------------------------------------------- */
+.cal-lieux{
+  list-style:none;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));
+  gap:clamp(.7rem,1.6vw,1rem);margin-bottom:var(--sp-blk)}
+.cal-lieu{
+  position:relative;display:grid;
+  grid-template-columns:clamp(84px,15vw,120px) 1fr auto;
+  align-items:center;gap:clamp(.9rem,2vw,1.2rem);
+  height:100%;padding:.7rem .95rem .7rem .7rem;
+  background:var(--surf-2);border:1px solid var(--hair);
+  border-radius:var(--r-md);overflow:hidden;
+  transition:border-color .25s, background .25s, transform .25s var(--ease-out)}
+.cal-lieu:hover{
+  border-color:var(--orange-vif);background:#12203a;transform:translateY(-2px)}
+.cal-lieu:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.cal-lieu__ph{
+  display:block;aspect-ratio:4/3;border-radius:var(--r-sm);overflow:hidden;
+  border:1px solid var(--hair);background:var(--nuit-0)}
+.cal-lieu__ph img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.95) contrast(1.05);
+  transition:transform .5s var(--ease-out)}
+.cal-lieu:hover .cal-lieu__ph img{transform:scale(1.05)}
+.cal-lieu__txt{display:flex;flex-direction:column;gap:.22rem;min-width:0}
+.cal-lieu__txt b{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:clamp(.98rem,2vw,1.08rem);color:var(--txt);
+  line-height:1.15}
+.cal-lieu__adr{font-size:.86rem;color:var(--txt-soft);line-height:1.35}
+.cal-lieu__tag{
+  align-self:flex-start;margin-top:.2rem;padding:.2em .6em;
+  border:1px solid var(--hair-2);border-radius:999px;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.62rem;color:var(--txt-soft)}
+.cal-lieu__go{
+  width:17px;height:17px;color:var(--txt-soft);flex:none;
+  transition:color .25s, transform .25s var(--ease-out)}
+.cal-lieu:hover .cal-lieu__go{color:var(--orange-vif);transform:translate(2px,-2px)}
+@media (max-width:420px){
+  .cal-lieu{grid-template-columns:76px 1fr;gap:.8rem}
+  .cal-lieu__go{display:none}
+}
+
+/* ---------------------------------------------------------------------------
+   5. NOUT KARTIE — le cadrage montrait les pieds, pas les visages
+   Une regle heritee posait object-position:50% 88% sur cette image : la
+   fenetre 21/9 se calait donc sur le BAS du cliche. Les visages du groupe se
+   tiennent entre 25 et 41 % de la hauteur du fichier : c'est la qu'on cale.
+   --------------------------------------------------------------------------- */
+.lp-stage picture{display:block;width:100%;height:100%}
+.lp-stage img{object-position:50% 26%}
+@media (max-width:760px){
+  /* En portrait, la fenetre est moins large : on remonte encore un peu et on
+     rend le format moins coupant pour garder le groupe entier. */
+  .lp-stage{aspect-ratio:16/10}
+  .lp-stage img{object-position:50% 30%}
+}
+
+/* La photo laterale a change (voir le commentaire du HTML) : elle est
+   desormais paysage, pas portrait. */
+.lp-aside img{
+  width:100%;height:auto;display:block;border-radius:var(--r-sm);
+  border:1px solid var(--hair)}
+
+/* ---------------------------------------------------------------------------
+   7. PARENTS — quatre vraies cartes
+   ----------------------------------------------------------------------------
+   Elles n'etaient qu'un filet superieur et une icone posee dessus : le trait
+   passait a quelques pixels du pictogramme et l'ensemble ne tenait pas comme
+   un bloc. Ce sont maintenant des cartes : un conteneur, du padding autour de
+   l'icone, une bordure a peine visible, un fond legerement detache. Hauteur
+   uniforme grace a l'etirement de la grille.
+   --------------------------------------------------------------------------- */
+.parents-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(.85rem,1.8vw,1.15rem);align-items:stretch}
+
+.p-pillar{
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;height:100%;
+  padding:clamp(1.35rem,2.6vw,1.75rem);
+  background:linear-gradient(168deg,rgba(20,32,54,.92),rgba(13,22,38,.92));
+  border:1px solid var(--hair);border-top:0;border-radius:var(--r-md);
+  box-shadow:var(--bevel);
+  transition:border-color .28s, background .28s, transform .28s var(--ease-out),
+             box-shadow .28s}
+
+/* Le filet de couleur passe EN HAUT DE LA CARTE, pas sous l'icone : c'est ce
+   chevauchement qui faisait « brouillon ». */
+.p-pillar::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:2px;
+  background:var(--hair-2);transition:background .28s}
+
+.p-pillar__ico{
+  width:46px;height:46px;display:grid;place-items:center;
+  margin-bottom:clamp(1rem,2vw,1.3rem);
+  background:rgba(232,130,42,.10);
+  border:1px solid rgba(232,130,42,.28);border-radius:12px;
+  box-shadow:none;
+  transition:background .28s, border-color .28s}
+.p-pillar__ico .ic{width:21px;height:21px;color:var(--orange-vif)}
+
+.p-pillar h3{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.09em;font-size:1.08rem;color:var(--blanc);
+  margin-bottom:.55rem}
+.p-pillar p{
+  font-size:.97rem;line-height:1.62;color:var(--bleu-glacier);
+  margin:0}
+
+@media (hover:hover) and (pointer:fine){
+  .p-pillar:hover{
+    border-color:rgba(232,130,42,.34);
+    background:linear-gradient(168deg,rgba(25,39,64,.96),rgba(16,27,45,.96));
+    transform:translateY(-3px);
+    box-shadow:var(--bevel),0 10px 26px rgba(2,6,14,.34)}
+  .p-pillar:hover::before{background:var(--orange-vif)}
+  /* la regle heritee faisait grossir et pivoter l'icone au survol */
+  .p-pillar:hover .p-pillar__ico{
+    background:rgba(232,130,42,.17);border-color:rgba(232,130,42,.5);
+    transform:none;box-shadow:none}
+  .p-pillar:hover .p-pillar__ico::before{transform:none;filter:none}
+}
+
+@media (max-width:1000px){.parents-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.parents-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){
+  .p-pillar:hover,.keyfig__i:hover,.cal-lieu:hover{transform:none}
+  .cal-lieu:hover .cal-lieu__ph img{transform:none}
+}
+
+/* ---------------------------------------------------------------------------
+   V101.1 — LA PLAGE 900-1400 px
+   A 1920 et 1440 le titre s'arrete avant les joueurs. Entre 900 et 1400 il
+   garde la meme taille absolue tandis que la photo, ancree a droite, remonte
+   vers la gauche : « HAUTEUR. » venait alors mordre sur le visage de CLAIN —
+   exactement le sujet qu'on vient de degager. On resserre les deux : la photo
+   se retracte un peu, le titre descend d'un cran.
+   --------------------------------------------------------------------------- */
+@media (min-width:901px) and (max-width:1400px){
+  .hero__photo{width:min(48%,660px)}
+  .hero__h1{font-size:clamp(2.9rem,8.4vw,6.2rem)}
+}
+
+/* Le bas de la photo se coupait encore un peu net sur le cote droit : on
+   allonge le fondu vertical. */
+.hero__photo{
+  -webkit-mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top,
+      transparent 0%, rgba(0,0,0,.18) 5%, rgba(0,0,0,.48) 11%,
+      rgba(0,0,0,.78) 17%, rgba(0,0,0,.94) 23%, #000 29%);
+  mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top,
+      transparent 0%, rgba(0,0,0,.18) 5%, rgba(0,0,0,.48) 11%,
+      rgba(0,0,0,.78) 17%, rgba(0,0,0,.94) 23%, #000 29%)}
+
+/* ---------------------------------------------------------------------------
+   V101.2 — NEUTRALISATION DE LA REGLE cal-lieu HERITEE DE LA V100
+   Quand les deux lieux etaient deux lignes de texte, une regle « .cal-lieu span »
+   posait width:100% et un padding-left de 33 px pour aligner la seconde ligne
+   sous l'icone. Le markup est maintenant une carte a trois colonnes : cette
+   regle etirait les puces sur toute la largeur et decalait la vignette de
+   33 px vers la droite — la bande sombre visible a gauche de chaque photo.
+   Elle est plus specifique (0,1,1) que .cal-lieu__ph : on la neutralise
+   explicitement au lieu d'essayer de la contourner.
+   --------------------------------------------------------------------------- */
+.cal-lieu span{width:auto;padding-left:0}
+.cal-lieu .cal-lieu__ph{width:100%;padding:0}
+.cal-lieu .cal-lieu__adr{
+  width:auto;padding-left:0;font-size:.86rem;color:var(--txt-soft)}
+.cal-lieu .cal-lieu__tag{
+  width:auto;align-self:start;justify-self:start;
+  padding:.2em .6em;font-size:.62rem}
+
+/* La photo laterale de la section quartier etait contrainte en aspect-ratio:4/5
+   (style.css:3184) : c'etait juste pour l'ancien portrait des officiels. La
+   nouvelle photo est un paysage 3:2 — on lui rend son format plutot que de la
+   recadrer en portrait. */
+.lp-aside img{aspect-ratio:3/2;object-position:50% 45%}
+.lp-aside picture{display:contents}
+
+/* La photo de la citation portait deux equerres decoratives posees 10 px en
+   dehors du cadre (une orange en haut a gauche, une grise en bas a droite).
+   A cote des quatre cartes refaites juste dessous, elles ne se lisent plus
+   comme un parti pris mais comme un cadre mal cale — et celle du bas mord sur
+   le bloc de citation. Meme langage que le reste : un filet de 1 px. */
+.pquote__ph::before,.pquote__ph::after{display:none}
+.pquote__ph picture{border:1px solid var(--hair)}
