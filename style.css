@@ -5623,3 +5623,51 @@ h3.faq__title{
 @media (min-height:1060px) and (min-width:900px){
   .hero{min-height:min(84svh,830px)}
 }
+
+/* ============================================================================
+   V104 — LES DEUX LIEUX : LA PHOTO PREND SA PLACE
+   ----------------------------------------------------------------------------
+   La vignette faisait 120 px de large dans une carte de 554 : elle se lisait
+   comme une puce, pas comme une photo, alors que ce sont les equipements dont
+   le club est fier. Elle passe en medaillon PLEINE HAUTEUR, bord a bord avec
+   la carte — la carte perd son padding, chaque zone porte le sien. Le
+   overflow:hidden deja pose sur .cal-lieu fait que l'arrondi de la carte
+   decoupe la photo : aucun rayon a redeclarer.
+   ============================================================================ */
+
+.cal-lieu{
+  padding:0;gap:0;align-items:stretch;
+  grid-template-columns:clamp(124px,21vw,196px) 1fr auto;
+  min-height:clamp(116px,13.5vw,152px)}
+
+.cal-lieu__ph{
+  height:100%;aspect-ratio:auto;
+  border:0;border-right:1px solid var(--hair);border-radius:0;
+  background:var(--nuit-0)}
+.cal-lieu__ph img{width:100%;height:100%;object-fit:cover}
+
+.cal-lieu__txt{
+  padding:clamp(.85rem,1.9vw,1.15rem) 0 clamp(.85rem,1.9vw,1.15rem) clamp(.95rem,2vw,1.3rem);
+  justify-content:center;gap:.3rem}
+.cal-lieu__txt b{font-size:clamp(1.02rem,2.1vw,1.14rem)}
+.cal-lieu__adr{font-size:.88rem}
+
+.cal-lieu__go{margin-right:clamp(.9rem,1.9vw,1.2rem)}
+
+/* En dessous de 420 px la troisieme colonne disparait deja ; on garde une
+   photo qui reste une photo. */
+@media (max-width:420px){
+  .cal-lieu{grid-template-columns:112px 1fr;min-height:104px}
+  .cal-lieu__txt{padding-right:.9rem}
+}
+
+/* align-items:stretch etire toutes les colonnes, y compris la fleche : elle se
+   calait en haut de la carte au lieu du milieu. */
+.cal-lieu__go{align-self:center}
+
+/* Sur mobile l'adresse du gymnase passe sur deux lignes et celle de Ruisseau
+   Blanc sur une : les deux cartes empilees ne faisaient pas la meme hauteur
+   (120 contre 104). On aligne par le plancher, pas en tronquant le texte. */
+@media (max-width:420px){
+  .cal-lieu{min-height:120px}
+}
