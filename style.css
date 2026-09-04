@@ -5413,3 +5413,119 @@ h3.faq__title{
    le bloc de citation. Meme langage que le reste : un filet de 1 px. */
 .pquote__ph::before,.pquote__ph::after{display:none}
 .pquote__ph picture{border:1px solid var(--hair)}
+
+
+/* ============================================================================
+   V102 — LES TROIS CHIFFRES DEVIENNENT TROIS PORTES
+   ----------------------------------------------------------------------------
+   Trois changements demandes, un principe : les trois blocs sont IDENTIQUES au
+   repos et c'est le survol qui designe. Le « 95 € » etait le seul en orange —
+   il tirait l'oeil sans rien offrir de plus que ses voisins. Tout est blanc au
+   repos ; l'orange devient la recompense de l'interaction, comme partout
+   ailleurs sur le site.
+   Chaque bloc est desormais un lien complet : cible tactile pleine, focus
+   clavier visible, et une ligne d'action qui dit ou l'on va.
+   ============================================================================ */
+
+/* --- 1. On annule la mise en avant du premier bloc -------------------------
+   (style.css:4147 et 4152 le passaient en orange au repos) */
+.keyfig__i:first-child{border-top-color:var(--hair-2)}
+.keyfig__i:first-child .keyfig__v{color:var(--blanc)}
+
+/* --- 2. La grille et la carte ---------------------------------------------- */
+.keyfig{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(1.2rem,3.4vw,3rem)}
+
+.keyfig__i{
+  display:flex;padding:0;border-top:0;
+  transform:none}
+
+/* Le lien porte tout : le filet, l'espace, l'etat. */
+.keyfig__a{
+  display:flex;flex-direction:column;align-items:flex-start;
+  width:100%;height:100%;
+  padding-top:clamp(1.5rem,3.2vw,2.1rem);
+  border-top:2px solid var(--hair-2);
+  color:inherit;text-decoration:none;
+  transition:border-color .26s var(--ease-out), transform .26s var(--ease-out)}
+.keyfig__a:focus-visible{
+  outline:3px solid var(--bleu-glacier);outline-offset:6px;
+  border-top-color:var(--orange-vif)}
+
+/* --- 3. Un cran plus grand ------------------------------------------------- */
+.keyfig__v{
+  display:block;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2.9rem,6.9vw,5.2rem);line-height:.88;
+  color:var(--blanc);letter-spacing:.5px;font-variant-numeric:tabular-nums;
+  transition:color .26s var(--ease-out)}
+
+.keyfig__l{
+  display:block;margin-top:1rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:1.02rem;color:var(--txt);line-height:1.35;
+  transition:color .26s var(--ease-out)}
+.keyfig__l span{
+  display:block;margin-top:.42rem;font-family:var(--ff-body);
+  font-weight:400;text-transform:none;letter-spacing:0;
+  font-size:.96rem;color:var(--txt-soft);
+  transition:color .26s var(--ease-out)}
+
+/* --- 4. La ligne d'action : discrete au repos, elle se leve au survol ------ */
+.keyfig__go{
+  display:inline-flex;align-items:center;gap:.5em;
+  margin-top:auto;padding-top:clamp(1rem,2.2vw,1.4rem);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.13em;font-size:.74rem;color:var(--txt-soft);
+  transition:color .26s var(--ease-out)}
+.keyfig__arrow{
+  width:1.15em;height:1.15em;flex:none;
+  transition:transform .26s var(--ease-out)}
+
+/* --- 5. Le survol ---------------------------------------------------------- */
+@media (hover:hover) and (pointer:fine){
+  .keyfig__a:hover{border-top-color:var(--orange-vif);transform:translateY(-3px)}
+  .keyfig__a:hover .keyfig__v{color:var(--orange-vif)}
+  .keyfig__a:hover .keyfig__l{color:var(--blanc)}
+  .keyfig__a:hover .keyfig__l span{color:var(--bleu-glacier)}
+  .keyfig__a:hover .keyfig__go{color:var(--orange-vif)}
+  .keyfig__a:hover .keyfig__arrow{transform:translateX(4px)}
+}
+/* Au clavier, exactement le meme etat. */
+.keyfig__a:focus-visible .keyfig__v,
+.keyfig__a:focus-visible .keyfig__go{color:var(--orange-vif)}
+
+/* --- 6. Mobile : une colonne, la cible reste large ------------------------- */
+@media (max-width:760px){
+  .keyfig{grid-template-columns:1fr;gap:1.5rem}
+  .keyfig__a{padding-top:1.2rem;padding-bottom:.2rem}
+  .keyfig__v{font-size:clamp(2.6rem,12vw,3.6rem)}
+  .keyfig__go{padding-top:.9rem;font-size:.78rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .keyfig__a:hover{transform:none}
+  .keyfig__a:hover .keyfig__arrow{transform:none}
+}
+
+/* « 2 TERRAINS » est le plus long des trois : a 5,2rem il passait a la ligne et
+   decalait vers le bas son libelle et sa ligne d'action, cassant l'alignement
+   des trois colonnes. On interdit la cesure et on cale la taille sur ce
+   libelle-la — c'est lui qui commande, pas le plus court. */
+.keyfig__v{
+  white-space:nowrap;
+  font-size:clamp(2.7rem,5.5vw,4.9rem)}
+/* Les trois libelles partent donc de la meme ligne de base. */
+.keyfig__l{min-height:calc(1.35em + 0.42rem + 1.4em)}
+@media (max-width:760px){
+  .keyfig__v{font-size:clamp(2.5rem,11.5vw,3.5rem)}
+  .keyfig__l{min-height:0}
+}
+
+/* La ligne d'action n'est plus un simple libelle : c'est ce qui annonce le
+   lien. A 12,5 px sur mobile elle etait a la limite du lisible pour ce role. */
+@media (max-width:760px){
+  .keyfig__go{font-size:.86rem;letter-spacing:.11em}
+}

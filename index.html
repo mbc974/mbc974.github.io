@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
       imagesizes="(max-width:900px) 100vw, 48vw">
-<link rel="stylesheet" href="style.css?v=af8e8558">
+<link rel="stylesheet" href="style.css?v=786ce578">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -651,20 +651,35 @@
 <section class="section keyfig-sec" id="essentiel" aria-labelledby="essentielTitle">
   <div class="wrap">
     <h2 class="sr-only" id="essentielTitle">Le MBC en trois chiffres</h2>
-    <dl class="keyfig reveal">
-      <div class="keyfig__i">
-        <dt class="keyfig__v"><span data-count="95">95</span> €</dt>
-        <dd class="keyfig__l">Licence FFBB + assurance<span>Un seul tarif, du Baby aux Seniors</span></dd>
-      </div>
-      <div class="keyfig__i">
-        <dt class="keyfig__v">Dès 3 ans</dt>
-        <dd class="keyfig__l">Des premiers dribbles aux Seniors<span>Filles et garçons, loisir ou compétition</span></dd>
-      </div>
-      <div class="keyfig__i">
-        <dt class="keyfig__v">2 terrains</dt>
-        <dd class="keyfig__l">100 % La Montagne<span>Gymnase &amp; plateau de Ruisseau Blanc</span></dd>
-      </div>
-    </dl>
+    <!-- Les trois chiffres sont devenus des portes d'entree. Chacun mene la
+         ou la question se resout vraiment : le tarif sur la page adhesion,
+         l'age sur le selecteur, les lieux sur les creneaux. La liste de
+         definitions est devenue une liste de liens — c'est desormais de la
+         navigation, et chaque element doit etre atteignable au clavier.
+         Le data-count du premier reste : c'est lui que script.js anime. -->
+    <ul class="keyfig reveal">
+      <li class="keyfig__i">
+        <a class="keyfig__a" href="adhesion.html#tarif">
+          <span class="keyfig__v"><span data-count="95">95</span> €</span>
+          <span class="keyfig__l">Licence FFBB + assurance<span>Un seul tarif, du Baby aux Seniors</span></span>
+          <span class="keyfig__go">Ce que couvre la licence<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+      <li class="keyfig__i">
+        <a class="keyfig__a" href="#categories">
+          <span class="keyfig__v">Dès 3 ans</span>
+          <span class="keyfig__l">Des premiers dribbles aux Seniors<span>Filles et garçons, loisir ou compétition</span></span>
+          <span class="keyfig__go">Trouver sa catégorie<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+      <li class="keyfig__i">
+        <a class="keyfig__a" href="#calendrier">
+          <span class="keyfig__v">2 terrains</span>
+          <span class="keyfig__l">100 % La Montagne<span>Gymnase &amp; plateau de Ruisseau Blanc</span></span>
+          <span class="keyfig__go">Voir les créneaux<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </li>
+    </ul>
   </div>
 </section>
 
