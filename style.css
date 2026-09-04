@@ -94,7 +94,7 @@ a{color:inherit;text-decoration:none}
 .btn--primary::after,.btn--roi::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);transition:left .6s var(--ease)}
 .btn--primary:hover::after,.btn--roi:hover::after{left:140%}
 /* ---------------- Scroll progress bar ---------------- */
-.scroll-bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad-orange);z-index:120;box-shadow:0 0 12px rgba(232,130,42,.6)}
+.scroll-bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad-orange);z-index:120}
 /* ---------------- Header ---------------- */
 /* ============================================================
    HEADER — lockup de marque MBC
@@ -1990,16 +1990,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-grid.in .essentiel-card:nth-child(4){animation-delay:.18s}
 .essentiel-grid.in .essentiel-card:nth-child(5){animation-delay:.24s}
 .essentiel-grid.in .essentiel-card:nth-child(6){animation-delay:.3s}}
-/* ---- Scroll-ball : légère pulsation "dribble" (desktop) ---- */
-@media (min-width:760px) and (prefers-reduced-motion:no-preference){.scroll-bar::after{animation:ballPulse 2.4s ease-in-out infinite}}
-@keyframes ballPulse{0%,100%{box-shadow:0 0 10px 2px rgba(232,130,42,.7),0 0 0 2px rgba(7,13,24,.55)}50%{box-shadow:0 0 17px 5px rgba(232,130,42,.92),0 0 0 2px rgba(7,13,24,.55)}}
 /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop, JS pose --bx/--by) ---- */
 .btn--primary,.btn--roi{--bx:50%;--by:50%}
 .btn--primary::before,.btn--roi::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(100px circle at var(--bx) var(--by),rgba(255,255,255,.5),transparent 60%);opacity:0;transition:opacity .35s var(--ease-out);pointer-events:none;mix-blend-mode:soft-light}
 .btn--primary:hover::before,.btn--roi:hover::before{opacity:1}
 /* ---- Hero crest : retour fluide après le parallaxe souris ---- */
 /* ---- a11y : neutralise les nouveaux effets si prefers-reduced-motion ---- */
-@media (prefers-reduced-motion:reduce){.gallery-mosaic.in .g-tile,.essentiel-grid.in .essentiel-card,.scroll-bar::after{animation:none!important}
+@media (prefers-reduced-motion:reduce){.gallery-mosaic.in .g-tile,.essentiel-grid.in .essentiel-card{animation:none!important}
 .btn--primary::before,.btn--roi::before{display:none}}
 /* ============================================================
    PERF MOBILE (≤760px) — HÉRO ALLÉGÉ POUR UN SCROLL FLUIDE
@@ -4330,3 +4327,288 @@ main > .section .cine-phone__island i{animation:none !important}
 .pl-slot__ou:focus-visible .pl-slot__go{opacity:1}
 .pl-slot__ou:hover .pl-slot__go,.pl-slot__ou:focus-visible .pl-slot__go{color:#F09A4C}
 .faq__item summary:focus-visible,.footer-legal>summary:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:6px}
+
+/* ============================================================
+   V93 · 1 — Le filet du kicker se trace
+   ------------------------------------------------------------
+   .kicker::before (l.77) est un trait orange de 34 x 2 px pose
+   devant le sur-titre de chaque section ; .ess__kicker::before
+   (l.1752) est le meme trait a 2.1rem. Il est deja la, il ne
+   bouge pas. Le faire se tracer au moment ou la section arrive
+   donne a l'oeil un POINT DE DEPART — decisif dans « L'essentiel »,
+   ou au-dessus de 1080 px le tirage 3/4 est infiniment plus
+   saillant qu'un h2 : sans ce signal, la premiere fixation part a
+   droite.
+   C'est le seul geste du lot qui se repete : une quinzaine de fois
+   sur la page d'accueil, a l'identique. C'est ce qui le fait lire
+   comme une signature et non comme un effet de plus — des la
+   troisieme section on ne le regarde plus, on le reconnait.
+
+   --ease-out et non --ease-pop / --ease-spring : un depassement
+   sur une barre de 34 px produit un rebond de jouet. --ease-out
+   place 80 % du trace dans les 200 premieres millisecondes, ce
+   qui se lit comme un trait sur, pas comme un essuie-glace.
+   .08s de retard : le trait se dessine DANS un texte qui a deja
+   commence a apparaitre, il ne court pas sur du vide.
+
+   Ecrit en @keyframes + backwards, et NON en transition depuis un
+   scaleX(0) au repos : c'est deliberé. Sans JS, .in n'arrive
+   jamais — avec une transition le filet resterait invisible ; avec
+   une keyframe aucune animation ne se declenche et le trait est
+   dessine normalement. Le <noscript> (index.html:61) n'a besoin
+   d'aucune retouche, sur aucune des 11 pages.
+
+   PORTEE reelle, a savoir avant de crier a l'incoherence : les
+   kickers des pages enfants sont dans un .seo-hero nu, hors
+   .reveal. Ils resteront dessines, sans animation. C'est le bon
+   comportement : jamais de contenu suspendu a une animation.
+
+   transform seul : le filet garde sa largeur dans le flux, le
+   texte qui le suit ne bouge pas d'un pixel. Zero CLS, y compris
+   sur les en-tetes centres (.kicker--center).
+   ============================================================ */
+@keyframes sigRule{from{transform:scaleX(0)}to{transform:none}}
+
+@media (prefers-reduced-motion:no-preference){
+.reveal.in .kicker::before{transform-origin:left center;
+  animation:sigRule .42s var(--ease-out) .08s backwards}}
+
+/* ============================================================
+   V93 · 2 — « L'essentiel » : la fiche technique se lit ligne
+   par ligne, au lieu d'arriver en dalle.
+   ------------------------------------------------------------
+   C'est le seul endroit du site ou le contenu EST une liste de
+   trois faits qui doivent etre lus DANS UN ORDRE : le prix
+   decide, l'age qualifie, le lieu rassure. Rien ne l'indiquait.
+   La cascade ne decore pas, elle nomme la priorite.
+
+   OPACITE SEULE, et c'est tout le sujet. A partir de 720 px
+   .ess-stat passe en display:contents (l.1815) : ses trois
+   cellules deviennent les items de la grille, le chiffre vit dans
+   une colonne max-content partagee par les trois lignes, et le
+   filet horizontal est porte par les TROIS cellules d'une meme
+   ligne (l.1822). Une translation, meme de 8 px et meme 400 ms,
+   decollerait ce filet du bas de la ligne precedente et ferait
+   respirer la colonne des chiffres — c'est exactement
+   l'alignement au pixel gagne en V90. L'opacite n'a pas ce mode
+   de defaillance.
+
+   DEUX ECRITURES, parce que la ligne change de nature au
+   breakpoint. Sous 720 px elle est une vraie boite et porte son
+   propre border-top : on fond la ligne entiere, le trait arrive
+   avec son contenu. Au-dessus elle n'a plus de boite du tout —
+   une regle posee sur .ess-stat y serait silencieusement morte —
+   et ce sont ses trois cellules qu'il faut animer, avec le MEME
+   delai, sans quoi le filet se dedouble pendant la cascade.
+
+   sigFadeIn (l.1954) est reutilise : c'est deja la grammaire de
+   .essentiel-grid, .gallery-mosaic et .packs. Aucun keyframe
+   nouveau.
+   .12s de base : c'est le transition-delay pose sur .ess-stats
+   par le bloc 3 ci-dessous. La cascade demarre donc quand le bloc
+   commence a devenir visible, sinon ses deux premiers paliers se
+   joueraient a opacite nulle. Les deux valeurs sont couplees : si
+   l'une bouge, l'autre suit.
+   .08s de pas : a .06s les trois lignes de ~90 px paraissent
+   simultanees, a .12s la troisieme traine derriere le fondu du
+   parent. Tout est resolu a .78s.
+   ============================================================ */
+@media (max-width:719px) and (prefers-reduced-motion:no-preference){
+.ess-stats.in .ess-stat{animation:sigFadeIn .5s var(--ease-out) .12s backwards}
+.ess-stats.in .ess-stat:nth-child(2){animation-delay:.2s}
+.ess-stats.in .ess-stat:nth-child(3){animation-delay:.28s}}
+
+@media (min-width:720px) and (prefers-reduced-motion:no-preference){
+.ess-stats.in .ess-stat>*{animation:sigFadeIn .5s var(--ease-out) .12s backwards}
+.ess-stats.in .ess-stat:nth-child(2)>*{animation-delay:.2s}
+.ess-stats.in .ess-stat:nth-child(3)>*{animation-delay:.28s}}
+
+/* ============================================================
+   V93 · 3 — Ordre de lecture dans « L'essentiel ».
+   ------------------------------------------------------------
+   AUCUNE animation nouvelle : uniquement des transition-delay sur
+   les transitions que V82 a deja posees. Cout de rendu
+   strictement nul — un delai ne cree ni calque, ni frame, ni
+   recalcul, et ne modifie ni la geometrie ni l'etat d'arrivee.
+
+   Le probleme qu'il corrige n'est pas l'absence d'effet, c'est la
+   SIMULTANEITE. La fleche du hero pointe sur #essentiel
+   (index.html:660) : au saut d'ancre, les cinq .reveal franchissent
+   le seuil de l'observateur dans la meme frame, l'observateur
+   livre les cinq entrees dans le meme callback, et la section
+   arrive en dalle — precisement la ou un parent cherche un prix,
+   un age et un lieu. A saillance egale de timing, un tirage 3/4
+   lumineux gagne toujours contre un h2.
+
+   L'ordre suit celui que la section s'est ecrit a elle-meme
+   (proprietes `order`, l.1743-1747) : promesse, preuve, chiffres,
+   garanties, action. Un seul jeu de valeurs sert les deux mises
+   en page : en colonne unique il epouse l'ordre visuel exact ; en
+   deux colonnes, ce qui compte est que le titre soit premier et
+   l'action derniere.
+
+   SPECIFICITE — le point de rupture de tout ce fichier. V82 pose
+   `main > .section .reveal` (0,2,1) avec un `transition:` en
+   RACCOURCI, ce qui fixe implicitement transition-delay a 0s.
+   Une regle ecrite `.ess__photo.reveal` (0,2,0) est donc
+   silencieusement morte, ou qu'elle soit dans le fichier : la
+   specificite tranche avant l'ordre source. `.ess X.reveal` pese
+   (0,3,0) et passe. Ne jamais alleger ce selecteur.
+
+   Plafond a 240 ms : ce delai s'applique AUSSI quand un bloc
+   arrive seul, en scroll lent. Sous ~80 ms deux evenements se
+   lisent comme simultanes ; au-dela de ~250 ms cumules, le dernier
+   bloc se lit comme un retard.
+   ============================================================ */
+@media (prefers-reduced-motion:no-preference){
+.ess .ess__head.reveal {transition-delay:0s}
+.ess .ess__photo.reveal{transition-delay:.06s}
+.ess .ess-stats.reveal {transition-delay:.12s}
+.ess .ess-plus.reveal  {transition-delay:.18s}
+.ess .ess__cta.reveal  {transition-delay:.24s}}
+
+/* ============================================================
+   V93 · 4 — L'onglet d'age se remplit.
+   ------------------------------------------------------------
+   BUG DORMANT, pas embellissement. .age__tab declare
+   `transition:...,background .2s` (l.4275) et .age__tab.is-on pose
+   `background:var(--grad-orange)` (l.4279). Un DEGRADE n'est pas
+   interpolable en CSS : la transition annoncee ne s'est jamais
+   executee, depuis le premier jour. Le changement d'onglet est un
+   saut sec.
+
+   Le selecteur d'age est le seul vrai CONTROLE de la page — tout
+   le reste est un lien. C'est la qu'un parent teste « et pour ma
+   fille de 8 ans ? », et le seul retour actuel est un panneau qui
+   se substitue en dessous, ce qui est ambigu : on ne sait pas si
+   c'est le tap qui a agi.
+
+   On sort le degrade dans un ::before dont on anime l'OPACITE.
+   z-index:-1 le pose apres le fond de la pastille et avant son
+   libelle, sans toucher au markup (le texte est un noeud texte
+   direct, on ne peut pas le remonter en z-index) ;
+   isolation:isolate l'empeche de passer derriere un fond
+   d'ancetre. inset:-1px recouvre la bordure d'1 px, que .is-on
+   rend transparente.
+
+   Le fond sombre est REMIS sur .is-on : sinon le degrade de la
+   l.4279 apparaitrait d'un coup sous un ::before encore a demi
+   transparent, et le saut qu'on repare serait toujours la.
+
+   La pastille ne change NI de taille NI de position : sous 520 px
+   les onglets passent en grille 3 colonnes (l.4298), le moindre
+   changement de boite casserait la ligne. Le pseudo est hors flux,
+   zero CLS.
+
+   .18s : au-dela de ~250 ms un changement d'onglet cesse d'etre un
+   etat et devient une animation qu'on attend.
+   Le libelle passe au noir avec 40 ms de retard, pour ne jamais se
+   retrouver sombre sur un degrade encore a demi transparent.
+
+   La liste de transitions reprend les trois proprietes de la
+   l.4275 : un `transition:` en raccourci EFFACE ce que la regle
+   precedente transitionnait, et le survol de .age__tab (l.4277)
+   change color, border-color ET background.
+   ============================================================ */
+.age__tab{position:relative;isolation:isolate;
+  transition:color .16s var(--ease-out) .04s,
+             border-color .18s var(--ease-out),
+             background .18s var(--ease-out)}
+.age__tab::before{content:"";position:absolute;inset:-1px;
+  border-radius:inherit;background:var(--grad-orange);
+  opacity:0;z-index:-1;pointer-events:none;
+  transition:opacity .18s var(--ease-out)}
+.age__tab.is-on::before{opacity:1}
+.age__tab.is-on{background:rgba(11,19,35,.82)}
+
+/* ============================================================
+   V93 — a11y : neutralisation integrale du jeu.
+   ------------------------------------------------------------
+   A coller en DERNIER, apres les quatre blocs.
+
+   Les blocs 1, 2 et 3 sont deja enfermes dans des
+   @media (prefers-reduced-motion:no-preference) : ils n'existent
+   tout simplement pas sous « reduce ». Ce bloc est la ceinture en
+   plus des bretelles — c'est la regle maison (46 blocs deja en
+   place) et il couvre trois cas reels :
+
+   · script.js pose `.in` sur TOUS les .reveal meme quand
+     reduceMotion est vrai (l.98-100). Les selecteurs en
+     `.ess-stats.in .ess-stat > *` MATCHENT donc bel et bien ici :
+     on repose opacity:1 explicitement pour qu'aucun `backwards`
+     mal neutralise ne puisse laisser du contenu invisible.
+   · l'utilisateur qui active « reduire les animations » APRES le
+     chargement, sans recharger.
+   · une edition future qui sortirait une de ces regles de son
+     bloc no-preference.
+
+   Principe pour le bloc 4 : « reduce » ne veut pas dire supprimer
+   le retour, mais supprimer le mouvement. L'onglet se remplit
+   toujours — instantanement. La lisibilite est identique.
+   ============================================================ */
+@media (prefers-reduced-motion:reduce){
+/* 1 — le filet est dessine, jamais trace */
+.reveal.in .kicker::before{animation:none!important;transform:none!important}
+/* 2 — la fiche technique est visible d'emblee, sans cascade */
+.ess-stats.in .ess-stat,
+.ess-stats.in .ess-stat>*{animation:none!important;opacity:1!important}
+/* 3 — plus aucun decalage d'ordre : tout arrive ensemble
+       (V82 l.3666 coupe deja `transition` sur ces elements ; on
+       annule le delai pour ne rien laisser en suspens) */
+.ess .ess__head.reveal,.ess .ess__photo.reveal,.ess .ess-stats.reveal,
+.ess .ess-plus.reveal,.ess .ess__cta.reveal{transition-delay:0s!important}
+/* 4 — l'onglet se remplit sans fondu : le degrade est la ou il n'y est pas */
+.age__tab,.age__tab::before{transition:none!important}
+/* allegements ci-dessous : le ballon de la barre de lecture ne
+   respire plus et revient a sa place exacte (la l.2002 vise deja
+   .scroll-bar::after, on n'y touche pas) ; le hero n'a pas besoin
+   d'etre mis en veille, son observateur n'est pas installe sous
+   reduceMotion et chacun de ses effets a deja son propre garde-fou
+   (l.578, 1105, 1692, 2340, 2379, 2522). */
+}
+
+/* ============================================================
+   V93 · 5 — Allegements. La contrepartie des quatre ajouts.
+   ------------------------------------------------------------
+   RETIRES plus haut dans le fichier, pas ici :
+   · ballPulse — une box-shadow animee en boucle (donc un repeint
+     par frame) sur .scroll-bar::after, seul element visible 100 %
+     du temps ; et c'etait un halo orange, ce que la doctrine du
+     header a nommement banni.
+   · le box-shadow de .scroll-bar (l.97) — script.js reecrit sa
+     width a chaque frame de scroll : la largeur n'etant pas
+     composable, chaque frame repeignait la barre ET son halo, soit
+     une bande de ~27 px sur toute la largeur atteinte. Sans le
+     halo, la bande repeinte retombe a 3 px.
+   ============================================================ */
+/* Le flou mort. .reveal{filter:blur(6px)} (l.1649) s'applique
+   toujours, mais V82 (l.3625) a redefini la transition de
+   `main > .section .reveal` sur opacity et transform SEULS : le
+   flou saute de 6 px a 0 a l'instant ou .in est pose, pendant que
+   l'element est encore a opacity:0. Personne ne le voit, tout le
+   monde le paie — une surface de rendu separee et une
+   rasterisation floue par bloc non encore revele.
+   (0,2,1) : bat le (0,1,0) de la l.1649 et le (0,2,0) de
+   .reveal.in{filter:blur(0)}. */
+main > .section .reveal,main > .section .reveal--l,
+main > .section .reveal--r,main > .section .reveal--scale{filter:none}
+
+/* Le hero mis en veille hors champ. <section class="hero ..."> n'a
+   PAS la classe .section : il echappe au content-visibility:auto de
+   la l.348, et ses boucles continuent de tourner pendant les
+   ~4000 px ou on ne le regarde pas. La plus couteuse est mbcAurora
+   (l.2505) : elle anime background-position, propriete de PEINTURE,
+   sous un filter:blur(44px) — rien ne peut la promouvoir en calque.
+   On enumere les porteurs plutot que d'ecrire `.hero.is-idle *` :
+   un selecteur universel invaliderait tout le sous-arbre a chaque
+   traversee, et figerait aussi heroTipOff, animation a usage unique
+   qui reprendrait a mi-course au retour en haut de page.
+   animation-play-state gele et reprend ou l'on s'etait arrete : sur
+   une boucle de 55 s, c'est invisible. */
+.hero.is-idle .hero-fx__glow,
+.hero.is-idle .hero__lightmotion,
+.hero.is-idle .hero__halo,
+.hero.is-idle .hero__halo::before,
+.hero.is-idle .hero__glow,
+.hero.is-idle .hero__scroll span::before,
+.hero.is-idle .hero__pill-dot::after{animation-play-state:paused!important}

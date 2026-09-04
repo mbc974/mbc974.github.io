@@ -93,6 +93,22 @@
   const hero = document.getElementById('hero');
   if (hero) requestAnimationFrame(function () { setTimeout(function () { hero.classList.add('in'); }, 80); });
 
+  /* ---- Hero : effets permanents suspendus hors champ ----
+     Le hero n'a pas la classe .section : il echappe au
+     content-visibility:auto pose sur les sections, et ses boucles
+     continuent de tourner pendant les ~4000 px ou on ne le regarde
+     pas. La plus couteuse anime background-position sous un flou de
+     44 px — une peinture, que rien ne peut promouvoir en calque.
+     Un seul observateur, seuil 0, et surtout PAS d'unobserve : il
+     doit continuer a basculer dans les deux sens. Deux callbacks par
+     traversee, rien de plus. Sous reduceMotion on ne l'installe meme
+     pas, chaque effet du hero ayant deja son propre garde-fou. */
+  if (hero && !reduceMotion && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      hero.classList.toggle('is-idle', !entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(hero);
+  }
+
 
   /* ---- Scroll reveal ---- */
   const reveals = document.querySelectorAll('.reveal');
