@@ -5793,3 +5793,140 @@ h3.faq__title{
       rgba(0,0,0,1) 14%);
     -webkit-mask-composite:source-over;mask-composite:add}
 }
+
+
+/* ============================================================================
+   V106 — LES DEUX LIEUX : GRANDES CARTES, TEXTE QUI RESPIRE
+   ----------------------------------------------------------------------------
+   La vignette laterale de 196 px ne rendait pas justice a des photos de 1445 px
+   de large, et le texte la touchait. On revient a la composition d'origine —
+   grande image rectangulaire, texte dessous — mais en carte.
+
+   Trois points de soin :
+   1. LA PHOTO. Un 16:10 sur toute la largeur de la carte, soit ~460x288 px a
+      1440 : plus de deux fois la largeur precedente.
+   2. LA RESPIRATION. Le texte a son propre pave de padding, il ne touche plus
+      l'image. C'etait le principal reproche.
+   3. L'ALIGNEMENT. Le planning juste dessous est plafonne a 940 px mais etait
+      cale a GAUCHE dans un wrap de 1220 : il n'etait donc pas centre sous le
+      titre de section. Les deux blocs partagent maintenant la meme largeur et
+      sont centres — toute la section tient dans une seule colonne.
+   ============================================================================ */
+
+/* --- La colonne commune de la section ------------------------------------- */
+.calendrier .cal-lieux,
+.calendrier .pl{
+  max-width:960px;margin-inline:auto}
+.calendrier .pl{margin-top:0}
+
+/* --- La grille des deux cartes -------------------------------------------- */
+.cal-lieux{
+  list-style:none;display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(1rem,2.2vw,1.6rem);
+  margin-bottom:var(--sp-blk);padding:0}
+.cal-lieux>li{display:flex}
+
+/* --- La carte ------------------------------------------------------------- */
+.cal-lieu{
+  display:flex;flex-direction:column;width:100%;height:100%;
+  padding:0;gap:0;min-height:0;
+  background:var(--surf-2);border:1px solid var(--hair);
+  border-radius:var(--r-md);overflow:hidden;
+  transition:border-color .28s, background .28s, transform .28s var(--ease-out),
+             box-shadow .28s}
+.cal-lieu:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px}
+
+/* --- La photo : grande, et c'est elle qui donne le format ----------------- */
+.cal-lieu__ph{
+  display:block;width:100%;aspect-ratio:16/10;
+  overflow:hidden;border:0;border-radius:0;
+  border-bottom:1px solid var(--hair);background:var(--nuit-0)}
+.cal-lieu__ph img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.97) contrast(1.04);
+  transition:transform .6s var(--ease-out)}
+
+/* --- Le texte : son propre pave, il ne touche plus l'image ---------------- */
+.cal-lieu__txt{
+  display:flex;flex-direction:column;align-items:flex-start;
+  gap:.5rem;flex:1;
+  padding:clamp(1.2rem,2.6vw,1.7rem)}
+
+.cal-lieu__tag{
+  display:inline-flex;align-items:center;gap:.42em;
+  width:auto;padding:0;border:0;border-radius:0;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.2em;font-size:.68rem;color:var(--orange-vif)}
+.cal-lieu__pin{width:14px;height:14px;flex:none}
+
+.cal-lieu__nom{
+  font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.5px;
+  font-size:clamp(1.35rem,2.9vw,1.85rem);line-height:1;color:var(--blanc)}
+
+.cal-lieu__adr{
+  width:auto;padding:0;
+  font-size:.95rem;line-height:1.5;color:var(--txt-soft)}
+
+/* La mention Maps, calee en bas de carte pour que les deux s'alignent. */
+.cal-lieu__map{
+  display:inline-flex;align-items:center;gap:.5em;
+  margin-top:auto;padding-top:clamp(.9rem,1.9vw,1.2rem);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.8rem;color:var(--txt);
+  transition:color .26s var(--ease-out)}
+.cal-lieu__mapic{
+  width:1.05em;height:1.05em;flex:none;
+  transition:transform .26s var(--ease-out)}
+
+/* --- Le survol ------------------------------------------------------------ */
+@media (hover:hover) and (pointer:fine){
+  .cal-lieu:hover{
+    border-color:rgba(232,130,42,.42);background:#12203a;
+    transform:translateY(-3px);box-shadow:0 12px 30px rgba(2,6,14,.36)}
+  .cal-lieu:hover .cal-lieu__ph img{transform:scale(1.045)}
+  .cal-lieu:hover .cal-lieu__map{color:var(--orange-vif)}
+  .cal-lieu:hover .cal-lieu__mapic{transform:translate(3px,-3px)}
+}
+
+/* --- Mobile : une colonne, la photo garde sa presence --------------------- */
+@media (max-width:720px){
+  .cal-lieux{grid-template-columns:1fr;gap:1rem}
+  .cal-lieu__ph{aspect-ratio:16/9}
+  .cal-lieu{min-height:0}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cal-lieu:hover{transform:none}
+  .cal-lieu:hover .cal-lieu__ph img{transform:none}
+  .cal-lieu:hover .cal-lieu__mapic{transform:none}
+}
+
+/* ---------------------------------------------------------------------------
+   V106.1 — TROIS HERITAGES QUI BLOQUAIENT LA NOUVELLE CARTE
+   ----------------------------------------------------------------------------
+   1. LA LARGEUR MINIMALE. Un element de grille ou de flex a une taille
+      minimale « auto » : ici c'est la largeur intrinseque de l'image
+      (1445 px) qui la fixait. Les deux cartes faisaient 796 px dans un
+      conteneur de 960. min-width:0 rend la main a la grille. C'est LE piege
+      classique de flex/grid avec une image.
+   2. LE PADDING GAUCHE. La regle « .cal-lieu span{padding-left:0} » de la
+      V101.2 (ecrite pour neutraliser une V100 encore anterieure) est plus
+      specifique (0,1,1) que .cal-lieu__txt : le texte se recollait au bord.
+   3. Le ratio de la photo suivait, une fois la largeur correcte.
+   --------------------------------------------------------------------------- */
+
+.cal-lieux>li,
+.cal-lieu,
+.cal-lieu__txt,
+.cal-lieu__ph{min-width:0}
+
+.cal-lieu .cal-lieu__txt{
+  padding:clamp(1.2rem,2.6vw,1.7rem);
+  width:auto}
+
+.cal-lieu .cal-lieu__ph{
+  width:100%;padding:0;aspect-ratio:16/10;height:auto}
+
+.cal-lieu .cal-lieu__adr,
+.cal-lieu .cal-lieu__tag,
+.cal-lieu .cal-lieu__map{padding-left:0}
