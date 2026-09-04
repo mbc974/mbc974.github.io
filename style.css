@@ -5671,3 +5671,125 @@ h3.faq__title{
 @media (max-width:420px){
   .cal-lieu{min-height:120px}
 }
+
+
+/* ============================================================================
+   V105 — LE BAS DE LA PHOTO DU HERO : SUPPRIMER LA BANDE DE MACH
+   ----------------------------------------------------------------------------
+   Le fondu du bas occupait 29 % de la hauteur (209 px) en degrade LINEAIRE.
+   Deux consequences, toutes deux visibles :
+
+   1. Une DEMARCATION la ou le fondu se termine. Ce n'est pas un defaut de
+      rendu : un degrade lineaire a une derivee DISCONTINUE a ses deux
+      extremites. L'oeil humain amplifie ces ruptures de pente — ce sont les
+      bandes de Mach. Allonger le fondu ne les efface pas, il les deplace.
+
+   2. Sur 209 px, les jambes et les chaussures traversaient toute la zone de
+      transition et se lisaient « coupees en deux » plutot que fondues.
+
+   Correctif : un fondu DEUX FOIS PLUS COURT (14 %, ~100 px) mais dont la
+   courbe est un smoothstep (3t² − 2t³) echantillonne en onze paliers. Sa
+   derivee s'annule aux deux bouts : il n'y a plus de rupture de pente a
+   percevoir, donc plus de bande — et le sujet reste net bien plus bas.
+
+   Ne pas « ameliorer » ceci en rallongeant la distance : c'est la COURBE qui
+   fait le travail, pas la longueur.
+   ============================================================================ */
+
+.hero__photo{
+  -webkit-mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,.028) 1.4%,
+      rgba(0,0,0,.104) 2.8%,
+      rgba(0,0,0,.216) 4.2%,
+      rgba(0,0,0,.352) 5.6%,
+      rgba(0,0,0,.5) 7%,
+      rgba(0,0,0,.648) 8.4%,
+      rgba(0,0,0,.784) 9.8%,
+      rgba(0,0,0,.896) 11.2%,
+      rgba(0,0,0,.972) 12.6%,
+      rgba(0,0,0,1) 14%);
+  mask-image:
+    linear-gradient(to right,
+      transparent 0%, rgba(0,0,0,.10) 4%, rgba(0,0,0,.28) 9%,
+      rgba(0,0,0,.52) 14%, rgba(0,0,0,.74) 19%, rgba(0,0,0,.90) 25%,
+      rgba(0,0,0,.98) 31%, #000 36%),
+    linear-gradient(to top,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,.028) 1.4%,
+      rgba(0,0,0,.104) 2.8%,
+      rgba(0,0,0,.216) 4.2%,
+      rgba(0,0,0,.352) 5.6%,
+      rgba(0,0,0,.5) 7%,
+      rgba(0,0,0,.648) 8.4%,
+      rgba(0,0,0,.784) 9.8%,
+      rgba(0,0,0,.896) 11.2%,
+      rgba(0,0,0,.972) 12.6%,
+      rgba(0,0,0,1) 14%);
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+
+/* Le fond du hero s'arrete exactement sur --nuit-0, et la section suivante
+   laisse voir le meme --nuit-0 du body : la couleur d'arrivee du fondu est
+   donc identique des deux cotes de la couture. Si l'une des deux change un
+   jour, la demarcation revient — c'est ici qu'il faudra regarder. */
+
+
+/* ============================================================================
+   V105.1 — REGRESSION MOBILE INTRODUITE PAR LA V101
+   ----------------------------------------------------------------------------
+   En redeclarant « .hero__photo{width:min(52%,720px)} » au niveau GLOBAL pour
+   regler le cadrage desktop, la V101 a ecrase le width:100% que la V100 posait
+   dans sa media query mobile — une regle globale placee APRES une media query
+   la bat, meme si la media query est plus specifique en intention.
+
+   Consequence mesuree a 375 px : la photo ne faisait plus que 195 px de large,
+   calee a gauche (left:0 et right:0 avec une width explicite : en LTR c'est
+   « right » qui est ignore). Son bord DROIT etait une coupe franche, sans
+   aucun fondu — une couture verticale en plein milieu du hero.
+
+   Deux corrections, et la lecon : sur ce fichier, toute redeclaration globale
+   d'une propriete deja pilotee en media query doit etre reprise dans CHAQUE
+   palier, sinon elle fuit.
+   ============================================================================ */
+
+@media (max-width:900px){
+
+  /* 1. La photo reprend toute la largeur. */
+  .hero__photo{width:100%;left:0;right:0}
+
+  /* 2. Le fondu horizontal n'a plus de sens quand la photo occupe tout
+        l'ecran : il ne resterait qu'a assombrir un cote au hasard. On ne
+        garde que le fondu du bas (meme smoothstep que sur desktop), la
+        lisibilite du texte etant assuree par le voile vertical de ::after. */
+  .hero__photo{
+    -webkit-mask-image:linear-gradient(to top,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,.028) 1.4%,
+      rgba(0,0,0,.104) 2.8%,
+      rgba(0,0,0,.216) 4.2%,
+      rgba(0,0,0,.352) 5.6%,
+      rgba(0,0,0,.5) 7%,
+      rgba(0,0,0,.648) 8.4%,
+      rgba(0,0,0,.784) 9.8%,
+      rgba(0,0,0,.896) 11.2%,
+      rgba(0,0,0,.972) 12.6%,
+      rgba(0,0,0,1) 14%);
+    mask-image:linear-gradient(to top,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,.028) 1.4%,
+      rgba(0,0,0,.104) 2.8%,
+      rgba(0,0,0,.216) 4.2%,
+      rgba(0,0,0,.352) 5.6%,
+      rgba(0,0,0,.5) 7%,
+      rgba(0,0,0,.648) 8.4%,
+      rgba(0,0,0,.784) 9.8%,
+      rgba(0,0,0,.896) 11.2%,
+      rgba(0,0,0,.972) 12.6%,
+      rgba(0,0,0,1) 14%);
+    -webkit-mask-composite:source-over;mask-composite:add}
+}
