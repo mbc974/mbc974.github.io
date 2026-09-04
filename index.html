@@ -54,10 +54,10 @@
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
 <!-- Preload recentré sur l'élément LCP réel : l'image du hero (le poster vidéo, sous la ligne de
      flottaison et en preload="none", n'a pas besoin d'être préchargé). -->
-<link rel="preload" as="image" href="assets/images/joueur-dribble-900.webp" type="image/webp" fetchpriority="high"
-      imagesrcset="assets/images/joueur-dribble-640.webp 640w, assets/images/joueur-dribble-900.webp 900w, assets/images/joueur-dribble.webp 1280w"
-      imagesizes="(max-width:900px) 104vw, 46vw">
-<link rel="stylesheet" href="style.css?v=0afce371">
+<link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
+      imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
+      imagesizes="(max-width:900px) 100vw, 48vw">
+<link rel="stylesheet" href="style.css?v=71ea0cbf">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -579,15 +579,13 @@
     <span class="sr-only"> — retour en haut de page</span>
   </a>
   <nav class="nav" id="nav" aria-label="Navigation principale">
+    <a href="club-basket-la-montagne/">Le club</a>
     <a href="#categories">Catégories</a>
     <a href="#calendrier">Créneaux</a>
     <a href="#matchs">Matchs</a>
-    <a href="#parents">Parents</a>
-    <a href="#staff">L'équipe</a>
-    <a href="#soutenir">Soutenir</a>
-    <a href="#contact">Contact</a>
-    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> (nouvel onglet)</span></a>
-    <a href="adhesion.html" class="nav__cta">Je m'inscris</a>
+    <a href="#parents">Infos parents</a>
+    <a class="nav__sep" href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> (nouvel onglet)</span></a>
+    <a href="adhesion.html" class="nav__cta">S'inscrire</a>
   </nav>
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
 </header>
@@ -609,120 +607,64 @@
 
 <main id="contenu">
 
-<!-- ===== 1. HERO ===== -->
-<section class="hero hero--split hero-light-motion" id="hero">
-  <div class="hero__texture" aria-hidden="true"></div>
-  <div class="hero__court" aria-hidden="true"></div>
-  <div class="hero__halo" aria-hidden="true"></div>
-  <div class="hero__glow hero__glow--b" aria-hidden="true"></div>
-  <div class="hero__glow hero__glow--o" aria-hidden="true"></div>
-  <div class="hero__lightmotion" aria-hidden="true"></div>
-  <div class="hero-fx" aria-hidden="true">
-    <div class="hero-fx__grid"></div>
-    <div class="hero-fx__glow"></div>
-  </div>
-  <div class="hero__photo" aria-hidden="true">
-    <img src="assets/images/joueur-dribble-900.webp"
-         srcset="assets/images/joueur-dribble-640.webp 640w, assets/images/joueur-dribble-900.webp 900w, assets/images/joueur-dribble.webp 1280w"
-         sizes="(max-width:900px) 104vw, 46vw"
-         alt="" width="1280" height="2264" decoding="async" fetchpriority="high"
-         onerror="this.closest('.hero__photo').classList.add('is-empty')">
+<!-- ===== 1. HERO =====
+     V100 · Refonte premium. Le premier ecran portait six couches
+     decoratives (texture, court, halo, deux glows, light-motion, grille
+     fx), une carte d'offre, trois CTA, une liste de preuves et un lien
+     WhatsApp : il disait tout, donc rien. Il ne reste que ce qui situe
+     le club, ce qui le nomme, et UNE action principale.
+     La photo n'est plus un joueur generique mais le duo MBC devant la
+     banniere du club : c'est le seul visuel qui porte a la fois le
+     maillot, le terrain de La Montagne et les deux slogans. Son alt
+     descriptif vient de l'ancienne section « essentiel » (Google
+     Images) : il ne doit pas redevenir vide. -->
+<section class="hero" id="hero">
+  <div class="hero__photo">
+    <img src="assets/images/mbc-duo-terrain-la-montagne-700.webp"
+         srcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
+         sizes="(max-width:900px) 100vw, 48vw"
+         alt="Deux joueurs du MBC de dos sur le terrain de La Montagne, maillots floqués GLAIN 2 et ALEX 1, face à la bannière du club : « Ansanm nou lé pli for », « La Montagne en lèr »."
+         width="1086" height="1448" decoding="async" fetchpriority="high"
+         onerror="this.onerror=null;this.srcset='';this.src='assets/images/mbc-duo-terrain-la-montagne.jpg'">
   </div>
   <div class="hero__inner">
-    <div class="hero__content">
-      <p class="hero__pill reveal-fade"><span class="hero__pill-dot" aria-hidden="true"></span>La Montagne · Saint-Denis · Saison 2026/2027</p>
-      <h1 class="hero__headline hero__headline-fixed reveal-fade">Le basket prend de la hauteur</h1>
-      <p class="hero__subtitle reveal-fade"><span lang="rcf">Ansanm nou lé pli for</span></p>
-      <p class="hero__sub reveal-fade d2">Le nouveau club de basket de La Montagne, à Saint-Denis de La Réunion — filles et garçons, dès 3 ans.</p>
-      <div class="hero-offer reveal-fade d3">
-        <p class="hero-offer__label">Pré-inscriptions ouvertes</p>
-        <p class="hero-offer__txt">Baby Basket, jeunes, loisirs et seniors — réserve ta place pour la saison 2026/2027.</p>
-        <div class="hero-offer__btns">
-          <a href="adhesion.html" class="btn btn--primary btn--cta btn--xl hero-offer__main" aria-label="Je m'inscris — saison 2026/2027">
-            <span class="hero-offer__main-t">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-            <span class="hero-offer__main-s">Saison 2026/2027</span>
-          </a>
-          <a href="#categories" class="btn btn--ghost btn--hero-sec hero-offer__browse">Voir les catégories</a>
-          <a href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20au%20MBC.%20Cat%C3%A9gorie%20%3A%20...%20%2F%20Ann%C3%A9e%20de%20naissance%20%3A%20..." target="_blank" rel="noopener" class="btn btn--ghost btn--hero-sec hero-offer__trial">
-            <svg class="ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
-            <span>Faire une séance d'essai</span><span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span>
-          </a>
-        </div>
-        <ul class="hero-offer__proof" aria-label="Garanties du club">
-          <li>Club affilié FFBB · REU0974104</li>
-          <li>Encadrement déclaré &amp; assuré</li>
-          <li>Licence 95 €</li>
-        </ul>
-        <a class="hero-offer__wa" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20les%20inscriptions%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>Une question avant de t'inscrire&nbsp;? <b>Écris-nous sur WhatsApp</b><span class="sr-only"> (nouvel onglet)</span></a>
-      </div>
+    <p class="hero__eyebrow">La Montagne <i aria-hidden="true"></i> Saint-Denis</p>
+    <h1 class="hero__h1">Le basket prend<br>de la <span class="hl">hauteur.</span></h1>
+    <p class="hero__creole" lang="rcf">Ansanm nou lé pli for.</p>
+    <p class="hero__meta">Basket dès 3 ans <i aria-hidden="true"></i> Filles &amp; garçons <i aria-hidden="true"></i> Saison 2026/2027</p>
+    <div class="hero__cta">
+      <a href="adhesion.html" class="btn btn--primary btn--lg">Rejoindre le MBC</a>
+      <a href="#categories" class="hero__second">Voir les catégories<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
+    <p class="hero__fine">FFBB <i aria-hidden="true"></i> Licence 95 € <i aria-hidden="true"></i> Séance d'essai possible</p>
   </div>
-  <a class="hero__scroll" href="#essentiel" aria-label="Voir l'essentiel des pré-inscriptions 2026/2027"><span aria-hidden="true"></span><span class="hero__scroll-label">L'essentiel</span></a>
+  <a class="hero__scroll" href="#essentiel" aria-label="Faire défiler vers l'essentiel"><span aria-hidden="true"></span><span class="hero__scroll-label">Découvrir</span></a>
 </section>
 
-<!-- ===== L'essentiel — la campagne de pré-inscription ===== -->
-<!-- V90 — Deux colonnes reelles, plus de photo en absolu.
-     A gauche : le titre, la fiche technique (les trois chiffres en
-     lignes alignees) et la preuve, calee en bas de colonne. A droite :
-     le tirage, dans le flux. En bas, pleine largeur : la barre de
-     reassurance puis l'action. Meme structure du telephone au grand
-     ecran, seule l'echelle change. -->
-<section class="section ess" id="essentiel" aria-labelledby="essentielTitle">
-  <div class="wrap ess__in">
-
-    <!-- colonne de gauche (elle se dissout en mobile : voir .ess__lead) -->
-    <div class="ess__lead">
-      <header class="ess__head reveal">
-        <p class="kicker ess__kicker">Pré-inscriptions 2026 / 2027</p>
-        <h2 class="h2" id="essentielTitle">L'essentiel <span class="hl">en un coup d'œil</span></h2>
-        <p class="ess__sub">Tout ce qu'un parent ou un futur joueur doit savoir pour rejoindre le <a href="club-basket-la-montagne/">MBC</a>, à Saint-Denis&nbsp;(974).</p>
-      </header>
-
-      <!-- La fiche technique. Une ligne par information : le chiffre dans
-           une colonne de largeur commune (max-content partage par les trois
-           lignes), le libelle en face. Plus aucun libelle ne tombe sur
-           quatre lignes comme dans la version en trois colonnes. -->
-      <dl class="ess-stats reveal">
-        <div class="ess-stat">
-          <svg class="ess-stat__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 12.4 5.2A2 2 0 0 0 11 4.6H5a1 1 0 0 0-1 1v6a2 2 0 0 0 .6 1.4l8.2 8.2a2 2 0 0 0 2.8 0l5-5a2 2 0 0 0 0-2.8Z"/><circle cx="8.2" cy="8.8" r="1.25"/></svg>
-          <dt class="ess-stat__v">95 €</dt>
-          <dd class="ess-stat__l">Licence saison 2026/2027<span class="ess-stat__x">FFBB &amp; assurance incluses</span></dd>
-        </div>
-        <div class="ess-stat">
-          <svg class="ess-stat__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg>
-          <dt class="ess-stat__v">Dès 3 ans</dt>
-          <dd class="ess-stat__l">Du Baby Basket aux Seniors<span class="ess-stat__x">Une catégorie pour chaque âge</span></dd>
-        </div>
-        <div class="ess-stat">
-          <svg class="ess-stat__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-          <dt class="ess-stat__v">2 lieux</dt>
-          <dd class="ess-stat__l">Gymnase de La Montagne &amp; plateau de Ruisseau Blanc<span class="ess-stat__x">À La Montagne, Saint-Denis</span></dd>
-        </div>
-      </dl>
-    </div>
-
-    <figure class="ess__photo reveal">
-      <img src="assets/images/mbc-duo-terrain-la-montagne-420.webp"
-           srcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
-           sizes="(min-width:1080px) 40vw, (min-width:780px) 56vw, min(92vw, 420px)"
-           alt="Deux joueurs du MBC de dos sur le terrain de La Montagne, maillots floqués GLAIN 2 et ALEX 1, face à la bannière du club : « Ansanm nou lé pli for », « La Montagne en lèr »."
-           width="1086" height="1448" loading="lazy" decoding="async"
-           onerror="this.onerror=null;this.srcset='';this.src='assets/images/mbc-duo-terrain-la-montagne.jpg'">
-    </figure>
-
-    <!-- La barre de reassurance. Volontairement legere : un filet, un fond
-         a peine plus clair. C'est le seul bloc encadre de la section, ce qui
-         suffit a le distinguer des lignes de la fiche technique. -->
-    <ul class="ess-plus reveal">
-      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 8.5-11.5H12l1-8.5Z"/></svg><b>Sous 48 h</b><span>Réponse après pré-inscription</span></li>
-      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg><b>Séance d'essai</b><span>Testez un entraînement avant de décider</span></li>
-      <li class="ess-plus__i"><svg class="ess-plus__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3.6"/><path d="M8.5 11.1V18M6 14.6h5"/><circle cx="15" cy="15" r="3.6"/><path d="M17.5 12.5 21 9M21 9h-3.2M21 9v3.2"/></svg><b>Filles &amp; garçons</b><span>Toutes les pratiques sont ouvertes</span></li>
-    </ul>
-
-    <div class="ess__cta reveal">
-      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-      <a href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20au%20MBC.%20Cat%C3%A9gorie%20%3A%20...%20%2F%20Ann%C3%A9e%20de%20naissance%20%3A%20..." target="_blank" rel="noopener" class="btn btn--ghost btn--lg">Faire une séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-    </div>
+<!-- ===== 2. CHIFFRES CLÉS =====
+     V100 · L'ancienne section « L'essentiel » cumulait un titre, un
+     chapô, trois lignes de fiche technique, une photo portrait, une
+     barre de réassurance de trois items et deux CTA : 1068 px pour
+     redire ce que le hero venait de dire. Trois chiffres suffisent.
+     Le titre de niveau 2 reste dans l arbre (structure de titres + aria-labelledby)
+     mais c'est le chiffre qui parle à l'œil. -->
+<section class="section keyfig-sec" id="essentiel" aria-labelledby="essentielTitle">
+  <div class="wrap">
+    <h2 class="sr-only" id="essentielTitle">Le MBC en trois chiffres</h2>
+    <dl class="keyfig reveal">
+      <div class="keyfig__i">
+        <dt class="keyfig__v"><span data-count="95">95</span> €</dt>
+        <dd class="keyfig__l">Licence FFBB + assurance<span>Un seul tarif, du Baby aux Seniors</span></dd>
+      </div>
+      <div class="keyfig__i">
+        <dt class="keyfig__v">Dès 3 ans</dt>
+        <dd class="keyfig__l">Des premiers dribbles aux Seniors<span>Filles et garçons, loisir ou compétition</span></dd>
+      </div>
+      <div class="keyfig__i">
+        <dt class="keyfig__v">2 terrains</dt>
+        <dd class="keyfig__l">100 % La Montagne<span>Gymnase &amp; plateau de Ruisseau Blanc</span></dd>
+      </div>
+    </dl>
   </div>
 </section>
 
@@ -736,12 +678,116 @@
   </div>
   <span class="bg-word" style="bottom:2%;right:-2%" aria-hidden="true">JOUE</span>
   <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Pour tous les âges</p>
-      <h2 class="h2">Trouve <span class="hl">ta place</span><br>sur le parquet</h2>
-      <p class="sec-head__sub">Chaque catégorie a son créneau, son ambiance et ses objectifs. C'est <b>l'année de naissance</b> qui détermine la catégorie FFBB, pas l'âge du jour — elle est indiquée sur chaque carte, avec le nom exact de la formule à choisir au moment de l'inscription.</p>
-      <p class="cat-mixite"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="17.5" cy="8" r="2.5"/><path d="M3.5 21c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5M15 21c.2-2.4 1.5-4.4 3.3-5.2"/></svg> <span><b>Filles et garçons sont les bienvenus dans toutes les pratiques du club.</b> Les équipes engagées en compétition sont constituées catégorie par catégorie, selon les effectifs de la saison. En savoir plus sur <a href="basket-enfant-saint-denis/">le basket pour enfant à Saint-Denis</a> et sur <a href="ecole-de-basket-saint-denis/">l'école de basket des 7-10 ans</a>.</span></p>
+    <header class="sec-head sec-head--center reveal">
+      <p class="kicker kicker--center">Trouver sa catégorie</p>
+      <h2 class="h2">Quel âge a <span class="hl">le joueur&nbsp;?</span></h2>
+      <p class="sec-head__sub sec-head__sub--tight">C'est <b>l'année de naissance</b> qui détermine la catégorie FFBB, pas l'âge du jour. Choisissez une tranche&nbsp;: le créneau, le lieu et la formule s'affichent.</p>
     </header>
+    <!-- Sélecteur d'âge : la question n°1 des parents, résolue en un clic.
+         Pas de modale, pas de librairie : six boutons, un panneau qui change.
+         Sans JS, le panneau du premier age reste visible et les six liens restent atteignables — le contenu est déjà dans le HTML. -->
+    <div class="age reveal" id="age-selector">
+      <p class="age__q" id="ageQ">Quel âge a le joueur&nbsp;?</p>
+      <div class="age__tabs" role="tablist" aria-labelledby="ageQ">
+        <button type="button" role="tab" class="age__tab is-on" aria-selected="true"  aria-controls="age-p-1" id="age-t-1">3&ndash;6 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-2" id="age-t-2">7&ndash;10 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-3" id="age-t-3">11&ndash;12 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-4" id="age-t-4">13&ndash;14 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-5" id="age-t-5">15&ndash;17 ans</button>
+        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-6" id="age-t-6">Adulte</button>
+      </div>
+      <div class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Baby Basket</b><span class="age__cat-n">nés de 2020 à 2023</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Samedi 09h00 – 10h00</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>Baby Basket 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="baby-basket-la-reunion/">Le Baby Basket</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20essayer%20le%20Baby%20Basket%20%C3%A0%20mon%20enfant%20n%C3%A9%20en%20..." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-2" aria-labelledby="age-t-2" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>École de Basket</b><span class="age__cat-n">nés de 2016 à 2019</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Samedi 10h00 – 11h30</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>École de Basket 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="ecole-de-basket-saint-denis/">L'école de basket</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20pour%20inscrire%20mon%20enfant%20%C3%A0%20l%27%C3%A9cole%20de%20basket%20du%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-3" aria-labelledby="age-t-3" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U13</b><span class="age__cat-n">nés en 2014 et 2015</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>U13 Compétition 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U13%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-4" aria-labelledby="age-t-4" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U15</b><span class="age__cat-n">nés en 2012 et 2013</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>U15 Compétition 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U15%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-5" aria-labelledby="age-t-5" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U18</b><span class="age__cat-n">nés de 2009 à 2011</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 20h30 &amp; mercredi 19h00</b></li>
+          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
+          <li><span>Formule</span><b>U18 2026/2027</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket jeune</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20un%20joueur%20n%C3%A9%20en%20...%20au%20MBC%20%28cat%C3%A9gorie%20U18%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+      <div class="age__panel" role="tabpanel" id="age-p-6" aria-labelledby="age-t-6" hidden>
+        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Seniors ou Loisirs</b><span class="age__cat-n">dès 16 ans</span></p>
+        <ul class="age__facts">
+          <li><span>Créneau</span><b>Lundi 20h30, mercredi 19h00 ou 20h30</b></li>
+          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
+          <li><span>Formule</span><b>Senior Compétition ou Basket Loisirs</b></li>
+        </ul>
+        <p class="age__a">
+          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
+          <a class="btn btn--ghost btn--sm" href="basket-adulte-loisirs-saint-denis/">Basket adulte &amp; loisirs</a>
+          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20en%20basket%20adulte%20au%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Les huit catégories restent dans la page — elles portent les liens
+         internes vers les pages enfants et les photos indexées par Google
+         Images — mais elles ne s'imposent plus a l'arrivee. Le visiteur qui
+         a repondu « quel age » a deja sa reponse ; celui qui veut tout
+         parcourir ouvre ce volet. Sans JS, le volet natif fonctionne seul. -->
+    <details class="cat-all reveal" id="toutes-categories">
+      <summary class="cat-all__s">
+        <span class="cat-all__lab">Voir toutes les catégories</span>
+        <span class="cat-all__n">8</span>
+        <svg class="cat-all__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="cat-all__body">
     <figure class="transm reveal">
       <figcaption class="transm__txt">
         <p class="kicker ess__kicker">Transmettre</p>
@@ -912,106 +958,14 @@
       </article>
       </div>
     </div>
-
-
-    <!-- Sélecteur d'âge : la question n°1 des parents, résolue en un clic.
-         Pas de modale, pas de librairie : six boutons, un panneau qui change.
-         Sans JS, le panneau du premier age reste visible et les six liens restent atteignables — le contenu est déjà dans le HTML. -->
-    <div class="age reveal" id="age-selector">
-      <p class="age__q" id="ageQ">Quel âge a le joueur&nbsp;?</p>
-      <div class="age__tabs" role="tablist" aria-labelledby="ageQ">
-        <button type="button" role="tab" class="age__tab is-on" aria-selected="true"  aria-controls="age-p-1" id="age-t-1">3&ndash;6 ans</button>
-        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-2" id="age-t-2">7&ndash;10 ans</button>
-        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-3" id="age-t-3">11&ndash;12 ans</button>
-        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-4" id="age-t-4">13&ndash;14 ans</button>
-        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-5" id="age-t-5">15&ndash;17 ans</button>
-        <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-6" id="age-t-6">Adulte</button>
+        <p class="cat-mixite"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="17.5" cy="8" r="2.5"/><path d="M3.5 21c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5M15 21c.2-2.4 1.5-4.4 3.3-5.2"/></svg> <span><b>Filles et garçons sont les bienvenus dans toutes les pratiques du club.</b> Les équipes engagées en compétition sont constituées catégorie par catégorie, selon les effectifs de la saison. En savoir plus sur <a href="basket-enfant-saint-denis/">le basket pour enfant à Saint-Denis</a> et sur <a href="ecole-de-basket-saint-denis/">l'école de basket des 7-10 ans</a>.</span></p>
       </div>
-      <div class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Baby Basket</b><span class="age__cat-n">nés de 2020 à 2023</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Samedi 09h00 – 10h00</b></li>
-          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
-          <li><span>Formule</span><b>Baby Basket 2026/2027</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="baby-basket-la-reunion/">Le Baby Basket</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20essayer%20le%20Baby%20Basket%20%C3%A0%20mon%20enfant%20n%C3%A9%20en%20..." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-      <div class="age__panel" role="tabpanel" id="age-p-2" aria-labelledby="age-t-2" hidden>
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>École de Basket</b><span class="age__cat-n">nés de 2016 à 2019</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Samedi 10h00 – 11h30</b></li>
-          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
-          <li><span>Formule</span><b>École de Basket 2026/2027</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="ecole-de-basket-saint-denis/">L'école de basket</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20pour%20inscrire%20mon%20enfant%20%C3%A0%20l%27%C3%A9cole%20de%20basket%20du%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-      <div class="age__panel" role="tabpanel" id="age-p-3" aria-labelledby="age-t-3" hidden>
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U13</b><span class="age__cat-n">nés en 2014 et 2015</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
-          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
-          <li><span>Formule</span><b>U13 Compétition 2026/2027</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U13%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-      <div class="age__panel" role="tabpanel" id="age-p-4" aria-labelledby="age-t-4" hidden>
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U15</b><span class="age__cat-n">nés en 2012 et 2013</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
-          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
-          <li><span>Formule</span><b>U15 Compétition 2026/2027</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket enfant</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U15%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-      <div class="age__panel" role="tabpanel" id="age-p-5" aria-labelledby="age-t-5" hidden>
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U18</b><span class="age__cat-n">nés de 2009 à 2011</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 20h30 &amp; mercredi 19h00</b></li>
-          <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
-          <li><span>Formule</span><b>U18 2026/2027</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="basket-enfant-saint-denis/">Le basket jeune</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20un%20joueur%20n%C3%A9%20en%20...%20au%20MBC%20%28cat%C3%A9gorie%20U18%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-      <div class="age__panel" role="tabpanel" id="age-p-6" aria-labelledby="age-t-6" hidden>
-        <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Seniors ou Loisirs</b><span class="age__cat-n">dès 16 ans</span></p>
-        <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 20h30, mercredi 19h00 ou 20h30</b></li>
-          <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
-          <li><span>Formule</span><b>Senior Compétition ou Basket Loisirs</b></li>
-        </ul>
-        <p class="age__a">
-          <a class="btn btn--primary btn--sm" href="adhesion.html">Je m'inscris</a>
-          <a class="btn btn--ghost btn--sm" href="basket-adulte-loisirs-saint-denis/">Basket adulte &amp; loisirs</a>
-          <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20en%20basket%20adulte%20au%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-        </p>
-      </div>
-    </div>
+    </details>
 
     <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Un doute sur la catégorie&nbsp;? Donnez-nous l'année de naissance, on confirme avec vous avant l'inscription — <a href="https://wa.me/262692556458?text=Bonjour%2C%20quelle%20cat%C3%A9gorie%20pour%20un%20enfant%20n%C3%A9%20en%20...%20%3F" target="_blank" rel="noopener">par WhatsApp<span class="sr-only"> (nouvel onglet)</span></a> ou depuis le <a href="#contact">formulaire de contact</a>.</span></p>
 
-    <div class="essentiel-cta reveal">
+    <div class="sec-cta reveal">
       <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-      <a href="#calendrier" class="btn btn--ghost btn--lg">Voir les créneaux</a>
     </div>
   </div>
 </section>
@@ -1026,31 +980,10 @@
       <p class="sec-head__sub">Les entraînements hebdomadaires du club, entre le Gymnase de La Montagne et le Terrain Ruisseau Blanc. Les lignes «&nbsp;match à domicile&nbsp;» sont des <b>réservations de salle</b> pour recevoir les rencontres&nbsp;: elles ne sont pas occupées toutes les semaines.</p>
     </header>
 
-    <figure class="cal-venue reveal">
-      <img src="assets/images/gymnase-la-montagne-clair.webp" alt="Intérieur du Gymnase de La Montagne, salle du MBC La Montagne Basket Club, avec le logo du club au mur et le terrain de basket" width="1445" height="1088" loading="lazy" decoding="async"
-           onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/gymnase-la-montagne-clair.jpg'}else{this.closest('.cal-venue').classList.add('is-empty')}">
-      <figcaption class="cal-venue__cap">
-        <span class="cal-venue__tag"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg> Notre salle</span>
-        <span class="cal-venue__name">Gymnase de La Montagne</span>
-        <span class="cal-venue__addr">Chemin des Bauhinias · Saint-Denis (974)</span>
-        <a class="cal-venue__map" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer">Voir sur Google Maps<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> &mdash; Gymnase de La Montagne (nouvel onglet)</span></a>
-      </figcaption>
-    </figure>
-
-    <figure class="cal-venue cal-venue--rb reveal">
-      <img src="assets/images/ruisseau-blanc-terrain-1000.webp"
-           srcset="assets/images/ruisseau-blanc-terrain-640.webp 640w, assets/images/ruisseau-blanc-terrain-1000.webp 1000w, assets/images/ruisseau-blanc-terrain.webp 1445w"
-           sizes="(min-width:1100px) 1060px, 100vw"
-           alt="Le plateau multisports de Ruisseau Blanc : terrain de basket bleu sous une charpente bois couverte, à La Montagne, Saint-Denis."
-           width="1445" height="963" loading="lazy" decoding="async"
-           onerror="if(!this.dataset.f){this.dataset.f=1;this.srcset='';this.src='assets/images/ruisseau-blanc-terrain.jpg'}else{this.closest('.cal-venue').classList.add('is-empty')}">
-      <figcaption class="cal-venue__cap">
-        <span class="cal-venue__tag"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg> Notre second terrain</span>
-        <span class="cal-venue__name">Terrain Ruisseau Blanc</span>
-        <span class="cal-venue__addr">La Montagne &middot; Saint-Denis (974) &mdash; couvert, en plein air</span>
-        <a class="cal-venue__map" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer">Voir sur Google Maps<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> &mdash; Terrain Ruisseau Blanc (nouvel onglet)</span></a>
-      </figcaption>
-    </figure>
+    <p class="cal-lieux reveal">
+      <a class="cal-lieu" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Gymnase de La Montagne</b><span>Chemin des Bauhinias &middot; 97417<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span></span></a>
+      <a class="cal-lieu" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><b>Terrain Ruisseau Blanc</b><span>Plateau couvert &middot; La Montagne<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span></span></a>
+    </p>
 
     <div class="pl reveal">
       <div class="pl-top">
@@ -1171,48 +1104,62 @@
     </header>
 
 
-    <!-- L'affiche du match d'ouverture. Elle ne redit pas ce qu'elle contient
-         déjà : le texte à côté ne porte que l'essentiel (qui, quand, où) et
-         deux actions. Le bloc s'efface tout seul après la rencontre — voir
-         data-match-date, traité dans script.js. -->
-    <aside class="nx reveal" id="prochain-match" data-match-date="2026-09-11"
+    <!-- LE SCOREBOARD. L'ancien bloc mettait l'affiche du match au premier
+         plan et les informations à côté, en petit. Ici c'est la rencontre
+         elle-même qui compose : deux écussons, un VS, la date, le lieu.
+         Contrat JS à ne pas casser (script.js) : #prochain-match,
+         data-match-date, data-state, #nxCountdown, #nxTitle. Le bloc
+         s'efface tout seul le lendemain de la rencontre. -->
+    <aside class="sb reveal" id="prochain-match" data-match-date="2026-09-11"
            data-state="upcoming" aria-labelledby="nxTitle">
-      <div class="nx__media">
-        <span class="nx__ghost" aria-hidden="true"></span>
-        <a class="nx__poster" href="assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg"
-           target="_blank" rel="noopener"
-           aria-label="Voir l'affiche du match MBC contre Sainte-Suzanne en grand (nouvel onglet)">
-          <img src="assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp"
-               srcset="assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp 480w, assets/affiches/mbc-premier-match-sainte-suzanne-2026-600.webp 600w, assets/affiches/mbc-premier-match-sainte-suzanne-2026-720.webp 720w, assets/affiches/mbc-premier-match-sainte-suzanne-2026.webp 1080w"
-               sizes="(min-width:900px) 340px, min(78vw,340px)"
-               alt="Affiche du premier match de la saison 2026/2027 : MBC La Montagne contre Sainte-Suzanne, le 11 septembre 2026 à 20h30 au Gymnase de La Montagne."
-               width="1080" height="1350" loading="lazy" decoding="async"
-               onerror="this.onerror=null;this.srcset='';this.src='assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg'">
-        </a>
+      <p class="sb__comp" id="nxKicker">Pré-Régionale Masculine <i aria-hidden="true"></i> Journée 1</p>
+
+      <div class="sb__duel">
+        <div class="sb__team">
+          <span class="sb__crest"><img src="assets/logos/mbc-logo.webp" alt="" width="360" height="370" decoding="async" onerror="this.onerror=null;this.src='assets/logos/mbc-logo.png'"></span>
+          <span class="sb__name">MBC</span>
+          <span class="sb__side">Domicile</span>
+        </div>
+        <span class="sb__vs" aria-hidden="true">VS</span>
+        <div class="sb__team">
+          <span class="sb__crest"><img src="assets/logos/clubs/bc2s-144.webp" srcset="assets/logos/clubs/bc2s-144.webp 144w, assets/logos/clubs/bc2s.webp 288w" sizes="88px" alt="" width="288" height="288" loading="lazy" decoding="async" onerror="this.closest('.sb__crest').classList.add('sb__crest--sigle');this.closest('.sb__crest').textContent='BC2S'"></span>
+          <span class="sb__name">Sainte-Suzanne</span>
+          <span class="sb__side">Visiteur</span>
+        </div>
       </div>
-      <div class="nx__body">
-        <p class="kicker nx__kicker" id="nxKicker">Prochain rendez-vous</p>
-        <h3 class="nx__t" id="nxTitle">MBC <em>vs</em> Sainte-Suzanne</h3>
-        <p class="nx__when">
-          <time datetime="2026-09-11T20:30">Vendredi 11 septembre 2026 &middot; 20h30</time>
-        </p>
-        <p class="nx__where">Gymnase de La Montagne
-          <span>Chemin des Bauhinias &middot; 97417 Saint-Denis</span>
-        </p>
-        <p class="nx__tags">
-          <span class="nx__tag nx__tag--free">Entrée libre</span>
-          <span class="nx__tag">Pré-Régionale &middot; J1</span>
-          <span class="nx__tag nx__tag--d" id="nxCountdown" hidden></span>
-        </p>
-        <p class="nx__a">
-          <a class="btn btn--primary" href="#mx-liste">Voir le calendrier</a>
-          <a class="btn btn--ghost" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers le Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a>
-          <a class="btn btn--ghost" href="assets/documents/mbc-vs-sainte-suzanne-11-09-2026.ics" download>Ajouter à mon agenda<span class="sr-only"> (fichier .ics)</span></a>
-        </p>
-      </div>
+
+      <h3 class="sr-only" id="nxTitle">MBC contre Sainte-Suzanne, vendredi 11 septembre 2026</h3>
+
+      <p class="sb__when">
+        <time datetime="2026-09-11T20:30">Ven. 11 sept. <i aria-hidden="true"></i> 20h30</time>
+      </p>
+      <p class="sb__where">Gymnase de La Montagne <span>Chemin des Bauhinias &middot; 97417 Saint-Denis</span></p>
+      <p class="sb__free">Entrée libre</p>
+
+      <!-- Compte à rebours : rempli par script.js, masqué tant qu'il n'a pas
+           de valeur sûre et retiré dès que la rencontre est passée. -->
+      <div class="sb__cd" id="nxCountdown" hidden></div>
+
+      <p class="sb__a">
+        <a class="btn btn--primary" href="assets/documents/mbc-vs-sainte-suzanne-11-09-2026.ics" download>Ajouter au calendrier<span class="sr-only"> (fichier .ics)</span></a>
+        <a class="btn btn--ghost" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers le Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a>
+      </p>
+      <p class="sb__poster">
+        <a href="assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg" target="_blank" rel="noopener">Voir l'affiche du match<span class="sr-only"> en grand (nouvel onglet)</span></a>
+      </p>
     </aside>
 
-    <div class="mx reveal" id="mx-liste">
+    <!-- Les sept rencontres restent dans le DOM : chaque ligne porte
+         l'ancre #match-AAAA-MM-JJ qui sert d'@id, d'url et d'offers.url
+         aux SportsEvent du JSON-LD. On les replie, on ne les retire pas.
+         script.js ouvre ce volet si l'URL cible une ancre qu'il contient. -->
+    <details class="mx-all reveal" id="mx-liste">
+      <summary class="mx-all__s">
+        <span class="mx-all__lab">Voir tous les matchs de la saison</span>
+        <span class="mx-all__n">7</span>
+        <svg class="mx-all__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="mx">
       <p class="mx-next" id="mxNext" hidden></p>
       <ol class="mx-list">
         <!-- calendrier:lignes -->
@@ -1362,27 +1309,32 @@
           <span>Réservée à la Division&nbsp;1. Les quatre premiers disputent les demi-finales (1<sup>er</sup> contre 4<sup>e</sup>, 2<sup>e</sup> contre 3<sup>e</sup>) puis la finale, toutes en aller-retour et départagées au cumul des points. Les deux premiers du championnat accèdent à la division supérieure, sous réserve d'en remplir les conditions.</span>
         </li>
       </ol>
-    </div>
+      </div>
+    </details>
 
     <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>L'horaire officiel du championnat est le <b>vendredi à 20h30</b>. Un jour ou un horaire peut être décalé par dérogation, demandée au plus tard cinq jours avant la rencontre&nbsp;: le <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener">calendrier officiel FFBB du club<span class="sr-only"> (nouvel onglet)</span></a> fait foi. Le format complet figure dans le <a href="assets/documents/reglement-sportif-prm-2026-2027.pdf" target="_blank" rel="noopener">règlement sportif particulier<span class="sr-only"> (PDF, nouvel onglet)</span></a> de la Ligue.</span></p>
 
-    <!-- L'affiche officielle : le calendrier sur un seul visuel, pensé pour
-         être renvoyé tel quel sur WhatsApp ou publié sur les réseaux. -->
-    <figure class="affiche reveal">
-      <a class="affiche__vue" href="assets/affiches/calendrier-phase1-2026-2027-d2326330.png" target="_blank" rel="noopener">
+    <!-- L'affiche du calendrier, en vignette. ATTENTION : l'attribut alt de
+         cette image est un POINT D'ANCRAGE de .claude/set-calendrier-prm.py
+         (motif « alt="Affiche du calendrier ... dont <mot> a domicile" », voir
+         COMPTES dans le script). Le script met a jour le nombre de rencontres
+         a domicile a chaque nouveau PDF de la Ligue et leve une exception si
+         le motif a disparu. Ne pas reformuler ce alt, ne pas retirer l'image
+         sans porter le motif ailleurs. Valider par :
+         python .claude/set-calendrier-prm.py --archive --essai -->
+    <figure class="mx-affiche reveal">
+      <a class="mx-affiche__vue" href="assets/affiches/calendrier-phase1-2026-2027-d2326330.png" target="_blank" rel="noopener">
         <img src="assets/affiches/calendrier-phase1-2026-2027-d2326330-480.webp"
-             srcset="assets/affiches/calendrier-phase1-2026-2027-d2326330-480.webp 480w, assets/affiches/calendrier-phase1-2026-2027-d2326330-720.webp 720w, assets/affiches/calendrier-phase1-2026-2027-d2326330.webp 1080w"
-             sizes="(min-width:760px) 320px, 62vw"
+             srcset="assets/affiches/calendrier-phase1-2026-2027-d2326330-480.webp 480w, assets/affiches/calendrier-phase1-2026-2027-d2326330-720.webp 720w"
+             sizes="(min-width:760px) 190px, 42vw"
              alt="Affiche du calendrier de la phase 1, saison 2026/2027 : les sept rencontres des seniors masculins, toutes le vendredi à 20h30, dont quatre à domicile au Gymnase de La Montagne."
              width="1080" height="1350" loading="lazy" decoding="async">
       </a>
-      <figcaption class="affiche__txt">
-        <p class="kicker">À partager</p>
-        <h3 class="affiche__t">L'affiche de la phase&nbsp;1</h3>
-        <p class="affiche__d">Les sept rencontres sur un seul visuel. Le calendrier ci-dessus reste la référence&nbsp;: en cas de dérogation, c'est lui qui est mis à jour.</p>
-        <p class="affiche__a">
-          <a class="btn btn--primary" href="assets/affiches/calendrier-phase1-2026-2027-d2326330.png" download="calendrier-MBC-phase1-2026-2027.png">Télécharger l'affiche</a>
-          <a class="btn btn--ghost" href="assets/affiches/calendrier-phase1-2026-2027-d2326330.png" target="_blank" rel="noopener">Voir en grand<span class="sr-only"> (nouvel onglet)</span></a>
+      <figcaption class="mx-affiche__txt">
+        <p class="mx-affiche__lab">À partager</p>
+        <p class="mx-affiche__d">Les sept rencontres sur un seul visuel.</p>
+        <p class="mx-affiche__a">
+          <a href="assets/affiches/calendrier-phase1-2026-2027-d2326330.png" download="calendrier-MBC-phase1-2026-2027.png">Télécharger l'affiche</a>
         </p>
       </figcaption>
     </figure>
@@ -1393,50 +1345,17 @@
   </div>
 </section>
 
-<!-- ===== Parcours licence — ce qui se passe après le paiement ===== -->
-<!-- Le parcours de licence en 5 etapes vivait ici ET sur /adhesion.html,
-     mot pour mot. Il reste sur la page adhesion, où il est à sa place :
-     on ne lit ce detail qu'une fois décidé. La home garde la reponse a
-     l'inquiétude réelle (« j'ai payé, où est ma licence ? ») et renvoie. -->
-<section class="section parcours" id="parcours" aria-labelledby="parcoursTitle">
-  <span class="bg-word" style="top:6%;right:-3%" aria-hidden="true">LICENCE</span>
-  <div class="wrap">
-    <header class="sec-head sec-head--center reveal">
-      <p class="kicker kicker--center">Après votre inscription</p>
-      <h2 class="h2" id="parcoursTitle">De l'inscription <span class="hl">à la licence FFBB</span></h2>
-      <p class="sec-head__sub" style="margin-inline:auto">Payer en ligne, c'est votre adhésion au club. La licence FFBB, elle, est créée juste après, avec vous&nbsp;: le club prépare la demande, la fédération vous envoie votre e-Licence, puis elle est validée. Comptez quelques jours &mdash; personne n'est laissé sans nouvelle.</p>
-    </header>
-    <p class="cat-foot reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> <span>Les 95&nbsp;&euro; couvrent l'adhésion, la licence FFBB et l'assurance &mdash; <a href="adhesion.html#tarif">le détail de ce qui est compris</a>.</span></p>
-    <div class="essentiel-cta reveal">
-      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris &middot; saison 2026/2027</a>
-      <a href="adhesion.html#parcours" class="btn btn--ghost btn--lg">Les 5 étapes en détail</a>
-    </div>
-  </div>
-</section>
 
 <!-- ===== 2. COMPTEURS ===== -->
-<!-- Marquee 1 -->
-<div class="marquee" aria-hidden="true"><div class="marquee__track">
-  <span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span><span>Passion</span><span>Respect</span><span>Solidarité</span><span>Engagement</span><span>Ansanm</span><span>Nout kartié</span><span>La Montagne en lér</span>
-</div></div>
+
 
 <!-- ===== Parents (réassurance + FAQ) ===== -->
 <section class="section parents" id="parents">
   <span class="bg-word" style="top:4%;right:-3%" aria-hidden="true">CONFIANCE</span>
   <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Parents</p>
-      <h2 class="h2">Votre enfant entre <span class="hl">de bonnes mains</span></h2>
-      <p class="sec-head__sub">Confier son marmay à un club, c'est d'abord une question de confiance. Voici nos engagements concrets, pas des promesses.</p>
-      <ul class="parents-proof reveal" aria-label="Nos garanties pour les familles">
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Licence FFBB &amp; assurance incluses</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg>Encadrement déclaré</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 12h12M9 7v10M15 7v10"/></svg>Séance d'essai possible</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 5h16v11H8l-4 3z"/></svg>Parents bienvenus &amp; infos régulières</li>
-      </ul>
-      <p class="trustline reveal" role="group" aria-label="Identité officielle du club">
-        <span>Affilié FFBB</span><span>Association loi 1901</span><span>Saint-Denis &middot; 974</span><span>Saison 2026/2027</span>
-      </p>
+    <header class="sec-head sec-head--center reveal">
+      <p class="kicker kicker--center">Infos parents</p>
+      <h2 class="h2">Votre enfant.<br><span class="hl">Notre responsabilité.</span></h2>
     </header>
 
     <!-- La preuve avant la promesse : un coach face aux enfants du quartier,
@@ -1463,42 +1382,21 @@
     </div>
 
     <div class="parents-grid">
-      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span><h3>Un encadrement engagé</h3><p>Des coachs et des bénévoles identifiés, déclarés et investis. Groupes par âge pour un suivi adapté à chaque enfant.</p></article>
-      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Sécurité &amp; assurance</h3><p>Licence FFBB et assurance incluses. Entraînements dans des équipements municipaux, dans un cadre encadré.</p></article>
-      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17l5-5 4 4 8-8M16 8h4v4"/></svg></span><h3>Une vraie pédagogie</h3><p>On part du jeu pour aller vers le geste : motricité, confiance, esprit d'équipe. On apprend en s'amusant, à son rythme.</p></article>
-      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Des valeurs éducatives</h3><p>Respect, ponctualité, entraide, fierté de représenter La Montagne. Le basket comme repère pour grandir.</p></article>
+      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span><h3>Encadrement</h3><p>Des coachs et des bénévoles identifiés et déclarés, avec des groupes par âge.</p></article>
+      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><h3>Sécurité</h3><p>Licence FFBB et assurance incluses, dans des équipements municipaux.</p></article>
+      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17l5-5 4 4 8-8M16 8h4v4"/></svg></span><h3>Pédagogie</h3><p>On part du jeu pour aller vers le geste. Chacun progresse à son rythme.</p></article>
+      <article class="p-pillar reveal"><span class="p-pillar__ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Valeurs</h3><p>Respect, entraide, fierté de représenter La Montagne.</p></article>
     </div>
 
-    <!-- Une respiration entre les quatre piliers et le tarif. La section
-         comptait 534 mots pour une seule image : c'était le bloc narratif le
-         plus dense de la page. Cette vue montre le type d'équipement dont
-         parle le pilier « Sécurité & assurance ». -->
-    <figure class="p-venue reveal">
-      <img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
-           srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
-           sizes="(min-width:1100px) 1060px, 100vw"
-           alt="Le plateau couvert de Ruisseau Blanc, ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne."
-           width="1300" height="866" loading="lazy" decoding="async"
-           onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'">
-      <figcaption>Des équipements municipaux, couverts et ouverts &mdash; ici le plateau de Ruisseau Blanc.</figcaption>
-    </figure>
-
-    <div class="tarifs reveal" id="tarifs">
-      <div class="tarifs__main">
-        <span class="tarifs__lbl">Licence saison 2026/2027</span>
-        <span class="tarifs__price"><span data-count="95">95</span> €</span>
-        <span class="tarifs__note">pour toutes les catégories</span>
-        <span class="tarifs__perm">soit environ 8 € / mois sur l'année</span>
-      </div>
-      <div class="tarifs__rest">
-        <p><b>Un seul tarif, tout compris.</b> Du Baby Basket aux Seniors, loisir comme compétition : <b>même prix pour tous</b>, licence FFBB et assurance incluses. Le basket reste accessible à toute la famille.</p>
-        <div class="tarifs__chips" role="group" aria-label="Catégories incluses dans le tarif unique">
-          <span>Baby</span><span>École</span><span>U13</span><span>U15</span><span>U18</span><span>Seniors</span>
-        </div>
-        <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-      </div>
+    <div class="sec-cta reveal">
+      <a href="basket-enfant-saint-denis/" class="btn btn--ghost btn--lg">Découvrir nos engagements<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
 
+    <!-- Les 7 questions sont le miroir visible du bloc JSON-LD FAQPage.
+         Elles avaient ete regroupees sous un volet parent : cela les repliait
+         a DEUX niveaux, et un contenu doublement ferme n'est plus « visible
+         sur la page » au sens ou Google l'entend pour un FAQPage. On garde
+         donc un seul niveau de repli, celui de chaque question. -->
     <div class="faq reveal" id="faq">
       <h3 class="faq__title">Les questions que se posent les parents</h3>
       <details class="faq__item"><summary>À partir de quel âge mon enfant peut-il commencer&nbsp;?</summary><p>Dès 3 ans avec le Baby Basket. Chaque catégorie, du Baby aux Seniors, a son créneau et son approche adaptés à l'âge.</p></details>
@@ -1508,10 +1406,9 @@
       <details class="faq__item"><summary>Comment se déroule une séance&nbsp;?</summary><p>Échauffement, jeux, exercices techniques et petits matchs encadrés par les coachs. De 1&nbsp;h à 1&nbsp;h&nbsp;30 selon la catégorie.</p></details>
       <details class="faq__item"><summary>Puis-je assister aux entraînements&nbsp;?</summary><p>Oui, les parents sont les bienvenus. Le club vit grâce à l'implication des familles.</p></details>
       <details class="faq__item"><summary>Y aura-t-il des matchs à suivre&nbsp;?</summary><p>Oui, selon la catégorie&nbsp;: des plateaux conviviaux pour les plus jeunes, le championnat FFBB pour les autres. Attention&nbsp;: les créneaux du vendredi soir et du dimanche matin sont <b>réservés pour accueillir les matchs à domicile</b> — il n'y a pas un match chaque semaine à la même heure. Les dates réelles suivent le <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener">calendrier officiel FFBB du club<span class="sr-only"> (nouvel onglet)</span></a>. Les parents sont chaleureusement invités à venir encourager — sans obligation. Tous les déplacements restent à La Réunion et le club facilite le covoiturage.</p></details>
-      <div class="faq__cta">
-        <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-        <a href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20au%20MBC.%20Cat%C3%A9gorie%20%3A%20...%20%2F%20Ann%C3%A9e%20de%20naissance%20%3A%20..." target="_blank" rel="noopener" class="btn btn--ghost">Faire une séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
-      </div>
+      <p class="faq__cta">
+        <a href="adhesion.html" class="btn btn--primary">Je m'inscris · saison 2026/2027</a>
+      </p>
     </div>
   </div>
 </section>
@@ -1524,9 +1421,9 @@
     <!-- Manchette : label en bandeau, titre à gauche, chapô à droite, alignés
          sur la même ligne de base — composition de couverture, pas centrage. -->
     <header class="lp-head">
-      <p class="lp-kicker reveal">Août 2026 · Saint-Denis</p>
-      <h2 class="lp-title reveal" id="inaugTitle">Le MBC,<br><span class="hl">dans son quartier</span></h2>
-      <p class="lp-standfirst reveal">Un nouveau plateau sportif couvert a été inauguré à Saint-Denis, et le MBC était sur le parquet.</p>
+      <p class="lp-kicker reveal">Août 2026 <i aria-hidden="true"></i> Saint-Denis</p>
+      <h2 class="lp-title reveal" id="inaugTitle"><span lang="rcf">Nout kartié.</span><br><span class="hl" lang="rcf">Nout basket.</span></h2>
+      <p class="lp-standfirst reveal">Un nouveau plateau sportif couvert a été inauguré à La Montagne, et le MBC était sur le parquet.</p>
     </header>
 
     <!-- L'image d'ancrage, 16:9 gravé dans le fichier : le cadrage ne dépend
@@ -1549,19 +1446,9 @@
     <div class="lp-below">
       <div class="lp-copy reveal">
         <p class="lp-txt lp-txt--lead">La maire de Saint-Denis a enfilé le maillot du club — dossard n°&nbsp;4, <span class="lp-creole" lang="rcf">Ansanm nou lé pli for</span> dans le dos — pour tenter son tir devant les marmay.</p>
-        <p class="lp-txt">Dans la matinée, les coachs ont fait tourner les ballons avec les enfants du quartier venus découvrir le basket. Certains n'avaient jamais tenu un ballon.</p>
-        <p class="lp-txt">C'est ça, un club de quartier&nbsp;: des équipements publics, des familles, des bénévoles, et des gamins qui repartent avec l'envie de revenir.</p>
+        <p class="lp-txt">Dans la matinée, les coachs ont fait tourner les ballons avec les enfants du quartier venus découvrir le basket. Certains n'avaient jamais tenu un ballon. C'est ça, un club de quartier&nbsp;: des équipements publics, des familles, des bénévoles, et des gamins qui repartent avec l'envie de revenir.</p>
         <p class="lp-sign"><span>Club affilié FFBB</span><span>Association loi 1901</span><span>Saison fondatrice 2026 / 2027</span></p>
 
-        <figure class="lp-live">
-          <img src="assets/images/ruisseau-blanc-concert-quartier-600.webp"
-               srcset="assets/images/ruisseau-blanc-concert-quartier-600.webp 600w, assets/images/ruisseau-blanc-concert-quartier-900.webp 900w, assets/images/ruisseau-blanc-concert-quartier.webp 1300w"
-               sizes="(min-width:900px) 46vw, 100vw"
-               alt="Concert sur le plateau couvert de Ruisseau Blanc : un artiste au micro et un DJ sur scène sous le panier de basket, devant le public du quartier."
-               width="1300" height="866" loading="lazy" decoding="async"
-               onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-concert-quartier.jpg'">
-          <figcaption>Le plateau ne sert pas qu'au basket&nbsp;: le quartier s'y retrouve aussi le soir.</figcaption>
-        </figure>
       </div>
 
       <figure class="lp-aside reveal">
@@ -1589,25 +1476,10 @@
           <p class="kicker">Adhésion 2026 / 2027</p>
           <h2 class="h2" id="adhesionVideoTitle">La licence MBC, <span class="hl">ça commence ici</span></h2>
           <p class="lead">Le MBC accueille chaque marmay, chaque famille et chaque passionné de La Montagne.</p>
-          <ul class="cine-stats" aria-label="Points clés de l'adhésion MBC">
-            <li>
-              <svg class="cine-stats__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
-              <b>Tout compris</b><span>Licence FFBB &amp; assurance</span>
-            </li>
-            <li>
-              <svg class="cine-stats__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              <b>Du Baby aux Seniors</b><span>Toutes les catégories</span>
-            </li>
-            <li>
-              <svg class="cine-stats__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg>
-              <b>Essai possible</b><span>Avant de t'engager</span>
-            </li>
-          </ul>
           <div class="cine-actions">
             <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-            <a href="#parents" class="btn btn--ghost btn--lg">Nos engagements aux parents</a>
           </div>
-          <p class="cine-note"><span lang="rcf">Nout kartié, nout basket</span> : places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
+          <p class="cine-note"><span lang="rcf">Nout kartié, nout basket</span> <i aria-hidden="true"></i> places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
         </div>
 
         <figure class="cine-stage">
@@ -1684,7 +1556,6 @@
     <header class="sec-head reveal">
       <p class="kicker">L'esprit MBC en images</p>
       <h2 class="h2">Sur le <span class="hl">terrain</span></h2>
-      <p class="sec-head__sub">Une équipe, une vraie dynamique de groupe. Retour en images sur les matchs et la cohésion des basketteurs de La Montagne, à Saint-Denis de La Réunion.</p>
     </header>
 
     <div class="gallery-mosaic reveal">
@@ -1708,48 +1579,18 @@
         <picture><source srcset="assets/galerie/equipe-groupe.webp" type="image/webp"><img src="assets/galerie/equipe-groupe.jpg" alt="Photo d'équipe des basketteurs du MBC La Montagne Basket Club, club de basket à Saint-Denis 974" loading="lazy" decoding="async" width="640" height="480"></picture>
         <figcaption>La famille MBC <span lang="rcf">lé là</span></figcaption>
       </figure>
+      <figure class="g-tile g-inaug">
+        <picture><source srcset="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-400.webp 400w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-560.webp 560w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-760.webp 760w" sizes="(min-width:900px) 33vw, 50vw" type="image/webp"><img src="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc.jpg" alt="Inauguration du plateau couvert de Ruisseau Blanc à La Montagne, Saint-Denis : le MBC et les habitants du quartier" loading="lazy" decoding="async" width="760" height="1009"></picture>
+        <figcaption>L'inauguration du plateau</figcaption>
+      </figure>
+      <figure class="g-tile g-gym">
+        <img src="assets/images/gymnase-la-montagne-clair.webp" alt="Intérieur du Gymnase de La Montagne, salle du MBC, avec le logo du club au mur et le terrain de basket" loading="lazy" decoding="async" width="1445" height="1088" onerror="this.onerror=null;this.src='assets/images/gymnase-la-montagne-clair.jpg'">
+        <figcaption>Notre salle, le Gymnase de La Montagne</figcaption>
+      </figure>
     </div>
 
-    <div class="gallery-cta reveal">
-      <p class="gallery-cta__txt">Envie de vivre ça la saison prochaine&nbsp;?</p>
-      <div class="gallery-cta__btns">
-        <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-        <a href="#calendrier" class="btn btn--ghost btn--lg">Voir les créneaux</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== 11. SOCIAL ===== -->
-<section class="section social-spotlight" id="suivez-mbc" aria-labelledby="socialTitle">
-  <div class="social-spotlight__media" aria-hidden="true">
-    <img src="assets/images/joueur-dunk.webp" alt="" width="1280" height="2264" loading="lazy" decoding="async"
-         onerror="this.closest('.social-spotlight__media').classList.add('is-empty')">
-  </div>
-  <div class="wrap social-spotlight__inner">
-    <header class="social-spotlight__head reveal">
-      <p class="kicker">La communauté MBC</p>
-      <h2 class="h2" id="socialTitle">Suivez <span class="hl">le MBC</span></h2>
-      <p class="social-spotlight__sub">Actus du club, coulisses, photos et temps forts de La Montagne. Reste connecté, <span lang="rcf">nou lé là</span>.</p>
-    </header>
-    <div class="social-spotlight__body">
-      <div class="social-spotlight__grid reveal reveal--r">
-        <a class="social-card social-card--facebook" href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener" aria-label="Suivre le MBC sur Facebook (nouvel onglet)">
-          <span class="social-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg></span>
-          <span class="social-card__body"><strong>Facebook</strong><span class="social-card__desc">Infos club</span><span class="social-card__handle">@mbc974.re</span></span>
-          <span class="social-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-        <a class="social-card social-card--instagram" href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Suivre le MBC sur Instagram (nouvel onglet)">
-          <span class="social-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></span>
-          <span class="social-card__body"><strong>Instagram</strong><span class="social-card__desc">Photos &amp; coulisses</span><span class="social-card__handle">@mbc974.re</span></span>
-          <span class="social-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-        <a class="social-card social-card--tiktok" href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="Suivre le MBC sur TikTok (nouvel onglet)">
-          <span class="social-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></span>
-          <span class="social-card__body"><strong>TikTok</strong><span class="social-card__desc">Temps forts</span><span class="social-card__handle">@mbc974.re</span></span>
-          <span class="social-card__go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-      </div>
+    <div class="sec-cta reveal">
+      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
     </div>
   </div>
 </section>
@@ -1788,57 +1629,14 @@
     </div>
 
     <div class="sponsors-wall reveal">
-      <header class="sponsors-wall__head">
-        <span class="sponsors-wall__label">Partenaires 2026/2027</span>
-        <h3 class="sponsors-wall__title">Ils soutiennent <span class="hl">le MBC</span></h3>
-        <p class="sponsors-wall__sub">Des acteurs péi engagés à nos côtés pour construire la saison fondatrice du basket à La Montagne.</p>
-      </header>
-      <div class="sponsors-marquee">
-        <div class="sponsors-marquee__track">
-          <!-- série 1 (liens réels) -->
-          <a class="sponsor-card" href="https://lesagitateursdumidi.com/" target="_blank" rel="noopener" aria-label="Les Agitateurs du Midi — visiter le site du partenaire (nouvel onglet)">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-agitateurs-midi.webp" type="image/webp"><img src="assets/sponsors/sponsor-agitateurs-midi.png" alt="Logo Les Agitateurs du Midi, sponsor du MBC La Montagne Basket Club" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Les Agitateurs du Midi</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://share.google/PTAqaZjgccrvXrFvE" target="_blank" rel="noopener" aria-label="CPA Paysage — visiter la page du partenaire (nouvel onglet)">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-cpa-paysage.webp" type="image/webp"><img src="assets/sponsors/sponsor-cpa-paysage.png" alt="Logo CPA Paysage, sponsor du MBC La Montagne Basket Club" loading="lazy" decoding="async" width="360" height="206"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">CPA Paysage</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://www.asfa.re/" target="_blank" rel="noopener" aria-label="Association Saint-François d'Assise — visiter le site (nouvel onglet)">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-saint-francois.webp" type="image/webp"><img src="assets/sponsors/sponsor-saint-francois.png" alt="Logo Association Saint-François d'Assise, partenaire du MBC La Montagne Basket Club" loading="lazy" decoding="async" width="360" height="359"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Saint-François d'Assise</span><span class="sponsor-card__badge">Mécène</span></div>
-          </a>
-          <a class="sponsor-card" href="https://share.google/ueOdrMVy3L7lThwcH" target="_blank" rel="noopener" aria-label="Resto Chen — visiter la page du partenaire (nouvel onglet)">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-resto-chen.webp" type="image/webp"><img src="assets/sponsors/sponsor-resto-chen.png" alt="Logo Resto Chen, sponsor du MBC La Montagne Basket Club" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Resto Chen</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://oxysom.re/" target="_blank" rel="noopener" aria-label="Oxysom — visiter le site du partenaire (nouvel onglet)">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-oxysom.webp" type="image/webp"><img src="assets/sponsors/sponsor-oxysom.png" alt="Logo Oxysom, assistance respiratoire, sponsor du MBC La Montagne Basket Club" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Oxysom</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <!-- série 2 (duplicata visuel pour la boucle, ignoré par les lecteurs d'écran) -->
-          <a class="sponsor-card" href="https://lesagitateursdumidi.com/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-agitateurs-midi.webp" type="image/webp"><img src="assets/sponsors/sponsor-agitateurs-midi.png" alt="" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Les Agitateurs du Midi</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://share.google/PTAqaZjgccrvXrFvE" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-cpa-paysage.webp" type="image/webp"><img src="assets/sponsors/sponsor-cpa-paysage.png" alt="" loading="lazy" decoding="async" width="360" height="206"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">CPA Paysage</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://www.asfa.re/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-saint-francois.webp" type="image/webp"><img src="assets/sponsors/sponsor-saint-francois.png" alt="" loading="lazy" decoding="async" width="360" height="359"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Saint-François d'Assise</span><span class="sponsor-card__badge">Mécène</span></div>
-          </a>
-          <a class="sponsor-card" href="https://share.google/ueOdrMVy3L7lThwcH" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-resto-chen.webp" type="image/webp"><img src="assets/sponsors/sponsor-resto-chen.png" alt="" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Resto Chen</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-          <a class="sponsor-card" href="https://oxysom.re/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">
-            <div class="sponsor-card__plate"><picture><source srcset="assets/sponsors/sponsor-oxysom.webp" type="image/webp"><img src="assets/sponsors/sponsor-oxysom.png" alt="" loading="lazy" decoding="async" width="360" height="360"></picture></div>
-            <div class="sponsor-card__meta"><span class="sponsor-card__name">Oxysom</span><span class="sponsor-card__badge">Partenaire officiel</span></div>
-          </a>
-        </div>
-      </div>
+      <p class="sponsors-wall__label">Partenaires 2026/2027 <i aria-hidden="true"></i> ils soutiennent le MBC</p>
+      <ul class="sponsors-row">
+        <li><a class="sponsor-card" href="https://lesagitateursdumidi.com/" target="_blank" rel="noopener"><picture><source srcset="assets/sponsors/sponsor-agitateurs-midi.webp" type="image/webp"><img src="assets/sponsors/sponsor-agitateurs-midi.png" alt="Les Agitateurs du Midi, partenaire du MBC" loading="lazy" decoding="async" width="360" height="360"></picture><span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a class="sponsor-card" href="https://share.google/PTAqaZjgccrvXrFvE" target="_blank" rel="noopener"><picture><source srcset="assets/sponsors/sponsor-cpa-paysage.webp" type="image/webp"><img src="assets/sponsors/sponsor-cpa-paysage.png" alt="CPA Paysage, partenaire du MBC" loading="lazy" decoding="async" width="360" height="206"></picture><span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a class="sponsor-card" href="https://www.asfa.re/" target="_blank" rel="noopener"><picture><source srcset="assets/sponsors/sponsor-saint-francois.webp" type="image/webp"><img src="assets/sponsors/sponsor-saint-francois.png" alt="Association Saint-François d'Assise, mécène du MBC" loading="lazy" decoding="async" width="360" height="359"></picture><span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a class="sponsor-card" href="https://share.google/ueOdrMVy3L7lThwcH" target="_blank" rel="noopener"><picture><source srcset="assets/sponsors/sponsor-resto-chen.webp" type="image/webp"><img src="assets/sponsors/sponsor-resto-chen.png" alt="Resto Chen, partenaire du MBC" loading="lazy" decoding="async" width="360" height="360"></picture><span class="sr-only"> (nouvel onglet)</span></a></li>
+        <li><a class="sponsor-card" href="https://oxysom.re/" target="_blank" rel="noopener"><picture><source srcset="assets/sponsors/sponsor-oxysom.webp" type="image/webp"><img src="assets/sponsors/sponsor-oxysom.png" alt="Oxysom, partenaire du MBC" loading="lazy" decoding="async" width="360" height="360"></picture><span class="sr-only"> (nouvel onglet)</span></a></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -1849,7 +1647,7 @@
     <header class="sec-head reveal">
       <p class="kicker">On vous répond vite</p>
       <h2 class="h2">Contact &amp; <span class="hl">pré-inscription</span></h2>
-      <p class="sec-head__sub">Laissez-nous vos coordonnées ou venez nous rencontrer au Gymnase de La Montagne.</p>
+      <p class="sec-head__sub">Une question&nbsp;? On répond vite.</p>
     </header>
     <div class="contact__grid">
       <!-- ENVOI DU FORMULAIRE : par défaut, repli « mailto » (ouvre la messagerie du visiteur — peut échouer
@@ -1892,7 +1690,7 @@
         <div class="field"><label for="msg">Message (facultatif)</label><textarea id="msg" name="msg" rows="4"></textarea></div>
         <button type="submit" class="btn btn--primary btn--full" aria-describedby="formRgpd">Envoyer ma demande</button>
         <p class="form-feedback" id="formFeedback" role="status" aria-live="polite"></p>
-        <p style="margin-top:1rem;font-size:.86rem;color:var(--txt-soft)">Pour une inscription officielle, rendez-vous sur notre <a href="adhesion.html" style="color:var(--orange-vif);font-weight:600">page adhésion</a>.</p>
+        <p class="form-officiel">Pour une inscription officielle, rendez-vous sur notre <a href="adhesion.html">page adhésion</a>.</p>
         <p class="form-rgpd" id="formRgpd">Les champs marqués d'un astérisque sont obligatoires&nbsp;; le <b>téléphone est facultatif</b> et ne sert qu'à vous rappeler plus vite. Vos informations sont transmises aux membres du bureau du MBC pour répondre à votre demande, et à personne d'autre&nbsp;: ni revente, ni autre usage. Vous pouvez demander leur suppression à tout moment à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a> — <a href="confidentialite/">politique de confidentialité</a>.</p>
       </form>
 
@@ -1903,11 +1701,6 @@
           <a class="info-line" href="mailto:contact@mbc974.com"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><span class="info-line__lbl">Email</span><span class="info-line__val">contact@mbc974.com</span></span></a>
           <a class="info-line" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20les%20inscriptions%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 32 32" fill="currentColor" style="color:#25D366" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg><span><span class="info-line__lbl">WhatsApp</span><span class="info-line__val">Réponse rapide<span class="sr-only"> (nouvel onglet)</span></span></span></a>
           <a class="info-line" href="https://maps.google.com/?cid=11137921175543905570" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span><span class="info-line__lbl">Où nous trouver</span><span class="info-line__val">Gymnase de La Montagne<br>Chemin des Bauhinias<br>97417 Saint-Denis · La Réunion<br><b>Itinéraire &amp; avis — notre fiche Google</b><span class="sr-only"> (nouvel onglet)</span></span></span></a>
-          <div class="socials" role="group" aria-label="Réseaux sociaux">
-            <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener">Facebook<span class="sr-only"> (nouvel onglet)</span></a>
-            <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener">Instagram<span class="sr-only"> (nouvel onglet)</span></a>
-            <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener">TikTok<span class="sr-only"> (nouvel onglet)</span></a>
-          </div>
         </div>
         <div class="contact-map">
           <!-- Façade : l'iframe Google n'est injectée qu'au clic. Chargée d'office,
@@ -1940,61 +1733,77 @@
 <!-- ===== Footer ===== -->
 <footer class="site-footer">
   <div class="wrap">
+
     <div class="footer__top">
       <div class="footer__brand">
         <span class="logo-img" role="img" aria-label="Logo MBC La Montagne Basket Club"></span>
-        <p class="footer__tag"><span lang="rcf">La Montagne en lér</span>&nbsp;!</p>
-        <p class="small">Le club de basket de La Montagne, Saint-Denis. <span lang="rcf">Nout kartié, nout basket</span> : passion, respect, solidarité, engagement. Club affilié FFBB.</p>
+        <p class="footer__name">La Montagne Basket&nbsp;Club</p>
+        <p class="footer__place">La Montagne <i aria-hidden="true"></i> Saint-Denis <i aria-hidden="true"></i> La Réunion</p>
+        <p class="footer__creole" lang="rcf">La Montagne en lér&nbsp;!</p>
         <div class="footer__social" role="group" aria-label="Réseaux sociaux">
           <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener" aria-label="Facebook (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
           <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
           <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="TikTok (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
         </div>
-        <p class="footer__equip">Équipementier officiel · <a href="https://inplay.fr/" target="_blank" rel="noopener">InPlay<span class="sr-only"> (nouvel onglet)</span></a></p>
       </div>
-      <div class="footer__col">
-        <h4>Le club</h4>
-        <a href="#categories">Catégories</a><a href="#calendrier">Créneaux</a><a href="#matchs">Matchs</a><a href="#faq">FAQ parents</a><a href="#inauguration">Le MBC dans le quartier</a><a href="#galerie">Galerie</a><a href="#staff">L'équipe</a><a href="club-basket-la-montagne/">Le club &amp; les maillots</a><a href="adhesion.html">Adhésion 2026/2027</a>
-      </div>
-      <div class="footer__col">
-        <h4>Agir</h4>
-        <div class="footer__actions">
-          <a href="adhesion.html"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Adhésion</a>
-          <a href="benevoles/"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>Devenir bénévole</a>
-          <a href="soutenir-le-club/"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-8-4.6-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.4-8 11-8 11Z"/></svg>Faire un don</a>
-          <a href="sponsor-club-basket-reunion/"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l9-6 9 6v12"/><path d="M9 21v-7h6v7"/></svg>Devenir partenaire</a>
-          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg>Espace adhérent<span class="sr-only"> — connexion Yapla (nouvel onglet)</span></a>
-          <a href="#contact"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Contact</a>
-        </div>
-      </div>
-      <div class="footer__col">
-        <h4>Contact</h4>
-        <a href="tel:+262692556458">0692 55 64 58</a><a href="mailto:contact@mbc974.com">contact@mbc974.com</a>
-        <p>Gymnase de La Montagne<br>Chemin des Bauhinias<br>97417 Saint-Denis · La Réunion</p>
+
+      <nav class="footer__col" aria-label="Le club">
+        <h3>Le club</h3>
+        <a href="club-basket-la-montagne/">Le club &amp; les maillots</a>
+        <a href="#categories">Catégories</a>
+        <a href="#calendrier">Créneaux</a>
+        <a href="#matchs">Matchs</a>
+        <a href="#staff">L'équipe</a>
+        <a href="#galerie">Galerie</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Rejoindre et soutenir">
+        <h3>Rejoindre</h3>
+        <a href="adhesion.html">Adhésion 2026/2027</a>
+        <a href="#parents">Infos parents</a>
+        <a href="benevoles/">Devenir bénévole</a>
+        <a href="soutenir-le-club/">Faire un don</a>
+        <a href="sponsor-club-basket-reunion/">Devenir partenaire</a>
+        <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> — connexion Yapla (nouvel onglet)</span></a>
+      </nav>
+
+      <div class="footer__col footer__col--contact">
+        <h3>Contact</h3>
+        <a href="tel:+262692556458">0692 55 64 58</a>
+        <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>
+        <p class="footer__addr">Gymnase de La Montagne<br>Chemin des Bauhinias<br>97417 Saint-Denis <i aria-hidden="true"></i> La Réunion</p>
+        <a href="#contact">Formulaire de contact</a>
       </div>
     </div>
-    <ul class="footer__trust" aria-label="Documents et garanties du club">
-      <li class="footer__trust-h">Documents &amp; garanties</li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-6h6v6"/></svg>Association <b>loi 1901</b></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>Club affilié <b>FFBB</b> · n° <a class="footer__trust-link" href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener" style="color:inherit"><b>REU0974104</b><span class="sr-only"> — voir la fiche officielle FFBB (nouvel onglet)</span></a></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg>Licence &amp; <b>assurance incluses</b></li>
-      <li>RNA <b>W9R1011179</b></li>
-      <li>SIREN <b>104 461 124</b></li>
-      <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a class="footer__trust-link" href="mailto:contact@mbc974.com" style="color:inherit">contact@mbc974.com</a></li>
-      <li><a class="footer__trust-link" href="#legal">Mentions légales &amp; RGPD</a></li>
-      <li><a class="footer__trust-link" href="confidentialite/">Politique de confidentialité</a></li>
-    </ul>
+
+    <p class="footer__ident">
+      <span>Club affilié FFBB <i aria-hidden="true"></i> <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener"><b>REU0974104</b><span class="sr-only"> — fiche officielle FFBB (nouvel onglet)</span></a></span>
+      <span>Association loi 1901</span>
+      <span>Licence &amp; assurance incluses</span>
+      <span>Équipementier <a href="https://inplay.fr/" target="_blank" rel="noopener">InPlay<span class="sr-only"> (nouvel onglet)</span></a></span>
+    </p>
+
     <nav class="footer__seo" aria-label="Le basket près de chez vous">
       <b>Le basket près de chez vous</b>
-      <a href="club-basket-la-montagne/">Club de basket à La Montagne</a> ·
-      <a href="basket-enfant-saint-denis/">Basket enfant à Saint-Denis</a> ·
-      <a href="ecole-de-basket-saint-denis/">École de basket à Saint-Denis</a> ·
-      <a href="baby-basket-la-reunion/">Baby Basket La Réunion</a> ·
-      <a href="basket-adulte-loisirs-saint-denis/">Basket adulte &amp; loisirs à Saint-Denis</a> ·
-      <a href="benevoles/">Devenir bénévole</a> ·
-      <a href="soutenir-le-club/">Soutenir le club</a> ·
+      <a href="club-basket-la-montagne/">Club de basket à La Montagne</a>
+      <a href="basket-enfant-saint-denis/">Basket enfant à Saint-Denis</a>
+      <a href="ecole-de-basket-saint-denis/">École de basket à Saint-Denis</a>
+      <a href="baby-basket-la-reunion/">Baby Basket La Réunion</a>
+      <a href="basket-adulte-loisirs-saint-denis/">Basket adulte &amp; loisirs à Saint-Denis</a>
+      <a href="benevoles/">Devenir bénévole</a>
+      <a href="soutenir-le-club/">Soutenir le club</a>
       <a href="sponsor-club-basket-reunion/">Devenir sponsor à La Réunion</a>
     </nav>
+
+    <div class="footer__bottom">
+      <p class="footer__legal">&copy; 2026 MBC La Montagne Basket Club &middot; Assoc. loi 1901 &middot; Saint-Denis (974)</p>
+      <p class="footer__links"><a href="#legal">Mentions légales</a> <a href="confidentialite/">Confidentialité</a></p>
+      <p class="footer__signature">Made with <span class="sig-heart" aria-hidden="true">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
+    </div>
+
+    <!-- Les mentions detaillees restent sur la page : l ancre #legal est
+         citee par les 9 pages enfants, adhesion.html et 404.html. Repliees,
+         elles ne pesent qu une ligne. -->
     <details class="footer-legal" id="legal">
       <summary>Mentions légales &amp; confidentialité</summary>
       <div class="footer-legal__body">
@@ -2008,12 +1817,6 @@
         <p><b>Propriété —</b> les contenus, visuels et le logo du MBC sont la propriété du club. Les logos des partenaires restent la propriété de leurs détenteurs respectifs.</p>
       </div>
     </details>
-    <div class="footer__bottom">
-      <span class="footer__mini-logo logo-img" role="img" aria-label="Petit logo MBC"></span>
-      <p class="footer__legal">© 2026 MBC La Montagne Basket Club · Assoc. loi 1901 · Saint-Denis (974)</p>
-      <p class="footer__signature">Made with <span class="sig-heart" aria-hidden="true">❤️</span> by <span class="sig-name">Alex</span></p>
-      <p class="footer__hand">#MBC974</p>
-    </div>
   </div>
 </footer>
 
@@ -2026,6 +1829,6 @@
   </div>
 </div>
 
-<script src="script.js?v=b70903ec" defer></script>
+<script src="script.js?v=ef90681b" defer></script>
 </body>
 </html>

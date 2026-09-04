@@ -92,7 +92,8 @@ AFFICHES_MATCH = {
 }
 IMAGES_GENERIQUES = [
     'assets/galerie/match-banniere.jpg',        # 1120x747, 3:2
-    'assets/images/gymnase-la-montagne.jpg',    # 1445x1088, 4:3
+    'assets/images/gymnase-la-montagne-clair.jpg',  # 1445x1088, 4:3 (photo courante ; l'ancienne
+    # gymnase-la-montagne.jpg existe encore mais n'est plus affichee nulle part)
 ]
 
 ACCENTS = {'fevr.': u'févr.', 'aout': u'août', 'dec.': u'déc.',

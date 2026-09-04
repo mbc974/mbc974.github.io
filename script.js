@@ -1041,15 +1041,92 @@
     return;
   }
 
-  // Compteur J-XX : un simple reperage, pas un chrono anime.
+  // Compte a rebours jours / heures / minutes.
+  //
+  // Trois garde-fous, parce qu'un compteur faux est pire que pas de compteur :
+  //  - au-dela de 60 jours il ne s'affiche pas (personne ne compte 8 mois) ;
+  //  - des que l'ecart devient negatif il se retire et l'intervalle s'arrete ;
+  //  - il se rafraichit a la minute, pas a la seconde : aucun cout perceptible,
+  //    et rien qui clignote dans le coin de l'oeil.
   var cd = document.getElementById('nxCountdown');
   if (!cd || isNaN(coup)) return;
-  var jour = 864e5;
-  var a = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  var b = new Date(coup.getFullYear(), coup.getMonth(), coup.getDate());
-  var n = Math.round((b - a) / jour);
-  if (n > 0 && n <= 60) { cd.textContent = 'J–' + n; cd.hidden = false; }
-  else if (n === 0) { cd.textContent = "C'est ce soir"; cd.hidden = false; }
+
+  var MIN = 6e4, H = 36e5, J = 864e5;
+  var timer = null;
+
+  function unite(valeur, libelle) {
+    return '<span class="sb__cd-u"><span class="sb__cd-n">' +
+      (valeur < 10 ? '0' : '') + valeur +
+      '</span><span class="sb__cd-s">' + libelle + '</span></span>';
+  }
+
+  function rendre() {
+    var reste = coup - new Date();
+
+    if (reste <= 0) {
+      // Le coup d'envoi est passe : soit c'est ce soir (le bloc entier
+      // reste, il s'effacera demain), soit il n'y a plus rien a compter.
+      cd.className = 'sb__cd sb__cd--soir';
+      cd.textContent = new Date() <= fin ? "C'est ce soir" : '';
+      cd.hidden = new Date() > fin;
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
+    if (reste > 60 * J) { cd.hidden = true; return; }
+
+    var j = Math.floor(reste / J);
+    var h = Math.floor((reste % J) / H);
+    var m = Math.floor((reste % H) / MIN);
+    var sep = '<span class="sb__cd-sep" aria-hidden="true">\u00b7</span>';
+
+    cd.className = 'sb__cd';
+    cd.innerHTML =
+      '<span class="sb__cd-lab">Prochain match dans</span>' +
+      '<span class="sb__cd-val">' +
+        unite(j, j > 1 ? 'jours' : 'jour') + sep +
+        unite(h, 'h') + sep +
+        unite(m, 'min') +
+      '</span>';
+    cd.hidden = false;
+  }
+
+  rendre();
+  timer = setInterval(rendre, MIN);
+})();
+
+/* ============================================================
+   Ancre dans un volet replie
+   ------------------------------------------------------------
+   La refonte replie ce qui n'a pas a s'imposer : les huit
+   categories, les sept rencontres, la FAQ. Or ces blocs portent
+   des ancres citees ailleurs — /#match-2026-10-02 est l'URL
+   canonique d'une rencontre dans le JSON-LD, /#faq est en pied
+   de page. Sans ceci, le lien menerait a un bloc ferme.
+   On ouvre donc chaque volet ancetre de la cible, puis on
+   recale le defilement (le contenu vient de changer de hauteur).
+   ============================================================ */
+(function () {
+  function ouvrir(hash) {
+    if (!hash || hash.length < 2) return;
+    var cible;
+    try { cible = document.getElementById(decodeURIComponent(hash.slice(1))); }
+    catch (e) { return; }
+    if (!cible) return;
+
+    var n = cible, ouvert = false;
+    while (n && n !== document.body) {
+      if (n.tagName === 'DETAILS' && !n.open) { n.open = true; ouvert = true; }
+      n = n.parentNode;
+    }
+    if (!ouvert) return;
+    // Le volet vient de s'ouvrir : la position calculee avant ne vaut plus.
+    requestAnimationFrame(function () {
+      cible.scrollIntoView({ block: 'start', behavior: 'auto' });
+    });
+  }
+
+  ouvrir(location.hash);
+  window.addEventListener('hashchange', function () { ouvrir(location.hash); });
 })();
 
 /* ============================================================

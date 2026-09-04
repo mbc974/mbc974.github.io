@@ -318,31 +318,16 @@ a{color:inherit;text-decoration:none}
 .nav-backdrop.show{opacity:1;visibility:visible}
 /* ---------------- Marquee ---------------- */
 .marquee{position:relative;overflow:hidden;background:var(--grad-orange);padding:.7rem 0;border-block:2px solid rgba(0,0,0,.15)}
-.marquee__track{display:inline-flex;white-space:nowrap;will-change:transform;animation:marq 26s linear infinite}
-.marquee:hover .marquee__track{animation-play-state:paused}
 /* Pause au tap (accessibilité WCAG 2.2.2 — mobile/tactile, voir script.js) */
-.marquee.is-paused .marquee__track,.sponsors-marquee.is-paused .sponsors-marquee__track{animation-play-state:paused}
-.marquee__track span{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.1rem,3vw,1.7rem);letter-spacing:.04em;color:#190f04;padding:0 .7rem;display:inline-flex;align-items:center;gap:.85rem}
-.marquee__track span::after{content:"●";font-size:.5em;color:rgba(0,0,0,.4)}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.marquee__track{animation:none}}
+@media (prefers-reduced-motion:reduce){}
 /* ---------------- HERO ---------------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:7rem 0 5rem;overflow:hidden;background:radial-gradient(120% 80% at 80% -10%,rgba(27,81,158,.55),transparent 55%),radial-gradient(90% 70% at -8% 115%,rgba(217,106,27,.28),transparent 52%),linear-gradient(180deg,#091020,var(--nuit-0))}
-.hero__texture{position:absolute;inset:0;background-image:var(--dimple-url);opacity:.5;pointer-events:none;mix-blend-mode:screen}
-.hero__court{position:absolute;inset:0;pointer-events:none;opacity:.45;background-image:linear-gradient(transparent calc(100% - 1px),var(--line) 100%);background-size:100% 66px;-webkit-mask-image:radial-gradient(75% 75% at 55% 40%,#000,transparent 85%);mask-image:radial-gradient(75% 75% at 55% 40%,#000,transparent 85%)}
-.hero__glow{position:absolute;width:46vw;height:46vw;max-width:560px;max-height:560px;border-radius:50%;filter:blur(100px);pointer-events:none;will-change:transform}
-.hero__glow--o{background:rgba(217,106,27,.3);left:-12vw;bottom:-14vw}
-.hero__glow--b{background:rgba(27,81,158,.4);right:4vw;top:-14vw}
 .hero__inner{position:relative;z-index:3;width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(18px,5vw,48px)}
-.hero__sub{max-width:46ch;font-size:clamp(1.08rem,2.5vw,1.4rem);color:var(--bleu-glacier)}
 .hero__scroll{position:absolute;bottom:1.4rem;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--ff-cond);text-transform:uppercase;letter-spacing:.2em;font-size:.7rem;color:var(--txt-soft);display:flex;flex-direction:column;align-items:center;gap:.5rem}
 .hero__scroll span{width:1px;height:34px;background:linear-gradient(var(--orange-vif),transparent);animation:scrollPulse 2s var(--ease) infinite}
 @keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
-.hero.in .reveal-fade{opacity:1;transform:none}
-.hero .reveal-fade{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease) .35s,transform .7s var(--ease) .35s}
-.hero .reveal-fade.d2{transition-delay:.5s}
-.hero .reveal-fade.d3{transition-delay:.65s}
-@media (prefers-reduced-motion:reduce){.hero .reveal-fade{transform:none!important;opacity:1!important}}
+@media (prefers-reduced-motion:reduce){}
 /* ---------------- Section base ---------------- */
 .section{position:relative;padding:clamp(4.5rem,10vw,8rem) 0}
 @supports (content-visibility:auto){.section{content-visibility:auto;contain-intrinsic-size:900px}
@@ -404,9 +389,6 @@ select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,va
 .info-line__lbl{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;color:var(--bleu-glacier)}
 .info-line__val{color:var(--blanc);font-weight:600;font-size:1.05rem;margin-top:.1rem;line-height:1.4;display:block}
 a.info-line:hover .info-line__val{color:var(--orange-vif)}
-.socials{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem;position:relative;z-index:1}
-.socials a{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:.82rem;padding:.45em .9em;border:1px solid rgba(255,255,255,.25);border-radius:99px;transition:background .2s,border-color .2s}
-.socials a:hover{background:var(--orange-vif);border-color:var(--orange-vif);color:#190f04}
 .contact-map{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:var(--nuit-3);min-height:260px}
 .contact-map iframe{display:block;width:100%;height:100%;min-height:260px;border:0;filter:grayscale(.3) contrast(1.05)}
 /* ---- Chiffres de visibilite (page sponsor) ----
@@ -474,16 +456,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    534 mots pour une seule image : c'etait le bloc narratif le plus dense du
    site. Cette bande separe les quatre piliers du tarif et illustre le type
    d'equipement dont parle le pilier « Securite & assurance ». */
-.p-venue{margin:clamp(1.8rem,4vw,2.6rem) 0 clamp(1.6rem,3.5vw,2.2rem);
-  border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);
-  background:var(--nuit-3);box-shadow:var(--e1)}
-.p-venue img{display:block;width:100%;height:clamp(170px,24vw,280px);
-  object-fit:cover;object-position:center 52%}
-.p-venue figcaption{display:flex;align-items:center;gap:.6rem;
-  padding:.8rem 1rem .9rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--txt-soft)}
-.p-venue figcaption::before{content:"";width:1.4rem;height:1px;flex:none;
-  background:var(--grad-orange)}
 /* ---- Le lien vers l'equipe, sous la citation ----
    La citation etait signee « L'equipe encadrante » sans qu'on puisse aller
    voir qui c'est. Un parent qui confie son enfant veut des visages. */
@@ -498,13 +470,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    Quatre faits verifiables, en petit, separes par des points. Aucun cadre,
    aucun fond : ce sont des mentions legales rendues rassurantes, pas un
    bandeau institutionnel de plus. */
-.trustline{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1.05rem;
-  margin:1.2rem 0 0;padding-top:1rem;border-top:1px solid var(--line);
-  font-family:var(--ff-cond);font-weight:600;font-size:.72rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--txt-soft)}
-.trustline span{display:inline-flex;align-items:center;gap:1.05rem}
-.trustline span:not(:last-child)::after{content:"";width:3px;height:3px;
-  border-radius:50%;background:currentColor;opacity:.55}
 /* ---- Facade de carte : on ne charge Google qu'a la demande ----
    Une iframe Maps coute ~700 Ko de scripts tiers et pose des cookies des
    le chargement de la page, meme derriere loading="lazy" (qui ne fait que
@@ -632,8 +597,6 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
    V4 "MARQUE INSTITUTIONNELLE" — ajouts
    ============================================================ */
 /* ---- Hero: logo géant + watermark ---- */
-.hero__halo{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(80vw,720px);height:min(80vw,720px);border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(27,81,158,.35),transparent 62%);filter:blur(10px)}
-.hero__halo::after{content:"";position:absolute;inset:8%;border-radius:50%;background:radial-gradient(circle,rgba(217,106,27,.22),transparent 60%)}
 /* ---- Sticky pre-inscription floating button (mobile) ---- */
 /* ---- Barre CTA mobile : deux intentions ----
    Un seul bouton « Je m'inscris » ne parlait qu'a ceux qui avaient deja
@@ -864,7 +827,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* Évite tout texte "compressé" : interlignes minimales garanties */
 .lead,.sec-head__sub,.cat__desc{line-height:1.55}
 /* Hero : un peu plus de respiration sous le sous-titre sur desktop */
-@media (min-width:980px){.hero__sub{margin-bottom:.4rem}}
+@media (min-width:980px){}
 /* Section headers : centrage cohérent des kickers centrés */
 .kicker--center{justify-content:center}
 /* Partenaires : slots de hauteur régulière */
@@ -887,7 +850,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .footer__social{margin-top:1.8rem;padding-top:1.6rem;border-top:1px solid var(--line)}
 .footer__brand p.small{margin-bottom:.2rem}
 /* ---- Marquee : éviter l'effet "compressé" sur mobile ---- */
-@media (max-width:560px){.marquee__track span{font-size:1.05rem;padding:0 .5rem}}
+@media (max-width:560px){}
 /* ---- Hero actions : grille parfaitement symétrique ---- */
 /* ============================================================
    V8 "FINITION PREMIUM" — passe ciblée
@@ -896,7 +859,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* Logo un peu plus petit + halo cohérent qui masque le liseré blanc du PNG */
 /* Eyebrow : on remet l'ordre naturel (logo puis texte) + plus d'air */
 /* Titre : éviter tout rognage des jambages (g, p, y) */
-.hero__sub{margin-top:.2rem}
 /* ---- 2. Scroll indicator premium (souris + flèche animée) ---- */
 .hero__scroll{bottom:1.8rem;gap:.7rem;font-size:.66rem;letter-spacing:.24em;color:var(--bleu-glacier);opacity:.9}
 .hero__scroll span{width:24px;height:38px;border:2px solid rgba(191,210,228,.5);border-radius:14px;
@@ -922,30 +884,9 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
    V9 "READY TO DROP" — assets, sponsors, social, pourquoi
    ============================================================ */
 /* ---- Suivez le MBC ---- */
-.social-spotlight{position:relative;
-  overflow:hidden;
-  background:linear-gradient(180deg,var(--nuit-0),#0c1729 52%,var(--nuit-2));}
-.social-spotlight::before{content:none}
 /* slash diagonal orange/bleu retiré */
 /* en-tête pleine largeur, puis 2 colonnes équilibrées (visuel + réseaux) */
-.social-spotlight__inner{position:relative;
-  z-index:1;
-  display:flex;
-  flex-direction:column;
-  gap:clamp(1.6rem,3vw,2.4rem);}
-.social-spotlight__head{max-width:620px}
-.social-spotlight .h2{margin-bottom:1rem}
-.social-spotlight__sub{max-width:48ch;
-  color:var(--txt-soft);
-  font-size:clamp(1.02rem,2vw,1.16rem);
-  line-height:1.65;}
-.social-spotlight__body{display:grid;
-  grid-template-columns:1fr;
-  gap:1.2rem;}
 /* réseaux : rangée de cartes premium */
-.social-spotlight__grid{display:flex;
-  flex-direction:column;
-  gap:.85rem;}
 .social-card{position:relative;
   display:grid;
   grid-template-columns:auto 1fr auto;
@@ -966,46 +907,12 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
   border-color:var(--brandline,rgba(232,130,42,.5));
   box-shadow:var(--e3),0 18px 46px -12px var(--brandglow,rgba(232,130,42,.45));}
 .social-card:hover::before,.social-card:focus-visible::before{opacity:1}
-.social-card__icon{width:54px;height:54px;flex:none;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:15px;color:#fff;
-  background:var(--grad-orange);
-  box-shadow:0 10px 24px rgba(217,106,27,.28),inset 0 1px 0 rgba(255,255,255,.28);
-  transition:transform .45s var(--ease-spring);}
-.social-card:hover .social-card__icon{transform:scale(1.07) rotate(-3deg)}
-.social-card__icon svg{width:27px;height:27px}
-.social-card__body{display:flex;flex-direction:column;gap:.16rem;min-width:0}
-.social-card__body strong{font-family:var(--ff-display);
-  text-transform:uppercase;letter-spacing:.04em;
-  font-size:1.34rem;line-height:1;color:#fff;}
-.social-card__desc{font-family:var(--ff-cond);font-weight:700;
-  text-transform:uppercase;letter-spacing:.09em;
-  font-size:.78rem;color:var(--bleu-glacier);}
-.social-card__handle{font-family:var(--ff-body);font-size:.82rem;letter-spacing:.01em;
-  color:var(--txt-soft);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.social-card__go{width:40px;height:40px;flex:none;display:grid;place-items:center;
-  border-radius:50%;border:1px solid var(--line-strong);color:var(--bleu-glacier);
-  transition:transform .4s var(--ease-spring),color .35s,border-color .35s,background .35s;}
-.social-card__go svg{width:18px;height:18px}
-.social-card:hover .social-card__go,.social-card:focus-visible .social-card__go{transform:translateX(4px);color:#fff;
-  border-color:var(--brandline,rgba(232,130,42,.6));
-  background:var(--brandglow,rgba(232,130,42,.16));}
 /* couleurs officielles des plateformes */
-.social-card--facebook{--brand:rgba(24,119,242,.24);--brandline:rgba(24,119,242,.6);--brandglow:rgba(24,119,242,.5)}
-.social-card--facebook .social-card__icon{background:linear-gradient(135deg,#1877F2,#0a4bb3);box-shadow:0 10px 24px rgba(24,119,242,.4),inset 0 1px 0 rgba(255,255,255,.28)}
-.social-card--instagram{--brand:rgba(221,42,123,.24);--brandline:rgba(221,42,123,.62);--brandglow:rgba(221,42,123,.5)}
-.social-card--instagram .social-card__icon{background:linear-gradient(135deg,#F58529,#DD2A7B 52%,#8134AF);box-shadow:0 10px 24px rgba(221,42,123,.42),inset 0 1px 0 rgba(255,255,255,.28)}
-.social-card--tiktok{--brand:rgba(37,244,238,.2);--brandline:rgba(254,44,85,.6);--brandglow:rgba(254,44,85,.45)}
-.social-card--tiktok .social-card__icon{background:linear-gradient(135deg,#25F4EE,#0b0b0b 46%,#FE2C55);box-shadow:0 10px 24px rgba(254,44,85,.35),inset 0 1px 0 rgba(255,255,255,.22)}
-@media (min-width:880px){.social-spotlight__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem}}
-@media (prefers-reduced-motion:reduce){.social-card,.social-card__icon,.social-card__go{transition:none}
+@media (min-width:880px){}
+@media (prefers-reduced-motion:reduce){.social-card{transition:none}
 .social-card:hover,.social-card:focus-visible{transform:none}}
 @media (max-width:560px){.social-card{min-height:0;padding:.95rem 1.05rem;gap:.9rem;border-radius:15px}
-.social-card__icon{width:48px;height:48px}
-.social-card__icon svg{width:24px;height:24px}
-.social-card__body strong{font-size:1.18rem}
-.social-card__go{width:36px;height:36px}}
+}
 /* ---- Sponsors premium ---- */
 /* ---- Pourquoi rejoindre : respiration premium ---- */
 .social-card{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);}
@@ -1033,20 +940,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 @media (max-height:760px) and (min-width:900px){.hero__scroll{bottom:.9rem}}
 /* Les badges chiffres deviennent de vrais boutons de navigation */
 /* Section engagement : bénévoles + service civique */
-.engagement{position:relative;
-  overflow:hidden;
-  background:radial-gradient(80% 120% at 12% 10%,rgba(232,130,42,.26),transparent 52%),
-             radial-gradient(90% 130% at 92% 20%,rgba(27,81,158,.46),transparent 55%),
-             linear-gradient(180deg,var(--nuit-0),#0d182b 58%,var(--nuit-2));}
-.engagement .wrap{position:relative;z-index:2}
-
-
-
-
-
-
-
-
 /* Pourquoi rejoindre : un visuel de parcours + cartes plus denses */
 /* Le menu bascule plus tôt : la nav contient maintenant 8 entrées + CTA,
    on évite tout rognage du bouton sur les largeurs intermédiaires (laptops). */
@@ -1067,7 +960,8 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 body{text-rendering:optimizeLegibility}
 /* ---- Typographie : équilibre des lignes (anti-veuves) ---- */
 .h2{text-wrap:balance}
-.lead,.sec-head__sub,.hero__sub,.social-spotlight__sub{text-wrap:pretty}
+.lead,
+.sec-head__sub{text-wrap:pretty}
 .h2{letter-spacing:.3px}
 .sec-head__sub{color:var(--txt-soft);max-width:60ch}
 /* ---- Boutons : profondeur tokenisée + état pressé ---- */
@@ -1094,15 +988,11 @@ body{text-rendering:optimizeLegibility}
   background:radial-gradient(60% 38% at 50% 8%,rgba(191,210,228,.10),transparent 70%),
              linear-gradient(180deg,transparent 78%,rgba(7,13,24,.55));}
 /* Halo derrière l'écusson : double couronne + lente rotation lumineuse */
-.hero__halo{background:radial-gradient(circle,rgba(27,81,158,.42),transparent 60%)}
-.hero__halo::before{content:"";position:absolute;inset:-6%;border-radius:50%;
-  background:conic-gradient(from 0deg,transparent,rgba(232,130,42,.20),transparent 38%,rgba(27,81,158,.22),transparent 72%);
-  filter:blur(26px);animation:heroSpin 26s linear infinite}
 @keyframes heroSpin{to{transform:rotate(360deg)}}
 /* Écusson : socle lumineux plus net */
 /* Titre : balayage premium sur la ligne accent */
 /* Eyebrow : pastille subtile au lieu d'un simple texte */
-@media (prefers-reduced-motion:reduce){.hero__halo::before{animation:none}}
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    SYSTÈME DE CARTES — un seul langage visuel partout
    (mêmes ombres, même profondeur, même logique de survol)
@@ -1198,18 +1088,8 @@ body{text-rendering:optimizeLegibility}
 /* ---- Crédibilité / institutions ---- */
 /* ---- Tarifs (parents) ---- */
 .tarifs{display:grid;gap:1.2rem;grid-template-columns:1fr;align-items:center;max-width:840px;margin:0 auto 2.2rem;padding:1.6rem 1.8rem;border:1px solid rgba(232,130,42,.3);border-radius:var(--r-lg);background:linear-gradient(168deg,rgba(21,35,61,.94),rgba(10,19,35,.98));box-shadow:var(--e2),var(--bevel)}
-.tarifs__main{display:flex;flex-direction:column;gap:.18rem;text-align:center;padding-bottom:1.2rem;border-bottom:1px solid var(--line)}
-.tarifs__lbl{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:var(--bleu-glacier)}
-.tarifs__price{font-family:var(--ff-display);font-size:3rem;line-height:1;color:var(--orange-vif);letter-spacing:.5px}
-.tarifs__note{font-family:var(--ff-cond);font-weight:600;font-size:.82rem;color:var(--txt-soft)}
-.tarifs__rest{display:flex;flex-direction:column;gap:1rem;text-align:center}
-.tarifs__rest p{color:var(--txt-soft);font-size:.96rem;line-height:1.55}
-.tarifs__rest b{color:#fff}
-.tarifs__rest .btn{align-self:center}
 @media(min-width:680px){.tarifs{grid-template-columns:auto 1fr;gap:2.2rem}
-.tarifs__main{padding-bottom:0;padding-right:2.2rem;border-bottom:0;border-right:1px solid var(--line)}
-.tarifs__rest{text-align:left}
-.tarifs__rest .btn{align-self:flex-start}}
+}
 /* ---- Contreparties sponsors soumises à condition ---- */
 .pack ul li em{font-style:normal;display:block;margin-top:.1rem;font-size:.78em;line-height:1.3;color:var(--txt-soft);opacity:.8}
 /* ---- Nav horizontale resserrée (>=1181px) pour loger 8 entrées + CTA ---- */
@@ -1233,26 +1113,10 @@ body{text-rendering:optimizeLegibility}
 .footer__hand{justify-self:center}}
 /* Mot du président : cohérent avec la nouvelle direction staff */
 /* Tarif unique */
-.tarifs__chips{display:flex;flex-wrap:wrap;gap:.45rem}
-.tarifs__chips span{display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:32px;
-  padding:.32em .8em;
-  border:1px solid rgba(232,130,42,.28);
-  border-radius:999px;
-  background:rgba(232,130,42,.08);
-  color:var(--orange-vif);
-  font-family:var(--ff-cond);
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font-size:.74rem;}
 /* Bénévoles : affiches mieux intégrées, cartes plus modernes */
 
 /* Pourquoi : plus de respiration et badge Respect décollé */
 /* Sponsors : nouvelle conversion, offres et logo wall premium */
-
 
 
 .packs-grid--four{grid-template-columns:1fr}
@@ -1325,7 +1189,6 @@ body{text-rendering:optimizeLegibility}
 html,body{max-width:100%;overflow-x:hidden}
 section[id]{scroll-margin-top:92px}
 .marquee{overflow:hidden;contain:paint}
-.marquee__track{will-change:transform}
 .bg-word{max-width:100vw;overflow:hidden;contain:paint}
 @media(max-width:1180px){.nav{display:flex;transform:translateX(105%);visibility:hidden;pointer-events:none}
 .nav.open{transform:none;visibility:visible;pointer-events:auto}}
@@ -1357,7 +1220,6 @@ section[id]{scroll-margin-top:92px}
 /* On retire les pastilles flottantes (décoratives, sources de
    chevauchement) au profit des metrics alignés ; spacing premium. */
 /* Marquee : respiration homogène, jamais "compressé" */
-.marquee__track span{padding:0 .55rem}
 /* ---- 5. TERRITOIRE · filigrane 974 agrandi + identité réunionnaise ---- */
 /* halo chaleur "974" pour plus de profondeur */
 /* ---- 6. PARTENAIRES · l'offre MVP devient le choix évident ---- */
@@ -1392,7 +1254,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   outline-offset:2px;
   border-radius:4px;}
 /* Cible tactile minimale (≥44px) pour les liens d'action du footer. */
-.footer__actions a,.socials a,.footer__social a{min-height:44px;display:inline-flex;align-items:center}
+.footer__actions a,
+.footer__social a{min-height:44px;display:inline-flex;align-items:center}
 .footer__col>a{padding-block:.45em;margin-bottom:.1rem}
 .footer__seo a{display:inline-block;padding-block:.35em}
 /* Le bouton flottant n'aspire pas le focus quand il est masqué. */
@@ -1411,18 +1274,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ============================================================
    2. SECTION MAILLOTS — charte & identité
    ============================================================ */
-.kits{background:
-    radial-gradient(100% 120% at 14% 0,rgba(27,81,158,.22),transparent 55%),
-    linear-gradient(180deg,var(--nuit-0),#0a1424 60%,var(--nuit-0));}
-
-
-
-
-
-
-
-
-
 /* ============================================================
    3. SECTION GALERIE — "Sur le terrain"
    ============================================================ */
@@ -1450,9 +1301,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .g-group{grid-area:group}}
 @media(min-width:980px){.gallery-mosaic{grid-auto-rows:226px;grid-template-columns:repeat(4,1fr);
     grid-template-areas:"tall huddle huddle banner" "tall shoot group group";}}
-.gallery-cta{margin-top:1.9rem;text-align:center}
-.gallery-cta__txt{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--bleu-glacier);font-size:1.05rem;margin-bottom:1rem}
-.gallery-cta__btns{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
 /* ============================================================
    V17 "PASS LA MONTAGNE" — retouches post-review
    ------------------------------------------------------------
@@ -1461,9 +1309,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    cadres individuels et footer mieux signé.
    ============================================================ */
 /* ---- Hero : logo MBC plus présent, sans impression d'opacité ---- */
-.hero__halo{width:min(78vw,820px);
-  height:min(78vw,820px);
-  background:radial-gradient(circle,rgba(27,81,158,.42),rgba(27,81,158,.12) 44%,transparent 66%);}
 @keyframes crestPremiumFloat{
   0%,100%{transform:translateY(0) scale(1)}
   50%{transform:translateY(-8px) scale(1.018)}
@@ -1529,14 +1374,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    formules partenaires et sponsor wall.
    ============================================================ */
 /* Hero : le logo doit rester au premier plan, sans voile par-dessus. */
-.hero__texture{z-index:1 !important;
-  opacity:.22 !important;
-  mix-blend-mode:normal !important;}
-.hero__court,.hero__halo,.hero__glow{z-index:1 !important}
 .hero__inner{position:relative;
   z-index:8 !important;}
 /* Couleurs du MBC : actions parfaitement centrees. */
-
 
 
 /* Carte licence : bouton centre et rendu plus premium. */
@@ -1546,20 +1386,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     radial-gradient(90% 120% at 18% 0,rgba(232,130,42,.18),transparent 56%),
     linear-gradient(160deg,rgba(21,35,61,.94),rgba(7,13,24,.97)) !important;
   box-shadow:0 26px 72px rgba(3,7,15,.44),0 0 0 1px rgba(232,130,42,.18) inset !important;}
-.tarifs__rest{align-items:center !important;
-  text-align:center !important;}
-.tarifs__chips{justify-content:center;}
-.tarifs__rest .btn{align-self:center !important;
-  min-width:min(100%,280px);
-  border-color:rgba(232,130,42,.7) !important;
-  background:var(--grad-orange) !important;
-  color:#170d04 !important;
-  box-shadow:0 18px 42px rgba(217,106,27,.28),inset 0 1px 0 rgba(255,255,255,.18) !important;}
-.tarifs__rest .btn:hover{transform:translateY(-2px);
-  box-shadow:0 24px 56px rgba(217,106,27,.36),inset 0 1px 0 rgba(255,255,255,.22) !important;}
-@media(min-width:680px){.tarifs__rest{align-items:center !important;
-    text-align:center !important;}
-.tarifs__rest .btn{align-self:center !important}}
+@media(min-width:680px){}
 /* Mot du president : pas de doublon photo, une vraie citation forte. */
 /* Territoire : plus simple, plus lisible, avec orange MBC. */
 /* Formules partenaires : MVP mis en avant, mais aligne avec les autres. */
@@ -1583,14 +1410,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   padding-top:clamp(5.2rem,8vh,6.1rem) !important;
   padding-bottom:clamp(1.4rem,3vh,2.4rem) !important;}
 .hero__inner{padding-top:clamp(.25rem,1vh,.75rem);}
-.hero__sub{max-width:43ch !important;
-  font-size:clamp(1rem,1.55vw,1.18rem) !important;
-  line-height:1.45 !important;}
 @media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}}
 @media(max-width:680px){.hero{padding-top:5rem !important;
     padding-bottom:1.2rem !important;}
-.hero__sub{font-size:1rem !important;
-    line-height:1.42 !important;}}
+}
 /* ============================================================
    V21 "VIDEO ADHESION" — intégration premium + SEO-friendly
    ============================================================ */
@@ -1651,12 +1474,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .reveal--l,.reveal--r,.reveal--scale{filter:blur(6px)}
 .reveal--l.in,.reveal--r.in,.reveal--scale.in{filter:blur(0)}}
 /* ---- Hero : entrée plus dynamique + halo "vivant" ---- */
-.hero .reveal-fade{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s var(--ease-out) .35s,transform .7s var(--ease-pop) .35s}
-.hero.in .reveal-fade{opacity:1;transform:none}
 /* crest → animé par crestPremiumFloat ; halo → par mbcHaloBreath (V30).
    heroFloat & haloPulse retirés (toujours écrasés → morts). */
-.hero__glow{animation:glowBreathe 7s ease-in-out infinite}
-.hero__glow--o{animation-delay:-2.4s}
 @keyframes glowBreathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.14)}}
 /* ---- Boutons & CTA : micro-interactions plus toniques ---- */
 .btn{transition:transform .3s var(--ease-pop),box-shadow .3s var(--ease-out),background .25s,color .25s,border-color .25s}
@@ -1681,15 +1500,13 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .p-pillar{transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
 .p-pillar:hover{transform:translateY(-7px)}
 /* ---- Marquee : un poil plus vif sans devenir agressif ---- */
-.marquee__track{animation-duration:36s}
 /* ---- Pulse CTA flottant mobile : respiration légère ---- */
 .float-cta{transition:transform .45s var(--ease-pop),box-shadow .35s}
 .float-cta.show{animation:floatCtaIn .5s var(--ease-pop)}
 @keyframes floatCtaIn{0%{transform:translateX(-50%) translateY(150%)}100%{transform:translateX(-50%) translateY(0)}}
 /* ---- Garde-fou accessibilité : tout reste statique si demandé ---- */
 @media (prefers-reduced-motion:reduce){.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
-.hero .reveal-fade{transform:none!important;opacity:1!important;transition:none!important}
-.hero__halo,.hero__glow,.float-cta.show{animation:none!important}
+.float-cta.show{animation:none!important}
 .cat,.brand,.nav__cta,.btn,.p-pillar{transition:none!important}
 .cat:hover,.brand:hover{transform:none!important}}
 /* ============================================================
@@ -1722,87 +1539,24 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    L'orange ne sert qu'a designer : « en un coup d'oeil », les icones,
    les libelles de la fiche, le bouton d'inscription.
    ============================================================ */
-.ess{position:relative;overflow:hidden;isolation:isolate;
-  /* deux lueurs tres basses (pas de filtre, pas de flou) : elles creusent
-     le fond derriere le tirage et sous le titre, sans halo visible. */
-  background:
-    radial-gradient(78% 46% at 82% 4%,rgba(27,81,158,.20),transparent 62%),
-    radial-gradient(64% 42% at -6% 96%,rgba(217,106,27,.10),transparent 60%),
-    linear-gradient(180deg,var(--nuit-0) 0%,#0a1424 46%,
-      var(--nuit-2) 100%)}
-
 /* ---- la grille ----
    En mobile tout s'empile ; .ess__lead se dissout (display:contents) pour
    que le tirage vienne s'intercaler entre le titre et la fiche technique.
    L'ordre de lecture est alors : promesse, photo, chiffres, garanties,
    preuve, action. */
-.ess__in{position:relative;z-index:2;
-  display:grid;grid-template-columns:minmax(0,1fr);
-  row-gap:clamp(1.9rem,5vw,2.6rem)}
-.ess__lead{display:contents}
-.ess__head{order:1}
-.ess__photo{order:2}
-.ess-stats{order:3}
-.ess-plus{order:4}
-.ess__cta{order:5}
-
 /* ---- le titre ---- */
-.ess__head{max-width:34rem}
 .ess__kicker{display:flex;align-items:center;gap:.85rem}
 .ess__kicker::before{content:"";width:2.1rem;height:2px;flex:none;
   background:var(--grad-orange);border-radius:2px}
-.ess__sub{margin:1.05rem 0 0;max-width:46ch;color:var(--txt-soft);
-  font-size:clamp(1.04rem,1.05vw,1.16rem);line-height:1.62}
-.ess__sub a{color:var(--bleu-glacier);text-decoration:underline;
-  text-underline-offset:3px;text-decoration-thickness:1px}
-.ess__sub a:hover{color:var(--orange-vif)}
-
 /* ---- le tirage ----
    Un cadre, pas un fond : angles arrondis, filet clair de 1 px, ombre
    profonde et deux equerres fines decalees — une ligne d'architecte,
    pas un halo. Le ratio 3/4 est celui de la source : on ne recadre pas,
    les devises du club peintes sur la banniere ne se coupent pas. */
-.ess__photo{position:relative;margin:0;justify-self:center;z-index:1;
-  /* pleine largeur sur telephone, puis il suit l'espace disponible :
-     seul, au milieu d'une colonne de 835 px, un cadre de 420 px flottait. */
-  width:min(100%,max(420px,54vw));aspect-ratio:3/4;border-radius:18px;
-  box-shadow:0 34px 78px rgba(3,8,18,.66),0 4px 14px rgba(3,8,18,.48)}
-.ess__photo img{width:100%;height:100%;object-fit:cover;object-position:center 42%;
-  border-radius:inherit;display:block;
-  border:1px solid rgba(191,210,228,.18);
-  filter:saturate(1.02) contrast(1.02)}
-.ess__photo::before{content:"";position:absolute;z-index:-1;
-  top:-10px;left:-10px;width:38%;height:26%;
-  border-top:1px solid var(--orange-vif);border-left:1px solid var(--orange-vif);
-  border-top-left-radius:18px;opacity:.85;pointer-events:none}
-.ess__photo::after{content:"";position:absolute;z-index:-1;
-  bottom:-10px;right:-10px;width:26%;height:18%;
-  border-bottom:1px solid rgba(191,210,228,.28);
-  border-right:1px solid rgba(191,210,228,.28);
-  border-bottom-right-radius:18px;pointer-events:none}
-
 /* ---- la fiche technique ----
    Une ligne par information, un filet entre les lignes. Le chiffre en
    blanc, le libelle en orange : l'oeil accroche le nombre, la couleur
    nomme ce qu'il designe. Pas de carte. */
-.ess-stats{margin:0;padding:0}
-.ess-stat{display:grid;grid-template-columns:1.9rem minmax(0,1fr);
-  column-gap:1rem;align-items:center;padding:1.15rem 0;
-  border-top:1px solid rgba(191,210,228,.15)}
-.ess-stat:first-child{border-top:0;padding-top:0}
-.ess-stat:last-child{padding-bottom:0}
-.ess-stat__ic{grid-column:1;grid-row:span 2;align-self:center;
-  width:1.7rem;height:1.7rem;color:var(--orange-vif)}
-.ess-stat__v{grid-column:2;align-self:end;margin:0;
-  font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(2rem,7.6vw,2.5rem);line-height:.92;color:var(--blanc);
-  letter-spacing:-.005em}
-.ess-stat__l{grid-column:2;align-self:start;margin:.32rem 0 0;
-  font-family:var(--ff-cond);font-weight:700;font-size:1rem;line-height:1.26;
-  letter-spacing:.035em;text-transform:uppercase;color:var(--orange-vif)}
-.ess-stat__x{display:block;margin-top:.3rem;
-  font-family:var(--ff-body);font-weight:500;font-size:.92rem;line-height:1.45;
-  letter-spacing:0;text-transform:none;color:var(--txt-soft)}
 /* A partir de 720 px les trois lignes partagent une seule grille : le
    chiffre passe a gauche du libelle, dans une colonne dont la largeur
    est celle du plus long des trois (max-content). Les .ess-stat se
@@ -1810,81 +1564,43 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    filet horizontal est alors porte par les trois cellules d'une meme
    ligne, ce qui le rend continu. */
 @media (min-width:720px){
-.ess-stats{display:grid;grid-template-columns:2rem max-content minmax(0,1fr);
-    column-gap:clamp(1rem,2.2vw,1.7rem);max-width:46rem}
-.ess-stat{display:contents}
 /* Les trois cellules d'une meme ligne restent ETIREES (align-items garde sa
    valeur par defaut, stretch) : leurs bords hauts coincident, donc les trois
    filets se rejoignent en UN seul trait continu. Les centrer une a une —
    ce que faisait la version precedente — posait chaque filet a la hauteur de
    sa propre boite : trois segments a trois hauteurs differentes. Le contenu,
    lui, se centre a l'interieur de chaque cellule. */
-.ess-stat__ic,.ess-stat__v,.ess-stat__l{
-    border-top:1px solid rgba(191,210,228,.15)}
 /* La fiche technique est desormais seule sous le titre : les lignes
    respirent davantage (24 -> 35 px de gouttiere verticale a 1350 px), ce qui
    acheve d'aligner le bas de la colonne sur le bas du tirage. */
-.ess-stat__v,.ess-stat__l{padding-block:clamp(1.3rem,2.6vw,2.25rem)}
-.ess-stat:first-child>*{border-top:0;padding-top:0}
-.ess-stat:last-child>*{padding-bottom:0}
 /* L'icone n'a ni hauteur fixe ni padding. box-sizing:border-box est global
    (ligne 62) : height:1.85rem + padding-block:1.5rem donnait une boite de
    CONTENU de hauteur nulle, et le dessin etait ecrase en un tiret orange.
    Elle occupe donc toute la hauteur de la ligne et le viewBox s'y centre
    seul (preserveAspectRatio par defaut), a sa largeur de 1.85rem. */
-.ess-stat__ic{grid-row:auto;width:1.85rem;height:100%;align-self:stretch}
-.ess-stat__v{grid-column:2;align-self:stretch;
-    display:flex;align-items:center;white-space:nowrap;
-    font-size:clamp(2.1rem,3.4vw,3rem)}
-.ess-stat__l{grid-column:3;align-self:stretch;
-    display:flex;flex-direction:column;justify-content:center;
-    margin:0;font-size:clamp(1rem,1.05vw,1.1rem)}
-.ess-stat__x{margin-top:.34rem}}
+}
 
 /* ---- la barre de reassurance ----
    Le seul bloc encadre de la section : un filet, un fond a peine plus
    clair. C'est un contraste de matiere, pas de taille — il suffit a la
    detacher des lignes de la fiche technique juste au-dessus, qui elles
    ne sont posees sur rien. */
-.ess-plus{list-style:none;margin:0;display:grid;grid-template-columns:1fr;
-  padding:clamp(.9rem,3vw,1.2rem) clamp(1.05rem,3.4vw,1.5rem);
-  border:1px solid rgba(191,210,228,.14);border-radius:var(--r-md);
-  background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.014));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.055)}
-.ess-plus__i{display:grid;grid-template-columns:auto minmax(0,1fr);
-  gap:.12rem .75rem;align-items:start;padding:.72rem 0}
-.ess-plus__i + .ess-plus__i{border-top:1px solid rgba(191,210,228,.10)}
-.ess-plus__ic{width:1.4rem;height:1.4rem;color:var(--orange-vif);
-  grid-row:span 2;align-self:center}
-.ess-plus__i b{font-family:var(--ff-cond);font-weight:700;font-size:1.02rem;
-  letter-spacing:.045em;text-transform:uppercase;color:var(--blanc)}
-.ess-plus__i span{font-size:.88rem;line-height:1.42;color:var(--txt-soft)}
 @media (min-width:720px){
-.ess-plus{grid-template-columns:repeat(3,minmax(0,1fr));
-    padding:clamp(1.1rem,2vw,1.5rem) clamp(1.3rem,2.4vw,1.9rem)}
-.ess-plus__i{padding:.15rem clamp(1.1rem,2.2vw,1.7rem)}
-.ess-plus__i:first-child{padding-left:0}
-.ess-plus__i:last-child{padding-right:0}
-.ess-plus__i + .ess-plus__i{border-top:0;
-    border-left:1px solid rgba(191,210,228,.13)}}
+}
 
 /* ---- l'action ----
    Centres : la bande de reassurance juste au-dessus est pleine largeur et
    symetrique, deux boutons cales a gauche sous elle faisaient retomber la
    composition d'un cote. En telephone ils passent pleine largeur, le
    centrage n'a alors plus d'effet. */
-.ess__cta{display:flex;flex-wrap:wrap;gap:.9rem;justify-content:center}
-@media (max-width:719px){.ess__cta .btn{flex:1 1 100%;justify-content:center;
-  /* « Je m'inscris · saison 2026/2027 » passait sur deux lignes a 375 px */
-  padding-inline:1.1rem!important;font-size:1rem!important}}
+@media (max-width:719px){}
 
 /* ---- calage horizontal ----
    Meme marche de gauche que .hero--split .hero__content : les deux
    sections qui se suivent partagent leur ligne de depart. La meme valeur
    sert a droite, la composition reste centree au-dela de 1440 px. */
 @media (min-width:900px){
-.ess__in{width:auto;max-width:none;padding-inline:0;
-    margin-inline:max(clamp(6vw,7.5vw,9vw),calc((100vw - 1440px) / 2))}}
+}
 
 /* ---- les deux colonnes ----
    1080 px : en dessous, reserver 44 % de la largeur au tirage ferait
@@ -1896,20 +1612,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      avec du remplissage — c'est le rapport des deux colonnes qui doit suivre.
      La colonne de texte y gagne 65 px, ce qui fait tenir le libelle du
      Gymnase sur une seule ligne. */
-.ess__in{grid-template-columns:minmax(0,1fr) minmax(0,.72fr);
-    column-gap:clamp(2.6rem,5vw,5.5rem);
-    row-gap:clamp(2.2rem,3.6vw,3.2rem)}
-.ess__lead{display:flex;flex-direction:column;grid-column:1;grid-row:1;
-    gap:clamp(1.9rem,3vw,2.8rem)}
-.ess__head{max-width:none}
-.ess-stats{max-width:none}
 /* centre vertical : le tirage garde son ratio 3/4, la colonne de texte
      reste plus haute que lui. L'air se repartit alors en haut et en bas
      du cadre — il flotte, au lieu de laisser un trou sous lui. */
-.ess__photo{grid-column:2;grid-row:1;align-self:center;
-    width:100%;justify-self:stretch}
-.ess-plus{grid-column:1 / -1;grid-row:2}
-.ess__cta{grid-column:1 / -1;grid-row:3}
 }
 .essentiel-grid{position:relative;z-index:2;list-style:none;display:grid;gap:1rem;grid-template-columns:1fr;margin-top:.5rem}
 .essentiel-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);box-shadow:var(--e1);overflow:hidden;transition:transform .4s var(--ease-pop),border-color .35s,box-shadow .4s var(--ease-out)}
@@ -1967,8 +1672,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- 9. Perf mobile : aucun effet permanent lourd sous 760px ----
    (le reflet du CTA flottant reste actif : c'est l'animation "app native"
    voulue sur mobile, et elle est brève + compositor-friendly) */
-@media (max-width:759px){.hero__halo,.hero__glow{animation:none}
-.sponsor-pack.pack--feat .pack__tag{animation:none}}
+@media (max-width:759px){.sponsor-pack.pack--feat .pack__tag{animation:none}}
 /* ---- a11y : neutralise toutes les nouvelles animations si prefers-reduced-motion ---- */
 @media (prefers-reduced-motion:reduce){.hero.in::before,.sponsor-pack.pack--feat .pack__tag,.packs.in .packs-grid--four .pack{animation:none!important}
 .hero::before{display:none}
@@ -2011,13 +1715,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .site-header{background:rgba(7,13,24,.92)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 .nav,.nav-backdrop,.btn--ghost{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
 /* HÉRO : on coupe les effets GPU permanents */
-.hero__glow{display:none!important}
 /* 2× blur(100px) */
-.hero__halo{filter:none!important}
 /* blur(10px) superflu sur un radial */
-.hero__halo::before{display:none!important;animation:none!important}
 /* conic blur(26px) en rotation = gros lag */
-.hero__texture{display:none!important}
 /* mix-blend-mode:screen */
 /* pas de calque GPU forcé (parallax off sur mobile) */
 /* 1 ombre au lieu de 3 */
@@ -2106,10 +1806,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* accent orange court, centré, à la place de la barre pleine largeur */
 /* ---- F. Stats : « % » à la même taille et même couleur que le chiffre ---- */
 /* ---- D + G. Fonds de sections premium (L'essentiel, L'équipe, Sponsors & mécènes) ---- */
-.essentiel{background:
-  radial-gradient(60% 55% at 50% -8%,rgba(27,81,158,.32),transparent 60%),
-  radial-gradient(55% 60% at 100% 105%,rgba(217,106,27,.14),transparent 60%),
-  linear-gradient(180deg,#0a1322,var(--nuit-0))!important}
 .staff{background:
   radial-gradient(65% 75% at 88% -5%,rgba(27,81,158,.32),transparent 58%),
   radial-gradient(60% 70% at 5% 108%,rgba(217,106,27,.16),transparent 58%),
@@ -2160,11 +1856,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   background:
     radial-gradient(48% 42% at 50% 10%,rgba(232,130,42,.09),transparent 70%),
     radial-gradient(60% 60% at 50% 58%,rgba(27,81,158,.11),transparent 72%);}
-.sponsors-wall__head{text-align:center;max-width:620px;margin:0 auto clamp(2rem,4vw,3rem)}
 .sponsors-wall__label{display:inline-block;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.22em;font-size:.74rem;color:var(--orange-vif);margin-bottom:.8rem}
-.sponsors-wall__title{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(2rem,5vw,3rem);line-height:1;color:#fff;letter-spacing:.5px}
-.sponsors-wall__title .hl{color:var(--orange-vif)}
-.sponsors-wall__sub{margin-top:1rem;color:var(--txt-soft);font-size:1.02rem;line-height:1.6}
 /* Carte : glassmorphism sombre + bordure dégradée */
 .sponsor-card{position:relative;display:flex;flex-direction:column;gap:1rem;
   padding:1.1rem 1.1rem 1.3rem;
@@ -2186,18 +1878,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    artwork. Sur un degrade #fff -> #eef2f7 ce rectangle se voyait en liseré
    des que le logo remplissait la plaque. Le fond est donc blanc plat : le
    degrade ne valait pas ce defaut. */
-.sponsor-card__plate{display:grid;place-items:center;width:100%;aspect-ratio:16/10;
-  padding:.6rem .7rem;border-radius:14px;
-  background:#fff;
-  box-shadow:inset 0 0 0 1px rgba(13,21,38,.07),0 6px 16px rgba(3,7,15,.32);}
-.sponsor-card__plate picture{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
-.sponsor-card__plate img{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;filter:none!important;transition:transform .4s var(--ease-pop)}
-.sponsor-card:hover .sponsor-card__plate img{transform:scale(1.05)}
 /* Nom + badge */
-.sponsor-card__meta{display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;padding:0 .3rem}
-.sponsor-card__name{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.96rem;color:#fff;line-height:1.2}
-.sponsor-card__badge{display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.66rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.32em .8em}
-.sponsor-card__badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--orange-vif);box-shadow:0 0 8px rgba(232,130,42,.7)}
 /* Cascade d'apparition */
 @media (prefers-reduced-motion:no-preference){.sponsors-wall.in .sponsor-card{animation:sigFadeUp .55s var(--ease-out) backwards}
 .sponsors-wall.in .sponsor-card:nth-child(2){animation-delay:.07s}
@@ -2210,7 +1891,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     linear-gradient(150deg,rgba(232,130,42,.45),rgba(27,81,158,.4) 55%,rgba(191,210,228,.12)) border-box}}
 /* a11y */
 @media (prefers-reduced-motion:reduce){.sponsors-wall.in .sponsor-card{animation:none!important}
-.sponsor-card:hover,.sponsor-card:hover .sponsor-card__plate img{transform:none!important}}
+.sponsor-card:hover{transform:none!important}}
 /* ============================================================
    V23 — RGPD formulaire + mentions légales / confidentialité
    ============================================================ */
@@ -2230,30 +1911,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    V24 — Tarif « 95 € » : grand, subtil & premium + bloc clarifié
    ============================================================ */
 .tarifs{overflow:hidden}
-.tarifs__main{position:relative}
-.tarifs__main>*{position:relative;z-index:1}
 /* Prix XL, dégradé orange STATIQUE (poli) + glow doux → premium discret */
-.tarifs__price{font-size:clamp(4.2rem,9vw,6.4rem)!important;
-  line-height:.95!important;letter-spacing:.5px!important;
-  color:var(--orange-vif);
-  filter:drop-shadow(0 6px 22px rgba(232,130,42,.32));}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){.tarifs__price{background:linear-gradient(180deg,#F6A862,#E8822A 46%,#C75F14);
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){}
 /* mobile : 95 € encore plus grand dans « Votre enfant entre de bonnes mains » */
-@media (max-width:559px){.tarifs__price{font-size:6.4rem!important}}
+@media (max-width:559px){}
 /* halo statique très doux derrière le prix (aucun mouvement) */
-.tarifs__main::before{content:"";position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);
-  width:160px;height:160px;border-radius:50%;z-index:0;pointer-events:none;
-  background:radial-gradient(circle,rgba(232,130,42,.15),transparent 70%);}
 /* Repère « pas cher » sous le prix */
-.tarifs__perm{align-self:center;display:inline-block;margin-top:.55rem;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.07em;font-size:.72rem;color:#190f04;background:var(--grad-orange);padding:.34em .9em;border-radius:99px;box-shadow:0 6px 16px rgba(217,106,27,.3)}
 /* Colonne de droite : centrée, claire, lisible */
-.tarifs__rest{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.15rem}
-.tarifs__rest p{max-width:48ch;margin:0;color:var(--txt-soft);line-height:1.65;font-size:1rem}
-.tarifs__rest p b{color:#fff}
-.tarifs__chips{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:0}
-@media (min-width:680px){.tarifs__rest{text-align:center!important;align-items:center!important}
-.tarifs__rest .btn{align-self:center!important}}
+@media (min-width:680px){}
 /* ============================================================
    V25 — Page Adhésion (/adhesion.html) — réutilise les classes
    existantes, très peu de CSS dédié.
@@ -2273,8 +1938,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .sponsor-card{flex:0 1 200px;cursor:pointer;color:inherit;text-decoration:none}
 .sponsor-card:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
 /* indice « lien externe » discret, accolé au nom du partenaire */
-.sponsor-card__name::after{content:"↗";display:inline-block;margin-left:.35em;color:var(--bleu-glacier);opacity:.55;transition:transform .3s var(--ease-out),color .3s,opacity .3s}
-.sponsor-card:hover .sponsor-card__name::after,.sponsor-card:focus-visible .sponsor-card__name::after{color:var(--orange-vif);opacity:1;transform:translate(2px,-2px)}
 @media (max-width:560px){.sponsor-card{flex:0 1 150px}}
 /* ============================================================
    V27 — Encart visibilité sponsors + bloc licences solidaires
@@ -2288,37 +1951,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .visi__tags li span{text-transform:none;letter-spacing:0;font-weight:500;font-size:.92em;color:var(--txt-soft)}
 /* Dons : « Objectif licences solidaires » (sobre) */
 .solidaire{margin-top:1.6rem;padding:1.2rem 1.3rem;border:1px solid var(--line);border-left:3px solid var(--orange-vif);border-radius:var(--r-sm);background:rgba(191,210,228,.03)}
-.solidaire__title{display:flex;align-items:center;gap:.5em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:.92rem;color:#fff}
-.solidaire__title .ic{width:1.1em;height:1.1em;color:var(--orange-vif);flex:none}
-.solidaire__txt{margin:.5rem 0 .9rem;font-size:.92rem;color:var(--txt-soft);line-height:1.5}
-.solidaire__count{margin-top:.6rem;font-family:var(--ff-cond);font-weight:600;font-size:.82rem;color:var(--bleu-glacier);letter-spacing:.02em}
-.solidaire__count b{color:#fff}
 /* Footer : mention équipementier discrète */
-.footer__equip{margin-top:.9rem;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.7rem;color:var(--txt-soft);opacity:.85}
-.footer__equip a{color:var(--bleu-glacier);transition:color .2s}
-.footer__equip a:hover{color:var(--orange-vif)}
 /* ============================================================
    V29 — HERO : encart unique + titre animé (phrases créoles)
    Inspiration "Animated Hero" recréée 100% en CSS/JS natif.
    Aucune dépendance (pas de React / framer-motion / Tailwind).
    ============================================================ */
 /* — Encart unique sous le logo (fusion des deux anciennes pills). — */
-.hero__pill{display:inline-flex;align-items:center;gap:.6em;
-  max-width:100%;margin-bottom:1.3rem;
-  padding:.5em 1.1em;
-  border-radius:var(--r-pill);
-  background:linear-gradient(180deg,rgba(21,35,61,.55),rgba(13,21,38,.4));
-  border:1px solid rgba(191,210,228,.18);
-  box-shadow:0 6px 20px rgba(3,7,15,.32),inset 0 1px 0 rgba(255,255,255,.06);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.12em;font-size:.74rem;color:var(--bleu-glacier);line-height:1.2;}
-.hero__pill-dot{position:relative;width:.5em;height:.5em;border-radius:50%;flex:none;
-  background:var(--orange-vif);}
 /* halo qui se diffuse — animé en transform/opacity (composité GPU, pas de repaint). */
-.hero__pill-dot::after{content:"";position:absolute;inset:0;border-radius:50%;
-  background:rgba(232,130,42,.5);
-  animation:heroBadgePulse 2.4s var(--ease) infinite;}
 @keyframes heroBadgePulse{
   0%{transform:scale(1);opacity:.6}
   70%{transform:scale(3.2);opacity:0}
@@ -2329,12 +1969,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
      en très grosse typo orange (le vrai impact visuel). — */
 /* align-self:stretch → le titre prend toute la largeur du hero centré, pour
    que les phrases longues aient la place et restent bien centrées. */
-.hero__headline{align-self:stretch;margin:.2rem 0 1.5rem;font-family:var(--ff-cond);line-height:1.05}
 /* sur grand écran les phrases tiennent sur une ligne → on resserre la scène. */
 /* Fallback sans JS : seul le 1er slogan s'affiche, la scène s'ajuste à lui. */
 /* JS actif : carrousel vertical (slide + fade), phrase centrée v+h. */
 /* Accessibilité : pas de mouvement si l'utilisateur le demande. */
-@media (prefers-reduced-motion:reduce){.hero__pill-dot::after{animation:none}}
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V30 — HERO : micro-animation lumineuse "aurora" MBC (CSS natif)
    Inspiration "AuroraBackground" mais SANS React/Tailwind : on ne rajoute
@@ -2347,34 +1986,20 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    NB : on utilise un vrai calque enfant (.hero__lightmotion) et non ::before,
    car .hero::before sert déjà au faisceau d'entrée "tip-off" (heroTipOff)
    et .hero::after à l'overlay de lisibilité — on ne les touche pas. */
-.hero-light-motion .hero__lightmotion{position:absolute;
-  inset:-15%;
-  z-index:2;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 50% 40%, rgba(232,130,42,.16), transparent 30%),
-    radial-gradient(circle at 43% 47%, rgba(27,81,158,.16), transparent 36%),
-    radial-gradient(circle at 58% 38%, rgba(255,255,255,.06), transparent 20%);
-  filter:blur(28px);
-  opacity:.6;
-  will-change:transform,opacity;
-  animation:mbcHeroGlow 19s ease-in-out infinite;}
 @keyframes mbcHeroGlow{
   0%,100%{opacity:.4;transform:translate3d(0,0,0) scale(1)}
   50%{opacity:.58;transform:translate3d(1.2%,-1.2%,0) scale(1.05)}
 }
 /* On donne aussi vie au halo bleu existant derrière le logo (respiration lente).
    Le halo n'a pas de parallaxe → on peut animer son transform sans rien casser. */
-.hero-light-motion .hero__halo{animation:mbcHaloBreath 16s ease-in-out infinite}
 @keyframes mbcHaloBreath{
   0%,100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
 }
 /* Mobile : effet encore plus discret + blur allégé (perf). */
-@media (max-width:768px){.hero-light-motion .hero__lightmotion{opacity:.32;filter:blur(24px)}}
+@media (max-width:768px){}
 /* Accessibilité : aucune animation si mouvement réduit. */
-@media (prefers-reduced-motion:reduce){.hero-light-motion .hero__lightmotion{animation:none}
-.hero-light-motion .hero__halo{animation:none}}
+@media (prefers-reduced-motion:reduce){}
 /* (V32 "React/Spline island" retirée — résidu Vite mort : aucun /src/main.tsx,
    #hero-spline-root jamais monté. Voir nettoyage 202606.) */
 /* ============================================================
@@ -2390,7 +2015,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Hiérarchie typo : titre beaucoup plus grand et sportif (Anton). */
 /* Bouton principal : impact + glow orange doux autour (box-shadow non rognée). */
 .btn__arrow{width:1.1em;height:1.1em;flex:none;transition:transform .25s var(--ease-out)}
-.btn--cta:hover .btn__arrow{transform:translateX(5px)}
 /* CTA secondaire discret. */
 /* Micro-preuves : discrètes mais lisibles. */
 /* Mobile : carte lisible, bouton pleine largeur, pas de débordement. */
@@ -2399,25 +2023,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    HERO — refonte centrée, impactante, axée CTA (sans Spline)
    Contenu centré H/V, grosses typos, gros bloc CTA central premium.
    ============================================================ */
-.hero--split{padding-block:clamp(6rem,12vh,9rem) 4.5rem}
-.hero--split .hero__inner{position:relative;z-index:3;
-  display:block;
-  width:100%;max-width:1180px;margin-inline:auto;
-  padding-inline:clamp(18px,5vw,56px);
-  text-align:center;}
 /* contenu CENTRÉ, agrandi — rendu affiche cinématique premium. */
-.hero--split .hero__content{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.05rem;min-width:0;max-width:880px;margin-inline:auto}
 /* Badge */
-.hero--split .hero__pill{margin-bottom:.2rem}
 /* Logo = marque centrée, taille moyenne premium (88–120 px). */
 /* Titre fixe (présent en HTML) + slogan rotatif créole — typographies agrandies. */
-.hero--split .hero__headline{align-self:stretch;margin:.1rem 0 .25rem;text-align:center}
-.hero__headline-fixed{display:block;font-family:var(--ff-display);text-transform:uppercase;
-  color:var(--blanc);letter-spacing:.5px;line-height:.9;
-  font-size:clamp(2.6rem,5.6vw,6rem);
-  text-shadow:0 10px 48px rgba(0,0,0,.6);}
 /* Sous-titre centré */
-.hero--split .hero__sub{max-width:620px;margin-inline:auto;text-align:center;color:var(--bleu-glacier)}
 /* ===== Gros bloc CTA central premium (pré-inscription) ===== */
 .hero-offer{position:relative;margin-top:1.4rem;
   display:flex;flex-direction:column;align-items:center;gap:.7rem;
@@ -2433,27 +2043,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   background:linear-gradient(135deg,rgba(27,81,158,.55),rgba(232,130,42,.5));
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none;}
-.hero-offer__label{margin:0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:.92rem;color:var(--orange-vif)}
-.hero-offer__txt{margin:0;max-width:46ch;font-size:.98rem;line-height:1.5;color:var(--bleu-glacier)}
-.hero-offer__btns{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.8rem;margin-top:.45rem;width:100%}
 /* CTA secondaire discret */
-.btn--hero-sec{padding-inline:1.45em}
 /* GROS bouton principal */
-.btn--xl{min-height:68px;font-size:clamp(1.08rem,1.5vw,1.3rem);font-weight:800;letter-spacing:.04em;padding-inline:1.9em}
-.hero-offer .btn--cta{box-shadow:0 14px 34px rgba(217,106,27,.5),0 0 26px rgba(232,130,42,.32)}
-.hero-offer .btn--cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 22px 52px rgba(232,130,42,.62),0 0 42px rgba(232,130,42,.46)}
-.hero-offer .btn--cta:active{transform:translateY(-1px) scale(.985)}
 /* preuves (puces orange) */
-.hero-offer__proof{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem 1rem;margin:.55rem 0 0;padding:0}
-.hero-offer__proof li{display:inline-flex;align-items:center;gap:.42em;font-family:var(--ff-cond);font-weight:600;font-size:.76rem;letter-spacing:.02em;color:var(--bleu-glacier)}
-.hero-offer__proof li::before{content:"";width:.42em;height:.42em;border-radius:50%;background:var(--orange-vif);flex:none}
 /* Watermark géant : texture de fond très discrète (plus de Spline). */
 /* ---- Desktop ≥ 1024 : contenu centré agrandi ---- */
-@media (min-width:1024px){.hero--split .hero__content{max-width:880px}}
+@media (min-width:1024px){}
 /* ---- Mobile : bouton principal pleine largeur, facile au pouce ---- */
 @media (max-width:680px){.hero-offer{padding:1.35rem 1.15rem;max-width:none}
-.hero-offer__btns .btn--cta{width:100%}
-.btn--xl{min-height:62px;font-size:1.05rem;padding-inline:1.2em}}
+}
 /* ============================================================
    V34 — Polish 202606 : rotator hors du H1 + timeline/FAQ adhésion
    ============================================================ */
@@ -2462,8 +2060,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* pleine largeur : sinon la scène (mots en position:absolute) se réduit à 0 */
 /* Page adhésion : timeline "Comment s'inscrire" + FAQ (cartes centrées). */
 .adh-faq{max-width:640px;margin:2.2rem auto 0}
-
-
 
 
 .adh-faq .faq__item{margin-top:.6rem}
@@ -2478,71 +2074,27 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    • Grille : .hero-fx__grid { opacity / background-size }
    • Couleurs : rgba(23,107,255)=bleu élec · rgba(232,130,42)=orange ballon
    ============================================================ */
-.hero-fx{position:absolute;top:0;left:0;right:0;
-  height:78%;
-  z-index:1;                 /* derrière le contenu (.hero__inner), au-dessus du fond */
-  pointer-events:none;
-  overflow:hidden;
-  /* concentre l'énergie en haut → fondu vers le bas (ne couvre pas le bas du hero) */
-  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);
-  mask-image:linear-gradient(to bottom,#000 0%,#000 40%,transparent 92%);}
 /* 1) AURORA premium : rubans de lumière fluides (adapté d'Aurora Background / 21st.dev → CSS natif),
       fortement floutés + masque radial → effet "aurores boréales" haut de gamme (pas des bandes nettes).
       Réglages : opacity (intensité) · filter:blur (douceur) · --aurora (couleurs) · animation 55s (vitesse) */
-.hero-fx__glow{position:absolute;inset:-15%;
-  --aurora:repeating-linear-gradient(100deg,
-     #0d2452 0%,#1f5fd6 8%,#4f86ff 14%,#7b6cff 19%,#e8822a 25%,#1f5fd6 31%);
-  background-image:var(--aurora);
-  background-size:200% 170%;
-  background-position:50% 50%;
-  filter:blur(44px) saturate(1.22);
-  opacity:.5;
-  -webkit-mask-image:radial-gradient(130% 105% at 72% 0%,#000 6%,transparent 80%);
-  mask-image:radial-gradient(130% 105% at 72% 0%,#000 6%,transparent 80%);
-  animation:mbcAurora 55s linear infinite;
-  will-change:background-position;}
 @keyframes mbcAurora{from{background-position:50% 50%}to{background-position:350% 50%}}
 /* 2) Grille discrète (profondeur, modernité) — fondue autour du haut-centre */
-.hero-fx__grid{position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(191,210,228,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(191,210,228,.05) 1px,transparent 1px);
-  background-size:46px 46px;
-  -webkit-mask-image:radial-gradient(82% 72% at 50% 10%,#000,transparent 72%);
-  mask-image:radial-gradient(82% 72% at 50% 10%,#000,transparent 72%);
-  opacity:.5;}
 /* Mobile : effet allégé (perf) — pas de faisceaux conic, grille + halo réduits */
-@media (max-width:760px){.hero-fx{height:60%}
-.hero-fx__grid{background-size:34px 34px;opacity:.32}
-.hero-fx__glow{filter:blur(30px) saturate(1.22);opacity:.5}}
+@media (max-width:760px){}
 /* Accessibilité : pas d'animation si mouvement réduit */
-@media (prefers-reduced-motion:reduce){.hero-fx__glow{animation:none}}
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V36 — HERO premium : titre massif · sous-titre punchy · CTA fort
    · relief montagne stylisé. Surcharge ciblée (appended → gagne).
    ============================================================ */
 /* Titre encore plus massif + relief (ombre douce, sans stroke lourd). */
-.hero__headline-fixed{font-size:clamp(2.8rem,6.4vw,6.6rem) !important;
-  line-height:.88;letter-spacing:.4px;
-  text-shadow:0 2px 0 rgba(0,0,0,.25),0 14px 50px rgba(0,0,0,.6);}
 /* Sous-titre fixe punchy (orange ballon dégradé, typo Anton). */
-.hero__subtitle{margin:.15rem 0 0;align-self:stretch;text-align:center;
-  font-family:var(--ff-display);text-transform:uppercase;letter-spacing:1px;line-height:1;
-  font-size:clamp(1.5rem,3.4vw,3.1rem);
-  background:linear-gradient(96deg,var(--orange-ballon),var(--orange-vif) 55%,#ffb15b);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 6px 22px rgba(232,130,42,.34));}
 /* Carte CTA : un peu plus large. */
 .hero-offer{max-width:640px}
-.hero-offer__label{font-size:.95rem}
 /* Bouton principal sur 2 lignes : action + précision saison. */
-.hero-offer__main{flex-direction:column !important;gap:.1em !important;line-height:1.05;padding-block:.8rem !important}
-.hero-offer__main-t{display:inline-flex;align-items:center;gap:.5em;font-weight:900;letter-spacing:.03em}
-.hero-offer__main-s{font-size:.62em;font-weight:600;letter-spacing:.04em;text-transform:none;opacity:.92}
 /* Watermark logo : encore plus subtil (simple texture de fond). */
 /* Mobile : titre/sous-titre lisibles, montagne plus basse. */
-@media (max-width:680px){.hero__headline-fixed{font-size:clamp(2.3rem,8.5vw,3.2rem) !important;line-height:.94}
-.hero__subtitle{font-size:clamp(1.3rem,6vw,1.9rem)}}
+@media (max-width:680px){}
 /* ===================================================================
    V37 — Visuels premium joueurs
    (1) Hero : photo joueur dribble en accent à droite
@@ -2595,41 +2147,14 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    montagne et couleurs MBC inchangés.
    ============================================================ */
 /* Logo MBC en filigrane : plus petit = net & premium (au lieu d'un upscale flou) */
-@media (min-width:769px){.hero--split{padding-block:clamp(4rem,7.5vh,6rem) 3.5rem}
-.hero--split .hero__inner{max-width:none;margin-inline:0;padding-inline:0}
-.hero--split .hero__content{align-items:flex-start;
-    text-align:left;
-    max-width:600px;
-    margin-inline:0;
-    /* calé à gauche jusqu'à 1440px, puis ramené vers le centre (évite le vide au milieu sur grands écrans) */
-    margin-left:max(clamp(6vw,7.5vw,9vw), calc((100vw - 1440px) / 2));
-    gap:.7rem;}
-.hero--split .hero__pill{align-self:flex-start;margin-inline:0}
-.hero--split .hero__headline{align-self:flex-start;text-align:left}
-.hero__headline-fixed{font-size:clamp(4rem,7vw,7.5rem)!important;line-height:.9;max-width:720px}
-.hero--split .hero__subtitle{align-self:flex-start;text-align:left;font-size:clamp(2rem,4.4vw,3.8rem);line-height:1.02}
-.hero--split .hero__sub{max-width:520px;margin-inline:0;text-align:left}
-.hero-offer{max-width:520px;margin-top:32px;padding:28px 32px}
-.hero-offer__label,.hero-offer__txt{text-align:left}
-.hero-offer__btns{justify-content:flex-start;gap:14px}
-.hero-offer__proof{justify-content:flex-start}}
+@media (min-width:769px){.hero-offer{max-width:520px;margin-top:32px;padding:28px 32px}
+}
 /* Grands écrans (>1440px) : on recentre la photo joueur avec le contenu dans une
    zone ~1440px (composition compacte, plus de vide au milieu) + fondu du bord droit. */
-@media (min-width:981px){.hero--split .hero__photo{right:max(0px, calc((100vw - 1440px) / 2));
-    -webkit-mask-image:linear-gradient(to left,transparent 0%,rgba(0,0,0,.22) 7%,rgba(0,0,0,.7) 15%,#000 24%,#000 40%,rgba(0,0,0,.82) 56%,transparent 86%),linear-gradient(to top,transparent 0%,#000 16%);
-    mask-image:linear-gradient(to left,transparent 0%,rgba(0,0,0,.22) 7%,rgba(0,0,0,.7) 15%,#000 24%,#000 40%,rgba(0,0,0,.82) 56%,transparent 86%),linear-gradient(to top,transparent 0%,#000 16%);
-    -webkit-mask-composite:source-in;mask-composite:intersect;}}
+@media (min-width:981px){}
 /* Mobile (<768px) : hero recentré, CTA pleine largeur, boutons empilés/centrés */
-@media (max-width:768px){.hero--split .hero__content{align-items:center;text-align:center;max-width:none;margin-left:0;margin-inline:auto}
-.hero--split .hero__pill{align-self:center}
-.hero--split .hero__headline,.hero--split .hero__subtitle{text-align:center;align-self:center}
-.hero--split .hero__subtitle{font-size:clamp(1.6rem,6.6vw,2.4rem)}
-.hero--split .hero__sub{text-align:center;margin-inline:auto;max-width:none}
-.hero-offer{max-width:none}
-.hero-offer__label,.hero-offer__txt{text-align:center}
-.hero-offer__btns{flex-direction:column;align-items:center;justify-content:center;gap:12px}
-.hero-offer__main{width:100%}
-.hero-offer__proof{justify-content:center}}
+@media (max-width:768px){.hero-offer{max-width:none}
+}
 /* Mobile/tablette (photo en fond) : pas de filigrane logo + joueur plus perceptible derrière le texte/CTA */
 @media (max-width:980px){.hero.in .hero__photo{opacity:.5}}
 /* ============================================================
@@ -2643,28 +2168,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* dégradé navy : lisibilité de la légende en bas-gauche, image dégagée au centre (logo MBC au mur) */
 .cal-venue::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgba(7,13,24,.6),rgba(7,13,24,.12) 44%,transparent 64%),linear-gradient(0deg,rgba(7,13,24,.84),rgba(7,13,24,.08) 54%,transparent 72%)}
-.cal-venue__cap{position:absolute;left:clamp(1rem,3vw,2rem);right:clamp(1rem,3vw,2rem);bottom:clamp(.9rem,3vw,1.5rem);z-index:2;display:flex;flex-direction:column;gap:.35rem}
-.cal-venue__tag{align-self:flex-start;display:inline-flex;align-items:center;gap:.45em;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;color:#190f04;background:var(--orange-vif);padding:.3em .75em;border-radius:999px}
-.cal-venue__tag .ic{width:1em;height:1em}
-.cal-venue__name{font-family:var(--ff-display);text-transform:uppercase;letter-spacing:.5px;line-height:1;font-size:clamp(1.5rem,3.4vw,2.4rem);color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.65)}
-.cal-venue__addr{font-family:var(--ff-cond);font-weight:600;font-size:clamp(.86rem,1.4vw,1rem);color:var(--bleu-glacier)}
 /* ============================================================
    V41 — Sponsors : bandeau de logos en défilement infini
    (adapté d'un carousel embla/shadcn → CSS natif, mécanisme "marquee").
    Boucle continue (2 séries + translateX -50%), pause au survol/focus, repli statique.
    Réglages : vitesse (animation 34s) · largeur carte (flex-basis) · masque des bords
    ============================================================ */
-.sponsors-marquee{position:relative;overflow:hidden;margin-top:.4rem;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
-  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
-.sponsors-marquee__track{display:flex;width:max-content;padding-block:.8rem;animation:sponsorsScroll 34s linear infinite;will-change:transform}
-.sponsors-marquee:hover .sponsors-marquee__track,.sponsors-marquee:focus-within .sponsors-marquee__track{animation-play-state:paused}
 /* carte adaptée au bandeau : largeur fixe, espacement par marge (boucle nette), sans flou (perf défilement) */
-.sponsors-marquee .sponsor-card{flex:0 0 clamp(186px,22vw,236px);margin-right:clamp(1rem,2vw,1.5rem);-webkit-backdrop-filter:none;backdrop-filter:none;animation:none!important}
 @keyframes sponsorsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.sponsors-marquee{overflow:visible;-webkit-mask-image:none;mask-image:none}
-.sponsors-marquee__track{animation:none;flex-wrap:wrap;justify-content:center;width:auto}
-.sponsors-marquee__track [aria-hidden="true"]{display:none}}
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V42 — Formules partenaires : finition "pricing" (description + CTA par carte)
    Adapté du composant Pricing (shadcn) → CSS natif. Le toggle mensuel/annuel +
@@ -2679,17 +2191,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    V44 — Passe pro : WhatsApp · réassurance parents
    ============================================================ */
 /* lien WhatsApp discret dans la carte hero */
-.hero-offer__wa{display:inline-flex;align-items:center;gap:.5em;margin-top:.85rem;font-family:var(--ff-cond);font-weight:600;font-size:.88rem;letter-spacing:.02em;color:var(--bleu-glacier);text-decoration:none;transition:color .25s}
-.hero-offer__wa .ic{width:1.2em;height:1.2em;color:#25D366;flex:none}
-.hero-offer__wa b{color:#fff;font-weight:700}
-.hero-offer__wa:hover{color:#fff}
 /* bandeau de réassurance parents */
 /* 4 garanties alignées : grille 2×2 d'encarts de largeur égale (PC + tablette),
    1 colonne sur petit mobile. Centré, uniforme -> alignement net partout. */
-.parents-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.55rem .6rem;margin:1.4rem auto 0;max-width:600px;padding:0;list-style:none}
-.parents-proof li{display:inline-flex;align-items:center;justify-content:center;text-align:center;gap:.5em;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.04em;font-size:.74rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.42em .9em;background:rgba(191,210,228,.03)}
-.parents-proof li svg{width:1.05em;height:1.05em;color:var(--orange-vif);flex:none}
-@media (max-width:520px){.parents-proof{grid-template-columns:1fr;max-width:340px}}
+@media (max-width:520px){}
 /* ============================================================
    V45 — "Deck" de cartes empilées (adaptation NATIVE du composant
    display-cards, sans React/Tailwind) pour "La licence MBC".
@@ -2968,36 +2473,12 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ET mobile · aucun débordement.
    ============================================================ */
 @property --cine-a{syntax:"<angle>";inherits:false;initial-value:0deg}
-.cine-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;list-style:none;margin:2rem 0;padding:0}
 /* carte stat PREMIUM : verre dépoli, liseré sheen statique, chiffre BLANC franc */
-.cine-stats li{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:.5rem;min-width:0;padding:1.35rem 1rem;border-radius:18px;isolation:isolate;
-  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,0) 44%),linear-gradient(165deg,rgba(31,49,84,.55),rgba(9,16,30,.72));
-  -webkit-backdrop-filter:blur(10px) saturate(122%);backdrop-filter:blur(10px) saturate(122%);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 1px 2px rgba(0,0,0,.35),0 22px 40px -24px rgba(0,0,0,.75);
-  transition:transform .45s var(--ease-spring),box-shadow .4s var(--ease-out);will-change:transform}
 /* liseré premium STATIQUE : sheen blanc haut-gauche -> hairline, soupçon orange en bas-droite */
-.cine-stats li::before{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit;padding:1px;
-  background:linear-gradient(150deg,rgba(255,255,255,.36),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 56%,rgba(232,130,42,.24));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;transition:background .4s var(--ease-out)}
 /* lueur douce derrière le chiffre : spotlight haut + halo bleu nuit discret */
-.cine-stats li::after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(88% 62% at 50% -12%,rgba(255,255,255,.1),transparent 60%),radial-gradient(82% 60% at 50% 34%,rgba(27,81,158,.16),transparent 72%)}
-.cine-stats li:hover,.cine-stats li:focus-within{transform:translateY(-4px);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.35),0 30px 56px -24px rgba(217,106,27,.34)}
-.cine-stats li:hover::before,.cine-stats li:focus-within::before{background:linear-gradient(150deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 32%,rgba(232,130,42,.2) 70%,rgba(232,130,42,.45))}
 /* carte VALEUR : icône d'accent orange + titre court (remplace l'ancien gros chiffre) */
-.cine-stats__ic{width:30px;height:30px;color:var(--orange-vif);position:relative;z-index:2;filter:drop-shadow(0 2px 5px rgba(0,0,0,.3))}
-.cine-stats b{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:clamp(.98rem,2.3vw,1.16rem);line-height:1.08;
-  color:#fff;-webkit-text-fill-color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.cine-stats span{position:relative;z-index:2;font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;line-height:1.3;color:rgba(216,228,242,.74);max-width:none}
-@media (max-width:520px){.cine-stats{gap:.55rem}
-.cine-stats li{padding:1.05rem .65rem;gap:.4rem;border-radius:15px}
-.cine-stats__ic{width:24px;height:24px}
-.cine-stats b{font-size:clamp(.84rem,3.3vw,1rem);letter-spacing:.03em}
-.cine-stats span{font-size:.72rem;letter-spacing:.07em;line-height:1.25}}
-@media (prefers-reduced-motion:reduce){.cine-stats li{transition:box-shadow .3s var(--ease-out)}
-.cine-stats li:hover,.cine-stats li:focus-within{transform:none}}
+@media (max-width:520px){}
+@media (prefers-reduced-motion:reduce){}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
 @media (max-width:559px){.cine-actions{justify-content:center}}
@@ -3181,27 +2662,7 @@ body.cine-fs-lock{overflow:hidden}
    + liens reseaux en COLONNE (garcon deplace depuis "Pret a faire
    partie"). Fondu lateral par masque, comme le visuel de la section "Suivez le MBC".
    ============================================================ */
-.social-spotlight{isolation:isolate}
-.social-spotlight__media{position:absolute;inset:0 0 0 auto;width:54%;max-width:880px;z-index:0;pointer-events:none}
-.social-spotlight__media img{width:100%;height:100%;object-fit:cover;object-position:52% 8%;display:block}
-.social-spotlight__media::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  /* couleurs EXACTES du fond de section (3 paliers) -> le lavage se fond sans aucune ligne */
-  background:linear-gradient(180deg,var(--nuit-0),#0c1729 52%,var(--nuit-2));
-  -webkit-mask-image:linear-gradient(90deg,#000 0%,#000 13%,rgba(0,0,0,.55) 33%,rgba(0,0,0,.18) 47%,transparent 56%);
-          mask-image:linear-gradient(90deg,#000 0%,#000 13%,rgba(0,0,0,.55) 33%,rgba(0,0,0,.18) 47%,transparent 56%)}
-.social-spotlight__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(to bottom,var(--nuit-0),transparent 15%),linear-gradient(to top,var(--nuit-2),transparent 13%)}
-.social-spotlight__media.is-empty{display:none}
-.social-spotlight__inner{position:relative;z-index:2;min-height:clamp(440px,56vh,640px);justify-content:center}
-.social-spotlight__head{max-width:540px}
-.social-spotlight__body{max-width:480px}
-.social-spotlight__grid{display:flex;flex-direction:column;gap:.85rem;max-width:480px}
-@media (max-width:860px){.social-spotlight__media{width:100%;max-width:none;opacity:.3}
-.social-spotlight__media img{object-position:50% 8%}
-.social-spotlight__media::before{-webkit-mask-image:none;mask-image:none;background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(16,27,48,.72))}
-.social-spotlight__media::after{background:linear-gradient(to top,var(--nuit-0) 8%,rgba(7,13,24,.4) 60%,transparent)}
-.social-spotlight__inner{min-height:0}
-.social-spotlight__head,.social-spotlight__body,.social-spotlight__grid{max-width:none}}
+@media (max-width:860px){}
 /* ---- Categories : note "filles bienvenues" (premium) ---- */
 .cat-mixite{display:flex;align-items:flex-start;gap:.7rem;margin-top:1.1rem;max-width:64ch;padding:.85rem 1.15rem;
   border-radius:14px;border:1px solid rgba(232,130,42,.28);
@@ -3274,19 +2735,14 @@ body.cine-fs-lock{overflow:hidden}
    SEO en responsive, pause tactile des bandeaux défilants.
    ============================================================ */
 /* Lien WhatsApp du hero : zone tactile >= 44px (WCAG 2.5.8) */
-.hero-offer__wa{min-height:44px}
 /* Textes informatifs : plancher ~12.5-12.8px pour rester lisibles (parents âgés, mobile) */
 .footer__legal{font-size:.8rem;opacity:.92}
-.sponsor-card__badge{font-size:.76rem}
-.hero-offer__proof li{font-size:.8rem}
-.parents-proof li{font-size:.8rem}
 .cat__age{font-size:.8rem}
 /* (la taille de « LA MONTAGNE » sur petits ecrans est geree dans le bloc
    header unique, plus haut) */
 /* Boutons de zoom de la lightbox : zone tactile 44px sur mobile */
 @media (max-width:560px){.lightbox__toolbar button{min-width:44px;height:44px}}
 /* Bandeaux défilants : pause au toucher (WCAG 2.2.2) — la pause au survol souris existe déjà */
-.marquee:active .marquee__track,.sponsors-marquee:active .sponsors-marquee__track{animation-play-state:paused}
 /* Header des pages SEO locales : responsive propre sous 680px */
 @media (max-width:680px){.seo-top{padding:.45rem 12px;gap:.4rem}
 .seo-top__brand{font-size:.92rem;gap:.45rem}
@@ -3471,57 +2927,15 @@ body.cine-fs-lock{overflow:hidden}
    premiers boutons en ligne 1, l'essai centré sous les deux,
    séparé par un filet dégradé qui rend la 2e rangée voulue.
    ============================================================ */
-@media (min-width:769px){.hero-offer__btns{
-    display:grid;
-    grid-template-columns:auto auto;
-    justify-content:start;
-    align-items:stretch;
-    gap:14px;
-    flex-wrap:nowrap;
-  }
-.hero-offer__main{grid-column:1;grid-row:1}
-.hero-offer__browse{grid-column:2;grid-row:1}
-.hero-offer__trial{
-    grid-column:1 / -1;
-    grid-row:2;
-    justify-self:center;
-    margin-top:6px;
-  }
-/* filet de séparation : centré sur la largeur des deux boutons du dessus */
-.hero-offer__trial::before{
-    content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
-    width:min(300px,86%);height:1px;pointer-events:none;
-    background:linear-gradient(90deg,transparent,rgba(191,210,228,.26),transparent);
-  }}
+@media (min-width:769px){/* filet de séparation : centré sur la largeur des deux boutons du dessus */
+}
 /* --- Traitement du bouton d'essai : 2e action réelle, pas un lien de nav --- */
-.hero-offer__trial{
-  overflow:visible;                       /* le filet déborde du bouton */
-  border-color:rgba(232,130,42,.34);
-  background:linear-gradient(180deg,rgba(232,130,42,.11),rgba(232,130,42,.035));
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
-  letter-spacing:.07em;
-}
-.hero-offer__trial .ic{width:1.1em;height:1.1em;color:#25D366;flex:none;
-  transition:transform .3s var(--ease-spring)}
-.hero-offer__trial:hover{
-  border-color:rgba(232,130,42,.62);
-  background:linear-gradient(180deg,rgba(232,130,42,.2),rgba(232,130,42,.07));
-  box-shadow:0 16px 32px -14px rgba(232,130,42,.6),inset 0 1px 0 rgba(255,255,255,.11);
-  transform:translateY(-2px);
-}
-.hero-offer__trial:hover .ic{transform:scale(1.12)}
-.hero-offer__trial:active{transform:translateY(0)}
 /* « Voir les catégories » reste un lien de navigation : on l'allège d'un cran
    pour que l'œil lise inscription > essai > parcourir. */
-.hero-offer__browse{color:var(--bleu-glacier);border-color:rgba(191,210,228,.2)}
-.hero-offer__browse:hover{color:#fff;border-color:var(--line-strong)}
 @media (max-width:768px){/* en colonne, des largeurs egales se lisent comme un empilement voulu ;
      la hierarchie passe par la couleur et le poids, pas par la largeur. */
-.hero-offer__btns > .btn{width:100%}
-.hero-offer__trial::before{display:none}}
-@media (prefers-reduced-motion:reduce){.hero-offer__trial,.hero-offer__trial .ic{transition:none!important}
-.hero-offer__trial:hover{transform:none!important}
-.hero-offer__trial:hover .ic{transform:none!important}}
+}
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V78 — Passe « finition » (2026-08)
    Trois défauts de rythme, pas trois effets de plus :
@@ -3538,8 +2952,7 @@ body.cine-fs-lock{overflow:hidden}
 .section .sec-head .kicker{justify-content:center}
 .section .sec-head__sub{margin-inline:auto}
 /* les blocs riches restent lisibles : texte à gauche dans un bloc centré */
-.sec-head .cat-mixite,.sec-head .parents-proof{text-align:left}
-.sec-head .parents-proof{justify-content:center}
+.sec-head .cat-mixite{text-align:left}
 .sec-head .cat-mixite{margin-inline:auto}
 /* ---- 2. Filet de séparation entre sections ---- */
 .section + .section::before,.marquee + .section::before{content:"";position:absolute;top:0;left:50%;
@@ -3629,21 +3042,9 @@ main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal
    §24 : les sponsors sont valorises, pas utilises comme decoration.
    Le defilement continu concurrencait le seul marquee legitime du
    site (le bandeau de valeurs) et rendait les logos illisibles. */
-.sponsors-marquee{overflow:visible}
-.sponsors-marquee__track{
-  animation:none !important;
-  width:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:clamp(.8rem,2vw,1.6rem);
-  padding-block:.4rem;
-  will-change:auto;
-}
 /* la seconde serie n'existait que pour boucler le defilement */
-.sponsors-marquee__track > [aria-hidden="true"]{display:none}
 .sponsor-card{transition:border-color .25s var(--ease-out),transform .25s var(--ease-out)}
 .sponsor-card:hover{transform:translateY(-2px)}
-.sponsor-card__plate{box-shadow:none}
 /* Le plafond de 56 px existait parce que les fichiers logos n'avaient pas
    le meme cadrage : chacun portait sa propre marge blanche, et brider la
    hauteur etait le seul moyen de les faire paraitre de taille voisine.
@@ -3655,11 +3056,6 @@ main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal
    les plaques prenaient 89, 118 ou 140 px selon le sponsor. On sort donc
    l'image du flux : la plaque tient sa hauteur du seul aspect-ratio, et le
    logo se pose dedans en object-fit:contain. */
-.sponsor-card__plate{position:relative;padding:0}
-.sponsor-card__plate picture{position:absolute;inset:.62rem .72rem;
-  width:auto;height:auto;display:flex;align-items:center;justify-content:center}
-.sponsor-card__plate img{width:100%;height:100%;max-width:100%;max-height:100%;
-  margin-inline:auto;object-fit:contain}
 @media (prefers-reduced-motion:reduce){main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{opacity:1 !important;transform:none !important;transition:none !important}
 .sponsor-card:hover{transform:none !important}}
 /* ---- Un seul mouvement continu sur la page ----
@@ -3764,12 +3160,6 @@ main > .section .cine-phone__island i{animation:none !important}
    La section parle d'un equipement de quartier : cette image le montre
    utilise autrement. Elle reste secondaire — cadree bas, sous le recit,
    sans concurrencer la photo d'ancrage en haut de section. */
-.lp-live{margin:var(--lp-gap-m) 0 0;border-radius:var(--r-md);overflow:hidden;
-  border:1px solid var(--line);background:var(--nuit-3)}
-.lp-live img{display:block;width:100%;height:clamp(160px,22vw,240px);
-  object-fit:cover;object-position:center 42%}
-.lp-live figcaption{padding:.75rem .95rem .85rem;font-size:.86rem;line-height:1.45;
-  color:var(--txt-soft)}
 /* ---- Double page ---- */
 .lp-below{display:grid;gap:var(--lp-gap-m);margin-top:var(--lp-gap-l)}
 /* Corps de texte remonté d'un cran : 17,3 px en 1920, c'était petit pour un
@@ -3907,11 +3297,6 @@ main > .section .cine-phone__island i{animation:none !important}
    n'écrit rien (voir .claude/lire-calendrier-prm.py). Ce bloc est donc inerte
    tant qu'aucun match n'a été joué — il évite d'avoir à retoucher la feuille
    le soir du premier résultat. */
-.mx-score{font-variant-numeric:tabular-nums;font-weight:700;color:var(--blanc);
-  letter-spacing:.02em}
-.mx-score__s{opacity:.5;margin:0 .18em}
-.mx-score--v{color:#7BD88F}
-.mx-score--d{color:#E58A8A}
 /* rencontre déjà jouée : on l'atténue sans la cacher (classe posée en JS) */
 .mx-row.is-past{opacity:.42}
 /* prochaine rencontre */
@@ -4072,77 +3457,23 @@ main > .section .cine-phone__island i{animation:none !important}
    Le halo orange est a .07 d'opacite. Il ne doit pas se voir :
    il doit juste empecher l'affiche de flotter dans le vide.
    ============================================================ */
-.nx{position:relative;display:grid;grid-template-columns:1fr;
-  gap:clamp(1.5rem,4vw,2.2rem);align-items:center;
-  margin:clamp(1.8rem,4vw,2.6rem) 0 clamp(2rem,5vw,3rem);
-  padding:clamp(1.4rem,3.5vw,2.2rem) 0;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 /* le filet orange qui amorce le bloc, comme le kicker des sections */
-.nx::before{content:"";position:absolute;top:-1px;left:0;width:clamp(3rem,12%,6rem);
-  height:1px;background:var(--grad-orange)}
-.nx__media{position:relative;justify-self:center;
-  width:min(78vw,340px);isolation:isolate}
 /* le plan arriere : meme affiche, floutee, decalee. C'est elle qui
    cree la profondeur, pas une ombre portee de 60px. */
-.nx__ghost{position:absolute;inset:0;z-index:0;border-radius:var(--r-md);
-  background:url("assets/affiches/mbc-premier-match-sainte-suzanne-2026-480.webp")
-    center/cover no-repeat;
-  transform:rotate(-3.2deg) translate(-3.5%,2.5%) scale(1.045);
-  filter:blur(17px) saturate(.85);opacity:.34;pointer-events:none}
 /* le halo orange — tres faible, large, sans bord net */
-.nx__media::after{content:"";position:absolute;z-index:-1;
-  inset:-14% -12% -16%;pointer-events:none;
-  background:radial-gradient(58% 46% at 50% 52%,
-    rgba(232,130,42,.07) 0%,rgba(232,130,42,.035) 46%,rgba(232,130,42,0) 78%)}
-.nx__poster{position:relative;z-index:1;display:block;
-  border-radius:var(--r-md);overflow:hidden;
-  border:1px solid rgba(191,210,228,.20);
-  box-shadow:0 14px 34px rgba(3,8,18,.52),0 2px 8px rgba(3,8,18,.4);
-  transform:rotate(1.4deg);
-  transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
-.nx__poster img{display:block;width:100%;height:auto}
 /* ---- le texte : il ne redit pas l'affiche ---- */
-.nx__kicker{margin:0 0 .55rem}
-.nx__t{font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(1.6rem,4.6vw,2.35rem);line-height:1.04;letter-spacing:.005em;
-  color:var(--blanc);margin:0 0 .75rem}
-.nx__t em{font-style:normal;color:var(--orange-vif);
-  font-size:.62em;vertical-align:.12em;margin:0 .12em;letter-spacing:.04em}
-.nx__when{margin:0 0 .5rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:clamp(1rem,2.4vw,1.15rem);letter-spacing:.045em;
-  text-transform:uppercase;color:var(--bleu-glacier)}
-.nx__where{margin:0 0 .55rem;font-family:var(--ff-cond);font-weight:700;
-  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;color:var(--blanc)}
-.nx__where span{display:block;margin-top:.2rem;font-weight:500;font-size:.9rem;
-  letter-spacing:0;text-transform:none;color:var(--txt-soft)}
-.nx__tags{display:flex;flex-wrap:wrap;gap:.45rem;margin:0 0 1.15rem}
-.nx__tag{display:inline-flex;align-items:center;font-family:var(--ff-cond);
-  font-weight:700;font-size:.72rem;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--bleu-glacier);border:1px solid var(--line-strong);
-  border-radius:99px;padding:.34em .8em}
-.nx__tag--free{color:#8FE0B0;border-color:rgba(143,224,176,.34)}
-.nx__tag--d{color:#190f04;background:var(--grad-orange);border-color:transparent}
-.nx__tag[hidden]{display:none}
-.nx__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 /* ---- desktop : l'affiche a gauche, le texte respire a droite ---- */
-@media (min-width:900px){.nx{grid-template-columns:340px minmax(0,1fr);gap:clamp(2.2rem,4vw,3.4rem);
-    align-items:center}
-.nx__media{justify-self:start}
-/* la profondeur ne se revele qu'au survol, et de quelques pixels */
-.nx__poster:hover{transform:rotate(.6deg) translateY(-6px);
-    box-shadow:0 22px 48px rgba(3,8,18,.58),0 3px 10px rgba(3,8,18,.42)}}
+@media (min-width:900px){/* la profondeur ne se revele qu'au survol, et de quelques pixels */
+}
 /* ---- mobile : l'affiche entiere, jamais rognee, jamais inclinee ----
    Une inclinaison sur un ecran de 375 px mange les coins de l'affiche
    et rend la date moins lisible. Sous 900 px on la pose bien a plat. */
-@media (max-width:899px){.nx__poster{transform:none}
-.nx__ghost{transform:translate(-2.5%,2%) scale(1.05);filter:blur(14px);opacity:.28}
-.nx__body{text-align:left}
-.nx__a .btn{flex:1 1 auto;justify-content:center}}
+@media (max-width:899px){.nx__body{text-align:left}
+}
 /* Pas d'animation d'apparition propre : .reveal (opacite + 34px) porte deja
    le bloc entier. En ajouter une seconde sur .nx__media faisait un double
    mouvement, exactement le genre de surcharge a eviter ici. */
 /* le bloc disparait une fois la rencontre jouee (script.js) */
-.nx[hidden]{display:none}
 /* ---- L'affiche officielle, à télécharger et partager ---- */
 .affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
   margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
@@ -4150,35 +3481,15 @@ main > .section .cine-phone__island i{animation:none !important}
 /* width explicite, et non max-width : en justify-self:start la largeur du
    lien suit son contenu, or l'image la reclame en retour — les deux
    s'annulaient et la vignette tombait a 0. */
-.affiche__vue{display:block;justify-self:start;width:min(320px,100%);
-  border-radius:var(--r-md);overflow:hidden;
-  border:1px solid rgba(191,210,228,.18);
-  box-shadow:0 18px 40px rgba(3,8,18,.55);
-  transition:transform .4s var(--ease)}
-.affiche__vue:hover{transform:translateY(-4px)}
-.affiche__vue img{display:block;width:100%;height:auto}
-.affiche__t{font-family:var(--ff-display);font-size:1.55rem;line-height:1.1;
-  margin:.2rem 0 .5rem;color:var(--blanc)}
-.affiche__d{margin:0 0 1.1rem;color:var(--txt-soft);max-width:48ch}
-.affiche__a{display:flex;flex-wrap:wrap;gap:.7rem;margin:0}
 @media (min-width:760px){.affiche{grid-template-columns:320px minmax(0,1fr);gap:1.9rem;padding:1.6rem}}
 /* ---- Le second terrain : Ruisseau Blanc ----
    Le chapo de la section annonce deux lieux depuis le debut, mais un seul
    etait montre. Le pendant reprend exactement le composant .cal-venue —
    meme cadre, meme legende en surimpression — pour que les deux salles se
    lisent comme une paire, pas comme deux traitements differents. */
-.cal-venue--rb{margin-bottom:1rem}
 /* la scene est plus large que haute : on cadre un peu plus bas pour garder
    le panier et la charpente. */
-.cal-venue--rb img{object-position:center 55%}
 /* le lien Maps sous la photo : qui regarde la salle peut lancer l'itinéraire */
-.cal-venue__map{display:inline-flex;align-items:center;gap:.4em;margin-top:.55rem;
-  font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.04em;
-  text-transform:uppercase;color:var(--orange-vif);text-decoration:none;
-  transition:color .2s var(--ease-out)}
-.cal-venue__map svg{width:.95em;height:.95em}
-.cal-venue__map:hover{color:#FFD7AE}
-.cal-venue__map:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
 /* ============================================================
    « Le basket commence ici » — la porte vers les pages enfants
    ------------------------------------------------------------
@@ -4414,14 +3725,10 @@ main > .section .cine-phone__island i{animation:none !important}
    parent. Tout est resolu a .78s.
    ============================================================ */
 @media (max-width:719px) and (prefers-reduced-motion:no-preference){
-.ess-stats.in .ess-stat{animation:sigFadeIn .5s var(--ease-out) .12s backwards}
-.ess-stats.in .ess-stat:nth-child(2){animation-delay:.2s}
-.ess-stats.in .ess-stat:nth-child(3){animation-delay:.28s}}
+}
 
 @media (min-width:720px) and (prefers-reduced-motion:no-preference){
-.ess-stats.in .ess-stat>*{animation:sigFadeIn .5s var(--ease-out) .12s backwards}
-.ess-stats.in .ess-stat:nth-child(2)>*{animation-delay:.2s}
-.ess-stats.in .ess-stat:nth-child(3)>*{animation-delay:.28s}}
+}
 
 /* ============================================================
    V93 · 3 — Ordre de lecture dans « L'essentiel ».
@@ -4461,11 +3768,7 @@ main > .section .cine-phone__island i{animation:none !important}
    bloc se lit comme un retard.
    ============================================================ */
 @media (prefers-reduced-motion:no-preference){
-.ess .ess__head.reveal {transition-delay:0s}
-.ess .ess__photo.reveal{transition-delay:.06s}
-.ess .ess-stats.reveal {transition-delay:.12s}
-.ess .ess-plus.reveal  {transition-delay:.18s}
-.ess .ess__cta.reveal  {transition-delay:.24s}}
+}
 
 /* ============================================================
    V93 · 4 — L'onglet d'age se remplit.
@@ -4550,13 +3853,9 @@ main > .section .cine-phone__island i{animation:none !important}
 /* 1 — le filet est dessine, jamais trace */
 .reveal.in .kicker::before{animation:none!important;transform:none!important}
 /* 2 — la fiche technique est visible d'emblee, sans cascade */
-.ess-stats.in .ess-stat,
-.ess-stats.in .ess-stat>*{animation:none!important;opacity:1!important}
 /* 3 — plus aucun decalage d'ordre : tout arrive ensemble
        (V82 l.3666 coupe deja `transition` sur ces elements ; on
        annule le delai pour ne rien laisser en suspens) */
-.ess .ess__head.reveal,.ess .ess__photo.reveal,.ess .ess-stats.reveal,
-.ess .ess-plus.reveal,.ess .ess__cta.reveal{transition-delay:0s!important}
 /* 4 — l'onglet se remplit sans fondu : le degrade est la ou il n'y est pas */
 .age__tab,.age__tab::before{transition:none!important}
 /* allegements ci-dessous : le ballon de la barre de lecture ne
@@ -4605,10 +3904,1234 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
    qui reprendrait a mi-course au retour en haut de page.
    animation-play-state gele et reprend ou l'on s'etait arrete : sur
    une boucle de 55 s, c'est invisible. */
-.hero.is-idle .hero-fx__glow,
-.hero.is-idle .hero__lightmotion,
-.hero.is-idle .hero__halo,
-.hero.is-idle .hero__halo::before,
-.hero.is-idle .hero__glow,
-.hero.is-idle .hero__scroll span::before,
-.hero.is-idle .hero__pill-dot::after{animation-play-state:paused!important}
+.hero.is-idle .hero__scroll span::before{animation-play-state:paused!important}
+
+
+/* ============================================================================
+   V100 — REFONTE PREMIUM
+   ----------------------------------------------------------------------------
+   Couche finale et FAISANT AUTORITE. Elle est la derniere du fichier : a
+   specificite egale, c'est elle qui gagne. Ne pas empiler d'override apres.
+
+   Trois partis pris, tenus partout :
+
+   1. L'ORANGE EST UN ACCENT, PAS UN FOND. Il ne sert plus qu'a cinq choses :
+      le CTA principal, le filet du sur-titre, le mot souligne d'un titre,
+      l'etat actif, et les chiffres (scores, compte a rebours, numeros). Tout
+      le reste est bleu nuit, blanc casse et gris bleute.
+
+   2. LE FILET REMPLACE L'OMBRE. La profondeur venait d'ombres a 56 px de flou
+      et de fonds vitres. Elle vient desormais d'un trait de 1 px et d'un fond
+      a peine plus clair. C'est ce qui distingue un site de club d'un template.
+
+   3. RIEN NE BOUGE TOUT SEUL. Les animations permanentes (bandeaux defilants,
+      halos qui respirent, balayages) sont neutralisees. Restent l'apparition
+      au defilement et les transitions au survol.
+   ============================================================================ */
+
+:root{
+  /* --- Rythme vertical unique. Toutes les sections respirent pareil. --- */
+  --sp-sec:clamp(4.5rem,8.5vw,7.5rem);
+  --sp-blk:clamp(2rem,4.5vw,3.25rem);
+  --sp-gap:clamp(1rem,2.4vw,1.75rem);
+
+  /* --- Surfaces. Trois niveaux suffisent : le fond, la bande, la carte. --- */
+  --surf-1:#0A1120;
+  --surf-2:#101a2c;
+  --hair:rgba(191,210,228,.10);
+  --hair-2:rgba(191,210,228,.20);
+
+  /* --- Ombres ramenees a l'echelle du papier, pas du neon. --- */
+  --e1:0 1px 2px rgba(2,6,14,.40);
+  --e2:0 8px 24px rgba(2,6,14,.38);
+  --e3:0 14px 38px rgba(2,6,14,.42);
+  --glow-o:0 10px 26px rgba(217,106,27,.24);
+  --glow-b:0 10px 26px rgba(27,81,158,.28);
+  --bevel:inset 0 0 0 1px rgba(191,210,228,.05);
+}
+
+/* ---------------------------------------------------------------------------
+   1. NEUTRALISATION DES EFFETS DE TROP
+   Ces regles ne suppriment pas de balise : elles eteignent des decors qui
+   restent dans le DOM (donc rien ne casse cote JS) mais ne s'imposent plus.
+   --------------------------------------------------------------------------- */
+
+/* Filigranes geants : ils restaient lisibles et bruitaient chaque section. */
+.bg-word,.lp-word{color:rgba(233,240,248,.022)!important}
+
+/* Balayage lumineux des boutons : gadget d'equipementier, pas de club. */
+.btn--primary::after,.btn--roi::after{display:none}
+
+/* Halos, reflets, grilles reactives : conserves dans le DOM (le JS s'y
+   accroche) mais ramenes au seuil du perceptible. */
+.spotglow__fx,
+.cine-card__glow,
+.cine-card__sheen{opacity:.18!important}
+.grid-fx{opacity:.25}
+.grid-fx__glow{display:none}
+
+/* Bandeaux defilants : l'animation permanente est proscrite. */
+.marquee{animation:none!important}
+
+/* Les cartes ne sont plus des vitres. */
+.cat,.p-pillar,.support-card,.faq__item,.pl-slot{backdrop-filter:none;-webkit-backdrop-filter:none}
+
+/* ---------------------------------------------------------------------------
+   2. RYTHME ET TYPOGRAPHIE
+   Plus de contraste entre les niveaux : le sur-titre devient discret et gris,
+   le titre prend toute la place, le chapeau se resserre.
+   --------------------------------------------------------------------------- */
+
+.section{padding-block:var(--sp-sec)}
+@supports (content-visibility:auto){.section{contain-intrinsic-size:auto 700px}}
+
+/* Une bande sur deux se detache — le filet, pas la couleur, marque la coupe. */
+.section.categories,
+.section.matchs,
+.section.staff,
+.section.contact{background:var(--surf-1);border-block:1px solid var(--hair)}
+
+.kicker{
+  font-size:.75rem;letter-spacing:.3em;color:var(--txt-soft);
+  margin-bottom:.85rem;font-weight:600}
+.kicker::before{width:26px;height:2px;background:var(--orange-vif);border-radius:0}
+
+.h2{
+  font-size:clamp(2.5rem,7.4vw,5.6rem);
+  line-height:.88;letter-spacing:.4px;text-wrap:balance}
+.h2 .hl{color:var(--orange-vif)}
+
+.sec-head{margin-bottom:var(--sp-blk)}
+.sec-head__sub{
+  font-size:1.0625rem;line-height:1.62;color:var(--txt-soft);
+  max-width:56ch;margin-top:1rem}
+.sec-head--center .sec-head__sub{margin-inline:auto}
+.sec-head__sub--tight{max-width:48ch}
+
+/* Le separateur « point median » de la refonte : un <i> vide, jamais lu par
+   les lecteurs d'ecran, qui remplace les « · » colles dans le texte. */
+.hero__eyebrow i,.hero__meta i,.hero__fine i,.sb__comp i,.sb__when i,
+.footer__place i,.footer__addr i,.footer__ident i,.footer__signature i,
+.sponsors-wall__label i,.cine-note i,.lp-kicker i{
+  display:inline-block;width:3px;height:3px;border-radius:50%;
+  background:currentColor;opacity:.45;vertical-align:middle;
+  margin-inline:.6em;flex:none}
+
+/* Un seul CTA par section, centre, avec de l'air. */
+.sec-cta{display:flex;justify-content:center;margin-top:var(--sp-blk)}
+.sec-cta .btn{min-width:min(100%,22rem)}
+
+/* Boutons : moins ronds, plus fermes. Cible tactile garantie. */
+.btn{border-radius:6px;min-height:48px;letter-spacing:.05em}
+.btn--primary{background:var(--orange-vif);color:#160C02;box-shadow:none}
+.btn--primary:hover{background:#F19340;transform:translateY(-2px);box-shadow:var(--glow-o)}
+.btn--ghost{border-color:var(--hair-2);color:var(--txt)}
+.btn--ghost:hover{border-color:var(--orange-vif);color:var(--orange-vif);transform:translateY(-2px)}
+.btn__arrow{width:1.1em;height:1.1em;margin-left:.15em;transition:transform .25s var(--ease-out)}
+.btn:hover .btn__arrow{transform:translateX(3px)}
+
+/* ---------------------------------------------------------------------------
+   3. HEADER — cinq entrees, un acces adherent, un bouton
+   --------------------------------------------------------------------------- */
+
+.site-header{height:72px;background:rgba(7,13,24,.72)}
+.site-header.scrolled{background:rgba(7,13,24,.94);box-shadow:0 1px 0 var(--hair)}
+.nav{gap:clamp(.9rem,1.8vw,1.9rem)}
+.nav>a{font-size:.9rem;letter-spacing:.09em}
+.nav__sep{position:relative;color:var(--txt-soft)}
+@media (min-width:1181px){
+  .nav__sep::before{content:"";position:absolute;left:calc(-1 * clamp(.45rem,.9vw,.95rem));top:50%;
+    width:1px;height:16px;transform:translateY(-50%);background:var(--hair-2)}
+}
+.nav__cta{min-height:42px;border-radius:6px}
+
+/* ---------------------------------------------------------------------------
+   4. HERO — une photo, un titre, une action
+   Le premier ecran ne doit contenir que ce qu'on lit debout dans un couloir.
+   --------------------------------------------------------------------------- */
+
+.hero{
+  min-height:min(100svh,860px);
+  padding:calc(72px + clamp(3rem,7vw,6rem)) 0 clamp(4rem,8vw,7rem);
+  display:grid;align-items:center;
+  background:
+    radial-gradient(115% 75% at 78% -8%,rgba(27,81,158,.34),transparent 58%),
+    linear-gradient(180deg,#080F1E 0%,var(--nuit-0) 100%)}
+
+.hero__inner{
+  width:100%;max-width:var(--wrap);margin-inline:auto;
+  padding-inline:clamp(18px,5vw,48px);
+  position:relative;z-index:3;max-width:min(var(--wrap),1220px)}
+
+.hero__eyebrow{
+  display:flex;align-items:center;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.34em;font-size:.78rem;color:var(--bleu-glacier);
+  margin-bottom:clamp(1.1rem,2.4vw,1.6rem)}
+
+.hero__h1{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(3.1rem,10.5vw,7.6rem);line-height:.86;letter-spacing:.5px;
+  color:var(--blanc);max-width:14ch;text-wrap:balance}
+.hero__h1 .hl{color:var(--orange-vif)}
+
+.hero__creole{
+  font-family:var(--ff-cond);font-weight:600;font-style:italic;
+  font-size:clamp(1.15rem,2.6vw,1.6rem);color:var(--bleu-glacier);
+  margin-top:clamp(.9rem,2vw,1.3rem);letter-spacing:.02em}
+
+.hero__meta{
+  display:flex;flex-wrap:wrap;align-items:center;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;font-size:.86rem;color:var(--txt-soft);
+  margin-top:clamp(1.4rem,3vw,2rem)}
+
+.hero__cta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:clamp(1rem,2.4vw,1.8rem);
+  margin-top:clamp(1.5rem,3.2vw,2.2rem)}
+.hero__second{
+  display:inline-flex;align-items:center;gap:.45em;min-height:48px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;font-size:1rem;color:var(--txt);
+  border-bottom:1px solid var(--hair-2);transition:color .25s,border-color .25s}
+.hero__second:hover{color:var(--orange-vif);border-bottom-color:var(--orange-vif)}
+.hero__second .btn__arrow{width:1em;height:1em}
+.hero__second:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px}
+
+.hero__fine{
+  display:flex;flex-wrap:wrap;align-items:center;
+  font-size:.84rem;color:var(--txt-soft);letter-spacing:.04em;
+  margin-top:clamp(1.6rem,3.4vw,2.4rem);
+  padding-top:clamp(1.1rem,2.4vw,1.5rem);border-top:1px solid var(--hair);
+  max-width:34rem}
+
+/* La photo : moitie droite en grand ecran, bandeau derriere le texte en
+   petit. Le degrade la raccroche au fond au lieu de la coller dessus. */
+.hero__photo{
+  position:absolute;inset:0 0 0 auto;width:min(52%,720px);z-index:1;
+  overflow:hidden;pointer-events:none}
+.hero__photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.hero__photo::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,var(--nuit-0) 2%,rgba(7,13,24,.72) 34%,rgba(7,13,24,.10) 78%),
+    linear-gradient(0deg,var(--nuit-0) 1%,transparent 26%)}
+.hero__photo.is-empty{display:none}
+
+.hero__scroll{z-index:3}
+.hero__scroll-label{font-size:.72rem;letter-spacing:.28em;color:var(--txt-soft)}
+
+@media (max-width:900px){
+  .hero{min-height:auto;padding-top:calc(72px + 2.5rem)}
+  .hero__photo{width:100%;opacity:.42}
+  .hero__photo img{object-position:center 18%}
+  .hero__photo::after{background:
+    linear-gradient(180deg,rgba(7,13,24,.55) 0%,rgba(7,13,24,.86) 46%,var(--nuit-0) 92%)}
+  .hero__h1{max-width:none}
+  .hero__cta{gap:1rem}
+  .hero__cta .btn{width:100%}
+  .hero__second{width:100%;justify-content:center}
+}
+
+/* ---------------------------------------------------------------------------
+   5. CHIFFRES CLES — trois nombres, beaucoup de vide
+   --------------------------------------------------------------------------- */
+
+.keyfig-sec{padding-block:clamp(3.5rem,7vw,6rem)}
+.keyfig{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(1.5rem,4vw,3.5rem)}
+.keyfig__i{
+  position:relative;padding-top:clamp(1.4rem,3vw,2rem);
+  border-top:2px solid var(--hair-2)}
+.keyfig__i:first-child{border-top-color:var(--orange-vif)}
+.keyfig__v{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2.6rem,6.2vw,4.6rem);line-height:.9;color:var(--blanc);
+  letter-spacing:.5px;font-variant-numeric:tabular-nums}
+.keyfig__i:first-child .keyfig__v{color:var(--orange-vif)}
+.keyfig__l{
+  display:block;margin-top:.9rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.98rem;color:var(--txt);line-height:1.35}
+.keyfig__l span{
+  display:block;margin-top:.4rem;font-family:var(--ff-body);
+  font-weight:400;text-transform:none;letter-spacing:0;
+  font-size:.94rem;color:var(--txt-soft)}
+@media (max-width:760px){
+  .keyfig{grid-template-columns:1fr;gap:1.6rem}
+  .keyfig__i{padding-top:1.1rem}
+  .keyfig__v{font-size:clamp(2.4rem,11vw,3.4rem)}
+}
+
+/* ---------------------------------------------------------------------------
+   6. SELECTEUR D'AGE — la premiere chose que voit un parent
+   --------------------------------------------------------------------------- */
+
+.age{
+  max-width:56rem;margin-inline:auto;
+  background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-lg);
+  padding:clamp(1.4rem,3.2vw,2.4rem);box-shadow:var(--e2)}
+.age__q{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.88rem;color:var(--txt-soft);
+  text-align:center;margin-bottom:1.2rem}
+.age__tabs{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:.5rem;
+  margin-bottom:clamp(1.5rem,3vw,2.2rem)}
+.age__tab{
+  min-height:56px;padding:.5rem .35rem;cursor:pointer;
+  background:transparent;border:1px solid var(--hair-2);border-radius:8px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:1rem;color:var(--txt);
+  transition:border-color .2s,background .2s,color .2s}
+.age__tab:hover{border-color:var(--bleu-glacier)}
+.age__tab.is-on{
+  background:var(--orange-vif);border-color:var(--orange-vif);color:#160C02}
+.age__tab:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+
+.age__panel{animation:none}
+.age__cat{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem .9rem;
+  padding-bottom:1.1rem;margin-bottom:1.1rem;border-bottom:1px solid var(--hair)}
+.age__cat-l{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.2em;font-size:.7rem;color:var(--txt-soft);width:100%}
+.age__cat b{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.9rem,4.6vw,2.9rem);line-height:1;color:var(--blanc);letter-spacing:.5px}
+.age__cat-n{font-size:.95rem;color:var(--txt-soft)}
+
+.age__facts{list-style:none;display:grid;gap:.55rem;margin-bottom:1.4rem}
+.age__facts li{
+  display:flex;flex-wrap:wrap;gap:.3rem .9rem;align-items:baseline;
+  padding:.55rem 0;border-bottom:1px solid var(--hair)}
+.age__facts li:last-child{border-bottom:0}
+.age__facts span{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.72rem;color:var(--txt-soft);min-width:5.5rem}
+.age__facts b{font-size:1.02rem;color:var(--txt);font-weight:600}
+.age__a{display:flex;flex-wrap:wrap;gap:.65rem}
+.age__a .btn{font-size:.95rem;padding:.8em 1.4em;min-height:46px}
+
+@media (max-width:760px){
+  .age__tabs{grid-template-columns:repeat(3,1fr)}
+  .age__tab{font-size:.95rem;min-height:52px}
+  .age__a .btn{width:100%}
+}
+
+/* ---------------------------------------------------------------------------
+   7. VOLETS (« voir toutes les catégories », « tous les matchs », la FAQ)
+   Un volet ferme doit ressembler a un bouton, pas a un titre orphelin.
+   --------------------------------------------------------------------------- */
+
+.cat-all,.mx-all{margin-top:var(--sp-blk);border-top:1px solid var(--hair)}
+.cat-all__s,.mx-all__s{
+  display:flex;align-items:center;gap:.8rem;cursor:pointer;list-style:none;
+  padding:1.15rem .25rem;min-height:56px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:1rem;color:var(--txt);
+  transition:color .2s}
+.cat-all__s::-webkit-details-marker,.mx-all__s::-webkit-details-marker{display:none}
+.cat-all__s:hover,.mx-all__s:hover{color:var(--orange-vif)}
+.cat-all__s:focus-visible,.mx-all__s:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:2px}
+.cat-all__n,.mx-all__n{
+  font-family:var(--ff-cond);font-weight:700;font-size:.8rem;
+  min-width:26px;height:26px;display:inline-grid;place-items:center;
+  border-radius:999px;background:rgba(232,130,42,.16);color:var(--orange-vif)}
+.cat-all__chev,.mx-all__chev{
+  width:20px;height:20px;margin-left:auto;color:var(--txt-soft);
+  transition:transform .3s var(--ease-out)}
+.cat-all[open] .cat-all__chev,.mx-all[open] .mx-all__chev{transform:rotate(180deg)}
+.cat-all__body{padding-top:var(--sp-blk)}
+
+/* ---------------------------------------------------------------------------
+   8. CRENEAUX — deux lieux en une ligne au lieu de deux grandes photos
+   --------------------------------------------------------------------------- */
+
+.cal-lieux{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));
+  gap:.75rem;margin-bottom:var(--sp-blk)}
+.cal-lieu{
+  display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;
+  padding:1rem 1.1rem;min-height:64px;
+  background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-sm);
+  transition:border-color .2s,transform .2s var(--ease-out)}
+.cal-lieu:hover{border-color:var(--orange-vif);transform:translateY(-2px)}
+.cal-lieu:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.cal-lieu .ic{width:20px;height:20px;color:var(--orange-vif);flex:none}
+.cal-lieu b{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;font-size:1.02rem;color:var(--txt)}
+.cal-lieu span{width:100%;padding-left:calc(20px + .85rem);font-size:.88rem;color:var(--txt-soft)}
+
+/* ---------------------------------------------------------------------------
+   9. SCOREBOARD — le seul endroit du site qui a le droit d'etre spectaculaire
+   --------------------------------------------------------------------------- */
+
+.sb{
+  position:relative;max-width:56rem;margin-inline:auto;
+  background:linear-gradient(180deg,var(--surf-2),#0B1424);
+  border:1px solid var(--hair-2);border-radius:var(--r-lg);
+  overflow:hidden;box-shadow:var(--e3)}
+.sb::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:3px;
+  background:linear-gradient(90deg,var(--orange-vif),var(--bleu-roi))}
+
+.sb__comp{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  padding:1.1rem 1.25rem;border-bottom:1px solid var(--hair);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.22em;font-size:.74rem;color:var(--txt-soft);text-align:center}
+
+.sb__duel{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:clamp(.75rem,3vw,2rem);padding:clamp(1.6rem,4vw,2.8rem) clamp(1rem,3vw,2rem)}
+.sb__team{display:flex;flex-direction:column;align-items:center;gap:.75rem;text-align:center}
+.sb__crest{
+  width:clamp(64px,13vw,104px);aspect-ratio:1;display:grid;place-items:center;
+  border-radius:50%;background:rgba(255,255,255,.045);border:1px solid var(--hair);
+  padding:12%}
+.sb__crest img{width:100%;height:100%;object-fit:contain}
+.sb__crest--sigle{
+  font-family:var(--ff-display);font-size:clamp(1rem,2.6vw,1.5rem);
+  color:var(--bleu-glacier);padding:0}
+.sb__name{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.25rem,3.6vw,2.35rem);line-height:1;color:var(--blanc);
+  letter-spacing:.5px;text-wrap:balance}
+.sb__side{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.68rem;color:var(--txt-soft)}
+.sb__team:first-child .sb__side{color:var(--orange-vif)}
+.sb__vs{
+  font-family:var(--ff-display);font-size:clamp(1.1rem,3vw,1.7rem);
+  color:var(--txt-soft);letter-spacing:.1em;opacity:.6}
+
+.sb__when,.sb__where,.sb__free{text-align:center}
+.sb__when{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.35rem,3.6vw,2.1rem);color:var(--blanc);
+  letter-spacing:.5px;padding-top:.25rem}
+.sb__when time{display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center}
+.sb__where{
+  margin-top:.7rem;font-family:var(--ff-cond);font-weight:600;
+  text-transform:uppercase;letter-spacing:.1em;font-size:.95rem;color:var(--txt)}
+.sb__where span{
+  display:block;margin-top:.25rem;font-family:var(--ff-body);font-weight:400;
+  text-transform:none;letter-spacing:0;font-size:.88rem;color:var(--txt-soft)}
+.sb__free{
+  margin-top:1rem;display:flex;justify-content:center}
+.sb__free::before{
+  content:"Entrée libre";display:inline-block;padding:.35em .9em;
+  border:1px solid rgba(232,130,42,.4);border-radius:999px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.68rem;color:var(--orange-vif)}
+.sb__free{font-size:0;color:transparent}
+
+/* Le compte a rebours. Chiffres tabulaires : ils ne sautillent pas d'une
+   minute a l'autre. Rempli par script.js — masque tant qu'il est vide. */
+.sb__cd{
+  display:flex;flex-direction:column;align-items:center;gap:.55rem;
+  margin:clamp(1.4rem,3vw,2rem) clamp(1rem,3vw,2rem) 0;
+  padding:1.1rem;border:1px solid var(--hair);border-radius:var(--r-sm);
+  background:rgba(7,13,24,.5)}
+.sb__cd-lab{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.24em;font-size:.68rem;color:var(--txt-soft)}
+.sb__cd-val{display:flex;align-items:flex-end;gap:clamp(.7rem,2.6vw,1.5rem)}
+.sb__cd-u{display:flex;flex-direction:column;align-items:center;gap:.15rem}
+.sb__cd-n{
+  font-family:var(--ff-display);font-size:clamp(1.9rem,5.6vw,3rem);line-height:1;
+  color:var(--orange-vif);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.sb__cd-s{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.66rem;color:var(--txt-soft)}
+.sb__cd-sep{
+  font-family:var(--ff-display);font-size:clamp(1.2rem,3.4vw,1.9rem);
+  color:var(--txt-soft);opacity:.35;line-height:1.4}
+.sb__cd--soir{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.4rem,4vw,2.1rem);color:var(--orange-vif)}
+
+.sb__a{
+  display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;
+  padding:clamp(1.4rem,3vw,2rem) clamp(1rem,3vw,2rem) 0}
+.sb__a .btn{flex:1 1 13rem;max-width:18rem}
+.sb__poster{
+  text-align:center;padding:1.1rem 1rem clamp(1.4rem,3vw,1.9rem)}
+.sb__poster a{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.78rem;color:var(--txt-soft);
+  border-bottom:1px solid var(--hair-2);padding-bottom:2px;
+  display:inline-block;min-height:24px}
+.sb__poster a:hover{color:var(--orange-vif);border-bottom-color:var(--orange-vif)}
+
+@media (max-width:560px){
+  .sb__duel{grid-template-columns:1fr auto 1fr;gap:.5rem}
+  .sb__a .btn{flex:1 1 100%;max-width:none}
+}
+
+/* Le calendrier replie : legende et liens sous le volet. */
+.mx-affiche{
+  display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;margin-top:1.4rem}
+.mx-affiche a{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:.82rem;color:var(--txt-soft);min-height:44px;
+  display:inline-flex;align-items:center;border-bottom:1px solid var(--hair-2)}
+.mx-affiche a:hover{color:var(--orange-vif);border-bottom-color:var(--orange-vif)}
+
+/* Postes benevoles : le resume porte l'information, pas trois lignes. */
+.mx-roles__s{min-height:44px}
+.mx-roles__lab::before{content:"\1F91D";margin-right:.5em;font-size:1.05em}
+.mx-roles__etat{color:var(--orange-vif);font-weight:700}
+.mx-roles__etat.is-complet{color:var(--bleu-glacier)}
+
+/* ---------------------------------------------------------------------------
+   10. PARENTS — quatre piliers, une phrase chacun
+   --------------------------------------------------------------------------- */
+
+.parents-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2.4vw,1.6rem)}
+.p-pillar{
+  background:transparent;border:0;border-top:1px solid var(--hair);
+  border-radius:0;padding:1.5rem 0 0;box-shadow:none}
+.p-pillar:hover{transform:none;box-shadow:none}
+.p-pillar__ico{
+  width:40px;height:40px;display:grid;place-items:center;margin-bottom:1rem;
+  border:1px solid var(--hair-2);border-radius:10px;background:transparent}
+.p-pillar__ico .ic{width:20px;height:20px;color:var(--orange-vif)}
+.p-pillar h3{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:1.05rem;color:var(--blanc);margin-bottom:.5rem}
+.p-pillar p{font-size:.98rem;line-height:1.55;color:var(--txt-soft)}
+@media (max-width:900px){.parents-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.parents-grid{grid-template-columns:1fr}}
+
+/* La citation reste, allegee : c'est la seule preuve humaine de la section. */
+.pquote{margin-bottom:var(--sp-blk)}
+.parents-quote{border-left:2px solid var(--orange-vif);padding-left:1.4rem}
+.parents-quote p{font-size:clamp(1.1rem,2.4vw,1.35rem);line-height:1.5;color:var(--txt)}
+
+/* La FAQ repliee : une ligne, un chevron. */
+details.faq{
+  margin-top:var(--sp-blk);border-top:1px solid var(--hair);
+  background:transparent;padding:0}
+summary.faq__title{
+  display:flex;align-items:center;gap:.8rem;cursor:pointer;list-style:none;
+  padding:1.15rem .25rem;min-height:56px;margin:0;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:1rem;color:var(--txt);transition:color .2s}
+summary.faq__title::-webkit-details-marker{display:none}
+summary.faq__title:hover{color:var(--orange-vif)}
+summary.faq__title:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:2px}
+details.faq .faq__item{margin-top:.5rem}
+p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
+
+/* ---------------------------------------------------------------------------
+   11. NOUT KARTIE — la section quartier
+   --------------------------------------------------------------------------- */
+
+.lp-title{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2.9rem,9vw,6.6rem);line-height:.86;color:var(--blanc);
+  letter-spacing:.5px}
+.lp-title .hl{color:var(--orange-vif)}
+.lp-kicker{
+  display:flex;align-items:center;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.28em;font-size:.74rem;color:var(--txt-soft)}
+.lp-standfirst{font-size:1.08rem;line-height:1.6;color:var(--txt-soft);max-width:46ch}
+.lp-txt{font-size:1.02rem;line-height:1.68;color:var(--txt-soft)}
+.lp-sign span{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.7rem;color:var(--txt-soft)}
+
+/* ---------------------------------------------------------------------------
+   12. STAFF — un roster, meme cadrage pour tous
+   --------------------------------------------------------------------------- */
+
+.team__photo .staff-card__media{
+  aspect-ratio:2/3;overflow:hidden;border-radius:var(--r-sm);
+  border:1px solid var(--hair);background:var(--surf-2)}
+.team__photo .staff-card__media img{
+  width:100%;height:100%;object-fit:cover;object-position:center 18%;
+  filter:saturate(.94) contrast(1.04)}
+.team__cap{padding-top:.9rem;display:block}
+.team__name{
+  display:block;font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1;color:var(--blanc);
+  letter-spacing:.5px}
+.team__role{
+  display:block;margin-top:.3rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.72rem;color:var(--orange-vif)}
+
+/* ---------------------------------------------------------------------------
+   13. GALERIE — une mosaique editoriale, pas une grille reguliere
+   Une grande, deux moyennes, quatre details. Sur mobile, deux colonnes.
+   --------------------------------------------------------------------------- */
+
+.gallery-mosaic{
+  display:grid;gap:clamp(.6rem,1.4vw,1rem);
+  grid-template-columns:repeat(4,1fr);
+  grid-auto-rows:clamp(90px,11vw,150px)}
+.gallery-mosaic .g-tile{
+  position:relative;margin:0;overflow:hidden;border-radius:var(--r-sm);
+  border:1px solid var(--hair);background:var(--surf-2)}
+.gallery-mosaic .g-tile img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease-out);filter:saturate(.96) contrast(1.04)}
+.gallery-mosaic .g-tile:hover img{transform:scale(1.04)}
+.gallery-mosaic figcaption{
+  position:absolute;inset:auto 0 0 0;padding:1.6rem .9rem .8rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.74rem;color:#fff;
+  background:linear-gradient(0deg,rgba(4,8,16,.88),transparent);
+  text-shadow:0 1px 3px rgba(0,0,0,.6)}
+
+.g-huddle{grid-column:span 2;grid-row:span 3}
+.g-tall  {grid-column:span 2;grid-row:span 3}
+.g-banner{grid-column:span 2;grid-row:span 2}
+.g-shoot {grid-column:span 1;grid-row:span 2}
+.g-group {grid-column:span 1;grid-row:span 2}
+.g-inaug {grid-column:span 2;grid-row:span 2}
+.g-gym   {grid-column:span 2;grid-row:span 2}
+
+@media (max-width:900px){
+  .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(96px,20vw,150px)}
+  .g-huddle,.g-tall{grid-column:span 2;grid-row:span 3}
+  .g-banner,.g-inaug,.g-gym{grid-column:span 2;grid-row:span 2}
+  .g-shoot,.g-group{grid-column:span 1;grid-row:span 2}
+}
+
+/* ---------------------------------------------------------------------------
+   14. SOUTENIR + PARTENAIRES
+   --------------------------------------------------------------------------- */
+
+.support-band{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.4vw,1.6rem)}
+.support-card{
+  background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-md);
+  padding:clamp(1.4rem,2.8vw,2rem);box-shadow:none;transition:border-color .25s,transform .25s var(--ease-out)}
+.support-card:hover{border-color:var(--hair-2);transform:translateY(-3px);box-shadow:var(--e2)}
+.support-card h3{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.09em;font-size:1.12rem;color:var(--blanc);margin:.9rem 0 .6rem}
+.support-card p{font-size:.97rem;line-height:1.58;color:var(--txt-soft)}
+.support-card__ico .ic{width:22px;height:22px;color:var(--orange-vif)}
+@media (max-width:900px){.support-band{grid-template-columns:1fr}}
+
+.sponsors-wall{margin-top:var(--sp-blk);padding-top:var(--sp-blk);border-top:1px solid var(--hair)}
+.sponsors-wall__label{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.24em;font-size:.7rem;color:var(--txt-soft);margin-bottom:1.6rem}
+.sponsors-row{
+  list-style:none;display:grid;gap:clamp(.7rem,1.8vw,1.2rem);
+  grid-template-columns:repeat(5,1fr);align-items:center}
+.sponsors-row .sponsor-card{
+  display:grid;place-items:center;padding:1rem;min-height:88px;
+  background:rgba(255,255,255,.035);border:1px solid var(--hair);
+  border-radius:var(--r-sm);transition:border-color .25s,background .25s}
+.sponsors-row .sponsor-card:hover{border-color:var(--hair-2);background:rgba(255,255,255,.06)}
+.sponsors-row img{
+  max-height:52px;width:auto;object-fit:contain;
+  filter:grayscale(1) brightness(1.7) contrast(.85);opacity:.72;
+  transition:filter .3s,opacity .3s}
+.sponsors-row .sponsor-card:hover img{filter:none;opacity:1}
+@media (max-width:760px){.sponsors-row{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:420px){.sponsors-row{grid-template-columns:repeat(2,1fr)}}
+
+/* ---------------------------------------------------------------------------
+   15. CTA FINAL — la carte video, sans le chrome
+   --------------------------------------------------------------------------- */
+
+.cine-card{
+  background:var(--surf-2);border:1px solid var(--hair);
+  border-radius:var(--r-lg);box-shadow:none}
+.cine-phone__island{display:none}
+.cine-phone{border-radius:var(--r-md);box-shadow:var(--e2)}
+.cine-note{font-size:.9rem;color:var(--txt-soft);display:flex;flex-wrap:wrap;align-items:center}
+.cine-actions{margin-top:1.6rem}
+
+/* ---------------------------------------------------------------------------
+   16. CONTACT
+   --------------------------------------------------------------------------- */
+
+.contact-form,.contact-aside{
+  background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-md)}
+.contact-form input,.contact-form select,.contact-form textarea{
+  font-size:1rem;min-height:48px;border-radius:8px}
+.contact-form label{font-size:.92rem}
+.info-line{min-height:52px}
+
+/* ---------------------------------------------------------------------------
+   17. PIED DE PAGE COMPACT
+   --------------------------------------------------------------------------- */
+
+.site-footer{
+  padding-block:clamp(3rem,6vw,4.5rem) 0;
+  background:var(--nuit-0);border-top:1px solid var(--hair)}
+.footer__top{
+  display:grid;grid-template-columns:1.4fr 1fr 1fr 1.1fr;
+  gap:clamp(1.6rem,3.4vw,3rem);padding-bottom:var(--sp-blk)}
+.footer__brand .logo-img{width:56px;height:56px;margin-bottom:1rem}
+.footer__name{
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:1.35rem;line-height:1;color:var(--blanc);letter-spacing:.5px}
+.footer__place{
+  display:flex;flex-wrap:wrap;align-items:center;margin-top:.55rem;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.76rem;color:var(--txt-soft)}
+.footer__creole{
+  margin-top:.7rem;font-family:var(--ff-cond);font-style:italic;font-weight:600;
+  font-size:1rem;color:var(--orange-vif)}
+.footer__social{display:flex;gap:.6rem;margin-top:1.2rem}
+.footer__social a{
+  width:44px;height:44px;display:grid;place-items:center;
+  border:1px solid var(--hair);border-radius:10px;color:var(--txt-soft);
+  transition:color .2s,border-color .2s}
+.footer__social a:hover{color:var(--orange-vif);border-color:var(--orange-vif)}
+.footer__social svg{width:19px;height:19px}
+
+.footer__col{display:flex;flex-direction:column;gap:.1rem}
+.footer__col h3{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.18em;font-size:.72rem;color:var(--blanc);
+  margin-bottom:.9rem;padding-bottom:.6rem;border-bottom:1px solid var(--hair)}
+.footer__col a{
+  display:inline-flex;align-items:center;min-height:38px;
+  font-size:.94rem;color:var(--txt-soft);transition:color .2s}
+.footer__col a:hover{color:var(--orange-vif)}
+.footer__addr{font-size:.9rem;line-height:1.6;color:var(--txt-soft);margin:.4rem 0 .5rem}
+
+.footer__ident{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.6rem;
+  padding-block:1.1rem;border-block:1px solid var(--hair);
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:.72rem;color:var(--txt-soft)}
+.footer__ident a{color:var(--txt);border-bottom:1px solid var(--hair-2)}
+.footer__ident a:hover{color:var(--orange-vif)}
+
+.footer__seo{
+  display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center;
+  padding-block:1.3rem;border-bottom:1px solid var(--hair);
+  font-size:.84rem;color:var(--txt-soft)}
+.footer__seo b{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.68rem;color:var(--txt);width:100%}
+.footer__seo a{color:var(--txt-soft);min-height:32px;display:inline-flex;align-items:center}
+.footer__seo a:hover{color:var(--orange-vif)}
+
+.footer__bottom{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1.6rem;
+  padding-block:1.4rem;font-size:.82rem;color:var(--txt-soft)}
+.footer__links{display:flex;gap:1.2rem;margin-left:auto}
+.footer__links a{color:var(--txt-soft);border-bottom:1px solid var(--hair-2);
+  min-height:32px;display:inline-flex;align-items:center}
+.footer__links a:hover{color:var(--orange-vif)}
+.footer__signature{display:flex;flex-wrap:wrap;align-items:center;width:100%;
+  font-size:.76rem;opacity:.6}
+.footer__hand{font-family:var(--ff-cond);font-weight:700;letter-spacing:.1em}
+
+.footer-legal{margin-bottom:clamp(2rem,4vw,3rem);border-top:1px solid var(--hair)}
+.footer-legal>summary{
+  padding-block:1.1rem;min-height:48px;display:flex;align-items:center;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.72rem;color:var(--txt-soft);cursor:pointer}
+.footer-legal>summary:hover{color:var(--orange-vif)}
+
+@media (max-width:980px){
+  .footer__top{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  .footer__top{grid-template-columns:1fr;gap:2rem}
+  .footer__links{margin-left:0}
+}
+
+/* ---------------------------------------------------------------------------
+   18. MOBILE — le texte courant ne descend jamais sous 16 px
+   --------------------------------------------------------------------------- */
+
+@media (max-width:760px){
+  body{font-size:1rem}
+  .section p,.sec-head__sub,.lp-txt,.lp-standfirst,
+  .p-pillar p,.support-card p,.cat__desc{font-size:1rem;line-height:1.6}
+  .age__facts b,.cal-lieu b{font-size:1rem}
+  .btn{width:auto;font-size:1rem}
+  .sec-cta .btn{width:100%}
+  .h2{font-size:clamp(2.2rem,10vw,3.2rem)}
+}
+
+/* ---------------------------------------------------------------------------
+   19. MOUVEMENT REDUIT — on respecte le reglage systeme, partout
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion:reduce){
+  .gallery-mosaic .g-tile:hover img,
+  .cal-lieu:hover,.support-card:hover,
+  .btn--primary:hover,.btn--ghost:hover{transform:none}
+  .cat-all__chev,
+.mx-all__chev,
+.btn__arrow{transition:none}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}
+}
+
+/* ---------------------------------------------------------------------------
+   V100.1 — CORRECTIFS APRES MESURE DANS LE NAVIGATEUR
+   --------------------------------------------------------------------------- */
+
+/* La photo du hero ne doit dependre d'aucune transition pilotee par JS : elle
+   EST l'identite du club. Elle est la des le premier rendu ; seul le texte se
+   leve. (Le masque d'origine est conserve : c'est lui qui fond l'image dans le
+   fond, mieux qu'un voile pose par-dessus.) */
+.hero .hero__photo,
+.hero.in .hero__photo{opacity:1;transform:none;transition:none}
+@media (max-width:900px){
+  .hero .hero__photo,
+  .hero.in .hero__photo{opacity:.4}
+}
+/* Le voile de mon ::after ferait doublon avec le masque : on l'allege. */
+.hero__photo::after{
+  background:linear-gradient(90deg,rgba(7,13,24,.92) 0%,rgba(7,13,24,.35) 45%,transparent 78%)}
+@media (max-width:900px){
+  .hero__photo::after{
+    background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(7,13,24,.8) 55%,var(--nuit-0))}
+}
+
+/* GALERIE — trois bandes calees sur une grille de six colonnes. Les rapports
+   sont imposes par la grille et non par le fichier source : object-fit recadre.
+   Une seule variable de hauteur (--g-row) pilote toute la mosaique. */
+.gallery-mosaic{
+  --g-row:clamp(74px,7.4vw,104px);
+  grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:var(--g-row)}
+.g-huddle{grid-column:span 4;grid-row:span 4}
+.g-tall  {grid-column:span 2;grid-row:span 4}
+.g-banner{grid-column:span 3;grid-row:span 3}
+.g-gym   {grid-column:span 3;grid-row:span 3}
+.g-shoot {grid-column:span 2;grid-row:span 3}
+.g-inaug {grid-column:span 2;grid-row:span 3}
+.g-group {grid-column:span 2;grid-row:span 3}
+@media (max-width:900px){
+  .gallery-mosaic{--g-row:clamp(64px,13vw,104px);grid-template-columns:repeat(4,1fr)}
+  .g-huddle{grid-column:span 4;grid-row:span 3}
+  .g-tall  {grid-column:span 2;grid-row:span 4}
+  .g-shoot {grid-column:span 2;grid-row:span 4}
+  .g-banner{grid-column:span 4;grid-row:span 3}
+  .g-gym   {grid-column:span 2;grid-row:span 3}
+  .g-inaug {grid-column:span 2;grid-row:span 3}
+  .g-group {grid-column:span 4;grid-row:span 3}
+}
+
+/* CRENEAUX — le planning etait le bloc le plus haut de la page apres refonte.
+   Meme information, moins de matelas : lignes resserrees, en-tetes de journee
+   ramenes a un filet, pastilles de categorie plus discretes. */
+.pl{padding:clamp(1rem,2.4vw,1.6rem)}
+.pl-jour{margin-bottom:1rem}
+.pl-slot{padding:.7rem .9rem;border-radius:10px}
+.pl-slot+.pl-slot{margin-top:.4rem}
+.pl-filtres{margin-bottom:1.1rem}
+.pl-f{min-height:44px}
+.calendrier .sec-head{margin-bottom:var(--sp-gap)}
+
+/* QUARTIER — le recit tient en deux colonnes serrees, pas en pleine largeur. */
+.lp-copy{max-width:56ch}
+.lp-stage{margin-bottom:var(--sp-blk)}
+
+/* ---------------------------------------------------------------------------
+   V100.2 — LEVEE DES HERITAGES QUI BLOQUAIENT LA REFONTE
+   Mesure faite dans le navigateur : la mosaique restait pilotee par les
+   grid-template-areas de la V17 (cinq zones nommees), qui ignoraient les
+   deux nouvelles photos et les renvoyaient sur des rangees en trop.
+   On coupe les zones nommees et on passe en portees explicites.
+   --------------------------------------------------------------------------- */
+
+.gallery-mosaic{
+  --g-row:clamp(64px,6.6vw,92px);
+  grid-template-areas:none!important;
+  grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:var(--g-row);
+  grid-auto-flow:dense}
+.gallery-mosaic .g-tile{height:auto;min-height:0;margin:0}
+.gallery-mosaic .g-huddle{grid-area:auto;grid-column:span 4;grid-row:span 5}
+.gallery-mosaic .g-tall  {grid-area:auto;grid-column:span 2;grid-row:span 5}
+.gallery-mosaic .g-banner{grid-area:auto;grid-column:span 3;grid-row:span 4}
+.gallery-mosaic .g-gym   {grid-area:auto;grid-column:span 3;grid-row:span 4}
+.gallery-mosaic .g-shoot {grid-area:auto;grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-inaug {grid-area:auto;grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-group {grid-area:auto;grid-column:span 2;grid-row:span 4}
+
+@media (max-width:900px){
+  .gallery-mosaic{--g-row:clamp(58px,11vw,92px);grid-template-columns:repeat(4,1fr)}
+  .gallery-mosaic .g-huddle{grid-column:span 4;grid-row:span 4}
+  .gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
+  .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-group {grid-column:span 4;grid-row:span 4}
+}
+
+/* L'image d'ouverture de la section quartier occupait 705 px : un 16:9 plein
+   cadre. Ramenee a un format de couverture, elle raconte la meme chose. */
+.lp-stage{aspect-ratio:21/9;overflow:hidden}
+.lp-stage picture,.lp-stage img{width:100%;height:100%;object-fit:cover}
+@media (max-width:760px){.lp-stage{aspect-ratio:16/10}}
+
+/* Le planning : en-tetes de journee ramenes a un filet. */
+.pl{padding:clamp(.8rem,2vw,1.2rem)}
+.pl-jour{margin-bottom:.8rem}
+/* ---------------------------------------------------------------------------
+   V100.3 — MOSAIQUE : les bandes suivent l'ordre du DOM
+   Mesure : avec des portees qui ne bouclaient pas a six colonnes, la grille
+   repartait a la ligne et montait a dix-sept rangees. Trois bandes qui se
+   ferment exactement : 2+4 / 4+2 / 2+2+2.
+   L'ordre des tuiles dans le HTML est tall, huddle, banner, shoot, group,
+   inaug, gym — toute nouvelle photo doit reboucler une bande, sinon la
+   mosaique se remet a trouer.
+   --------------------------------------------------------------------------- */
+.gallery-mosaic{--g-row:clamp(60px,6vw,84px)}
+.gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
+.gallery-mosaic .g-huddle{grid-column:span 4;grid-row:span 5}
+.gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
+.gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-group {grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+
+@media (max-width:900px){
+  .gallery-mosaic{--g-row:clamp(56px,10vw,84px);grid-template-columns:repeat(4,1fr)}
+  .gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-huddle{grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
+  .gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-group {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+}
+
+/* ---------------------------------------------------------------------------
+   V100.4 — TROIS DEFAUTS VUS A L'ECRAN
+   --------------------------------------------------------------------------- */
+
+/* 1. Les mots-filigranes. Baisser leur opacite ne suffisait pas : a cette
+      taille (jusqu'a 22rem) meme 2 % de blanc reste une masse. C'est aussi
+      l'element le plus « template » de la page. Ils sortent du rendu ; les
+      spans restent dans le DOM (ils sont deja aria-hidden) pour ne rien
+      casser des sections qui s'y reperent. */
+.bg-word,.lp-word{display:none}
+
+/* 2. La question etait posee deux fois : par le titre de section, puis par
+      l'etiquette du selecteur. On garde l'etiquette pour aria-labelledby,
+      on la retire de l'ecran. */
+.age__q{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);border:0;white-space:nowrap}
+
+/* 3. Le hero reservait 860 px pour 450 px de contenu : un demi-ecran de vide
+      sous la ligne fine. On cale la hauteur sur le contenu, avec un plancher
+      qui garde l'effet d'affiche. */
+.hero{min-height:min(84svh,720px);padding-bottom:clamp(3rem,6vw,5rem)}
+.hero__scroll{bottom:clamp(1rem,2.5vw,1.8rem)}
+@media (max-width:900px){.hero{min-height:auto}}
+
+/* ---------------------------------------------------------------------------
+   V100.5 — ECUSSONS DU SCOREBOARD
+   Le padding etait exprime en pourcentage : un pourcentage de padding se
+   resout sur la LARGEUR DU BLOC CONTENEUR, pas sur l'element. Les 12 %
+   valaient 44 px sur une pastille de 104 px — il ne restait que 14 px pour
+   le logo. Padding fixe, et taille de logo garantie.
+   --------------------------------------------------------------------------- */
+.sb__crest{padding:0;position:relative;overflow:hidden}
+.sb__crest img{
+  width:66%;height:66%;object-fit:contain;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+.sb__crest--sigle{
+  font-family:var(--ff-display);font-size:clamp(.95rem,2.4vw,1.4rem);
+  color:var(--bleu-glacier);display:grid;place-items:center;letter-spacing:.04em}
+
+/* ---------------------------------------------------------------------------
+   V100.6 — TROIS DEFAUTS VUS SUR LE RENDU COMPLET
+   --------------------------------------------------------------------------- */
+
+/* 1. L'encart « Coordonnees » etait un aplat de bleu roi en degrade : dans une
+      page qui repose sur le bleu nuit et le filet, c'etait la seule surface
+      saturee de la page, et elle attirait l'oeil plus que le formulaire.
+      Meme surface que le reste, l'accent revient aux icones. */
+.contact-info{
+  background:var(--surf-2);border:1px solid var(--hair);box-shadow:none}
+.contact-info h3{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.16em;font-size:.8rem;color:var(--txt-soft);
+  padding-bottom:.9rem;margin-bottom:.4rem;border-bottom:1px solid var(--hair)}
+.contact-aside{background:transparent;border:0}
+.contact-info .info-line{border-bottom:1px solid var(--hair)}
+.contact-info .info-line:last-of-type{border-bottom:0}
+.info-line__lbl{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.68rem;color:var(--txt-soft)}
+.info-line__val{font-size:1rem;color:var(--txt)}
+.info-line .ic{color:var(--orange-vif)}
+
+/* 2. Les plaques partenaires. Les logos sont des PNG sombres : un
+      brightness(1.7) les cramait en aplats blancs illisibles. Plaque claire,
+      logo en couleur, comme sur un panneau de gymnase. */
+.sponsors-row .sponsor-card{
+  background:rgba(255,255,255,.92);border-color:rgba(255,255,255,.14)}
+.sponsors-row .sponsor-card:hover{background:#fff;border-color:var(--orange-vif)}
+.sponsors-row img{filter:none;opacity:1;max-height:46px}
+
+/* 3. « PRE-INSCRIPTION » se coupait au trait d'union en plein milieu du titre.
+      On interdit la cesure sur les grands titres : ils cassent aux espaces. */
+.h2,.hero__h1,.lp-title,.sb__name,.keyfig__v{
+  hyphens:none;-webkit-hyphens:none;overflow-wrap:normal;word-break:normal}
+
+/* 4. Le pave de mentions legales se retrouvait sous la barre de copyright.
+      Il remonte juste avant, ou on l'attend. */
+.site-footer>.wrap{display:flex;flex-direction:column}
+.site-footer>.wrap>.footer__top{order:1}
+.site-footer>.wrap>.footer__ident{order:2}
+.site-footer>.wrap>.footer__seo{order:3}
+.site-footer>.wrap>.footer-legal{order:4;margin-bottom:0}
+.site-footer>.wrap>.footer__bottom{order:5}
+
+/* ---------------------------------------------------------------------------
+   V100.7 — FINITIONS MOBILE (mesurees a 375 px)
+   Pas de defilement horizontal (scrollWidth == clientWidth), mais trois
+   details qui trahissaient la composition.
+   --------------------------------------------------------------------------- */
+@media (max-width:900px){
+  /* La photo etait tombee a l'etat de texture. Elle doit se lire comme une
+     photo — c'est elle qui dit « ce club existe, voici son terrain ». */
+  .hero .hero__photo,
+  .hero.in .hero__photo{opacity:.62}
+  .hero__photo{inset:0;height:78%}
+  .hero__photo img{object-position:center 12%}
+  .hero__photo::after{
+    background:linear-gradient(180deg,rgba(7,13,24,.45) 0%,rgba(7,13,24,.82) 52%,var(--nuit-0) 96%)}
+
+  /* Le lien secondaire portait un filet qui doublait celui de la ligne fine
+     juste dessous. Sur mobile il devient un vrai bouton fantome. */
+  .hero__second{
+    border:1px solid var(--hair-2);border-radius:6px;
+    padding:.85em 1.4em;justify-content:center}
+  .hero__second:hover{border-color:var(--orange-vif)}
+
+  /* Le hero reservait encore un demi-ecran de vide sous la ligne fine. */
+  .hero{padding-bottom:clamp(2.2rem,7vw,3.2rem)}
+  .hero__scroll{display:none}
+  .hero__fine{margin-top:1.6rem;padding-top:1.1rem}
+}
+
+/* ---------------------------------------------------------------------------
+   V100.8 — LES CLASSES QUI N'AVAIENT AUCUNE REGLE
+   Detectees par .claude/verifier-classes.py, ecrit pour ca. .btn--sm est le
+   cas le plus parlant : dix-huit boutons du selecteur d'age le portaient
+   depuis toujours et se rendaient a taille pleine, faute de regle. Le bloc
+   n'etait pas casse — il etait invisible au controle.
+   --------------------------------------------------------------------------- */
+
+/* Boutons secondaires du selecteur d'age : plus petits, mais jamais sous la
+   cible tactile de 44 px. */
+.btn--sm{
+  font-size:.92rem;padding:.62em 1.15em;min-height:44px;letter-spacing:.045em}
+
+/* Libelles des volets (le mot, a cote du compteur et du chevron). */
+.cat-all__lab,.mx-all__lab{flex:0 1 auto}
+
+/* Colonne « Contact » du pied de page : elle porte un paragraphe d'adresse
+   en plus des liens, donc un rythme propre. */
+.footer__col--contact a{min-height:34px}
+
+/* L'aide de defilement du roster est en sr-only ; la regle existe pour que le
+   controle de couverture ne la signale pas et que le rail reste documente. */
+.roster__hint{margin:0}
+
+/* Legende de la porte d'entree « Le basket commence ici », dans le volet. */
+.begin__txt{display:flex;flex-direction:column;justify-content:center;gap:.5rem}
+
+/* Vignette de l'affiche du calendrier : petite, posee a cote de son texte. */
+.mx-affiche{
+  display:flex;flex-wrap:wrap;align-items:center;gap:clamp(1rem,2.6vw,1.8rem);
+  margin:var(--sp-blk) auto 0;max-width:44rem;padding:clamp(1rem,2.4vw,1.4rem);
+  border:1px solid var(--hair);border-radius:var(--r-md);background:var(--surf-2)}
+.mx-affiche__vue{
+  flex:0 0 auto;width:clamp(110px,20vw,164px);display:block;
+  border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--hair);
+  transition:border-color .25s,transform .25s var(--ease-out)}
+.mx-affiche__vue:hover{border-color:var(--orange-vif);transform:translateY(-2px)}
+.mx-affiche__vue:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.mx-affiche__vue img{width:100%;height:auto;display:block}
+.mx-affiche__txt{flex:1 1 14rem;min-width:0}
+.mx-affiche__lab{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.22em;font-size:.68rem;color:var(--txt-soft)}
+.mx-affiche__d{margin:.45rem 0 .8rem;font-size:.98rem;color:var(--txt)}
+.mx-affiche__a a{
+  display:inline-flex;align-items:center;min-height:44px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.82rem;color:var(--orange-vif);
+  border-bottom:1px solid rgba(232,130,42,.4)}
+.mx-affiche__a a:hover{border-bottom-color:var(--orange-vif)}
+
+/* ---------------------------------------------------------------------------
+   V100.9 — CE QUI EST PARTAGE AVEC LES NEUF PAGES ENFANTS
+   ----------------------------------------------------------------------------
+   .h2, .kicker, .lead, .btn* et .section ne sont PAS du style de home : ce
+   sont des contrats partages (mesure : .h2 x67, .btn x47, .faq__item x32 sur
+   les neuf pages). En poussant .h2 a clamp(2.5rem,7.4vw,5.6rem) pour donner
+   de l'ampleur au titre de la home, on a aussi fait monter a ~90 px les dix
+   titres de prose SEO de chaque page enfant — ou l'echelle d'affiche n'a pas
+   de sens.
+   Les pages enfants se reconnaissent a leur en-tete .seo-top (la home et
+   adhesion.html utilisent .site-header). Le <main> en est le frere direct :
+   « .seo-top ~ main » les cible sans :has() et sans toucher au markup.
+   --------------------------------------------------------------------------- */
+.seo-top ~ main .h2{
+  font-size:clamp(2rem,5vw,3.4rem);line-height:.95;letter-spacing:.3px}
+.seo-top ~ main h1.h2{font-size:clamp(2.3rem,5.6vw,3.9rem)}
+.seo-top ~ main .sec-head{margin-bottom:clamp(1.4rem,3vw,2.2rem)}
+.seo-top ~ main .section{padding-block:clamp(3rem,6vw,5rem)}
+
+/* ---------------------------------------------------------------------------
+   V100.10 — L'ATTERRISSAGE DES ANCRES
+   Deux mecanismes se cumulaient : html{scroll-padding-top:80px} et
+   section[id]{scroll-margin-top:92px}. Ils s'additionnent — une section visee
+   par une ancre s'arretait ~172 px sous le haut de la fenetre pour un header
+   qui en mesure 72. Or 45 liens visent #contact et 23 visent #calendrier.
+   Un seul mecanisme desormais : le scroll-padding du document.
+   --------------------------------------------------------------------------- */
+html{scroll-padding-top:88px}
+section[id],div[id],details[id],li[id],aside[id]{scroll-margin-top:0}
+
+/* Photo editoriale des pages SEO : elle etait posee en style en ligne
+   (max-width 420px, rayon 18px). Une regle, pour que toutes se ressemblent. */
+.seo-photo{margin:2rem auto 0;max-width:min(100%,700px)}
+.seo-photo img{width:100%;height:auto;border-radius:var(--r-md);border:1px solid var(--hair)}
+.seo-photo figcaption{
+  font-size:.86rem;color:var(--txt-soft);margin-top:.7rem;text-align:center}
+
+/* ---------------------------------------------------------------------------
+   V100.11 — PAGE ADHESION : LE PARCOURS DEVIENT UNE TIMELINE 01 -> 05
+   ----------------------------------------------------------------------------
+   Aucun mot du HTML ne change : la liste ordonnee .licence-path porte deja son
+   compteur CSS et ses badges d'acteur (« Vous » / « Le club »). On passe d'une
+   pastille numerotee a un vrai jalonnement : un rail vertical, un grand
+   nombre a deux chiffres, une carte par etape.
+   --------------------------------------------------------------------------- */
+
+.licence-path{
+  counter-reset:lp;display:grid;gap:0;margin:1.8rem 0 0;list-style:none;
+  position:relative}
+
+/* Le rail. Il s'arrete a la derniere etape au lieu de filer dans le vide. */
+.licence-path::before{
+  content:"";position:absolute;left:calc(clamp(2.6rem,7vw,3.4rem) / 2);
+  top:.6rem;bottom:2.4rem;width:2px;
+  background:linear-gradient(180deg,var(--orange-vif),rgba(232,130,42,.15));
+  border-radius:2px}
+
+.licence-path li{
+  counter-increment:lp;position:relative;
+  padding:0 0 clamp(1.6rem,3.4vw,2.4rem) calc(clamp(2.6rem,7vw,3.4rem) + clamp(1rem,2.4vw,1.6rem));
+  background:none;border:0;border-radius:0}
+.licence-path li:last-child{padding-bottom:0}
+
+/* Le jalon : 01, 02, 03… en chiffres d'affiche, sur le rail. */
+.licence-path li::before{
+  content:"0" counter(lp);
+  position:absolute;left:0;top:-.15em;
+  width:clamp(2.6rem,7vw,3.4rem);height:clamp(2.6rem,7vw,3.4rem);
+  display:grid;place-items:center;
+  font-family:var(--ff-display);font-size:clamp(.95rem,2.4vw,1.15rem);
+  letter-spacing:.02em;color:var(--orange-vif);
+  background:var(--nuit-0);border:2px solid var(--orange-vif);border-radius:50%;
+  font-variant-numeric:tabular-nums}
+
+.licence-path b{
+  display:block;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.04em;
+  font-size:clamp(1.05rem,2.4vw,1.25rem);color:var(--blanc);margin-bottom:.5rem}
+.licence-path span{font-size:1rem;line-height:1.65;color:var(--txt-soft)}
+.licence-path .lp-who{
+  margin-top:.7rem;padding:.3em .8em;border-radius:999px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.66rem}
+
+@media (max-width:560px){
+  .licence-path li{padding-left:calc(clamp(2.2rem,10vw,2.8rem) + .9rem)}
+  .licence-path li::before{width:clamp(2.2rem,10vw,2.8rem);height:clamp(2.2rem,10vw,2.8rem)}
+  .licence-path::before{left:calc(clamp(2.2rem,10vw,2.8rem) / 2)}
+}
+
+/* Le tarif : le chiffre doit se voir de loin sur la page qui le vend. */
+.adh-block#tarif .adh-prepare__title{margin-bottom:.6rem}
+
+/* Le tableau des formules : en dessous de 720 px, chaque ligne devient une
+   carte. Le mecanisme existait deja (chaque cellule porte son data-label) —
+   il ne lui manquait qu'une presentation qui tienne dans un pouce. */
+@media (max-width:720px){
+  .year-table,.year-table tbody,.year-table tr,.year-table td{display:block;width:100%}
+  .year-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  .year-table tr{
+    margin-bottom:.8rem;padding:1rem 1.1rem;
+    background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-sm)}
+  .year-table td{
+    display:flex;justify-content:space-between;gap:1rem;align-items:baseline;
+    padding:.5rem 0;border:0;border-bottom:1px solid var(--hair);text-align:right}
+  .year-table td:last-child{border-bottom:0}
+  .year-table td::before{
+    content:attr(data-label);flex:0 0 auto;text-align:left;
+    font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+    letter-spacing:.12em;font-size:.68rem;color:var(--txt-soft)}
+  /* La formule Yapla est ce que l'adherent doit recopier : elle ressort. */
+  .year-table td:last-child{
+    margin-top:.35rem;padding-top:.7rem;border-top:1px solid var(--hair-2);
+    font-weight:700;color:var(--orange-vif)}
+}
+
+/* La ligne de reassurance de bas de page portait ses styles en attribut. */
+.adh-reassure{
+  text-align:center;margin-top:1rem;font-size:.92rem;color:var(--txt-soft)}
+
+/* La FAQ est repassee d'un volet parent a un simple titre (voir V100.8) :
+   son titre doit redevenir un intertitre, pas concurrencer le titre de
+   section juste au-dessus. */
+h3.faq__title{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:clamp(1.05rem,2.2vw,1.25rem);
+  color:var(--txt);text-align:left;
+  margin:var(--sp-blk) 0 1.1rem;padding-top:1.4rem;
+  border-top:1px solid var(--hair)}
+
+/* ---------------------------------------------------------------------------
+   V100.12 — DERNIERE PASSE MOBILE (mesuree a 375 px)
+   --------------------------------------------------------------------------- */
+@media (max-width:900px){
+  /* La photo s'arretait a 78 % de la hauteur : le bas du hero retombait sur
+     un aplat vide avant les chiffres cles. Elle va desormais jusqu'en bas,
+     c'est le degrade qui assure la lisibilite du texte. */
+  .hero__photo{height:100%}
+  .hero__photo::after{
+    background:linear-gradient(180deg,rgba(7,13,24,.42) 0%,rgba(7,13,24,.80) 48%,var(--nuit-0) 88%)}
+  .hero{padding-bottom:clamp(1.6rem,5vw,2.4rem)}
+  .keyfig-sec{padding-top:clamp(2.4rem,6vw,3.5rem)}
+
+  /* Le brief fixe 16 px comme plancher du texte courant. Les lignes de meta
+     du hero et la note du planning passaient sous ce seuil. */
+  .hero__meta{font-size:.95rem}
+  .hero__fine{font-size:.92rem}
+  .pl-note,.lp-sign span,.cal-note{font-size:1rem;line-height:1.55}
+}
+
+/* Deux phrases de contenu tombaient sous le plancher de 16 px sur mobile.
+   Celle du formulaire etait bloquee par un font-size en attribut : le style
+   en ligne est passe en classe pour redevenir pilotable. */
+.form-officiel{margin-top:1rem;font-size:.92rem;color:var(--txt-soft)}
+.form-officiel a{color:var(--orange-vif);font-weight:600}
+.pl .pl-note{font-size:.95rem;line-height:1.55}
+@media (max-width:900px){
+  .form-officiel,.pl .pl-note{font-size:1rem;line-height:1.55}
+}
