@@ -5529,3 +5529,97 @@ h3.faq__title{
 @media (max-width:760px){
   .keyfig__go{font-size:.86rem;letter-spacing:.11em}
 }
+
+
+/* ============================================================================
+   V103 — LA MOLETTE « DÉCOUVRIR » REMONTAIT DANS LA LIGNE FINE
+   ----------------------------------------------------------------------------
+   Mesure a 1440x900 : le hero fait 720 px, son contenu descend jusqu'a 662,
+   il restait donc 58 px sous la derniere ligne. L'indicateur en fait 68 —
+   ancre a 28,8 px du bas, il commencait a 624, soit 38 px AU-DESSUS de la fin
+   de la ligne fine. D'ou l'impression qu'il flotte au milieu du bloc de texte
+   au lieu de marquer le bas de l'ecran.
+
+   Deux leviers, pas un : on remonte legerement la ligne fine ET on ramene
+   l'indicateur a une taille compacte. Le but est d'obtenir un vrai vide entre
+   les deux, pas de les faire tenir de justesse.
+   ============================================================================ */
+
+/* 1. La ligne fine remonte d'une vingtaine de pixels. */
+.hero__fine{
+  margin-top:clamp(1.15rem,2.5vw,1.7rem);
+  padding-top:clamp(.85rem,1.8vw,1.15rem)}
+
+/* 2. L'indicateur devient compact : la souris passe de 38 a 30 px de haut,
+      l'ecart et le libelle se resserrent. */
+.hero__scroll{
+  bottom:clamp(.9rem,1.8vw,1.35rem);
+  gap:.42rem}
+.hero__scroll span{width:20px;height:30px;border-width:1.5px;border-radius:11px}
+.hero__scroll span::before{top:5px;width:2.5px;height:6px}
+.hero__scroll-label{font-size:.64rem;letter-spacing:.26em}
+
+/* 3. Sous 860 px de haut, la place manque de toute facon : l'indicateur ne
+      sert plus a rien puisque la section suivante est deja visible. */
+@media (max-height:860px) and (min-width:900px){
+  .hero__scroll{display:none}
+}
+
+/* Rappel des regles deja en place, pour qu'on ne les cherche pas ailleurs :
+   masque sous 760 px de large (style.css:1213) et sous 720 px de haut
+   (style.css:1215). */
+
+/* La molette ne chevauchait plus la ligne fine, mais elle la touchait (0 px
+   d'ecart) : elle se lisait encore comme la suite du bloc de texte. Le hero
+   centre son contenu ; en lui donnant plus de reserve en bas, le texte remonte
+   de la moitie de ce qu'on ajoute, sans allonger la page (la hauteur du hero
+   reste plafonnee a 720 px). */
+@media (min-width:900px){
+  .hero{padding-bottom:clamp(5rem,9vw,8rem)}
+}
+
+/* CORRECTIF DU CORRECTIF. Ajouter du padding-bas n'a rien donne : une regle
+   heritee impose « align-items:flex-start !important » au hero (style.css:1465).
+   Le contenu est donc cale EN HAUT, et c'est le padding-HAUT qui commande sa
+   position, pas celui du bas. On le reduit de 26 px : tout le bloc remonte
+   d'autant, ce qui ouvre enfin un vrai vide avant la molette. La hauteur du
+   hero ne bouge pas (plafonnee a 720 px), la page ne s'allonge donc pas. */
+@media (min-width:900px){
+  .hero{
+    padding-top:calc(72px + clamp(2.1rem,5.6vw,4.4rem));
+    padding-bottom:clamp(3rem,6vw,5rem)}
+}
+
+/* ---------------------------------------------------------------------------
+   V103.1 — POURQUOI LA MOLETTE NE POUVAIT PAS SE DEPLACER
+   ----------------------------------------------------------------------------
+   Deux tentatives n'ont rien change, il faut le noter ici pour la prochaine
+   fois : le rythme vertical du hero est verrouille par un bloc en !important
+   (style.css:1409-1411, padding-top ET padding-bottom). Aucune regle sans
+   !important ne peut le deplacer, et surenchérir serait empiler un override
+   de plus sur celui qui pose deja probleme.
+   Par ailleurs il n'y avait rien a recuperer en haut : le sur-titre n'est
+   qu'a 20 px sous un header fixe de 72 px.
+   Mesure a 1440x900 : hero 720 px, contenu jusqu'a 645, il reste 75 px. Un
+   indicateur de 53 px ne peut pas y tenir avec de l'air des deux cotes.
+   La seule variable qui restait est donc sa PROPRE taille : on retire le
+   libelle, on garde la souris seule. 30 px au lieu de 53 — l'ecart devient
+   reel, et le signe est plus discret, ce qui va dans le sens du reste.
+   Le nom accessible du lien reste porte par son aria-label.
+   --------------------------------------------------------------------------- */
+.hero__scroll{bottom:1.1rem;gap:0}
+.hero__scroll .hero__scroll-label{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);border:0;white-space:nowrap}
+.hero__scroll span{width:19px;height:29px}
+.hero__scroll:hover span{border-color:var(--orange-vif)}
+
+/* Sur les ecrans hauts, le padding-top herite est exprime en vh (8vh) alors que
+   la hauteur du hero est plafonnee a 720 px : le contenu descend sans que la
+   boite grandisse, et l'ecart sous la ligne fine se referme (11 px mesures a
+   1440x1250 contre 29 a 1440x900). On rend au hero la hauteur qui lui manque,
+   uniquement la ou l'ecran en a de reste. Un hero de 720 px dans une fenetre
+   de 1250 avait de toute facon l'air rabougri. */
+@media (min-height:1060px) and (min-width:900px){
+  .hero{min-height:min(84svh,830px)}
+}
