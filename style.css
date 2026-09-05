@@ -4800,9 +4800,15 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
 .gallery-mosaic .g-group {grid-column:span 2;grid-row:span 4}
 .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
 .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+/* Bande a elle seule : 6 colonnes sur 6, donc elle reboucle par construction
+   et ne peut pas trouer la mosaique. 4 rangees donnent environ 2,9:1 pour un
+   cliche a 2,50:1 : le recadrage retire 7 % en haut (plafond) et en bas (sol),
+   jamais les sujets, qui sont centres. */
+.gallery-mosaic .g-team  {grid-column:span 6;grid-row:span 4}
 
 @media (max-width:900px){
   .gallery-mosaic{--g-row:clamp(56px,10vw,84px);grid-template-columns:repeat(4,1fr)}
+  .gallery-mosaic .g-team  {grid-column:span 4;grid-row:span 3}
   .gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
   .gallery-mosaic .g-huddle{grid-column:span 2;grid-row:span 5}
   .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
@@ -4810,6 +4816,15 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
   .gallery-mosaic .g-group {grid-column:span 2;grid-row:span 5}
   .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
   .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+}
+
+/* Sous 640 px, « .gallery-mosaic .g-tile:first-child » (0,3,0) impose une
+   hauteur fixe de 230 px a la premiere tuile : elle ecrasait le panoramique
+   a 1,53:1. On repasse en hauteur calculee par la grille, a specificite
+   egale (0,3,0) mais plus bas dans le fichier, et sur 2 rangees pour rester
+   proche du rapport du cliche. */
+@media (max-width:640px){
+  .gallery-mosaic .g-tile.g-team{height:auto;grid-column:span 4;grid-row:span 2}
 }
 
 /* ---------------------------------------------------------------------------

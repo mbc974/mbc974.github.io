@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
       imagesizes="(max-width:900px) 100vw, 48vw">
-<link rel="stylesheet" href="style.css?v=e8569ab0">
+<link rel="stylesheet" href="style.css?v=e1299d4c">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -1615,6 +1615,20 @@
     </header>
 
     <div class="gallery-mosaic reveal">
+      <!-- Panoramique 2,50:1 place en ouverture : c'est le seul cliche qui
+           montre l'ecole de basket au complet avec son encadrant, et la tuile
+           pleine largeur a justement ce rapport. Sur mobile (max-width:640px)
+           c'est la PREMIERE tuile qui passe pleine largeur : un panoramique y
+           tient mieux que le portrait qui occupait cette place. -->
+      <figure class="g-tile g-team">
+        <picture>
+          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-640.webp 640w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1000.webp 1000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1400.webp 1400w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1900.webp 1900w" sizes="(min-width:1240px) 1124px, 94vw" type="image/webp">
+          <img src="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne.jpg"
+               alt="Un coach du MBC La Montagne rassemble en cercle les enfants de l'école de basket avant l'entraînement, au gymnase de La Montagne à Saint-Denis."
+               loading="lazy" decoding="async" width="1900" height="759">
+        </picture>
+        <figcaption>Le cercle d'avant-séance</figcaption>
+      </figure>
       <figure class="g-tile g-tall">
         <picture><source srcset="assets/galerie/match-tir-hauteur.webp" type="image/webp"><img src="assets/galerie/match-tir-hauteur.jpg" alt="Joueur du MBC La Montagne au shoot en suspension lors d'un match de basket à La Réunion" loading="lazy" decoding="async" width="900" height="1200"></picture>
         <figcaption>Le basket prend de la hauteur</figcaption>
