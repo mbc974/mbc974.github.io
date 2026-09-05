@@ -1224,7 +1224,61 @@
   var aucun = pl.querySelector('.pl-aucun');
   if (!zone || !boutons.length || !creneaux.length) return;
 
-  function appliquer(cat) {
+  /* --- Les deux cartes de lieu suivent le filtre -------------------------
+     Choisir « U13 » ne dit pas seulement QUAND on joue, mais OU. On compte
+     donc les creneaux restes visibles par lieu et on le montre sur les
+     cartes juste au-dessus : celle qui accueille la categorie s'elargit,
+     l'autre s'attenue. Les lieux sont apparies par data-lieu et non par le
+     lien Maps — les deux blocs n'utilisent pas la meme URL courte pour
+     Ruisseau Blanc — ni par le libelle, qui bougerait a la premiere
+     reformulation.
+     Tout ce bloc est optionnel : s'il n'y a pas de cartes, le filtre
+     fonctionne comme avant. */
+  var cartes = document.querySelectorAll('.cal-lieu[data-lieu]');
+  var rangee = document.querySelector('.cal-lieux');
+
+  function refletLieux(cat, libelle) {
+    if (!cartes.length || !rangee) return;
+
+    // combien de creneaux visibles par lieu, apres filtrage
+    var parLieu = {};
+    Array.prototype.forEach.call(creneaux, function (c) {
+      if (c.hidden) return;
+      var l = c.getAttribute('data-lieu');
+      if (l) parLieu[l] = (parLieu[l] || 0) + 1;
+    });
+
+    var actifs = 0, indexActif = -1;
+    Array.prototype.forEach.call(cartes, function (carte, i) {
+      var n = parLieu[carte.getAttribute('data-lieu')] || 0;
+      var cnt = carte.querySelector('.cal-lieu__cnt');
+      var concerne = n > 0;
+
+      if (cat !== 'tous' && concerne) { actifs++; indexActif = i; }
+
+      carte.classList.toggle('is-actif', cat !== 'tous' && concerne);
+      carte.classList.toggle('is-attenue', cat !== 'tous' && !concerne);
+
+      if (cnt) {
+        if (cat === 'tous' || !concerne) {
+          cnt.hidden = true;
+          cnt.textContent = '';
+        } else {
+          cnt.hidden = false;
+          cnt.textContent = n + (n > 1 ? ' créneaux ' : ' créneau ') + libelle;
+        }
+      }
+    });
+
+    // La rangee ne s'elargit que si UN SEUL lieu est concerne : quand la
+    // categorie s'entraine aux deux, les mettre a egalite est plus juste.
+    rangee.classList.remove('is-lieu-1', 'is-lieu-2');
+    if (cat !== 'tous' && actifs === 1 && indexActif >= 0) {
+      rangee.classList.add(indexActif === 0 ? 'is-lieu-1' : 'is-lieu-2');
+    }
+  }
+
+  function appliquer(cat, libelle) {
     var visibles = 0;
     Array.prototype.forEach.call(creneaux, function (c) {
       var liste = ' ' + (c.getAttribute('data-cat') || '') + ' ';
@@ -1239,6 +1293,7 @@
       if (cpt) cpt.textContent = n + (n > 1 ? ' créneaux' : ' créneau');
     });
     if (aucun) aucun.hidden = visibles !== 0;
+    refletLieux(cat, libelle);
   }
 
   Array.prototype.forEach.call(boutons, function (b) {
@@ -1249,7 +1304,7 @@
       });
       b.classList.add('is-on');
       b.setAttribute('aria-pressed', 'true');
-      appliquer(b.getAttribute('data-cat'));
+      appliquer(b.getAttribute('data-cat'), (b.textContent || '').trim());
     });
   });
 })();

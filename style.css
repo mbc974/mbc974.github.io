@@ -5930,3 +5930,102 @@ h3.faq__title{
 .cal-lieu .cal-lieu__adr,
 .cal-lieu .cal-lieu__tag,
 .cal-lieu .cal-lieu__map{padding-left:0}
+
+
+/* ============================================================================
+   V107 — LE FILTRE DU PLANNING ANIME LES DEUX LIEUX
+   ----------------------------------------------------------------------------
+   Choisir « U13 » repond desormais a deux questions au lieu d'une : quand, et
+   OU. Le lieu qui accueille la categorie s'elargit, l'autre s'attenue.
+
+   Ce qui est anime, et pourquoi :
+     - grid-template-columns : c'est LUI qui porte l'agrandissement. Les deux
+       valeurs sont des <flex> (1fr / 1.62fr), donc interpolables — le
+       navigateur redistribue la largeur en continu, sans reflow saccade.
+     - la photo suit sa carte : elle grandit en largeur ET en hauteur puisque
+       l'aspect-ratio est conserve. Rien a animer de plus.
+     - la carte attenuee ne DISPARAIT pas : elle reste lisible et cliquable.
+       On ne cache jamais une information au visiteur parce qu'un filtre est
+       actif ; on la met au second plan.
+
+   Duree 0,72 s sur un ease-out doux : assez long pour qu'on suive le
+   mouvement de l'oeil, assez court pour ne pas attendre. Le meme easing que
+   le reste du site (--ease-out), pour que ca appartienne au meme monde.
+   ============================================================================ */
+
+.cal-lieux{
+  transition:grid-template-columns .72s var(--ease-out)}
+
+/* 1,62 : proche du nombre d'or, la carte active domine sans ecraser. */
+.cal-lieux.is-lieu-1{grid-template-columns:1.62fr 1fr}
+.cal-lieux.is-lieu-2{grid-template-columns:1fr 1.62fr}
+
+.cal-lieu{
+  transition:border-color .28s, background .28s, transform .28s var(--ease-out),
+             box-shadow .28s, opacity .45s var(--ease-out)}
+.cal-lieu__ph img{
+  transition:transform .6s var(--ease-out), filter .5s var(--ease-out)}
+
+/* --- Le lieu concerne ------------------------------------------------------ */
+.cal-lieu.is-actif{
+  border-color:rgba(232,130,42,.38);
+  box-shadow:0 14px 34px rgba(2,6,14,.34)}
+.cal-lieu.is-actif .cal-lieu__tag{color:var(--orange-vif)}
+
+/* --- Le lieu non concerne : au second plan, jamais efface ------------------ */
+.cal-lieu.is-attenue{opacity:.5}
+.cal-lieu.is-attenue .cal-lieu__ph img{
+  filter:grayscale(.6) saturate(.5) brightness(.82)}
+.cal-lieu.is-attenue:hover,
+.cal-lieu.is-attenue:focus-visible{opacity:1}
+.cal-lieu.is-attenue:hover .cal-lieu__ph img{filter:saturate(.97) contrast(1.04)}
+
+/* --- Le compteur : ce qui justifie l'animation ----------------------------- */
+/* Sans lui, l'agrandissement ne serait qu'un effet ; avec lui, la carte
+   repond « 3 creneaux U13 ici ». */
+.cal-lieu__cnt{
+  display:inline-flex;align-items:center;gap:.45em;
+  margin-top:.15rem;padding:.3em .7em;
+  border:1px solid rgba(232,130,42,.34);border-radius:999px;
+  background:rgba(232,130,42,.10);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.7rem;color:var(--orange-vif);
+  animation:calCntIn .42s var(--ease-out) both}
+.cal-lieu__cnt[hidden]{display:none}
+
+@keyframes calCntIn{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
+}
+
+/* --- Mobile : une seule colonne, donc pas d'elargissement ------------------
+   L'etat reste utile (attenuation + compteur), mais la grille ne bouge pas :
+   sur une colonne, agrandir n'aurait aucun sens. */
+@media (max-width:720px){
+  .cal-lieux.is-lieu-1,
+  .cal-lieux.is-lieu-2{grid-template-columns:1fr}
+  .cal-lieu.is-attenue{opacity:.62}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .cal-lieux,
+  .cal-lieu,
+  .cal-lieu__ph img{transition:none}
+  .cal-lieu__cnt{animation:none}
+}
+
+/* La transition de la grille etait ecrasee par « main > .section .reveal »
+   (specificite 0,2,1, style.css:3036) qui redefinit transition sur opacity et
+   transform seuls : la grille sautait au lieu d'interpoler. On reprend les
+   TROIS proprietes a une specificite superieure — la revelation au scroll est
+   conservee a l'identique, on ne fait qu'ajouter la colonne. */
+main > .section .cal-lieux.reveal,
+main > .section .cal-lieux{
+  transition:grid-template-columns .72s var(--ease-out),
+             opacity .52s var(--ease-out),
+             transform .52s var(--ease-out)}
+
+@media (prefers-reduced-motion:reduce){
+  main > .section .cal-lieux.reveal,
+  main > .section .cal-lieux{transition:none}
+}

@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
       imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
       imagesizes="(max-width:900px) 100vw, 48vw">
-<link rel="stylesheet" href="style.css?v=2bf9492a">
+<link rel="stylesheet" href="style.css?v=64c3b8ac">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -1003,7 +1003,7 @@
          section tienne dans une seule colonne centree. -->
     <ul class="cal-lieux reveal" aria-label="Les deux lieux de pratique du club">
       <li>
-        <a class="cal-lieu" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer">
+        <a class="cal-lieu" data-lieu="gymnase" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer">
           <span class="cal-lieu__ph">
             <img src="assets/images/gymnase-la-montagne-clair.webp"
                  sizes="(min-width:760px) 47vw, 92vw" width="1445" height="1088"
@@ -1014,13 +1014,14 @@
             <span class="cal-lieu__tag"><svg class="cal-lieu__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Salle couverte</span>
             <b class="cal-lieu__nom">Gymnase de La Montagne</b>
             <span class="cal-lieu__adr">Chemin des Bauhinias<br>97417 Saint-Denis &middot; La Réunion</span>
+            <span class="cal-lieu__cnt" hidden></span>
             <span class="cal-lieu__map">Voir sur Google Maps<svg class="cal-lieu__mapic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
           </span>
           <span class="sr-only"> (nouvel onglet)</span>
         </a>
       </li>
       <li>
-        <a class="cal-lieu" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer">
+        <a class="cal-lieu" data-lieu="ruisseau" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer">
           <span class="cal-lieu__ph">
             <img src="assets/images/ruisseau-blanc-terrain-1000.webp"
                  srcset="assets/images/ruisseau-blanc-terrain-640.webp 640w, assets/images/ruisseau-blanc-terrain-1000.webp 1000w, assets/images/ruisseau-blanc-terrain.webp 1445w"
@@ -1032,6 +1033,7 @@
             <span class="cal-lieu__tag"><svg class="cal-lieu__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Plateau couvert, en plein air</span>
             <b class="cal-lieu__nom">Terrain Ruisseau Blanc</b>
             <span class="cal-lieu__adr">Ruisseau Blanc, La Montagne<br>97417 Saint-Denis &middot; La Réunion</span>
+            <span class="cal-lieu__cnt" hidden></span>
             <span class="cal-lieu__map">Voir sur Google Maps<svg class="cal-lieu__mapic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
           </span>
           <span class="sr-only"> (nouvel onglet)</span>
@@ -1063,13 +1065,13 @@
       <section class="pl-jour" aria-labelledby="pl-j-lundi">
         <h4 class="pl-jour__n" id="pl-j-lundi">Lundi<span class="pl-jour__n2">2 créneaux</span></h4>
         <ol class="pl-jour__l">
-          <li class="pl-slot pl-slot--train" data-cat="u13 u15">
+          <li class="pl-slot pl-slot--train" data-cat="u13 u15" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="17:30">17:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="19:00">19:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">U13</span><span class="pl-chip">U15</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
             <a class="pl-slot__ou" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Gymnase de La Montagne</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
-          <li class="pl-slot pl-slot--train" data-cat="seniors u18">
+          <li class="pl-slot pl-slot--train" data-cat="seniors u18" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="20:30">20:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="22:00">22:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Seniors</span><span class="pl-chip">U18</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
@@ -1080,19 +1082,19 @@
       <section class="pl-jour" aria-labelledby="pl-j-mercredi">
         <h4 class="pl-jour__n" id="pl-j-mercredi">Mercredi<span class="pl-jour__n2">3 créneaux</span></h4>
         <ol class="pl-jour__l">
-          <li class="pl-slot pl-slot--train" data-cat="u13 u15">
+          <li class="pl-slot pl-slot--train" data-cat="u13 u15" data-lieu="ruisseau">
             <p class="pl-slot__h"><time datetime="14:30">14:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="16:00">16:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">U13</span><span class="pl-chip">U15</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
             <a class="pl-slot__ou" href="https://maps.app.goo.gl/YMZpWLT9YncQdy8G8" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Terrain Ruisseau Blanc</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
-          <li class="pl-slot pl-slot--train" data-cat="seniors u18">
+          <li class="pl-slot pl-slot--train" data-cat="seniors u18" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="19:00">19:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="20:30">20:30</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Seniors</span><span class="pl-chip">U18</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
             <a class="pl-slot__ou" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Gymnase de La Montagne</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
-          <li class="pl-slot pl-slot--loisir" data-cat="loisir">
+          <li class="pl-slot pl-slot--loisir" data-cat="loisir" data-lieu="ruisseau">
             <p class="pl-slot__h"><time datetime="20:30">20:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="22:00">22:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Dès 16 ans</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Loisir mixte</b><span class="pl-slot__prec">Ouvert à tous, filles et garçons</span></p>
@@ -1103,7 +1105,7 @@
       <section class="pl-jour" aria-labelledby="pl-j-vendredi">
         <h4 class="pl-jour__n" id="pl-j-vendredi">Vendredi<span class="pl-jour__n2">1 créneau</span></h4>
         <ol class="pl-jour__l">
-          <li class="pl-slot pl-slot--match" data-cat="seniors u18">
+          <li class="pl-slot pl-slot--match" data-cat="seniors u18" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="20:00">20:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="23:00">23:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Seniors</span><span class="pl-chip">U18</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Match à domicile</b><span class="pl-slot__prec">Selon calendrier FFBB</span></p>
@@ -1114,13 +1116,13 @@
       <section class="pl-jour" aria-labelledby="pl-j-samedi">
         <h4 class="pl-jour__n" id="pl-j-samedi">Samedi<span class="pl-jour__n2">2 créneaux</span></h4>
         <ol class="pl-jour__l">
-          <li class="pl-slot pl-slot--train" data-cat="baby">
+          <li class="pl-slot pl-slot--train" data-cat="baby" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="09:00">09:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="10:00">10:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Baby Basket</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
             <a class="pl-slot__ou" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Gymnase de La Montagne</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
-          <li class="pl-slot pl-slot--train" data-cat="ecole">
+          <li class="pl-slot pl-slot--train" data-cat="ecole" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="10:00">10:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="11:30">11:30</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">École de Basket</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
@@ -1131,7 +1133,7 @@
       <section class="pl-jour" aria-labelledby="pl-j-dimanche">
         <h4 class="pl-jour__n" id="pl-j-dimanche">Dimanche<span class="pl-jour__n2">1 créneau</span></h4>
         <ol class="pl-jour__l">
-          <li class="pl-slot pl-slot--match" data-cat="u13">
+          <li class="pl-slot pl-slot--match" data-cat="u13" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="09:00">09:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="11:00">11:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">U13</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Match à domicile</b><span class="pl-slot__prec">Selon calendrier FFBB</span></p>
@@ -1887,6 +1889,6 @@
   </div>
 </div>
 
-<script src="script.js?v=ef90681b" defer></script>
+<script src="script.js?v=4bc6c47f" defer></script>
 </body>
 </html>
