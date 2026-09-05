@@ -6029,3 +6029,39 @@ main > .section .cal-lieux{
   main > .section .cal-lieux.reveal,
   main > .section .cal-lieux{transition:none}
 }
+
+/* ============================================================
+   V101 "HERO GRAND ÉCRAN" — le vide n'est pas comblé par du texte
+   ============================================================
+   Constat mesuré à 1920x1080 : 180 px de vide sous la mention FFBB
+   et 250 px entre la colonne de texte et la photo. La cause est un
+   double plafonnement : la photo s'arrête à 720 px et le titre à
+   7,6 rem, alors que la hauteur du hero, elle, continue jusqu'à
+   860 px. Le bloc de texte cesse donc de grandir bien avant l'écran.
+
+   On ne rajoute AUCUN contenu : la bande des trois chiffres est
+   200 px plus bas et la répéter ici réinstallerait la redondance que
+   la V100 avait retirée. Les filigranes géants sont exclus aussi :
+   ils ont été éteints volontairement (voir plus haut dans ce fichier).
+   On laisse simplement la composition occuper la place qu'elle a. */
+
+@media (min-width:1600px){
+  /* La photo reprend sa progression. Deux plafonds la retenaient : le
+     « min(52%,720px) » du bloc final ET un max-width:760px hérité d'un
+     bloc antérieur — il faut lever les deux, sinon rien ne bouge.
+     45,5 % vaut exactement les 720 px de l'ancienne règle au point de
+     bascule : la croissance reprend sans à-coup à 1600 px (720 → 722)
+     et atteint le nouveau plafond de 900 px vers 1985 px de large. */
+  .hero__photo{width:clamp(640px,45.5%,900px);max-width:900px}
+
+  /* Le titre, lui, ne bouge PAS. Essayé à 9,6 rem : il gagne 16 px de
+     hauteur et vient écrire « HAUTEUR. » par-dessus le maillot du joueur,
+     parce que la photo élargie commence désormais 180 px plus à gauche.
+     Le vide se comble par la photo, pas en poussant la typo. */
+}
+
+@media (min-width:1600px) and (min-height:900px){
+  /* Le reliquat vertical est réparti au lieu d'être empilé en bas. */
+  .hero{align-items:center !important;
+    padding-bottom:clamp(3rem,6vh,5rem) !important}
+}
