@@ -6235,9 +6235,9 @@ main > .section .cal-lieux{
 
 /* --- 6. Micro-interaction des CTA ----------------------------------------- */
 .hero__cta .btn--primary{transition:transform .22s var(--ease-out),box-shadow .22s var(--ease-out)}
-.hero__cta .btn--primary:hover{transform:translateY(-2px);
+.hero__cta a.btn--primary:hover{transform:translateY(-2px);
   box-shadow:0 12px 30px -8px rgba(232,130,42,.55)}
-.hero__cta .btn--primary:active{transform:translateY(0)}
+.hero__cta a.btn--primary:active{transform:translateY(0)}
 
 /* --- 7. Header : un cran plus premium, sans glassmorphism ------------------ */
 @media (min-width:761px){
@@ -6300,4 +6300,201 @@ main > .section .cal-lieux{
 
 @media (max-width:640px){
   .hero__photo{height:calc(100vw / 1.3);max-height:430px}
+}
+
+/* ============================================================================
+   V108 — LE HERO REDEVIENT UNE SEULE SCÈNE
+   ----------------------------------------------------------------------------
+   La V106 avait construit deux rectangles côte à côte : un panneau navy à
+   gauche, une photo à droite, séparés par une arête franche. Ce n'était pas la
+   direction voulue. Ici la photographie couvre TOUTE la scène, y compris sous
+   le texte, et le navy n'est plus un bloc mais un VOILE posé par-dessus la même
+   image. Il ne doit plus exister de frontière verticale.
+
+   Hero + bandeau chiffres forment un seul canvas arrondi de 1560 px centré.
+   Heureuse coïncidence : la marge du lockup du header, max(0,(100vw-1560)/2),
+   aligne déjà le logo sur ce canvas.
+   ============================================================================ */
+
+.hero{
+  --hero-canvas:1560px;
+  --hero-gutter:clamp(18px,4vw,44px);
+  position:relative;overflow:hidden;
+  max-width:var(--hero-canvas);margin-inline:auto;
+  border-radius:clamp(10px,1vw,18px) clamp(10px,1vw,18px) 0 0;
+  min-height:clamp(520px,66svh,660px) !important;
+  display:flex;align-items:center;
+  padding-top:calc(72px + clamp(1rem,2.4vw,2.2rem)) !important;
+  padding-bottom:clamp(1.6rem,3.2vw,2.8rem) !important;
+  background:#060C16}
+
+/* --- 1. La photo : fond de toute la scène -------------------------------- */
+.hero__photo,
+.hero .hero__photo{
+  position:absolute;inset:0;width:100%;height:100%;
+  left:0;right:0;max-width:none;z-index:0;
+  -webkit-mask-image:none;mask-image:none;
+  opacity:1;transform:none;filter:none;pointer-events:none}
+.hero__photo picture{display:block;width:100%;height:100%}
+.hero__photo img{
+  width:100%;height:100%;object-fit:cover;
+  /* 40 % : de l'air au-dessus des têtes, coupe au mollet — la référence coupe
+     aussi les jambes, c'est le bandeau chiffres qui ferme la scène. */
+  object-position:50% 40%;
+  display:block;filter:saturate(1.06) contrast(1.04)}
+.hero__photo::before{display:none}
+
+/* --- 2. Les voiles, posés par-dessus la MÊME image ------------------------ */
+/* a) teinte navy générale, très légère : elle unifie sans salir. */
+.hero__photo::after{
+  content:"";display:block;position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(4,14,28,.26) 0%,rgba(4,14,28,.10) 12%,
+                    rgba(4,14,28,0) 26%,rgba(4,14,28,0) 60%,
+                    rgba(4,14,28,.30) 82%,rgba(4,14,28,.58) 100%),
+    rgba(4,14,28,.18)}
+/* b) zone de lisibilité à gauche. Beaucoup de paliers : c'est ce qui évite la
+      bande de Mach, et l'extinction est totale à 83 % — au-delà, la photo
+      n'est plus touchée du tout. */
+.hero::after{
+  content:"";display:block;position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,
+    rgba(4,14,28,.955) 0%,  rgba(4,14,28,.940) 14%, rgba(4,14,28,.890) 28%,
+    rgba(4,14,28,.795) 37%, rgba(4,14,28,.660) 44%, rgba(4,14,28,.500) 51%,
+    rgba(4,14,28,.340) 58%, rgba(4,14,28,.205) 65%, rgba(4,14,28,.100) 72%,
+    rgba(4,14,28,.035) 77%, rgba(4,14,28,0)    83%)}
+
+/* --- 3. Décor : la marque géante en outline + les lignes de terrain ------- */
+.hero__panel{
+  position:absolute;inset:0;width:auto;z-index:1;
+  pointer-events:none;overflow:hidden;
+  background:none;box-shadow:none}
+.hero__panel::after{display:none}
+.hero__panel::before{
+  content:"MBC 974";position:absolute;
+  left:calc(var(--hero-gutter) - .08em);top:50%;transform:translateY(-54%);
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(7rem,17vw,15rem);line-height:.78;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:2px rgba(191,210,228,1);
+  /* l'opacite du trait se multipliait a celle du bloc : .055 x .5 = .027,
+     soit invisible sur une photo. Un seul reglage desormais. */
+  opacity:.06;white-space:nowrap}
+.hero__court{position:absolute;inset:0}
+.hero__court::before{
+  content:"";position:absolute;left:-14%;bottom:-52%;width:58%;aspect-ratio:1;
+  border-radius:50%;border:1.5px solid rgba(191,210,228,.07)}
+.hero__court::after{
+  content:"";position:absolute;left:0;right:52%;bottom:26%;height:1.5px;
+  background:linear-gradient(90deg,rgba(191,210,228,.09),rgba(191,210,228,0))}
+
+/* --- 4. Le texte flotte DANS la scène ------------------------------------ */
+.hero__inner{
+  position:relative;z-index:4;
+  width:min(46%,660px);max-width:none;margin-inline:0;
+  padding-left:0;padding-right:0;
+  /* 3,3 % de 1560 = 51,5 px : exactement la position du logo a
+     l'interieur du canvas. Le texte se cale donc dessous. */
+  margin-left:clamp(18px,3.3%,52px)}
+.hero__h1{
+  font-size:clamp(3rem,5.4vw,5.75rem);line-height:.86;letter-spacing:-.012em;
+  max-width:none;text-shadow:0 3px 26px rgba(4,10,20,.6)}
+.hero__creole{text-shadow:0 2px 16px rgba(4,10,20,.65)}
+.hero__fine{max-width:none;border-top-color:rgba(191,210,228,.16)}
+.hero__scroll{display:none}
+
+/* --- 5. Les deux CTA, même gabarit --------------------------------------- */
+.hero__cta{gap:clamp(.7rem,1.4vw,1.1rem);margin-top:clamp(1.4rem,2.6vw,2rem)}
+/* Selecteur avec un element en plus (a.btn--primary) : sans cela le padding
+   et le corps de .btn--lg gagnaient, et le bouton faisait 79 px contre 56 au
+   secondaire. Les deux doivent avoir le meme gabarit. */
+.hero__cta a.btn--primary{
+  height:56px;min-height:56px;padding:0 clamp(1.5rem,2.4vw,2.4rem);
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  font-size:1.06rem;line-height:1;
+  transition:transform .22s var(--ease-out),box-shadow .22s var(--ease-out)}
+.hero__cta .btn--primary:hover{transform:translateY(-2px);
+  box-shadow:0 14px 34px -10px rgba(232,130,42,.6)}
+.hero__cta .btn--primary:active{transform:translateY(0)}
+/* Le lien secondaire devient un vrai bouton contour, comme la référence. */
+.hero__second{
+  min-height:56px;padding:0 clamp(1.3rem,2.2vw,2.1rem);
+  border:1px solid rgba(226,236,246,.34);border-radius:6px;
+  background:rgba(8,18,34,.30);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  color:var(--blanc);font-size:1.02rem;letter-spacing:.09em;
+  transition:border-color .22s,background .22s,transform .22s var(--ease-out)}
+.hero__second:hover{
+  border-color:var(--orange-vif);background:rgba(232,130,42,.14);
+  color:var(--blanc);transform:translateY(-2px)}
+
+/* --- 6. Le header fait partie de la scène -------------------------------- */
+@media (min-width:761px){
+  .site-header{
+    background:linear-gradient(180deg,rgba(4,12,24,.62),rgba(4,12,24,.18));
+    -webkit-backdrop-filter:saturate(1.2) blur(10px);
+    backdrop-filter:saturate(1.2) blur(10px);
+    border-bottom:1px solid rgba(191,210,228,.06)}
+  .site-header.scrolled{
+    background:rgba(6,12,22,.92);border-bottom-color:rgba(191,210,228,.10)}
+}
+
+/* --- 7. Le bandeau chiffres ferme le canvas ------------------------------- */
+.keyfig-sec{
+  max-width:1560px;margin-inline:auto;
+  border-radius:0 0 clamp(10px,1vw,18px) clamp(10px,1vw,18px);
+  background:linear-gradient(180deg,#080F1C,#060B14);
+  padding:clamp(.9rem,1.5vw,1.35rem) 0 !important;
+  margin-top:0}
+.keyfig-sec .wrap{max-width:none;padding-inline:clamp(18px,4vw,44px)}
+.keyfig{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin:0;min-height:96px;align-items:center}
+.keyfig__i{padding:.2rem clamp(1rem,2.6vw,2.4rem)}
+.keyfig__i + .keyfig__i{border-left:1px solid rgba(191,210,228,.10)}
+.keyfig__a{display:grid;grid-template-columns:auto 1fr;
+  column-gap:clamp(.9rem,1.6vw,1.35rem);align-items:center;row-gap:.25rem}
+.keyfig__ico{grid-row:1 / span 3;display:grid;place-items:center;
+  width:clamp(38px,3.4vw,50px);aspect-ratio:1;color:var(--orange-vif)}
+.keyfig__ico svg{width:100%;height:100%}
+.keyfig__v{font-size:clamp(1.7rem,2.5vw,2.55rem);line-height:1;margin:0}
+.keyfig__l{line-height:1.22;margin:.15rem 0 0}
+.keyfig__l span{line-height:1.2;margin-top:.02rem}
+/* Le lien portait une hauteur de cible tactile de 41 px : inutile ici, c'est
+   toute la carte (.keyfig__a) qui est cliquable. */
+.keyfig__go{font-size:.72rem;margin-top:.35rem;padding-top:0;min-height:0;height:auto;line-height:1.4}
+
+/* ============================ TABLETTE ET MOBILE ========================== */
+@media (max-width:900px){
+  .hero{
+    display:block;border-radius:0;max-width:none;
+    min-height:clamp(520px,78svh,680px) !important;
+    padding-top:calc(72px + clamp(1rem,4vw,2rem)) !important;
+    padding-bottom:clamp(1.4rem,4vw,2.2rem) !important}
+  /* max-height:none est indispensable : un bloc anterieur plafonnait la photo
+     a 430 px en mobile, et height:100% seul restait borne par ce plafond. */
+  .hero__photo{position:absolute;inset:0;height:100%;max-height:none;margin-top:0}
+  .hero__photo img{object-position:56% 26%}
+  /* Sur une colonne, la lisibilité vient du BAS, pas de la gauche. */
+  .hero::after{
+    background:linear-gradient(180deg,
+      rgba(4,14,28,.30) 0%,  rgba(4,14,28,.26) 22%, rgba(4,14,28,.42) 40%,
+      rgba(4,14,28,.68) 52%, rgba(4,14,28,.86) 64%, rgba(4,14,28,.945) 76%,
+      rgba(4,14,28,.975) 100%)}
+  .hero__panel::before{font-size:26vw;top:20%;transform:none;opacity:.05}
+  .hero__court{display:none}
+  .hero__inner{
+    width:100%;margin-left:0;
+    padding-inline:var(--hero-gutter);
+    padding-top:clamp(11rem,40vw,16rem)}
+  .hero__h1{font-size:clamp(2.6rem,10.5vw,4.2rem)}
+  .hero__cta{flex-direction:column;align-items:stretch}
+  .hero__cta .btn--primary,.hero__second{width:100%;justify-content:center}
+  .keyfig-sec{border-radius:0;max-width:none}
+  .keyfig{grid-template-columns:1fr;min-height:0}
+  .keyfig__i{padding:.9rem 0}
+  .keyfig__i + .keyfig__i{border-left:0;border-top:1px solid rgba(191,210,228,.10)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero__cta .btn--primary:hover,.hero__second:hover{transform:none}
 }
