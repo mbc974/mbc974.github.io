@@ -7533,3 +7533,49 @@ main > .section .cal-lieux{
         rgba(6,12,22,.55) 0%, rgba(6,12,22,.20) 8%, rgba(6,12,22,0) 15%),
       linear-gradient(rgba(9,16,30,.12),rgba(9,16,30,.12))}
 }
+
+/* ============================================================================
+   V118 — GALERIE : TROIS VRAIES PHOTOS DU CLUB
+   ----------------------------------------------------------------------------
+   Cinq cliches generiques sont remplaces par trois photos prises au gymnase et
+   sur le plateau. Les classes g-banner, g-tall et g-shoot sont reprises telles
+   quelles : leurs portees font reboucler les bandes de la mosaique a six
+   colonnes, et c'est la seule chose qui empeche la grille de trouer (cf. la
+   note de la V100.3, toujours valable).
+
+       team 6  |  banner 4 + tall 2  |  shoot 2 + inaug 2 + gym 2
+
+   Seul ajustement : g-banner passe de 4 a 5 rangees. Le cliche du gymnase fait
+   1,88:1 ; sur 4 rangees la tuile en faisait 2,37 et le recadrage mangeait le
+   toit ET le sol — or c'est justement la charpente et l'ecusson use au sol qui
+   font la photo. A 5 rangees, la tuile tombe pile sur le rapport du fichier.
+   ============================================================================ */
+.gallery-mosaic .g-banner{grid-row:span 5}
+@media (max-width:900px){
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
+}
+
+/* V118.1 — mesure faite a l'ecran plutot qu'au calcul.
+   La tuile g-banner sur 5 rangees tombait a 1,54:1 (la hauteur de rangee est
+   plafonnee a 84 px), donc cover rognait 18 % de la largeur du cliche. Sur
+   4 rangees elle fait 1,77 a 1,94 selon la largeur d'ecran, soit exactement la
+   plage du fichier (1,88). g-tall passe aussi a 4 rangees pour que la bande
+   « banner + tall » ait une seule et meme hauteur. */
+.gallery-mosaic .g-banner{grid-row:span 4}
+.gallery-mosaic .g-tall{grid-row:span 4}
+@media (max-width:900px){
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
+  .gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 5}
+}
+
+/* V118.2 — sur telephone, la hauteur de rangee tombe a 56 px : une tuile de
+   5 rangees y devient deux fois plus haute que large (0,54:1) alors que les
+   fichiers font 0,90. Trois rangees rendent les bons rapports — mesure a
+   390 px : 0,91 pour les deux portraits, 1,88 pour le panoramique du gymnase,
+   soit exactement les fichiers. Les bandes rebouclent toujours a 4 colonnes. */
+@media (max-width:640px){
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 3}
+  .gallery-mosaic .g-tall,
+  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 3}
+}
