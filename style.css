@@ -8147,3 +8147,40 @@ main > .section .cal-lieux{
   display:block;padding-inline:.4rem}
 .sponsor-card__ext{
   display:inline-block;vertical-align:-.04em;margin-left:.35em}
+
+/* ============================================================================
+   V123 — LES TROIS CHIFFRES REPRENNENT DU POIDS
+   ----------------------------------------------------------------------------
+   La V119.1 les avait volontairement dégonflés (48 px) pour qu'ils cessent de
+   concurrencer le hero. Le curseur était allé trop loin : ce sont les trois
+   réponses qu'un parent cherche en arrivant — combien, à partir de quel âge,
+   où — et elles se lisaient comme une note de bas de page.
+
+   Nouvelle mesure : 69 px à 1920, contre 103 px pour le titre du hero. Ils
+   pèsent enfin, sans repasser devant. Le libellé et le lien montent d'autant,
+   sinon le chiffre flotte au-dessus d'un texte devenu minuscule par contraste.
+
+   Vérifié : « 2 TERRAINS », la valeur la plus large, occupe 290 px pour une
+   colonne qui en offre 395 — aucun retour à la ligne, à aucune largeur.
+   ============================================================================ */
+@media (min-width:1001px){
+  .keyfig-sec{padding:clamp(3rem,4.8vw,4.8rem) 0 !important}
+  .keyfig__v{font-size:clamp(2.6rem,3.6vw,4.4rem)}
+  .keyfig__l{font-size:clamp(1.05rem,1.18vw,1.32rem);margin-top:1rem}
+  .keyfig__l span{font-size:.8em;margin-top:.4rem}
+  .keyfig__go{font-size:.82rem;margin-top:1.3rem}
+}
+
+@media (min-width:681px) and (max-width:1000px){
+  .keyfig__v{font-size:clamp(2.1rem,4.6vw,3.1rem)}
+  .keyfig__l{font-size:1.05rem;margin-top:.8rem}
+  .keyfig__go{font-size:.78rem;margin-top:1rem}
+}
+
+@media (max-width:680px){
+  .keyfig-sec{padding:clamp(2.4rem,6vw,3.2rem) 0 !important}
+  .keyfig__v{font-size:clamp(2.2rem,8.6vw,3rem)}
+  .keyfig__l{font-size:1.06rem;margin-top:.7rem}
+  .keyfig__go{font-size:.8rem;margin-top:.9rem}
+  .keyfig__i{padding:1.6rem 0}
+}
