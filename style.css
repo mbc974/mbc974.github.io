@@ -7579,3 +7579,364 @@ main > .section .cal-lieux{
   .gallery-mosaic .g-tall,
   .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 3}
 }
+
+/* ============================================================================
+   V119 — HERO ÉDITORIAL : LA PHOTO D'ABORD, LA SIGNATURE ENSUITE
+   ----------------------------------------------------------------------------
+   Ce bloc est volontairement COMPLET plutôt qu'incrémental. Les règles du hero
+   sont réparties sur une douzaine de blocs (V17 → V118) qui se corrigent les
+   uns les autres ; y ajouter trois lignes de plus, c'est exactement ce qui a
+   produit le désordre actuel. On redéclare donc ici TOUT ce dont le hero a
+   besoin — y compris les remises à zéro héritées (masque de la V105, opacités
+   de la V103, filtres) — pour qu'il ne dépende plus de rien en amont.
+
+   Un point de cascade à connaître : `.hero.in .hero__photo` (spécificité 0,3,0)
+   est déclarée six fois plus haut et descend jusqu'à opacity .4 ; un simple
+   `.hero .hero__photo` (0,2,0) ne peut pas la battre, quel que soit son rang.
+   D'où la reprise de la même forme ci-dessous.
+
+   Ce qu'on ne peut pas contourner : la photo fait 2,50:1 et le cadre est bien
+   plus haut, donc c'est la LARGEUR qui est rognée. À 1440 × 810 il n'en reste
+   que 71 %. L'ancrage à 34 % maintient l'entraîneur (à 15 % de la largeur) et
+   le groupe (jusqu'à 76 %) dans le cadre.
+   ============================================================================ */
+
+/* --- 1. Le cadre ---------------------------------------------------------- */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  width:100%;max-width:none;margin-inline:0;border-radius:0;
+  display:flex;
+  align-items:flex-end !important;
+  min-height:clamp(700px,90svh,880px) !important;
+  padding:calc(72px + clamp(1rem,2.4vw,2rem)) 0 clamp(2.6rem,5.2vh,4.4rem) !important;
+  background:#030a14}
+.hero::before{content:none;display:none;animation:none}
+
+/* --- 2. La photo ---------------------------------------------------------- */
+.hero__photo,
+.hero .hero__photo,
+.hero.in .hero__photo,
+.hero.is-idle .hero__photo{
+  position:absolute;inset:0;z-index:0;
+  width:100%;max-width:none;height:100%;
+  overflow:hidden;pointer-events:none;
+  opacity:1;transform:none;filter:none;transition:none;
+  -webkit-mask-image:none;mask-image:none}
+.hero__photo::before,
+.hero__photo::after{content:none;display:none}
+.hero__photo picture{display:block;width:100%;height:100%}
+.hero__photo img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;object-position:34% 50%;
+  filter:none;transform:none}
+
+/* --- 3. Le dégradé, pas le rectangle -------------------------------------- */
+/* Trois couches, aucune n'est un aplat :
+   a) une ellipse très large ancrée en bas à gauche — c'est elle qui porte le
+      texte. Volontairement BASSE (85 % de la hauteur) : à hauteur du visage de
+      l'entraîneur et de l'écusson dans son dos, elle est déjà retombée sous
+      15 %, donc le sujet garde sa lumière ;
+   b) un fondu vertical qui atteint le bleu nuit EXACT du bandeau de chiffres :
+      c'est ce qui supprime la coupure horizontale entre les deux ;
+   c) un voile très court en haut, uniquement pour la navigation. */
+.hero::after{
+  content:"";display:block;position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(125% 85% at -8% 104%,
+      rgba(3,10,20,.95) 0%,  rgba(3,10,20,.90) 20%, rgba(3,10,20,.80) 34%,
+      rgba(3,10,20,.60) 46%, rgba(3,10,20,.36) 58%, rgba(3,10,20,.16) 70%,
+      rgba(3,10,20,.04) 82%, rgba(3,10,20,0)   92%),
+    linear-gradient(to top,
+      #030a14 0%, rgba(3,10,20,.90) 5%, rgba(3,10,20,.62) 11%,
+      rgba(3,10,20,.32) 18%, rgba(3,10,20,.12) 26%, rgba(3,10,20,0) 36%),
+    linear-gradient(to bottom,
+      rgba(3,10,20,.46) 0%, rgba(3,10,20,.16) 7%, rgba(3,10,20,0) 14%)}
+
+/* --- 4. Le bloc éditorial ------------------------------------------------- */
+/* Même mesure que le header et que le bandeau de chiffres : 1560 px centrés,
+   gouttière commune. Les alignements verticaux tombent donc juste tout seuls. */
+.hero__inner{
+  position:relative;z-index:3;
+  width:100%;max-width:1560px;margin-inline:auto;padding-top:0;
+  padding-inline:var(--hero-gutter,clamp(20px,4.4vw,52px))}
+.hero__inner > *{max-width:620px}
+
+.hero__kicker{
+  display:inline-flex;align-items:center;gap:.75em;margin:0 0 clamp(1rem,1.8vw,1.35rem);
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.28em;font-size:.72rem;line-height:1;
+  color:rgba(233,240,248,.74)}
+.hero__kicker-dot{
+  width:6px;height:6px;border-radius:50%;flex:none;background:var(--orange-vif)}
+
+.hero__h1{
+  display:block;max-width:620px;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2.7rem,5.2vw,6rem);line-height:.92;letter-spacing:-.005em;
+  color:var(--blanc);text-shadow:0 2px 18px rgba(3,8,16,.42);
+  text-wrap:balance;margin:0}
+.hero__h1 .hl{color:var(--orange-vif)}
+
+.hero__sub{
+  display:flex;flex-wrap:wrap;align-items:center;
+  margin:clamp(1.5rem,2.6vw,2.1rem) 0 0;max-width:560px;
+  font-size:clamp(1rem,1.05vw,1.12rem);line-height:1.5;
+  color:rgba(226,236,246,.80);letter-spacing:.005em}
+.hero__sub i{
+  display:inline-block;width:3px;height:3px;border-radius:50%;flex:none;
+  margin-inline:.7em;background:rgba(226,236,246,.42)}
+
+/* --- 5. Une action principale, une action discrète ------------------------ */
+.hero__cta{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(1.1rem,2.4vw,2.2rem);
+  margin-top:clamp(1.9rem,3.4vw,2.7rem);max-width:none}
+.hero__cta a.btn--primary{
+  height:60px;min-height:60px;border-radius:8px;
+  padding:0 clamp(1.7rem,2.4vw,2.4rem);
+  display:inline-flex;align-items:center;gap:.7em;
+  box-shadow:0 10px 30px -16px rgba(232,130,42,.85);
+  transition:transform .28s var(--ease-out),box-shadow .28s var(--ease-out)}
+.hero__cta a.btn--primary:hover{
+  transform:translateY(-2px);box-shadow:0 16px 38px -16px rgba(232,130,42,.95)}
+.hero__cta a.btn--primary:active{transform:translateY(0)}
+.hero__cta .btn__arrow{transition:transform .28s var(--ease-out)}
+.hero__cta a:hover .btn__arrow{transform:translateX(4px)}
+
+/* Le second n'est plus un bouton : un lien, souligné au survol seulement. */
+.hero__second{
+  height:auto;min-height:0;padding:.35em 0;
+  border:0;border-radius:0;background:none;
+  -webkit-backdrop-filter:none;backdrop-filter:none;
+  display:inline-flex;align-items:center;gap:.55em;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.92rem;
+  color:rgba(240,246,252,.88);
+  box-shadow:inset 0 -1px 0 0 rgba(240,246,252,0);
+  transition:color .25s,box-shadow .25s,transform .25s var(--ease-out)}
+.hero__second:hover{
+  color:var(--blanc);transform:none;background:none;
+  box-shadow:inset 0 -1px 0 0 rgba(240,246,252,.55)}
+.hero__second:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px}
+
+/* --- 6. Le header fait partie de la scène --------------------------------- */
+@media (min-width:761px){
+  .site-header{
+    background:rgba(5,15,28,.70);
+    -webkit-backdrop-filter:blur(10px) saturate(1.15);
+    backdrop-filter:blur(10px) saturate(1.15);
+    border-bottom:1px solid rgba(191,210,228,.07)}
+  .site-header.scrolled{
+    background:rgba(4,11,22,.93);border-bottom-color:rgba(191,210,228,.11)}
+}
+
+/* --- 7. L'entrée : quatre lignes, décalées ------------------------------- */
+/* Aucune règle ne pose opacity:0 à l'état de base : la classe .in est ajoutée
+   dans un requestAnimationFrame, qui ne se déclenche PAS sur un onglet ouvert
+   en arrière-plan. Le contenu est donc visible par défaut, et l'animation ne
+   fait que le rejouer quand elle arrive. */
+@keyframes heroMonte{
+  from{opacity:0;transform:translateY(18px)}
+  to  {opacity:1;transform:none}
+}
+@keyframes heroZoom{
+  from{transform:scale(1.015)}
+  to  {transform:none}
+}
+.hero.in .hero__kicker{animation:heroMonte .62s var(--ease-out) .05s both}
+.hero.in .hero__h1    {animation:heroMonte .72s var(--ease-out) .14s both}
+.hero.in .hero__sub   {animation:heroMonte .72s var(--ease-out) .26s both}
+.hero.in .hero__cta   {animation:heroMonte .72s var(--ease-out) .36s both}
+.hero.in .hero__photo img{animation:heroZoom 1.6s var(--ease-out) both}
+
+/* --- 8. Tablette : 641 → 1000 px ----------------------------------------- */
+@media (min-width:641px) and (max-width:1000px){
+  .hero{min-height:clamp(600px,82svh,780px) !important}
+  .hero__photo img{object-position:38% 52%}
+  .hero__inner > *{max-width:min(84%,560px)}
+  .hero__h1{font-size:clamp(2.6rem,7.4vw,4.4rem);max-width:none}
+  .hero__sub{max-width:none}
+}
+
+/* --- 9. Téléphone : ≤ 640 px --------------------------------------------- */
+/* Le <picture> bascule ici sur une fenêtre portrait dédiée. Sur une colonne,
+   la lisibilité vient du BAS, pas du côté : le dégradé devient vertical, et il
+   laisse le tiers supérieur intact — c'est là que sont les visages. */
+@media (max-width:640px){
+  .hero{
+    min-height:clamp(560px,82svh,720px) !important;
+    padding:calc(66px + .9rem) 0 clamp(1.8rem,5vw,2.6rem) !important}
+  .hero__photo img{object-position:50% 42%}
+  .hero__inner{padding-inline:clamp(20px,5.4vw,24px)}
+  .hero__inner > *{max-width:none}
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        #030a14 0%, rgba(3,10,20,.94) 8%, rgba(3,10,20,.88) 20%,
+        rgba(3,10,20,.78) 31%, rgba(3,10,20,.62) 41%, rgba(3,10,20,.42) 51%,
+        rgba(3,10,20,.24) 61%, rgba(3,10,20,.10) 72%, rgba(3,10,20,.02) 83%,
+        rgba(3,10,20,0)   91%),
+      linear-gradient(to bottom,
+        rgba(3,10,20,.50) 0%, rgba(3,10,20,.18) 8%, rgba(3,10,20,0) 15%)}
+  .hero__kicker{font-size:.66rem;letter-spacing:.24em;margin-bottom:.9rem}
+  .hero__h1{font-size:clamp(2.2rem,10.2vw,3.4rem);line-height:.94}
+  .hero__sub{font-size:.95rem;margin-top:1.1rem}
+  .hero__cta{
+    flex-direction:column;align-items:stretch;
+    gap:1rem;margin-top:1.5rem}
+  .hero__cta a.btn--primary{width:100%;justify-content:center;height:56px;min-height:56px}
+  .hero__second{align-self:center;font-size:.86rem}
+}
+
+/* --- 10. Mouvement réduit ------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  .hero.in .hero__kicker,.hero.in .hero__h1,.hero.in .hero__sub,
+  .hero.in .hero__cta,.hero.in .hero__photo img{animation:none}
+  .hero__cta a.btn--primary:hover{transform:none}
+  .hero__cta a:hover .btn__arrow{transform:none}
+}
+
+/* ============================================================================
+   V119.1 — LA BANDE DE PREUVES SOUS LE HERO
+   ----------------------------------------------------------------------------
+   Les trois chiffres étaient devenus un second hero : 86 px de valeur, un filet
+   orange par colonne, et une arrivée franche juste sous la photo. Ils
+   redeviennent ce qu'ils sont — trois faits qui rassurent — sans cesser d'être
+   trois portes d'entrée cliquables.
+
+   La jonction avec le hero n'est plus une arête : la photo se termine sur le
+   bleu nuit exact du bandeau (#030a14), et le bandeau repart de cette même
+   valeur avant de rejoindre le fond du site.
+   ============================================================================ */
+.keyfig-sec{
+  max-width:none;border-radius:0;border-top:0;
+  background:linear-gradient(180deg,#030a14 0%,#040b17 46%,var(--nuit-0) 100%);
+  padding:clamp(2.6rem,4.4vw,4.4rem) 0 !important}
+.keyfig-sec .wrap{max-width:1560px;margin-inline:auto;
+  padding-inline:var(--kf-gutter,clamp(20px,4.4vw,52px))}
+
+.keyfig{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin:0;align-items:stretch}
+.keyfig__i{padding:.2rem clamp(1.2rem,3vw,3rem);background:none;border:0;border-radius:0}
+.keyfig__i:first-child{padding-left:0}
+.keyfig__i:last-child{padding-right:0}
+/* Une séparation, pas un cadre : un trait de 1 px qui ne va pas jusqu'aux
+   bords, obtenu par un dégradé qui s'éteint en haut et en bas. */
+.keyfig__i + .keyfig__i{
+  border-left:0;position:relative}
+.keyfig__i + .keyfig__i::before{
+  content:"";position:absolute;left:0;top:8%;bottom:8%;width:1px;
+  background:linear-gradient(180deg,
+    rgba(191,210,228,0),rgba(191,210,228,.16) 22%,
+    rgba(191,210,228,.16) 78%,rgba(191,210,228,0));
+  transform:none}
+
+/* Plus de filet décoratif au-dessus des chiffres. */
+.keyfig__n{display:none}
+.keyfig__a{position:relative;display:block;padding-top:0}
+.keyfig__a::before{content:none;display:none}
+
+.keyfig__v{
+  display:block;margin:0;
+  font-size:clamp(2.1rem,2.7vw,3.05rem);line-height:1;letter-spacing:-.005em;
+  color:var(--blanc)}
+.keyfig__l{
+  display:block;margin:.85rem 0 0;line-height:1.35;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.08em;font-size:clamp(.92rem,1vw,1.06rem);
+  color:rgba(233,240,248,.92)}
+.keyfig__l span{
+  display:block;margin-top:.35rem;
+  font-family:var(--ff-body);font-weight:400;text-transform:none;
+  letter-spacing:0;font-size:.94rem;color:var(--txt-soft)}
+.keyfig__go{
+  display:inline-flex;align-items:center;gap:.45em;
+  margin-top:1.15rem;padding-top:0;min-height:0;height:auto;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.76rem;line-height:1.4;
+  color:rgba(233,240,248,.58);transition:color .25s}
+.keyfig__a:hover .keyfig__go{color:var(--orange-vif)}
+.keyfig__arrow{transition:transform .25s var(--ease-out)}
+.keyfig__a:hover .keyfig__arrow{transform:translateX(3px)}
+
+/* Entrée en trois temps, calquée sur celle du hero. */
+.keyfig.reveal{opacity:1;transform:none;transition:none}
+.keyfig__i{opacity:0;transform:translateY(16px);
+  transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
+.keyfig.in .keyfig__i{opacity:1;transform:none}
+.keyfig.in .keyfig__i:nth-child(2){transition-delay:.10s}
+.keyfig.in .keyfig__i:nth-child(3){transition-delay:.20s}
+
+@media (max-width:900px){
+  .keyfig-sec{padding:clamp(2rem,5vw,2.8rem) 0 !important}
+  .keyfig{grid-template-columns:1fr;gap:0}
+  .keyfig__i{padding:1.35rem 0}
+  .keyfig__i:first-child{padding-top:.2rem}
+  .keyfig__i + .keyfig__i{border-top:0}
+  .keyfig__i + .keyfig__i::before{
+    left:0;right:0;top:0;bottom:auto;width:auto;height:1px;
+    background:linear-gradient(90deg,
+      rgba(191,210,228,.16),rgba(191,210,228,.16) 62%,rgba(191,210,228,0))}
+  .keyfig__v{font-size:clamp(1.9rem,7.4vw,2.5rem)}
+  .keyfig__l{margin-top:.6rem}
+  .keyfig__go{margin-top:.8rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .keyfig__i{opacity:1;transform:none;transition:none}
+}
+
+/* V119.2 — le dégradé, calibré sur le rendu et non sur le calcul.
+   L'ellipse de la V119 était trop basse et trop courte : au niveau du titre
+   elle ne donnait que 38 % d'opacité, sur un gymnase à 134/255 de luminance.
+   Elle s'étire (85 % × 130 %) et se double d'une composante horizontale très
+   douce — celle demandée dans le brief — qui densifie la colonne de gauche
+   sans rien ajouter à droite.
+
+   Points de contrôle, mesurés sur le cadre 1920 × 880 :
+     CTA .88 · titre .83 · micro-label .77   → lisibles
+     visage de l'entraîneur .21 · premiers enfants .13 · groupe 0  → intacts */
+.hero::after{
+  background:
+    radial-gradient(85% 130% at -5% 100%,
+      rgba(3,10,20,.95) 0%,  rgba(3,10,20,.92) 20%, rgba(3,10,20,.87) 32%,
+      rgba(3,10,20,.78) 44%, rgba(3,10,20,.66) 52%, rgba(3,10,20,.46) 62%,
+      rgba(3,10,20,.24) 72%, rgba(3,10,20,.08) 82%, rgba(3,10,20,0)   92%),
+    linear-gradient(90deg,
+      rgba(3,10,20,.55) 0%,  rgba(3,10,20,.34) 18%, rgba(3,10,20,.14) 34%,
+      rgba(3,10,20,.03) 48%, rgba(3,10,20,0)   60%),
+    linear-gradient(to top,
+      #030a14 0%, rgba(3,10,20,.90) 5%, rgba(3,10,20,.62) 11%,
+      rgba(3,10,20,.32) 18%, rgba(3,10,20,.12) 26%, rgba(3,10,20,0) 36%),
+    linear-gradient(to bottom,
+      rgba(3,10,20,.46) 0%, rgba(3,10,20,.16) 7%, rgba(3,10,20,0) 14%)}
+.hero__h1{text-shadow:0 2px 24px rgba(3,8,16,.55)}
+.hero__kicker{color:rgba(233,240,248,.82)}
+
+/* V119.3 — le dégradé du téléphone, re-déclaré APRÈS celui du desktop.
+   Une @media n'ajoute aucune spécificité : le `.hero::after` de la V119.2,
+   écrit hors media query mais plus bas dans le fichier, écrasait celui du
+   bloc ≤640 px. Sur une colonne la lisibilité vient du bas, et le tiers
+   supérieur — où sont les visages — reste dégagé. */
+@media (max-width:640px){
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        #030a14 0%,           rgba(3,10,20,.95) 14%, rgba(3,10,20,.92) 28%,
+        rgba(3,10,20,.88) 40%, rgba(3,10,20,.82) 50%, rgba(3,10,20,.70) 58%,
+        rgba(3,10,20,.50) 66%, rgba(3,10,20,.28) 74%, rgba(3,10,20,.12) 82%,
+        rgba(3,10,20,.02) 90%, rgba(3,10,20,0)   96%),
+      linear-gradient(to bottom,
+        rgba(3,10,20,.52) 0%, rgba(3,10,20,.18) 8%, rgba(3,10,20,0) 15%)}
+  .hero__h1{text-shadow:0 1px 3px rgba(3,8,16,.55),0 2px 22px rgba(3,8,16,.6)}
+  .hero__sub{color:rgba(226,236,246,.88)}
+}
+
+/* V119.4 — le point médian appartient au segment qui le suit.
+   Posé en ::before, il ne peut plus rester orphelin en fin de ligne quand la
+   phrase passe à la ligne (constaté sur 390 px). */
+.hero__sub{display:block}
+.hero__sub span{display:inline}
+.hero__sub span + span::before{
+  content:"";display:inline-block;vertical-align:.25em;
+  width:3px;height:3px;border-radius:50%;
+  margin:0 .75em 0 .55em;background:rgba(226,236,246,.45)}
