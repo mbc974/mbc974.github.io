@@ -8422,3 +8422,24 @@ main > .section .cal-lieux{
 @media (min-width:641px) and (max-width:1000px){.hero__rot{font-size:inherit}}
 @media (max-width:640px){.hero__rot{font-size:inherit}}
 @media (max-width:340px){.hero__rot{font-size:inherit}}
+
+/* ============================================================================
+   V127 — LES DEUX PHOTOS DE GYMNASE PRENNENT DE LA PLACE
+   ----------------------------------------------------------------------------
+   Elles ne faisaient que 465 × 291 px dans un wrap de 1220 : la colonne
+   commune de la section était plafonnée à 960 px. Ce plafond n'est pas un
+   oubli — il aligne les cartes de lieu sur le bloc « planning » juste en
+   dessous, et le commentaire de la V-précédente le dit. On le relève donc
+   pour les DEUX blocs à la fois : l'alignement est conservé, les photos
+   gagnent 18 % de largeur.
+
+   Le cadre passe en même temps de 16/10 à 3/2, ce qui leur rend 26 % de
+   hauteur. Total : 465 × 291 -> 549 × 366, soit 40 % de surface en plus.
+   ============================================================================ */
+.calendrier .cal-lieux,
+.calendrier .pl{max-width:1120px}
+
+@media (min-width:721px){
+  .cal-lieu .cal-lieu__ph,
+  .cal-lieu__ph{aspect-ratio:3 / 2}
+}
