@@ -7455,3 +7455,81 @@ main > .section .cal-lieux{
     gap:.18rem;padding:.15rem 0 .7rem}
   .age__facts span{min-width:0}
 }
+
+/* ============================================================================
+   V117 — LE VOILE, RECALIBRE POUR UNE PHOTO CLAIRE
+   ----------------------------------------------------------------------------
+   Le hero passe d'une scene de plein air en contre-jour (luminance moyenne
+   ~60/255) a un gymnase eclaire au neon (~134/255) : le degrade de coin cale
+   pour la premiere ne fait plus rien sur la seconde, et le titre orange se
+   posait sur des maillots clairs.
+
+   La contrainte est plus fine qu'un simple « plus fonce » : il faut assombrir
+   le bas a gauche, ou se pose le texte, SANS toucher trois choses situees plus
+   haut — le visage de l'entraineur, l'ecusson MBC dans son dos, et les visages
+   des enfants. D'ou une ellipse volontairement basse (95 % de la hauteur
+   seulement) : a la hauteur de l'ecusson elle est deja retombee sous 15 %.
+
+   Le cadrage vertical remonte aussi a 50 % : la photo fait 2,503:1 pour un
+   cadre a 2,70:1, il n'y a que 7 % de hauteur a perdre, autant les prendre
+   equitablement en haut et en bas.
+   ============================================================================ */
+.hero__photo img{object-position:50% 50%}
+
+.hero::after{
+  background:
+    /* a) la zone de lecture, en bas a gauche */
+    radial-gradient(100% 95% at -5% 106%,
+      rgba(7,13,24,.96) 0%,  rgba(7,13,24,.93) 22%, rgba(7,13,24,.86) 36%,
+      rgba(7,13,24,.70) 48%, rgba(7,13,24,.46) 60%, rgba(7,13,24,.22) 72%,
+      rgba(7,13,24,.06) 84%, rgba(7,13,24,0)   94%),
+    /* b) raccord avec le bandeau chiffres */
+    linear-gradient(to top,
+      rgba(6,12,22,.72) 0%, rgba(6,12,22,.30) 8%, rgba(6,12,22,0) 19%),
+    /* c) lisibilite de la navigation */
+    linear-gradient(to bottom,
+      rgba(6,12,22,.52) 0%, rgba(6,12,22,.20) 7%, rgba(6,12,22,0) 14%),
+    /* d) teinte navy tres legere : elle raccroche la photo a la charte du site
+          sans eteindre le parquet ni les maillots */
+    linear-gradient(rgba(9,16,30,.14),rgba(9,16,30,.14))}
+
+@media (min-width:1001px){
+  .hero__photo img{object-position:50% 50%}
+}
+@media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
+  .hero__photo img{object-position:56% 50%}
+}
+@media (min-width:641px) and (max-width:1000px){
+  .hero__photo img{object-position:38% 50%}
+}
+
+/* Le voile s'eteignait un peu tot vers la droite : la fin du titre orange
+   (« TOUS ») retombait sur un fond clair. On elargit l'ellipse sans la faire
+   monter — l'ecusson dans le dos de l'entraineur reste au-dessus d'elle. */
+.hero::after{
+  background:
+    radial-gradient(118% 95% at -5% 106%,
+      rgba(7,13,24,.96) 0%,  rgba(7,13,24,.93) 22%, rgba(7,13,24,.86) 36%,
+      rgba(7,13,24,.70) 48%, rgba(7,13,24,.46) 60%, rgba(7,13,24,.22) 72%,
+      rgba(7,13,24,.06) 84%, rgba(7,13,24,0)   94%),
+    linear-gradient(to top,
+      rgba(6,12,22,.72) 0%, rgba(6,12,22,.30) 8%, rgba(6,12,22,0) 19%),
+    linear-gradient(to bottom,
+      rgba(6,12,22,.52) 0%, rgba(6,12,22,.20) 7%, rgba(6,12,22,0) 14%),
+    linear-gradient(rgba(9,16,30,.14),rgba(9,16,30,.14))}
+
+/* Telephone : la vignette portrait est presque carree (0,99:1), le voile doit
+   donc remonter du bas comme avant, mais un cran plus fort — le gymnase est
+   clair. */
+@media (max-width:640px){
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        rgba(7,13,24,.95) 0%,  rgba(7,13,24,.92) 14%, rgba(7,13,24,.87) 26%,
+        rgba(7,13,24,.79) 36%, rgba(7,13,24,.66) 45%, rgba(7,13,24,.48) 54%,
+        rgba(7,13,24,.30) 63%, rgba(7,13,24,.14) 72%, rgba(7,13,24,.04) 82%,
+        rgba(7,13,24,0)   90%),
+      linear-gradient(to bottom,
+        rgba(6,12,22,.55) 0%, rgba(6,12,22,.20) 8%, rgba(6,12,22,0) 15%),
+      linear-gradient(rgba(9,16,30,.12),rgba(9,16,30,.12))}
+}
