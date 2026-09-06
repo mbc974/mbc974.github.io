@@ -7373,3 +7373,66 @@ main > .section .cal-lieux{
   .keyfig__l{margin-top:.42rem}
   .keyfig__go{margin-top:.62rem}
 }
+
+/* ============================================================================
+   V115 — PLUS DE NUMEROTATION, ET DES CHIFFRES QUI TIENNENT L'ECRAN
+   ----------------------------------------------------------------------------
+   Les « 01 / 02 / 03 » sortent : ils numerotaient une liste de trois elements
+   qui se lisent tres bien sans. Le filet orange, lui, reste — c'est lui qui
+   pose chaque colonne et qui se trace a l'arrivee ; il passe simplement du
+   pseudo-element du numero a celui du lien.
+
+   Les valeurs montent encore d'un cran, de sorte que le hero et le bandeau
+   remplissent ensemble le premier ecran : la section suivante (fond quadrille)
+   ne doit plus pointer sous le bandeau.
+   ============================================================================ */
+.keyfig__n{display:none}
+
+/* Le filet reprend le role de reperage, sur le lien lui-meme. */
+.keyfig__a{position:relative}
+.keyfig__a::before{
+  content:"";position:absolute;top:0;left:0;height:2px;width:0;
+  border-radius:2px;
+  background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0));
+  transition:width .85s var(--ease-out)}
+.keyfig.in .keyfig__i:nth-child(1) .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition-delay:.30s}
+.keyfig.in .keyfig__i:nth-child(2) .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition-delay:.42s}
+.keyfig.in .keyfig__i:nth-child(3) .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition-delay:.54s}
+
+@media (min-width:1001px){
+  .keyfig-sec{padding:clamp(2.4rem,3.6vw,3.9rem) 0 !important}
+  .keyfig__a{padding-top:1.5rem}
+  .keyfig__v{font-size:clamp(2.9rem,4.5vw,5.4rem)}
+  .keyfig__l{font-size:clamp(1.18rem,1.4vw,1.6rem);margin-top:.6rem}
+  .keyfig__l span{font-size:.82em;margin-top:.3rem}
+  .keyfig__go{font-size:.94rem;margin-top:1rem;letter-spacing:.09em}
+}
+
+@media (min-width:681px) and (max-width:1000px){
+  .keyfig__a{padding-top:1.2rem}
+  .keyfig__v{font-size:clamp(1.9rem,4.2vw,2.9rem)}
+  .keyfig__l{font-size:1.05rem}
+}
+
+@media (max-width:680px){
+  .keyfig__a{padding-top:1.1rem}
+  .keyfig__v{font-size:clamp(2.3rem,9.2vw,3.2rem)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition:none}
+}
+
+/* --------------------------------------------------------------------------
+   V115.1 — les trois colonnes doivent rester d'egale hauteur
+   --------------------------------------------------------------------------
+   « Des premiers dribbles aux Seniors » passait sur deux lignes alors que les
+   deux autres libelles tenaient sur une : la colonne du milieu descendait plus
+   bas que ses voisines. On elargit un peu les colonnes (moins de padding
+   lateral) et on retire deux points au libelle — la difference ne se voit pas,
+   l'alignement si. */
+@media (min-width:1001px){
+  .keyfig__i{padding-inline:clamp(.8rem,2vw,1.9rem)}
+  .keyfig__i:first-child{padding-left:0}
+  .keyfig__l{font-size:clamp(1.1rem,1.26vw,1.44rem)}
+}
