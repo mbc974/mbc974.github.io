@@ -7940,3 +7940,50 @@ main > .section .cal-lieux{
   content:"";display:inline-block;vertical-align:.25em;
   width:3px;height:3px;border-radius:50%;
   margin:0 .75em 0 .55em;background:rgba(226,236,246,.45)}
+
+/* ============================================================================
+   V120 — LES PLAQUES PARTENAIRES RESPIRENT
+   ----------------------------------------------------------------------------
+   Les logos plafonnaient à 46 px de haut dans des plaques de 88 px : sur un
+   écran large, cinq timbres-poste alignés. Ce sont des partenaires qui
+   financent le club, ils méritent d'être lisibles.
+
+   Les fichiers sources font 360 px de large : monter à 96 px de hauteur reste
+   très en dessous de leur définition, il n'y a donc aucune perte de netteté.
+   Le `max-width:100%` protège le seul logo au format paysage (CPA Paysage,
+   1,75:1), qui atteindrait 168 px de large : il se réduit tout seul plutôt que
+   de déborder de sa plaque.
+   ============================================================================ */
+.sponsors-row{gap:clamp(.8rem,1.6vw,1.4rem)}
+.sponsors-row .sponsor-card{
+  min-height:clamp(120px,11vw,158px);
+  padding:clamp(1rem,1.6vw,1.5rem)}
+.sponsors-row img{
+  max-height:clamp(72px,6.4vw,96px);
+  max-width:100%;width:auto;height:auto;object-fit:contain}
+
+/* Sous 760 px la grille passe à trois colonnes : les plaques s'élargissent,
+   les logos peuvent donc rester grands. */
+@media (max-width:760px){
+  .sponsors-row .sponsor-card{min-height:118px;padding:1rem}
+  .sponsors-row img{max-height:78px}
+}
+@media (max-width:420px){
+  .sponsors-row .sponsor-card{min-height:104px;padding:.85rem}
+  .sponsors-row img{max-height:68px}
+}
+
+/* V120.1 — encore un cran. À 92 px dans une plaque de 207, il restait 30 % de
+   marge inutile de chaque côté. On resserre le rembourrage et on remonte le
+   plafond : les logos carrés atteignent 108 px, et le seul logo paysage se
+   borne tout seul à la largeur disponible. */
+.sponsors-row .sponsor-card{padding:clamp(.9rem,1.25vw,1.15rem)}
+.sponsors-row img{max-height:clamp(78px,7.2vw,108px)}
+@media (max-width:760px){
+  .sponsors-row .sponsor-card{min-height:124px;padding:.9rem}
+  .sponsors-row img{max-height:86px}
+}
+@media (max-width:420px){
+  .sponsors-row .sponsor-card{min-height:108px;padding:.75rem}
+  .sponsors-row img{max-height:74px}
+}
