@@ -7315,3 +7315,61 @@ main > .section .cal-lieux{
 @media (max-width:640px){
   .hero{min-height:clamp(540px,78svh,700px) !important}
 }
+
+/* ============================================================================
+   V114 — LES TROIS CHIFFRES CESSENT D'ETRE UNE NOTE DE BAS DE PAGE
+   ----------------------------------------------------------------------------
+   Ils portent les trois questions que se pose un parent — combien, a partir de
+   quel age, ou — et chacun est un lien vers la reponse. A 49 px de valeur et
+   16 px de libelle sous un titre de hero a 65 px, ils se lisaient comme une
+   mention legale. Tout le bloc monte d'un cran, proportionnellement : la
+   valeur d'abord, mais aussi le libelle, le numero et son filet, et le lien.
+   Le bandeau gagne l'air qui va avec, sinon l'agrandissement ne fait que le
+   serrer.
+   ============================================================================ */
+@media (min-width:1001px){
+  .keyfig-sec{padding:clamp(2rem,3vw,3.1rem) 0 !important}
+  .keyfig__a{padding-top:1.55rem}
+  .keyfig__v{font-size:clamp(2.4rem,3.7vw,4.5rem)}
+  .keyfig__l{font-size:clamp(1.05rem,1.15vw,1.32rem);margin-top:.55rem}
+  .keyfig__l span{font-size:.86em;margin-top:.22rem}
+  .keyfig__n{font-size:.84rem;letter-spacing:.26em}
+  .keyfig__n::after{width:clamp(26px,3vw,44px)}
+  .keyfig.in .keyfig__i:nth-child(1) .keyfig__n::after,
+  .keyfig.in .keyfig__i:nth-child(2) .keyfig__n::after,
+  .keyfig.in .keyfig__i:nth-child(3) .keyfig__n::after{width:clamp(26px,3vw,44px)}
+  .keyfig__go{font-size:.82rem;margin-top:.85rem;letter-spacing:.09em}
+}
+
+/* Tablette : meme intention, un cran en dessous. */
+@media (min-width:681px) and (max-width:1000px){
+  .keyfig-sec{padding:clamp(1.6rem,2.6vw,2.2rem) 0 !important}
+  .keyfig__v{font-size:clamp(1.75rem,3.9vw,2.6rem)}
+  .keyfig__l{font-size:1rem}
+  .keyfig__go{font-size:.76rem;margin-top:.6rem}
+}
+
+/* Telephone : les trois blocs sont empiles, la valeur peut donc s'etaler. */
+@media (max-width:680px){
+  .keyfig__v{font-size:clamp(2.1rem,8.6vw,2.9rem)}
+  .keyfig__l{font-size:1.02rem;margin-top:.45rem}
+  .keyfig__go{font-size:.78rem;margin-top:.7rem}
+  .keyfig__i{padding:1.25rem 0}
+}
+
+/* --------------------------------------------------------------------------
+   V114.1 — l'equilibre du premier ecran
+   --------------------------------------------------------------------------
+   Les valeurs agrandies poussaient le bandeau a 310 px : la ligne « Ce que
+   couvre la licence » tombait sous la ligne de flottaison sur un ecran de
+   963 px. On resserre les interlignes du bloc (l'air etait dans les marges,
+   pas dans les caracteres) et on rend 40 px au hero. Les trois chiffres
+   gardent leur nouvelle taille — c'etait le point. */
+@media (min-width:1001px){
+  .hero{min-height:clamp(560px,max(68svh,37vw),920px) !important}
+  .keyfig-sec{padding:clamp(1.7rem,2.4vw,2.5rem) 0 !important}
+  .keyfig__a{padding-top:1.35rem}
+  .keyfig__v{font-size:clamp(2.3rem,3.5vw,4.2rem)}
+  .keyfig__l{margin-top:.42rem}
+  .keyfig__go{margin-top:.62rem}
+}
