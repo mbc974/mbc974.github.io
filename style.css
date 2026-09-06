@@ -6095,10 +6095,13 @@ main > .section .cal-lieux{
    toutes quand la section approche, et la bascule est instantanée. */
 
 .bh-wrap{
-  float:right;width:clamp(104px,15vw,168px);
-  margin:.15rem 0 1rem clamp(1rem,2.6vw,2rem)}
+  float:right;width:clamp(140px,19vw,240px);
+  margin:.15rem 0 1rem clamp(1.1rem,2.8vw,2.2rem)}
+/* 4:5 et non plus 2:3 : le cadrage porte desormais sur la tete et le buste,
+   c'est la que se lit la difference d'age. Un format plus carre laisse la
+   place aux epaules sans rogner le visage. */
 .bh{
-  position:relative;aspect-ratio:2 / 3;overflow:hidden;
+  position:relative;aspect-ratio:4 / 5;overflow:hidden;
   border-radius:10px;border:1px solid var(--hair);
   background:var(--surf-2);
   box-shadow:0 14px 34px -14px rgba(3,7,15,.75)}
@@ -6128,7 +6131,7 @@ main > .section .cal-lieux{
 @media (max-width:560px){
   /* Sous cette largeur le panneau n'a plus la place d'habiller la vignette :
      elle repasse au fil du texte, centrée, en plus petit. */
-  .bh-wrap{float:none;width:104px;margin:0 auto .9rem}
+  .bh-wrap{float:none;width:150px;margin:0 auto .9rem}
 }
 
 @media (prefers-reduced-motion:reduce){
