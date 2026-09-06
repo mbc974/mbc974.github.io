@@ -7436,3 +7436,22 @@ main > .section .cal-lieux{
   .keyfig__i:first-child{padding-left:0}
   .keyfig__l{font-size:clamp(1.1rem,1.26vw,1.44rem)}
 }
+
+/* ============================================================================
+   V116 — LE PANNEAU DE CATEGORIE SANS LA VIGNETTE
+   ----------------------------------------------------------------------------
+   La vignette flottait a droite et retrecissait le panneau : chaque colonne
+   « Creneau / Lieu / Formule » etait alors trop etroite pour tenir le libelle
+   et la valeur sur une meme ligne, et les trois se presentaient empilees. Le
+   flottant parti, la premiere colonne est devenue assez large pour les mettre
+   cote a cote — les trois ne se lisaient plus pareil.
+
+   On fixe la presentation au lieu de la laisser dependre de la place : le
+   libelle au-dessus, la valeur en dessous, dans les trois colonnes.
+   ============================================================================ */
+@media (min-width:700px){
+  .age__facts li{
+    flex-direction:column;align-items:flex-start;
+    gap:.18rem;padding:.15rem 0 .7rem}
+  .age__facts span{min-width:0}
+}
