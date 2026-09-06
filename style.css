@@ -8067,3 +8067,83 @@ main > .section .cal-lieux{
    boîte inline-block et le texte qui la suit. On rend chaque segment
    insécable — ils sont courts, seule la phrase entière casse. */
 .hero__sub span{white-space:nowrap}
+
+/* ============================================================================
+   V122 — LES PARTENAIRES ONT UN NOM
+   ----------------------------------------------------------------------------
+   Un logo seul ne dit rien à qui ne connaît pas déjà l'enseigne, et rien
+   n'indiquait que la plaque menait quelque part. Le nom se pose désormais SOUS
+   la plaque, sur le fond navy — la plaque blanche reste dédiée au logo — avec
+   une petite flèche sortante qui n'apparaît vraiment qu'au survol.
+
+   La carte reste un seul lien : c'est toute la colonne (plaque + nom) qui est
+   cliquable, pas seulement le texte.
+   ============================================================================ */
+.sponsors-row{align-items:start}
+.sponsors-row .sponsor-card{
+  display:grid;grid-template-rows:auto auto;gap:.85rem;
+  min-height:0;padding:0;
+  background:none;border:0;border-radius:0;
+  place-items:stretch;text-decoration:none}
+.sponsors-row .sponsor-card:hover{background:none;border-color:transparent}
+
+/* La plaque reprend exactement ce que portait la carte. */
+.sponsor-card__plate{
+  display:grid;place-items:center;
+  min-height:clamp(120px,11vw,158px);
+  padding:clamp(.9rem,1.25vw,1.15rem);
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-sm);
+  transition:background .25s,border-color .25s,transform .25s var(--ease-out)}
+.sponsor-card:hover .sponsor-card__plate{
+  background:#fff;border-color:var(--orange-vif);transform:translateY(-3px)}
+
+.sponsor-card__name{
+  display:flex;align-items:center;justify-content:center;gap:.4em;
+  text-align:center;text-wrap:balance;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.08em;font-size:.76rem;line-height:1.35;
+  color:var(--txt-soft);transition:color .25s}
+.sponsor-card:hover .sponsor-card__name,
+.sponsor-card:focus-visible .sponsor-card__name{color:var(--orange-vif)}
+.sponsor-card__ext{
+  width:.85em;height:.85em;flex:none;
+  opacity:.45;transform:translate(-1px,1px);
+  transition:opacity .25s,transform .25s var(--ease-out)}
+.sponsor-card:hover .sponsor-card__ext{opacity:1;transform:none}
+
+.sponsor-card:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px;border-radius:var(--r-sm)}
+
+@media (max-width:760px){
+  .sponsor-card__plate{min-height:124px;padding:.9rem}
+  .sponsors-row .sponsor-card{gap:.7rem}
+  .sponsor-card__name{font-size:.72rem;letter-spacing:.06em}
+}
+@media (max-width:420px){
+  .sponsor-card__plate{min-height:108px;padding:.75rem}
+  .sponsor-card__name{font-size:.7rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .sponsor-card:hover .sponsor-card__plate{transform:none}
+  .sponsor-card__ext{transition:none}
+}
+
+/* V122.1 — le rectangle fantôme autour des cartes.
+   `.sponsor-card` gardait un `box-shadow` d'un bloc antérieur. Sur un élément
+   devenu transparent, une ombre ne dessine plus un relief : elle dessine la
+   silhouette de la boîte, nom compris. On la retire de la carte et on la
+   redonne à la plaque, qui est le seul objet à devoir flotter. */
+.sponsors-row .sponsor-card{box-shadow:none}
+.sponsor-card__plate{box-shadow:0 6px 18px -10px rgba(3,7,15,.55)}
+.sponsor-card:hover .sponsor-card__plate{box-shadow:0 14px 30px -12px rgba(3,7,15,.65)}
+
+/* V122.1b — la flèche doit suivre le dernier mot, pas flotter à droite.
+   En flex, un nom sur deux lignes laissait l'icône centrée verticalement à
+   l'extrémité du bloc. En inline, elle se comporte comme un caractère de plus
+   et reste accrochée à la fin du texte. Un petit retrait latéral empêche les
+   noms longs de toucher les bords de la colonne. */
+.sponsor-card__name{
+  display:block;padding-inline:.4rem}
+.sponsor-card__ext{
+  display:inline-block;vertical-align:-.04em;margin-left:.35em}
