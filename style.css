@@ -7987,3 +7987,83 @@ main > .section .cal-lieux{
   .sponsors-row .sponsor-card{min-height:108px;padding:.75rem}
   .sponsors-row img{max-height:74px}
 }
+
+/* ============================================================================
+   V121 — TROIS CORRECTIONS SUR LA BANDE DE CHIFFRES ET LE HAUT DE LA PHOTO
+   ----------------------------------------------------------------------------
+   1. LES TRAITS HORIZONTAUX. Ils ne venaient pas d'un décor mais d'un
+      `border:2px solid` posé sur `.keyfig__a` par un bloc antérieur. La V119.1
+      avait bien éteint le filet orange (`::before`), mais pas cette bordure —
+      d'où trois lignes grises au-dessus des valeurs.
+
+   2. LE CENTRAGE. La première colonne avait `padding-left:0` et la dernière
+      `padding-right:0` pour aligner le bandeau sur le titre du hero : le texte
+      était donc collé à gauche dans la colonne 1 et rentré de 48 px dans les
+      deux autres. Les trois colonnes reçoivent maintenant le même retrait et
+      leur contenu est centré entre les séparateurs verticaux.
+
+   3. LE PARQUET ÉCAILLÉ. La peinture bleue usée du coin supérieur droit
+      attirait l'œil hors du sujet. Plutôt que de la masquer — ce qui se
+      verrait — on l'assombrit doucement : un halo d'angle qui plafonne à 52 %
+      et retombe à 3 % avant d'atteindre le premier enfant. Le regard n'y va
+      plus, mais rien ne paraît caché.
+   ============================================================================ */
+
+/* --- 1 et 2 : le bandeau de chiffres -------------------------------------- */
+.keyfig__a{border:0;border-radius:0}
+.keyfig__i{padding-inline:clamp(1.2rem,3vw,3rem)}
+.keyfig__i:first-child{padding-left:clamp(1.2rem,3vw,3rem)}
+.keyfig__i:last-child{padding-right:clamp(1.2rem,3vw,3rem)}
+.keyfig__a{text-align:center}
+.keyfig__l span{margin-inline:auto}
+.keyfig__go{justify-content:center}
+
+@media (max-width:900px){
+  /* Empilées, les colonnes n'ont plus de séparateur vertical : le texte
+     revient à gauche, sinon il flotte au milieu d'une pleine largeur. */
+  .keyfig__i{padding-inline:0}
+  .keyfig__i:first-child,
+  .keyfig__i:last-child{padding-inline:0}
+  .keyfig__a{text-align:left}
+  .keyfig__go{justify-content:flex-start}
+}
+
+/* --- 3 : le coin supérieur droit de la photo ------------------------------ */
+.hero::after{
+  background:
+    radial-gradient(58% 66% at 103% -4%,
+      rgba(3,10,20,.52) 0%,  rgba(3,10,20,.40) 26%, rgba(3,10,20,.23) 46%,
+      rgba(3,10,20,.09) 64%, rgba(3,10,20,0)   80%),
+    radial-gradient(85% 130% at -5% 100%,
+      rgba(3,10,20,.95) 0%,  rgba(3,10,20,.92) 20%, rgba(3,10,20,.87) 32%,
+      rgba(3,10,20,.78) 44%, rgba(3,10,20,.66) 52%, rgba(3,10,20,.46) 62%,
+      rgba(3,10,20,.24) 72%, rgba(3,10,20,.08) 82%, rgba(3,10,20,0)   92%),
+    linear-gradient(90deg,
+      rgba(3,10,20,.55) 0%,  rgba(3,10,20,.34) 18%, rgba(3,10,20,.14) 34%,
+      rgba(3,10,20,.03) 48%, rgba(3,10,20,0)   60%),
+    linear-gradient(to top,
+      #030a14 0%, rgba(3,10,20,.90) 5%, rgba(3,10,20,.62) 11%,
+      rgba(3,10,20,.32) 18%, rgba(3,10,20,.12) 26%, rgba(3,10,20,0) 36%),
+    linear-gradient(to bottom,
+      rgba(3,10,20,.46) 0%, rgba(3,10,20,.16) 7%, rgba(3,10,20,0) 14%)}
+
+/* La fenêtre du téléphone est cadrée sur le groupe : ce parquet n'y figure
+   pas, son dégradé reste donc celui de la V119.3, re-déclaré ici pour repasser
+   devant celui du desktop. */
+@media (max-width:640px){
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        #030a14 0%,           rgba(3,10,20,.95) 14%, rgba(3,10,20,.92) 28%,
+        rgba(3,10,20,.88) 40%, rgba(3,10,20,.82) 50%, rgba(3,10,20,.70) 58%,
+        rgba(3,10,20,.50) 66%, rgba(3,10,20,.28) 74%, rgba(3,10,20,.12) 82%,
+        rgba(3,10,20,.02) 90%, rgba(3,10,20,0)   96%),
+      linear-gradient(to bottom,
+        rgba(3,10,20,.52) 0%, rgba(3,10,20,.18) 8%, rgba(3,10,20,0) 15%)}
+}
+
+/* V121.1 — le point médian se détachait encore de son segment.
+   Le poser en ::before ne suffit pas : le navigateur peut couper entre une
+   boîte inline-block et le texte qui la suit. On rend chaque segment
+   insécable — ils sont courts, seule la phrase entière casse. */
+.hero__sub span{white-space:nowrap}
