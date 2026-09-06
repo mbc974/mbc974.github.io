@@ -7096,3 +7096,76 @@ main > .section .cal-lieux{
   .hero__h1{max-width:min(78%,640px)}
   .hero__rot{font-size:clamp(2.1rem,5.4vw,3.4rem)}
 }
+
+/* ============================================================================
+   V112 — LE HERO RESPIRE, LE BANDEAU CHIFFRES PREND LA PAROLE
+   ----------------------------------------------------------------------------
+   L'image mangeait l'ecran : 886 px de haut en 1920, soit 82 % de la
+   photographie affichee, et les trois chiffres se retrouvaient relegues en
+   bordure basse. Deux mouvements, en sens inverse.
+
+   1. LE HERO RACCOURCIT. La largeur ne bouge pas (elle etait juste), c'est la
+      hauteur qui descend d'environ 15 %. Attention : sur cette photo en 16:9
+      calee sur la largeur, raccourcir le cadre revient a rogner davantage en
+      hauteur. La formule est donc indexee sur la LARGEUR (39vw) et non plus
+      seulement sur la hauteur d'ecran : c'est ce qui maintient la bande
+      visible autour de 0,12 -> 0,83 de la photo quel que soit le moniteur —
+      le panneau et l'arceau restent entiers en haut, la coupe tombe au niveau
+      du genou en bas, jamais sur la cheville.
+
+   2. LE BANDEAU CHIFFRES ENTRE EN SCENE. Il gagne un peu d'air, ses valeurs
+      grossissent, et surtout il ARRIVE au lieu d'etre deja la : les trois
+      colonnes montent l'une apres l'autre, le filet orange du numero se trace,
+      la separation verticale se deploie, et le tarif se compte de 0 a 95.
+      Tout cela dure moins d'une seconde et demie, et disparait entierement
+      sous prefers-reduced-motion.
+   ============================================================================ */
+
+/* --- 1. Le hero raccourcit -------------------------------------------------- */
+.hero{min-height:clamp(560px,max(62svh,39vw),940px) !important}
+
+/* --- 2. Le bandeau chiffres respire ---------------------------------------- */
+.keyfig-sec{padding:clamp(1.45rem,2.1vw,2rem) 0 !important}
+@media (min-width:1001px){
+  .keyfig__v{font-size:clamp(1.9rem,2.9vw,3.1rem)}
+  .keyfig__a{padding-top:1.2rem}
+}
+
+/* --- 3. L'entree en trois temps -------------------------------------------- */
+/* Le <ul> porte .reveal, qui fait deja monter tout le bloc de 34 px d'un seul
+   tenant. On l'annule : c'est chaque colonne qui doit arriver, pas le bloc. */
+.keyfig.reveal{opacity:1;transform:none;transition:none}
+
+.keyfig__i{
+  opacity:0;transform:translateY(18px);
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+.keyfig.in .keyfig__i{opacity:1;transform:none}
+.keyfig.in .keyfig__i:nth-child(2){transition-delay:.12s}
+.keyfig.in .keyfig__i:nth-child(3){transition-delay:.24s}
+
+/* Le filet orange derriere 01 / 02 / 03 se trace apres coup. */
+.keyfig__n::after{width:0;transition:width .85s var(--ease-out)}
+.keyfig.in .keyfig__i:nth-child(1) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.34s}
+.keyfig.in .keyfig__i:nth-child(2) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.46s}
+.keyfig.in .keyfig__i:nth-child(3) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.58s}
+
+/* La separation entre colonnes se deploie de haut en bas. Une bordure ne sait
+   pas s'animer en hauteur : on la remplace par un trait en pseudo-element,
+   uniquement la ou les colonnes sont cote a cote (au-dela de 680 px). */
+@media (min-width:681px){
+  .keyfig__i + .keyfig__i{border-left-color:transparent;position:relative}
+  .keyfig__i + .keyfig__i::before{
+    content:"";position:absolute;left:-1px;top:0;bottom:0;width:1px;
+    background:rgba(191,210,228,.12);
+    transform:scaleY(0);transform-origin:top center;
+    transition:transform .85s var(--ease-out)}
+  .keyfig.in .keyfig__i:nth-child(2)::before{transform:scaleY(1);transition-delay:.18s}
+  .keyfig.in .keyfig__i:nth-child(3)::before{transform:scaleY(1);transition-delay:.30s}
+}
+
+/* --- 4. Mouvement reduit : tout est deja en place -------------------------- */
+@media (prefers-reduced-motion:reduce){
+  .keyfig__i{opacity:1;transform:none;transition:none}
+  .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition:none}
+  .keyfig__i + .keyfig__i::before{transform:scaleY(1);transition:none}
+}
