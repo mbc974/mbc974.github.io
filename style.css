@@ -6082,68 +6082,57 @@ main > .section .cal-lieux{
 }
 
 /* ============================================================
-   V102 "LE JOUEUR SE DESSINE" — selecteur d'age
+   V102 — LE JOUEUR DE LA TRANCHE D'ÂGE (sélecteur d'âge)
    ============================================================
-   Six silhouettes, une par tranche, tracees au trait a chaque
-   changement d'onglet. Ce qui les distingue n'est pas un habillage
-   mais deux marqueurs anatomiques : le rapport tete/corps (5 tetes
-   chez les 3-6 ans, pres de 8 a l'age adulte) et la taille du
-   ballon, qui grandit avec le joueur. Meme cadre et meme sol pour
-   les six : la croissance se lit en passant d'un onglet a l'autre.
+   Une vignette par tranche, révélée à chaque changement d'onglet.
+   Ce qui les distingue est le sujet lui-même : un enfant, puis un
+   jeune, puis un adulte. Les six partagent le même cadre 2:3 et le
+   même traitement, donc la progression se lit d'un onglet à l'autre.
 
-   Le trace utilise pathLength="1" sur chaque primitive : le dash
-   vaut 1 quelle que soit la longueur reelle du trait, donc aucune
-   mesure en JS et un rythme identique pour un bras et pour une tete. */
+   Les six sont EMPILÉES et jamais display:none : une image cachée de
+   cette façon n'est pas chargée par le lazy-loading, et le premier
+   changement d'onglet attendrait alors le réseau. Ici elles arrivent
+   toutes quand la section approche, et la bascule est instantanée. */
 
 .bh-wrap{
-  float:right;width:clamp(96px,13vw,146px);
-  margin:.2rem 0 1rem clamp(1rem,2.6vw,2rem)}
-.bh{width:100%;height:auto;display:block;overflow:visible}
-/* Surtout PAS de vector-effect:non-scaling-stroke ici : il fait calculer le
-   motif de pointilles en unites ecran, ce qui annule la normalisation
-   pathLength="1" et laisse tous les traits inacheves. L'epaisseur suit donc
-   l'echelle du viewBox, ce qui est le comportement voulu de toute facon. */
-.bh *{
-  fill:none;stroke:var(--bleu-glacier);stroke-width:3.4;
-  stroke-linecap:round;stroke-linejoin:round}
-.bh__sol{stroke:var(--hair-2);stroke-width:2}
-/* Le ballon est opaque : il masque le buste ou le crane qui passeraient
-   derriere, sans qu'on ait a decouper les traits. */
-.bh__ballon{stroke:var(--orange-vif);fill:var(--surf-2)}
-.bh__f{display:none}
-.bh__f.is-on{display:block}
+  float:right;width:clamp(104px,15vw,168px);
+  margin:.15rem 0 1rem clamp(1rem,2.6vw,2rem)}
+.bh{
+  position:relative;aspect-ratio:2 / 3;overflow:hidden;
+  border-radius:10px;border:1px solid var(--hair);
+  background:var(--surf-2);
+  box-shadow:0 14px 34px -14px rgba(3,7,15,.75)}
+.bh__f{
+  position:absolute;inset:0;display:block;
+  opacity:0;pointer-events:none}
+.bh__f img{width:100%;height:100%;object-fit:cover;display:block}
+/* Le pied de la vignette se fond dans le panneau, et un filet orange la
+   pose sur une ligne — le même vocabulaire que la couture du hero. */
+.bh::after{
+  content:"";position:absolute;inset:auto 0 0 0;height:38%;pointer-events:none;
+  background:linear-gradient(to top,rgba(11,19,35,.82),transparent)}
+.bh::before{
+  content:"";position:absolute;inset:auto 0 0 0;height:2px;z-index:2;
+  background:linear-gradient(90deg,
+    transparent,rgba(232,130,42,.9) 22%,rgba(232,130,42,.9) 78%,transparent)}
 
-@keyframes bhTrace{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes bhBallon{
-  from{stroke-dashoffset:1;fill-opacity:0}
-  to{stroke-dashoffset:0;fill-opacity:1}}
-
-/* « both » et pas « forwards » : pendant le delai, l'element doit deja tenir
-   l'etat de depart. Avec forwards seul, le ballon affichait son disque opaque
-   AVANT d'etre trace. :not(title) evite d'animer un noeud non rendu. */
-.bh__f.is-on > *:not(title){stroke-dasharray:1;stroke-dashoffset:1;
-  animation:bhTrace .38s var(--ease-out) both}
-/* L'enfant <title> est le 1er enfant : le dessin commence au 2e.
-   Ordre du trace : tete, epaules, buste, jambes, bras, ballon. */
-.bh__f.is-on > :nth-child(2){animation-delay:0s}
-.bh__f.is-on > :nth-child(3){animation-delay:.07s}
-.bh__f.is-on > :nth-child(4){animation-delay:.13s}
-.bh__f.is-on > :nth-child(5){animation-delay:.2s}
-.bh__f.is-on > :nth-child(6){animation-delay:.26s}
-.bh__f.is-on > :nth-child(7){animation-delay:.33s}
-.bh__f.is-on > :nth-child(8){animation-delay:.39s}
-.bh__f.is-on > .bh__ballon{animation-name:bhBallon;animation-delay:.46s;
-  animation-duration:.34s;fill-opacity:0}
+/* La révélation : le joueur monte et se dévoile du bas vers le haut.
+   inset(100% 0 0 0) = bord haut descendu à fond, donc rien de visible ;
+   l'animation le remonte. */
+@keyframes bhReveal{
+  from{opacity:0;transform:translateY(9px) scale(1.035);clip-path:inset(100% 0 0 0)}
+  to  {opacity:1;transform:none;clip-path:inset(0 0 0 0)}
+}
+.bh__f.is-on{opacity:1;animation:bhReveal .52s var(--ease-out) both}
 
 @media (max-width:560px){
-  /* Sous cette largeur le panneau n'a plus la place d'habiller la figure :
-     elle repasse au fil du texte, centree, en plus petit. */
-  .bh-wrap{float:none;width:78px;margin:0 auto .9rem}
+  /* Sous cette largeur le panneau n'a plus la place d'habiller la vignette :
+     elle repasse au fil du texte, centrée, en plus petit. */
+  .bh-wrap{float:none;width:104px;margin:0 auto .9rem}
 }
 
 @media (prefers-reduced-motion:reduce){
-  .bh__f.is-on > *:not(title){animation:none;stroke-dashoffset:0}
-  .bh__f.is-on > .bh__ballon{fill-opacity:1}
+  .bh__f.is-on{animation:none;opacity:1;transform:none;clip-path:none}
 }
 
 /* ============================================================================

@@ -57,7 +57,7 @@
 <link rel="preload" as="image" href="assets/images/mbc-hero-duo-ruisseau-blanc-980.avif" type="image/avif" fetchpriority="high"
       imagesrcset="assets/images/mbc-hero-duo-ruisseau-blanc-p-420.avif 420w, assets/images/mbc-hero-duo-ruisseau-blanc-p-640.avif 640w, assets/images/mbc-hero-duo-ruisseau-blanc-p-780.avif 780w, assets/images/mbc-hero-duo-ruisseau-blanc-700.avif 700w, assets/images/mbc-hero-duo-ruisseau-blanc-980.avif 980w, assets/images/mbc-hero-duo-ruisseau-blanc-1300.avif 1300w"
       imagesizes="(max-width:900px) 100vw, 56vw">
-<link rel="stylesheet" href="style.css?v=2eb16bf4">
+<link rel="stylesheet" href="style.css?v=49bdfe15">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -716,23 +716,46 @@
         <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-5" id="age-t-5">15&ndash;17 ans</button>
         <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-6" id="age-t-6">Adulte</button>
       </div>
-      <!-- Le joueur se dessine a chaque changement de tranche. Ce n'est pas
-           un decor : le rapport tete/corps (5 tetes chez les tout-petits,
-           pres de 8 a l'age adulte) et la taille du ballon sont les deux
-           marqueurs qui font lire un age. Les six figures partagent le meme
-           sol et le meme cadre, donc la croissance se voit d'un onglet a
-           l'autre. Purement decoratif pour les lecteurs d'ecran : le contenu
-           utile est dans le panneau. Sans JS, la premiere figure reste. -->
+      <!-- Une vignette par tranche d'age : c'est le JOUEUR qui change, pas un
+           habillage. Les six partagent le meme cadre 2:3 et le meme traitement,
+           donc la progression d'age se lit en passant d'un onglet a l'autre.
+           Les six sont dans le DOM et empilees : le navigateur les charge quand
+           la section approche, et le changement d'onglet n'attend aucun reseau.
+           Decoratif pour les lecteurs d'ecran (le contenu utile est dans le
+           panneau) ; sans JS la premiere reste affichee. -->
       <div class="bh-wrap" aria-hidden="true">
-        <svg class="bh" viewBox="0 0 100 200" aria-hidden="true" focusable="false">
-          <line class="bh__sol" x1="12" y1="188" x2="88" y2="188" pathLength="1"/>
-          <g class="bh__f is-on" data-bh="1"><title>Baby Basket</title><circle cx="50" cy="112.4" r="8.4" pathLength="1"/><path d="M42.9 124.5 L57.1 124.5" pathLength="1"/><path d="M50 120.8 L50 157.8" pathLength="1"/><path d="M50 157.8 L44.9 172.9 L41.1 188" pathLength="1"/><path d="M50 157.8 L55.1 172.9 L58.9 188" pathLength="1"/><path d="M42.9 124.5 L35.9 138.8 L43.7 145.3" pathLength="1"/><path d="M57.1 124.5 L64.1 138.8 L56.3 145.3" pathLength="1"/><circle class="bh__ballon" cx="50" cy="141.8" r="7" pathLength="1"/></g>
-          <g class="bh__f" data-bh="2"><title>Ecole de Basket</title><circle cx="50" cy="93.1" r="9.1" pathLength="1"/><path d="M42.3 106.3 L57.7 106.3" pathLength="1"/><path d="M50 102.2 L50 144.2" pathLength="1"/><path d="M50 144.2 L44.4 166.1 L40.4 188" pathLength="1"/><path d="M50 144.2 L55.6 166.1 L59.6 188" pathLength="1"/><path d="M42.3 106.3 L37.2 124.5 L36.1 141.3" pathLength="1"/><path d="M57.7 106.3 L66.8 123.6 L74.5 169.6" pathLength="1"/><circle class="bh__ballon" cx="76.5" cy="180" r="8" pathLength="1"/></g>
-          <g class="bh__f" data-bh="3"><title>U13</title><circle cx="50" cy="77.7" r="9.7" pathLength="1"/><path d="M41.9 91.6 L58.1 91.6" pathLength="1"/><path d="M50 87.4 L50 133.3" pathLength="1"/><path d="M50 133.3 L44.1 160.6 L39.8 188" pathLength="1"/><path d="M50 133.3 L55.9 160.6 L60.2 188" pathLength="1"/><path d="M41.9 91.6 L26.4 103.2 L19.6 116.8" pathLength="1"/><path d="M58.1 91.6 L68.8 108.1 L77.4 123.2" pathLength="1"/><circle class="bh__ballon" cx="80" cy="134.2" r="8.8" pathLength="1"/></g>
-          <g class="bh__f" data-bh="4"><title>U15</title><circle cx="50" cy="63.9" r="9.9" pathLength="1"/><path d="M41.7 78 L58.3 78" pathLength="1"/><path d="M50 73.7 L50 122.1" pathLength="1"/><path d="M50 122.1 L44 155.1 L39.6 188" pathLength="1"/><path d="M50 122.1 L56 155.1 L60.4 188" pathLength="1"/><path d="M41.7 78 L30.9 93.8 L27.5 109.6" pathLength="1"/><path d="M58.3 78 L76 77.3 L80.5 75.7" pathLength="1"/><circle class="bh__ballon" cx="89.4" cy="75.7" r="9.4" pathLength="1"/></g>
-          <g class="bh__f" data-bh="5"><title>U18</title><circle cx="50" cy="50.1" r="10.1" pathLength="1"/><path d="M41.5 64.7 L58.5 64.7" pathLength="1"/><path d="M50 60.3 L50 111.5" pathLength="1"/><path d="M50 111.5 L43.8 149.8 L39.3 188" pathLength="1"/><path d="M50 111.5 L56.2 149.8 L60.7 188" pathLength="1"/><path d="M41.5 64.7 L35 82 L33.4 98.8" pathLength="1"/><path d="M58.5 64.7 L71.1 70.8 L70.8 63.7" pathLength="1"/><circle class="bh__ballon" cx="76.8" cy="54.2" r="10" pathLength="1"/></g>
-          <g class="bh__f" data-bh="6"><title>Seniors</title><circle cx="50" cy="40.1" r="10.1" pathLength="1"/><path d="M41.5 54.7 L58.5 54.7" pathLength="1"/><path d="M50 50.3 L50 102.9" pathLength="1"/><path d="M50 102.9 L43.8 145.5 L39.3 188" pathLength="1"/><path d="M50 102.9 L56.2 145.5 L60.7 188" pathLength="1"/><path d="M41.5 54.7 L30.4 50.7 L33 33.4" pathLength="1"/><path d="M58.5 54.7 L66.6 37.5 L66.1 28.9" pathLength="1"/><circle class="bh__ballon" cx="69.2" cy="16.8" r="10.6" pathLength="1"/></g>
-        </svg>
+        <div class="bh">
+          <picture class="bh__f is-on" data-bh="1">
+            <source type="image/avif" srcset="assets/images/mbc-cat-baby-190.avif 190w, assets/images/mbc-cat-baby-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-baby-340.webp" srcset="assets/images/mbc-cat-baby-190.webp 190w, assets/images/mbc-cat-baby-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+          <picture class="bh__f" data-bh="2">
+            <source type="image/avif" srcset="assets/images/mbc-cat-ecole-190.avif 190w, assets/images/mbc-cat-ecole-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-ecole-340.webp" srcset="assets/images/mbc-cat-ecole-190.webp 190w, assets/images/mbc-cat-ecole-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+          <picture class="bh__f" data-bh="3">
+            <source type="image/avif" srcset="assets/images/mbc-cat-u13-190.avif 190w, assets/images/mbc-cat-u13-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-u13-340.webp" srcset="assets/images/mbc-cat-u13-190.webp 190w, assets/images/mbc-cat-u13-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+          <picture class="bh__f" data-bh="4">
+            <source type="image/avif" srcset="assets/images/mbc-cat-u15-190.avif 190w, assets/images/mbc-cat-u15-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-u15-340.webp" srcset="assets/images/mbc-cat-u15-190.webp 190w, assets/images/mbc-cat-u15-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+          <picture class="bh__f" data-bh="5">
+            <source type="image/avif" srcset="assets/images/mbc-cat-u18-190.avif 190w, assets/images/mbc-cat-u18-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-u18-340.webp" srcset="assets/images/mbc-cat-u18-190.webp 190w, assets/images/mbc-cat-u18-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+          <picture class="bh__f" data-bh="6">
+            <source type="image/avif" srcset="assets/images/mbc-cat-seniors-190.avif 190w, assets/images/mbc-cat-seniors-340.avif 340w" sizes="(min-width:561px) 168px, 104px">
+            <img src="assets/images/mbc-cat-seniors-340.webp" srcset="assets/images/mbc-cat-seniors-190.webp 190w, assets/images/mbc-cat-seniors-340.webp 340w" sizes="(min-width:561px) 168px, 104px"
+                 alt="" width="340" height="510" loading="lazy" decoding="async">
+          </picture>
+        </div>
       </div>
       <div class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Baby Basket</b><span class="age__cat-n">nés de 2020 à 2023</span></p>
