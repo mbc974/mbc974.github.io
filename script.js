@@ -958,6 +958,21 @@
 
   tabs.forEach(function (t, i) { t.setAttribute('tabindex', i === 0 ? '0' : '-1'); });
 
+  /* Silhouettes : une par tranche d'age, retracee a chaque changement.
+     Purement decoratif (le <div> porte aria-hidden), donc rien a annoncer. */
+  var figures = [].slice.call(box.querySelectorAll('.bh__f'));
+
+  function dessiner(i) {
+    var g = figures[i];
+    if (!g) return;
+    figures.forEach(function (f) { f.classList.remove('is-on'); });
+    /* Retirer puis remettre la classe dans la meme tache ne relance pas
+       l'animation : le navigateur regroupe les deux changements. Lire une
+       geometrie force le recalcul de style entre les deux. */
+    void g.getBoundingClientRect();
+    g.classList.add('is-on');
+  }
+
   function show(i, focus) {
     tabs.forEach(function (t, k) {
       var on = k === i;
@@ -967,6 +982,7 @@
       panels[k].hidden = !on;
       panels[k].classList.toggle('is-on', on);
     });
+    dessiner(i);
     if (focus) tabs[i].focus();
   }
 
