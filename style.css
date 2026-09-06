@@ -6598,3 +6598,75 @@ main > .section .cal-lieux{
   .keyfig__i + .keyfig__i{border-left:0;border-top:1px solid rgba(191,210,228,.09)}
   .keyfig__i:first-child{padding-top:.2rem}
 }
+
+/* ============================================================================
+   V110 — LE HERO PANORAMIQUE TIENT AUSSI ENTRE 390 ET 1024 px
+   ----------------------------------------------------------------------------
+   Le visuel maitre est un panoramique 2,5:1. Une fois pose en object-fit:cover,
+   sa geometrie obeit a une regle simple qu'il faut avoir en tete :
+
+       largeur de photo REELLEMENT visible = largeur du cadre x (2,5 / ratio)
+
+   Autrement dit, plus le cadre est HAUT, moins on voit la photo en LARGE. Les
+   trois corrections ci-dessous decoulent toutes de la :
+
+   1. Entre 761 et 900 px, le <picture> servait encore le panoramique desktop
+      alors que la CSS appliquait deja le cadrage mobile (56 % / 26 %). Le
+      fichier 980 px etait etire x2,15 pour remplir un cadre de 865 px de haut :
+      flou, et les deux joueurs decentres. Les deux bascules sont desormais
+      alignees sur 900 px, et le `sizes` demande la largeur reellement affichee
+      au lieu de 100vw (qui sous-estimait la demande d'un facteur 2 sur mobile).
+
+   2. La hauteur du hero derivait avec le contenu : 612 px en 1024x900,
+      865 px en 900x900. On la borne franchement entre 660 et 880 px sur
+      desktop, et on degonfle le retrait haut du bloc texte sur tablette.
+
+   3. Le bandeau chiffres empilait ses trois colonnes des 900 px : 528 px de
+      haut sur une tablette. Il reste sur trois colonnes jusqu'a 680 px.
+   ============================================================================ */
+
+/* --- 1. Hauteur du hero -------------------------------------------------- */
+/* 64vh gouverne les ecrans hauts, 26vw les tres larges (sinon le cadre monte a
+   3,6:1 et rogne les jambes des joueurs), le plancher de 660 px empeche le
+   hero de se tasser sur un portable 1024x900. */
+.hero{min-height:clamp(660px,max(64vh,26vw),880px) !important}
+
+/* En dessous de ~1650 px de large, la photo est calee sur la HAUTEUR : elle
+   deborde donc lateralement et le point d'ancrage horizontal redevient actif.
+   56 % maintient le duo dans le cadre jusqu'a 1024 px, et reste sans effet
+   au-dela (l'image est alors calee sur la largeur). */
+.hero__photo img{object-position:56% 42%}
+
+/* --- 2. Tablette et mobile ----------------------------------------------- */
+@media (max-width:900px){
+  .hero{min-height:clamp(540px,74svh,700px) !important}
+
+  /* Le fichier mobile est deja cadre sur les deux joueurs : on vise son
+     centre, sans decalage. La composante verticale est inerte ici (le cadre
+     est plus etroit que la photo), on la laisse au milieu. */
+  .hero__photo img{object-position:50% 50%}
+
+  /* 26vw au lieu de 40vw : c'est ce retrait qui poussait le hero a 865 px. */
+  .hero__inner{padding-top:clamp(6rem,22vw,9rem)}
+
+  /* Trois colonnes tant qu'il y a la place : empiler des 900 px donnait un
+     bandeau de 528 px de haut sur une tablette. */
+  .keyfig-sec{padding:clamp(1rem,2.4vw,1.5rem) 0 !important}
+}
+
+@media (min-width:561px) and (max-width:900px){
+  /* Deux boutons pleine largeur empiles, c'est une mise en page de telephone.
+     Sur tablette ils reprennent leur gabarit naturel, cote a cote. */
+  .hero__cta{flex-direction:row;align-items:center;flex-wrap:wrap}
+  .hero__cta .btn--primary,
+  .hero__second{width:auto}
+}
+
+@media (min-width:681px) and (max-width:900px){
+  .keyfig{grid-template-columns:repeat(3,1fr)}
+  .keyfig__i{padding:.1rem clamp(.8rem,2.2vw,1.6rem)}
+  .keyfig__i:first-child{padding-left:0;padding-top:.1rem}
+  .keyfig__i + .keyfig__i{
+    border-left:1px solid rgba(191,210,228,.09);border-top:0}
+  .keyfig__v{font-size:clamp(1.5rem,3.4vw,2.1rem)}
+}
