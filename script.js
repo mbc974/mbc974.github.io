@@ -135,14 +135,22 @@
   function animateCount(el) {
     const target = parseInt(el.getAttribute('data-count'), 10);
     if (reduceMotion) { el.textContent = target; return; }
-    const dur = 1300, start = performance.now();
-    function tick(now) {
-      const p = Math.min((now - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * eased);
-      if (p < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+    /* data-count-delay : laisse la colonne finir son entree avant de compter.
+       Sans ce decalage le chiffre a deja atteint sa valeur quand l'oeil arrive
+       dessus, et l'animation ne sert a rien. */
+    const retard = parseInt(el.getAttribute('data-count-delay'), 10) || 0;
+    const dur = 1500;
+    el.textContent = '0';
+    window.setTimeout(function () {
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }, retard);
   }
   if ('IntersectionObserver' in window && counters.length) {
     const cio = new IntersectionObserver(function (entries) {
@@ -965,10 +973,28 @@
   function dessiner(i) {
     var g = figures[i];
     if (!g) return;
-    figures.forEach(function (f) { f.classList.remove('is-on'); });
+    figures.forEach(function (f) {
+      if (f === g) return;
+      /* Celle qui etait affichee passe par .is-out : elle recule et s'efface
+         pendant que la nouvelle arrive. Sans cette etape elle disparaissait
+         d'un coup, et il ne restait qu'un cadre vide le temps de l'echange —
+         c'est ce qui donnait l'impression qu'il ne se passait rien. */
+      if (f.classList.contains('is-on')) {
+        f.classList.remove('is-on');
+        f.classList.add('is-out');
+        window.setTimeout(function () {
+          /* Clics rapides : ne pas retirer .is-out d'une vignette redevenue
+             active entre-temps. */
+          if (!f.classList.contains('is-on')) f.classList.remove('is-out');
+        }, 460);
+      } else {
+        f.classList.remove('is-out');
+      }
+    });
     /* Retirer puis remettre la classe dans la meme tache ne relance pas
        l'animation : le navigateur regroupe les deux changements. Lire une
        geometrie force le recalcul de style entre les deux. */
+    g.classList.remove('is-out');
     void g.getBoundingClientRect();
     g.classList.add('is-on');
   }

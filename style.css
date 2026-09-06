@@ -7169,3 +7169,149 @@ main > .section .cal-lieux{
   .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition:none}
   .keyfig__i + .keyfig__i::before{transform:scaleY(1);transition:none}
 }
+
+/* --------------------------------------------------------------------------
+   V112.1 — deux constats confirmes par la revue adversariale
+   --------------------------------------------------------------------------
+   a) GABARIT DES DEUX BOUTONS. La V111 ecrivait `.hero__cta .btn--primary`
+      (specificite 0,2,0) pour passer le bouton principal a 58 px, mais la
+      regle V109 `.hero__cta a.btn--primary` (0,2,1) est plus specifique et
+      gagnait quelle que soit sa position : le principal restait a 56 px avec
+      un rayon de 6 px, pendant que le secondaire, lui, passait bien a 58 px
+      et 8 px. Resultat mesure : le secondaire depassait d'1 px en haut ET en
+      bas, avec des coins visiblement plus ronds. On reprend le meme selecteur
+      pour reprendre la main.
+   b) SOUS 321 px, la phrase la plus large (« la jeunesse en mouvement »)
+      passait sur deux lignes. Comme c'est elle le fantome, la ligne reservait
+      48 px alors que les neuf autres phrases n'en occupent que 24 : un trou
+      d'une ligne entiere pendant neuf rotations sur dix — precisement ce que
+      la V111.3 declarait interdit. On resserre la taille sous 340 px.
+   -------------------------------------------------------------------------- */
+.hero__cta a.btn--primary{
+  height:58px;min-height:58px;border-radius:8px;
+  padding:0 clamp(1.5rem,2.3vw,2.3rem)}
+@media (max-width:640px){
+  .hero__cta a.btn--primary,
+  .hero__second{height:54px;min-height:54px}
+}
+@media (max-width:340px){
+  .hero__rot{font-size:clamp(1.35rem,7.4vw,1.9rem)}
+}
+
+/* ============================================================================
+   V113 — LE SELECTEUR D'AGE : LA VIGNETTE SE VOIT, ET LE CHANGEMENT SE SENT
+   ----------------------------------------------------------------------------
+   Deux defauts distincts, deux corrections.
+
+   1. ON NE VOYAIT RIEN. Les six photos sont des portraits studio en
+      clair-obscur (luminance mediane 12-20 sur 255). Elles ont ete
+      reetalonnees a la source — meme cadrage, tons moyens releves — mais la
+      CSS en rajoutait : un degrade a 82 % d'opacite sur les 38 % du bas
+      ecrasait justement le maillot et l'ecusson. Il descend a 58 % sur 30 %.
+
+   2. LE CHANGEMENT NE SE SENTAIT PAS. La sortante passait a opacity:0 d'un
+      seul coup — il restait un cadre vide pendant que l'entrante se devoilait.
+      Desormais les deux se croisent : l'ancienne recule et s'efface, la
+      nouvelle monte et se decouvre du bas vers le haut, et un bref reflet
+      traverse le cadre. Moins d'une seconde en tout, rien sous
+      prefers-reduced-motion.
+   ============================================================================ */
+
+.bh-wrap{width:clamp(148px,20vw,248px)}
+.bh{
+  border-color:rgba(191,210,228,.14);
+  background:linear-gradient(180deg,#0e1729,#070d18);
+  box-shadow:0 18px 40px -18px rgba(3,7,15,.85),
+             inset 0 0 0 1px rgba(255,255,255,.04)}
+
+/* Le voile du bas ne doit plus manger le maillot. */
+.bh::after{
+  height:30%;
+  background:linear-gradient(to top,rgba(9,15,28,.58),rgba(9,15,28,0))}
+
+.bh__f{will-change:opacity,transform,clip-path}
+
+/* L'entrante : elle monte et se decouvre du bas vers le haut. */
+@keyframes bhIn{
+  0%   {opacity:0;transform:translateY(14px) scale(1.055);
+        clip-path:inset(62% 0 0 0);filter:saturate(.76) brightness(.88)}
+  38%  {opacity:1}
+  100% {opacity:1;transform:none;clip-path:inset(0 0 0 0);filter:none}
+}
+/* La sortante : elle recule, se desature et s'efface. Sans elle, le cadre se
+   vidait le temps de l'echange. */
+@keyframes bhOut{
+  0%   {opacity:1;transform:none;filter:none}
+  100% {opacity:0;transform:scale(.955) translateY(-7px);
+        filter:saturate(.5) brightness(.72)}
+}
+.bh__f.is-on{opacity:1;z-index:2;animation:bhIn .66s var(--ease-out) both}
+.bh__f.is-out{opacity:0;z-index:1;animation:bhOut .44s var(--ease-out) both}
+
+/* Un reflet unique traverse le cadre au moment de l'echange. */
+.bh__f::after{
+  content:"";position:absolute;inset:-8% -36%;z-index:3;pointer-events:none;
+  opacity:0;
+  background:linear-gradient(102deg,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,.13) 47%,
+    rgba(232,130,42,.22) 51%, rgba(255,255,255,.09) 55%,
+    rgba(255,255,255,0) 62%)}
+@keyframes bhSweep{
+  0%   {opacity:0;transform:translateX(-56%)}
+  20%  {opacity:1}
+  100% {opacity:0;transform:translateX(56%)}
+}
+.bh__f.is-on::after{animation:bhSweep .82s var(--ease-out) .04s both}
+
+@media (max-width:560px){
+  .bh-wrap{width:158px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .bh__f.is-on{animation:none;opacity:1;transform:none;clip-path:none;filter:none}
+  .bh__f.is-out{animation:none;opacity:0}
+  .bh__f.is-on::after{animation:none;opacity:0}
+}
+
+/* --------------------------------------------------------------------------
+   V112.2 — l'ancrage vertical suit le raccourcissement
+   --------------------------------------------------------------------------
+   La V112 a raccourci le hero mais gardait l'ancrage a 82 %, cale pour un
+   cadre de 886 px. Sur 776 px il ne reste que 69 % de la hauteur de la photo,
+   et a 82 % la fenetre demarrait trop bas : le panneau et l'arceau passaient
+   derriere le header. A 42 %, la bande visible redevient 0,13 -> 0,82 — le
+   panier entier en haut, la coupe au genou en bas.
+
+   Le rappel de la regle tablette-portrait juste apres n'est pas un doublon :
+   les media queries n'ajoutent pas de specificite, donc sans lui la regle
+   ci-dessus, plus basse dans le fichier, ecraserait la V111.5. */
+@media (min-width:1001px){
+  .hero__photo img{object-position:60% 42%}
+}
+@media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
+  .hero__photo img{object-position:82% 55%}
+}
+
+/* 62svh etait trop bas : sur un 1440 x 900 le hero tombait a 562 px et le
+   bandeau d'infos venait se poser sur la bache « ANSANM NOU LE PLI FOR ».
+   68svh lui rend de l'air la ou l'ecran est haut, sans rien changer sur les
+   larges (c'est alors le terme en vw qui gouverne). */
+.hero{min-height:clamp(560px,max(68svh,39vw),940px) !important}
+
+/* --------------------------------------------------------------------------
+   V112.3 — la nouvelle hauteur ne concerne QUE le desktop
+   --------------------------------------------------------------------------
+   Ecrite hors media query, elle ecrasait aussi les reglages telephone et
+   tablette : une @media n'ajoute aucune specificite, seul le rang compte, et
+   la V112 est plus bas dans le fichier que la V111. Le hero du telephone
+   tombait ainsi de 658 a 560 px et les tetes des joueurs passaient sous le
+   header. On borne les trois plages explicitement, une bonne fois. */
+@media (min-width:1001px){
+  .hero{min-height:clamp(560px,max(68svh,39vw),940px) !important}
+}
+@media (min-width:641px) and (max-width:1000px){
+  .hero{min-height:clamp(560px,74svh,760px) !important}
+}
+@media (max-width:640px){
+  .hero{min-height:clamp(540px,78svh,700px) !important}
+}
