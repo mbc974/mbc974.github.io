@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-d0562138-6f3c8dd4';
+const CACHE = 'mbc-770c5373-a0572c6a';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,8 +13,8 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=d0562138',
-  '/script.js?v=6f3c8dd4',
+  '/style.css?v=770c5373',
+  '/script.js?v=a0572c6a',
   '/assets/logos/mbc-logo.webp',
   '/assets/icons/favicon.png'
   // Pas d'image de hero ici : depuis que le <picture> sert deux cadrages

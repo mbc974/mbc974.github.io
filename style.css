@@ -6716,3 +6716,383 @@ main > .section .cal-lieux{
 @media (min-width:901px){
   .hero__inner > .hero__cta{max-width:min(58%,700px)}
 }
+
+/* ============================================================================
+   V111 — HERO « UNE SEULE SCENE, PLEIN CADRE »
+   ----------------------------------------------------------------------------
+   Nouveau visuel : la scene entiere du plateau couvert, symetrique, panier dans
+   l'axe, ecusson MBC peint au sol, duo a droite, massif de La Montagne au fond.
+   Elle est en 16:9 alors que le hero est nettement plus large que haut : le
+   navigateur la cale donc sur la LARGEUR et rogne en HAUTEUR. Deux consequences
+   qui expliquent toutes les valeurs ci-dessous :
+
+   1. La hauteur du hero decide de ce qu'on voit. A 1920x1080 il en reste 82 %
+      de la hauteur, a 2560 seulement 74 % : c'est pour cela que la hauteur
+      porte aussi un terme en vw, et que l'ancrage vertical vaut 82 % — de quoi
+      garder les chaussures des joueurs en bas ET l'arceau du panier en haut.
+   2. Sur un ecran haut et etroit (1024x900), c'est la LARGEUR qui est rognee.
+      L'ancrage horizontal a 60 % garde alors la main droite d'ALEX dans le
+      cadre ; il est sans effet sur les ecrans larges.
+
+   Le texte se pose en BAS A GAUCHE, sur la portion de terrain nu : c'est la
+   seule zone de l'image ou il ne recouvre ni les joueurs, ni le panier, ni la
+   bache « ANSANM NOU LE PLI FOR » (qui, elle, est plus haut). Le voile est un
+   degrade de COIN, pas un filtre : le terrain, la vegetation et le ciel gardent
+   leurs couleurs sur les deux tiers droits.
+   ============================================================================ */
+
+/* --- 1. Le cadre : plein bord, contenu ancre en bas ----------------------- */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  width:100%;max-width:none;margin-inline:0;border-radius:0;
+  display:flex;
+  align-items:flex-end !important;
+  min-height:clamp(620px,max(82svh,41vw),1060px) !important;
+  padding:calc(72px + clamp(.8rem,2.4vw,1.8rem)) 0 clamp(2rem,5vh,3.8rem) !important;
+  background:var(--nuit-0)}
+
+/* --- 2. La photo EST le hero --------------------------------------------- */
+.hero__photo,
+.hero .hero__photo{
+  position:absolute;inset:0;z-index:0;
+  width:100%;max-width:none;height:100%;
+  overflow:hidden;pointer-events:none;
+  opacity:1;transform:none;filter:none;
+  -webkit-mask-image:none;mask-image:none}
+.hero__photo::before,
+.hero__photo::after{content:none;display:none}
+.hero__photo picture{display:block;width:100%;height:100%}
+.hero__photo img{
+  width:100%;height:100%;display:block;
+  object-fit:cover;object-position:60% 82%;
+  filter:none}
+
+/* --- 3. Le voile : un COIN, pas un filtre -------------------------------- */
+.hero::after{
+  content:"";display:block;position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    /* a) la zone de lecture, en bas a gauche */
+    radial-gradient(84% 116% at -10% 112%,
+      rgba(7,13,24,.96) 0%,  rgba(7,13,24,.93) 26%, rgba(7,13,24,.85) 38%,
+      rgba(7,13,24,.64) 50%, rgba(7,13,24,.38) 62%, rgba(7,13,24,.16) 74%,
+      rgba(7,13,24,.04) 86%, rgba(7,13,24,0)   95%),
+    /* b) raccord avec la section suivante, tres court */
+    linear-gradient(to top,
+      rgba(6,12,22,.62) 0%, rgba(6,12,22,.24) 7%, rgba(6,12,22,0) 17%),
+    /* c) lisibilite de la navigation, tres court aussi */
+    linear-gradient(to bottom,
+      rgba(6,12,22,.46) 0%, rgba(6,12,22,.16) 6%, rgba(6,12,22,0) 12%)}
+
+/* --- 4. Le contenu -------------------------------------------------------- */
+.hero__inner{
+  position:relative;z-index:3;
+  width:100%;max-width:1560px;margin-inline:auto;
+  padding-top:0;
+  padding-inline:var(--hero-gutter,clamp(20px,4.4vw,52px))}
+.hero__inner > *{max-width:min(46%,640px)}
+
+/* Le bandeau d'informations : un seul element, pose et discret. */
+.hero__badge{
+  display:inline-flex;flex-wrap:wrap;align-items:center;gap:.62em;
+  max-width:min(72%,760px);
+  padding:.46em .95em .46em .8em;border-radius:var(--r-pill);
+  background:rgba(7,13,24,.42);
+  border:1px solid rgba(255,255,255,.16);
+  -webkit-backdrop-filter:blur(7px) saturate(1.05);
+  backdrop-filter:blur(7px) saturate(1.05);
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.13em;font-size:.74rem;line-height:1.5;
+  color:rgba(233,240,248,.86);
+  margin:0 0 clamp(1rem,2vw,1.5rem)}
+.hero__badge b{font-weight:700;color:var(--blanc)}
+.hero__badge-dot{
+  width:7px;height:7px;border-radius:50%;flex:none;
+  background:var(--orange-vif);
+  box-shadow:0 0 0 3px rgba(232,130,42,.20)}
+.hero__badge-sep{
+  width:3px;height:3px;border-radius:50%;flex:none;
+  background:rgba(233,240,248,.42)}
+
+/* Le titre : une phrase blanche, puis la phrase creole en orange. */
+.hero__h1{
+  display:block;max-width:none;
+  font-size:inherit;line-height:1;letter-spacing:0;
+  text-shadow:none;text-wrap:balance}
+.hero__lead{
+  display:block;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(1.32rem,2.05vw,2.25rem);line-height:1.02;
+  letter-spacing:.012em;color:var(--blanc);
+  text-shadow:0 2px 20px rgba(4,9,18,.55)}
+
+/* La ligne qui tourne. Le « fantome » est la piece maitresse : invisible mais
+   dans le flux, il reserve la hauteur de la plus longue des phrases, si bien
+   qu'aucun changement ne peut decaler le CTA (donc aucun CLS). Les phrases
+   visibles sont posees par-dessus, en absolu. */
+.hero__rot{
+  position:relative;display:block;margin-top:.14em;
+  font-family:var(--ff-display);text-transform:uppercase;
+  font-size:clamp(2.5rem,4.4vw,5rem);line-height:.92;
+  letter-spacing:.004em;color:var(--orange-vif)}
+.hero__rot-ghost{display:block;visibility:hidden;pointer-events:none}
+.hero__rot-i{
+  position:absolute;left:0;top:0;right:0;
+  opacity:0;visibility:hidden;transform:translateY(.30em);
+  text-shadow:0 2px 22px rgba(4,9,18,.55);
+  transition:opacity .82s var(--ease-out),transform .82s var(--ease-out),
+             visibility 0s linear .82s}
+.hero__rot-i.is-on{
+  opacity:1;visibility:visible;transform:none;
+  transition:opacity .82s var(--ease-out),transform .82s var(--ease-out),
+             visibility 0s linear 0s}
+
+/* --- 5. Les deux appels a l'action --------------------------------------- */
+.hero__cta{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:clamp(.9rem,1.8vw,1.5rem);
+  margin-top:clamp(1.5rem,3vw,2.3rem);
+  max-width:min(58%,700px)}
+.hero__cta .btn--primary{
+  min-height:58px;padding:0 clamp(1.5rem,2.3vw,2.3rem);
+  display:inline-flex;align-items:center;gap:.6em;font-size:1.04rem;
+  box-shadow:0 12px 30px -14px rgba(232,130,42,.55);
+  transition:transform .24s var(--ease-out),box-shadow .24s var(--ease-out)}
+.hero__cta .btn--primary:hover{
+  transform:translateY(-2px);box-shadow:0 18px 40px -14px rgba(232,130,42,.62)}
+.hero__cta .btn--primary:active{transform:translateY(0)}
+.hero__second{
+  min-height:58px;padding:0 clamp(1.15rem,1.9vw,1.7rem);
+  border:1px solid rgba(233,240,248,.30);border-bottom-color:rgba(233,240,248,.30);
+  border-radius:8px;background:rgba(7,13,24,.30);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  color:var(--blanc);font-size:1rem;
+  transition:border-color .24s,background .24s,transform .24s var(--ease-out)}
+.hero__second:hover{
+  color:var(--blanc);border-color:var(--orange-vif);
+  background:rgba(232,130,42,.15);transform:translateY(-2px)}
+
+/* --- 6. Ecrans hauts et etroits : le reliquat n'est plus reparti ---------- */
+/* Le contenu doit rester COLLE EN BAS a toutes les tailles : c'est la que se
+   trouve la portion de terrain nu. La regle V101 le recentrait au-dela de
+   1600x900, ce qui le renvoyait sur l'ecusson peint. */
+@media (min-width:1600px) and (min-height:900px){
+  .hero{align-items:flex-end !important;
+    padding-bottom:clamp(2.4rem,5vh,4rem) !important}
+}
+
+/* --- 7. Tablette : 641 -> 1000 px ---------------------------------------- */
+/* Ici le cadre est presque carre : la photo est calee sur la HAUTEUR et c'est
+   la largeur qui manque (60 % seulement du 16:9 reste visible a 768 px). On
+   decale donc franchement vers la droite pour garder les deux joueurs, le
+   panier et l'ecusson ; c'est la bache de gauche qui sort du cadre. */
+@media (min-width:641px) and (max-width:1000px){
+  .hero{min-height:clamp(560px,74svh,760px) !important}
+  .hero__photo img{object-position:76% 60%}
+  .hero__inner > *{max-width:min(76%,620px)}
+  .hero__cta{max-width:none}
+  .hero::after{
+    background:
+      radial-gradient(122% 92% at 6% 108%,
+        rgba(7,13,24,.96) 0%,  rgba(7,13,24,.92) 24%, rgba(7,13,24,.80) 38%,
+        rgba(7,13,24,.58) 50%, rgba(7,13,24,.32) 62%, rgba(7,13,24,.12) 75%,
+        rgba(7,13,24,0)   88%),
+      linear-gradient(to top,
+        rgba(6,12,22,.62) 0%, rgba(6,12,22,.22) 8%, rgba(6,12,22,0) 19%),
+      linear-gradient(to bottom,
+        rgba(6,12,22,.48) 0%, rgba(6,12,22,.16) 7%, rgba(6,12,22,0) 13%)}
+}
+
+/* --- 8. Telephone : <= 640 px -------------------------------------------- */
+/* Le <picture> bascule ici sur une fenetre portrait dediee (706 x 941), calee
+   sur la moitie droite de la scene : les deux joueurs entiers, le poteau du
+   panier, la bache de droite et la moitie de l'ecusson au sol. Le voile,
+   lui, remonte du bas : sur une colonne, la lisibilite vient de la, pas du
+   cote. */
+@media (max-width:640px){
+  .hero{
+    min-height:clamp(540px,78svh,700px) !important;
+    padding:calc(66px + .8rem) 0 clamp(1.5rem,4vw,2.2rem) !important}
+  .hero__photo img{object-position:58% 46%}
+  .hero__inner > *{max-width:none}
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        rgba(7,13,24,.955) 0%, rgba(7,13,24,.93) 16%, rgba(7,13,24,.84) 28%,
+        rgba(7,13,24,.66) 38%, rgba(7,13,24,.42) 48%, rgba(7,13,24,.20) 59%,
+        rgba(7,13,24,.06) 70%, rgba(7,13,24,0) 80%),
+      linear-gradient(to bottom,
+        rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}
+  .hero__badge{
+    max-width:100%;font-size:.68rem;letter-spacing:.11em;gap:.5em;
+    padding:.42em .8em .42em .7em}
+  .hero__lead{font-size:clamp(1.1rem,4.6vw,1.45rem)}
+  .hero__rot{font-size:clamp(2.1rem,9.4vw,3.1rem);margin-top:.16em}
+  .hero__cta{
+    flex-direction:column;align-items:stretch;max-width:none;
+    gap:.7rem;margin-top:clamp(1.2rem,4vw,1.7rem)}
+  .hero__cta .btn--primary,
+  .hero__second{width:100%;justify-content:center;min-height:54px}
+}
+
+/* Sous 520 px, les deux reperes geographiques les plus redondants sortent du
+   bandeau : ils restent dans le DOM, dans le <head> et dans le JSON-LD. */
+@media (max-width:519px){
+  .hero__badge-opt{display:none}
+}
+
+/* --- 9. Mouvement reduit -------------------------------------------------- */
+@media (prefers-reduced-motion:reduce){
+  .hero__rot-i{transition:none}
+  .hero__cta .btn--primary:hover,
+  .hero__second:hover{transform:none}
+}
+
+/* --------------------------------------------------------------------------
+   V111.1 — deux heritages qui gagnaient encore par specificite
+   --------------------------------------------------------------------------
+   a) `.hero.in .hero__photo` (0,3,0) est declaree cinq fois dans le fichier
+      (l. 2110, 2129, 2159, 4690, 4693, 4924) et descend jusqu'a opacity:.4.
+      Un simple `.hero .hero__photo` (0,2,0) ne peut pas la battre, quel que
+      soit son rang. On reprend donc la meme forme, plus bas. Au passage : la
+      classe .in est posee dans un requestAnimationFrame, qui ne se declenche
+      PAS si l'onglet est ouvert en arriere-plan — la photo ne doit donc
+      dependre de rien pour etre visible.
+   b) `.hero::before` porte encore le balayage lumineux « heroTipOff » (l. 1640).
+      Son display:none de la l. 1678 est enferme dans un @media
+      prefers-reduced-motion : en marche normale, le faisceau passe toujours.
+      Sur une photographie, ce reflet se lit comme un defaut de rendu — on
+      l'eteint pour de bon. */
+.hero .hero__photo,
+.hero.in .hero__photo,
+.hero.is-idle .hero__photo{opacity:1;transform:none;transition:none}
+.hero::before{content:none;display:none;animation:none}
+
+/* --------------------------------------------------------------------------
+   V111.2 — ce que le premier rendu a montre
+   --------------------------------------------------------------------------
+   a) Le titre debordait sur toute la mesure. `.hero__inner > *` le bornait
+      bien a 46 %, mais le `max-width:none` pose juste apres sur `.hero__h1`
+      (meme specificite, plus bas) l'annulait. On borne explicitement.
+   b) Le voile n'atteignait pas la fin du titre : une ellipse haute et etroite
+      s'eteint trop vite vers la droite. Elle devient large et basse — forte
+      le long du bas a gauche, nulle avant les joueurs et avant la bache
+      « ANSANM NOU LE PLI FOR », qui restent en pleine lumiere. */
+.hero__h1{max-width:min(52%,720px)}
+.hero__rot{font-size:clamp(2.2rem,3.3vw,4.05rem)}
+
+.hero::after{
+  background:
+    radial-gradient(120% 80% at -8% 106%,
+      rgba(7,13,24,.96) 0%,  rgba(7,13,24,.93) 24%, rgba(7,13,24,.86) 38%,
+      rgba(7,13,24,.70) 50%, rgba(7,13,24,.48) 62%, rgba(7,13,24,.24) 74%,
+      rgba(7,13,24,.07) 86%, rgba(7,13,24,0)   96%),
+    linear-gradient(to top,
+      rgba(6,12,22,.60) 0%, rgba(6,12,22,.22) 7%, rgba(6,12,22,0) 17%),
+    linear-gradient(to bottom,
+      rgba(6,12,22,.46) 0%, rgba(6,12,22,.16) 6%, rgba(6,12,22,0) 12%)}
+
+/* --------------------------------------------------------------------------
+   V111.3 — la ligne qui tourne ne doit JAMAIS changer de nombre de lignes
+   --------------------------------------------------------------------------
+   Mesure faite au banc, police reelle : la plus large des dix phrases est
+   « la jeunesse en mouvement » (10,83 em), devant « Basket, respect, famille »
+   (9,90 em). C'est donc elle le fantome, et la taille de la ligne se cale
+   partout sous largeur_de_colonne / 10,83 : si une seule phrase passait sur
+   deux lignes, toutes les autres flotteraient au-dessus d'un trou.
+
+   Corrige aussi le plafond de largeur du titre, qui s'appliquait encore sur
+   telephone (52 % de 354 px = 184 px de colonne : le titre y tombait sur
+   trois lignes). */
+.hero__h1{max-width:min(52%,720px)}
+.hero__rot{font-size:clamp(2.2rem,3.3vw,4.05rem)}
+
+@media (min-width:641px) and (max-width:1000px){
+  .hero__h1{max-width:min(78%,640px)}
+  .hero__rot{font-size:clamp(2.1rem,6.2vw,3.6rem)}
+}
+
+@media (max-width:640px){
+  .hero__h1{max-width:none}
+  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}
+
+  /* Sur une colonne, la lisibilite vient du bas. Le voile monte donc plus haut
+     qu'en V111 : le titre se posait sur le short blanc de CLAIN. Le tiers
+     superieur — tetes, montagne, structure bois — reste intact. */
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        rgba(7,13,24,.96) 0%,  rgba(7,13,24,.94) 22%, rgba(7,13,24,.90) 34%,
+        rgba(7,13,24,.84) 46%, rgba(7,13,24,.76) 56%, rgba(7,13,24,.62) 64%,
+        rgba(7,13,24,.42) 72%, rgba(7,13,24,.22) 80%, rgba(7,13,24,.07) 88%,
+        rgba(7,13,24,0)   95%),
+      linear-gradient(to bottom,
+        rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}
+}
+
+/* La ligne restait timide entre 1000 et 1400 px (3,3vw = 34 px a 1024, pour
+   une colonne qui en autorise 45). On remonte a 4,2vw, et on abaisse le
+   plafond tablette pour que la bascule des 1000 px ne fasse plus un saut. */
+.hero__rot{font-size:clamp(2.2rem,4.2vw,4.05rem)}
+@media (min-width:641px) and (max-width:1000px){
+  .hero__rot{font-size:clamp(2.1rem,6.2vw,3rem)}
+}
+@media (max-width:640px){
+  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}
+}
+
+/* --------------------------------------------------------------------------
+   V111.4 — telephone : le cadrage coupait ALEX, et le voile mangeait la photo
+   --------------------------------------------------------------------------
+   a) A 58 %, la fenetre visible s'arretait a 91 % de la vignette alors que la
+      main droite d'ALEX et le ballon sont a 95 %. A 80 %, la fenetre glisse
+      juste ce qu'il faut : le duo tient en entier, le bord du panneau qui
+      depassait a gauche sort du cadre, et la moitie droite de l'ecusson au
+      sol reste visible.
+   b) Le voile V111.3 montait a .84 des la mi-hauteur : le terrain devenait
+      noir, ce qui est exactement ce qu'on ne veut pas. Il redescend, et c'est
+      le contour du texte qui prend le relais la ou il mord encore sur le
+      short blanc. */
+@media (max-width:640px){
+  .hero__photo img{object-position:80% 46%}
+  .hero::after{
+    background:
+      linear-gradient(to top,
+        rgba(7,13,24,.94) 0%,  rgba(7,13,24,.91) 14%, rgba(7,13,24,.86) 26%,
+        rgba(7,13,24,.78) 36%, rgba(7,13,24,.66) 45%, rgba(7,13,24,.48) 54%,
+        rgba(7,13,24,.30) 63%, rgba(7,13,24,.14) 72%, rgba(7,13,24,.04) 82%,
+        rgba(7,13,24,0)   90%),
+      linear-gradient(to bottom,
+        rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}
+  .hero__badge{background:rgba(7,13,24,.54);border-color:rgba(255,255,255,.20)}
+  .hero__lead{text-shadow:0 1px 3px rgba(4,9,18,.72),0 2px 16px rgba(4,9,18,.80)}
+  .hero__rot-i{text-shadow:0 1px 3px rgba(4,9,18,.70),0 2px 18px rgba(4,9,18,.78)}
+}
+
+/* Le bandeau passait sur deux lignes sur tablette, avec un point median
+   orphelin en fin de premiere ligne. Sous 860 px, les deux reperes les plus
+   redondants sortent — ils restent dans le DOM, dans le <title>, la
+   meta description et le JSON-LD. */
+@media (max-width:860px){
+  .hero__badge-opt{display:none}
+}
+
+/* `.hero__rot-i.is-on` (0,2,0) l'emportait sur le `.hero__rot-i` (0,1,0) du
+   bloc prefers-reduced-motion : la transition restait declaree, meme si rien
+   ne la declenchait. On aligne les specificites. */
+@media (prefers-reduced-motion:reduce){
+  .hero__rot-i,
+  .hero__rot-i.is-on{transition:none}
+}
+
+/* --------------------------------------------------------------------------
+   V111.5 — la tablette large en portrait (iPad Pro 12,9" : 1024 x 1366)
+   --------------------------------------------------------------------------
+   Elle depasse les 1000 px de la regle tablette, donc elle heritait du
+   cadrage desktop. Or son cadre est presque carre : seuls 54 % de la largeur
+   de la photo restent visibles, et a 60 % d'ancrage la main droite d'ALEX
+   sortait. On lui donne le meme traitement qu'a une tablette. */
+@media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
+  .hero__photo img{object-position:82% 55%}
+  .hero__h1{max-width:min(78%,640px)}
+  .hero__rot{font-size:clamp(2.1rem,5.4vw,3.4rem)}
+}

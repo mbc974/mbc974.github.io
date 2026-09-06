@@ -54,15 +54,15 @@
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
 <!-- Preload recentré sur l'élément LCP réel : l'image du hero (le poster vidéo, sous la ligne de
      flottaison et en preload="none", n'a pas besoin d'être préchargé). -->
-<link rel="preload" as="image" media="(max-width:900px)" type="image/avif" fetchpriority="high"
-      href="assets/images/mbc-hero-plateau-m-912.avif"
-      imagesrcset="assets/images/mbc-hero-plateau-m-460.avif 460w, assets/images/mbc-hero-plateau-m-700.avif 700w, assets/images/mbc-hero-plateau-m-912.avif 912w"
-      imagesizes="810px">
-<link rel="preload" as="image" media="(min-width:901px)" type="image/avif" fetchpriority="high"
-      href="assets/images/mbc-hero-plateau-1400.avif"
-      imagesrcset="assets/images/mbc-hero-plateau-980.avif 980w, assets/images/mbc-hero-plateau-1400.avif 1400w, assets/images/mbc-hero-plateau-1983.avif 1983w"
-      imagesizes="(max-width:1200px) 1400px, 100vw">
-<link rel="stylesheet" href="style.css?v=d0562138">
+<link rel="preload" as="image" media="(max-width:640px)" type="image/avif" fetchpriority="high"
+      href="assets/images/mbc-hero-plateau-mbc-m-706.avif"
+      imagesrcset="assets/images/mbc-hero-plateau-mbc-m-440.avif 440w, assets/images/mbc-hero-plateau-mbc-m-640.avif 640w, assets/images/mbc-hero-plateau-mbc-m-706.avif 706w"
+      imagesizes="520px">
+<link rel="preload" as="image" media="(min-width:641px)" type="image/avif" fetchpriority="high"
+      href="assets/images/mbc-hero-plateau-mbc-1280.avif"
+      imagesrcset="assets/images/mbc-hero-plateau-mbc-980.avif 980w, assets/images/mbc-hero-plateau-mbc-1280.avif 1280w, assets/images/mbc-hero-plateau-mbc-1672.avif 1672w"
+      imagesizes="(max-width:1350px) 1360px, 100vw">
+<link rel="stylesheet" href="style.css?v=770c5373">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -624,31 +624,60 @@
      descriptif vient de l'ancienne section « essentiel » (Google
      Images) : il ne doit pas redevenir vide. -->
 <section class="hero" id="hero">
-  <!-- La photo n'est plus une colonne : elle couvre toute la scène, y compris
-       sous le texte. Les voiles navy sont posés PAR-DESSUS en CSS. -->
+  <!-- La photo couvre toute la scene : c'est elle le sujet, pas un decor. Les
+       voiles sont poses par-dessus en CSS, et uniquement dans le coin ou le
+       texte se pose. Sous 640 px, une fenetre portrait dediee prend le relais :
+       un 16:9 entier dans un cadre de telephone couperait forcement un des
+       deux joueurs. -->
   <div class="hero__photo">
     <picture>
-      <source media="(max-width:900px)" type="image/avif" srcset="assets/images/mbc-hero-plateau-m-460.avif 460w, assets/images/mbc-hero-plateau-m-700.avif 700w, assets/images/mbc-hero-plateau-m-912.avif 912w" sizes="810px">
-      <source media="(max-width:900px)" type="image/webp" srcset="assets/images/mbc-hero-plateau-m-460.webp 460w, assets/images/mbc-hero-plateau-m-700.webp 700w, assets/images/mbc-hero-plateau-m-912.webp 912w" sizes="810px">
-      <source type="image/avif" srcset="assets/images/mbc-hero-plateau-980.avif 980w, assets/images/mbc-hero-plateau-1400.avif 1400w, assets/images/mbc-hero-plateau-1983.avif 1983w" sizes="(max-width:1200px) 1400px, 100vw">
-      <source type="image/webp" srcset="assets/images/mbc-hero-plateau-980.webp 980w, assets/images/mbc-hero-plateau-1400.webp 1400w, assets/images/mbc-hero-plateau-1983.webp 1983w" sizes="(max-width:1200px) 1400px, 100vw">
-      <img src="assets/images/mbc-hero-plateau.jpg" alt="Le plateau couvert de Ruisseau Blanc à La Montagne aux couleurs du MBC : deux joueurs de dos, maillots floqués CLAIN 2 et ALEX 1, devant le panier et les bâches du club « Ansanm nou lé pli for » et « La Montagne en lèr », l'écusson peint au sol et les hauteurs de Saint-Denis en arrière-plan."
-           width="1983" height="793" decoding="async" fetchpriority="high">
+      <source media="(max-width:640px)" type="image/avif" srcset="assets/images/mbc-hero-plateau-mbc-m-440.avif 440w, assets/images/mbc-hero-plateau-mbc-m-640.avif 640w, assets/images/mbc-hero-plateau-mbc-m-706.avif 706w" sizes="520px">
+      <source media="(max-width:640px)" type="image/webp" srcset="assets/images/mbc-hero-plateau-mbc-m-440.webp 440w, assets/images/mbc-hero-plateau-mbc-m-640.webp 640w, assets/images/mbc-hero-plateau-mbc-m-706.webp 706w" sizes="520px">
+      <source type="image/avif" srcset="assets/images/mbc-hero-plateau-mbc-980.avif 980w, assets/images/mbc-hero-plateau-mbc-1280.avif 1280w, assets/images/mbc-hero-plateau-mbc-1672.avif 1672w" sizes="(max-width:1350px) 1360px, 100vw">
+      <source type="image/webp" srcset="assets/images/mbc-hero-plateau-mbc-980.webp 980w, assets/images/mbc-hero-plateau-mbc-1280.webp 1280w, assets/images/mbc-hero-plateau-mbc-1672.webp 1672w" sizes="(max-width:1350px) 1360px, 100vw">
+      <img src="assets/images/mbc-hero-plateau-mbc.jpg" alt="Le plateau couvert de Ruisseau Blanc, à La Montagne : le terrain de basket bleu aux couleurs du MBC, l'ecusson du club peint au centre, le panier dans l'axe, les baches « Ansanm nou lé pli for » et « La Montagne en lèr » sur la clôture, deux joueurs de dos en maillots CLAIN 2 et ALEX 1, et les hauteurs de Saint-Denis en arrière-plan."
+           width="1672" height="941" decoding="async" fetchpriority="high">
     </picture>
   </div>
-  <!-- Couche de décor : la marque géante en outline et les lignes de terrain,
-       entre la photo et le texte. Purement graphique. -->
-  <div class="hero__panel" aria-hidden="true"><span class="hero__court"></span></div>
   <div class="hero__inner">
-    <p class="hero__eyebrow">La Montagne <i aria-hidden="true"></i> Saint-Denis</p>
-    <h1 class="hero__h1">Le basket prend<br>de la <span class="hl">hauteur.</span></h1>
-    <p class="hero__creole" lang="rcf">Ansanm nou lé pli for.</p>
-    <p class="hero__meta">Basket dès 3 ans <i aria-hidden="true"></i> Filles &amp; garçons <i aria-hidden="true"></i> Saison 2026/2027</p>
+    <!-- Un seul element pour situer le club : lieu, saison, etat des
+         inscriptions. Sous 520 px, les deux reperes geographiques les plus
+         redondants sont masques (ils restent dans le DOM et dans le <head>). -->
+    <p class="hero__badge">
+      <span class="hero__badge-dot" aria-hidden="true"></span>
+      <span lang="rcf">La Montagne lé là</span>
+      <span class="hero__badge-sep hero__badge-opt" aria-hidden="true"></span>
+      <span class="hero__badge-opt">Saint-Denis</span>
+      <span class="hero__badge-sep hero__badge-opt" aria-hidden="true"></span>
+      <span class="hero__badge-opt">La Réunion</span>
+      <span class="hero__badge-sep" aria-hidden="true"></span>
+      <span>Saison 2026/2027</span>
+      <span class="hero__badge-sep" aria-hidden="true"></span>
+      <b>Pré-inscriptions ouvertes</b>
+    </p>
+    <h1 class="hero__h1">
+      <span class="hero__lead">Le basket à La&nbsp;Montagne, c'est</span>
+      <!-- La scene qui tourne est aria-hidden : c'est la ligne sr-only qui
+           donne au titre sa phrase complete, une fois pour toutes. -->
+      <span class="hero__rot" data-hero-rot aria-hidden="true">
+        <span class="hero__rot-ghost">la jeunesse en mouvement</span>
+          <span class="hero__rot-i is-on">une nouvelle énergie</span>
+          <span class="hero__rot-i">un club pour tous</span>
+          <span class="hero__rot-i">la jeunesse en mouvement</span>
+          <span class="hero__rot-i">un projet péi</span>
+          <span class="hero__rot-i">la passion du basket</span>
+          <span class="hero__rot-i" lang="rcf">La Montagne en lèr</span>
+          <span class="hero__rot-i" lang="rcf">Nou lé la pou jouer</span>
+          <span class="hero__rot-i">Ensemble, nou avance</span>
+          <span class="hero__rot-i">Fé bouger le quartier</span>
+          <span class="hero__rot-i">Basket, respect, famille</span>
+      </span>
+      <span class="sr-only">une nouvelle énergie.</span>
+    </h1>
     <div class="hero__cta">
       <a href="adhesion.html" class="btn btn--primary btn--lg">Rejoindre le MBC<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       <a href="#categories" class="hero__second">Voir les catégories<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <p class="hero__fine">FFBB <i aria-hidden="true"></i> Licence 95 € <i aria-hidden="true"></i> Séance d'essai possible</p>
   </div>
   <a class="hero__scroll" href="#essentiel" aria-label="Faire défiler vers l'essentiel"><span aria-hidden="true"></span><span class="hero__scroll-label">Découvrir</span></a>
 </section>
@@ -1959,6 +1988,6 @@
   </div>
 </div>
 
-<script src="script.js?v=6f3c8dd4" defer></script>
+<script src="script.js?v=a0572c6a" defer></script>
 </body>
 </html>
