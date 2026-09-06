@@ -21,6 +21,29 @@ Le service worker met les médias en cache par leur nom ; réutiliser un nom ser
 
 ---
 
+## 1 bis. Les pages générées — on modifie le JSON, jamais le HTML
+
+Une partie du site est produite par des scripts. Les fichiers concernés portent tous un
+commentaire qui le dit ; les modifier à la main, c'est perdre son travail à la régénération
+suivante.
+
+| Ce qu'on veut changer | Le fichier à modifier | La commande |
+|---|---|---|
+| Une rencontre (date, heure, adversaire, bénévoles) | `data/matchs.json` | `python .claude/build-matchs.py` |
+| Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
+| Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
+| La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
+| Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
+
+**L'ordre compte.** `bump-assets.py` se lance **en dernier** : les générateurs relèvent le
+`?v=` sur une page existante, donc bumper avant leur ferait écrire une version périmée.
+
+`set-calendrier-prm.py` refuse d'écrire si le PDF de la ligue et `data/matchs.json` ne disent
+pas la même chose — c'est voulu : deux sources qui divergent, c'est un site à moitié faux.
+Corriger le JSON, puis relancer.
+
+---
+
 ## 2. Lancer le site en local
 
 ```bash
@@ -68,20 +91,25 @@ dans le `<head>` de chaque page. Les événements remontent alors sans autre mod
 
 ## 4. RGPD — ce qui reste à valider par le bureau
 
-La page `/confidentialite/` est en ligne, mais **trois points y sont volontairement laissés en attente**
-plutôt que remplis avec des valeurs inventées. Ils sont signalés dans la page par un encadré :
+La page `/confidentialite/` est en ligne. **Deux points y restent en attente**, signalés dans
+la page par un encadré, plutôt que remplis avec des valeurs inventées :
 
-1. **Durées de conservation** — à fixer pour (a) les demandes de contact sans suite,
-   (b) les dossiers d'adhérents, (c) les archives comptables et sportives.
-2. **Transferts hors UE** — les garanties (clauses contractuelles types, décision d'adéquation)
+1. **Transferts hors UE** — les garanties (clauses contractuelles types, décision d'adéquation)
    doivent être confirmées service par service auprès de GitHub, Google et Web3Forms.
-3. **Activation de Plausible** — si elle a lieu, la section « Cookies » doit être révisée.
+2. **Activation de Plausible** — si elle a lieu, la section « Cookies » doit être révisée.
+
+Les **durées de conservation** ne sont plus en attente : elles sont publiées sous forme de
+**critères**, catégorie par catégorie, ce que l'article 13 du RGPD autorise explicitement quand
+une durée fixe ne peut pas être annoncée à l'avance. Si le bureau arrête un jour des durées
+chiffrées, elles remplaceront les critères — mais la page n'est plus incomplète en attendant.
 
 Un juriste ou la personne référente RGPD du club doit relire la page avant de la considérer comme définitive.
 
 **Sous-traitants réellement utilisés** (vérifiés dans le code, pas supposés) :
-GitHub Pages (hébergement) · Web3Forms (formulaire) · Google Fonts (polices) ·
-Google Maps (au clic uniquement) · Yapla (adhésion/paiement, hors site).
+GitHub Pages (hébergement) · Web3Forms (formulaire) · Google Maps (au clic uniquement) ·
+Yapla (adhésion/paiement, hors site).
+**Google Fonts ne figure plus dans cette liste** : les polices sont servies par le site depuis
+le 06/09/2026, plus aucune requête ne part vers Google au chargement d'une page.
 
 ---
 
@@ -141,7 +169,10 @@ Il n'y a pas de CI. Les contrôles se font en local :
 node --check script.js                 # syntaxe JS
 python -c "s=open('style.css',encoding='utf-8').read(); print(s.count('{'), s.count('}'))"
 python -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
-python .claude/verifier-jsonld.py      # données structurées, les 13 pages
+python .claude/verifier-jsonld.py      # données structurées, les 25 pages
+python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
+python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
+python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
 ```
 
 `verifier-jsonld.py` doit sortir **0 erreur, 0 avertissement**. Il contrôle, hors ligne, ce
@@ -149,6 +180,14 @@ que Search Console reprocherait ensuite : JSON-LD qui parse, images et fichiers 
 présents dans le dépôt, ancres `#match-…` qui existent vraiment dans la page, propriétés
 recommandées par Google sur chaque `SportsEvent`, ids HTML non dupliqués, entité club unique.
 Il ne remplace pas le Rich Results Test, qui seul fait foi.
+
+`verifier-liens.py` doit sortir **0 lien cassé, 0 ancre absente, 0 page orpheline**. La dernière
+colonne est la plus utile : une page qu'aucun lien du site n'atteint n'est vue ni par un visiteur
+ni par un robot, même si elle figure dans le sitemap.
+
+Les quatre scripts balaient `*.html`, `*/index.html` **et** `*/*/index.html`. Si une rubrique
+descend un jour à trois niveaux, étendre les quatre `glob` — sinon les scripts annonceront
+« 0 erreur » sur des pages qu'ils n'ont pas ouvertes.
 
 Puis, sur le serveur local, vérifier page par page : HTTP 200, un seul `<h1>`, JSON-LD qui parse,
 aucun débordement horizontal en 320 / 375 / 768 / 1024 / 1440 / 1920 px, aucune erreur console.
