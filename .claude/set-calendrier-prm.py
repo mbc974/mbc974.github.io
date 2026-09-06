@@ -50,7 +50,10 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARCHIVE = 'assets/documents/calendrier-prm-nord-2026-2027.pdf'
 AFFICHE = 'assets/affiches/calendrier-phase1-2026-2027'
 BENEVOLES = '.claude/benevoles-matchs.json'
-ICS = 'assets/documents/mbc-vs-sainte-suzanne-11-09-2026.ics'
+# Le .ics du prochain match : c'est celui que build-matchs.py produit a
+# partir de data/matchs.json. Il y en avait un second, ecrit a la main,
+# pour la meme rencontre — deux fichiers a tenir a jour pour un seul match.
+ICS = 'assets/documents/mbc-sainte-suzanne-11-septembre-2026.ics'
 
 SITE = 'https://mbc974.com/'
 CLUB_ID = 'https://mbc974.com/#club'      # l'entite SportsClub declaree dans le <head>
@@ -85,7 +88,7 @@ ACCENTS = {'fevr.': u'févr.', 'aout': u'août', 'dec.': u'déc.',
            'fevrier': u'février', 'decembre': u'décembre'}
 
 CREST_MBC = ('<span class="mx-crest mx-crest--mbc">'
-             '<img src="assets/logos/mbc-logo.webp" alt="" width="360" height="370" '
+             '<img src="assets/logos/mbc-logo.webp" alt="" width="288" height="296" '
              'loading="lazy" decoding="async" '
              'onerror="this.onerror=null;this.src=\'assets/logos/mbc-logo.png\'"></span>')
 
@@ -102,6 +105,8 @@ def ancre(m):
     ne joue qu'une rencontre par journee.
     """
     return 'match-%s' % m['date']
+
+
 def crest_adverse(sigle):
     """Le logo du club adverse, avec repli sur le sigle officiel s'il manque."""
     f = sigle.lower()

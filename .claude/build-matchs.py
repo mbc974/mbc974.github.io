@@ -17,11 +17,17 @@ CE QU'IL ECRIT
   index.html                        le bandeau « prochain match » sous le hero,
                                     entre les deux marqueurs PROCHAIN-MATCH
 
+CE QU'IL ECRIT AUSSI DANS index.html
+-----------------------------------
+Le bloc « calendrier:jsonld » de la page d'accueil, qui ne contient plus des
+SportsEvent mais une ItemList pointant vers les sept fiches. Un evenement se
+declare sur SA page, pas deux fois sur deux URL differentes.
+
 CE QU'IL NE TOUCHE PAS
 ----------------------
-Le Match Center existant (#matchs) et ses SportsEvent restent en place : ils
-sont deja corrects et servent d'ancres a 16 liens entrants. Ce script ne les
-reecrit pas, il ajoute une couche au-dessus.
+Les sept lignes du Match Center (#matchs) et leurs ancres #match-AAAA-MM-JJ,
+qui servent de cible a 16 liens entrants. Elles restent ecrites par
+set-calendrier-prm.py, a partir du PDF de la ligue.
 
 L'HEURE
 -------
@@ -254,13 +260,51 @@ def event(m, d):
 # --------------------------------------------------------------------------
 # Fichier .ics
 # --------------------------------------------------------------------------
+def _ics_heure(iso):
+    """« 2026-09-11T20:30:00+04:00 » -> « 20260911T203000 ».
+
+    L'heure locale, SANS decalage : c'est la forme imposee par la RFC 5545 des
+    lors que la propriete porte un TZID. Ecrire « ...T203000+0400 » a cote de
+    TZID=Indian/Reunion donne une date que la moitie des agendas refusent et
+    que l'autre moitie interprete a sa facon. Le decalage est retire AVANT les
+    separateurs : une fois les deux-points supprimes, « +04:00 » n'existe plus
+    dans la chaine et un replace sur ce motif ne trouverait rien."""
+    return iso.split("+")[0].split("Z")[0].replace("-", "").replace(":", "")
+
+
+def _ics_txt(s):
+    """Echappement des valeurs TEXT : la virgule et le point-virgule separent
+    des valeurs en iCalendar, la barre oblique inverse echappe."""
+    return (s.replace("\\", "\\\\").replace(";", "\\;")
+             .replace(",", "\\,").replace("\n", "\\n"))
+
+
+def _ics_plier(ligne):
+    """Repli a 75 octets, la limite de la RFC. La suite d'une ligne commence
+    par une espace ; on coupe sur les octets UTF-8, pas sur les caracteres,
+    en veillant a ne pas scinder un caractere en deux."""
+    b = ligne.encode("utf-8")
+    if len(b) <= 75:
+        return ligne
+    morceaux, reste = [], b
+    limite = 75
+    while len(reste) > limite:
+        coupe = limite
+        while coupe > 0 and (reste[coupe] & 0xC0) == 0x80:   # milieu d'un caractere
+            coupe -= 1
+        morceaux.append(reste[:coupe].decode("utf-8"))
+        reste = reste[coupe:]
+        limite = 74            # les suivantes portent une espace en tete
+    morceaux.append(reste.decode("utf-8"))
+    return "\r\n ".join(morceaux)
+
+
 def ics(m, d):
     if not m["_lieu"]:
         return None
     L = m["_lieu"]
-    fmt = lambda s: s.replace("-", "").replace(":", "").replace("+04:00", "")
     lieu = u"%s, %s, %s %s" % (L["nom"], L["adresse"], L["codePostal"], L["ville"])
-    return u"\r\n".join([
+    lignes = [
         "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//MBC La Montagne Basket Club//FR",
         "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
         "BEGIN:VTIMEZONE", "TZID:Indian/Reunion", "BEGIN:STANDARD",
@@ -269,14 +313,16 @@ def ics(m, d):
         "BEGIN:VEVENT",
         "UID:%s@mbc974.com" % m["slug"],
         "DTSTAMP:%sZ" % datetime(2026, 9, 1).strftime("%Y%m%dT%H%M%S"),
-        "DTSTART;TZID=Indian/Reunion:%s" % fmt(m["_debutIso"]),
-        "DTEND;TZID=Indian/Reunion:%s" % fmt(m["_finIso"]),
-        u"SUMMARY:%s — %s (J%d)" % (d["club"]["court"], m["adversaireCourt"], m["journee"]),
-        u"LOCATION:%s" % lieu,
-        u"DESCRIPTION:%s%s" % (d["competition"]["nom"],
-                               u" — entrée libre." if m["entreeLibre"] else "."),
+        "DTSTART;TZID=Indian/Reunion:%s" % _ics_heure(m["_debutIso"]),
+        "DTEND;TZID=Indian/Reunion:%s" % _ics_heure(m["_finIso"]),
+        u"SUMMARY:%s" % _ics_txt(u"%s — %s (J%d)" % (d["club"]["court"],
+                                                     m["adversaireCourt"], m["journee"])),
+        u"LOCATION:%s" % _ics_txt(lieu),
+        u"DESCRIPTION:%s" % _ics_txt(
+            d["competition"]["nom"] + (u" — entrée libre." if m["entreeLibre"] else u".")),
         "URL:%s" % m["_url"],
-        "END:VEVENT", "END:VCALENDAR", ""])
+        "END:VEVENT", "END:VCALENDAR", ""]
+    return u"\r\n".join(_ics_plier(l) for l in lignes)
 
 
 VERSION_CSS = "0"
@@ -343,7 +389,7 @@ def ecusson(logo, nom, sigle, taille="96px"):
 
 
 ECUSSON_MBC = (u'<span class="mp__crest"><img src="/assets/logos/mbc-logo.webp" '
-               u'alt="Écusson MBC La Montagne" width="360" height="370" loading="lazy" '
+               u'alt="Écusson MBC La Montagne" width="288" height="296" loading="lazy" '
                u'decoding="async"></span>')
 
 

@@ -15,10 +15,10 @@ END:VTIMEZONE
 BEGIN:VEVENT
 UID:mbc-sainte-suzanne-11-septembre-2026@mbc974.com
 DTSTAMP:20260901T000000Z
-DTSTART;TZID=Indian/Reunion:20260911T203000+0400
-DTEND;TZID=Indian/Reunion:20260911T230000+0400
+DTSTART;TZID=Indian/Reunion:20260911T203000
+DTEND;TZID=Indian/Reunion:20260911T230000
 SUMMARY:MBC — Sainte-Suzanne (J1)
-LOCATION:Gymnase de La Montagne, Chemin des Bauhinias, 97417 Saint-Denis
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
 DESCRIPTION:Pré-Régionale Masculine — entrée libre.
 URL:https://mbc974.com/matchs/mbc-sainte-suzanne-11-septembre-2026/
 END:VEVENT

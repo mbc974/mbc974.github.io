@@ -15,10 +15,10 @@ END:VTIMEZONE
 BEGIN:VEVENT
 UID:mbc-mtg-basketball-9-octobre-2026@mbc974.com
 DTSTAMP:20260901T000000Z
-DTSTART;TZID=Indian/Reunion:20261009T203000+0400
-DTEND;TZID=Indian/Reunion:20261009T230000+0400
+DTSTART;TZID=Indian/Reunion:20261009T203000
+DTEND;TZID=Indian/Reunion:20261009T230000
 SUMMARY:MBC — MTG Basketball (J4)
-LOCATION:Gymnase de La Montagne, Chemin des Bauhinias, 97417 Saint-Denis
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
 DESCRIPTION:Pré-Régionale Masculine — entrée libre.
 URL:https://mbc974.com/matchs/mbc-mtg-basketball-9-octobre-2026/
 END:VEVENT
