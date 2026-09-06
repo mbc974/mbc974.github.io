@@ -6145,3 +6145,170 @@ main > .section .cal-lieux{
   .bh__f.is-on > *:not(title){animation:none;stroke-dashoffset:0}
   .bh__f.is-on > .bh__ballon{fill-opacity:1}
 }
+
+/* ============================================================================
+   V106 — HERO ÉDITORIAL : panneau navy + photo, plus aucun fondu
+   ----------------------------------------------------------------------------
+   Ce que cette passe remplace : le masque smoothstep de la V104/V105 sur
+   .hero__photo et le voile .hero::after. Les deux faisaient le même travail —
+   noircir la photo pour porter le texte — et c'est précisément ce qui donnait
+   l'impression de deux blocs collés. Ils sont éteints ici, pas retouchés.
+
+   À la place, une vraie composition en deux colonnes : un PANNEAU navy tenu
+   par une arête franche, et la photo qui occupe sa colonne en entier. La
+   lisibilité ne vient plus d'un dégradé posé sur le sujet mais du fait que le
+   texte et la photo n'occupent plus le même espace.
+
+   Le repère est --hero-split : tout s'y accroche. Le modifier suffit à
+   rééquilibrer la composition.
+   ============================================================================ */
+
+.hero{
+  --hero-split:46%;
+  /* Alignement sur le logo. Le header combine deux choses : son padding-inline
+     clamp(18px,4vw,44px) ET la marge du lockup, max(0,(100vw-1560)/2), qui
+     ouvre une gouttiere au-dela de 1560 px. On reprend la SOMME des deux,
+     sinon l'accroche du hero derive de 180 px des 1920 px de large. */
+  --hero-gutter:calc(clamp(18px,4vw,44px) + max(0px,(100vw - 1560px) / 2));
+  position:relative;overflow:hidden;
+  min-height:clamp(620px,76svh,780px);
+  display:flex;align-items:center;
+  /* !important assume : un bloc V20 pose « padding-top:5rem !important » sous
+     680 px et « clamp(5.2rem,8vh,6.1rem) !important » au-dessus. Sans cela la
+     composition ne peut pas fixer sa propre hauteur. */
+  padding-top:calc(72px + clamp(1.5rem,3vw,3rem)) !important;
+  padding-bottom:clamp(2rem,4vw,3.5rem) !important;
+  align-items:center !important;
+  background:linear-gradient(180deg,#0A1220 0%,var(--nuit-0) 100%)}
+
+/* --- 1. Extinction de l'ancien fondu -------------------------------------- */
+.hero::after{display:none}
+.hero__photo,
+.hero .hero__photo{
+  -webkit-mask-image:none;mask-image:none;
+  -webkit-mask-composite:add;mask-composite:add;
+  opacity:1;transform:none;filter:none}
+.hero__photo::before,
+.hero__photo::after{display:none}
+
+/* --- 2. La photo occupe sa colonne, entière -------------------------------- */
+.hero__photo{
+  position:absolute;top:0;bottom:0;right:0;left:calc(var(--hero-split) - 2px);
+  width:auto;max-width:none;z-index:1;pointer-events:none}
+.hero__photo picture{display:block;height:100%}
+.hero__photo img{
+  width:100%;height:100%;object-fit:cover;object-position:58% 42%;
+  display:block;filter:saturate(1.04) contrast(1.02)}
+
+/* --- 3. Le panneau navy et son arête -------------------------------------- */
+.hero__panel{
+  position:absolute;inset:0 auto 0 0;width:var(--hero-split);z-index:2;
+  pointer-events:none;overflow:hidden;
+  background:
+    radial-gradient(120% 90% at 12% 8%,rgba(27,81,158,.30),transparent 62%),
+    linear-gradient(180deg,#0A1424 0%,#070D18 78%);
+  /* La profondeur vient d'une ombre portée vers la photo, pas d'un dégradé
+     étalé sur elle : l'ombre s'arrête à 90 px, le sujet n'est jamais touché. */
+  box-shadow:34px 0 90px -26px rgba(3,7,15,.92)}
+/* Le filet de couture : 2 px d'orange, éteint aux deux extrémités. */
+.hero__panel::after{
+  content:"";position:absolute;top:0;right:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,
+    transparent 0%,rgba(232,130,42,.85) 26%,rgba(232,130,42,.85) 74%,transparent 100%)}
+
+/* --- 4. Les lignes de terrain, dans le panneau ----------------------------- */
+/* Un arc de rond central et une ligne de touche, au trait, très en retrait :
+   la texture est du basket, pas un motif décoratif générique. */
+.hero__court{position:absolute;inset:0}
+.hero__court::before{
+  content:"";position:absolute;left:-22%;bottom:-46%;width:76%;aspect-ratio:1;
+  border-radius:50%;border:1.5px solid rgba(191,210,228,.085)}
+.hero__court::after{
+  content:"";position:absolute;left:0;right:14%;bottom:22%;height:1.5px;
+  background:linear-gradient(90deg,rgba(191,210,228,.10),rgba(191,210,228,.02))}
+
+/* --- 5. La colonne de texte ------------------------------------------------ */
+.hero__inner{
+  position:relative;z-index:4;
+  width:var(--hero-split);max-width:none;margin-inline:0;
+  padding-left:var(--hero-gutter);padding-right:clamp(16px,2.4vw,40px)}
+/* Le titre n'a plus besoin d'ombre portée : il n'est plus sur la photo. */
+.hero__h1,.hero__creole{text-shadow:none}
+/* Le titre tient sur DEUX lignes : « LE BASKET PREND » mesure environ 6,4 fois
+   le corps, la colonne doit donc rester plus large que cela. Le plafond de
+   6,1 rem est ce que la colonne supporte a 1920 px, gouttiere comprise. */
+.hero__h1{font-size:clamp(2.5rem,6vw,6.1rem);max-width:none}
+.hero__fine{max-width:none}
+
+/* L'indicateur de defilement etait centre sur le hero, donc pose sur la photo.
+   Il se recale au centre de la COLONNE de texte, ou il a un fond a lui. */
+.hero__scroll{left:calc(var(--hero-split) / 2);transform:translateX(-50%)}
+
+/* --- 6. Micro-interaction des CTA ----------------------------------------- */
+.hero__cta .btn--primary{transition:transform .22s var(--ease-out),box-shadow .22s var(--ease-out)}
+.hero__cta .btn--primary:hover{transform:translateY(-2px);
+  box-shadow:0 12px 30px -8px rgba(232,130,42,.55)}
+.hero__cta .btn--primary:active{transform:translateY(0)}
+
+/* --- 7. Header : un cran plus premium, sans glassmorphism ------------------ */
+@media (min-width:761px){
+  .site-header{
+    background:rgba(8,14,26,.62);
+    -webkit-backdrop-filter:saturate(1.25) blur(14px);
+    backdrop-filter:saturate(1.25) blur(14px);
+    border-bottom:1px solid rgba(191,210,228,.07)}
+  .site-header.scrolled{background:rgba(8,14,26,.88);
+    border-bottom-color:rgba(191,210,228,.11)}
+}
+
+/* La gouttiere grandit avec l'ecran : la colonne de texte doit grandir aussi,
+   sinon la place utile diminue alors que l'ecran s'agrandit. */
+@media (min-width:1600px){ .hero{--hero-split:48%} }
+@media (min-width:2100px){ .hero{--hero-split:52%} }
+
+/* --- 8. Le bandeau chiffres colle au hero ---------------------------------- */
+.keyfig-sec{padding-top:clamp(1.6rem,3.4vw,2.8rem)}
+
+/* ============================ TABLETTE ET MOBILE ========================== */
+@media (max-width:900px){
+  /* Empilement réel : la photo occupe un bandeau plein, le texte vient
+     dessous. Aucun mot ne passe sur un visage ou sur un joueur. */
+  .hero{display:block;min-height:0;
+    padding-top:0 !important;padding-bottom:clamp(1.6rem,5vw,2.4rem) !important;
+    /* sous 1180 px le header remet la marge du lockup a zero */
+    --hero-gutter:clamp(18px,4vw,44px)}
+  /* La hauteur du bandeau suit EXACTEMENT le rapport du cadrage servi, sinon
+     object-fit:cover rogne et les chaussures sautent. Deux paliers, donc :
+     tablette = cadrage paysage 1,466:1, telephone = cadrage portrait 1,30:1
+     (voir les media des <source> dans index.html, cales sur 640 px). */
+  .hero__photo{
+    position:relative;inset:auto;width:100%;left:0;
+    height:calc(100vw / 1.466);max-height:600px;margin-top:72px}
+  .hero__photo img{object-position:50% 50%}
+  /* L'arête devient horizontale : même filet orange, même rôle. */
+  .hero__panel{position:relative;inset:auto;width:100%;height:0;
+    box-shadow:none;background:none}
+  .hero__panel::after{top:auto;bottom:0;left:0;right:0;width:auto;height:2px;
+    background:linear-gradient(90deg,
+      transparent 0%,rgba(232,130,42,.85) 18%,rgba(232,130,42,.85) 82%,transparent 100%)}
+  .hero__court{display:none}
+  /* Rythme resserre : c'est ce qui garde « REJOINDRE LE MBC » au-dessus de la
+     ligne de flottaison sur un ecran de 844 px de haut. */
+  .hero__inner{width:100%;padding-top:clamp(.9rem,3vw,1.4rem);
+    padding-right:var(--hero-gutter)}
+  .hero__meta{margin-top:clamp(.9rem,3vw,1.4rem)}
+  .hero__creole{margin-top:clamp(.7rem,2.4vw,1.1rem)}
+  .hero__h1{font-size:clamp(2.5rem,10vw,4rem)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero__cta .btn--primary{transition:none}
+  .hero__cta .btn--primary:hover{transform:none}
+}
+
+/* Sous 520 px le header passe a 16 px de padding : la gouttiere du hero suit. */
+@media (max-width:520px){ .hero{--hero-gutter:16px} }
+
+@media (max-width:640px){
+  .hero__photo{height:calc(100vw / 1.3);max-height:430px}
+}

@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-741f58ff-6f3c8dd4';
+const CACHE = 'mbc-2eb16bf4-6f3c8dd4';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,13 +13,13 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=741f58ff',
+  '/style.css?v=2eb16bf4',
   '/script.js?v=6f3c8dd4',
   '/assets/logos/mbc-logo.webp',
   '/assets/icons/favicon.png',
   // Image LCP du hero. A repointer en meme temps que le <link rel=preload>
   // d'index.html : bump-assets.py ne touche jamais cette liste.
-  '/assets/images/mbc-duo-terrain-la-montagne-700.webp'
+  '/assets/images/mbc-hero-duo-ruisseau-blanc-980.avif'
 ];
 
 self.addEventListener('install', function (e) {

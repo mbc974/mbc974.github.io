@@ -54,10 +54,10 @@
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
 <!-- Preload recentré sur l'élément LCP réel : l'image du hero (le poster vidéo, sous la ligne de
      flottaison et en preload="none", n'a pas besoin d'être préchargé). -->
-<link rel="preload" as="image" href="assets/images/mbc-duo-terrain-la-montagne-700.webp" type="image/webp" fetchpriority="high"
-      imagesrcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
-      imagesizes="(max-width:900px) 100vw, 48vw">
-<link rel="stylesheet" href="style.css?v=741f58ff">
+<link rel="preload" as="image" href="assets/images/mbc-hero-duo-ruisseau-blanc-980.avif" type="image/avif" fetchpriority="high"
+      imagesrcset="assets/images/mbc-hero-duo-ruisseau-blanc-p-420.avif 420w, assets/images/mbc-hero-duo-ruisseau-blanc-p-640.avif 640w, assets/images/mbc-hero-duo-ruisseau-blanc-p-780.avif 780w, assets/images/mbc-hero-duo-ruisseau-blanc-700.avif 700w, assets/images/mbc-hero-duo-ruisseau-blanc-980.avif 980w, assets/images/mbc-hero-duo-ruisseau-blanc-1300.avif 1300w"
+      imagesizes="(max-width:900px) 100vw, 56vw">
+<link rel="stylesheet" href="style.css?v=2eb16bf4">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -620,13 +620,18 @@
      Images) : il ne doit pas redevenir vide. -->
 <section class="hero" id="hero">
   <div class="hero__photo">
-    <img src="assets/images/mbc-duo-terrain-la-montagne-700.webp"
-         srcset="assets/images/mbc-duo-terrain-la-montagne-420.webp 420w, assets/images/mbc-duo-terrain-la-montagne-640.webp 640w, assets/images/mbc-duo-terrain-la-montagne-700.webp 700w, assets/images/mbc-duo-terrain-la-montagne-860.webp 860w, assets/images/mbc-duo-terrain-la-montagne.webp 1086w"
-         sizes="(max-width:900px) 100vw, 48vw"
-         alt="Deux joueurs du MBC de dos sur le terrain de La Montagne, maillots floqués GLAIN 2 et ALEX 1, face à la bannière du club : « Ansanm nou lé pli for », « La Montagne en lèr »."
-         width="1086" height="1448" decoding="async" fetchpriority="high"
-         onerror="this.onerror=null;this.srcset='';this.src='assets/images/mbc-duo-terrain-la-montagne.jpg'">
+    <picture>
+      <source media="(max-width:640px)" type="image/avif" srcset="assets/images/mbc-hero-duo-ruisseau-blanc-p-420.avif 420w, assets/images/mbc-hero-duo-ruisseau-blanc-p-640.avif 640w, assets/images/mbc-hero-duo-ruisseau-blanc-p-780.avif 780w" sizes="100vw">
+      <source media="(max-width:640px)" type="image/webp" srcset="assets/images/mbc-hero-duo-ruisseau-blanc-p-420.webp 420w, assets/images/mbc-hero-duo-ruisseau-blanc-p-640.webp 640w, assets/images/mbc-hero-duo-ruisseau-blanc-p-780.webp 780w" sizes="100vw">
+      <source type="image/avif" srcset="assets/images/mbc-hero-duo-ruisseau-blanc-700.avif 700w, assets/images/mbc-hero-duo-ruisseau-blanc-980.avif 980w, assets/images/mbc-hero-duo-ruisseau-blanc-1300.avif 1300w" sizes="56vw">
+      <source type="image/webp" srcset="assets/images/mbc-hero-duo-ruisseau-blanc-700.webp 700w, assets/images/mbc-hero-duo-ruisseau-blanc-980.webp 980w, assets/images/mbc-hero-duo-ruisseau-blanc-1300.webp 1300w" sizes="56vw">
+      <img src="assets/images/mbc-hero-duo-ruisseau-blanc.jpg" alt="Deux joueurs du MBC de dos sur le plateau de Ruisseau Blanc à La Montagne, maillots floqués CLAIN 2 et ALEX 1, devant les bâches du club « Ansanm nou lé pli for » et « La Montagne en lèr »."
+           width="1300" height="887" decoding="async" fetchpriority="high">
+    </picture>
   </div>
+  <!-- Le panneau navy remplace l'ancien fondu : une arete franche au lieu d'un
+       degrade qui mangeait le sujet. Purement graphique, donc aria-hidden. -->
+  <div class="hero__panel" aria-hidden="true"><span class="hero__court"></span></div>
   <div class="hero__inner">
     <p class="hero__eyebrow">La Montagne <i aria-hidden="true"></i> Saint-Denis</p>
     <h1 class="hero__h1">Le basket prend<br>de la <span class="hl">hauteur.</span></h1>
