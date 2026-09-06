@@ -6670,3 +6670,49 @@ main > .section .cal-lieux{
     border-left:1px solid rgba(191,210,228,.09);border-top:0}
   .keyfig__v{font-size:clamp(1.5rem,3.4vw,2.1rem)}
 }
+
+/* Le brief cadre le bandeau chiffres entre 145 et 175 px ; il en faisait 206.
+   Le contenu (numero, valeur, deux lignes de legende, lien) est incompressible :
+   c'est donc l'air autour qui se resserre. */
+.keyfig-sec{padding:clamp(1rem,1.4vw,1.15rem) 0 !important}
+.keyfig__a{padding-top:1.05rem}
+.keyfig__go{margin-top:.3rem}
+
+/* --------------------------------------------------------------------------
+   V110.1 — deux defauts vus au rendu, pas a la lecture du code
+   -------------------------------------------------------------------------- */
+
+/* a) --hero-gutter est declaree sur .hero, donc invisible depuis .keyfig-sec.
+      La regle desktop s'en tirait grace a sa valeur de repli ; la regle mobile
+      ne l'avait pas, et le bandeau chiffres se collait au bord de l'ecran
+      (« CE QUE COUVRE LA LICENCE » sortait meme du cadre a gauche).
+      On lui donne sa propre variable plutot que de dependre du hero. */
+.keyfig-sec{--kf-gutter:clamp(18px,4vw,44px)}
+.keyfig-sec .wrap{padding-inline:var(--kf-gutter)}
+@media (max-width:900px){
+  .keyfig-sec .wrap{padding-inline:var(--kf-gutter)}
+}
+@media (max-width:520px){
+  .keyfig-sec{--kf-gutter:16px}
+}
+
+/* b) Sur telephone le titre se posait en plein sur le maillot blanc de CLAIN.
+      Le voile part toujours du haut de la scene, mais il se ferme plus tot :
+      la photo respire sur le premier tiers (tetes, montagne, lumiere), le
+      texte se lit sur un fond calme en dessous. Une seule scene, un seul
+      degrade : aucune frontiere nette n'apparait. */
+@media (max-width:900px){
+  .hero::after{
+    background:linear-gradient(180deg,
+      rgba(4,14,28,.20) 0%,  rgba(4,14,28,.24) 13%, rgba(4,14,28,.44) 23%,
+      rgba(4,14,28,.66) 32%, rgba(4,14,28,.81) 41%, rgba(4,14,28,.89) 51%,
+      rgba(4,14,28,.93) 63%, rgba(4,14,28,.955) 78%, rgba(4,14,28,.97) 100%)}
+}
+
+/* c) La colonne de texte est bornee a 46 % pour que le titre ne parte pas sur
+      les joueurs. Mais les deux boutons mesurent ~515 px : sous 1120 px de
+      large, 46 % passait sous cette valeur et le second bouton tombait a la
+      ligne. On desserre la contrainte pour cette rangee-la uniquement. */
+@media (min-width:901px){
+  .hero__inner > .hero__cta{max-width:min(58%,700px)}
+}
