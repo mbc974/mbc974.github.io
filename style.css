@@ -8227,3 +8227,138 @@ main > .section .cal-lieux{
 @media (max-width:680px){
   .keyfig__v{font-size:clamp(2.15rem,9vw,3.1rem)}
 }
+
+/* ============================================================================
+   V125 — LES CARTES RÉAGISSENT VRAIMENT AU SURVOL
+   ----------------------------------------------------------------------------
+   Le survol se limitait à un liseré qui changeait de teinte et 3 px de
+   translation : on ne le remarquait pas. Quatre gestes coordonnés le
+   remplacent, tous déclenchés par le même geste et calés sur la même courbe :
+
+     1. la carte se soulève de 7 px ET grandit de 1,8 %, avec une ombre portée
+        doublée d'un halo orange très faible ;
+     2. le filet du haut se TRACE de gauche à droite au lieu de changer de
+        couleur d'un coup ;
+     3. un trait orange se déploie sous le titre, depuis la gauche ;
+     4. la tuile de l'icône s'inverse : fond orange plein, glyphe navy.
+
+   Un reflet diagonal traverse la carte une seule fois, à 7 % de blanc — assez
+   pour donner de la matière, pas assez pour se voir comme un effet.
+
+   Les deux familles de cartes du site partagent ce vocabulaire : les quatre
+   piliers « Infos parents » et les trois cartes « Soutenir ». Les traiter
+   différemment les ferait paraître appartenir à deux sites.
+   ============================================================================ */
+
+.p-pillar,
+.support-card{
+  position:relative;overflow:hidden;
+  transition:transform .42s var(--ease-out), border-color .32s,
+             background .32s, box-shadow .42s var(--ease-out)}
+
+/* 2. le filet du haut, tracé de gauche à droite */
+.p-pillar::before,
+.support-card::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:2px;z-index:2;
+  background-color:var(--hair-2);
+  background-image:linear-gradient(90deg,var(--orange-ballon),var(--orange-vif));
+  background-repeat:no-repeat;background-size:0 100%;
+  transition:background-size .5s var(--ease-out)}
+
+/* 3. le trait sous le titre */
+.p-pillar h3,
+.support-card h3{position:relative;display:inline-block}
+.p-pillar h3::after,
+.support-card h3::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.2em;height:2px;
+  border-radius:2px;background:var(--orange-vif);
+  transform:scaleX(0);transform-origin:left center;
+  transition:transform .45s var(--ease-out) .06s}
+
+/* 5. le reflet, une seule traversée */
+.p-pillar::after,
+.support-card::after{
+  content:"";position:absolute;inset:-40% -60% auto -60%;height:180%;
+  z-index:1;pointer-events:none;opacity:0;
+  background:linear-gradient(102deg,
+    rgba(255,255,255,0) 42%, rgba(255,255,255,.07) 50%,
+    rgba(232,130,42,.10) 53%, rgba(255,255,255,0) 61%)}
+@keyframes carteReflet{
+  0%  {opacity:0;transform:translateX(-45%)}
+  22% {opacity:1}
+  100%{opacity:0;transform:translateX(45%)}
+}
+
+/* La tuile d'icône doit pouvoir s'inverser d'un bloc. */
+.p-pillar__ico,
+.support-card__ico{
+  transition:background .32s, border-color .32s, transform .38s var(--ease-out),
+             box-shadow .38s}
+.p-pillar__ico .ic,
+.support-card__ico .ic{transition:color .28s}
+
+@media (hover:hover) and (pointer:fine){
+  .p-pillar:hover,
+  .support-card:hover{
+    transform:translateY(-7px) scale(1.018);
+    border-color:rgba(232,130,42,.42);
+    box-shadow:var(--bevel),
+               0 22px 46px -18px rgba(2,6,14,.78),
+               0 18px 52px -28px rgba(232,130,42,.5)}
+  .p-pillar:hover::before,
+  .support-card:hover::before{background-size:100% 100%}
+  .p-pillar:hover h3::after,
+  .support-card:hover h3::after{transform:scaleX(1)}
+  .p-pillar:hover::after,
+  .support-card:hover::after{animation:carteReflet .9s var(--ease-out) .05s both}
+  .p-pillar:hover .p-pillar__ico,
+  .support-card:hover .support-card__ico{
+    background:var(--grad-orange);border-color:transparent;
+    transform:translateY(-2px);
+    box-shadow:0 12px 26px -12px rgba(217,106,27,.65)}
+  .p-pillar:hover .p-pillar__ico .ic,
+  .support-card:hover .support-card__ico .ic{color:#170c02}
+}
+
+/* Le contenu doit rester AU-DESSUS du reflet. */
+.p-pillar > *,
+.support-card > *{position:relative;z-index:2}
+
+@media (prefers-reduced-motion:reduce){
+  .p-pillar,.support-card,
+  .p-pillar__ico,.support-card__ico,
+  .p-pillar h3::after,.support-card h3::after{transition:none}
+  .p-pillar:hover,.support-card:hover{transform:none}
+  .p-pillar:hover::after,.support-card:hover::after{animation:none;opacity:0}
+  .p-pillar:hover .p-pillar__ico,
+  .support-card:hover .support-card__ico{transform:none}
+}
+
+/* V125.1 — pourquoi les quatre piliers ne se soulevaient pas.
+   ----------------------------------------------------------------------------
+   Réponse obtenue en demandant au navigateur lui-même la cascade appliquée
+   (CDP CSS.getMatchedStylesForNode, avec :hover forcé) plutôt qu'en la
+   déduisant du fichier — trois hypothèses fausses avaient précédé.
+
+   Les `.p-pillar` portent aussi la classe `reveal`, et la règle
+   `main > .section .reveal` (ligne 3035) pèse (0,2,1) : un type en plus qu'un
+   `.p-pillar:hover` (0,2,0). Elle gagnait donc, quelle que soit sa position,
+   et imposait le `transform` de l'animation d'apparition. Les cartes
+   « Soutenir », elles, n'ont pas cette classe — d'où un survol qui marchait
+   d'un côté et pas de l'autre.
+
+   On repasse devant avec quatre classes (0,4,0). Le `.in` n'est pas un
+   ornement : il garantit que le soulèvement n'entre en jeu qu'une fois la
+   carte révélée. */
+@media (hover:hover) and (pointer:fine){
+  .p-pillar.reveal.in:hover{
+    transform:translateY(-7px) scale(1.018)}
+}
+@media (prefers-reduced-motion:reduce){
+  .p-pillar.reveal.in:hover{transform:none}
+}
+
+/* Le liseré lumineux injecté par script.js doit rester au-dessus du contenu :
+   la règle `.p-pillar > *` le rétrogradait au même plan. */
+.p-pillar > .spotglow__fx,
+.support-card > .spotglow__fx{z-index:3}

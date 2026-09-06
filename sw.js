@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-98789f0c-5784bcbd';
+const CACHE = 'mbc-82c6968a-5784bcbd';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,7 +13,7 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=98789f0c',
+  '/style.css?v=82c6968a',
   '/script.js?v=5784bcbd',
   '/assets/logos/mbc-logo.webp',
   '/assets/icons/favicon.png'
