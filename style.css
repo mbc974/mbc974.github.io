@@ -8362,3 +8362,63 @@ main > .section .cal-lieux{
    la règle `.p-pillar > *` le rétrogradait au même plan. */
 .p-pillar > .spotglow__fx,
 .support-card > .spotglow__fx{z-index:3}
+
+/* V126 — la bande de chiffres se centre aussi sur téléphone.
+   Empilées, les trois colonnes étaient restées alignées à gauche : c'était le
+   bon réflexe tant qu'il n'y avait pas de séparateur vertical pour cadrer le
+   texte, mais l'ensemble se lit mieux centré, comme sur desktop. Le trait de
+   séparation devient symétrique lui aussi : il s'éteint des deux côtés au lieu
+   d'un seul. */
+@media (max-width:900px){
+  .keyfig__a{text-align:center}
+  .keyfig__go{justify-content:center}
+  .keyfig__l span{margin-inline:auto}
+  .keyfig__i + .keyfig__i::before{
+    left:12%;right:12%;
+    background:linear-gradient(90deg,
+      rgba(191,210,228,0),rgba(191,210,228,.18) 22%,
+      rgba(191,210,228,.18) 78%,rgba(191,210,228,0))}
+}
+
+/* ============================================================================
+   V126.1 — LA CHUTE DU TITRE QUI TOURNE
+   ----------------------------------------------------------------------------
+   Même dispositif que la version précédente, et pour la même raison : un
+   « fantôme » invisible mais DANS LE FLUX réserve la hauteur de la formule la
+   plus large, et les six formules visibles sont posées par-dessus en absolu.
+   Sans lui, chaque changement décalerait le sous-titre et les boutons — donc
+   du CLS à chaque rotation.
+
+   Les six tiennent sur une ligne à toutes les largeurs (vérifié au banc) :
+   c'est la condition pour qu'aucune ne flotte au-dessus d'un trou.
+   ============================================================================ */
+.hero__rot{
+  position:relative;display:block;
+  color:var(--orange-vif)}
+.hero__rot-ghost{display:block;visibility:hidden;pointer-events:none}
+.hero__rot-i{
+  position:absolute;left:0;top:0;right:0;
+  opacity:0;visibility:hidden;transform:translateY(.26em);
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out),
+             visibility 0s linear .8s}
+.hero__rot-i.is-on{
+  opacity:1;visibility:visible;transform:none;
+  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out),
+             visibility 0s linear 0s}
+
+@media (prefers-reduced-motion:reduce){
+  .hero__rot-i,
+  .hero__rot-i.is-on{transition:none}
+}
+
+/* V126.2 — la chute doit avoir la taille du titre, pas celle de l'ancien
+   rotateur. Les règles `.hero__rot{font-size:…}` des V111.3 et V124 étaient
+   calées sur une composition différente (une amorce petite + une phrase
+   moyenne) ; ici la troisième ligne EST le titre, elle doit donc simplement
+   hériter. Mesure : 96 px à 1920, comme « LE BASKET À ». */
+.hero__rot{
+  font-size:inherit;line-height:inherit;letter-spacing:inherit;
+  margin-top:0}
+@media (min-width:641px) and (max-width:1000px){.hero__rot{font-size:inherit}}
+@media (max-width:640px){.hero__rot{font-size:inherit}}
+@media (max-width:340px){.hero__rot{font-size:inherit}}

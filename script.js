@@ -1316,3 +1316,39 @@
     });
   });
 })();
+
+
+/* ============================================================
+   HERO — la chute du titre alterne francais et creole
+   ============================================================
+   Les six formules sont dans le HTML : elles doivent exister sans JS, et la
+   scene est aria-hidden avec une ligne sr-only a cote, si bien que le titre
+   reste une phrase complete pour les lecteurs d'ecran comme pour les moteurs.
+   Ici on ne fait que deplacer la classe .is-on ; le fondu et le glissement
+   sont en CSS, et le « fantome » invisible reserve deja la hauteur, donc rien
+   ne bouge autour.
+
+   Sous prefers-reduced-motion on n'installe rien : « Ensemble. » reste
+   affiche. Et le minuteur s'arrete franchement quand l'onglet passe en
+   arriere-plan plutot que de tourner dans le vide. */
+(function () {
+  var scene = document.querySelector('[data-hero-rot]');
+  if (!scene) return;
+  var formules = scene.querySelectorAll('.hero__rot-i');
+  if (formules.length < 2) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var i = 0, minuteur = null;
+  function suivante() {
+    formules[i].classList.remove('is-on');
+    i = (i + 1) % formules.length;
+    formules[i].classList.add('is-on');
+  }
+  function demarrer() { if (!minuteur) minuteur = window.setInterval(suivante, 3400); }
+  function arreter() { if (minuteur) { window.clearInterval(minuteur); minuteur = null; } }
+
+  demarrer();
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) arreter(); else demarrer();
+  });
+})();
