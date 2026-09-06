@@ -8184,3 +8184,46 @@ main > .section .cal-lieux{
   .keyfig__go{font-size:.8rem;margin-top:.9rem}
   .keyfig__i{padding:1.6rem 0}
 }
+
+/* ============================================================================
+   V124 — LES CHIFFRES, TAILLE FINALE
+   ----------------------------------------------------------------------------
+   Troisième passe : 48 px, puis 69, toujours jugés trop discrets. On monte à
+   92 px — presque le titre du hero (96 px) — et on récupère la place
+   nécessaire en resserrant le rembourrage des colonnes, sinon « 2 TERRAINS »,
+   la valeur la plus large, n'a plus la largeur pour tenir sur une ligne.
+
+   Le rapport de force s'inverse donc volontairement : la bande ne se lit plus
+   comme une note sous le hero, mais comme le second temps de la page.
+   ============================================================================ */
+@media (min-width:1001px){
+  .keyfig-sec{padding:clamp(3.2rem,5.2vw,5.4rem) 0 !important}
+  .keyfig__i{padding-inline:clamp(.8rem,1.6vw,1.9rem)}
+  .keyfig__i:first-child{padding-left:clamp(.8rem,1.6vw,1.9rem)}
+  .keyfig__i:last-child{padding-right:clamp(.8rem,1.6vw,1.9rem)}
+  .keyfig__v{font-size:clamp(3rem,4.8vw,5.8rem)}
+  .keyfig__l{font-size:clamp(1.12rem,1.35vw,1.55rem);margin-top:1.15rem}
+  .keyfig__l span{font-size:.78em;margin-top:.45rem}
+  .keyfig__go{font-size:.88rem;margin-top:1.5rem}
+}
+
+@media (min-width:681px) and (max-width:1000px){
+  .keyfig__v{font-size:clamp(2.4rem,5.6vw,3.6rem)}
+  .keyfig__l{font-size:1.12rem}
+  .keyfig__go{font-size:.82rem}
+}
+
+@media (max-width:680px){
+  .keyfig__v{font-size:clamp(2.6rem,10.4vw,3.6rem)}
+  .keyfig__l{font-size:1.14rem;margin-top:.8rem}
+  .keyfig__l span{font-size:.88em}
+  .keyfig__go{font-size:.84rem;margin-top:1rem}
+}
+
+/* V124.1 — sur téléphone, la valeur passait DEVANT le titre du hero.
+   Mesure : 57,6 px contre 50,3 px à 680, 41,6 contre 35,2 à 320. Les deux
+   échelles n'ont pas la même pente (10,4vw contre 7,4vw), elles se croisaient.
+   La valeur repasse sous le titre à toutes les largeurs testées. */
+@media (max-width:680px){
+  .keyfig__v{font-size:clamp(2.15rem,9vw,3.1rem)}
+}
