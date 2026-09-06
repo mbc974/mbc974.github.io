@@ -6343,7 +6343,7 @@ main > .section .cal-lieux{
   width:100%;height:100%;object-fit:cover;
   /* 40 % : de l'air au-dessus des têtes, coupe au mollet — la référence coupe
      aussi les jambes, c'est le bandeau chiffres qui ferme la scène. */
-  object-position:50% 40%;
+  object-position:50% 42%;
   display:block;filter:saturate(1.06) contrast(1.04)}
 .hero__photo::before{display:none}
 
@@ -6500,4 +6500,101 @@ main > .section .cal-lieux{
 
 @media (prefers-reduced-motion:reduce){
   .hero__cta .btn--primary:hover,.hero__second:hover{transform:none}
+}
+
+/* ============================================================================
+   V109 — HERO PLEINE LARGEUR + BANDEAU KPI TYPOGRAPHIQUE
+   ----------------------------------------------------------------------------
+   Deux corrections par rapport à la V108 :
+
+   1. Le FOND doit faire 100vw. La V108 enfermait tout le hero dans un canvas
+      arrondi de 1560 px : sur un écran large, la photo s'arrêtait avant les
+      bords et redevenait un rectangle posé sur la page. Désormais seul le
+      CONTENU est borné à 1560 px ; l'image, elle, va d'un bord à l'autre.
+
+   2. Le bandeau chiffres redevient typographique. Les pictogrammes génériques
+      (ballon, groupe, épingle) faisaient « template » ; un numéro d'ordre
+      orange et un filet suffisent à rythmer les trois colonnes.
+   ============================================================================ */
+
+.hero{
+  max-width:none;border-radius:0;
+  /* La hauteur suit AUSSI la largeur. Le fond fait 2,5:1 : si le hero garde
+     720 px quand l'ecran passe a 2560, le cadre monte a 3,6:1 et object-fit
+     rogne 30 % de la hauteur — les jambes des joueurs disparaissent. En
+     laissant la hauteur croitre avec la largeur, le rognage reste faible :
+     1440 -> aucun, 1920 -> 7 %, 2560 -> 12 %. */
+  min-height:clamp(560px,max(66vh,26vw),900px) !important}
+
+/* Le contenu se recale seul dans une mesure de 1560, la photo continue
+   jusqu'aux bords de l'écran. */
+.hero__inner{
+  width:100%;max-width:1560px;margin-inline:auto;
+  padding-left:var(--hero-gutter);padding-right:var(--hero-gutter)}
+.hero__inner > *{max-width:min(46%,700px)}
+
+/* Le voile de lisibilité reprend les valeurs demandées : l'extinction est
+   complète à 78 %, et le terrain reste devinable sous le texte. */
+.hero::after{
+  background:linear-gradient(90deg,
+    rgba(3,13,27,.960) 0%,  rgba(3,13,27,.930) 12%, rgba(3,13,27,.880) 25%,
+    rgba(3,13,27,.760) 34%, rgba(3,13,27,.580) 45%, rgba(3,13,27,.400) 53%,
+    rgba(3,13,27,.260) 59%, rgba(3,13,27,.180) 64%, rgba(3,13,27,.090) 70%,
+    rgba(3,13,27,.030) 74%, rgba(3,13,27,0)    78%)}
+
+/* La marque géante suit la mesure du contenu, pas le bord de l'écran. */
+.hero__panel::before{
+  left:calc(max(0px,(100vw - 1560px) / 2) + var(--hero-gutter) - .08em)}
+
+/* ---------------------------------------------------------------------------
+   Bandeau KPI : trois colonnes, aucune carte, aucun arrondi, aucun pictogramme
+   --------------------------------------------------------------------------- */
+.keyfig-sec{
+  max-width:none;border-radius:0;
+  /* .section pose content-visibility:auto + contain-intrinsic-size 700-900 px.
+     Le bandeau ne fait plus que ~206 px : la place reservee tant qu'il n'est
+     pas vu creait un saut de mise en page de plus de 500 px au premier
+     defilement. Il est dans le premier ecran, le sauter n'apporte rien. */
+  content-visibility:visible;contain-intrinsic-size:auto none;
+  background:linear-gradient(180deg,#060C16,#04080F);
+  border-top:1px solid rgba(191,210,228,.07);
+  padding:clamp(1.1rem,1.8vw,1.6rem) 0 !important}
+.keyfig-sec .wrap{
+  max-width:1560px;margin-inline:auto;
+  padding-inline:var(--hero-gutter,clamp(18px,4vw,44px))}
+.keyfig{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:0;margin:0;min-height:0;align-items:stretch}
+.keyfig__i{
+  padding:.1rem clamp(1rem,2.8vw,2.6rem);
+  border-radius:0;background:none;border:0}
+.keyfig__i + .keyfig__i{border-left:1px solid rgba(191,210,228,.09)}
+.keyfig__i:first-child{padding-left:0}
+
+/* Le numéro d'ordre remplace le pictogramme : il numérote sans illustrer. */
+.keyfig__a{display:block;position:relative;padding-top:1.35rem}
+.keyfig__n{
+  position:absolute;top:0;left:0;
+  display:inline-flex;align-items:center;gap:.6em;
+  font-family:var(--ff-cond);font-weight:700;
+  font-size:.72rem;letter-spacing:.24em;color:var(--orange-vif)}
+.keyfig__n::after{
+  content:"";width:clamp(18px,2.4vw,30px);height:1px;
+  background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}
+.keyfig__v{
+  display:block;font-size:clamp(1.75rem,2.6vw,2.7rem);line-height:1;margin:0}
+.keyfig__l{display:block;line-height:1.24;margin:.3rem 0 0}
+.keyfig__l span{display:block;line-height:1.22;margin-top:.05rem}
+.keyfig__go{
+  display:inline-flex;margin-top:.5rem;padding-top:0;
+  min-height:0;height:auto;line-height:1.4;font-size:.72rem}
+
+@media (max-width:900px){
+  .hero{min-height:clamp(520px,78svh,680px) !important}
+  .hero__inner > *{max-width:none}
+  .keyfig-sec .wrap{padding-inline:var(--hero-gutter)}
+  .keyfig{grid-template-columns:1fr}
+  .keyfig__i{padding:1rem 0}
+  .keyfig__i + .keyfig__i{border-left:0;border-top:1px solid rgba(191,210,228,.09)}
+  .keyfig__i:first-child{padding-top:.2rem}
 }
