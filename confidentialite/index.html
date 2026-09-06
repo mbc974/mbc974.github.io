@@ -34,11 +34,11 @@
 <link rel="apple-touch-icon" href="/assets/icons/favicon.png">
 <link rel="manifest" href="/site.webmanifest">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;600;700&display=swap"></noscript>
-<link rel="stylesheet" href="/style.css?v=7fd9dfd0">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../assets/fonts/anton-400-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../assets/fonts/barlow-condensed-700-latin.woff2">
+<link rel="stylesheet" href="/style.css?v=d0bb712b">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Politique de confidentialité — MBC La Montagne Basket Club","url":"https://mbc974.com/confidentialite/","inLanguage":"fr","description":"Traitement des données personnelles par le MBC La Montagne Basket Club.","isPartOf":{"@type":"WebSite","@id":"https://mbc974.com/#website","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
@@ -106,7 +106,7 @@
       <ul>
         <li><b>GitHub Pages</b> (GitHub, Inc.) — hébergement du site. Comme tout hébergeur, il journalise techniquement les requêtes reçues.</li>
         <li><b>Web3Forms</b> — acheminement du formulaire de contact vers la boîte e-mail du club. Les champs que vous saisissez transitent par ce service.</li>
-        <li><b>Google Fonts</b> — les polices d'affichage sont chargées depuis les serveurs de Google, ce qui implique la transmission de votre adresse IP à Google.</li>
+        <li><b>Polices d'écriture</b> — elles sont <b>hébergées sur ce site</b>, avec les autres fichiers. Elles ne sont plus appelées chez Google&nbsp;: aucune requête n'est envoyée à Google Fonts et votre adresse IP ne lui est pas transmise.</li>
         <li><b>Google Maps</b> — la carte du gymnase <b>ne se charge pas toute seule</b>. Elle n'est appelée qu'après un clic explicite sur le bouton « Charger la carte ». Tant que vous ne cliquez pas, aucune requête n'est envoyée à Google Maps.</li>
         <li><b>Yapla</b> — plateforme d'adhésion et de paiement, atteinte uniquement si vous cliquez sur un bouton d'inscription.</li>
         <li><b>WhatsApp</b> — les boutons « nous écrire » ouvrent WhatsApp&nbsp;; aucune donnée n'est transmise tant que vous n'envoyez pas de message.</li>
@@ -118,8 +118,14 @@
       <p class="lp-note"><b>À valider avant toute activation&nbsp;:</b> une mesure d'audience sans cookie (Plausible) est préparée dans le code mais <b>n'est pas activée</b> à ce jour. Si le club l'active un jour, cette page devra être mise à jour en conséquence.</p>
 
       <h2 class="h2">Combien de temps <span class="hl">nous conservons vos données</span></h2>
-      <p>Les messages reçus via le formulaire sont conservés le temps de traiter la demande et d'assurer le suivi de la relation avec la personne ou la famille concernée, puis supprimés lorsqu'ils ne sont plus utiles.</p>
-      <p class="lp-note"><b>Durées précises à arrêter par le bureau&nbsp;:</b> le club doit fixer et inscrire ici les durées exactes de conservation pour (a) les demandes de contact restées sans suite, (b) les dossiers d'adhérents, (c) les archives comptables et sportives soumises à des obligations légales. Tant que ces durées ne sont pas arrêtées, aucune valeur n'est affichée ici — plutôt que d'annoncer un délai qui ne serait pas appliqué.</p>
+      <p>Le règlement européen demande d'indiquer soit une durée de conservation, soit, lorsqu'une durée fixe ne peut pas être annoncée à l'avance, <b>les critères qui la déterminent</b>. Le MBC est une association de bénévoles&nbsp;: plutôt que d'afficher des délais qu'il ne serait pas en mesure d'appliquer, il publie ici le critère retenu pour chaque catégorie de données.</p>
+      <ul>
+        <li><b>Messages reçus via le formulaire</b> — conservés le temps de traiter la demande et d'assurer le suivi de la relation avec la personne ou la famille, puis supprimés. Une demande restée sans suite est supprimée dès qu'elle n'a plus d'objet&nbsp;; elle n'est pas reportée d'une saison sur l'autre.</li>
+        <li><b>Dossiers d'adhérents</b> — conservés pendant toute la durée de l'adhésion, puis le temps nécessaire pour justifier, si besoin, la licence et l'assurance de la saison concernée. Un dossier qui n'est plus rattaché à aucune adhésion et à aucune obligation en cours est supprimé.</li>
+        <li><b>Pièces comptables, dossiers de subvention et archives sportives</b> — conservés pendant la durée imposée par les obligations légales, fiscales et fédérales qui s'y appliquent, et pas au-delà. Ces durées ne sont pas fixées par le club&nbsp;: elles s'imposent à lui.</li>
+        <li><b>Photos et vidéos</b> — conservées tant qu'elles sont diffusées par le club. Elles sont retirées à la demande de la personne concernée ou de son représentant légal, sans justification à fournir.</li>
+      </ul>
+      <p>Aucune donnée n'est conservée «&nbsp;par défaut&nbsp;»&nbsp;: ce qui n'a plus d'objet est supprimé. Pour savoir ce que le club détient vous concernant à un instant donné, écrivez à <a href="mailto:contact@mbc974.com">contact@mbc974.com</a>.</p>
 
       <h2 class="h2">Vos <span class="hl">droits</span></h2>
       <p>Conformément au Règlement général sur la protection des données, vous disposez d'un droit d'<b>accès</b>, de <b>rectification</b>, d'<b>effacement</b>, de <b>limitation</b> du traitement, d'<b>opposition</b> lorsqu'il s'applique, et de <b>portabilité</b> lorsqu'il s'applique.</p>
@@ -147,7 +153,7 @@
 <footer class="seo-foot">
   <div class="wrap">
     <div class="seo-foot__links">
-      <a href="/">Accueil</a><a href="/adhesion.html">Adhésion 2026/2027</a><a href="/#contact">Contact</a><a href="/#legal">Mentions légales</a>
+      <a href="/">Accueil</a><a href="/adhesion.html">Adhésion 2026/2027</a><a href="/matchs/">Matchs</a><a href="/actualites/">Actualités</a><a href="/#contact">Contact</a><a href="/#legal">Mentions légales</a>
     </div>
     <p>MBC La Montagne Basket Club · Association loi 1901 · Club affilié FFBB n° REU0974104<br>Siège social : 23 Chemin des Alizés, La Montagne, 97417 Saint-Denis (974) · © 2026</p>
   </div>

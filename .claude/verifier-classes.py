@@ -49,8 +49,10 @@ POSEES_PAR_JS = {
 
 def pages():
     """Les fichiers HTML reellement publies, et eux seuls."""
-    fichiers = sorted(glob.glob('*.html')) + sorted(glob.glob('*/index.html'))
-    return [f for f in fichiers if not f.startswith('.') and 'worktrees' not in f]
+    fichiers = (sorted(glob.glob('*.html')) + sorted(glob.glob('*/index.html'))
+                + sorted(glob.glob('*/*/index.html')))
+    return [f for f in fichiers
+            if not f.startswith('.') and 'worktrees' not in f.replace(os.sep, '/')]
 
 
 def classes_du_html():

@@ -41,8 +41,14 @@ RECOMMANDEES = ['description', 'endDate', 'eventAttendanceMode', 'eventStatus',
 
 def pages():
     os.chdir(RACINE)
-    trouvees = sorted(glob.glob('*.html') + glob.glob('*/index.html'))
-    return [p for p in trouvees if not p.startswith('print/')]
+    # Deux niveaux : /matchs/<slug>/ et /actualites/<slug>/ sont des pages
+    # publiees comme les autres. Ne balayer qu'un niveau, c'est croire le site
+    # verifie alors que dix pages ne l'ont jamais ete.
+    trouvees = sorted(glob.glob('*.html') + glob.glob('*/index.html')
+                      + glob.glob('*/*/index.html'))
+    return [p for p in trouvees
+            if not p.startswith('print/') and not p.startswith('.')
+            and 'worktrees' not in p.replace(os.sep, '/')]
 
 
 def noeuds(doc):

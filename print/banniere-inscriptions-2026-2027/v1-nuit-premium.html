@@ -4,8 +4,19 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex">
 <title>Bannière MBC 300x100 — V1 Nuit Premium</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@500;600;700&display=swap">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../assets/fonts/anton-400-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="../../assets/fonts/barlow-condensed-700-latin.woff2">
 <style>
+  /* Polices auto-hebergees : ce gabarit ne charge pas style.css.
+     font-display:block et non swap — sur une affiche destinee a une
+     capture, un rendu transitoire en police de repli serait fige. */
+  @font-face{font-family:'Anton';font-style:normal;font-weight:400;font-display:block;src:url('../../assets/fonts/anton-400-latin.woff2') format('woff2')}
+  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:500;font-display:block;src:url('../../assets/fonts/barlow-condensed-500-latin.woff2') format('woff2')}
+  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:block;src:url('../../assets/fonts/barlow-condensed-600-latin.woff2') format('woff2')}
+  @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:700;font-display:block;src:url('../../assets/fonts/barlow-condensed-700-latin.woff2') format('woff2')}
+
   /* Canvas = 3000 x 1000 px → 300 x 100 cm (1px = 1mm) */
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:3000px;height:1000px;overflow:hidden}

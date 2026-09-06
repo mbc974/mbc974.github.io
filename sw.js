@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-7fd9dfd0-987ed51a';
+const CACHE = 'mbc-d0bb712b-987ed51a';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,10 +13,17 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=7fd9dfd0',
+  '/style.css?v=d0bb712b',
   '/script.js?v=987ed51a',
   '/assets/logos/mbc-logo.webp',
-  '/assets/icons/favicon.png'
+  '/assets/icons/favicon.png',
+  // Les deux polices du premier ecran (le titre en Anton, les intertitres en
+  // Barlow Condensed 700). Elles sont prechargees dans le <head> et pesent
+  // 41 Ko a elles deux : les mettre au cache evite qu'une visite hors ligne
+  // retombe sur Impact / Arial Narrow. Les autres graisses sont mises en
+  // cache par le gestionnaire de fetch quand la page les demande.
+  '/assets/fonts/anton-400-latin.woff2',
+  '/assets/fonts/barlow-condensed-700-latin.woff2'
   // Pas d'image de hero ici : depuis que le <picture> sert deux cadrages
   // differents (mobile 912 px / desktop 1983 px), precharger une variante
   // fixe ferait telecharger a un telephone 103 Ko qu'il n'affichera jamais.
@@ -45,7 +52,9 @@ self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
   var url = new URL(req.url);
-  // Cross-origin (Yapla, Google Fonts, réseaux sociaux…) : on laisse le réseau gérer.
+  // Cross-origin (Yapla, Google Maps après clic, réseaux sociaux…) : on laisse
+  // le réseau gérer. Les polices, elles, sont désormais servies par cette origine
+  // et passent donc par le cache ci-dessous comme n'importe quel asset.
   if (url.origin !== self.location.origin) return;
 
   // Pages (navigations) : réseau d'abord → cache en repli → page hors-ligne en dernier recours.

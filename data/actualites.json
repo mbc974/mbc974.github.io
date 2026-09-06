@@ -1,0 +1,105 @@
+{
+  "_lisezmoi": "Source UNIQUE des actualites. On modifie CE fichier, jamais le HTML, puis on lance « python .claude/build-actus.py ». REGLE DE REDACTION : rien ici ne doit etre invente. Pas de citation qu'on n'a pas, pas de score, pas de chiffre de frequentation, pas de date approximative presentee comme exacte. Le champ « date » est la date de PUBLICATION de l'article (celle qui part dans datePublished) ; si le fait raconte s'est produit a une autre date, on le dit dans le texte, avec la precision qu'on a reellement.",
+
+  "_sources": {
+    "calendrier-phase-1-prm-2026-2027": "assets/documents/calendrier-prm-nord-2026-2027.pdf (edition du 25/08/2026) et assets/documents/reglement-sportif-prm-2026-2027.pdf",
+    "plateau-couvert-ruisseau-blanc": "section « inauguration » de la page d'accueil et photos assets/galerie/mbc-*-ruisseau-blanc-*, mbc-la-montagne-inauguration-terrain-*",
+    "inscriptions-2026-2027-ouvertes": "adhesion.html (tarif, contenu de la licence, parcours Yapla puis e-Licence) et la FAQ de la page d'accueil"
+  },
+
+  "site": {
+    "nom": "MBC La Montagne Basket Club",
+    "court": "MBC",
+    "url": "https://mbc974.com/",
+    "logo": "assets/logos/mbc-logo.webp"
+  },
+
+  "articles": [
+    {
+      "slug": "inscriptions-2026-2027-ouvertes",
+      "date": "2026-09-06",
+      "categorie": "Le club",
+      "titre": "Les inscriptions 2026/2027 sont ouvertes",
+      "titreCourt": "Inscriptions 2026/2027",
+      "chapeau": "Un tarif unique de 95 € pour toute la saison, licence FFBB et assurance comprises, dès 3 ans et jusqu'aux seniors. L'adhésion se fait en ligne, puis la licence se finalise auprès de la fédération.",
+      "image": {
+        "base": "assets/galerie/ecole-basket-enfant-mbc-saint-denis",
+        "crans": [560, 800, 1100, 1400],
+        "largeur": 1400,
+        "hauteur": 821,
+        "alt": "Enfants de l'école de basket du MBC en séance au gymnase de La Montagne, à Saint-Denis."
+      },
+      "corps": [
+        {"t": "p", "c": "La saison 2026/2027 est lancée et les inscriptions sont ouvertes dans toutes les catégories, du Baby Basket aux seniors. Le club accueille les enfants <b>dès 3 ans</b>, en loisir comme en compétition."},
+        {"t": "h2", "c": "Un seul tarif, et ce qu'il couvre"},
+        {"t": "p", "c": "L'adhésion joueur est à <b>95 € pour la saison</b>, dans toutes les catégories. Ce montant couvre l'adhésion au club, la licence FFBB et l'assurance liée à la licence. Le club ne demande aucun autre règlement. L'adhésion <b>dirigeant / bénévole est gratuite</b>."},
+        {"t": "h2", "c": "Comment s'inscrire"},
+        {"t": "p", "c": "L'adhésion et le paiement se font en ligne sur Yapla, la plateforme du club. La demande de licence est ensuite instruite par le club dans FBI, l'outil officiel de la Fédération Française de BasketBall, puis complétée par la famille via le formulaire e-Licence que la FFBB envoie par courriel."},
+        {"t": "p", "c": "Vous hésitez sur la catégorie ? Elle se choisit à l'année de naissance, pas au niveau : le détail est sur la page d'adhésion, et une séance d'essai reste toujours possible avant de s'engager."},
+        {"t": "liens", "c": [
+          {"l": "Voir les tarifs et s'inscrire", "h": "/adhesion.html", "p": true},
+          {"l": "Trouver sa catégorie", "h": "/#categories"},
+          {"l": "Les créneaux d'entraînement", "h": "/#calendrier"}
+        ]}
+      ]
+    },
+
+    {
+      "slug": "plateau-couvert-ruisseau-blanc",
+      "date": "2026-09-06",
+      "categorie": "Le quartier",
+      "titre": "Un plateau couvert inauguré à La Montagne",
+      "titreCourt": "Le plateau de Ruisseau Blanc",
+      "chapeau": "En août 2026, un nouveau plateau sportif couvert a été inauguré à La Montagne. Le MBC était sur le parquet, avec les enfants du quartier.",
+      "image": {
+        "base": "assets/galerie/mbc-la-montagne-inauguration-terrain",
+        "crans": [640, 800, 1000, 1400, 1920],
+        "largeur": 1400,
+        "hauteur": 933,
+        "alt": "Joueurs du MBC La Montagne Basket Club et acteurs locaux réunis sous le nouveau plateau sportif couvert, lors de son inauguration à Saint-Denis."
+      },
+      "corps": [
+        {"t": "p", "c": "Le quartier de Ruisseau Blanc, à La Montagne, dispose depuis août 2026 d'un plateau sportif <b>couvert</b>. Sous ce climat, la nuance n'est pas cosmétique : une averse ne renvoie plus tout le monde à la maison, et le soleil de midi cesse d'être un adversaire."},
+        {"t": "h2", "c": "Le club sur le parquet"},
+        {"t": "p", "c": "Le MBC était présent à l'inauguration. La maire de Saint-Denis a enfilé le maillot du club — dossard n° 4, <i>Ansanm nou lé pli for</i> dans le dos — pour tenter son tir devant les marmay."},
+        {"t": "p", "c": "Dans la matinée, les coachs ont fait tourner les ballons avec les enfants du quartier venus découvrir le basket. Certains n'avaient jamais tenu un ballon. C'est ça, un club de quartier : des équipements publics, des familles, des bénévoles, et des gamins qui repartent avec l'envie de revenir."},
+        {"t": "h2", "c": "Un équipement qui ne sert pas qu'au basket"},
+        {"t": "p", "c": "Le plateau vit aussi en dehors des créneaux sportifs : le quartier s'y retrouve le soir, et la scène y a déjà remplacé les paniers le temps d'un concert. C'est le deuxième lieu du club, à côté du Gymnase de La Montagne où se jouent les matchs et la majorité des entraînements."},
+        {"t": "liens", "c": [
+          {"l": "Voir les créneaux au gymnase et au plateau", "h": "/#calendrier", "p": true},
+          {"l": "Découvrir le club", "h": "/club-basket-la-montagne/"}
+        ]}
+      ]
+    },
+
+    {
+      "slug": "calendrier-phase-1-prm-2026-2027",
+      "date": "2026-09-06",
+      "categorie": "Compétition",
+      "titre": "Le calendrier de la phase 1 est publié",
+      "titreCourt": "Calendrier phase 1",
+      "chapeau": "Sept journées de Pré-Régionale Masculine, toutes le vendredi à 20h30, dont quatre à domicile au Gymnase de La Montagne. Entrée libre.",
+      "image": {
+        "base": "assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne",
+        "crans": [640, 1000, 1400, 1900],
+        "largeur": 1400,
+        "hauteur": 559,
+        "alt": "Regroupement de l'équipe et des jeunes du MBC au Gymnase de La Montagne."
+      },
+      "corps": [
+        {"t": "p", "c": "La Ligue Réunionnaise de Basket-Ball a publié le 25 août 2026 le calendrier de la première phase de Pré-Régionale Masculine. L'équipe seniors du MBC évolue en <b>zone Nord</b> et affronte une fois chacune des sept autres équipes de sa poule."},
+        {"t": "h2", "c": "Quatre rencontres à la maison"},
+        {"t": "p", "c": "Quatre des sept journées se jouent au <b>Gymnase de La Montagne</b>, le vendredi à 20h30, et l'entrée est libre. Les trois autres sont des déplacements. Chaque rencontre a désormais sa fiche sur le site, avec la date, le lieu et le fichier à ajouter à son agenda."},
+        {"t": "h2", "c": "Un calendrier qui peut encore bouger"},
+        {"t": "p", "c": "Le règlement sportif particulier de la compétition autorise une dérogation jusqu'à cinq jours avant chaque rencontre : une date ou un terrain peuvent changer en cours de saison. Le site est regénéré à partir du calendrier officiel de la ligue, ce qui évite de laisser une information périmée en ligne."},
+        {"t": "h2", "c": "Ensuite : deux divisions, puis la phase finale"},
+        {"t": "p", "c": "À l'issue des poules géographiques, le classement constitue deux divisions de huit équipes — les quatre premiers de chaque zone en Division 1, les quatre suivants en Division 2 — et les rencontres se jouent alors aller et retour. Une phase finale, réservée à la Division 1, désigne ensuite le champion."},
+        {"t": "liens", "c": [
+          {"l": "Voir les sept rencontres", "h": "/matchs/", "p": true},
+          {"l": "Le calendrier officiel de la ligue (PDF)", "h": "/assets/documents/calendrier-prm-nord-2026-2027.pdf"},
+          {"l": "Le règlement sportif de la compétition (PDF)", "h": "/assets/documents/reglement-sportif-prm-2026-2027.pdf"}
+        ]}
+      ]
+    }
+  ]
+}

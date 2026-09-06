@@ -20,7 +20,9 @@ rencontre, cela se reproduira.
 Le script touche quatre choses, toutes reperees par des balises dans index.html :
 
     calendrier:lignes   les <li> du calendrier
-    calendrier:jsonld   les SportsEvent (matchs a domicile uniquement)
+    calendrier:jsonld   la liste ItemList du calendrier (les SportsEvent, eux,
+                        vivent sur /matchs/<slug>/ et sont ecrits par
+                        .claude/build-matchs.py, relance ici automatiquement)
     calendrier:compte   le nombre de matchs a domicile, dans le chapeau
     calendrier:affiche  le texte alternatif de l'affiche
 
@@ -67,8 +69,9 @@ FUSEAU = '+04:00'                          # La Reunion, toute l'annee
 # premier match va de 20h30 a 23h00, et le creneau du vendredi declare dans les
 # openingHoursSpecification du <head> va de 20h00 a 23h00. Quatre quart-temps
 # de 10 minutes, mi-temps, temps morts et protocole d'apres-match tiennent dans
-# ces 2 h 30. Changer la valeur ici la change partout.
-DUREE = datetime.timedelta(hours=2, minutes=30)
+# ces 2 h 30. Depuis que les SportsEvent vivent sur les pages /matchs/<slug>/,
+# la valeur qui fait foi est le champ « duree » (en minutes) de
+# data/matchs.json ; elle est rappelee ici pour memoire du raisonnement.
 
 ADRESSE_GYMNASE = {
     '@type': 'PostalAddress',
@@ -78,24 +81,6 @@ ADRESSE_GYMNASE = {
     'addressRegion': u'La Réunion',
     'addressCountry': 'RE',
 }
-
-# ---------------------------------------------------------------------------
-# Images des evenements — uniquement des fichiers qui existent vraiment.
-# ---------------------------------------------------------------------------
-# Ordre de priorite demande par Google : d'abord le visuel propre a la
-# rencontre s'il existe, puis l'affiche de la phase (elle montre bien CE match),
-# puis deux photos reelles du club. L'existence de chaque fichier est verifiee
-# avant ecriture : une URL d'image cassee dans un SportsEvent est un
-# avertissement Search Console de plus, pas un detail.
-AFFICHES_MATCH = {
-    '2026-09-11': 'assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg',
-}
-IMAGES_GENERIQUES = [
-    'assets/galerie/match-banniere.jpg',        # 1120x747, 3:2
-    'assets/images/gymnase-la-montagne-clair.jpg',  # 1445x1088, 4:3 (photo courante ; l'ancienne
-    # gymnase-la-montagne.jpg existe encore mais n'est plus affichee nulle part)
-]
-
 ACCENTS = {'fevr.': u'févr.', 'aout': u'août', 'dec.': u'déc.',
            'fevrier': u'février', 'decembre': u'décembre'}
 
@@ -117,22 +102,6 @@ def ancre(m):
     ne joue qu'une rencontre par journee.
     """
     return 'match-%s' % m['date']
-
-
-def url_match(m):
-    return '%s#%s' % (SITE, ancre(m))
-
-
-def debut(m):
-    return '%sT%s:00%s' % (m['date'], m['iso_heure'], FUSEAU)
-
-
-def fin(m):
-    """Coup d'envoi + DUREE. Passe minuit si un jour l'horaire l'exige."""
-    t = datetime.datetime.fromisoformat('%sT%s:00' % (m['date'], m['iso_heure'])) + DUREE
-    return t.strftime('%Y-%m-%dT%H:%M:%S') + FUSEAU
-
-
 def crest_adverse(sigle):
     """Le logo du club adverse, avec repli sur le sigle officiel s'il manque."""
     f = sigle.lower()
@@ -184,7 +153,10 @@ def bloc_score(m):
             % (issue, libelle, s['mbc'], s['adverse']))
 
 
-def lignes_html(mbc, postes, benevoles):
+def lignes_html(mbc, postes, benevoles, slugs):
+    """Chaque rencontre porte desormais un lien vers sa page dediee. Les slugs
+    viennent de data/matchs.json, dont verifier_source_matchs() garantit qu'il
+    parle des memes dates que le PDF."""
     out = []
     for m in mbc:
         dom = m['domicile']
@@ -204,120 +176,18 @@ def lignes_html(mbc, postes, benevoles):
             u'<span class="mx-opp__s">%(sigle)s</span></span>\n'
             u'          <span class="mx-side%(sidecls)s">%(side)s</span>\n'
             u'          <span class="mx-meta"><span class="mx-h">%(heure)s</span>'
-            u'<span class="mx-lieu">%(lieu)s</span>%(score)s</span>\n'
+            u'<span class="mx-lieu">%(lieu)s</span>%(score)s'
+            u'<a class="mx-fiche" href="/matchs/%(slug)s/">Fiche du match'
+            u'<span class="sr-only"> %(adversaire)s</span></a></span>\n'
             u'%(roles)s'
             u'        </li>' % dict(
                 m, cls='dom' if dom else 'ext', duel=duel, roles=roles,
-                ancre=ancre(m), score=bloc_score(m),
+                ancre=ancre(m), score=bloc_score(m), slug=slugs[m['date']],
                 mois=acc(m['mois']),
                 sidecls=' mx-side--dom' if dom else '',
                 side=u'À domicile' if dom else u'En déplacement',
                 lieu=GYMNASE if dom else u"Chez l'adversaire"))
     return '\n'.join(out)
-
-
-# ---------------------------------------------------------------------------
-# JSON-LD
-# ---------------------------------------------------------------------------
-def description(m):
-    """Une phrase lisible par un humain, faite uniquement de donnees connues."""
-    return (u"J%d de %s : le %s reçoit %s au %s, à Saint-Denis (La Réunion), "
-            u"le %s %d %s %d à %s. Entrée libre."
-            % (m['journee'], COMPETITION, CLUB_NOM, m['adversaire'], GYMNASE,
-               m['jour_long'], m['num'], acc(m['mois_long']), m['annee'], m['heure']))
-
-
-def images(m, affiche):
-    """Les visuels de la rencontre, du plus specifique au plus general."""
-    chemins = []
-    if m['date'] in AFFICHES_MATCH:
-        chemins.append(AFFICHES_MATCH[m['date']])
-    if affiche:
-        chemins.append(affiche)
-    chemins.extend(IMAGES_GENERIQUES)
-    for c in chemins:
-        if not os.path.exists(c):
-            raise ValueError(u'image absente du depot : %s' % c)
-    return [SITE + c for c in chemins]
-
-
-def equipes(m):
-    """Les deux equipes en presence, dans l'ordre recevant / visiteur.
-
-    Google demande un « performer » : les deux equipes le sont, pas seulement
-    le MBC. Le club adverse n'a pas d'URL verifiee ici — on ne lui en invente
-    donc pas, un SportsTeam nomme est valide.
-    """
-    mbc = {'@type': 'SportsTeam', 'name': CLUB_NOM, 'sport': 'Basketball',
-           'url': SITE, 'memberOf': {'@id': CLUB_ID}}
-    adverse = {'@type': 'SportsTeam', 'name': m['adversaire'], 'sport': 'Basketball'}
-    return (mbc, adverse) if m['domicile'] else (adverse, mbc)
-
-
-def bloc_jsonld(mbc, affiche, valid_from):
-    """Seuls les matchs a domicile sont declares : le lieu des autres nous echappe.
-
-    Un Event sans location est une ERREUR Search Console, pas un avertissement,
-    et le PDF de la LRBB ne donne pas l'adresse des gymnases adverses. Declarer
-    les sept rencontres couterait donc plus qu'il ne rapporterait — et surtout
-    obligerait a inventer trois adresses.
-
-    Sur l'organisateur : c'est le club recevant qui organise la rencontre chez
-    lui (salle, table de marque, benevoles — la liste des postes juste au-dessus
-    dans la page le dit). Comme on ne declare que les matchs a domicile, le MBC
-    est bien l'organisateur de tous les evenements de ce bloc, et il a une URL
-    reelle. La competition, elle, reste nommee dans le nom et la description.
-
-    Sur les matchs deja joues : leur noeud est CONSERVE et garde
-    EventScheduled — la rencontre a bien eu lieu comme prevu. Schema.org n'offre
-    pas d'etat « termine » (seuls Cancelled / Postponed / Rescheduled / MovedOnline
-    existent) et n'a pas non plus de propriete de score : le resultat vit dans le
-    HTML, pas ici.
-    """
-    evts = []
-    for m in (x for x in mbc if x['domicile']):
-        recoit, visite = equipes(m)
-        offre = {
-            '@type': 'Offer',
-            'name': u'Entrée libre',
-            'price': '0',
-            'priceCurrency': 'EUR',
-            'availability': 'https://schema.org/InStock',
-            'url': url_match(m),
-        }
-        if valid_from:
-            offre['validFrom'] = valid_from
-        evts.append({
-            '@type': 'SportsEvent',
-            '@id': url_match(m),
-            'name': u'%s – %s (%s, J%d)' % (CLUB_NOM, m['adversaire'], COMPETITION, m['journee']),
-            'description': description(m),
-            'url': url_match(m),
-            'startDate': debut(m),
-            'endDate': fin(m),
-            'eventStatus': 'https://schema.org/EventScheduled',
-            'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
-            'sport': 'Basketball',
-            'image': images(m, affiche),
-            'location': {'@type': 'Place', 'name': GYMNASE,
-                         'address': dict(ADRESSE_GYMNASE),
-                         'geo': {'@type': 'GeoCoordinates',
-                                 'latitude': -20.891557, 'longitude': 55.423974},
-                         'hasMap': 'https://maps.app.goo.gl/KcTePvY47wzi6JMu9'},
-            'performer': [recoit, visite],
-            'homeTeam': recoit,
-            'awayTeam': visite,
-            'organizer': {'@type': 'SportsOrganization', '@id': CLUB_ID,
-                          'name': CLUB_NOM, 'url': SITE},
-            'offers': offre,
-            'isAccessibleForFree': True,
-            'inLanguage': 'fr-RE',
-        })
-    txt = json.dumps({'@context': 'https://schema.org', '@graph': evts},
-                     ensure_ascii=False, indent=2)
-    return '<script type="application/ld+json">\n%s\n</script>' % txt
-
-
 def remplacer(src, balise, contenu):
     d, f = '<!-- %s -->' % balise, '<!-- /%s -->' % balise
     i, j = src.find(d), src.find(f)
@@ -340,9 +210,8 @@ COMPTES = (
 
 # L'affiche porte une empreinte dans son nom (voir affiche-calendrier.py). Il
 # faut donc repointer ses URL : la source, les crans du srcset, les deux liens
-# « telecharger » / « voir en grand » — et desormais aussi celle citee dans les
-# images du JSON-LD. Le motif tolere une empreinte deja presente, pour que le
-# script reste rejouable.
+# « telecharger » / « voir en grand ». Le motif tolere une empreinte deja
+# presente, pour que le script reste rejouable.
 # Attention : le nom propose au telechargement (attribut download) est
 # volontairement « calendrier-MBC-phase1-... » et non « calendrier-phase1-... ».
 # Sinon ce motif le reecrirait aussi, et le visiteur enregistrerait un fichier
@@ -352,20 +221,6 @@ AFFICHE_URL = re.compile(r'calendrier-phase1-2026-2027(?:-[0-9a-f]{8})?(-\d{3})?
 
 def repointer_affiche(src, nouveau):
     return AFFICHE_URL.sub(lambda m: '%s%s.%s' % (nouveau, m.group(1) or '', m.group(2)), src)
-
-
-def affiche_actuelle(html):
-    """Le chemin de l'affiche pleine taille telle qu'elle est referencee aujourd'hui.
-
-    Le JSON-LD la cite comme image des rencontres. On la relit dans la page au
-    lieu de la recalculer : en mode --archive l'affiche n'est pas regeneree, et
-    en mode complet repointer_affiche() corrigera l'empreinte juste apres.
-    """
-    m = re.search(r'assets/affiches/calendrier-phase1-2026-2027(?:-[0-9a-f]{8})?\.png', html)
-    if not m:
-        return None
-    chemin = m.group(0)
-    return chemin if os.path.exists(chemin) else None
 
 
 def remplacer_compte(src, mot):
@@ -428,6 +283,50 @@ def verifier_coherence(html, mbc):
     return alertes
 
 
+# ---------------------------------------------------------------------------
+# data/matchs.json est la source des pages /matchs/. Le PDF, lui, est la source
+# du calendrier. Les deux doivent dire la meme chose : on le verifie ici plutot
+# que de laisser un site a moitie a jour (la home juste, les fiches fausses).
+# ---------------------------------------------------------------------------
+SOURCE_MATCHS = 'data/matchs.json'
+
+
+def verifier_source_matchs(mbc):
+    """Compare le PDF et data/matchs.json. Ne reecrit rien : reecrire
+    demanderait de fabriquer des slugs, donc des URL, donc des redirections."""
+    if not os.path.exists(SOURCE_MATCHS):
+        return [u'%s introuvable' % SOURCE_MATCHS]
+    d = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))
+    par_date = {m['date']: m for m in d['matchs']}
+    ecarts = []
+    for m in mbc:
+        f = par_date.get(m['date'])
+        if not f:
+            ecarts.append(u'%s : rencontre absente de %s' % (m['date'], SOURCE_MATCHS))
+            continue
+        if bool(f['domicile']) != bool(m['domicile']):
+            ecarts.append(u'%s : domicile/exterieur divergent (PDF %s, %s %s)'
+                          % (m['date'], 'domicile' if m['domicile'] else 'exterieur',
+                             SOURCE_MATCHS, 'domicile' if f['domicile'] else 'exterieur'))
+        if int(f['journee']) != int(m['journee']):
+            ecarts.append(u'%s : journee divergente (PDF J%s, %s J%s)'
+                          % (m['date'], m['journee'], SOURCE_MATCHS, f['journee']))
+    for date in sorted(set(par_date) - {m['date'] for m in mbc}):
+        ecarts.append(u'%s : rencontre de %s absente du PDF' % (date, SOURCE_MATCHS))
+    return ecarts
+
+
+def regenerer_matchs():
+    """Relance .claude/build-matchs.py : pages de rencontre, /matchs/, bandeau
+    du prochain match et ItemList de la home."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('bm', '.claude/build-matchs.py')
+    bm = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bm)
+    print('  --- build-matchs.py ---')
+    bm.main()
+
+
 def main():
     essai = '--essai' in sys.argv
     depuis_archive = '--archive' in sys.argv
@@ -459,13 +358,17 @@ def main():
 
     html = io.open('index.html', encoding='utf-8').read()
     avant = html
-    affiche = affiche_actuelle(html)
-    if not affiche:
-        print('  .. affiche du calendrier introuvable : elle ne sera pas citee dans le JSON-LD')
 
-    html = remplacer(html, 'calendrier:lignes', lignes_html(mbc, postes, affect))
-    html = remplacer(html, 'calendrier:jsonld',
-                     bloc_jsonld(mbc, affiche, lire_cal.edite_le_date(pdf)))
+    ecarts = verifier_source_matchs(mbc)
+    for a in ecarts:
+        print('  !! %s' % a)
+    if ecarts:
+        print("  !! corrigez data/matchs.json avant de republier le calendrier")
+        return 1
+    slugs = {m['date']: m['slug'] for m in
+             json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))['matchs']}
+
+    html = remplacer(html, 'calendrier:lignes', lignes_html(mbc, postes, affect, slugs))
     mot = {1: 'un', 2: 'deux', 3: 'trois', 4: 'quatre',
            5: 'cinq', 6: 'six', 7: 'sept'}[r['domicile']]
     html = remplacer_compte(html, mot)
@@ -479,6 +382,8 @@ def main():
 
     io.open('index.html', 'w', encoding='utf-8', newline='\n').write(html)
     print('  index.html mis a jour' if html != avant else '  index.html etait deja a jour')
+
+    regenerer_matchs()
 
     if depuis_archive:
         print('  (--archive : PDF et affiche laisses tels quels)')
@@ -497,7 +402,7 @@ def main():
     nouveau = aff.produire(mbc, AFFICHE)
     print('  affiche regeneree -> %s.png (+ 3 webp)' % nouveau)
 
-    # repointer les URL de l'affiche (page ET JSON-LD), puis retirer les orphelins
+    # repointer les URL de l'affiche dans la page, puis retirer les orphelins
     html = repointer_affiche(io.open('index.html', encoding='utf-8').read(), nouveau)
     io.open('index.html', 'w', encoding='utf-8', newline='\n').write(html)
     gardes = set(glob.glob('assets/affiches/%s*' % nouveau))
