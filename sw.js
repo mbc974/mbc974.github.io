@@ -80,27 +80,25 @@ self.addEventListener('fetch', function (e) {
     return;
   }
 
-  // Feuille de style et script : RÉSEAU D'ABORD.
-  // En stale-while-revalidate, un visiteur recevait le HTML du jour avec la CSS
-  // de la veille — donc une mise en page cassée jusqu'au rechargement suivant.
-  // Ces deux fichiers sont petits : on préfère quelques millisecondes de réseau
-  // à un rendu faux. Le cache reste le filet en cas de coupure.
-  if (/\.(css|js)(\?|$)/.test(url.pathname + url.search)) {
-    e.respondWith(
-      fetch(req).then(function (res) {
-        if (res && res.status === 200 && res.type === 'basic') {
-          var copy = res.clone();
-          caches.open(CACHE).then(function (c) { c.put(req, copy); });
-        }
-        return res;
-      }).catch(function () { return caches.match(req); })
-    );
-    return;
-  }
-
-  // Images, polices, médias : stale-while-revalidate.
-  // Ce sont des fichiers lourds et versionnés par leur nom : servir la copie
-  // locale immédiatement est ici le bon compromis.
+  // TOUT LE RESTE (feuille de style, scripts, images, polices, médias) :
+  // stale-while-revalidate. La copie locale part immédiatement, le réseau
+  // revalide en tâche de fond.
+  //
+  // La CSS et le JS avaient ici, jusqu'à présent, un cas particulier
+  // « réseau d'abord », posé après un incident réel : un visiteur recevait le
+  // HTML du jour avec la CSS de la veille. Il coûtait cher — mesuré à
+  // 1,6 Mb/s, style.css passait de 199 à 2018 ms, soit près de deux secondes
+  // de rendu bloqué à chaque page vue, même la centième.
+  //
+  // Cet incident ne peut plus se reproduire, pour deux raisons indépendantes :
+  //   1. le ?v= de style.css, script.js et consent.js est un hachage de leur
+  //      contenu, tenu par .claude/bump-assets.py. Une feuille modifiée a donc
+  //      une URL nouvelle : le cache ne peut pas la connaître, il va au réseau.
+  //   2. le nom de ce cache suit ces mêmes hachages. Un changement de CSS
+  //      change CACHE, et le gestionnaire « activate » efface tout l'ancien.
+  //
+  // PRÉCONDITION : « python .claude/bump-assets.py --check » doit sortir en 0
+  // avant toute publication. C'est ce qui rend le raisonnement ci-dessus vrai.
   e.respondWith(
     caches.match(req).then(function (cached) {
       var network = fetch(req).then(function (res) {

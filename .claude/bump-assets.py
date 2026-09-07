@@ -28,7 +28,12 @@ def digest(path):
 
 
 def targets():
-    files = ['index.html', 'adhesion.html', 'sw.js']
+    # Toutes les pages de la racine, pas seulement les deux nommees : 404.html
+    # et offline.html appellent elles aussi consent.js et style.css, et elles
+    # etaient les seules a ne jamais recevoir de version. Les fichiers de
+    # travail « _*.html » restent hors du lot (voir .gitignore).
+    files = sorted(f for f in glob.glob('*.html') if not f.startswith('_'))
+    files.append('sw.js')
     files += sorted(glob.glob('*/index.html'))
     files += sorted(glob.glob('*/*/index.html'))
     return [f for f in files if os.path.exists(f)]
@@ -49,8 +54,16 @@ def main():
         src = io.open(f, encoding='utf-8').read()
         out = src
         for asset, ver in versions.items():
+            # a) on rafraichit les references qui portent deja un ?v=
             pattern = re.escape(asset) + r'\?v=[A-Za-z0-9._-]+'
             out = re.sub(pattern, '%s?v=%s' % (asset, ver), out)
+            # b) on AJOUTE le ?v= aux references d'attribut qui n'en ont pas.
+            #    C'etait le cas de /consent.js sur les 25 pages : la boucle (a)
+            #    ne voyait rien a rafraichir, le fichier partait donc sans
+            #    version. On ancre sur src="/href=" pour ne pas toucher les
+            #    commentaires qui citent le nom du fichier en prose.
+            out = re.sub(r'((?:src|href)="/?' + re.escape(asset) + r')(")',
+                         r'\1?v=' + ver + r'\2', out)
         # nom du cache du service worker : suit les deux hachages
         out = re.sub(r"const CACHE = '[^']*';",
                      "const CACHE = 'mbc-%s-%s-%s';" % (versions['style.css'],

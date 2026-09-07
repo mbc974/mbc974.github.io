@@ -460,7 +460,7 @@ FLECHE = (u'<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="curr
           u'stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
 
-def ecusson(logo, nom, sigle, taille="96px"):
+def ecusson(logo, nom, sigle, taille="(max-width:800px) 48px, 80px"):
     if not logo:
         return u'<span class="mp__crest mp__crest--sigle">%s</span>' % ech(sigle)
     return (u'<span class="mp__crest"><img src="/assets/logos/clubs/%s-144.webp" '
