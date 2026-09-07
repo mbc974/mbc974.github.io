@@ -8855,9 +8855,12 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     max-height:none;margin:0}
   .hero__photo img{
     object-fit:cover;
-    /* 34 % : la bande se cale sur la hauteur des visages et du blason, en
-       laissant tomber le parquet du bas — qui ne raconte rien. */
-    object-position:50% 34%}
+    /* Le cadrage vertical de la bande. La bande fait 265 px pour une image
+       affichee a 322 px : il n'y a que 58 px de jeu, donc chaque point de
+       pourcentage vaut 0,6 px. 14 % descend l'image d'environ 12 px par
+       rapport au 34 % d'origine, ce qui degage le haut des tetes sans
+       faire entrer le parquet vide du bas. */
+    object-position:50% 14%}
 
   /* Le voile de lisibilite n'a plus lieu d'etre : plus rien n'est ecrit sur
      la photo. On garde un degrade court a la jonction, pour que la bande ne
