@@ -321,6 +321,51 @@ def verifier_source_matchs(mbc):
     return ecarts
 
 
+def synchroniser_scores(mbc, essai=False):
+    """Recopie les scores du PDF dans data/matchs.json.
+
+    Sans cela, le site serait a moitie a jour le soir du premier resultat : la
+    home afficherait le score, parce que set-calendrier-prm.py l'ecrit
+    directement dans les lignes du Match Center, mais /matchs/ et les fiches de
+    rencontre l'ignoreraient, parce qu'ils lisent data/matchs.json. C'est
+    exactement l'incoherence que verifier_source_matchs() existe pour eviter.
+
+    Ce n'est PAS une exception a la regle « ne rien reecrire » qui gouverne
+    cette fonction voisine : elle refuse de reecrire parce qu'ajouter une
+    rencontre demanderait de fabriquer un slug, donc une URL, donc une
+    redirection. Mettre a jour le score d'une rencontre DEJA appariee par sa
+    date ne cree aucune URL.
+
+    Rien n'est devine : on ne recopie que ce que la ligue a publie. Un PDF sans
+    score ne vide pas un score deja enregistre — le PDF de la journee suivante
+    ne republie pas les resultats des precedentes.
+    """
+    d = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))
+    par_date = {m['date']: m for m in d['matchs']}
+    changes = []
+    for m in mbc:
+        if not m.get('score'):
+            continue
+        f = par_date.get(m['date'])
+        if f is None:
+            continue
+        neuf = {'mbc': int(m['score']['mbc']), 'adverse': int(m['score']['adverse'])}
+        if f.get('score') == neuf:
+            continue
+        changes.append(u'%s : score %d-%d' % (m['date'], neuf['mbc'], neuf['adverse']))
+        if not essai:
+            f['score'] = neuf
+            # Une rencontre dont la ligue publie le score a ete jouee.
+            if f.get('statut') == 'a-venir':
+                f['statut'] = 'joue'
+    if changes and not essai:
+        io.open(SOURCE_MATCHS, 'w', encoding='utf-8', newline='\n').write(
+            json.dumps(d, ensure_ascii=False, indent=2) + '\n')
+    for c in changes:
+        print('  .. %s -> %s' % (c, 'a ecrire' if essai else SOURCE_MATCHS))
+    return changes
+
+
 def regenerer_matchs():
     """Relance .claude/build-matchs.py : pages de rencontre, /matchs/, bandeau
     du prochain match et ItemList de la home."""
@@ -380,6 +425,11 @@ def main():
 
     for a in verifier_coherence(html, mbc):
         print('  !! %s' % a)
+
+    # Les scores publies par la ligue redescendent dans data/matchs.json AVANT
+    # la regeneration, sans quoi /matchs/ et les fiches resteraient muettes
+    # pendant que la home afficherait le resultat.
+    synchroniser_scores(mbc, essai=essai)
 
     if essai:
         print('\n  essai : %s' % ('des ecarts subsistent' if html != avant else 'index.html est deja a jour'))

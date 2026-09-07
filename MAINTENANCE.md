@@ -65,6 +65,45 @@ Corriger le JSON, puis relancer.
 
 ---
 
+## 1 ter. Le soir d'un match — publier un résultat
+
+**Un seul geste :** dès que la ligue publie le PDF avec les scores, on le dépose dans
+Téléchargements et on lance
+
+```bash
+python .claude/set-calendrier-prm.py
+python .claude/bump-assets.py
+```
+
+Le script recopie le score dans `data/matchs.json`, bascule le `statut` de `a-venir` à `joue`,
+puis relance `build-matchs.py`. Le résultat apparaît alors aux **trois** endroits d'un coup :
+la ligne du Match Center sur l'accueil, la carte de `/matchs/`, et la ligne « Résultat » des
+informations pratiques de la fiche. Le vert marque une victoire, le blanc énonce une défaite,
+le bleu un match nul — et un lecteur d'écran entend « Victoire du MBC, score » avant les
+chiffres.
+
+**Ce qui n'est jamais fait :** deviner. Tant que le PDF imprime `...  ...` à la place du score,
+rien n'est écrit nulle part. Et un PDF sans score n'efface pas un score déjà enregistré — celui
+de la journée suivante ne republie pas les résultats des précédentes.
+
+**La forme du champ**, si on doit le saisir à la main dans `data/matchs.json` :
+
+```json
+"score": { "mbc": 72, "adverse": 65 }
+```
+
+toujours du point de vue du MBC, jamais dans l'ordre d'affichage. Le générateur remet les
+chiffres dans le bon sens selon que la rencontre est à domicile ou en déplacement. Une autre
+forme (une chaîne « 72-65 », par exemple) fait échouer `build-matchs.py` avec un message
+explicite plutôt que de produire une page fausse.
+
+**Le passage « à venir » → « déjà joué »** se fait au **coup de sifflet final**, pas au coup
+d'envoi : la bascule compare l'heure de fin (début + `duree`, 120 minutes par défaut). Un
+supporter qui ouvre le site à 20h45 un vendredi voit toujours la rencontre en cours comme
+« prochain match ».
+
+---
+
 ## 2. Lancer le site en local
 
 ```bash

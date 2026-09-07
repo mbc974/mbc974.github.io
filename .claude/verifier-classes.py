@@ -67,6 +67,54 @@ def classes_du_html():
     return trouvees
 
 
+def classes_des_generateurs():
+    """Les classes que les scripts de .claude/ savent ecrire.
+
+    Sans cela, le garde-fou ne voit que ce qui est publie AUJOURD'HUI. Or un
+    generateur ecrit du markup CONDITIONNEL : .mx-score n'apparait que lorsque
+    la ligue a publie un resultat, .ml__score seulement une fois une rencontre
+    jouee. Ces classes etaient donc invisibles dans les deux sens : comptees
+    mortes par --mortes — c'est ainsi que .mx-score a ete purgee de la feuille,
+    et le site aurait affiche un score nu au premier resultat publie — et
+    jamais controlees par la passe « sans regle CSS ».
+
+    On lit les chaines class="..." des .py de .claude/ comme on lit celles du
+    HTML. Deux precautions :
+
+    - les jetons qui contiennent un caractere de formatage (%s, %(x)d, {}) ne
+      sont pas des noms de classe : « mx-score--%s » devient une FAMILLE, notee
+      « mx-score--* ». Elle est satisfaite des qu'une regle CSS commence par ce
+      prefixe, ce qui evite d'inventer la liste des suffixes possibles ;
+    - le nom du fichier est conserve, pour que le rapport dise ou chercher.
+    """
+    trouvees, familles = {}, {}
+    ici = os.path.dirname(os.path.abspath(__file__))
+    for f in sorted(glob.glob(os.path.join(ici, '*.py'))):
+        # Les garde-fous n'ecrivent aucun markup ; ils contiennent en revanche
+        # l'expression class="..." elle-meme, qui se lirait comme une classe.
+        if os.path.basename(f).startswith('verifier-'):
+            continue
+        src = io.open(f, encoding='utf-8').read()
+        for val in re.findall(r'class="([^"\n]*)"', src):
+            for c in val.split():
+                if re.search(r'[%{}$]', c):
+                    prefixe = re.split(r'[%{}$]', c)[0]
+                    if len(prefixe) > 2:
+                        familles.setdefault(prefixe, set()).add(os.path.basename(f))
+                    continue
+                trouvees.setdefault(c, set()).add(os.path.basename(f))
+    return trouvees, familles
+
+
+def tout_le_vocabulaire():
+    """Le HTML publie, plus ce que les generateurs savent ecrire."""
+    tout = classes_du_html()
+    fixes, _ = classes_des_generateurs()
+    for c, ou in fixes.items():
+        tout.setdefault(c, set()).update(ou)
+    return tout
+
+
 def classes_de_la_css(fichier_html=None):
     """Les classes stylees : style.css, plus le <style> en ligne de la page.
 
@@ -86,8 +134,9 @@ def main():
         print('style.css introuvable — lancer depuis la racine du depot')
         return 2
 
-    html = classes_du_html()
+    html = tout_le_vocabulaire()
     css = classes_de_la_css()
+    _, familles = classes_des_generateurs()
 
     # une classe n'est un trou que si elle manque AUSSI dans le <style> en
     # ligne de chacune des pages ou elle apparait
@@ -95,9 +144,18 @@ def main():
     for c in sorted(html):
         if c in css:
             continue
-        if all(c in classes_de_la_css(f) for f in html[c]):
+        # Le repli « <style> en ligne » ne concerne que les vraies pages :
+        # html[c] contient aussi des noms de generateurs (« build-matchs.py »),
+        # qui n'ont pas de feuille embarquee.
+        vues = [f for f in html[c] if f.endswith('.html')]
+        if vues and all(c in classes_de_la_css(f) for f in vues):
             continue
         sans_regle.append(c)
+
+    # Les familles a suffixe variable : « mx-score--%s » est satisfaite des
+    # qu'une regle commence par « mx-score-- ».
+    familles_vides = sorted(p for p in familles
+                            if not any(c.startswith(p) for c in css))
 
     if sans_regle:
         print('CLASSES SANS AUCUNE REGLE CSS (%d) :' % len(sans_regle))
@@ -110,14 +168,22 @@ def main():
     else:
         print('OK — chaque classe du HTML a au moins une regle dans style.css')
 
+    if familles_vides:
+        print('\nFAMILLES A SUFFIXE VARIABLE SANS AUCUNE REGLE (%d) :'
+              % len(familles_vides))
+        for p in familles_vides:
+            print('  .%-28s %s' % (p + '*', ', '.join(sorted(familles[p]))))
+
     if '--mortes' in sys.argv:
-        mortes = sorted(c for c in css if c not in html and c not in POSEES_PAR_JS)
+        def couverte(c):
+            return c in html or c in POSEES_PAR_JS or any(c.startswith(p) for p in familles)
+        mortes = sorted(c for c in css if not couverte(c))
         print('\nREGLES SANS AUCUN USAGE DANS LE HTML (%d) :' % len(mortes))
         print('  ' + ' '.join('.' + c for c in mortes))
         print('\n  (verifier une par une avant suppression : certaines peuvent'
               '\n   etre posees par JS et avoir echappe a la liste POSEES_PAR_JS)')
 
-    if '--check' in sys.argv and sans_regle:
+    if '--check' in sys.argv and (sans_regle or familles_vides):
         return 1
     return 0
 

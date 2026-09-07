@@ -86,6 +86,10 @@ def charger():
         dt = datetime.strptime(m["date"] + " " + m["heure"], "%Y-%m-%d %H:%M")
         fin = dt + timedelta(minutes=m.get("duree") or 120)
         m["_dt"] = dt
+        # La FIN, et pas seulement le debut : c'est elle qui doit decider
+        # qu'une rencontre appartient au passe. Sur le coup d'envoi, un match
+        # en cours basculait dans « Deja joues » des la premiere minute.
+        m["_fin"] = fin
         m["_debutIso"] = dt.strftime("%Y-%m-%dT%H:%M:00") + FUSEAU
         m["_finIso"] = fin.strftime("%Y-%m-%dT%H:%M:00") + FUSEAU
         m["_jour"] = JOURS[dt.weekday()]
@@ -105,7 +109,11 @@ def prochain(d, maintenant=None):
     fonction qui rend le bandeau de la home reutilisable d'une journee a
     l'autre : il n'est pas code autour du 11 septembre."""
     maintenant = maintenant or datetime.now()
-    futurs = [m for m in d["matchs"] if m["_dt"] >= maintenant and m["statut"] != "annule"]
+    # Sur _fin et non _dt : tant que le coup de sifflet final n'a pas sonne, le
+    # match du soir reste « le prochain ». Un supporter qui ouvre le site a
+    # 20h45 un vendredi veut voir la rencontre en cours, pas celle d'apres.
+    futurs = [m for m in d["matchs"]
+              if m["_fin"] >= maintenant and m["statut"] != "annule"]
     return futurs[0] if futurs else None
 
 
@@ -548,6 +556,30 @@ def bandeau(m, d):
     }
 
 
+def score_texte(m):
+    """Le score du point de vue du MBC, ou None. Forme unique :
+    {"mbc": 72, "adverse": 65} — celle que produit le PDF de la ligue via
+    .claude/lire-calendrier-prm.py. Rien n'est devine : pas de score dans la
+    source, pas de score sur le site."""
+    s = m.get("score")
+    if not s:
+        return None
+    if not isinstance(s, dict) or "mbc" not in s or "adverse" not in s:
+        raise ValueError(
+            "data/matchs.json, %s : le champ score doit valoir null ou "
+            '{"mbc": <entier>, "adverse": <entier>}, pas %r' % (m["slug"], s))
+    return (int(s["mbc"]), int(s["adverse"]))
+
+
+def issue(pour, contre):
+    """v / d / n, et le mot correspondant, pour les lecteurs d'ecran."""
+    if pour > contre:
+        return "v", u"Victoire"
+    if pour < contre:
+        return "d", u"D\u00e9faite"
+    return "n", u"Match nul"
+
+
 FLECHE = (u'<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
           u'stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" '
           u'stroke-linecap="round" stroke-linejoin="round"/></svg>')
@@ -600,6 +632,12 @@ def page_match(m, d, precedent, suivant):
     if L:
         pratique.append((u"Adresse", u"%s<br>%s %s" % (ech(L["adresse"]), L["codePostal"], ech(L["ville"]))))
     pratique.append((u"Coup d’envoi", u"%s à %s" % (ech(m["_dateLongue"]), m["_heureFr"])))
+    _sc = score_texte(m)
+    if _sc:
+        pratique.append((u"Résultat", u"%s %d–%d"
+                         % (issue(_sc[0], _sc[1])[1],
+                            _sc[0] if m["domicile"] else _sc[1],
+                            _sc[1] if m["domicile"] else _sc[0])))
     pratique.append((u"Compétition", u"%s — %s" % (ech(comp["nom"]), ech(comp["zone"]))))
     pratique.append((u"Sens", u"À domicile" if m["domicile"] else u"En déplacement"))
     if m["entreeLibre"]:
@@ -698,23 +736,32 @@ def page_liste(d, maintenant=None):
     maintenant = maintenant or datetime.now()
     comp = d["competition"]
     club = d["club"]
-    a_venir = [m for m in d["matchs"] if m["_dt"] >= maintenant]
-    passes = [m for m in d["matchs"] if m["_dt"] < maintenant]
+    # Meme regle que prochain() : la fin, pas le coup d'envoi.
+    a_venir = [m for m in d["matchs"] if m["_fin"] >= maintenant]
+    passes = [m for m in d["matchs"] if m["_fin"] < maintenant]
 
     def carte(m, futur):
         L = m["_lieu"]
         lieu = L["nom"] if L else u"Chez l’adversaire"
+        # Le score entre DANS .ml__duel (un flex), pas comme 7e case de la
+        # grille a six colonnes : il y repartait a la ligne sous la date.
+        sc = score_texte(m)
         score = u""
-        if m.get("score"):
-            score = u'<span class="ml__score">%s</span>' % ech(m["score"])
+        if sc:
+            cls, mot = issue(sc[0], sc[1])
+            dom_pour = sc[0] if m["domicile"] else sc[1]
+            ext_pour = sc[1] if m["domicile"] else sc[0]
+            score = (u'<span class="ml__score ml__score--%s">'
+                     u'<span class="sr-only">%s du MBC, score </span>'
+                     u'%d<span class="ml__score__s">\u2013</span>%d</span>'
+                     % (cls, mot, dom_pour, ext_pour))
         return u"""        <li class="ml__i%(cls)s">
           <a class="ml__a" href="/matchs/%(slug)s/">
             <span class="ml__j">J%(j)d</span>
             <time class="ml__d" datetime="%(iso)s"><b>%(jour)s %(n)d</b><span>%(mois)s</span></time>
-            <span class="ml__duel"><b>%(dom)s</b><i aria-hidden="true">vs</i><b>%(ext)s</b></span>
+            <span class="ml__duel"><b>%(dom)s</b><i aria-hidden="true">vs</i><b>%(ext)s</b>%(score)s</span>
             <span class="ml__ou">%(lieu)s</span>
             <span class="ml__cote">%(cote)s</span>
-            %(score)s
             <span class="ml__go" aria-hidden="true">%(fleche)s</span>
           </a>
         </li>""" % {

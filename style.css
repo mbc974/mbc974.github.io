@@ -3194,7 +3194,33 @@ main > .section .cine-phone__island i{animation:none !important}
    son PDF : tant que la ligne de résultat vaut « ... ... », le générateur
    n'écrit rien (voir .claude/lire-calendrier-prm.py). Ce bloc est donc inerte
    tant qu'aucun match n'a été joué — il évite d'avoir à retoucher la feuille
-   le soir du premier résultat. */
+   le soir du premier résultat.
+
+   V143 — CE COMMENTAIRE AVAIT SURVÉCU À SES RÈGLES. La purge des règles mortes
+   du 06/09 a supprimé .mx-score, .mx-score--v/d/n et .mx-score__s : aucune
+   page ne les employait, puisque aucun résultat n'avait encore été publié. Le
+   commentaire, lui, est resté — et disait précisément pourquoi il ne fallait
+   pas les supprimer. Elles sont rétablies, et .claude/verifier-classes.py lit
+   désormais le vocabulaire des générateurs pour que cela ne recommence pas.
+
+   Le score n'est jamais la SEULE façon de savoir qui a gagné : le duel est
+   nommé juste à côté, et un lecteur d'écran entend « Victoire du MBC, score »
+   avant les chiffres (span .sr-only posé par le générateur). La couleur ne
+   fait que renforcer — critère WCAG 1.4.1.
+
+   Pas de rouge pour une défaite : le vert marque la victoire, le reste est
+   énoncé en blanc, sans commentaire. C'est le site du club, pas un bulletin. */
+.mx-score{
+  display:inline-flex;align-items:baseline;gap:.12em;
+  font-family:var(--ff-display);font-size:1.02em;letter-spacing:.02em;
+  color:var(--blanc)}
+.mx-score__s{color:var(--txt-soft);padding:0 .12em}
+.mx-score--v{color:#8FE0A6}
+.mx-score--n{color:var(--bleu-glacier)}
+/* --d : la défaite garde la couleur par défaut, déclarée ici pour que la
+   famille soit complète et que le garde-fou la voie. */
+.mx-score--d{color:var(--blanc)}
+
 /* rencontre déjà jouée : on l'atténue sans la cacher (classe posée en JS) */
 .mx-row.is-past{opacity:.42}
 /* prochaine rencontre */
@@ -7952,8 +7978,21 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.09em;font-size:.76rem;color:var(--txt-soft);white-space:nowrap}
 .ml__cote{color:var(--bleu-glacier)}
+/* Le score d'une rencontre jouée, dans la liste /matchs/.
+   V143 — il vit DANS .ml__duel, pas comme septième case de .ml__a : cette
+   grille déclare six colonnes et la carte émet six enfants, un septième
+   repartait à la ligne, en colonne 1, sous la date. .ml__duel est un flex :
+   le score s'y ajoute sans toucher à la grille ni à ses trois points de
+   rupture, et il se lit comme on le dit — « MBC vs Sainte-Suzanne 72–65 ».
+   Mêmes couleurs et même raisonnement que .mx-score sur l'accueil. */
 .ml__score{
-  font-family:var(--ff-display);font-size:1.15rem;color:var(--orange-vif)}
+  display:inline-flex;align-items:baseline;
+  margin-left:.15em;
+  font-family:var(--ff-display);font-size:.92em;color:var(--blanc)}
+.ml__score__s{color:var(--txt-soft);padding:0 .12em}
+.ml__score--v{color:#8FE0A6}
+.ml__score--n{color:var(--bleu-glacier)}
+.ml__score--d{color:var(--blanc)}
 .ml__go{display:inline-flex;color:var(--txt-soft);transition:transform .24s var(--ease-out),color .24s}
 .ml__go svg{width:1.1em;height:1.1em}
 .ml__a:hover .ml__go{color:var(--orange-vif);transform:translateX(3px)}

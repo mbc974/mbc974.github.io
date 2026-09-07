@@ -1813,6 +1813,14 @@ main > .section .cine-phone__island i{animation:none !important}
   border-radius:50%;background:rgba(191,210,228,.45)}
 .mx-row--dom{box-shadow:inset 3px 0 0 var(--orange-vif)}
 .mx-row--dom .mx-lieu::before{background:var(--orange-vif)}
+.mx-score{
+  display:inline-flex;align-items:baseline;gap:.12em;
+  font-family:var(--ff-display);font-size:1.02em;letter-spacing:.02em;
+  color:var(--blanc)}
+.mx-score__s{color:var(--txt-soft);padding:0 .12em}
+.mx-score--v{color:#8FE0A6}
+.mx-score--n{color:var(--bleu-glacier)}
+.mx-score--d{color:var(--blanc)}
 .mx-row.is-past{opacity:.42}
 .mx-row.is-next{background:rgba(27,81,158,.16)}
 .mx-next{margin:0 0 1.1rem;font-family:var(--ff-cond);font-weight:600;
@@ -4509,7 +4517,13 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   letter-spacing:.09em;font-size:.76rem;color:var(--txt-soft);white-space:nowrap}
 .ml__cote{color:var(--bleu-glacier)}
 .ml__score{
-  font-family:var(--ff-display);font-size:1.15rem;color:var(--orange-vif)}
+  display:inline-flex;align-items:baseline;
+  margin-left:.15em;
+  font-family:var(--ff-display);font-size:.92em;color:var(--blanc)}
+.ml__score__s{color:var(--txt-soft);padding:0 .12em}
+.ml__score--v{color:#8FE0A6}
+.ml__score--n{color:var(--bleu-glacier)}
+.ml__score--d{color:var(--blanc)}
 .ml__go{display:inline-flex;color:var(--txt-soft);transition:transform .24s var(--ease-out),color .24s}
 .ml__go svg{width:1.1em;height:1.1em}
 .ml__a:hover .ml__go{color:var(--orange-vif);transform:translateX(3px)}
