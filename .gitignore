@@ -11,3 +11,6 @@ planning-v2-rendu.png
 essai-cadrage.png
 apercu-photo.png
 .claude/worktrees/
+
+# Pages de test temporaires (bancs de mesure), jamais publiees
+_*.html
