@@ -8869,3 +8869,39 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 
   .hero__inner{position:relative;z-index:2;padding-top:1.25rem}
 }
+
+
+/* ==========================================================================
+   V139 — LES LEGENDES DE LA GALERIE REDEVIENNENT DES PASTILLES
+   ==========================================================================
+   Deux generations de design se superposaient sur le meme element. La
+   premiere en avait fait une PASTILLE (bordure, rayon 999px, fond flouté,
+   largeur au contenu) ; la seconde, plus recente et donc gagnante sur les
+   proprietes communes, lui a impose « padding:1.6rem .9rem .8rem » et un
+   fond en degrade — des valeurs calculees pour une legende pleine largeur
+   posee sur un fondu, pas pour une pastille.
+
+   Resultat mesure : 59 px de haut pour 11,8 px de texte, avec 25,6 px de
+   remplissage au-dessus contre 12,8 en dessous. Le texte n'etait meme pas
+   centre dans sa propre pastille.
+
+   Ici on ne change ni la police, ni la couleur, ni le trait orange : on
+   redonne simplement a la pastille un remplissage proportionne a son texte,
+   symetrique, et on la decolle du bord. Le fond redevient uni — un degrade
+   dans une forme arrondie ne se voit pas, il salit juste le bord haut. */
+.gallery-mosaic figcaption{
+  inset:auto auto .8rem .8rem;
+  padding:.34rem .8rem;
+  line-height:1.25;
+  background:rgba(7,13,24,.74);
+  text-shadow:none}
+
+/* Sous 900 px les tuiles sont deux fois plus petites : la pastille se
+   resserre encore, sans quoi elle mangerait le quart de la photo. */
+@media (max-width:900px){
+  .gallery-mosaic figcaption{
+    inset:auto auto .55rem .55rem;
+    padding:.28rem .62rem;
+    font-size:.68rem;
+    letter-spacing:.08em}
+}
