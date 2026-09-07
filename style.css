@@ -308,12 +308,9 @@ a{color:inherit;text-decoration:none}
    assez de specificite (0,3,0) pour battre un futur .brand:hover reintroduit
    ailleurs par distraction. */
 .site-header .brand:hover,.site-header .brand:focus-visible{transform:none}
-.site-header .brand:hover .brand__txt::before,
-.site-header .brand:focus-visible .brand__txt::before{opacity:1}
-.site-header .brand:hover .brand__sub2,
-.site-header .brand:focus-visible .brand__sub2{color:var(--blanc)}
-.site-header .brand:hover .logo-img,
-.site-header .brand:focus-visible .logo-img{
+.site-header .brand:hover .brand__txt::before,.site-header .brand:focus-visible .brand__txt::before{opacity:1}
+.site-header .brand:hover .brand__sub2,.site-header .brand:focus-visible .brand__sub2{color:var(--blanc)}
+.site-header .brand:hover .logo-img,.site-header .brand:focus-visible .logo-img{
   filter:drop-shadow(0 3px 12px rgba(0,0,0,.6))}
 @media (prefers-reduced-motion:reduce){
   .brand,.brand .logo-img,.brand__sub2,.brand__txt::before{
@@ -351,14 +348,12 @@ a{color:inherit;text-decoration:none}
 .marquee{position:relative;overflow:hidden;background:var(--grad-orange);padding:.7rem 0;border-block:2px solid rgba(0,0,0,.15)}
 /* Pause au tap (accessibilité WCAG 2.2.2 — mobile/tactile, voir script.js) */
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){}
 /* ---------------- HERO ---------------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:7rem 0 5rem;overflow:hidden;background:radial-gradient(120% 80% at 80% -10%,rgba(27,81,158,.55),transparent 55%),radial-gradient(90% 70% at -8% 115%,rgba(217,106,27,.28),transparent 52%),linear-gradient(180deg,#091020,var(--nuit-0))}
 .hero__inner{position:relative;z-index:3;width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:clamp(18px,5vw,48px)}
 .hero__scroll{position:absolute;bottom:1.4rem;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--ff-cond);text-transform:uppercase;letter-spacing:.2em;font-size:.7rem;color:var(--txt-soft);display:flex;flex-direction:column;align-items:center;gap:.5rem}
 .hero__scroll span{width:1px;height:34px;background:linear-gradient(var(--orange-vif),transparent);animation:scrollPulse 2s var(--ease) infinite}
 @keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
-@media (prefers-reduced-motion:reduce){}
 /* ---------------- Section base ---------------- */
 .section{position:relative;padding:clamp(4.5rem,10vw,8rem) 0}
 @supports (content-visibility:auto){.section{content-visibility:auto;contain-intrinsic-size:900px}
@@ -391,9 +386,6 @@ a{color:inherit;text-decoration:none}
 .cal-wrap{position:relative;z-index:2}
 .cal-note{margin-top:1.3rem;font-size:.9rem;color:var(--txt-soft);display:flex;align-items:center;gap:.5em}
 .cal-note .ic{width:1.1em;height:1.1em;color:var(--orange-vif);flex:none}
-/* ---------------- POURQUOI ---------------- */
-/* ---------------- PARTENAIRES ---------------- */
-.partenaires{position:relative;background:linear-gradient(180deg,var(--nuit-0),var(--nuit-2));overflow:hidden}
 /* ---------------- CTA BAND ---------------- */
 /* fond STRICTEMENT uniforme horizontalement (aucune variation gauche/droite) -> aucune ligne verticale possible ; haut #0b1626 = bas exact de .partenaires (frontière haute invisible) */
 /* ---------------- CONTACT ---------------- */
@@ -907,46 +899,8 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 .cat--featured::after{display:none!important}
 /* hover premium homogène pour TOUTES les cartes (liseré orange au survol) */
 .cat:hover{border-color:rgba(232,130,42,.5)!important}
-/* ---- 7. Pourquoi : aération, line-height, hiérarchie ---- */
-/* ---- 9. Éditorial La Montagne : lisibilité texte sur fond ---- */
-/* ---- 10. Dons : équilibre texte / carte, lisibilité usages ---- */
-/* recr mini-court + season badge spacing */
-/* ============================================================
-   V9 "READY TO DROP" — assets, sponsors, social, pourquoi
-   ============================================================ */
-/* ---- Suivez le MBC ---- */
-/* slash diagonal orange/bleu retiré */
-/* en-tête pleine largeur, puis 2 colonnes équilibrées (visuel + réseaux) */
-/* réseaux : rangée de cartes premium */
-.social-card{position:relative;
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  align-items:center;
-  gap:1.15rem;
-  min-height:88px;
-  padding:1.1rem 1.3rem;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:linear-gradient(150deg,rgba(191,210,228,.08),rgba(7,13,24,.55));
-  box-shadow:var(--e1),var(--bevel);
-  isolation:isolate;
-  overflow:hidden;
-  transition:transform .45s var(--ease-spring),border-color .35s,box-shadow .4s,background .35s;}
-.social-card::before{content:"";position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .45s;
-  background:radial-gradient(130% 150% at 0% 50%,var(--brand,rgba(232,130,42,.22)),transparent 62%);}
-.social-card:hover,.social-card:focus-visible{transform:translateY(-5px);
-  border-color:var(--brandline,rgba(232,130,42,.5));
-  box-shadow:var(--e3),0 18px 46px -12px var(--brandglow,rgba(232,130,42,.45));}
-.social-card:hover::before,.social-card:focus-visible::before{opacity:1}
 /* couleurs officielles des plateformes */
 @media (min-width:880px){}
-@media (prefers-reduced-motion:reduce){.social-card{transition:none}
-.social-card:hover,.social-card:focus-visible{transform:none}}
-@media (max-width:560px){.social-card{min-height:0;padding:.95rem 1.05rem;gap:.9rem;border-radius:15px}
-}
-/* ---- Sponsors premium ---- */
-/* ---- Pourquoi rejoindre : respiration premium ---- */
-.social-card{transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);}
 /* ============================================================
    V10 "MICRO-FINITIONS" — terrain, typo, TikTok
    ============================================================ */
@@ -991,8 +945,7 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 body{text-rendering:optimizeLegibility}
 /* ---- Typographie : équilibre des lignes (anti-veuves) ---- */
 .h2{text-wrap:balance}
-.lead,
-.sec-head__sub{text-wrap:pretty}
+.lead,.sec-head__sub{text-wrap:pretty}
 .h2{letter-spacing:.3px}
 .sec-head__sub{color:var(--txt-soft);max-width:60ch}
 /* ---- Boutons : profondeur tokenisée + état pressé ---- */
@@ -1028,10 +981,10 @@ body{text-rendering:optimizeLegibility}
    SYSTÈME DE CARTES — un seul langage visuel partout
    (mêmes ombres, même profondeur, même logique de survol)
    ============================================================ */
-.cat,.social-card,.contact-info{box-shadow:var(--e2),var(--bevel);}
-.cat:hover,.social-card:hover{box-shadow:var(--e3),0 0 0 1px rgba(232,130,42,.18),var(--bevel);}
+.cat,.contact-info{box-shadow:var(--e2),var(--bevel);}
+.cat:hover{box-shadow:var(--e3),0 0 0 1px rgba(232,130,42,.18),var(--bevel);}
 /* Lift homogène et "ressort" léger sur toutes les cartes interactives */
-.cat,.social-card{transition:transform .4s var(--ease-spring),border-color .35s var(--ease-out),box-shadow .4s var(--ease-out),filter .35s var(--ease-out),background .35s var(--ease-out);}
+.cat{transition:transform .4s var(--ease-spring),border-color .35s var(--ease-out),box-shadow .4s var(--ease-out),filter .35s var(--ease-out),background .35s var(--ease-out);}
 /* ============================================================
    SPONSORS — mur premium : surface unique, zone de sécurité
    identique, monochrome au repos → couleur au survol.
@@ -1115,12 +1068,6 @@ body{text-rendering:optimizeLegibility}
 @media(min-width:620px){.packs-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1080px){.packs-grid{grid-template-columns:repeat(5,1fr);align-items:stretch}
 .pack--feat{transform:translateY(-10px)}}
-
-/* ---- Crédibilité / institutions ---- */
-/* ---- Tarifs (parents) ---- */
-.tarifs{display:grid;gap:1.2rem;grid-template-columns:1fr;align-items:center;max-width:840px;margin:0 auto 2.2rem;padding:1.6rem 1.8rem;border:1px solid rgba(232,130,42,.3);border-radius:var(--r-lg);background:linear-gradient(168deg,rgba(21,35,61,.94),rgba(10,19,35,.98));box-shadow:var(--e2),var(--bevel)}
-@media(min-width:680px){.tarifs{grid-template-columns:auto 1fr;gap:2.2rem}
-}
 /* ---- Contreparties sponsors soumises à condition ---- */
 .pack ul li em{font-style:normal;display:block;margin-top:.1rem;font-size:.78em;line-height:1.3;color:var(--txt-soft);opacity:.8}
 /* ---- Nav horizontale resserrée (>=1181px) pour loger 8 entrées + CTA ---- */
@@ -1285,8 +1232,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   outline-offset:2px;
   border-radius:4px;}
 /* Cible tactile minimale (≥44px) pour les liens d'action du footer. */
-.footer__actions a,
-.footer__social a{min-height:44px;display:inline-flex;align-items:center}
+.footer__actions a,.footer__social a{min-height:44px;display:inline-flex;align-items:center}
 .footer__col>a{padding-block:.45em;margin-bottom:.1rem}
 .footer__seo a{display:inline-block;padding-block:.35em}
 /* Le bouton flottant n'aspire pas le focus quand il est masqué. */
@@ -1326,10 +1272,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
     grid-template-areas:"tall huddle" "tall banner" "shoot group";}
 .g-tile{min-height:0}
 .g-tall{grid-area:tall}
-.g-huddle{grid-area:huddle}
 .g-banner{grid-area:banner}
-.g-shoot{grid-area:shoot}
-.g-group{grid-area:group}}
+.g-shoot{grid-area:shoot}}
 @media(min-width:980px){.gallery-mosaic{grid-auto-rows:226px;grid-template-columns:repeat(4,1fr);
     grid-template-areas:"tall huddle huddle banner" "tall shoot group group";}}
 /* ============================================================
@@ -1407,17 +1351,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Hero : le logo doit rester au premier plan, sans voile par-dessus. */
 .hero__inner{position:relative;
   z-index:8 !important;}
-/* Couleurs du MBC : actions parfaitement centrees. */
-
-
-/* Carte licence : bouton centre et rendu plus premium. */
-.tarifs{max-width:780px !important;
-  margin-inline:auto;
-  background:
-    radial-gradient(90% 120% at 18% 0,rgba(232,130,42,.18),transparent 56%),
-    linear-gradient(160deg,rgba(21,35,61,.94),rgba(7,13,24,.97)) !important;
-  box-shadow:0 26px 72px rgba(3,7,15,.44),0 0 0 1px rgba(232,130,42,.18) inset !important;}
-@media(min-width:680px){}
 /* Mot du president : pas de doublon photo, une vraie citation forte. */
 /* Territoire : plus simple, plus lisible, avec orange MBC. */
 /* Formules partenaires : MVP mis en avant, mais aligne avec les autres. */
@@ -1443,8 +1376,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .hero__inner{padding-top:clamp(.25rem,1vh,.75rem);}
 @media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}}
 @media(max-width:680px){.hero{padding-top:5rem !important;
-    padding-bottom:1.2rem !important;}
-}
+    padding-bottom:1.2rem !important;}}
 /* ============================================================
    V21 "VIDEO ADHESION" — intégration premium + SEO-friendly
    ============================================================ */
@@ -1841,10 +1773,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
   radial-gradient(65% 75% at 88% -5%,rgba(27,81,158,.32),transparent 58%),
   radial-gradient(60% 70% at 5% 108%,rgba(217,106,27,.16),transparent 58%),
   linear-gradient(180deg,#0c1526,var(--nuit-0))!important}
-.partenaires{background:
-  radial-gradient(60% 70% at 12% -5%,rgba(217,106,27,.18),transparent 58%),
-  radial-gradient(60% 80% at 92% 92%,rgba(27,81,158,.28),transparent 58%),
-  linear-gradient(180deg,var(--nuit-0),#0b1626)!important}
 /* ---- a11y : cœur figé si mouvement réduit ---- */
 @media (prefers-reduced-motion:reduce){.footer__signature .sig-heart{animation:none!important}}
 /* ============================================================
@@ -1938,10 +1866,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .footer-legal__body p{font-size:.82rem;line-height:1.6;color:var(--txt-soft)}
 .footer-legal__body b{color:var(--bleu-glacier)}
 .footer-legal__body a{color:var(--orange-vif)}
-/* ============================================================
-   V24 — Tarif « 95 € » : grand, subtil & premium + bloc clarifié
-   ============================================================ */
-.tarifs{overflow:hidden}
 /* Prix XL, dégradé orange STATIQUE (poli) + glow doux → premium discret */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){}
 /* mobile : 95 € encore plus grand dans « Votre enfant entre de bonnes mains » */
@@ -1980,8 +1904,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .visi__tags{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0}
 .visi__tags li{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.05em;font-size:.78rem;color:var(--bleu-glacier);border:1px solid var(--line-strong);border-radius:99px;padding:.34em .9em;background:rgba(27,81,158,.12)}
 .visi__tags li span{text-transform:none;letter-spacing:0;font-weight:500;font-size:.92em;color:var(--txt-soft)}
-/* Dons : « Objectif licences solidaires » (sobre) */
-.solidaire{margin-top:1.6rem;padding:1.2rem 1.3rem;border:1px solid var(--line);border-left:3px solid var(--orange-vif);border-radius:var(--r-sm);background:rgba(191,210,228,.03)}
 /* Footer : mention équipementier discrète */
 /* ============================================================
    V29 — HERO : encart unique + titre animé (phrases créoles)
@@ -2046,34 +1968,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Hiérarchie typo : titre beaucoup plus grand et sportif (Anton). */
 /* Bouton principal : impact + glow orange doux autour (box-shadow non rognée). */
 .btn__arrow{width:1.1em;height:1.1em;flex:none;transition:transform .25s var(--ease-out)}
-/* CTA secondaire discret. */
-/* Micro-preuves : discrètes mais lisibles. */
-/* Mobile : carte lisible, bouton pleine largeur, pas de débordement. */
-/* (Intégration Spline retirée — hero recentré sur le CTA. 202606-hero-cta) */
-/* ============================================================
-   HERO — refonte centrée, impactante, axée CTA (sans Spline)
-   Contenu centré H/V, grosses typos, gros bloc CTA central premium.
-   ============================================================ */
-/* contenu CENTRÉ, agrandi — rendu affiche cinématique premium. */
-/* Badge */
-/* Logo = marque centrée, taille moyenne premium (88–120 px). */
-/* Titre fixe (présent en HTML) + slogan rotatif créole — typographies agrandies. */
-/* Sous-titre centré */
-/* ===== Gros bloc CTA central premium (pré-inscription) ===== */
-.hero-offer{position:relative;margin-top:1.4rem;
-  display:flex;flex-direction:column;align-items:center;gap:.7rem;
-  width:100%;max-width:600px;
-  padding:1.7rem 1.6rem;
-  border-radius:var(--r-lg);
-  background:linear-gradient(168deg,rgba(27,81,158,.26),rgba(9,15,28,.74));
-  border:1px solid rgba(191,210,228,.16);
-  box-shadow:0 26px 64px rgba(3,7,15,.5),inset 0 1px 0 rgba(255,255,255,.07);
-  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);}
-/* liseré dégradé bleu → orange subtil (coins arrondis préservés) */
-.hero-offer::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
-  background:linear-gradient(135deg,rgba(27,81,158,.55),rgba(232,130,42,.5));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;pointer-events:none;}
 /* CTA secondaire discret */
 /* GROS bouton principal */
 /* preuves (puces orange) */
@@ -2114,14 +2008,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media (max-width:760px){}
 /* Accessibilité : pas d'animation si mouvement réduit */
 @media (prefers-reduced-motion:reduce){}
-/* ============================================================
-   V36 — HERO premium : titre massif · sous-titre punchy · CTA fort
-   · relief montagne stylisé. Surcharge ciblée (appended → gagne).
-   ============================================================ */
-/* Titre encore plus massif + relief (ombre douce, sans stroke lourd). */
-/* Sous-titre fixe punchy (orange ballon dégradé, typo Anton). */
-/* Carte CTA : un peu plus large. */
-.hero-offer{max-width:640px}
 /* Bouton principal sur 2 lignes : action + précision saison. */
 /* Watermark logo : encore plus subtil (simple texture de fond). */
 /* Mobile : titre/sous-titre lisibles, montagne plus basse. */
@@ -2189,17 +2075,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Mobile/tablette (photo en fond) : pas de filigrane logo + joueur plus perceptible derrière le texte/CTA */
 @media (max-width:980px){.hero.in .hero__photo{opacity:.5}}
 /* ============================================================
-   V40 — Calendrier : bannière "salle" (photo du Gymnase de La Montagne)
-   Réglages : hauteur (.cal-venue img height) · cadrage (object-position) · overlay (.cal-venue::after)
-   ============================================================ */
-.cal-venue{position:relative;margin:0 0 2rem;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--e1),var(--bevel)}
-.cal-venue img{display:block;width:100%;height:clamp(220px,30vw,380px);object-fit:cover;object-position:center 40%}
-.cal-venue.is-empty{min-height:clamp(180px,24vw,260px);background:linear-gradient(120deg,#13284b,#0a1426)}
-.cal-venue.is-empty img{display:none}
-/* dégradé navy : lisibilité de la légende en bas-gauche, image dégagée au centre (logo MBC au mur) */
-.cal-venue::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(7,13,24,.6),rgba(7,13,24,.12) 44%,transparent 64%),linear-gradient(0deg,rgba(7,13,24,.84),rgba(7,13,24,.08) 54%,transparent 72%)}
-/* ============================================================
    V41 — Sponsors : bandeau de logos en défilement infini
    (adapté d'un carousel embla/shadcn → CSS natif, mécanisme "marquee").
    Boucle continue (2 séries + translateX -50%), pause au survol/focus, repli statique.
@@ -2207,7 +2082,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    ============================================================ */
 /* carte adaptée au bandeau : largeur fixe, espacement par marge (boucle nette), sans flou (perf défilement) */
 @keyframes sponsorsScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V42 — Formules partenaires : finition "pricing" (description + CTA par carte)
    Adapté du composant Pricing (shadcn) → CSS natif. Le toggle mensuel/annuel +
@@ -2361,8 +2235,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
    gardent une taille confortable (l'en-tete reste cale sur ses 64ch centres) */
 @media (min-width:1500px){.staff .wrap{max-width:min(94vw,1680px)}}
 /* rien a faire defiler : on retire les commandes plutot que de les laisser mortes */
-.staff.roster-static .roster__nav,
-.staff.roster-static .roster__progress{visibility:hidden;opacity:0}
+.staff.roster-static .roster__nav,.staff.roster-static .roster__progress{visibility:hidden;opacity:0}
 /* petit mobile : le swipe suffit, les fleches disparaissent */
 @media (max-width:559px){.sec-head__row{grid-template-columns:1fr}
 .sec-head__row .h2{grid-column:1}
@@ -2509,7 +2382,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* lueur douce derrière le chiffre : spotlight haut + halo bleu nuit discret */
 /* carte VALEUR : icône d'accent orange + titre court (remplace l'ancien gros chiffre) */
 @media (max-width:520px){}
-@media (prefers-reduced-motion:reduce){}
 .cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
 @media (max-width:559px){.cine-actions{justify-content:center}}
@@ -2966,7 +2838,6 @@ body.cine-fs-lock{overflow:hidden}
 @media (max-width:768px){/* en colonne, des largeurs egales se lisent comme un empilement voulu ;
      la hierarchie passe par la couleur et le poids, pas par la largeur. */
 }
-@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V78 — Passe « finition » (2026-08)
    Trois défauts de rythme, pas trois effets de plus :
@@ -3501,14 +3372,6 @@ main > .section .cine-phone__island i{animation:none !important}
    et rend la date moins lisible. Sous 900 px on la pose bien a plat. */
 @media (max-width:899px){.nx__body{text-align:left}
 }
-/* Pas d'animation d'apparition propre : .reveal (opacite + 34px) porte deja
-   le bloc entier. En ajouter une seconde sur .nx__media faisait un double
-   mouvement, exactement le genre de surcharge a eviter ici. */
-/* le bloc disparait une fois la rencontre jouee (script.js) */
-/* ---- L'affiche officielle, à télécharger et partager ---- */
-.affiche{display:grid;grid-template-columns:1fr;gap:1.3rem;align-items:center;
-  margin:2.2rem 0 0;padding:1.25rem;border:1px solid var(--line);
-  border-radius:var(--r-lg);background:var(--grad-card)}
 /* width explicite, et non max-width : en justify-self:start la largeur du
    lien suit son contenu, or l'image la reclame en retour — les deux
    s'annulaient et la vignette tombait a 0. */
@@ -3758,9 +3621,6 @@ main > .section .cine-phone__island i{animation:none !important}
 @media (max-width:719px) and (prefers-reduced-motion:no-preference){
 }
 
-@media (min-width:720px) and (prefers-reduced-motion:no-preference){
-}
-
 /* ============================================================
    V93 · 3 — Ordre de lecture dans « L'essentiel ».
    ------------------------------------------------------------
@@ -3920,8 +3780,7 @@ main > .section .cine-phone__island i{animation:none !important}
    rasterisation floue par bloc non encore revele.
    (0,2,1) : bat le (0,1,0) de la l.1649 et le (0,2,0) de
    .reveal.in{filter:blur(0)}. */
-main > .section .reveal,main > .section .reveal--l,
-main > .section .reveal--r,main > .section .reveal--scale{filter:none}
+main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 
 /* Le hero mis en veille hors champ. <section class="hero ..."> n'a
    PAS la classe .section : il echappe au content-visibility:auto de
@@ -3995,9 +3854,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 
 /* Halos, reflets, grilles reactives : conserves dans le DOM (le JS s'y
    accroche) mais ramenes au seuil du perceptible. */
-.spotglow__fx,
-.cine-card__glow,
-.cine-card__sheen{opacity:.18!important}
+.spotglow__fx,.cine-card__glow,.cine-card__sheen{opacity:.18!important}
 .grid-fx{opacity:.25}
 .grid-fx__glow{display:none}
 
@@ -4017,10 +3874,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 @supports (content-visibility:auto){.section{contain-intrinsic-size:auto 700px}}
 
 /* Une bande sur deux se detache — le filet, pas la couleur, marque la coupe. */
-.section.categories,
-.section.matchs,
-.section.staff,
-.section.contact{background:var(--surf-1);border-block:1px solid var(--hair)}
+.section.categories,.section.matchs,.section.staff,.section.contact{background:var(--surf-1);border-block:1px solid var(--hair)}
 
 .kicker{
   font-size:.75rem;letter-spacing:.3em;color:var(--txt-soft);
@@ -4039,11 +3893,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 .sec-head--center .sec-head__sub{margin-inline:auto}
 .sec-head__sub--tight{max-width:48ch}
 
-/* Le separateur « point median » de la refonte : un <i> vide, jamais lu par
-   les lecteurs d'ecran, qui remplace les « · » colles dans le texte. */
-.hero__eyebrow i,.hero__meta i,.hero__fine i,.sb__comp i,.sb__when i,
-.footer__place i,.footer__addr i,.footer__ident i,.footer__signature i,
-.sponsors-wall__label i,.cine-note i,.lp-kicker i{
+.sb__comp i,.sb__when i,.footer__place i,.footer__addr i,.footer__ident i,.footer__signature i,.sponsors-wall__label i,.cine-note i,.lp-kicker i{
   display:inline-block;width:3px;height:3px;border-radius:50%;
   background:currentColor;opacity:.45;vertical-align:middle;
   margin-inline:.6em;flex:none}
@@ -4072,8 +3922,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 .nav__sep{position:relative;color:var(--txt-soft)}
 @media (min-width:1181px){
   .nav__sep::before{content:"";position:absolute;left:calc(-1 * clamp(.45rem,.9vw,.95rem));top:50%;
-    width:1px;height:16px;transform:translateY(-50%);background:var(--hair-2)}
-}
+    width:1px;height:16px;transform:translateY(-50%);background:var(--hair-2)}}
 .nav__cta{min-height:42px;border-radius:6px}
 
 /* ---------------------------------------------------------------------------
@@ -4094,28 +3943,11 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
   padding-inline:clamp(18px,5vw,48px);
   position:relative;z-index:3;max-width:min(var(--wrap),1220px)}
 
-.hero__eyebrow{
-  display:flex;align-items:center;
-  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.34em;font-size:.78rem;color:var(--bleu-glacier);
-  margin-bottom:clamp(1.1rem,2.4vw,1.6rem)}
-
 .hero__h1{
   font-family:var(--ff-display);text-transform:uppercase;
   font-size:clamp(3.1rem,10.5vw,7.6rem);line-height:.86;letter-spacing:.5px;
   color:var(--blanc);max-width:14ch;text-wrap:balance}
 .hero__h1 .hl{color:var(--orange-vif)}
-
-.hero__creole{
-  font-family:var(--ff-cond);font-weight:600;font-style:italic;
-  font-size:clamp(1.15rem,2.6vw,1.6rem);color:var(--bleu-glacier);
-  margin-top:clamp(.9rem,2vw,1.3rem);letter-spacing:.02em}
-
-.hero__meta{
-  display:flex;flex-wrap:wrap;align-items:center;
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.13em;font-size:.86rem;color:var(--txt-soft);
-  margin-top:clamp(1.4rem,3vw,2rem)}
 
 .hero__cta{
   display:flex;flex-wrap:wrap;align-items:center;gap:clamp(1rem,2.4vw,1.8rem);
@@ -4128,13 +3960,6 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 .hero__second:hover{color:var(--orange-vif);border-bottom-color:var(--orange-vif)}
 .hero__second .btn__arrow{width:1em;height:1em}
 .hero__second:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px}
-
-.hero__fine{
-  display:flex;flex-wrap:wrap;align-items:center;
-  font-size:.84rem;color:var(--txt-soft);letter-spacing:.04em;
-  margin-top:clamp(1.6rem,3.4vw,2.4rem);
-  padding-top:clamp(1.1rem,2.4vw,1.5rem);border-top:1px solid var(--hair);
-  max-width:34rem}
 
 /* La photo : moitie droite en grand ecran, bandeau derriere le texte en
    petit. Le degrade la raccroche au fond au lieu de la coller dessus. */
@@ -4161,8 +3986,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
   .hero__h1{max-width:none}
   .hero__cta{gap:1rem}
   .hero__cta .btn{width:100%}
-  .hero__second{width:100%;justify-content:center}
-}
+  .hero__second{width:100%;justify-content:center}}
 
 /* ---------------------------------------------------------------------------
    5. CHIFFRES CLES — trois nombres, beaucoup de vide
@@ -4192,8 +4016,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 @media (max-width:760px){
   .keyfig{grid-template-columns:1fr;gap:1.6rem}
   .keyfig__i{padding-top:1.1rem}
-  .keyfig__v{font-size:clamp(2.4rem,11vw,3.4rem)}
-}
+  .keyfig__v{font-size:clamp(2.4rem,11vw,3.4rem)}}
 
 /* ---------------------------------------------------------------------------
    6. SELECTEUR D'AGE — la premiere chose que voit un parent
@@ -4248,8 +4071,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 @media (max-width:760px){
   .age__tabs{grid-template-columns:repeat(3,1fr)}
   .age__tab{font-size:.95rem;min-height:52px}
-  .age__a .btn{width:100%}
-}
+  .age__a .btn{width:100%}}
 
 /* ---------------------------------------------------------------------------
    7. VOLETS (« voir toutes les catégories », « tous les matchs », la FAQ)
@@ -4401,8 +4223,7 @@ main > .section .reveal--r,main > .section .reveal--scale{filter:none}
 
 @media (max-width:560px){
   .sb__duel{grid-template-columns:1fr auto 1fr;gap:.5rem}
-  .sb__a .btn{flex:1 1 100%;max-width:none}
-}
+  .sb__a .btn{flex:1 1 100%;max-width:none}}
 
 /* Le calendrier replie : legende et liens sous le volet. */
 .mx-affiche{
@@ -4521,21 +4342,17 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
   letter-spacing:.1em;font-size:.74rem;color:#fff;
   background:linear-gradient(0deg,rgba(4,8,16,.88),transparent);
   text-shadow:0 1px 3px rgba(0,0,0,.6)}
-
-.g-huddle{grid-column:span 2;grid-row:span 3}
-.g-tall  {grid-column:span 2;grid-row:span 3}
+.g-tall{grid-column:span 2;grid-row:span 3}
 .g-banner{grid-column:span 2;grid-row:span 2}
-.g-shoot {grid-column:span 1;grid-row:span 2}
-.g-group {grid-column:span 1;grid-row:span 2}
-.g-inaug {grid-column:span 2;grid-row:span 2}
-.g-gym   {grid-column:span 2;grid-row:span 2}
+.g-shoot{grid-column:span 1;grid-row:span 2}
+.g-inaug{grid-column:span 2;grid-row:span 2}
+.g-gym{grid-column:span 2;grid-row:span 2}
 
 @media (max-width:900px){
   .gallery-mosaic{grid-template-columns:repeat(2,1fr);grid-auto-rows:clamp(96px,20vw,150px)}
-  .g-huddle,.g-tall{grid-column:span 2;grid-row:span 3}
+  .g-tall{grid-column:span 2;grid-row:span 3}
   .g-banner,.g-inaug,.g-gym{grid-column:span 2;grid-row:span 2}
-  .g-shoot,.g-group{grid-column:span 1;grid-row:span 2}
-}
+  .g-shoot{grid-column:span 1;grid-row:span 2}}
 
 /* ---------------------------------------------------------------------------
    14. SOUTENIR + PARTENAIRES
@@ -4674,12 +4491,10 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
 .footer-legal>summary:hover{color:var(--orange-vif)}
 
 @media (max-width:980px){
-  .footer__top{grid-template-columns:1fr 1fr}
-}
+  .footer__top{grid-template-columns:1fr 1fr}}
 @media (max-width:600px){
   .footer__top{grid-template-columns:1fr;gap:2rem}
-  .footer__links{margin-left:0}
-}
+  .footer__links{margin-left:0}}
 
 /* ---------------------------------------------------------------------------
    18. MOBILE — le texte courant ne descend jamais sous 16 px
@@ -4717,19 +4532,15 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
    EST l'identite du club. Elle est la des le premier rendu ; seul le texte se
    leve. (Le masque d'origine est conserve : c'est lui qui fond l'image dans le
    fond, mieux qu'un voile pose par-dessus.) */
-.hero .hero__photo,
-.hero.in .hero__photo{opacity:1;transform:none;transition:none}
+.hero .hero__photo,.hero.in .hero__photo{opacity:1;transform:none;transition:none}
 @media (max-width:900px){
-  .hero .hero__photo,
-  .hero.in .hero__photo{opacity:.4}
-}
+  .hero .hero__photo,.hero.in .hero__photo{opacity:.4}}
 /* Le voile de mon ::after ferait doublon avec le masque : on l'allege. */
 .hero__photo::after{
   background:linear-gradient(90deg,rgba(7,13,24,.92) 0%,rgba(7,13,24,.35) 45%,transparent 78%)}
 @media (max-width:900px){
   .hero__photo::after{
-    background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(7,13,24,.8) 55%,var(--nuit-0))}
-}
+    background:linear-gradient(180deg,rgba(7,13,24,.5),rgba(7,13,24,.8) 55%,var(--nuit-0))}}
 
 /* GALERIE — trois bandes calees sur une grille de six colonnes. Les rapports
    sont imposes par la grille et non par le fichier source : object-fit recadre.
@@ -4738,23 +4549,18 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
   --g-row:clamp(74px,7.4vw,104px);
   grid-template-columns:repeat(6,1fr);
   grid-auto-rows:var(--g-row)}
-.g-huddle{grid-column:span 4;grid-row:span 4}
-.g-tall  {grid-column:span 2;grid-row:span 4}
+.g-tall{grid-column:span 2;grid-row:span 4}
 .g-banner{grid-column:span 3;grid-row:span 3}
-.g-gym   {grid-column:span 3;grid-row:span 3}
-.g-shoot {grid-column:span 2;grid-row:span 3}
-.g-inaug {grid-column:span 2;grid-row:span 3}
-.g-group {grid-column:span 2;grid-row:span 3}
+.g-gym{grid-column:span 3;grid-row:span 3}
+.g-shoot{grid-column:span 2;grid-row:span 3}
+.g-inaug{grid-column:span 2;grid-row:span 3}
 @media (max-width:900px){
   .gallery-mosaic{--g-row:clamp(64px,13vw,104px);grid-template-columns:repeat(4,1fr)}
-  .g-huddle{grid-column:span 4;grid-row:span 3}
-  .g-tall  {grid-column:span 2;grid-row:span 4}
-  .g-shoot {grid-column:span 2;grid-row:span 4}
+  .g-tall{grid-column:span 2;grid-row:span 4}
+  .g-shoot{grid-column:span 2;grid-row:span 4}
   .g-banner{grid-column:span 4;grid-row:span 3}
-  .g-gym   {grid-column:span 2;grid-row:span 3}
-  .g-inaug {grid-column:span 2;grid-row:span 3}
-  .g-group {grid-column:span 4;grid-row:span 3}
-}
+  .g-gym{grid-column:span 2;grid-row:span 3}
+  .g-inaug{grid-column:span 2;grid-row:span 3}}
 
 /* CRENEAUX — le planning etait le bloc le plus haut de la page apres refonte.
    Meme information, moins de matelas : lignes resserrees, en-tetes de journee
@@ -4786,24 +4592,19 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
   grid-auto-rows:var(--g-row);
   grid-auto-flow:dense}
 .gallery-mosaic .g-tile{height:auto;min-height:0;margin:0}
-.gallery-mosaic .g-huddle{grid-area:auto;grid-column:span 4;grid-row:span 5}
-.gallery-mosaic .g-tall  {grid-area:auto;grid-column:span 2;grid-row:span 5}
+.gallery-mosaic .g-tall{grid-area:auto;grid-column:span 2;grid-row:span 5}
 .gallery-mosaic .g-banner{grid-area:auto;grid-column:span 3;grid-row:span 4}
-.gallery-mosaic .g-gym   {grid-area:auto;grid-column:span 3;grid-row:span 4}
-.gallery-mosaic .g-shoot {grid-area:auto;grid-column:span 2;grid-row:span 4}
-.gallery-mosaic .g-inaug {grid-area:auto;grid-column:span 2;grid-row:span 4}
-.gallery-mosaic .g-group {grid-area:auto;grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-gym{grid-area:auto;grid-column:span 3;grid-row:span 4}
+.gallery-mosaic .g-shoot{grid-area:auto;grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-inaug{grid-area:auto;grid-column:span 2;grid-row:span 4}
 
 @media (max-width:900px){
   .gallery-mosaic{--g-row:clamp(58px,11vw,92px);grid-template-columns:repeat(4,1fr)}
-  .gallery-mosaic .g-huddle{grid-column:span 4;grid-row:span 4}
-  .gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
-  .gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 5}
   .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
-  .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
-  .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
-  .gallery-mosaic .g-group {grid-column:span 4;grid-row:span 4}
-}
+  .gallery-mosaic .g-gym{grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-inaug{grid-column:span 2;grid-row:span 4}}
 
 /* L'image d'ouverture de la section quartier occupait 705 px : un 16:9 plein
    cadre. Ramenee a un format de couverture, elle raconte la meme chose. */
@@ -4824,30 +4625,25 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
    mosaique se remet a trouer.
    --------------------------------------------------------------------------- */
 .gallery-mosaic{--g-row:clamp(60px,6vw,84px)}
-.gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
-.gallery-mosaic .g-huddle{grid-column:span 4;grid-row:span 5}
+.gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 5}
 .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
-.gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 4}
-.gallery-mosaic .g-group {grid-column:span 2;grid-row:span 4}
-.gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
-.gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-inaug{grid-column:span 2;grid-row:span 4}
+.gallery-mosaic .g-gym{grid-column:span 2;grid-row:span 4}
 /* Bande a elle seule : 6 colonnes sur 6, donc elle reboucle par construction
    et ne peut pas trouer la mosaique. 4 rangees donnent environ 2,9:1 pour un
    cliche a 2,50:1 : le recadrage retire 7 % en haut (plafond) et en bas (sol),
    jamais les sujets, qui sont centres. */
-.gallery-mosaic .g-team  {grid-column:span 6;grid-row:span 4}
+.gallery-mosaic .g-team{grid-column:span 6;grid-row:span 4}
 
 @media (max-width:900px){
   .gallery-mosaic{--g-row:clamp(56px,10vw,84px);grid-template-columns:repeat(4,1fr)}
-  .gallery-mosaic .g-team  {grid-column:span 4;grid-row:span 3}
-  .gallery-mosaic .g-tall  {grid-column:span 2;grid-row:span 5}
-  .gallery-mosaic .g-huddle{grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-team{grid-column:span 4;grid-row:span 3}
+  .gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 5}
   .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
-  .gallery-mosaic .g-shoot {grid-column:span 2;grid-row:span 5}
-  .gallery-mosaic .g-group {grid-column:span 2;grid-row:span 5}
-  .gallery-mosaic .g-inaug {grid-column:span 2;grid-row:span 4}
-  .gallery-mosaic .g-gym   {grid-column:span 2;grid-row:span 4}
-}
+  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 5}
+  .gallery-mosaic .g-inaug{grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-gym{grid-column:span 2;grid-row:span 4}}
 
 /* Sous 640 px, « .gallery-mosaic .g-tile:first-child » (0,3,0) impose une
    hauteur fixe de 230 px a la premiere tuile : elle ecrasait le panoramique
@@ -5109,8 +4905,7 @@ section[id],div[id],details[id],li[id],aside[id]{scroll-margin-top:0}
 @media (max-width:560px){
   .licence-path li{padding-left:calc(clamp(2.2rem,10vw,2.8rem) + .9rem)}
   .licence-path li::before{width:clamp(2.2rem,10vw,2.8rem);height:clamp(2.2rem,10vw,2.8rem)}
-  .licence-path::before{left:calc(clamp(2.2rem,10vw,2.8rem) / 2)}
-}
+  .licence-path::before{left:calc(clamp(2.2rem,10vw,2.8rem) / 2)}}
 
 /* Le tarif : le chiffre doit se voir de loin sur la page qui le vend. */
 .adh-block#tarif .adh-prepare__title{margin-bottom:.6rem}
@@ -5179,8 +4974,7 @@ h3.faq__title{
 .form-officiel a{color:var(--orange-vif);font-weight:600}
 .pl .pl-note{font-size:.95rem;line-height:1.55}
 @media (max-width:900px){
-  .form-officiel,.pl .pl-note{font-size:1rem;line-height:1.55}
-}
+  .form-officiel,.pl .pl-note{font-size:1rem;line-height:1.55}}
 
 
 /* ============================================================================
@@ -5237,7 +5031,7 @@ h3.faq__title{
 
 /* Filet de securite sur le titre : la ou il mord encore sur la photo, ce sont
    ses propres contours qui le portent, pas un aplat sombre de plus. */
-.hero__h1,.hero__creole{text-shadow:0 2px 18px rgba(4,8,16,.55)}
+.hero__h1{text-shadow:0 2px 18px rgba(4,8,16,.55)}
 
 /* ---------------------------------------------------------------------------
    2. CHIFFRES CLES — un survol, pas une animation
@@ -5254,8 +5048,7 @@ h3.faq__title{
   .keyfig__i:hover{border-top-color:var(--orange-vif);transform:translateY(-2px)}
   .keyfig__i:hover .keyfig__v{color:var(--orange-vif)}
   .keyfig__i:hover .keyfig__l{color:var(--blanc)}
-  .keyfig__i:hover .keyfig__l span{color:var(--bleu-glacier)}
-}
+  .keyfig__i:hover .keyfig__l span{color:var(--bleu-glacier)}}
 /* Au clavier, le meme etat, si un jour un lien vient s'y loger. */
 .keyfig__i:focus-within{border-top-color:var(--orange-vif)}
 .keyfig__i:focus-within .keyfig__v{color:var(--orange-vif)}
@@ -5297,14 +5090,8 @@ h3.faq__title{
   border:1px solid var(--hair-2);border-radius:999px;
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.12em;font-size:.62rem;color:var(--txt-soft)}
-.cal-lieu__go{
-  width:17px;height:17px;color:var(--txt-soft);flex:none;
-  transition:color .25s, transform .25s var(--ease-out)}
-.cal-lieu:hover .cal-lieu__go{color:var(--orange-vif);transform:translate(2px,-2px)}
 @media (max-width:420px){
-  .cal-lieu{grid-template-columns:76px 1fr;gap:.8rem}
-  .cal-lieu__go{display:none}
-}
+  .cal-lieu{grid-template-columns:76px 1fr;gap:.8rem}}
 
 /* ---------------------------------------------------------------------------
    5. NOUT KARTIE — le cadrage montrait les pieds, pas les visages
@@ -5318,8 +5105,7 @@ h3.faq__title{
   /* En portrait, la fenetre est moins large : on remonte encore un peu et on
      rend le format moins coupant pour garder le groupe entier. */
   .lp-stage{aspect-ratio:16/10}
-  .lp-stage img{object-position:50% 30%}
-}
+  .lp-stage img{object-position:50% 30%}}
 
 /* La photo laterale a change (voir le commentaire du HTML) : elle est
    desormais paysage, pas portrait. */
@@ -5384,15 +5170,13 @@ h3.faq__title{
   .p-pillar:hover .p-pillar__ico{
     background:rgba(232,130,42,.17);border-color:rgba(232,130,42,.5);
     transform:none;box-shadow:none}
-  .p-pillar:hover .p-pillar__ico::before{transform:none;filter:none}
-}
+  .p-pillar:hover .p-pillar__ico::before{transform:none;filter:none}}
 
 @media (max-width:1000px){.parents-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:560px){.parents-grid{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){
   .p-pillar:hover,.keyfig__i:hover,.cal-lieu:hover{transform:none}
-  .cal-lieu:hover .cal-lieu__ph img{transform:none}
-}
+  .cal-lieu:hover .cal-lieu__ph img{transform:none}}
 
 /* ---------------------------------------------------------------------------
    V101.1 — LA PLAGE 900-1400 px
@@ -5540,8 +5324,7 @@ h3.faq__title{
   .keyfig__a:hover .keyfig__arrow{transform:translateX(4px)}
 }
 /* Au clavier, exactement le meme etat. */
-.keyfig__a:focus-visible .keyfig__v,
-.keyfig__a:focus-visible .keyfig__go{color:var(--orange-vif)}
+.keyfig__a:focus-visible .keyfig__v,.keyfig__a:focus-visible .keyfig__go{color:var(--orange-vif)}
 
 /* --- 6. Mobile : une colonne, la cible reste large ------------------------- */
 @media (max-width:760px){
@@ -5553,8 +5336,7 @@ h3.faq__title{
 
 @media (prefers-reduced-motion:reduce){
   .keyfig__a:hover{transform:none}
-  .keyfig__a:hover .keyfig__arrow{transform:none}
-}
+  .keyfig__a:hover .keyfig__arrow{transform:none}}
 
 /* « 2 TERRAINS » est le plus long des trois : a 5,2rem il passait a la ligne et
    decalait vers le bas son libelle et sa ligne d'action, cassant l'alignement
@@ -5567,34 +5349,13 @@ h3.faq__title{
 .keyfig__l{min-height:calc(1.35em + 0.42rem + 1.4em)}
 @media (max-width:760px){
   .keyfig__v{font-size:clamp(2.5rem,11.5vw,3.5rem)}
-  .keyfig__l{min-height:0}
-}
+  .keyfig__l{min-height:0}}
 
 /* La ligne d'action n'est plus un simple libelle : c'est ce qui annonce le
    lien. A 12,5 px sur mobile elle etait a la limite du lisible pour ce role. */
 @media (max-width:760px){
   .keyfig__go{font-size:.86rem;letter-spacing:.11em}
 }
-
-
-/* ============================================================================
-   V103 — LA MOLETTE « DÉCOUVRIR » REMONTAIT DANS LA LIGNE FINE
-   ----------------------------------------------------------------------------
-   Mesure a 1440x900 : le hero fait 720 px, son contenu descend jusqu'a 662,
-   il restait donc 58 px sous la derniere ligne. L'indicateur en fait 68 —
-   ancre a 28,8 px du bas, il commencait a 624, soit 38 px AU-DESSUS de la fin
-   de la ligne fine. D'ou l'impression qu'il flotte au milieu du bloc de texte
-   au lieu de marquer le bas de l'ecran.
-
-   Deux leviers, pas un : on remonte legerement la ligne fine ET on ramene
-   l'indicateur a une taille compacte. Le but est d'obtenir un vrai vide entre
-   les deux, pas de les faire tenir de justesse.
-   ============================================================================ */
-
-/* 1. La ligne fine remonte d'une vingtaine de pixels. */
-.hero__fine{
-  margin-top:clamp(1.15rem,2.5vw,1.7rem);
-  padding-top:clamp(.85rem,1.8vw,1.15rem)}
 
 /* 2. L'indicateur devient compact : la souris passe de 38 a 30 px de haut,
       l'ecart et le libelle se resserrent. */
@@ -5698,18 +5459,12 @@ h3.faq__title{
 .cal-lieu__txt b{font-size:clamp(1.02rem,2.1vw,1.14rem)}
 .cal-lieu__adr{font-size:.88rem}
 
-.cal-lieu__go{margin-right:clamp(.9rem,1.9vw,1.2rem)}
-
 /* En dessous de 420 px la troisieme colonne disparait deja ; on garde une
    photo qui reste une photo. */
 @media (max-width:420px){
   .cal-lieu{grid-template-columns:112px 1fr;min-height:104px}
   .cal-lieu__txt{padding-right:.9rem}
 }
-
-/* align-items:stretch etire toutes les colonnes, y compris la fleche : elle se
-   calait en haut de la carte au lieu du milieu. */
-.cal-lieu__go{align-self:center}
 
 /* Sur mobile l'adresse du gymnase passe sur deux lignes et celle de Ruisseau
    Blanc sur une : les deux cartes empilees ne faisaient pas la meme hauteur
@@ -5860,8 +5615,7 @@ h3.faq__title{
    ============================================================================ */
 
 /* --- La colonne commune de la section ------------------------------------- */
-.calendrier .cal-lieux,
-.calendrier .pl{
+.calendrier .cal-lieux,.calendrier .pl{
   max-width:960px;margin-inline:auto}
 .calendrier .pl{margin-top:0}
 
@@ -5944,8 +5698,7 @@ h3.faq__title{
 @media (prefers-reduced-motion:reduce){
   .cal-lieu:hover{transform:none}
   .cal-lieu:hover .cal-lieu__ph img{transform:none}
-  .cal-lieu:hover .cal-lieu__mapic{transform:none}
-}
+  .cal-lieu:hover .cal-lieu__mapic{transform:none}}
 
 /* ---------------------------------------------------------------------------
    V106.1 — TROIS HERITAGES QUI BLOQUAIENT LA NOUVELLE CARTE
@@ -5961,10 +5714,7 @@ h3.faq__title{
    3. Le ratio de la photo suivait, une fois la largeur correcte.
    --------------------------------------------------------------------------- */
 
-.cal-lieux>li,
-.cal-lieu,
-.cal-lieu__txt,
-.cal-lieu__ph{min-width:0}
+.cal-lieux>li,.cal-lieu,.cal-lieu__txt,.cal-lieu__ph{min-width:0}
 
 .cal-lieu .cal-lieu__txt{
   padding:clamp(1.2rem,2.6vw,1.7rem);
@@ -5973,9 +5723,7 @@ h3.faq__title{
 .cal-lieu .cal-lieu__ph{
   width:100%;padding:0;aspect-ratio:16/10;height:auto}
 
-.cal-lieu .cal-lieu__adr,
-.cal-lieu .cal-lieu__tag,
-.cal-lieu .cal-lieu__map{padding-left:0}
+.cal-lieu .cal-lieu__adr,.cal-lieu .cal-lieu__tag,.cal-lieu .cal-lieu__map{padding-left:0}
 
 
 /* ============================================================================
@@ -6022,8 +5770,7 @@ h3.faq__title{
 .cal-lieu.is-attenue{opacity:.5}
 .cal-lieu.is-attenue .cal-lieu__ph img{
   filter:grayscale(.6) saturate(.5) brightness(.82)}
-.cal-lieu.is-attenue:hover,
-.cal-lieu.is-attenue:focus-visible{opacity:1}
+.cal-lieu.is-attenue:hover,.cal-lieu.is-attenue:focus-visible{opacity:1}
 .cal-lieu.is-attenue:hover .cal-lieu__ph img{filter:saturate(.97) contrast(1.04)}
 
 /* --- Le compteur : ce qui justifie l'animation ----------------------------- */
@@ -6054,27 +5801,21 @@ h3.faq__title{
 }
 
 @media (prefers-reduced-motion:reduce){
-  .cal-lieux,
-  .cal-lieu,
-  .cal-lieu__ph img{transition:none}
-  .cal-lieu__cnt{animation:none}
-}
+  .cal-lieux,.cal-lieu,.cal-lieu__ph img{transition:none}
+  .cal-lieu__cnt{animation:none}}
 
 /* La transition de la grille etait ecrasee par « main > .section .reveal »
    (specificite 0,2,1, style.css:3036) qui redefinit transition sur opacity et
    transform seuls : la grille sautait au lieu d'interpoler. On reprend les
    TROIS proprietes a une specificite superieure — la revelation au scroll est
    conservee a l'identique, on ne fait qu'ajouter la colonne. */
-main > .section .cal-lieux.reveal,
-main > .section .cal-lieux{
+main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   transition:grid-template-columns .72s var(--ease-out),
              opacity .52s var(--ease-out),
              transform .52s var(--ease-out)}
 
 @media (prefers-reduced-motion:reduce){
-  main > .section .cal-lieux.reveal,
-  main > .section .cal-lieux{transition:none}
-}
+  main > .section .cal-lieux.reveal,main > .section .cal-lieux{transition:none}}
 
 /* ============================================================
    V101 "HERO GRAND ÉCRAN" — le vide n'est pas comblé par du texte
@@ -6109,46 +5850,7 @@ main > .section .cal-lieux{
 @media (min-width:1600px) and (min-height:900px){
   /* Le reliquat vertical est réparti au lieu d'être empilé en bas. */
   .hero{align-items:center !important;
-    padding-bottom:clamp(3rem,6vh,5rem) !important}
-}
-
-/* ============================================================
-   V102 — LE JOUEUR DE LA TRANCHE D'ÂGE (sélecteur d'âge)
-   ============================================================
-   Une vignette par tranche, révélée à chaque changement d'onglet.
-   Ce qui les distingue est le sujet lui-même : un enfant, puis un
-   jeune, puis un adulte. Les six partagent le même cadre 2:3 et le
-   même traitement, donc la progression se lit d'un onglet à l'autre.
-
-   Les six sont EMPILÉES et jamais display:none : une image cachée de
-   cette façon n'est pas chargée par le lazy-loading, et le premier
-   changement d'onglet attendrait alors le réseau. Ici elles arrivent
-   toutes quand la section approche, et la bascule est instantanée. */
-
-.bh-wrap{
-  float:right;width:clamp(140px,19vw,240px);
-  margin:.15rem 0 1rem clamp(1.1rem,2.8vw,2.2rem)}
-/* 4:5 et non plus 2:3 : le cadrage porte desormais sur la tete et le buste,
-   c'est la que se lit la difference d'age. Un format plus carre laisse la
-   place aux epaules sans rogner le visage. */
-.bh{
-  position:relative;aspect-ratio:4 / 5;overflow:hidden;
-  border-radius:10px;border:1px solid var(--hair);
-  background:var(--surf-2);
-  box-shadow:0 14px 34px -14px rgba(3,7,15,.75)}
-.bh__f{
-  position:absolute;inset:0;display:block;
-  opacity:0;pointer-events:none}
-.bh__f img{width:100%;height:100%;object-fit:cover;display:block}
-/* Le pied de la vignette se fond dans le panneau, et un filet orange la
-   pose sur une ligne — le même vocabulaire que la couture du hero. */
-.bh::after{
-  content:"";position:absolute;inset:auto 0 0 0;height:38%;pointer-events:none;
-  background:linear-gradient(to top,rgba(11,19,35,.82),transparent)}
-.bh::before{
-  content:"";position:absolute;inset:auto 0 0 0;height:2px;z-index:2;
-  background:linear-gradient(90deg,
-    transparent,rgba(232,130,42,.9) 22%,rgba(232,130,42,.9) 78%,transparent)}
+    padding-bottom:clamp(3rem,6vh,5rem) !important}}
 
 /* La révélation : le joueur monte et se dévoile du bas vers le haut.
    inset(100% 0 0 0) = bord haut descendu à fond, donc rien de visible ;
@@ -6156,17 +5858,6 @@ main > .section .cal-lieux{
 @keyframes bhReveal{
   from{opacity:0;transform:translateY(9px) scale(1.035);clip-path:inset(100% 0 0 0)}
   to  {opacity:1;transform:none;clip-path:inset(0 0 0 0)}
-}
-.bh__f.is-on{opacity:1;animation:bhReveal .52s var(--ease-out) both}
-
-@media (max-width:560px){
-  /* Sous cette largeur le panneau n'a plus la place d'habiller la vignette :
-     elle repasse au fil du texte, centrée, en plus petit. */
-  .bh-wrap{float:none;width:150px;margin:0 auto .9rem}
-}
-
-@media (prefers-reduced-motion:reduce){
-  .bh__f.is-on{animation:none;opacity:1;transform:none;clip-path:none}
 }
 
 /* ============================================================================
@@ -6206,13 +5897,11 @@ main > .section .cal-lieux{
 
 /* --- 1. Extinction de l'ancien fondu -------------------------------------- */
 .hero::after{display:none}
-.hero__photo,
-.hero .hero__photo{
+.hero__photo,.hero .hero__photo{
   -webkit-mask-image:none;mask-image:none;
   -webkit-mask-composite:add;mask-composite:add;
   opacity:1;transform:none;filter:none}
-.hero__photo::before,
-.hero__photo::after{display:none}
+.hero__photo::before,.hero__photo::after{display:none}
 
 /* --- 2. La photo occupe sa colonne, entière -------------------------------- */
 .hero__photo{
@@ -6223,45 +5912,17 @@ main > .section .cal-lieux{
   width:100%;height:100%;object-fit:cover;object-position:58% 42%;
   display:block;filter:saturate(1.04) contrast(1.02)}
 
-/* --- 3. Le panneau navy et son arête -------------------------------------- */
-.hero__panel{
-  position:absolute;inset:0 auto 0 0;width:var(--hero-split);z-index:2;
-  pointer-events:none;overflow:hidden;
-  background:
-    radial-gradient(120% 90% at 12% 8%,rgba(27,81,158,.30),transparent 62%),
-    linear-gradient(180deg,#0A1424 0%,#070D18 78%);
-  /* La profondeur vient d'une ombre portée vers la photo, pas d'un dégradé
-     étalé sur elle : l'ombre s'arrête à 90 px, le sujet n'est jamais touché. */
-  box-shadow:34px 0 90px -26px rgba(3,7,15,.92)}
-/* Le filet de couture : 2 px d'orange, éteint aux deux extrémités. */
-.hero__panel::after{
-  content:"";position:absolute;top:0;right:0;bottom:0;width:2px;
-  background:linear-gradient(180deg,
-    transparent 0%,rgba(232,130,42,.85) 26%,rgba(232,130,42,.85) 74%,transparent 100%)}
-
-/* --- 4. Les lignes de terrain, dans le panneau ----------------------------- */
-/* Un arc de rond central et une ligne de touche, au trait, très en retrait :
-   la texture est du basket, pas un motif décoratif générique. */
-.hero__court{position:absolute;inset:0}
-.hero__court::before{
-  content:"";position:absolute;left:-22%;bottom:-46%;width:76%;aspect-ratio:1;
-  border-radius:50%;border:1.5px solid rgba(191,210,228,.085)}
-.hero__court::after{
-  content:"";position:absolute;left:0;right:14%;bottom:22%;height:1.5px;
-  background:linear-gradient(90deg,rgba(191,210,228,.10),rgba(191,210,228,.02))}
-
 /* --- 5. La colonne de texte ------------------------------------------------ */
 .hero__inner{
   position:relative;z-index:4;
   width:var(--hero-split);max-width:none;margin-inline:0;
   padding-left:var(--hero-gutter);padding-right:clamp(16px,2.4vw,40px)}
 /* Le titre n'a plus besoin d'ombre portée : il n'est plus sur la photo. */
-.hero__h1,.hero__creole{text-shadow:none}
+.hero__h1{text-shadow:none}
 /* Le titre tient sur DEUX lignes : « LE BASKET PREND » mesure environ 6,4 fois
    le corps, la colonne doit donc rester plus large que cela. Le plafond de
    6,1 rem est ce que la colonne supporte a 1920 px, gouttiere comprise. */
 .hero__h1{font-size:clamp(2.5rem,6vw,6.1rem);max-width:none}
-.hero__fine{max-width:none}
 
 /* L'indicateur de defilement etait centre sur le hero, donc pose sur la photo.
    Il se recale au centre de la COLONNE de texte, ou il a un fond a lui. */
@@ -6287,7 +5948,7 @@ main > .section .cal-lieux{
 /* La gouttiere grandit avec l'ecran : la colonne de texte doit grandir aussi,
    sinon la place utile diminue alors que l'ecran s'agrandit. */
 @media (min-width:1600px){ .hero{--hero-split:48%} }
-@media (min-width:2100px){ .hero{--hero-split:52%} }
+@media (min-width:2100px){ .hero{--hero-split:52%}}
 
 /* --- 8. Le bandeau chiffres colle au hero ---------------------------------- */
 .keyfig-sec{padding-top:clamp(1.6rem,3.4vw,2.8rem)}
@@ -6326,15 +5987,13 @@ main > .section .cal-lieux{
 
 @media (prefers-reduced-motion:reduce){
   .hero__cta .btn--primary{transition:none}
-  .hero__cta .btn--primary:hover{transform:none}
-}
+  .hero__cta .btn--primary:hover{transform:none}}
 
 /* Sous 520 px le header passe a 16 px de padding : la gouttiere du hero suit. */
 @media (max-width:520px){ .hero{--hero-gutter:16px} }
 
 @media (max-width:640px){
-  .hero__photo{height:calc(100vw / 1.3);max-height:430px}
-}
+  .hero__photo{height:calc(100vw / 1.3);max-height:430px}}
 
 /* ============================================================================
    V108 — LE HERO REDEVIENT UNE SEULE SCÈNE
@@ -6363,8 +6022,7 @@ main > .section .cal-lieux{
   background:#060C16}
 
 /* --- 1. La photo : fond de toute la scène -------------------------------- */
-.hero__photo,
-.hero .hero__photo{
+.hero__photo,.hero .hero__photo{
   position:absolute;inset:0;width:100%;height:100%;
   left:0;right:0;max-width:none;z-index:0;
   -webkit-mask-image:none;mask-image:none;
@@ -6398,29 +6056,6 @@ main > .section .cal-lieux{
     rgba(4,14,28,.340) 58%, rgba(4,14,28,.205) 65%, rgba(4,14,28,.100) 72%,
     rgba(4,14,28,.035) 77%, rgba(4,14,28,0)    83%)}
 
-/* --- 3. Décor : la marque géante en outline + les lignes de terrain ------- */
-.hero__panel{
-  position:absolute;inset:0;width:auto;z-index:1;
-  pointer-events:none;overflow:hidden;
-  background:none;box-shadow:none}
-.hero__panel::after{display:none}
-.hero__panel::before{
-  content:"MBC 974";position:absolute;
-  left:calc(var(--hero-gutter) - .08em);top:50%;transform:translateY(-54%);
-  font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(7rem,17vw,15rem);line-height:.78;letter-spacing:-.02em;
-  color:transparent;-webkit-text-stroke:2px rgba(191,210,228,1);
-  /* l'opacite du trait se multipliait a celle du bloc : .055 x .5 = .027,
-     soit invisible sur une photo. Un seul reglage desormais. */
-  opacity:.06;white-space:nowrap}
-.hero__court{position:absolute;inset:0}
-.hero__court::before{
-  content:"";position:absolute;left:-14%;bottom:-52%;width:58%;aspect-ratio:1;
-  border-radius:50%;border:1.5px solid rgba(191,210,228,.07)}
-.hero__court::after{
-  content:"";position:absolute;left:0;right:52%;bottom:26%;height:1.5px;
-  background:linear-gradient(90deg,rgba(191,210,228,.09),rgba(191,210,228,0))}
-
 /* --- 4. Le texte flotte DANS la scène ------------------------------------ */
 .hero__inner{
   position:relative;z-index:4;
@@ -6432,8 +6067,6 @@ main > .section .cal-lieux{
 .hero__h1{
   font-size:clamp(3rem,5.4vw,5.75rem);line-height:.86;letter-spacing:-.012em;
   max-width:none;text-shadow:0 3px 26px rgba(4,10,20,.6)}
-.hero__creole{text-shadow:0 2px 16px rgba(4,10,20,.65)}
-.hero__fine{max-width:none;border-top-color:rgba(191,210,228,.16)}
 .hero__scroll{display:none}
 
 /* --- 5. Les deux CTA, même gabarit --------------------------------------- */
@@ -6487,9 +6120,6 @@ main > .section .cal-lieux{
 .keyfig__i + .keyfig__i{border-left:1px solid rgba(191,210,228,.10)}
 .keyfig__a{display:grid;grid-template-columns:auto 1fr;
   column-gap:clamp(.9rem,1.6vw,1.35rem);align-items:center;row-gap:.25rem}
-.keyfig__ico{grid-row:1 / span 3;display:grid;place-items:center;
-  width:clamp(38px,3.4vw,50px);aspect-ratio:1;color:var(--orange-vif)}
-.keyfig__ico svg{width:100%;height:100%}
 .keyfig__v{font-size:clamp(1.7rem,2.5vw,2.55rem);line-height:1;margin:0}
 .keyfig__l{line-height:1.22;margin:.15rem 0 0}
 .keyfig__l span{line-height:1.2;margin-top:.02rem}
@@ -6530,8 +6160,7 @@ main > .section .cal-lieux{
 }
 
 @media (prefers-reduced-motion:reduce){
-  .hero__cta .btn--primary:hover,.hero__second:hover{transform:none}
-}
+  .hero__cta .btn--primary:hover,.hero__second:hover{transform:none}}
 
 /* ============================================================================
    V109 — HERO PLEINE LARGEUR + BANDEAU KPI TYPOGRAPHIQUE
@@ -6573,10 +6202,6 @@ main > .section .cal-lieux{
     rgba(3,13,27,.260) 59%, rgba(3,13,27,.180) 64%, rgba(3,13,27,.090) 70%,
     rgba(3,13,27,.030) 74%, rgba(3,13,27,0)    78%)}
 
-/* La marque géante suit la mesure du contenu, pas le bord de l'écran. */
-.hero__panel::before{
-  left:calc(max(0px,(100vw - 1560px) / 2) + var(--hero-gutter) - .08em)}
-
 /* ---------------------------------------------------------------------------
    Bandeau KPI : trois colonnes, aucune carte, aucun arrondi, aucun pictogramme
    --------------------------------------------------------------------------- */
@@ -6604,14 +6229,6 @@ main > .section .cal-lieux{
 
 /* Le numéro d'ordre remplace le pictogramme : il numérote sans illustrer. */
 .keyfig__a{display:block;position:relative;padding-top:1.35rem}
-.keyfig__n{
-  position:absolute;top:0;left:0;
-  display:inline-flex;align-items:center;gap:.6em;
-  font-family:var(--ff-cond);font-weight:700;
-  font-size:.72rem;letter-spacing:.24em;color:var(--orange-vif)}
-.keyfig__n::after{
-  content:"";width:clamp(18px,2.4vw,30px);height:1px;
-  background:linear-gradient(90deg,var(--orange-vif),rgba(232,130,42,0))}
 .keyfig__v{
   display:block;font-size:clamp(1.75rem,2.6vw,2.7rem);line-height:1;margin:0}
 .keyfig__l{display:block;line-height:1.24;margin:.3rem 0 0}
@@ -6627,8 +6244,7 @@ main > .section .cal-lieux{
   .keyfig{grid-template-columns:1fr}
   .keyfig__i{padding:1rem 0}
   .keyfig__i + .keyfig__i{border-left:0;border-top:1px solid rgba(191,210,228,.09)}
-  .keyfig__i:first-child{padding-top:.2rem}
-}
+  .keyfig__i:first-child{padding-top:.2rem}}
 
 /* ============================================================================
    V110 — LE HERO PANORAMIQUE TIENT AUSSI ENTRE 390 ET 1024 px
@@ -6689,9 +6305,7 @@ main > .section .cal-lieux{
   /* Deux boutons pleine largeur empiles, c'est une mise en page de telephone.
      Sur tablette ils reprennent leur gabarit naturel, cote a cote. */
   .hero__cta{flex-direction:row;align-items:center;flex-wrap:wrap}
-  .hero__cta .btn--primary,
-  .hero__second{width:auto}
-}
+  .hero__cta .btn--primary,.hero__second{width:auto}}
 
 @media (min-width:681px) and (max-width:900px){
   .keyfig{grid-template-columns:repeat(3,1fr)}
@@ -6699,8 +6313,7 @@ main > .section .cal-lieux{
   .keyfig__i:first-child{padding-left:0;padding-top:.1rem}
   .keyfig__i + .keyfig__i{
     border-left:1px solid rgba(191,210,228,.09);border-top:0}
-  .keyfig__v{font-size:clamp(1.5rem,3.4vw,2.1rem)}
-}
+  .keyfig__v{font-size:clamp(1.5rem,3.4vw,2.1rem)}}
 
 /* Le brief cadre le bandeau chiffres entre 145 et 175 px ; il en faisait 206.
    Le contenu (numero, valeur, deux lignes de legende, lien) est incompressible :
@@ -6721,11 +6334,9 @@ main > .section .cal-lieux{
 .keyfig-sec{--kf-gutter:clamp(18px,4vw,44px)}
 .keyfig-sec .wrap{padding-inline:var(--kf-gutter)}
 @media (max-width:900px){
-  .keyfig-sec .wrap{padding-inline:var(--kf-gutter)}
-}
+  .keyfig-sec .wrap{padding-inline:var(--kf-gutter)}}
 @media (max-width:520px){
-  .keyfig-sec{--kf-gutter:16px}
-}
+  .keyfig-sec{--kf-gutter:16px}}
 
 /* b) Sur telephone le titre se posait en plein sur le maillot blanc de CLAIN.
       Le voile part toujours du haut de la scene, mais il se ferme plus tot :
@@ -6783,15 +6394,13 @@ main > .section .cal-lieux{
   background:var(--nuit-0)}
 
 /* --- 2. La photo EST le hero --------------------------------------------- */
-.hero__photo,
-.hero .hero__photo{
+.hero__photo,.hero .hero__photo{
   position:absolute;inset:0;z-index:0;
   width:100%;max-width:none;height:100%;
   overflow:hidden;pointer-events:none;
   opacity:1;transform:none;filter:none;
   -webkit-mask-image:none;mask-image:none}
-.hero__photo::before,
-.hero__photo::after{content:none;display:none}
+.hero__photo::before,.hero__photo::after{content:none;display:none}
 .hero__photo picture{display:block;width:100%;height:100%}
 .hero__photo img{
   width:100%;height:100%;display:block;
@@ -6822,39 +6431,11 @@ main > .section .cal-lieux{
   padding-inline:var(--hero-gutter,clamp(20px,4.4vw,52px))}
 .hero__inner > *{max-width:min(46%,640px)}
 
-/* Le bandeau d'informations : un seul element, pose et discret. */
-.hero__badge{
-  display:inline-flex;flex-wrap:wrap;align-items:center;gap:.62em;
-  max-width:min(72%,760px);
-  padding:.46em .95em .46em .8em;border-radius:var(--r-pill);
-  background:rgba(7,13,24,.42);
-  border:1px solid rgba(255,255,255,.16);
-  -webkit-backdrop-filter:blur(7px) saturate(1.05);
-  backdrop-filter:blur(7px) saturate(1.05);
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.13em;font-size:.74rem;line-height:1.5;
-  color:rgba(233,240,248,.86);
-  margin:0 0 clamp(1rem,2vw,1.5rem)}
-.hero__badge b{font-weight:700;color:var(--blanc)}
-.hero__badge-dot{
-  width:7px;height:7px;border-radius:50%;flex:none;
-  background:var(--orange-vif);
-  box-shadow:0 0 0 3px rgba(232,130,42,.20)}
-.hero__badge-sep{
-  width:3px;height:3px;border-radius:50%;flex:none;
-  background:rgba(233,240,248,.42)}
-
 /* Le titre : une phrase blanche, puis la phrase creole en orange. */
 .hero__h1{
   display:block;max-width:none;
   font-size:inherit;line-height:1;letter-spacing:0;
   text-shadow:none;text-wrap:balance}
-.hero__lead{
-  display:block;
-  font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(1.32rem,2.05vw,2.25rem);line-height:1.02;
-  letter-spacing:.012em;color:var(--blanc);
-  text-shadow:0 2px 20px rgba(4,9,18,.55)}
 
 /* La ligne qui tourne. Le « fantome » est la piece maitresse : invisible mais
    dans le flux, il reserve la hauteur de la plus longue des phrases, si bien
@@ -6993,9 +6574,7 @@ main > .section .cal-lieux{
       prefers-reduced-motion : en marche normale, le faisceau passe toujours.
       Sur une photographie, ce reflet se lit comme un defaut de rendu — on
       l'eteint pour de bon. */
-.hero .hero__photo,
-.hero.in .hero__photo,
-.hero.is-idle .hero__photo{opacity:1;transform:none;transition:none}
+.hero .hero__photo,.hero.in .hero__photo,.hero.is-idle .hero__photo{opacity:1;transform:none;transition:none}
 .hero::before{content:none;display:none;animation:none}
 
 /* --------------------------------------------------------------------------
@@ -7039,8 +6618,7 @@ main > .section .cal-lieux{
 
 @media (min-width:641px) and (max-width:1000px){
   .hero__h1{max-width:min(78%,640px)}
-  .hero__rot{font-size:clamp(2.1rem,6.2vw,3.6rem)}
-}
+  .hero__rot{font-size:clamp(2.1rem,6.2vw,3.6rem)}}
 
 @media (max-width:640px){
   .hero__h1{max-width:none}
@@ -7057,19 +6635,16 @@ main > .section .cal-lieux{
         rgba(7,13,24,.42) 72%, rgba(7,13,24,.22) 80%, rgba(7,13,24,.07) 88%,
         rgba(7,13,24,0)   95%),
       linear-gradient(to bottom,
-        rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}
-}
+        rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}}
 
 /* La ligne restait timide entre 1000 et 1400 px (3,3vw = 34 px a 1024, pour
    une colonne qui en autorise 45). On remonte a 4,2vw, et on abaisse le
    plafond tablette pour que la bascule des 1000 px ne fasse plus un saut. */
 .hero__rot{font-size:clamp(2.2rem,4.2vw,4.05rem)}
 @media (min-width:641px) and (max-width:1000px){
-  .hero__rot{font-size:clamp(2.1rem,6.2vw,3rem)}
-}
+  .hero__rot{font-size:clamp(2.1rem,6.2vw,3rem)}}
 @media (max-width:640px){
-  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}
-}
+  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}}
 
 /* --------------------------------------------------------------------------
    V111.4 — telephone : le cadrage coupait ALEX, et le voile mangeait la photo
@@ -7159,8 +6734,7 @@ main > .section .cal-lieux{
 .keyfig-sec{padding:clamp(1.45rem,2.1vw,2rem) 0 !important}
 @media (min-width:1001px){
   .keyfig__v{font-size:clamp(1.9rem,2.9vw,3.1rem)}
-  .keyfig__a{padding-top:1.2rem}
-}
+  .keyfig__a{padding-top:1.2rem}}
 
 /* --- 3. L'entree en trois temps -------------------------------------------- */
 /* Le <ul> porte .reveal, qui fait deja monter tout le bloc de 34 px d'un seul
@@ -7173,12 +6747,6 @@ main > .section .cal-lieux{
 .keyfig.in .keyfig__i{opacity:1;transform:none}
 .keyfig.in .keyfig__i:nth-child(2){transition-delay:.12s}
 .keyfig.in .keyfig__i:nth-child(3){transition-delay:.24s}
-
-/* Le filet orange derriere 01 / 02 / 03 se trace apres coup. */
-.keyfig__n::after{width:0;transition:width .85s var(--ease-out)}
-.keyfig.in .keyfig__i:nth-child(1) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.34s}
-.keyfig.in .keyfig__i:nth-child(2) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.46s}
-.keyfig.in .keyfig__i:nth-child(3) .keyfig__n::after{width:clamp(18px,2.4vw,30px);transition-delay:.58s}
 
 /* La separation entre colonnes se deploie de haut en bas. Une bordure ne sait
    pas s'animer en hauteur : on la remplace par un trait en pseudo-element,
@@ -7222,45 +6790,9 @@ main > .section .cal-lieux{
   height:58px;min-height:58px;border-radius:8px;
   padding:0 clamp(1.5rem,2.3vw,2.3rem)}
 @media (max-width:640px){
-  .hero__cta a.btn--primary,
-  .hero__second{height:54px;min-height:54px}
-}
+  .hero__cta a.btn--primary,.hero__second{height:54px;min-height:54px}}
 @media (max-width:340px){
-  .hero__rot{font-size:clamp(1.35rem,7.4vw,1.9rem)}
-}
-
-/* ============================================================================
-   V113 — LE SELECTEUR D'AGE : LA VIGNETTE SE VOIT, ET LE CHANGEMENT SE SENT
-   ----------------------------------------------------------------------------
-   Deux defauts distincts, deux corrections.
-
-   1. ON NE VOYAIT RIEN. Les six photos sont des portraits studio en
-      clair-obscur (luminance mediane 12-20 sur 255). Elles ont ete
-      reetalonnees a la source — meme cadrage, tons moyens releves — mais la
-      CSS en rajoutait : un degrade a 82 % d'opacite sur les 38 % du bas
-      ecrasait justement le maillot et l'ecusson. Il descend a 58 % sur 30 %.
-
-   2. LE CHANGEMENT NE SE SENTAIT PAS. La sortante passait a opacity:0 d'un
-      seul coup — il restait un cadre vide pendant que l'entrante se devoilait.
-      Desormais les deux se croisent : l'ancienne recule et s'efface, la
-      nouvelle monte et se decouvre du bas vers le haut, et un bref reflet
-      traverse le cadre. Moins d'une seconde en tout, rien sous
-      prefers-reduced-motion.
-   ============================================================================ */
-
-.bh-wrap{width:clamp(148px,20vw,248px)}
-.bh{
-  border-color:rgba(191,210,228,.14);
-  background:linear-gradient(180deg,#0e1729,#070d18);
-  box-shadow:0 18px 40px -18px rgba(3,7,15,.85),
-             inset 0 0 0 1px rgba(255,255,255,.04)}
-
-/* Le voile du bas ne doit plus manger le maillot. */
-.bh::after{
-  height:30%;
-  background:linear-gradient(to top,rgba(9,15,28,.58),rgba(9,15,28,0))}
-
-.bh__f{will-change:opacity,transform,clip-path}
+  .hero__rot{font-size:clamp(1.35rem,7.4vw,1.9rem)}}
 
 /* L'entrante : elle monte et se decouvre du bas vers le haut. */
 @keyframes bhIn{
@@ -7276,32 +6808,10 @@ main > .section .cal-lieux{
   100% {opacity:0;transform:scale(.955) translateY(-7px);
         filter:saturate(.5) brightness(.72)}
 }
-.bh__f.is-on{opacity:1;z-index:2;animation:bhIn .66s var(--ease-out) both}
-.bh__f.is-out{opacity:0;z-index:1;animation:bhOut .44s var(--ease-out) both}
-
-/* Un reflet unique traverse le cadre au moment de l'echange. */
-.bh__f::after{
-  content:"";position:absolute;inset:-8% -36%;z-index:3;pointer-events:none;
-  opacity:0;
-  background:linear-gradient(102deg,
-    rgba(255,255,255,0) 40%, rgba(255,255,255,.13) 47%,
-    rgba(232,130,42,.22) 51%, rgba(255,255,255,.09) 55%,
-    rgba(255,255,255,0) 62%)}
 @keyframes bhSweep{
   0%   {opacity:0;transform:translateX(-56%)}
   20%  {opacity:1}
   100% {opacity:0;transform:translateX(56%)}
-}
-.bh__f.is-on::after{animation:bhSweep .82s var(--ease-out) .04s both}
-
-@media (max-width:560px){
-  .bh-wrap{width:158px}
-}
-
-@media (prefers-reduced-motion:reduce){
-  .bh__f.is-on{animation:none;opacity:1;transform:none;clip-path:none;filter:none}
-  .bh__f.is-out{animation:none;opacity:0}
-  .bh__f.is-on::after{animation:none;opacity:0}
 }
 
 /* --------------------------------------------------------------------------
@@ -7320,8 +6830,7 @@ main > .section .cal-lieux{
   .hero__photo img{object-position:60% 42%}
 }
 @media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
-  .hero__photo img{object-position:82% 55%}
-}
+  .hero__photo img{object-position:82% 55%}}
 
 /* 62svh etait trop bas : sur un 1440 x 900 le hero tombait a 562 px et le
    bandeau d'infos venait se poser sur la bache « ANSANM NOU LE PLI FOR ».
@@ -7341,11 +6850,9 @@ main > .section .cal-lieux{
   .hero{min-height:clamp(560px,max(68svh,39vw),940px) !important}
 }
 @media (min-width:641px) and (max-width:1000px){
-  .hero{min-height:clamp(560px,74svh,760px) !important}
-}
+  .hero{min-height:clamp(560px,74svh,760px) !important}}
 @media (max-width:640px){
-  .hero{min-height:clamp(540px,78svh,700px) !important}
-}
+  .hero{min-height:clamp(540px,78svh,700px) !important}}
 
 /* ============================================================================
    V114 — LES TROIS CHIFFRES CESSENT D'ETRE UNE NOTE DE BAS DE PAGE
@@ -7405,20 +6912,6 @@ main > .section .cal-lieux{
   .keyfig__go{margin-top:.62rem}
 }
 
-/* ============================================================================
-   V115 — PLUS DE NUMEROTATION, ET DES CHIFFRES QUI TIENNENT L'ECRAN
-   ----------------------------------------------------------------------------
-   Les « 01 / 02 / 03 » sortent : ils numerotaient une liste de trois elements
-   qui se lisent tres bien sans. Le filet orange, lui, reste — c'est lui qui
-   pose chaque colonne et qui se trace a l'arrivee ; il passe simplement du
-   pseudo-element du numero a celui du lien.
-
-   Les valeurs montent encore d'un cran, de sorte que le hero et le bandeau
-   remplissent ensemble le premier ecran : la section suivante (fond quadrille)
-   ne doit plus pointer sous le bandeau.
-   ============================================================================ */
-.keyfig__n{display:none}
-
 /* Le filet reprend le role de reperage, sur le lien lui-meme. */
 .keyfig__a{position:relative}
 .keyfig__a::before{
@@ -7436,23 +6929,19 @@ main > .section .cal-lieux{
   .keyfig__v{font-size:clamp(2.9rem,4.5vw,5.4rem)}
   .keyfig__l{font-size:clamp(1.18rem,1.4vw,1.6rem);margin-top:.6rem}
   .keyfig__l span{font-size:.82em;margin-top:.3rem}
-  .keyfig__go{font-size:.94rem;margin-top:1rem;letter-spacing:.09em}
-}
+  .keyfig__go{font-size:.94rem;margin-top:1rem;letter-spacing:.09em}}
 
 @media (min-width:681px) and (max-width:1000px){
   .keyfig__a{padding-top:1.2rem}
   .keyfig__v{font-size:clamp(1.9rem,4.2vw,2.9rem)}
-  .keyfig__l{font-size:1.05rem}
-}
+  .keyfig__l{font-size:1.05rem}}
 
 @media (max-width:680px){
   .keyfig__a{padding-top:1.1rem}
-  .keyfig__v{font-size:clamp(2.3rem,9.2vw,3.2rem)}
-}
+  .keyfig__v{font-size:clamp(2.3rem,9.2vw,3.2rem)}}
 
 @media (prefers-reduced-motion:reduce){
-  .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition:none}
-}
+  .keyfig__a::before{width:clamp(34px,3.6vw,58px);transition:none}}
 
 /* --------------------------------------------------------------------------
    V115.1 — les trois colonnes doivent rester d'egale hauteur
@@ -7525,14 +7014,11 @@ main > .section .cal-lieux{
     linear-gradient(rgba(9,16,30,.14),rgba(9,16,30,.14))}
 
 @media (min-width:1001px){
-  .hero__photo img{object-position:50% 50%}
-}
+  .hero__photo img{object-position:50% 50%}}
 @media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
-  .hero__photo img{object-position:56% 50%}
-}
+  .hero__photo img{object-position:56% 50%}}
 @media (min-width:641px) and (max-width:1000px){
-  .hero__photo img{object-position:38% 50%}
-}
+  .hero__photo img{object-position:38% 50%}}
 
 /* Le voile s'eteignait un peu tot vers la droite : la fin du titre orange
    (« TOUS ») retombait sur un fond clair. On elargit l'ellipse sans la faire
@@ -7583,8 +7069,7 @@ main > .section .cal-lieux{
    ============================================================================ */
 .gallery-mosaic .g-banner{grid-row:span 5}
 @media (max-width:900px){
-  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
-}
+  .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}}
 
 /* V118.1 — mesure faite a l'ecran plutot qu'au calcul.
    La tuile g-banner sur 5 rangees tombait a 1,54:1 (la hauteur de rangee est
@@ -7597,8 +7082,7 @@ main > .section .cal-lieux{
 @media (max-width:900px){
   .gallery-mosaic .g-banner{grid-column:span 4;grid-row:span 4}
   .gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 5}
-  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 5}
-}
+  .gallery-mosaic .g-shoot{grid-column:span 2;grid-row:span 5}}
 
 /* V118.2 — sur telephone, la hauteur de rangee tombe a 56 px : une tuile de
    5 rangees y devient deux fois plus haute que large (0,54:1) alors que les
@@ -7644,17 +7128,13 @@ main > .section .cal-lieux{
 .hero::before{content:none;display:none;animation:none}
 
 /* --- 2. La photo ---------------------------------------------------------- */
-.hero__photo,
-.hero .hero__photo,
-.hero.in .hero__photo,
-.hero.is-idle .hero__photo{
+.hero__photo,.hero .hero__photo,.hero.in .hero__photo,.hero.is-idle .hero__photo{
   position:absolute;inset:0;z-index:0;
   width:100%;max-width:none;height:100%;
   overflow:hidden;pointer-events:none;
   opacity:1;transform:none;filter:none;transition:none;
   -webkit-mask-image:none;mask-image:none}
-.hero__photo::before,
-.hero__photo::after{content:none;display:none}
+.hero__photo::before,.hero__photo::after{content:none;display:none}
 .hero__photo picture{display:block;width:100%;height:100%}
 .hero__photo img{
   width:100%;height:100%;display:block;
@@ -7775,9 +7255,9 @@ main > .section .cal-lieux{
   to  {transform:none}
 }
 .hero.in .hero__kicker{animation:heroMonte .62s var(--ease-out) .05s both}
-.hero.in .hero__h1    {animation:heroMonte .72s var(--ease-out) .14s both}
-.hero.in .hero__sub   {animation:heroMonte .72s var(--ease-out) .26s both}
-.hero.in .hero__cta   {animation:heroMonte .72s var(--ease-out) .36s both}
+.hero.in .hero__h1{animation:heroMonte .72s var(--ease-out) .14s both}
+.hero.in .hero__sub{animation:heroMonte .72s var(--ease-out) .26s both}
+.hero.in .hero__cta{animation:heroMonte .72s var(--ease-out) .36s both}
 .hero.in .hero__photo img{animation:heroZoom 1.6s var(--ease-out) both}
 
 /* --- 8. Tablette : 641 → 1000 px ----------------------------------------- */
@@ -7860,9 +7340,6 @@ main > .section .cal-lieux{
     rgba(191,210,228,0),rgba(191,210,228,.16) 22%,
     rgba(191,210,228,.16) 78%,rgba(191,210,228,0));
   transform:none}
-
-/* Plus de filet décoratif au-dessus des chiffres. */
-.keyfig__n{display:none}
 .keyfig__a{position:relative;display:block;padding-top:0}
 .keyfig__a::before{content:none;display:none}
 
@@ -7909,12 +7386,10 @@ main > .section .cal-lieux{
       rgba(191,210,228,.16),rgba(191,210,228,.16) 62%,rgba(191,210,228,0))}
   .keyfig__v{font-size:clamp(1.9rem,7.4vw,2.5rem)}
   .keyfig__l{margin-top:.6rem}
-  .keyfig__go{margin-top:.8rem}
-}
+  .keyfig__go{margin-top:.8rem}}
 
 @media (prefers-reduced-motion:reduce){
-  .keyfig__i{opacity:1;transform:none;transition:none}
-}
+  .keyfig__i{opacity:1;transform:none;transition:none}}
 
 /* V119.2 — le dégradé, calibré sur le rendu et non sur le calcul.
    L'ellipse de la V119 était trop basse et trop courte : au niveau du titre
@@ -8001,8 +7476,7 @@ main > .section .cal-lieux{
 }
 @media (max-width:420px){
   .sponsors-row .sponsor-card{min-height:104px;padding:.85rem}
-  .sponsors-row img{max-height:68px}
-}
+  .sponsors-row img{max-height:68px}}
 
 /* V120.1 — encore un cran. À 92 px dans une plaque de 207, il restait 30 % de
    marge inutile de chaque côté. On resserre le rembourrage et on remonte le
@@ -8012,12 +7486,10 @@ main > .section .cal-lieux{
 .sponsors-row img{max-height:clamp(78px,7.2vw,108px)}
 @media (max-width:760px){
   .sponsors-row .sponsor-card{min-height:124px;padding:.9rem}
-  .sponsors-row img{max-height:86px}
-}
+  .sponsors-row img{max-height:86px}}
 @media (max-width:420px){
   .sponsors-row .sponsor-card{min-height:108px;padding:.75rem}
-  .sponsors-row img{max-height:74px}
-}
+  .sponsors-row img{max-height:74px}}
 
 /* ============================================================================
    V121 — TROIS CORRECTIONS SUR LA BANDE DE CHIFFRES ET LE HAUT DE LA PHOTO
@@ -8053,11 +7525,9 @@ main > .section .cal-lieux{
   /* Empilées, les colonnes n'ont plus de séparateur vertical : le texte
      revient à gauche, sinon il flotte au milieu d'une pleine largeur. */
   .keyfig__i{padding-inline:0}
-  .keyfig__i:first-child,
-  .keyfig__i:last-child{padding-inline:0}
+  .keyfig__i:first-child,.keyfig__i:last-child{padding-inline:0}
   .keyfig__a{text-align:left}
-  .keyfig__go{justify-content:flex-start}
-}
+  .keyfig__go{justify-content:flex-start}}
 
 /* --- 3 : le coin supérieur droit de la photo ------------------------------ */
 .hero::after{
@@ -8136,8 +7606,7 @@ main > .section .cal-lieux{
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.08em;font-size:.76rem;line-height:1.35;
   color:var(--txt-soft);transition:color .25s}
-.sponsor-card:hover .sponsor-card__name,
-.sponsor-card:focus-visible .sponsor-card__name{color:var(--orange-vif)}
+.sponsor-card:hover .sponsor-card__name,.sponsor-card:focus-visible .sponsor-card__name{color:var(--orange-vif)}
 .sponsor-card__ext{
   width:.85em;height:.85em;flex:none;
   opacity:.45;transform:translate(-1px,1px);
@@ -8149,16 +7618,13 @@ main > .section .cal-lieux{
 @media (max-width:760px){
   .sponsor-card__plate{min-height:124px;padding:.9rem}
   .sponsors-row .sponsor-card{gap:.7rem}
-  .sponsor-card__name{font-size:.72rem;letter-spacing:.06em}
-}
+  .sponsor-card__name{font-size:.72rem;letter-spacing:.06em}}
 @media (max-width:420px){
   .sponsor-card__plate{min-height:108px;padding:.75rem}
-  .sponsor-card__name{font-size:.7rem}
-}
+  .sponsor-card__name{font-size:.7rem}}
 @media (prefers-reduced-motion:reduce){
   .sponsor-card:hover .sponsor-card__plate{transform:none}
-  .sponsor-card__ext{transition:none}
-}
+  .sponsor-card__ext{transition:none}}
 
 /* V122.1 — le rectangle fantôme autour des cartes.
    `.sponsor-card` gardait un `box-shadow` d'un bloc antérieur. Sur un élément
@@ -8205,16 +7671,14 @@ main > .section .cal-lieux{
 @media (min-width:681px) and (max-width:1000px){
   .keyfig__v{font-size:clamp(2.1rem,4.6vw,3.1rem)}
   .keyfig__l{font-size:1.05rem;margin-top:.8rem}
-  .keyfig__go{font-size:.78rem;margin-top:1rem}
-}
+  .keyfig__go{font-size:.78rem;margin-top:1rem}}
 
 @media (max-width:680px){
   .keyfig-sec{padding:clamp(2.4rem,6vw,3.2rem) 0 !important}
   .keyfig__v{font-size:clamp(2.2rem,8.6vw,3rem)}
   .keyfig__l{font-size:1.06rem;margin-top:.7rem}
   .keyfig__go{font-size:.8rem;margin-top:.9rem}
-  .keyfig__i{padding:1.6rem 0}
-}
+  .keyfig__i{padding:1.6rem 0}}
 
 /* ============================================================================
    V124 — LES CHIFFRES, TAILLE FINALE
@@ -8241,15 +7705,13 @@ main > .section .cal-lieux{
 @media (min-width:681px) and (max-width:1000px){
   .keyfig__v{font-size:clamp(2.4rem,5.6vw,3.6rem)}
   .keyfig__l{font-size:1.12rem}
-  .keyfig__go{font-size:.82rem}
-}
+  .keyfig__go{font-size:.82rem}}
 
 @media (max-width:680px){
   .keyfig__v{font-size:clamp(2.6rem,10.4vw,3.6rem)}
   .keyfig__l{font-size:1.14rem;margin-top:.8rem}
   .keyfig__l span{font-size:.88em}
-  .keyfig__go{font-size:.84rem;margin-top:1rem}
-}
+  .keyfig__go{font-size:.84rem;margin-top:1rem}}
 
 /* V124.1 — sur téléphone, la valeur passait DEVANT le titre du hero.
    Mesure : 57,6 px contre 50,3 px à 680, 41,6 contre 35,2 à 320. Les deux
@@ -8281,15 +7743,13 @@ main > .section .cal-lieux{
    différemment les ferait paraître appartenir à deux sites.
    ============================================================================ */
 
-.p-pillar,
-.support-card{
+.p-pillar,.support-card{
   position:relative;overflow:hidden;
   transition:transform .42s var(--ease-out), border-color .32s,
              background .32s, box-shadow .42s var(--ease-out)}
 
 /* 2. le filet du haut, tracé de gauche à droite */
-.p-pillar::before,
-.support-card::before{
+.p-pillar::before,.support-card::before{
   content:"";position:absolute;inset:0 0 auto 0;height:2px;z-index:2;
   background-color:var(--hair-2);
   background-image:linear-gradient(90deg,var(--orange-ballon),var(--orange-vif));
@@ -8297,18 +7757,15 @@ main > .section .cal-lieux{
   transition:background-size .5s var(--ease-out)}
 
 /* 3. le trait sous le titre */
-.p-pillar h3,
-.support-card h3{position:relative;display:inline-block}
-.p-pillar h3::after,
-.support-card h3::after{
+.p-pillar h3,.support-card h3{position:relative;display:inline-block}
+.p-pillar h3::after,.support-card h3::after{
   content:"";position:absolute;left:0;right:0;bottom:-.2em;height:2px;
   border-radius:2px;background:var(--orange-vif);
   transform:scaleX(0);transform-origin:left center;
   transition:transform .45s var(--ease-out) .06s}
 
 /* 5. le reflet, une seule traversée */
-.p-pillar::after,
-.support-card::after{
+.p-pillar::after,.support-card::after{
   content:"";position:absolute;inset:-40% -60% auto -60%;height:180%;
   z-index:1;pointer-events:none;opacity:0;
   background:linear-gradient(102deg,
@@ -8321,49 +7778,35 @@ main > .section .cal-lieux{
 }
 
 /* La tuile d'icône doit pouvoir s'inverser d'un bloc. */
-.p-pillar__ico,
-.support-card__ico{
+.p-pillar__ico,.support-card__ico{
   transition:background .32s, border-color .32s, transform .38s var(--ease-out),
              box-shadow .38s}
-.p-pillar__ico .ic,
-.support-card__ico .ic{transition:color .28s}
+.p-pillar__ico .ic,.support-card__ico .ic{transition:color .28s}
 
 @media (hover:hover) and (pointer:fine){
-  .p-pillar:hover,
-  .support-card:hover{
+  .p-pillar:hover,.support-card:hover{
     transform:translateY(-7px) scale(1.018);
     border-color:rgba(232,130,42,.42);
     box-shadow:var(--bevel),
                0 22px 46px -18px rgba(2,6,14,.78),
                0 18px 52px -28px rgba(232,130,42,.5)}
-  .p-pillar:hover::before,
-  .support-card:hover::before{background-size:100% 100%}
-  .p-pillar:hover h3::after,
-  .support-card:hover h3::after{transform:scaleX(1)}
-  .p-pillar:hover::after,
-  .support-card:hover::after{animation:carteReflet .9s var(--ease-out) .05s both}
-  .p-pillar:hover .p-pillar__ico,
-  .support-card:hover .support-card__ico{
+  .p-pillar:hover::before,.support-card:hover::before{background-size:100% 100%}
+  .p-pillar:hover h3::after,.support-card:hover h3::after{transform:scaleX(1)}
+  .p-pillar:hover::after,.support-card:hover::after{animation:carteReflet .9s var(--ease-out) .05s both}
+  .p-pillar:hover .p-pillar__ico,.support-card:hover .support-card__ico{
     background:var(--grad-orange);border-color:transparent;
     transform:translateY(-2px);
     box-shadow:0 12px 26px -12px rgba(217,106,27,.65)}
-  .p-pillar:hover .p-pillar__ico .ic,
-  .support-card:hover .support-card__ico .ic{color:#170c02}
-}
+  .p-pillar:hover .p-pillar__ico .ic,.support-card:hover .support-card__ico .ic{color:#170c02}}
 
 /* Le contenu doit rester AU-DESSUS du reflet. */
-.p-pillar > *,
-.support-card > *{position:relative;z-index:2}
+.p-pillar > *,.support-card > *{position:relative;z-index:2}
 
 @media (prefers-reduced-motion:reduce){
-  .p-pillar,.support-card,
-  .p-pillar__ico,.support-card__ico,
-  .p-pillar h3::after,.support-card h3::after{transition:none}
+  .p-pillar,.support-card,.p-pillar__ico,.support-card__ico,.p-pillar h3::after,.support-card h3::after{transition:none}
   .p-pillar:hover,.support-card:hover{transform:none}
   .p-pillar:hover::after,.support-card:hover::after{animation:none;opacity:0}
-  .p-pillar:hover .p-pillar__ico,
-  .support-card:hover .support-card__ico{transform:none}
-}
+  .p-pillar:hover .p-pillar__ico,.support-card:hover .support-card__ico{transform:none}}
 
 /* V125.1 — pourquoi les quatre piliers ne se soulevaient pas.
    ----------------------------------------------------------------------------
@@ -8386,13 +7829,11 @@ main > .section .cal-lieux{
     transform:translateY(-7px) scale(1.018)}
 }
 @media (prefers-reduced-motion:reduce){
-  .p-pillar.reveal.in:hover{transform:none}
-}
+  .p-pillar.reveal.in:hover{transform:none}}
 
 /* Le liseré lumineux injecté par script.js doit rester au-dessus du contenu :
    la règle `.p-pillar > *` le rétrogradait au même plan. */
-.p-pillar > .spotglow__fx,
-.support-card > .spotglow__fx{z-index:3}
+.p-pillar > .spotglow__fx,.support-card > .spotglow__fx{z-index:3}
 
 /* V126 — la bande de chiffres se centre aussi sur téléphone.
    Empilées, les trois colonnes étaient restées alignées à gauche : c'était le
@@ -8438,9 +7879,7 @@ main > .section .cal-lieux{
              visibility 0s linear 0s}
 
 @media (prefers-reduced-motion:reduce){
-  .hero__rot-i,
-  .hero__rot-i.is-on{transition:none}
-}
+  .hero__rot-i,.hero__rot-i.is-on{transition:none}}
 
 /* V126.2 — la chute doit avoir la taille du titre, pas celle de l'ancien
    rotateur. Les règles `.hero__rot{font-size:…}` des V111.3 et V124 étaient
@@ -8467,13 +7906,10 @@ main > .section .cal-lieux{
    Le cadre passe en même temps de 16/10 à 3/2, ce qui leur rend 26 % de
    hauteur. Total : 465 × 291 -> 549 × 366, soit 40 % de surface en plus.
    ============================================================================ */
-.calendrier .cal-lieux,
-.calendrier .pl{max-width:1120px}
+.calendrier .cal-lieux,.calendrier .pl{max-width:1120px}
 
 @media (min-width:721px){
-  .cal-lieu .cal-lieu__ph,
-  .cal-lieu__ph{aspect-ratio:3 / 2}
-}
+  .cal-lieu .cal-lieu__ph,.cal-lieu__ph{aspect-ratio:3 / 2}}
 
 /* ============================================================================
    V128 — LE PROCHAIN MATCH, LES PAGES DE RENCONTRE, LE FIL D'ARIANE
@@ -8573,8 +8009,7 @@ main > .section .cal-lieux{
   .nx__in{grid-template-columns:1fr;grid-template-areas:"eyebrow" "titre" "meta" "actions"}
   .nx__a{margin-top:1.1rem}
   .nx__a .btn--primary{flex:1 1 100%;justify-content:center}
-  .nx__second{margin-inline:auto}
-}
+  .nx__second{margin-inline:auto}}
 
 /* ============================================================================
    LA LISTE /matchs/
@@ -8632,8 +8067,7 @@ main > .section .cal-lieux{
 @media (max-width:900px){
   .ml__a{grid-template-columns:auto auto minmax(0,1fr) auto}
   .ml__ou{grid-column:2 / -1;white-space:normal}
-  .ml__cote{grid-column:2 / -1}
-}
+  .ml__cote{grid-column:2 / -1}}
 @media (max-width:560px){
   .ml__a{grid-template-columns:auto minmax(0,1fr) auto;row-gap:.5rem}
   .ml__j{grid-row:1}
@@ -8642,8 +8076,7 @@ main > .section .cal-lieux{
   .ml__d span{margin-left:.35em}
   .ml__duel{grid-column:1 / -1;font-size:1.1rem}
   .ml__ou,.ml__cote{grid-column:1 / -1}
-  .ml__go{grid-row:1;grid-column:3}
-}
+  .ml__go{grid-row:1;grid-column:3}}
 
 /* ============================================================================
    LA PAGE D'UNE RENCONTRE
@@ -8757,13 +8190,11 @@ main > .section .cal-lieux{
 @media (max-width:560px){
   .mp__dl{grid-template-columns:1fr}
   .mp__a .btn{flex:1 1 100%;justify-content:center}
-  .mp__suiv{text-align:left}
-}
+  .mp__suiv{text-align:left}}
 
 @media (prefers-reduced-motion:reduce){
   .ml__a:hover,.mp__nav a:hover{transform:none}
-  .ml__a:hover .ml__go{transform:none}
-}
+  .ml__a:hover .ml__go{transform:none}}
 
 /* Les deux moities du duel dans le bandeau : elles n'ont pas besoin de style
    propre au-dela de l'heritage, mais elles doivent exister pour que le
@@ -8847,8 +8278,7 @@ main > .section .cal-lieux{
 @media (min-width:760px){
   .ac-liste{grid-template-columns:repeat(2,minmax(0,1fr))}
   /* Le premier article prend toute la largeur : c'est la une. */
-  .ac-liste > .ac:first-child{grid-column:1/-1}
-}
+  .ac-liste > .ac:first-child{grid-column:1/-1}}
 
 .ac{margin:0}
 .ac__l{
@@ -8909,13 +8339,11 @@ main > .section .cal-lieux{
   .ac-liste > .ac:first-child .ac__media{aspect-ratio:auto;height:100%}
   .ac-liste > .ac:first-child .ac__corps{align-self:center;
     padding:clamp(1.6rem,3vw,2.6rem)}
-  .ac-liste > .ac:first-child .ac__t{font-size:clamp(1.8rem,3.2vw,2.7rem)}
-}
+  .ac-liste > .ac:first-child .ac__t{font-size:clamp(1.8rem,3.2vw,2.7rem)}}
 @media (prefers-reduced-motion:reduce){
   .ac__l,.ac__img,.ac__t,.ac__lire{transition:none}
   .ac__l:hover{transform:none}
-  .ac__l:hover .ac__img{transform:none}
-}
+  .ac__l:hover .ac__img{transform:none}}
 
 /* ---- La page d'un article ---- */
 .ar{padding-top:clamp(2rem,4vw,3.4rem)}
