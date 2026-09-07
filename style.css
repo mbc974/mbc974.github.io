@@ -8510,11 +8510,11 @@ main > .section .cal-lieux{
   background:linear-gradient(180deg,#050d1a,#070f1e);
   border-top:1px solid rgba(232,130,42,.22);
   border-bottom:1px solid var(--hair);
-  padding:clamp(1.4rem,2.6vw,2rem) 0}
+  padding:clamp(1rem,1.8vw,1.4rem) 0}
 .nx__in{
   display:grid;align-items:center;
   grid-template-columns:1fr auto;
-  gap:.35rem clamp(1.5rem,3vw,3rem);
+  gap:.3rem clamp(1.5rem,3vw,3rem);
   grid-template-areas:"eyebrow actions" "titre actions" "meta actions"}
 .nx__eyebrow{
   grid-area:eyebrow;display:flex;align-items:center;gap:.6em;margin:0;
@@ -8528,14 +8528,24 @@ main > .section .cal-lieux{
 .nx__t{
   grid-area:titre;margin:.15rem 0 0;
   font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(1.5rem,2.6vw,2.4rem);line-height:1;letter-spacing:.005em;
-  color:var(--blanc);display:flex;flex-wrap:wrap;align-items:baseline;gap:.4em}
+  font-size:clamp(1.4rem,2.4vw,2.2rem);line-height:1;letter-spacing:.005em;
+  color:var(--blanc);display:flex;flex-wrap:wrap;align-items:center;gap:.35em}
 .nx__vs{
   font-family:var(--ff-cond);font-weight:600;font-size:.42em;
   letter-spacing:.18em;color:var(--orange-vif)}
+.nx__club,.nx__opp{display:inline-flex;align-items:center;gap:.3em}
+.nx__crest{
+  display:inline-grid;place-items:center;flex:none;
+  width:.9em;height:.9em;padding:.14em;
+  background:rgba(255,255,255,.92);border-radius:.22em}
+.nx__crest img{width:100%;height:100%;object-fit:contain;display:block}
+.nx__crest--sigle{
+  background:rgba(232,130,42,.14);border:1px solid rgba(232,130,42,.32);
+  font-family:var(--ff-cond);font-weight:700;color:var(--orange-vif);
+  letter-spacing:.02em;font-size:.3em}
 .nx__meta{
   grid-area:meta;display:flex;flex-wrap:wrap;align-items:center;
-  gap:.4rem .9rem;margin:.5rem 0 0;
+  gap:.4rem .9rem;margin:.4rem 0 0;
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
   letter-spacing:.1em;font-size:.82rem;color:var(--bleu-glacier)}
 .nx__meta i{

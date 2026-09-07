@@ -332,6 +332,23 @@ GABARIT = None
 # --------------------------------------------------------------------------
 # Le bandeau « prochain match », juste sous le hero
 # --------------------------------------------------------------------------
+def ecusson_nx(logo, sigle):
+    """Petit ecusson du bandeau « prochain match », meme logo que le duel de la
+    fiche (ecusson) mais en case reduite, taillee sur la police du titre."""
+    if not logo:
+        return u'<span class="nx__crest nx__crest--sigle" aria-hidden="true">%s</span>' % ech(sigle)
+    return (u'<span class="nx__crest" aria-hidden="true"><img '
+            u'src="/assets/logos/clubs/%s-144.webp" '
+            u'srcset="/assets/logos/clubs/%s-144.webp 144w, /assets/logos/clubs/%s.webp 288w" '
+            u'sizes="40px" alt="" width="288" height="288" loading="lazy" decoding="async">'
+            u'</span>') % (logo, logo, logo)
+
+
+ECUSSON_MBC_NX = (u'<span class="nx__crest" aria-hidden="true"><img '
+                  u'src="/assets/logos/mbc-logo.webp" alt="" width="288" height="296" '
+                  u'loading="lazy" decoding="async"></span>')
+
+
 def bandeau(m, d):
     """Volontairement une BANDE, pas une section : le hero doit rester le
     premier ecran. Elle ne porte AUCUNE donnee structuree — la source de verite
@@ -350,11 +367,14 @@ def bandeau(m, d):
                       u'<span class="sr-only"> vers %s (Google Maps, nouvel onglet)</span></a>'
                       ) % (L["carte"], ech(lieu))
         itineraire = itineraire.replace(u"Itineraire", u"Itinéraire")
+    crest_adv = ecusson_nx(m["logo"], m["sigle"])
+    crest_dom = ECUSSON_MBC_NX if m["domicile"] else crest_adv
+    crest_ext = crest_adv if m["domicile"] else ECUSSON_MBC_NX
     return u"""<!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
 <section class="nx" aria-labelledby="nxBandTitle">
   <div class="wrap nx__in">
     <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J%(j)d</p>
-    <h2 class="nx__t" id="nxBandTitle"><span class="nx__club">%(dom)s</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp">%(ext)s</span></h2>
+    <h2 class="nx__t" id="nxBandTitle"><span class="nx__club">%(crestDom)s%(dom)s</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp">%(crestExt)s%(ext)s</span></h2>
     <p class="nx__meta"><time datetime="%(iso)s">%(dateLongue)s <i aria-hidden="true"></i> %(heure)s</time><span class="nx__ou">%(lieu)s</span>%(libre)s</p>
     <p class="nx__a"><a class="btn btn--primary" href="/matchs/%(slug)s/">Voir le match%(fleche)s</a>%(itineraire)s</p>
   </div>
@@ -363,6 +383,8 @@ def bandeau(m, d):
         "j": m["journee"],
         "dom": ech(club["court"] if m["domicile"] else m["adversaireCourt"]),
         "ext": ech(m["adversaireCourt"] if m["domicile"] else club["court"]),
+        "crestDom": crest_dom,
+        "crestExt": crest_ext,
         "iso": m["_debutIso"],
         "dateLongue": ech(m["_dateLongue"][0].upper() + m["_dateLongue"][1:]),
         "heure": m["_heureFr"],

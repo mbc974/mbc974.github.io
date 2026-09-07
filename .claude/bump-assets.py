@@ -30,6 +30,7 @@ def digest(path):
 def targets():
     files = ['index.html', 'adhesion.html', 'sw.js']
     files += sorted(glob.glob('*/index.html'))
+    files += sorted(glob.glob('*/*/index.html'))
     return [f for f in files if os.path.exists(f)]
 
 
