@@ -81,7 +81,10 @@ def score(brut):
     return {'recoit': int(n[0]), 'visite': int(n[1])}
 
 
-def dernier_pdf(motif='C:/Users/ALEX/Downloads/CALENDRIER SENIOR PRM NORD*.pdf'):
+TELECHARGEMENTS = os.path.join(os.path.expanduser('~'), 'Downloads')
+
+
+def dernier_pdf(motif=os.path.join(TELECHARGEMENTS, 'CALENDRIER SENIOR PRM NORD*.pdf')):
     """Le plus recemment modifie parmi les telechargements correspondants."""
     trouves = glob.glob(motif)
     if not trouves:

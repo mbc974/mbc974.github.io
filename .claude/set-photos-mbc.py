@@ -38,7 +38,7 @@ import sys
 
 from PIL import Image
 
-SRC = 'C:/Users/ALEX/Downloads/'
+SRC = os.path.join(os.path.expanduser('~'), 'Downloads') + '/'
 DEST = 'assets/images/'
 EXTS = ('.jpg', '.jpeg', '.png', '.webp')
 

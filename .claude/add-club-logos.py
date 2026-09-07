@@ -46,7 +46,7 @@ from collections import Counter, deque
 
 from PIL import Image
 
-SRC = 'C:/Users/ALEX/Downloads/'
+SRC = os.path.join(os.path.expanduser('~'), 'Downloads') + '/'
 DEST = 'assets/logos/clubs/'
 PLANCHE = 'planche-logos.png'
 EXTS = ('.png', '.jpg', '.jpeg', '.webp')
