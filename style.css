@@ -9112,3 +9112,30 @@ main > .section .cal-lieux{
 @media (max-width:640px){
   .hero{min-height:clamp(500px,100vw * 1.273,620px) !important}
 }
+
+
+/* ==========================================================================
+   V134 — LE H1 NE CONTIENT PLUS QUE LA PHRASE STABLE
+   ==========================================================================
+   La chute animee etait DANS le H1 : le texte du titre valait donc
+   « Le basket a La Montagne. Nout kartie. Ensemble. Ansanm. En famille. Nout
+   kartie. Pour tous. Nout basket. Ensemble. » pour un moteur de recherche.
+   L'aria-hidden reglait le cas des lecteurs d'ecran, pas celui de Google, qui
+   lit le DOM.
+
+   .hero__h1 devient donc le BLOC typographique (un div) et porte, inchangees,
+   toutes les regles empilees depuis la V119 : taille, largeur maximale par
+   palier, animation d'entree, ombre. A l'interieur, .hero__h1-t est le vrai
+   H1 — il ne fait que neutraliser les styles par defaut du navigateur — et la
+   chute reste a cote, toujours descendante de .hero__h1.
+
+   C'est ce qui evite de recopier la typographie du titre sur la chute a ses
+   trois paliers : elle continue de l'heriter, donc les deux lignes ne peuvent
+   pas se desynchroniser si la taille du titre change un jour.
+
+   Le font-weight:700 n'etait declare NULLE PART : il venait de la feuille par
+   defaut du navigateur, qui met les H1 en gras. En passant le bloc a un div on
+   le perdait — Anton n'ayant qu'une graisse, le navigateur en synthetise une.
+   Il est donc repose ici explicitement, a l'identique. */
+.hero__h1{font-weight:700}
+.hero__h1-t{font:inherit;margin:0}

@@ -1321,9 +1321,10 @@
 /* ============================================================
    HERO — la chute du titre alterne francais et creole
    ============================================================
-   Les six formules sont dans le HTML : elles doivent exister sans JS, et la
-   scene est aria-hidden avec une ligne sr-only a cote, si bien que le titre
-   reste une phrase complete pour les lecteurs d'ecran comme pour les moteurs.
+   Les six formules sont dans le HTML : elles doivent exister sans JS. La
+   scene est aria-hidden, donc muette pour les lecteurs d'ecran ; et depuis la
+   V134 elle est HORS du H1, ce qui regle le cas des moteurs de recherche —
+   aria-hidden ne les concernait pas, ils lisent le DOM.
    Ici on ne fait que deplacer la classe .is-on ; le fondu et le glissement
    sont en CSS, et le « fantome » invisible reserve deja la hauteur, donc rien
    ne bouge autour.
