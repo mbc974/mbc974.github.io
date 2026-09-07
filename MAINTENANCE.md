@@ -189,20 +189,35 @@ Relevé sur la production le 27/08/2026 :
 **GitHub Pages ne permet pas de définir d'en-têtes HTTP personnalisés.** Ce n'est pas un oubli de
 configuration : la plateforme n'offre aucun mécanisme pour cela.
 
-Ce qui est en place au niveau HTML, et qui fonctionne réellement :
+Ce qui est en place au niveau HTML, et qui fonctionne réellement (recompté le 07/09/2026) :
 
-- `<meta name="referrer" content="strict-origin-when-cross-origin">` sur **les 12 pages** ;
-- `rel="noopener"` sur **les 94 liens** `target="_blank"` (protection contre le tabnabbing) ;
-- l'iframe Google Maps est créée avec un attribut `sandbox` restrictif.
+- `<meta name="referrer" content="strict-origin-when-cross-origin">` sur **les 25 pages** ;
+- `rel="noopener"` sur **les 97 liens** `target="_blank"` (protection contre le tabnabbing) —
+  aucun n'y échappe ;
+- l'iframe Google Maps est créée au clic seulement, avec un attribut `sandbox` restrictif ;
+- les polices sont **auto-hébergées** : aucune requête ne part vers Google Fonts.
 
-**Aucune CSP en `<meta>` n'a été ajoutée délibérément.** Une CSP posée en meta ne couvre ni
-`frame-ancestors` ni le mode `report-only` : elle donnerait une fausse impression de protection
-tout en risquant de casser Yapla, Google Fonts et la carte.
+**Aucune CSP en `<meta>` n'a été ajoutée délibérément**, et le raisonnement a été vérifié plutôt
+que supposé. Une CSP posée en meta ne couvre ni `frame-ancestors` ni le mode `report-only` : elle
+donnerait une fausse impression de protection. Surtout, la faire passer imposerait
+`script-src 'unsafe-inline'` ou une liste de hachages — et **106 images du site portent un attribut
+`onerror` de repli** (28 sur l'accueil seul) vers un `.jpg` ou un `.png`. Une CSP qui interdit les
+gestionnaires en ligne les rendrait tous inertes, en silence : le jour où un `.webp` ne serait pas
+servi, la page afficherait un trou au lieu de son image de secours.
 
 **La seule vraie solution** est de placer un proxy devant le site (Cloudflare en offre gratuite) et
 d'y définir les en-têtes. C'est un changement d'infrastructure : il n'a pas été engagé sans validation.
-Domaines à autoriser le jour où une CSP sera écrite : `fonts.googleapis.com`, `fonts.gstatic.com`,
-`api.web3forms.com`, `www.google.com` (maps), `plausible.io` (si activé), `*.yapla.com`.
+Domaines à autoriser le jour où une CSP sera écrite, relevés dans le code et non devinés :
+`www.googletagmanager.com` (mesure d'audience, après consentement), `api.web3forms.com`
+(formulaire), `www.google.com` et `maps.google.com` (carte, au clic), `*.yapla.com` (adhésion),
+`wa.me` (WhatsApp). **Ni Google Fonts ni Plausible** : les polices sont auto-hébergées et Plausible
+a été remplacé par GA4.
+
+**Ce qui ne dépend pas de la plateforme, et reste à faire chez le registrar** : le domaine n'a
+ni enregistrement **DMARC** ni enregistrement **CAA**. Le premier laisse un tiers usurper
+l'adresse d'expédition `@mbc974.com` sans qu'aucun serveur ne le refuse ; le second laisse
+n'importe quelle autorité de certification émettre un certificat pour le domaine. Les deux
+s'ajoutent en une ligne dans la zone DNS, et aucun des deux ne peut être posé depuis ce dépôt.
 
 ---
 
@@ -233,7 +248,16 @@ python .claude/verifier-jsonld.py      # données structurées, les 25 pages
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
+python .claude/build-css.py --check    # style.min.css correspond-il à style.css ?
+python .claude/bump-assets.py --check  # les ?v= des 25 pages sont-ils à jour ?
 ```
+
+**Les deux derniers doivent sortir en 0 avant toute publication**, et c'est plus important qu'il
+n'y paraît : le service worker sert désormais la CSS et le JS depuis son cache, ce qui n'est sûr
+que parce que le `?v=` est un hachage du contenu. Un `?v=` périmé, et un visiteur garderait
+indéfiniment l'ancienne feuille. `bump-assets.py` refuse de tourner si `style.min.css` ne
+correspond plus à `style.css`, donc la seule façon de se tromper est de ne lancer ni l'un ni
+l'autre.
 
 `verifier-jsonld.py` doit sortir **0 erreur, 0 avertissement**. Il contrôle, hors ligne, ce
 que Search Console reprocherait ensuite : JSON-LD qui parse, images et fichiers réellement
@@ -245,9 +269,21 @@ Il ne remplace pas le Rich Results Test, qui seul fait foi.
 colonne est la plus utile : une page qu'aucun lien du site n'atteint n'est vue ni par un visiteur
 ni par un robot, même si elle figure dans le sitemap.
 
-Les quatre scripts balaient `*.html`, `*/index.html` **et** `*/*/index.html`. Si une rubrique
-descend un jour à trois niveaux, étendre les quatre `glob` — sinon les scripts annonceront
+`verifier-classes.py` lit aussi, depuis le 08/09/2026, les chaînes `class="…"` des **générateurs**
+de `.claude/`, et plus seulement le HTML publié. C'est ce qui manquait : un générateur écrit du
+markup conditionnel, et `.mx-score` — le score d'une rencontre jouée — n'existe dans aucune page
+tant que la ligue n'a rien publié. Il avait donc été compté mort et purgé de la feuille. Un jeton
+à suffixe variable (`mx-score--%s`) est traité comme une **famille**, satisfaite dès qu'une règle
+commence par ce préfixe.
+
+Les scripts balaient `*.html`, `*/index.html` **et** `*/*/index.html`. Si une rubrique
+descend un jour à trois niveaux, étendre les `glob` — sinon les scripts annonceront
 « 0 erreur » sur des pages qu'ils n'ont pas ouvertes.
+
+Il reste **trois classes sans règle**, connues et volontairement laissées : `.sponsor-pack--rookie`,
+`.sponsor-pack--mvp` et `.sponsor-pack--allstar`, sur la page partenaires. Ce sont des crochets
+sémantiques sans style propre — le rendu vient de `.pack--feat`. Les retirer serait une
+modification de markup sans bénéfice ; les garder coûte trois lignes de rapport.
 
 Puis, sur le serveur local, vérifier page par page : HTTP 200, un seul `<h1>`, JSON-LD qui parse,
 aucun débordement horizontal en 320 / 375 / 768 / 1024 / 1440 / 1920 px, aucune erreur console.
