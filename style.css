@@ -9034,3 +9034,33 @@ main > .section .cal-lieux{
 @media (prefers-reduced-motion:reduce){
   .float-cta{transition:none}
 }
+
+
+/* ==========================================================================
+   V132 — LE HERO SUR TÉLÉPHONE : LE BLASON DANS LE CADRE
+   ==========================================================================
+   Demande : « qu'on voie le logo MBC dans le dos du t-shirt, sur la gauche ».
+   Il occupe x=1050..1483 de la photo d'origine, et l'ancienne fenêtre mobile
+   commençait à 1387 : le blason était entièrement hors champ. La nouvelle
+   fenêtre part de 960 (voir .claude/build-hero.py).
+
+   POURQUOI 0 % ET PAS 50 %
+   Sur un téléphone, la hauteur du hero varie de 560 à 720 px selon l'appareil,
+   et la largeur de 360 à 430. Or, avec object-fit:cover sur un cadre plus
+   étroit que la source, l'échelle est fixée par la hauteur : la largeur de
+   scène visible vaut largeur_écran × 1630 / hauteur_du_hero, soit de 815 à
+   1252 px selon le modèle. Centrer (50 %) ferait donc respirer la fenêtre des
+   DEUX côtés — et à gauche il n'y a que du parquet. À 0 %, le bord gauche est
+   figé sur l'épaule du coach : quand l'écran s'élargit ou que le hero
+   raccourcit, c'est vers les enfants que le cadre s'ouvre.
+
+   Le blason est vérifié entier sur toute la matrice 360/390/412/430 × 560/620/
+   692/720. Sur les téléphones courts (≤ 667 px de haut, iPhone SE), le hero
+   tombe à 560 px alors que le bloc de texte en garde 350 : le titre recouvre
+   alors la moitié basse du blason. C'est une limite assumée, pas un oubli —
+   la corriger demanderait de raccourcir le texte du hero sur ces appareils.
+   Ne PAS essayer de la corriger en raccourcissant le hero : ça remonte le
+   titre et ça aggrave exactement ce qu'on veut éviter. */
+@media (max-width:640px){
+  .hero__photo img{object-position:0% 42%}
+}

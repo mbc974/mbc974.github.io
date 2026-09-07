@@ -18,9 +18,33 @@ Deux cadrages, pas un
 L'original est un panoramique 4080x1630 (2,5:1). Dans un cadre de telephone, un
 2,5:1 ne peut pas tenir : ou il devient une bande de 150 px de haut, ou
 `object-fit: cover` en coupe les quatre cinquiemes. On sort donc une SECONDE
-serie, recadree sur la fenetre x=1387..2489 — le coach et le cercle d'enfants,
-c'est-a-dire le sujet. La bascule se fait a 640 px, dans le <picture> ET dans
-la feuille de style : les deux valeurs doivent rester egales.
+serie, recadree sur une fenetre portrait. La bascule se fait a 640 px, dans le
+<picture> ET dans la feuille de style : les deux valeurs doivent rester egales.
+
+LA FENETRE MOBILE, ET POURQUOI ELLE COMMENCE A 960
+--------------------------------------------------
+Le blason MBC, dans le dos du coach, occupe x=1050..1483 de l'original. La
+premiere fenetre mobile (1387..2489) le laissait entierement hors champ : sur
+un telephone, le logo du club n'apparaissait nulle part dans le hero. La
+fenetre part donc de 960, soit 90 px de marge avant le blason.
+
+Le point a comprendre, parce qu'il est contre-intuitif : avec object-fit:cover
+et un cadre plus etroit que la source, l'echelle est fixee par la HAUTEUR. La
+largeur de scene visible vaut
+
+    largeur_ecran x 1630 / hauteur_du_hero
+
+et elle ne depend PAS de la largeur du fichier livre. Elargir ce recadrage ne
+dezoome donc rien : ca donne seulement de la matiere sur laquelle deplacer le
+cadre. Le seul vrai levier de dezoom serait de RACCOURCIR le hero — mais le
+bloc de texte, lui, garde ses 350 px : le titre remonterait alors PAR-DESSUS le
+blason. Essaye et mesure avant de changer cette valeur.
+
+Avec object-position:0% (voir V132 dans style.css), le bord gauche est fige :
+la fenetre demarre toujours a 960 et c'est vers la DROITE qu'elle s'ouvre quand
+l'ecran s'elargit ou que le hero raccourcit — donc vers les enfants, jamais
+vers le parquet vide. La fenetre s'arrete a 2240 parce que c'est le maximum
+utile : 430 px de large sur un hero de 560 px montre 1252 px de scene.
 
 Qualites
 --------
@@ -42,10 +66,16 @@ SORTIE = os.path.join(RACINE, 'assets', 'images')
 BASE = 'mbc-hero-regroupement'
 
 # La fenetre du recadrage mobile dans l'original, en pixels.
-FENETRE_MOBILE = (1387, 0, 2489, 1630)
+FENETRE_MOBILE = (960, 0, 2240, 1630)
 
 LARGEURS_DESKTOP = (1280, 1672, 2048, 2400, 2800)
-LARGEURS_MOBILE = (440, 700, 1102)
+# Deux crans mobiles suffisent. Le `sizes` du <picture> vaut 585px (la largeur
+# de la source une fois mise a l'echelle par cover, dans le cas le plus grand) :
+# un troisieme cran a 440 ne pourrait donc etre choisi que sous un DPR de 0,75,
+# ce qui n'existe pas. Le cran haut est a 1280, soit la resolution NATIVE de la
+# fenetre : au-dela on inventerait des pixels, en deca on livre une image
+# agrandie x1,5 sur les telephones denses.
+LARGEURS_MOBILE = (700, 1280)
 REPLI_JPEG = 1672
 
 Q_AVIF = 45
@@ -108,7 +138,11 @@ def main():
 
     print('\nrecadrage mobile (<= 640 px), fenetre x=%d..%d' % (FENETRE_MOBILE[0], FENETRE_MOBILE[2]))
     m = o.crop(FENETRE_MOBILE)
-    t2, a2 = serie(m, LARGEURS_MOBILE, '-m-', essai)
+    # « -mob- » et non « -m- » : le cadrage a change, donc le CONTENU des
+    # fichiers a change. Le service worker met les images en cache par leur nom
+    # (stale-while-revalidate) : garder les anciens noms aurait servi l'ancien
+    # cadrage, celui sans le logo, a tout visiteur deja venu.
+    t2, a2 = serie(m, LARGEURS_MOBILE, '-mob-', essai)
 
     print('\nrepli JPEG')
     j = o.resize((REPLI_JPEG, hauteur(o, REPLI_JPEG)), Image.LANCZOS)
