@@ -3,6 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode v2.
+     Tout est refuse par defaut ; consent.js pose le bandeau et transmet le
+     choix. Le club n'utilise pas Google Ads : seul analytics_storage peut
+     passer a « granted ». -->
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});
+try{if(localStorage.getItem('mbc-consent')==='granted'){gtag('consent','update',{'analytics_storage':'granted'});}}catch(e){}
+gtag('js',new Date());
+gtag('config','G-4C00VET9W9');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4C00VET9W9"></script>
+<script defer src="/consent.js"></script>
+<!-- /Google Analytics 4 -->
 <title>Politique de confidentialité — MBC La Montagne</title>
 <meta name="description" content="Comment le MBC, club de basket de La Montagne à Saint-Denis, traite vos données personnelles : finalités, destinataires, durées, et comment exercer vos droits.">
 <meta name="author" content="MBC La Montagne Basket Club">
@@ -38,7 +52,7 @@
       href="../assets/fonts/anton-400-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="../assets/fonts/barlow-condensed-700-latin.woff2">
-<link rel="stylesheet" href="/style.css?v=0e9df4d3">
+<link rel="stylesheet" href="/style.css?v=5ea07208">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Politique de confidentialité — MBC La Montagne Basket Club","url":"https://mbc974.com/confidentialite/","inLanguage":"fr","description":"Traitement des données personnelles par le MBC La Montagne Basket Club.","isPartOf":{"@type":"WebSite","@id":"https://mbc974.com/#website","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
@@ -47,11 +61,6 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://mbc974.com/"},{"@type":"ListItem","position":2,"name":"Politique de confidentialité","item":"https://mbc974.com/confidentialite/"}]}
 </script>
 
-<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
-     Activer partout : python .claude/set-analytics.py --on
-     Les evenements personnalises sont deja prepares dans script.js.
-<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
--->
 </head>
 <body>
 
@@ -110,15 +119,18 @@
         <li><b>Web3Forms</b> — acheminement du formulaire de contact vers la boîte e-mail du club. Les champs que vous saisissez transitent par ce service.</li>
         <li><b>Polices d'écriture</b> — elles sont <b>hébergées sur ce site</b>, avec les autres fichiers. Elles ne sont plus appelées chez Google&nbsp;: aucune requête n'est envoyée à Google Fonts et votre adresse IP ne lui est pas transmise.</li>
         <li><b>Google Maps</b> — la carte du gymnase <b>ne se charge pas toute seule</b>. Elle n'est appelée qu'après un clic explicite sur le bouton « Charger la carte ». Tant que vous ne cliquez pas, aucune requête n'est envoyée à Google Maps.</li>
+        <li><b>Google Analytics 4</b> (Google Ireland Limited) — mesure statistique de la frequentation du site. <b>Elle ne demarre qu'apres votre accord</b>&nbsp;: tant que vous n'avez pas accepte, aucun cookie de mesure n'est depose et aucun identifiant ne vous est attribue. Ce que le club regarde, ce sont des totaux — pages consultees, origine des visites, appareil utilise — jamais des personnes. Les donnees des formulaires ne lui sont jamais transmises.</li>
         <li><b>Yapla</b> — plateforme d'adhésion et de paiement, atteinte uniquement si vous cliquez sur un bouton d'inscription.</li>
         <li><b>WhatsApp</b> — les boutons « nous écrire » ouvrent une conversation WhatsApp avec un message déjà rédigé, que vous restez libre de modifier ou d'abandonner. Tant que vous ne cliquez pas, rien n'est transmis&nbsp;; au clic, votre navigateur contacte WhatsApp, qui applique alors sa propre politique de confidentialité. Si l'envoi du formulaire de contact échoue, le site vous propose un lien WhatsApp ou e-mail contenant déjà ce que vous aviez saisi&nbsp;: vous choisissez alors de l'envoyer ou non.</li>
         <li><b>Réseaux sociaux et fiche FFBB</b> — de simples liens vers nos pages publiques. Aucun pixel ni script de ces plateformes n'est présent sur le site&nbsp;: elles ne sont contactées que si vous cliquez.</li>
       </ul>
 
       <h2 class="h2">Cookies et <span class="hl">stockage local</span></h2>
-      <p><b>Ce site ne dépose aucun cookie publicitaire, aucun cookie de mesure d'audience et aucun pixel de réseau social.</b> Il n'y a donc pas de bandeau de consentement&nbsp;: il n'y a rien à consentir.</p>
-      <p>Le site enregistre en revanche des éléments strictement techniques dans votre navigateur&nbsp;: un <i>service worker</i> et son cache, qui permettent au site de rester consultable hors connexion et de se charger plus vite. Ces données restent sur votre appareil, ne sont pas transmises au club, et disparaissent si vous videz les données du site dans votre navigateur.</p>
-      <p class="lp-note"><b>À valider avant toute activation&nbsp;:</b> une mesure d'audience sans cookie (Plausible) est préparée dans le code mais <b>n'est pas activée</b> à ce jour. Si le club l'active un jour, cette page devra être mise à jour en conséquence.</p>
+      <p><b>Ce site ne dépose aucun cookie publicitaire et aucun pixel de réseau social.</b> Le seul cookie possible est celui de la mesure d'audience, et il n'existe qu'après votre accord.</p>
+      <p>À votre première visite, un bandeau vous demande si le club peut compter votre passage. Tant que vous n'avez pas répondu, ou si vous refusez, la mesure reste désactivée&nbsp;: aucun cookie n'est écrit et aucun identifiant ne vous est attribué. Le refus est aussi simple que l'acceptation, et vous pouvez changer d'avis à tout moment en effaçant les données de ce site dans votre navigateur&nbsp;: le bandeau reparaîtra.</p>
+      <p>Le club n'utilise pas Google Ads. Même lorsque vous acceptez la mesure d'audience, la publicité personnalisée, le partage de données publicitaires et les cookies publicitaires restent <b>désactivés</b>.</p>
+      <p>Le site enregistre en revanche des éléments strictement techniques dans votre navigateur&nbsp;: un <i>service worker</i> et son cache, qui permettent au site de rester consultable hors connexion et de se charger plus vite, ainsi que votre réponse au bandeau de mesure d'audience — pour ne pas vous la redemander à chaque page. Ces données restent sur votre appareil, ne sont pas transmises au club, et disparaissent si vous videz les données du site dans votre navigateur.</p>
+      
 
       <h2 class="h2">Combien de temps <span class="hl">nous conservons vos données</span></h2>
       <p>Le règlement européen demande d'indiquer soit une durée de conservation, soit, lorsqu'une durée fixe ne peut pas être annoncée à l'avance, <b>les critères qui la déterminent</b>. Le MBC est une association de bénévoles&nbsp;: plutôt que d'afficher des délais qu'il ne serait pas en mesure d'appliquer, il publie ici le critère retenu pour chaque catégorie de données.</p>
@@ -144,7 +156,7 @@
 
       <h2 class="h2">Mise <span class="hl">à jour</span></h2>
       <p>Cette page peut évoluer avec le site et les outils du club. Toute modification substantielle sera visible ici.</p>
-      <p><b>Dernière mise à jour&nbsp;: 7 septembre 2026.</b></p>
+      <p><b>Dernière mise à jour&nbsp;: 7 septembre 2026 (ajout de la mesure d'audience Google Analytics, soumise à consentement).</b></p>
 
       <div class="seo-links">
         <a href="/#legal" class="btn btn--ghost btn--lg">Mentions légales</a>

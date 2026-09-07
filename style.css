@@ -8770,3 +8770,59 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     border-radius:0;font-size:.94rem}
   .pl-slot__nom{color:var(--bleu-glacier)}
 }
+
+/* ==========================================================================
+   V137 — LE BANDEAU DE CONSENTEMENT
+   ==========================================================================
+   Il n'existait pas : le site ne posait aucun cookie et n'avait donc rien a
+   faire consentir. L'arrivee de Google Analytics 4 le rend necessaire.
+
+   Choix de conception : une BARRE en bas, pas une boite modale. Elle
+   n'assombrit pas la page, ne capture pas le focus et ne bloque pas la
+   lecture — un visiteur qui veut seulement les horaires du mercredi n'a pas
+   a repondre avant de les lire. Le refus est un vrai bouton, aussi visible
+   que l'acceptation ; c'est ce que demande la CNIL.
+
+   Elle se place au-dessus de la barre CTA flottante (z-index 60 contre 50)
+   et lui laisse sa place sur telephone. */
+.ccb{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:grid;gap:.55rem;
+  padding:1rem clamp(1rem,4vw,2rem) calc(1rem + env(safe-area-inset-bottom));
+  background:rgba(6,14,26,.97);
+  border-top:1px solid rgba(232,130,42,.35);
+  box-shadow:0 -18px 40px -24px rgba(0,0,0,.9);
+  color:var(--txt-soft);
+  transform:translateY(100%);
+  transition:transform .32s var(--ease-out)}
+.ccb.is-on{transform:none}
+.ccb__t{
+  margin:0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.78rem;color:var(--orange-vif)}
+.ccb__d{margin:0;font-size:.92rem;line-height:1.5;max-width:70ch}
+.ccb__a{display:flex;flex-wrap:wrap;align-items:center;gap:.7rem 1rem;margin-top:.25rem}
+.ccb__oui{height:44px;min-height:44px;padding:0 1.4rem;border-radius:8px}
+.ccb__non{
+  height:44px;min-height:44px;padding:0 1.1rem;
+  background:none;border:1px solid rgba(191,210,228,.32);border-radius:8px;
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.1em;font-size:.84rem;color:var(--blanc);cursor:pointer;
+  transition:border-color .2s,background .2s}
+.ccb__non:hover{border-color:rgba(191,210,228,.6);background:rgba(255,255,255,.05)}
+.ccb__lien{font-size:.86rem;color:var(--bleu-glacier);text-decoration:underline}
+.ccb__oui:focus-visible,.ccb__non:focus-visible,.ccb__lien:focus-visible{
+  outline:3px solid var(--bleu-glacier);outline-offset:3px}
+
+@media (min-width:900px){
+  .ccb{grid-template-columns:1fr auto;align-items:center;gap:.35rem 2rem}
+  .ccb__t{grid-column:1}
+  .ccb__d{grid-column:1}
+  .ccb__a{grid-column:2;grid-row:1 / span 2;margin-top:0}
+}
+/* La barre CTA flottante remonte pour ne pas etre recouverte tant que le
+   choix n'est pas fait. */
+.ccb ~ .float-cta,body:has(.ccb) .float-cta{bottom:calc(1rem + 132px)}
+
+@media (prefers-reduced-motion:reduce){
+  .ccb{transition:none}
+}

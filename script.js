@@ -850,50 +850,13 @@
 
 
 /* ============================================================
-   Mesure d'audience (préparée, inactive tant que l'analytics
-   n'est pas activé dans le <head> — voir commentaire ANALYTICS
-   de index.html). Aucun cookie, aucun envoi si Plausible absent.
-   ============================================================ */
-(function () {
-  'use strict';
-  function track(name) {
-    if (typeof window.plausible === 'function') window.plausible(name);
-  }
-  document.addEventListener('click', function (e) {
-    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
-    if (!a) return;
-    var h = a.href || '';
-    if (h.indexOf('yapla.com') !== -1) {
-      track(h.indexOf('authentication') !== -1 ? 'Connexion espace membre'
-          : h.indexOf('campaign') !== -1 ? 'Don Yapla'
-          : 'Inscription Yapla');
-    }
-    // WhatsApp : on distingue la demande d'essai du simple contact, ce sont
-    // deux intentions tres differentes cote conversion.
-    else if (h.indexOf('wa.me') !== -1) {
-      track(/essai/i.test(decodeURIComponent(h)) ? 'WhatsApp essai' : 'WhatsApp');
-    }
-    else if (h.indexOf('DOSSIER-PARTENARIAT') !== -1) track('Dossier sponsor');
-    else if (h.indexOf('tel:') === 0) track('Appel telephone');
-    else if (h.indexOf('mailto:') === 0) track('E-mail');
-    else if (/maps\.(app\.)?goo|google\.[a-z.]+\/maps/.test(h)) track('Itineraire Maps');
-    else if (/\.ics(\?|$)/.test(h)) track('Ajout agenda');
-    else if (/\/adhesion\.html/.test(h)) track('Je m inscris');
-  }, true);
-
-  // Chargement de la carte : mesure si la facade sert vraiment.
-  var mf = document.getElementById('mapFacade');
-  if (mf) mf.addEventListener('click', function () { track('Carte chargee'); }, { once: true });
-
-  // Selecteur d'age : quelle tranche interesse les visiteurs ?
-  var ageBox = document.getElementById('age-selector');
-  if (ageBox) ageBox.addEventListener('click', function (e) {
-    var t = e.target && e.target.closest ? e.target.closest('.age__tab') : null;
-    if (t) track('Selecteur age');
-  });
-  var form = document.getElementById('contactForm');
-  if (form) form.addEventListener('mbc:contact-ok', function () { track('Formulaire contact'); });
-})();
+   Mesure d'audience
+   ============================================================
+   Les evenements GA4 vivent dans consent.js, charge sur TOUTES les pages
+   (celui-ci ne l'est que sur la home et adhesion.html). Un seul ecouteur
+   delegue y suffit, et il ne lit que des URL de destination.
+   Le formulaire de contact fait exception : lui seul sait s'il a REUSSI,
+   il emet donc « mbc:contact-ok » et consent.js n'a rien a deviner. */
 
 /* ============================================================
    PWA — enregistrement du service worker (/sw.js).

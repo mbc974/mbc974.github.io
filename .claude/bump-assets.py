@@ -20,7 +20,7 @@ import os
 import re
 import sys
 
-ASSETS = ('style.css', 'script.js')
+ASSETS = ('style.css', 'script.js', 'consent.js')
 
 
 def digest(path):
@@ -53,7 +53,9 @@ def main():
             out = re.sub(pattern, '%s?v=%s' % (asset, ver), out)
         # nom du cache du service worker : suit les deux hachages
         out = re.sub(r"const CACHE = '[^']*';",
-                     "const CACHE = 'mbc-%s-%s';" % (versions['style.css'], versions['script.js']),
+                     "const CACHE = 'mbc-%s-%s-%s';" % (versions['style.css'],
+                                                        versions['script.js'],
+                                                        versions['consent.js']),
                      out)
         if out != src:
             (stale if check else changed).append(f)

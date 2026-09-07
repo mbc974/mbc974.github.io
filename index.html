@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode v2.
+     Tout est refuse par defaut ; consent.js pose le bandeau et transmet le
+     choix. Le club n'utilise pas Google Ads : seul analytics_storage peut
+     passer a « granted ». -->
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});
+try{if(localStorage.getItem('mbc-consent')==='granted'){gtag('consent','update',{'analytics_storage':'granted'});}}catch(e){}
+gtag('js',new Date());
+gtag('config','G-4C00VET9W9');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4C00VET9W9"></script>
+<script defer src="/consent.js"></script>
+<!-- /Google Analytics 4 -->
 <title>Club de basket à Saint-Denis — MBC La Montagne (974)</title>
 <meta name="description" content="Le club de basket de La Montagne, à Saint-Denis (974). Filles et garçons dès 3 ans, licence FFBB 95 € tout compris. Inscriptions 2026/2027 ouvertes.">
 <meta name="author" content="MBC La Montagne Basket Club">
@@ -66,7 +80,7 @@
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.css?v=0e9df4d3">
+<link rel="stylesheet" href="style.css?v=5ea07208">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -233,11 +247,6 @@
 <!-- BreadcrumbList supprimé : le fil « Accueil > Adhésion » déclaré ici décrivait une autre page
      que la page courante (non conforme aux guidelines Google). Celui d'adhesion.html reste en place. -->
 
-<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
-     Activer partout : python .claude/set-analytics.py --on
-     Les evenements personnalises sont deja prepares dans script.js.
-<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
--->
 </head>
 <body>
 
@@ -1603,6 +1612,6 @@
   </div>
 </div>
 
-<script src="script.js?v=05be4265" defer></script>
+<script src="script.js?v=c1efb8de" defer></script>
 </body>
 </html>

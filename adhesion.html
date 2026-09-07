@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode v2.
+     Tout est refuse par defaut ; consent.js pose le bandeau et transmet le
+     choix. Le club n'utilise pas Google Ads : seul analytics_storage peut
+     passer a « granted ». -->
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});
+try{if(localStorage.getItem('mbc-consent')==='granted'){gtag('consent','update',{'analytics_storage':'granted'});}}catch(e){}
+gtag('js',new Date());
+gtag('config','G-4C00VET9W9');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4C00VET9W9"></script>
+<script defer src="/consent.js"></script>
+<!-- /Google Analytics 4 -->
 <title>Inscription basket 2026/2027 à Saint-Denis — 95 €</title>
 <meta name="description" content="Inscription basket à Saint-Denis (974) : 95 € tout compris, licence FFBB et assurance incluses. Choisir sa formule selon l'année de naissance.">
 <meta name="author" content="MBC La Montagne Basket Club">
@@ -47,7 +61,7 @@
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=0e9df4d3">
+<link rel="stylesheet" href="style.css?v=5ea07208">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -87,11 +101,6 @@
 }
 </script>
 
-<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
-     Activer partout : python .claude/set-analytics.py --on
-     Les evenements personnalises sont deja prepares dans script.js.
-<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
--->
 </head>
 <body>
 
@@ -353,6 +362,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=05be4265" defer></script>
+<script src="script.js?v=c1efb8de" defer></script>
 </body>
 </html>

@@ -133,13 +133,25 @@ def gabarit():
 # l'audience instrumentait le site a moitie, et l'evenement « Ajout agenda »
 # n'aurait jamais rien compte puisque le lien .ics ne vit que sur ces pages.
 # Bascule d'un seul geste : python .claude/set-analytics.py --on
-ANALYTICS = (u"<!-- ANALYTICS (à activer) : mesure d'audience légère, "
-             u"sans cookies ni bannière RGPD.\n"
-             u"     Activer partout : python .claude/set-analytics.py --on\n"
-             u"     Les evenements personnalises sont deja prepares dans script.js.\n"
-             u'<script defer data-domain="mbc974.com" '
-             u'src="https://plausible.io/js/script.outbound-links.file-downloads.js">'
-             u"</script>\n-->")
+# Le meme bloc que dans .claude/set-analytics.py, pour les 12 pages
+# generees. Les deux sources doivent rester identiques : une page sans
+# balise est une page invisible dans les rapports, et rien ne le signale.
+ANALYTICS = u"\n".join([
+    '<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode v2.',
+    '     Tout est refuse par defaut ; consent.js pose le bandeau et transmet',
+    "     le choix. Le club n'utilise pas Google Ads : seul analytics_storage",
+    '     peut passer a « granted ». -->',
+    '<script>',
+    'window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}',
+    "gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});",
+    "try{if(localStorage.getItem('mbc-consent')==='granted'){gtag('consent','update',{'analytics_storage':'granted'});}}catch(e){}",
+    "gtag('js',new Date());",
+    "gtag('config','G-4C00VET9W9');",
+    '</script>',
+    '<script async src="https://www.googletagmanager.com/gtag/js?id=G-4C00VET9W9"></script>',
+    '<script defer src="/consent.js"></script>',
+    '<!-- /Google Analytics 4 -->',
+])
 
 
 def tete(titre, description, url, jsonlds, prof=2):
