@@ -56,6 +56,13 @@ def cible(page, url):
         chemin = u.lstrip('/')
     else:
         chemin = os.path.normpath(os.path.join(os.path.dirname(page), u)).replace(os.sep, '/')
+        # normpath SUPPRIME le slash final : « confidentialite/ » devient
+        # « confidentialite ». Sans cette restitution, index.html n'etait jamais
+        # ajoute pour un lien RELATIF vers un dossier : le lien etait signale
+        # casse a tort, et surtout les liens relatifs de ce type n'etaient
+        # verifies qu'au niveau du dossier, jamais de la page.
+        if u.endswith('/') and not chemin.endswith('/'):
+            chemin += '/'
     if chemin == '' or chemin.endswith('/'):
         chemin += 'index.html'
     return chemin

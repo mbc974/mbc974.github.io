@@ -91,14 +91,42 @@
     b.appendChild(a);
 
     function repondre(accepte) {
+      var avant = lire();
       ecrire(accepte ? 'accepted' : 'refused');
+      b.remove();
+
       if (accepte) {
         accorde = true;
         /* Le chargeur vit dans le <head> : c'est ici, et seulement ici, que
            gtag.js entre dans la page pour la premiere fois. */
         if (typeof window.mbcChargerGA === 'function') window.mbcChargerGA();
+        return;
       }
-      b.remove();
+
+      /* REFUS. Tant que le bandeau ne s'ouvrait qu'en l'absence de choix, cette
+         branche n'avait rien a faire : on ne pouvait pas refuser apres avoir
+         accepte. Depuis que « Gerer mes cookies » rouvre le choix, c'est
+         possible — et il faut alors reellement tout arreter.
+
+         Couper analytics_storage ne suffit pas : en Consent Mode, gtag.js
+         reste charge et continue d'emettre des pings sans cookie. Cela
+         contredirait la promesse faite au visiteur (« rien de Google »). On
+         recharge donc la page : le garde du <head> lit « refused » et
+         n'appelle plus le chargeur. Le retrait des cookies est un meilleur
+         effort — leur domaine est pose en « auto » par Google. */
+      accorde = false;
+      if (window.MBC_GA_ON) {
+        if (typeof window.gtag === 'function') {
+          window.gtag('consent', 'update', { 'analytics_storage': 'denied' });
+        }
+        var id = String(window.MBC_GA_ID || '').replace(/^G-/, '');
+        ['_ga', '_ga_' + id].forEach(function (n) {
+          document.cookie = n + '=; Max-Age=0; path=/';
+          document.cookie = n + '=; Max-Age=0; path=/; domain=' + location.hostname;
+          document.cookie = n + '=; Max-Age=0; path=/; domain=.' + location.hostname;
+        });
+        if (avant === 'accepted' || avant === 'granted') location.reload();
+      }
     }
     oui.addEventListener('click', function () { repondre(true); });
     non.addEventListener('click', function () { repondre(false); });
@@ -106,6 +134,26 @@
     document.body.appendChild(b);
     requestAnimationFrame(function () { b.classList.add('is-on'); });
   }
+
+  /* ---- 1 bis. Rouvrir le choix --------------------------------------- */
+  /* Le bandeau n'est construit qu'en l'absence de choix memorise : sans ce
+     point d'entree, un visiteur qui a repondu ne pourrait plus revenir dessus
+     autrement qu'en effacant les donnees du site — ce qui viderait aussi le
+     cache hors ligne. Tout element portant data-mbc-cookies le rouvre.
+
+     L'ecouteur est SEPARE de celui des evenements : ce dernier commence par
+     « if (!accorde) return », il ne verrait donc jamais le clic d'un visiteur
+     ayant refuse — c'est-a-dire precisement celui qui veut changer d'avis. */
+  window.mbcRouvrirConsentement = function () {
+    if (document.querySelector('.ccb')) return;
+    bandeau();
+  };
+  document.addEventListener('click', function (e) {
+    var l = e.target && e.target.closest ? e.target.closest('[data-mbc-cookies]') : null;
+    if (!l) return;
+    e.preventDefault();
+    window.mbcRouvrirConsentement();
+  });
 
   if (!memorise) bandeau();
 
