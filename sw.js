@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-38e869c0-f30bf95f-1f74870d';
+const CACHE = 'mbc-4f2c3a34-f30bf95f-1f74870d';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,7 +13,7 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.css?v=38e869c0',
+  '/style.min.css?v=4f2c3a34',
   '/script.js?v=f30bf95f',
   '/consent.js?v=1f74870d',
   '/assets/logos/mbc-logo.webp',
@@ -87,13 +87,14 @@ self.addEventListener('fetch', function (e) {
   // La CSS et le JS avaient ici, jusqu'à présent, un cas particulier
   // « réseau d'abord », posé après un incident réel : un visiteur recevait le
   // HTML du jour avec la CSS de la veille. Il coûtait cher — mesuré à
-  // 1,6 Mb/s, style.css passait de 199 à 2018 ms, soit près de deux secondes
+  // 1,6 Mb/s, la feuille passait de 199 à 2018 ms, soit près de deux secondes
   // de rendu bloqué à chaque page vue, même la centième.
   //
   // Cet incident ne peut plus se reproduire, pour deux raisons indépendantes :
-  //   1. le ?v= de style.css, script.js et consent.js est un hachage de leur
-  //      contenu, tenu par .claude/bump-assets.py. Une feuille modifiée a donc
-  //      une URL nouvelle : le cache ne peut pas la connaître, il va au réseau.
+  //   1. le ?v= de style.min.css, script.js et consent.js est un hachage de
+  //      leur contenu, tenu par .claude/bump-assets.py. Une feuille modifiée a
+  //      donc une URL nouvelle : le cache ne peut pas la connaître, il va au
+  //      réseau.
   //   2. le nom de ce cache suit ces mêmes hachages. Un changement de CSS
   //      change CACHE, et le gestionnaire « activate » efface tout l'ancien.
   //

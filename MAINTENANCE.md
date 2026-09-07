@@ -9,12 +9,32 @@ et tâches qui ne peuvent pas être faites depuis le dépôt.
 ## 1. Règle absolue après modification de `style.css` ou `script.js`
 
 ```bash
+python .claude/build-css.py      # seulement si style.css a bougé
 python .claude/bump-assets.py
 ```
 
-Le script recalcule l'empreinte des deux fichiers, met à jour le `?v=…` dans **toutes** les pages
-et le nom du cache du service worker. **Sans ce bump, les visiteurs gardent l'ancienne CSS** :
-le service worker sert alors une feuille périmée sur un HTML à jour, et la mise en page casse.
+`bump-assets.py` recalcule l'empreinte des fichiers servis, met à jour le `?v=…` dans **toutes**
+les pages et le nom du cache du service worker. **Sans ce bump, les visiteurs gardent l'ancienne
+CSS** : le service worker sert alors une feuille périmée sur un HTML à jour, et la mise en page
+casse.
+
+### La feuille éditée n'est pas la feuille servie
+
+On édite **`style.css`** — c'est la source, et c'est elle qui porte les commentaires de version.
+Les pages, elles, chargent **`style.min.css`**, que `build-css.py` produit en retirant ces
+commentaires. Ils font 230 Ko sur 512, et 88 Ko sur 139 une fois compressés, sur la seule
+ressource qui bloque le rendu : les enlever fait gagner **644 ms de premier rendu** à 1,6 Mb/s
+(mesuré, quatre passages par variante).
+
+`style.min.css` est **généré** : toute modification faite dedans sera écrasée. `build-css.py` ne
+retire que les commentaires et les lignes vides — il ne renomme, ne réordonne et ne raccourcit
+rien, et l'équivalence a été vérifiée dans le navigateur (4 300 règles CSSOM, `cssText`
+identique pour chacune).
+
+Le piège est d'éditer `style.css` sans régénérer : le hachage de `style.min.css` ne bougerait
+pas, les pages garderaient leur `?v=` et le site continuerait de servir l'ancienne feuille, sans
+qu'aucun voyant ne passe au rouge. `bump-assets.py` **refuse donc de tourner** dans ce cas et dit
+quoi lancer. `python .claude/build-css.py --check` fait le même contrôle seul.
 
 Pour les **images**, la règle est différente : une nouvelle photo = **un nouveau nom de fichier**.
 Le service worker met les médias en cache par leur nom ; réutiliser un nom sert l'ancienne image.
@@ -34,6 +54,7 @@ suivante.
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
+| La feuille de style | `style.css` | `python .claude/build-css.py` |
 
 **L'ordre compte.** `bump-assets.py` se lance **en dernier** : les générateurs relèvent le
 `?v=` sur une page existante, donc bumper avant leur ferait écrire une version périmée.

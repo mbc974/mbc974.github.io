@@ -144,7 +144,10 @@ def gabarit():
         '<a href="/#contact">Contact</a>', 1)
     pied = s[s.index('<footer class="seo-foot">'):s.index("</footer>") + len("</footer>")]
     scripts = s[s.index("<script>\n/* Barre CTA mobile"):s.index("</body>")]
-    version = re.search(r'href="/style\.css\?v=([0-9a-f]+)"', s).group(1)
+    # La feuille servie est style.min.css (voir .claude/build-css.py) ; le ?v=
+    # accepte aussi le jeton temporaire pose par un lot de modifications, que
+    # bump-assets.py remplace ensuite par le vrai hachage.
+    version = re.search(r'href="/style\.min\.css\?v=([A-Za-z0-9._-]+)"', s).group(1)
     return entete, cta, pied, scripts, version
 
 
@@ -229,7 +232,7 @@ def tete(titre, description, url, jsonlds, prof=2):
       href="%(rel)sassets/fonts/anton-400-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="%(rel)sassets/fonts/barlow-condensed-700-latin.woff2">
-<link rel="stylesheet" href="/style.css?v=%(v)s">
+<link rel="stylesheet" href="/style.min.css?v=%(v)s">
 
 %(jsonld)s
 %(analytics)s
