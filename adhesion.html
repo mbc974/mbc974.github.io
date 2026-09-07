@@ -4,6 +4,32 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode BASIQUE.
+     Rien n'est charge tant que le visiteur n'a pas accepte : pas de
+     gtag.js, pas de requete, pas de ping anonyme. Ce bloc ne fait que
+     definir mbcChargerGA() et l'appeler si un accord est deja memorise,
+     pour que la mesure reprenne des la premiere page d'une visite
+     suivante. C'est consent.js qui l'appelle au clic sur Accepter.
+     Les trois consentements publicitaires restent refuses en toutes
+     circonstances : le club n'utilise pas Google Ads. -->
+<script>
+window.MBC_GA_ID='G-4C00VET9W9';
+window.mbcChargerGA=function(){
+  if(window.MBC_GA_ON){return;}window.MBC_GA_ON=true;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});
+  gtag('consent','update',{'analytics_storage':'granted'});
+  gtag('js',new Date());
+  gtag('config',window.MBC_GA_ID);
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+window.MBC_GA_ID;
+  document.head.appendChild(s);
+};
+try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){window.mbcChargerGA();}}catch(e){}
+</script>
+<script defer src="/consent.js"></script>
+<!-- /Google Analytics 4 -->
 <title>Inscription basket 2026/2027 à Saint-Denis — 95 €</title>
 <meta name="description" content="Inscription basket à Saint-Denis (974) : 95 € tout compris, licence FFBB et assurance incluses. Choisir sa formule selon l'année de naissance.">
 <meta name="author" content="MBC La Montagne Basket Club">
@@ -47,7 +73,7 @@
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.css?v=a6301b99">
+<link rel="stylesheet" href="style.css?v=d3ef5b16">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -87,11 +113,6 @@
 }
 </script>
 
-<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
-     Activer partout : python .claude/set-analytics.py --on
-     Les evenements personnalises sont deja prepares dans script.js.
-<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
--->
 </head>
 <body>
 
@@ -353,6 +374,6 @@
   </div>
 </footer>
 
-<script src="script.js?v=e940e0ec" defer></script>
+<script src="script.js?v=c7f694f4" defer></script>
 </body>
 </html>

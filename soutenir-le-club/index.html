@@ -3,6 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode BASIQUE.
+     Rien n'est charge tant que le visiteur n'a pas accepte : pas de
+     gtag.js, pas de requete, pas de ping anonyme. Ce bloc ne fait que
+     definir mbcChargerGA() et l'appeler si un accord est deja memorise,
+     pour que la mesure reprenne des la premiere page d'une visite
+     suivante. C'est consent.js qui l'appelle au clic sur Accepter.
+     Les trois consentements publicitaires restent refuses en toutes
+     circonstances : le club n'utilise pas Google Ads. -->
+<script>
+window.MBC_GA_ID='G-4C00VET9W9';
+window.mbcChargerGA=function(){
+  if(window.MBC_GA_ON){return;}window.MBC_GA_ON=true;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});
+  gtag('consent','update',{'analytics_storage':'granted'});
+  gtag('js',new Date());
+  gtag('config',window.MBC_GA_ID);
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+window.MBC_GA_ID;
+  document.head.appendChild(s);
+};
+try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){window.mbcChargerGA();}}catch(e){}
+</script>
+<script defer src="/consent.js"></script>
+<!-- /Google Analytics 4 -->
 <title>Faire un don au club de basket MBC — Saint-Denis</title>
 <meta name="description" content="Soutenez le MBC, club de basket de La Montagne à Saint-Denis (974) : 95 € financent une licence pour un enfant. Paiement sécurisé.">
 <meta name="author" content="MBC La Montagne Basket Club">
@@ -36,7 +62,7 @@
       href="../assets/fonts/anton-400-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="../assets/fonts/barlow-condensed-700-latin.woff2">
-<link rel="stylesheet" href="/style.css?v=a6301b99">
+<link rel="stylesheet" href="/style.css?v=d3ef5b16">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Soutenir le MBC La Montagne Basket Club","url":"https://mbc974.com/soutenir-le-club/","inLanguage":"fr","description":"Faire un don au club de basket de La Montagne, à Saint-Denis de La Réunion : ce que finance votre soutien et comment donner.","isPartOf":{"@type":"WebSite","@id":"https://mbc974.com/#website","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
 </script>
@@ -51,11 +77,6 @@
 ]}
 </script>
 
-<!-- ANALYTICS (à activer) : mesure d'audience légère, sans cookies ni bannière RGPD.
-     Activer partout : python .claude/set-analytics.py --on
-     Les evenements personnalises sont deja prepares dans script.js.
-<script defer data-domain="mbc974.com" src="https://plausible.io/js/script.outbound-links.file-downloads.js"></script>
--->
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu principal</a>

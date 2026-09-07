@@ -133,13 +133,37 @@ def gabarit():
 # l'audience instrumentait le site a moitie, et l'evenement « Ajout agenda »
 # n'aurait jamais rien compte puisque le lien .ics ne vit que sur ces pages.
 # Bascule d'un seul geste : python .claude/set-analytics.py --on
-ANALYTICS = (u"<!-- ANALYTICS (à activer) : mesure d'audience légère, "
-             u"sans cookies ni bannière RGPD.\n"
-             u"     Activer partout : python .claude/set-analytics.py --on\n"
-             u"     Les evenements personnalises sont deja prepares dans script.js.\n"
-             u'<script defer data-domain="mbc974.com" '
-             u'src="https://plausible.io/js/script.outbound-links.file-downloads.js">'
-             u"</script>\n-->")
+# Le meme bloc que dans .claude/set-analytics.py, pour les 12 pages
+# generees. Les deux sources doivent rester identiques : une page sans
+# balise est une page invisible dans les rapports, et rien ne le signale.
+ANALYTICS = u"\n".join([
+    '<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode BASIQUE.',
+    "     Rien n'est charge tant que le visiteur n'a pas accepte : pas de",
+    '     gtag.js, pas de requete, pas de ping anonyme. Ce bloc ne fait que',
+    "     definir mbcChargerGA() et l'appeler si un accord est deja memorise,",
+    "     pour que la mesure reprenne des la premiere page d'une visite",
+    "     suivante. C'est consent.js qui l'appelle au clic sur Accepter.",
+    '     Les trois consentements publicitaires restent refuses en toutes',
+    "     circonstances : le club n'utilise pas Google Ads. -->",
+    '<script>',
+    "window.MBC_GA_ID='G-4C00VET9W9';",
+    'window.mbcChargerGA=function(){',
+    '  if(window.MBC_GA_ON){return;}window.MBC_GA_ON=true;',
+    '  window.dataLayer=window.dataLayer||[];',
+    '  window.gtag=function(){window.dataLayer.push(arguments);};',
+    "  gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});",
+    "  gtag('consent','update',{'analytics_storage':'granted'});",
+    "  gtag('js',new Date());",
+    "  gtag('config',window.MBC_GA_ID);",
+    "  var s=document.createElement('script');s.async=true;",
+    "  s.src='https://www.googletagmanager.com/gtag/js?id='+window.MBC_GA_ID;",
+    '  document.head.appendChild(s);',
+    '};',
+    "try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){window.mbcChargerGA();}}catch(e){}",
+    '</script>',
+    '<script defer src="/consent.js"></script>',
+    '<!-- /Google Analytics 4 -->',
+])
 
 
 def tete(titre, description, url, jsonlds, prof=2):

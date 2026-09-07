@@ -216,7 +216,7 @@ posés en dur dans `index.html`, dans `<span class="hw" data-hw>`.
 
 C'est ce qui permet d'animer le tracé sans embarquer de police manuscrite ni de bibliothèque :
 le hero ne fait **aucune requête** de plus, et un changement de phrase n'en déclenche aucune.
-Le style est dans la couche V137 de `style.css`, la rotation en fin de `script.js`.
+Le style est dans la couche V138 de `style.css`, la rotation en fin de `script.js`.
 
 ### Changer les phrases (ou la police)
 
