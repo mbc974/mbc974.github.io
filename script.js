@@ -605,28 +605,6 @@
 })();
 
 /* ============================================================
-   Grille infinie "Sur le terrain" : le calque révélé suit le curseur
-   (adaptation native de the-infinite-grid — pas de framer-motion)
-   ============================================================ */
-(function () {
-  'use strict';
-  var gal = document.getElementById('categories');
-  if (!gal || !gal.querySelector('.grid-fx')) return;
-  if (window.matchMedia('(hover:none)').matches) return;
-  var raf = null, gx = 0, gy = 0;
-  gal.addEventListener('pointermove', function (e) {
-    var r = gal.getBoundingClientRect();
-    gx = e.clientX - r.left; gy = e.clientY - r.top;
-    if (raf) return;
-    raf = window.requestAnimationFrame(function () {
-      raf = null;
-      gal.style.setProperty('--grx', gx.toFixed(0) + 'px');
-      gal.style.setProperty('--gry', gy.toFixed(0) + 'px');
-    });
-  }, { passive: true });
-})();
-
-/* ============================================================
    Carte cinématique "La licence MBC" : la vidéo apparaît en fondu
    (transition CSS .cine-video) à l'entrée dans le viewport, + reflet/
    parallaxe à la souris (sans GSAP). L'ancienne jauge « 0→100 % »
