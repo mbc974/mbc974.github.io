@@ -9074,3 +9074,41 @@ main > .section .cal-lieux{
 @media (max-width:640px){
   .hero__photo img{object-position:0% 42%}
 }
+
+
+/* ==========================================================================
+   V133 — LE HERO SUR TÉLÉPHONE : DÉZOOMER, PAS DÉPLACER
+   ==========================================================================
+   La V132 avait amené le blason dans le cadre en déplaçant la fenêtre vers la
+   gauche (object-position:0%). Mais déplacer n'est pas dézoomer : à 82svh, le
+   cadre ne montrait que ~80 % de la largeur du recadrage mobile, donc gagner le
+   blason à gauche revenait à perdre les enfants à droite.
+
+   LE SEUL VRAI LEVIER, ET SON CALCUL
+   Avec object-fit:cover et un cadre plus étroit que la source, l'échelle est
+   fixée par la hauteur : la largeur de scène visible vaut
+
+       largeur_écran x 1630 / hauteur_du_hero
+
+   Elle grandit donc quand le hero RACCOURCIT. Le recadrage mobile fait
+   1280x1630 (voir FENETRE_MOBILE dans .claude/build-hero.py), soit 1:1,273 :
+   à hauteur = largeur x 1,273, la fenêtre entre EXACTEMENT dans le cadre,
+   blason et enfants compris, sans rien rogner. C'est la valeur plancher visée.
+
+   La hauteur ne dépend donc plus de celle de l'écran (82svh), mais de sa
+   LARGEUR : le cadre garde le rapport de la photo, quel que soit le téléphone.
+   De 375 à 430 px de large, il ne se rogne plus que 0 à 8 % de la largeur,
+   contre 20 % auparavant — ce sont les enfants de droite qui reviennent.
+
+   LE PLANCHER DE 500 PX, ET CE QU'IL ARBITRE
+   La V132 déconseillait de raccourcir le hero : le bloc éditorial mesure ~350 px
+   et vient du BAS (align-items:flex-end), donc plus le cadre est court, plus le
+   titre remonte sur le blason. C'est vrai, et c'est un arbitrage, pas un bug :
+   le blason occupe la bande 30–55 % de la hauteur de la photo, le titre la
+   moitié basse — les deux se croisent forcément sur un écran de téléphone.
+   Le plancher de 500 px garde la MOITIÉ HAUTE du blason (la couronne, le
+   ballon, la montagne) au-dessus du titre sur les téléphones courts, où la
+   formule seule tombait à 477 px et l'avalait entièrement. */
+@media (max-width:640px){
+  .hero{min-height:clamp(500px,100vw * 1.273,620px) !important}
+}
