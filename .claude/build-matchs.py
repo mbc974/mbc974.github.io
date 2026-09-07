@@ -128,6 +128,20 @@ def gabarit():
     return entete, cta, pied, scripts, version
 
 
+# Le meme bloc que dans les pages ecrites a la main. Sans lui, les 12 pages
+# generees etaient les seules a n'avoir aucun emplacement de mesure : activer
+# l'audience instrumentait le site a moitie, et l'evenement « Ajout agenda »
+# n'aurait jamais rien compte puisque le lien .ics ne vit que sur ces pages.
+# Bascule d'un seul geste : python .claude/set-analytics.py --on
+ANALYTICS = (u"<!-- ANALYTICS (à activer) : mesure d'audience légère, "
+             u"sans cookies ni bannière RGPD.\n"
+             u"     Activer partout : python .claude/set-analytics.py --on\n"
+             u"     Les evenements personnalises sont deja prepares dans script.js.\n"
+             u'<script defer data-domain="mbc974.com" '
+             u'src="https://plausible.io/js/script.outbound-links.file-downloads.js">'
+             u"</script>\n-->")
+
+
 def tete(titre, description, url, jsonlds, prof=2):
     """<head> commun. `prof` = profondeur du dossier, pour les preloads de
     police en chemin relatif (matchs/ = 1, matchs/<slug>/ = 2)."""
@@ -174,12 +188,13 @@ def tete(titre, description, url, jsonlds, prof=2):
 <link rel="stylesheet" href="/style.css?v=%(v)s">
 
 %(jsonld)s
+%(analytics)s
 </head>
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu principal</a>
 """ % {"titre": ech(titre), "desc": ech(description), "url": url, "rel": rel,
-       "v": VERSION_CSS, "jsonld": blocs,
+       "v": VERSION_CSS, "jsonld": blocs, "analytics": ANALYTICS,
        "image": SITE + "/assets/images/social-preview.png"}
 
 

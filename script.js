@@ -347,6 +347,10 @@
             feedback.textContent = 'Merci ! Votre demande a bien été envoyée — le club vous répond sous 48 h.';
             feedback.className = 'form-feedback ok';
             form.reset();
+            /* La mesure d'audience ecoute cet evenement, et lui seul : compter
+               l'evenement « submit » revenait a compter les tentatives, y
+               compris celles refusees par la validation du navigateur. */
+            form.dispatchEvent(new CustomEvent('mbc:contact-ok'));
           })
           .catch(function () {
             feedback.innerHTML = 'L\u2019envoi a échoué. Contactez-nous directement sur ' + altLinks + '.';
@@ -884,7 +888,7 @@
     if (t) track('Selecteur age');
   });
   var form = document.getElementById('contactForm');
-  if (form) form.addEventListener('submit', function () { track('Formulaire contact'); });
+  if (form) form.addEventListener('mbc:contact-ok', function () { track('Formulaire contact'); });
 })();
 
 /* ============================================================
