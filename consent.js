@@ -1,50 +1,51 @@
 /* ============================================================
    MBC — consentement statistiques + evenements GA4
    ============================================================
-   Ce fichier est charge sur TOUTES les pages, en defer. Il fait trois
-   choses, et rien d'autre :
+   CONSENT MODE BASIQUE. C'est le point essentiel de ce fichier : tant que
+   le visiteur n'a pas accepte, RIEN de Google n'est charge. Pas de
+   gtag.js, pas de requete vers googletagmanager.com, pas de ping anonyme,
+   pas de dataLayer. Un refus n'est donc pas « une mesure sans cookie » :
+   c'est l'absence totale de Google sur la page.
 
-     1. affiche le bandeau de choix tant que le visiteur n'a pas tranche ;
-     2. transmet ce choix a Google Consent Mode ;
-     3. envoie une poignee d'evenements de conversion, sans aucune donnee
-        personnelle.
+   Le chargement lui-meme vit dans le <head> de chaque page, sous la forme
+   de mbcChargerGA(). Ce fichier ne fait que decider QUAND l'appeler :
 
-   L'ETAT PAR DEFAUT EST « REFUSE ». Il est pose en clair dans le <head> de
-   chaque page, AVANT le chargement de gtag.js — c'est la seule facon d'etre
-   sur qu'aucun cookie de mesure n'existe avant le choix. Ce fichier ne fait
-   que passer de « refuse » a « accepte » quand le visiteur l'accepte.
+     - accord deja memorise  -> le <head> l'a deja appele, des la premiere
+                                ligne de la page ;
+     - clic sur « Accepter » -> on l'appelle ici ;
+     - refus, ou pas encore de choix -> on ne l'appelle jamais.
 
    Le MBC n'utilise pas Google Ads : ad_storage, ad_user_data et
    ad_personalization restent refuses en toutes circonstances, y compris
-   apres acceptation. Seul analytics_storage bascule.
+   apres acceptation. Seul analytics_storage passe a « granted ».
 
-   MEMOIRE DU CHOIX : localStorage, cle « mbc-consent », valeurs
-   « granted » / « denied ». C'est le PREMIER stockage local du site ; tout
-   est enveloppe dans des try/catch car un navigateur en navigation privee,
-   ou configure pour bloquer le stockage, leve une exception a la lecture
-   comme a l'ecriture. Dans ce cas le bandeau reapparait, ce qui est le
-   comportement correct : sans memoire, pas de consentement presume. */
+   MEMOIRE DU CHOIX : localStorage, cle « mbc-consent ». La valeur ecrite
+   est « accepted » ou « refused » ; « granted » est encore reconnu, c'est
+   la valeur qu'ecrivait la version precedente — un visiteur qui avait
+   deja accepte n'a pas a repondre une seconde fois. Tout est enveloppe
+   dans des try/catch : en navigation privee, ou si le stockage est
+   bloque, le bandeau reapparait, ce qui est le comportement correct —
+   sans memoire, pas de consentement presume. */
 (function () {
   'use strict';
 
   var CLE = 'mbc-consent';
+  var accorde = false;
 
   function lire() {
     try { return localStorage.getItem(CLE); } catch (e) { return null; }
   }
   function ecrire(v) {
-    try { localStorage.setItem(CLE, v); } catch (e) { /* stockage refuse : tant pis */ }
-  }
-  function gtag() {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(arguments);
+    try { localStorage.setItem(CLE, v); } catch (e) { /* stockage bloque */ }
   }
 
+  var memorise = lire();
+  accorde = (memorise === 'accepted' || memorise === 'granted');
+
   /* ---- 1. Le bandeau ------------------------------------------------- */
-  /* Il n'est construit que s'il doit etre montre : aucune page n'a de DOM
-     inutile une fois le choix fait. Ce n'est volontairement PAS une boite
-     modale — elle ne bloque pas la lecture et ne capture pas le focus ;
-     elle reste atteignable au clavier comme n'importe quel contenu. */
+  /* Construit uniquement s'il doit etre montre. Ce n'est volontairement PAS
+     une boite modale : elle ne bloque pas la lecture et ne capture pas le
+     focus, et « Refuser » est aussi visible qu'« Accepter ». */
   function bandeau() {
     var b = document.createElement('div');
     b.className = 'ccb';
@@ -61,8 +62,8 @@
     d.className = 'ccb__d';
     d.id = 'ccbD';
     d.textContent = 'Le club aimerait compter les visites pour savoir ce qui '
-      + 'est utile sur ce site. Rien n’est mesuré sans votre accord, et '
-      + 'aucune donnée de formulaire n’est transmise.';
+      + 'est utile sur ce site. Tant que vous n’avez pas accepté, aucun outil '
+      + 'de mesure n’est chargé. Aucune donnée de formulaire n’est transmise.';
 
     var a = document.createElement('div');
     a.className = 'ccb__a';
@@ -90,34 +91,40 @@
     b.appendChild(a);
 
     function repondre(accepte) {
-      ecrire(accepte ? 'granted' : 'denied');
-      gtag('consent', 'update', { analytics_storage: accepte ? 'granted' : 'denied' });
+      ecrire(accepte ? 'accepted' : 'refused');
+      if (accepte) {
+        accorde = true;
+        /* Le chargeur vit dans le <head> : c'est ici, et seulement ici, que
+           gtag.js entre dans la page pour la premiere fois. */
+        if (typeof window.mbcChargerGA === 'function') window.mbcChargerGA();
+      }
       b.remove();
     }
     oui.addEventListener('click', function () { repondre(true); });
     non.addEventListener('click', function () { repondre(false); });
 
     document.body.appendChild(b);
-    /* Laisse un cadre au navigateur pour peindre avant la transition. */
     requestAnimationFrame(function () { b.classList.add('is-on'); });
   }
 
-  if (!lire()) bandeau();
+  if (!memorise) bandeau();
 
   /* ---- 2. Les evenements --------------------------------------------- */
-  /* Un seul ecouteur delegue, en phase de capture, pour attraper aussi les
-     liens dont le clic est intercepte ailleurs. On ne lit QUE l'URL de
+  /* Un seul ecouteur delegue, en phase de capture. On ne lit QUE l'URL de
      destination : jamais un champ, jamais un texte saisi. Aucun nom, aucun
      e-mail, aucun telephone ne peut transiter par ici.
 
-     gtag() empile dans dataLayer meme si gtag.js n'est pas encore charge :
-     les evenements ne sont pas perdus. Et si le consentement est refuse,
-     c'est Consent Mode qui les neutralise cote Google — pas ce fichier. */
+     Sans accord, evenement() ne fait RIEN — on n'empile meme pas dans
+     dataLayer. Sans cette garde, un clic effectue avant le choix serait
+     rejoue au moment ou gtag.js arrive : de la donnee collectee avant le
+     consentement, ce qui est precisement ce qu'on veut eviter. */
   function evenement(nom) {
-    gtag('event', nom);
+    if (!accorde || typeof window.gtag !== 'function') return;
+    window.gtag('event', nom);
   }
 
   document.addEventListener('click', function (e) {
+    if (!accorde) return;
     var a = e.target && e.target.closest ? e.target.closest('a[href],button[data-ga]') : null;
     if (!a) return;
 
@@ -132,7 +139,7 @@
     else if (h.indexOf('adhesion.html') !== -1) evenement('signup_click');
     else if (h.indexOf('mailto:') === 0 || h.indexOf('tel:') === 0) evenement('contact_click');
     else if (/\.ics(\?|$)/.test(h)) evenement('add_to_calendar');
-    else if (/^\/matchs\/|\/matchs\//.test(h)) evenement('match_cta_click');
+    else if (/\/matchs\//.test(h)) evenement('match_cta_click');
     else if (/facebook\.com|instagram\.com|tiktok\.com|youtube\.com/.test(h)) evenement('social_click');
   }, true);
 

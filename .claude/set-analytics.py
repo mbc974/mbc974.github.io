@@ -17,18 +17,19 @@ Les 12 pages generees recoivent le meme bloc par build-matchs.py (dont
 build-actus.py reprend le gabarit) : les deux sources sont volontairement
 identiques, voir ANALYTICS dans ce fichier et dans build-matchs.py.
 
-CE QUE FAIT LE BLOC POSE
-------------------------
-Il declare Consent Mode AVANT de charger gtag.js, avec TOUT refuse. C'est la
-seule facon d'etre certain qu'aucun cookie de mesure n'existe avant le choix
-du visiteur. Le choix deja memorise (localStorage « mbc-consent ») est
-relu dans la foulee, pour qu'un visiteur qui a accepte soit mesure des la
-premiere page et pas seulement a partir de la deuxieme.
+CE QUE FAIT LE BLOC POSE (Consent Mode BASIQUE)
+-----------------------------------------------
+Il ne charge RIEN de Google. Il definit mbcChargerGA() et ne l'appelle que si
+un accord est deja memorise (localStorage « mbc-consent » = accepted, ou
+granted pour les choix faits avant ce changement). Sans accord : pas de
+gtag.js, aucune requete vers googletagmanager.com, pas meme un ping anonyme.
+
+C'est consent.js qui pose le bandeau et qui appelle mbcChargerGA() au clic
+sur Accepter. Un refus n'entraine aucun chargement, jamais.
 
 Le MBC n'utilise pas Google Ads : ad_storage, ad_user_data et
 ad_personalization restent refuses meme apres acceptation. Seul
-analytics_storage bascule. C'est consent.js qui pose le bandeau et envoie la
-mise a jour.
+analytics_storage passe a granted.
 """
 import glob
 import io
@@ -41,20 +42,32 @@ MESURE = 'G-4C00VET9W9'
 DEBUT = '<!-- Google Analytics 4'
 FIN = '<!-- /Google Analytics 4 -->'
 
-ANALYTICS = u"""<!-- Google Analytics 4 (%(id)s) — Consent Mode v2.
-     Tout est refuse par defaut ; consent.js pose le bandeau et transmet le
-     choix. Le club n'utilise pas Google Ads : seul analytics_storage peut
-     passer a « granted ». -->
+ANALYTICS = u'''<!-- Google Analytics 4 (G-4C00VET9W9) — Consent Mode BASIQUE.
+     Rien n'est charge tant que le visiteur n'a pas accepte : pas de
+     gtag.js, pas de requete, pas de ping anonyme. Ce bloc ne fait que
+     definir mbcChargerGA() et l'appeler si un accord est deja memorise,
+     pour que la mesure reprenne des la premiere page d'une visite
+     suivante. C'est consent.js qui l'appelle au clic sur Accepter.
+     Les trois consentements publicitaires restent refuses en toutes
+     circonstances : le club n'utilise pas Google Ads. -->
 <script>
-window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
-gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied','wait_for_update':500});
-try{if(localStorage.getItem('mbc-consent')==='granted'){gtag('consent','update',{'analytics_storage':'granted'});}}catch(e){}
-gtag('js',new Date());
-gtag('config','%(id)s');
+window.MBC_GA_ID='G-4C00VET9W9';
+window.mbcChargerGA=function(){
+  if(window.MBC_GA_ON){return;}window.MBC_GA_ON=true;
+  window.dataLayer=window.dataLayer||[];
+  window.gtag=function(){window.dataLayer.push(arguments);};
+  gtag('consent','default',{'analytics_storage':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});
+  gtag('consent','update',{'analytics_storage':'granted'});
+  gtag('js',new Date());
+  gtag('config',window.MBC_GA_ID);
+  var s=document.createElement('script');s.async=true;
+  s.src='https://www.googletagmanager.com/gtag/js?id='+window.MBC_GA_ID;
+  document.head.appendChild(s);
+};
+try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){window.mbcChargerGA();}}catch(e){}
 </script>
-<script async src="https://www.googletagmanager.com/gtag/js?id=%(id)s"></script>
 <script defer src="/consent.js"></script>
-<!-- /Google Analytics 4 -->""" % {'id': MESURE}
+<!-- /Google Analytics 4 -->'''
 
 # L'ancre : juste apres le viewport, donc avant tout le reste du <head>.
 ANCRE = re.compile(r'(<meta name="viewport"[^>]*>\s*\n)')
