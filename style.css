@@ -8934,3 +8934,22 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    autour d'une boite invisible n'a plus de sens, meme au survol. Ce qui
    reagit au survol, c'est la plaque du logo. */
 .sponsors-row .sponsor-card > .spotglow__fx{display:none !important}
+
+/* ============================================================================
+   V142 — LE BANDEAU DE CONSENTEMENT NE MASQUE PLUS L'ELEMENT FOCALISE
+   ----------------------------------------------------------------------------
+   WCAG 2.2 AA, critere 2.4.11 « Focus non masque ». Le bandeau est colle en
+   bas de fenetre : un lien ou un bouton atteint au clavier dans cette bande
+   etait bien amene dans la fenetre par le navigateur, puis recouvert par lui.
+
+   scroll-padding-bottom dit au defilement de s'arreter plus haut. La valeur
+   suit la hauteur reellement mesuree du bandeau : 207 px a 360-430 px de
+   large, 185 px vers 640-760, 125 px a partir de 900. On arrondit vers le
+   haut, une marge en trop ne coute rien.
+
+   La regle ne s'applique QUE tant que le bandeau existe : des qu'on a
+   repondu, il est retire du DOM et le defilement redevient normal. */
+html:has(.ccb){scroll-padding-bottom:215px}
+@media (min-width:900px){
+  html:has(.ccb){scroll-padding-bottom:135px}
+}

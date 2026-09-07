@@ -5004,3 +5004,7 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 .spotglow > .spotglow__fx{opacity:0 !important}
 .spotglow:hover > .spotglow__fx{opacity:.18 !important}
 .sponsors-row .sponsor-card > .spotglow__fx{display:none !important}
+html:has(.ccb){scroll-padding-bottom:215px}
+@media (min-width:900px){
+  html:has(.ccb){scroll-padding-bottom:135px}
+}

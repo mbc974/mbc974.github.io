@@ -131,7 +131,21 @@
     oui.addEventListener('click', function () { repondre(true); });
     non.addEventListener('click', function () { repondre(false); });
 
-    document.body.appendChild(b);
+    /* EN TETE DE PAGE, pas a la fin. Le bandeau est en position:fixed :
+       sa place dans le DOM ne change rien a son apparence, mais elle decide
+       de son rang dans l'ordre de tabulation. Ajoute en fin de <body>, il
+       arrivait au 168e arret sur 171 (mesure sur l'accueil) : il fallait
+       traverser toute la page pour repondre a une question posee des la
+       premiere seconde.
+
+       On l'insere APRES le lien d'evitement, qui doit rester le tout premier
+       arret (WCAG 2.4.1 Contourner des blocs). */
+    var evitement = document.querySelector('.skip-link');
+    if (evitement && evitement.parentNode === document.body && evitement.nextSibling) {
+      document.body.insertBefore(b, evitement.nextSibling);
+    } else {
+      document.body.insertBefore(b, document.body.firstChild);
+    }
     requestAnimationFrame(function () { b.classList.add('is-on'); });
   }
 
