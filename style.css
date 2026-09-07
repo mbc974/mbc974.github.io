@@ -9139,3 +9139,206 @@ main > .section .cal-lieux{
    Il est donc repose ici explicitement, a l'identique. */
 .hero__h1{font-weight:700}
 .hero__h1-t{font:inherit;margin:0}
+
+
+/* ==========================================================================
+   V135 — LA HOME MOBILE, MIEUX EDITEE
+   ==========================================================================
+   La home faisait 22 245 px a 390 px de large, soit 26 ecrans de telephone.
+   Rien n'est SUPPRIME ici : aucun texte, aucun lien, aucune image ne quitte
+   le DOM. On ne corrige que des mises en page qui empilaient verticalement
+   ce qui tient cote a cote, et un rythme vertical calibre pour le bureau.
+
+   Chaque valeur ci-dessous a ete mesuree dans Chrome (viewport 390x844,
+   emulation mobile, content-visibility neutralise), scenario par scenario.
+   Les gains indiques sont donc constates, pas estimes.
+
+   Ce qui a ete essaye et ECARTE, parce que mesure a contresens : compacter
+   la mosaique de la galerie RALLONGE la page de 511 px (ses lignes fixes se
+   reorganisent), et compacter le selecteur d'age ne rend que 41 px alors
+   que c'est la piece maitresse de la page. */
+
+/* --- 1. Rythme vertical : celui que les 21 pages enfants servent deja ----- */
+/* .seo-top ~ main .section tourne a clamp(3rem,6vw,5rem) sur toutes les pages
+   enfants ; seules la home et adhesion.html gardaient 72 px. -523 px. */
+@media (max-width:640px){
+  :root{--sp-sec:3.25rem;--sp-blk:1.5rem}
+}
+
+/* --- 2. Le planning : 2 colonnes au lieu de 4 lignes empilees ------------- */
+/* Le plus gros bloc unique de la page : 2 073 px pour 9 creneaux, parce que
+   la grille 3 colonnes n'arrivait qu'a 880 px. -848 px.
+   Le nom du lieu RESTE affiche (texte local utile au referencement) et le
+   lien itineraire garde une cible tactile de 44 px. */
+@media (max-width:879px){
+  /* Colonne 1 en `auto` et colonne 2 en `minmax(0,1fr)` : l'inverse
+     (1fr | auto) fait s'effondrer la colonne 1 a 0 px des que la carte du
+     lieu est plus large que la place restante — l'heure et la nature du
+     creneau se superposaient alors au lieu. Verifie au banc. */
+  .pl-slot{grid-template-columns:auto minmax(0,1fr);
+    align-items:center;gap:.45rem .8rem;padding:.9rem 1rem}
+  .pl-slot__h{grid-area:1 / 1 / auto / auto}
+  .pl-slot__cats{grid-area:1 / 2 / auto / auto;justify-content:flex-end}
+  .pl .pl-slot__nat{grid-area:2 / 1 / auto / -1}
+  .pl-slot__ou{grid-area:3 / 1 / auto / -1;justify-self:start;
+    min-height:44px;align-items:center}
+}
+
+/* --- 3. Les deux cartes « lieux » : vignette au lieu de photo pleine ------ */
+/* Une couche tardive avait annule la vignette compacte prevue, laissant deux
+   photos plein cadre empilees. -477 px. Les deux photos restent dans le DOM
+   avec leur alt, les deux liens Maps restent cliquables.
+   .cal-lieu est redefini par cinq couches : cette regle est en fin de
+   feuille et n'en reveille aucune. */
+@media (max-width:720px){
+  .calendrier .cal-lieu{flex-direction:row;align-items:center}
+  .calendrier .cal-lieu__ph{width:104px;flex:none;aspect-ratio:1/1;
+    border-bottom:0;border-right:1px solid var(--hair)}
+  .calendrier .cal-lieu__txt{padding:.7rem .9rem}
+}
+
+/* --- 4. Titres et chapos : le .h2 mobile etait calibre pour le bureau ----- */
+/* A 390 px, clamp(2.5rem,7.4vw,5.6rem) tapait son plancher de 40 px : un
+   titre sur deux lignes coutait 70 px avant meme son chapo. -450 px.
+   Aucun texte retire : les chapos portent le vocabulaire local. */
+@media (max-width:640px){
+  .h2{font-size:clamp(1.95rem,6.2vw,5.6rem)}
+  .sec-head__sub{font-size:.98rem;line-height:1.45;margin-top:.55rem}
+  .kicker{margin-bottom:.45rem}
+}
+
+/* --- 5. Le pied de page : 2 colonnes, liens SEO en ligne ------------------ */
+/* 1 944 px, soit plus que toute la section categories. Les 10 liens SEO
+   restent tous presents, cliquables et dans le meme ordre. -450 px. */
+@media (max-width:640px){
+  .footer__top{grid-template-columns:1fr 1fr}
+  .footer__seo{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem}
+}
+
+/* --- 6. La carte Maps de la section contact ------------------------------- */
+/* 13e point d'entree Maps de la page, juste sous un lien « Ou nous trouver »
+   qui pointe deja sur la fiche Google du club. Aucun contenu indexable,
+   aucune donnee structuree. -284 px. */
+@media (max-width:720px){
+  .contact-map{display:none}
+}
+
+/* --- 7. La FAQ : items compactes, aucun item retire ---------------------- */
+/* Les 7 questions sont le miroir visible du JSON-LD FAQPage : les replier a
+   deux niveaux les ferait cesser d'etre « visibles sur la page » au sens de
+   Google. On ne touche donc qu'au rembourrage. -202 px. */
+@media (max-width:640px){
+  .faq__item summary{padding-block:.55rem;font-size:.95rem}
+}
+
+/* --- 8. Inauguration : la photo de concert passe au bureau seulement ------ */
+/* Seul visuel de la home qui ne montre pas de basket, 318 px sur telephone.
+   Elle reste servie au-dessus de 720 px, donc rien n'est perdu pour Google
+   Images, et le recit + le titre creole restent intacts. -469 px. */
+@media (max-width:720px){
+  .lp-aside{display:none}
+  .local-proof .lp-txt{font-size:.98rem;line-height:1.5}
+}
+
+/* --- 9. Les quatre piliers « parents » en 2 colonnes ---------------------- */
+/* Ils repassaient en une seule colonne sous 560 px. -297 px. */
+@media (max-width:560px){
+  .parents-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* ==========================================================================
+   V136 — LA HOME MOBILE, SUITE : LES DOUBLONS D'AFFICHAGE
+   ==========================================================================
+   Deuxieme vague, meme methode et meme regle : on ne retire rien du DOM, on
+   cesse seulement d'AFFICHER deux fois la meme chose sur un ecran de
+   telephone. Tout ce qui est masque ici reste servi au-dessus de 720 px et
+   reste lisible par les moteurs et les lecteurs d'ecran.
+
+   Le scoreboard est le cas d'ecole : il redit mot pour mot le bandeau
+   « prochain match » situe 6 500 px plus haut (memes equipes, memes
+   ecussons, meme date, meme lieu, meme mention d'entree libre). On garde
+   donc sur telephone ce que le bandeau n'a PAS — le compte a rebours et les
+   actions — et on masque le reste.
+
+   IMPORTANT : rien n'est touche en HTML. #prochain-match, data-match-date,
+   #nxCountdown et #nxTitle restent en place : script.js s'en sert pour
+   effacer le bloc le lendemain du match, et set-calendrier-prm.py leve une
+   alerte si le motif disparait. */
+@media (max-width:720px){
+  #prochain-match .sb__comp,
+  #prochain-match .sb__duel,
+  #prochain-match .sb__where,
+  #prochain-match .sb__free,
+  #prochain-match .sb__poster{display:none}
+}
+
+/* L'affiche du match : la meme image est sur la fiche de la rencontre, ou
+   elle est a sa place. Sur telephone elle coute 302 px au milieu du Match
+   Center. Conservee au-dessus de 720 px. */
+@media (max-width:720px){
+  .mx-affiche{display:none}
+}
+
+/* Les deux cartes « soutenir » et la carte video : leur rembourrage est
+   calibre pour le bureau. Aucun texte retire. */
+@media (max-width:640px){
+  .support-card{padding:1.1rem 1rem}
+  .support-card__ico{width:2.2rem;height:2.2rem}
+  .cine-copy{padding:1.2rem 1rem}
+  .pquote{padding:1.1rem 1rem}
+}
+
+/* Le formulaire de contact : interlignage des champs. Les labels, les
+   messages d'erreur et les cibles tactiles de 44 px sont inchanges. */
+@media (max-width:640px){
+  .contact-form .field{margin-bottom:.75rem}
+  .form-rgpd,.form-officiel{font-size:.82rem;line-height:1.45}
+}
+
+/* Les deux CTA « Je m'inscris » de #categories et #galerie sont a l'identique
+   celui de la barre collante, qui est affichee EN PERMANENCE sous 920 px
+   (.float-cta, plus haut dans cette feuille). Sous ce seuil ils font donc
+   double emploi ; au-dessus, la barre disparait et ils reprennent leur role.
+   Rien n'est retire du HTML : les 25 liens vers adhesion.html restent tous
+   en place pour le maillage interne. */
+@media (max-width:920px){
+  #categories > .wrap > .sec-cta,
+  #galerie > .wrap > .sec-cta{display:none}
+}
+
+/* --- Derniere vague : les blocs encore calibres pour le bureau ------------ */
+/* Aucun texte, aucune image, aucun lien ne quitte le DOM ici non plus. */
+@media (max-width:640px){
+  /* Le planning : l'ecart entre deux journees etait de 1,7 rem. */
+  .pl-jour + .pl-jour{margin-top:1rem}
+  .pl-jour{margin-bottom:.6rem}
+
+  /* La citation de parent : la photo occupait presque autant que le propos. */
+  .pquote{gap:1rem}
+  .pquote__ph{max-height:210px;overflow:hidden}
+
+  /* Le mur de sponsors et les cartes « soutenir ». */
+  .section.soutenir .sponsors-wall{margin-top:1.6rem;padding-top:1.6rem}
+  .support-card{padding:1rem .95rem}
+
+  /* La carte « Adhesion 2026/2027 » : la page adhesion.html est le vrai
+     tunnel de conversion, la home n'a pas a en redire le detail. Le titre,
+     la video et le CTA restent ; seul le rembourrage se resserre. */
+  .cine-copy{padding:1.1rem 1rem}
+  .cine-copy p{font-size:.97rem;line-height:1.5}
+
+  /* Le bloc de marque du pied de page. */
+  .footer__brand{margin-bottom:.8rem}
+}
+
+/* Le lieu de chaque creneau etait une carte encadree, repetee neuf fois alors
+   que les deux lieux viennent d'etre presentes en grand juste au-dessus
+   (.cal-lieux). Sur telephone il redevient un simple lien : le nom du lieu
+   reste ecrit — c'est du texte local utile au referencement — et la cible
+   tactile de 44 px est conservee. */
+@media (max-width:640px){
+  .pl-slot__ou{background:none;border-color:transparent;padding:.35rem 0;
+    border-radius:0;font-size:.94rem}
+  .pl-slot__nom{color:var(--bleu-glacier)}
+}
