@@ -378,11 +378,6 @@
 
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* ---- Marquee : pause au tap (WCAG 2.2.2 — le hook .is-paused vit dans style.css) ---- */
-  Array.prototype.forEach.call(document.querySelectorAll('.marquee'), function (m) {
-    m.addEventListener('click', function () { m.classList.toggle('is-paused'); });
-  });
-
   /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop uniquement) ---- */
   if (finePointer && !reduceMotion) {
     document.querySelectorAll('.btn--primary,.btn--roi').forEach(function (btn) {
@@ -571,9 +566,13 @@
   'use strict';
   if (window.matchMedia('(hover:none)').matches) return;
   // Tous les éléments rectangulaires qui reçoivent le liseré lumineux.
-  var SEL = '.essentiel-card,.hero-offer,.cine-card,.cat,.tarifs,.cal-venue,' +
-            '.solidaire,.visi,.contact-form,.contact-info,' +
-            '.pack,.p-pillar,.social-card,' +
+  /* .pack et .visi ne vivent que sur la page sponsors, qui ne charge pas ce
+     fichier : ils ne coutent rien ici et documentent l'intention. En
+     revanche .hero-offer, .tarifs, .cal-venue, .solidaire et .social-card
+     ont ete retires du site — les citer laissait croire a des composants
+     qui n'existent plus. */
+  var SEL = '.essentiel-card,.cine-card,.cat,.visi,' +
+            '.contact-form,.contact-info,.pack,.p-pillar,' +
             '.team__photo,.sponsor-card,.btn--ghost';
   var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
   if (!targets.length) return;
@@ -656,8 +655,13 @@
       window.removeEventListener('scroll', maybeStart);
     }
   }
-  maybeStart();
+  /* Le listener AVANT le premier appel : dans l'ordre inverse, une carte deja
+     visible au chargement (ou atteinte par un lien direct #adhesion-2026-video)
+     declenchait runLoad, puis le removeEventListener ne retirait rien puisque
+     rien n'etait encore attache — et la ligne suivante posait alors un handler
+     de defilement definitif, qui ressortait aussitot a chaque scroll. */
   window.addEventListener('scroll', maybeStart, { passive: true });
+  maybeStart();
 
   /* reflet (sheen) + parallaxe 3D du téléphone à la souris */
   if (!window.matchMedia('(hover:none)').matches) {
@@ -1084,7 +1088,13 @@
       if (timer) { clearInterval(timer); timer = null; }
       return;
     }
-    if (reste > 60 * J) { cd.hidden = true; return; }
+    if (reste > 60 * J) {
+      /* Plus rien a afficher : on arrete aussi le minuteur, qui sinon
+         tournait chaque minute jusqu'a la fermeture de l'onglet. */
+      cd.hidden = true;
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
 
     var j = Math.floor(reste / J);
     var h = Math.floor((reste % J) / H);
@@ -1104,6 +1114,16 @@
 
   rendre();
   timer = setInterval(rendre, MIN);
+  /* Meme regle que le rotateur du hero : rien ne tourne dans le vide
+     quand l'onglet est en arriere-plan. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (timer) { clearInterval(timer); timer = null; }
+    } else if (!timer && !cd.hidden) {
+      rendre();
+      timer = setInterval(rendre, MIN);
+    }
+  });
 })();
 
 /* ============================================================
