@@ -120,8 +120,28 @@ def gabarit():
     s = lire(MODELE)
     entete = s[s.index('<header class="seo-top">'):s.index("</header>") + len("</header>")]
     # la barre CTA flottante, entre le header et <main>
-    cta = s[s.index('<div class="float-cta"'):s.index("</div>", s.index('float-cta__b--main')) + 6]
+    # Le premier decoupage etait aussitot ecrase par le second : ligne morte,
+    # retiree.
     cta = s[s.index('<div class="float-cta"'):s.index('<main id="contenu">')].rstrip()
+
+    # La page modele s'adresse aux parents de l'ecole de basket. Recopies tels
+    # quels sur une fiche de match seniors ou un article, son libelle et son
+    # message WhatsApp pre-rempli deviennent faux : c'est le VISITEUR qui
+    # enverrait « je souhaite inscrire mon enfant » depuis une page de match.
+    # On neutralise les deux, avec des textes deja employes ailleurs sur le
+    # site. La page modele, elle, n'est pas touchee.
+    cta = cta.replace(
+        "Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20pour%20"
+        "inscrire%20mon%20enfant%20%C3%A0%20l%27%C3%A9cole%20de%20basket%20du%20MBC.",
+        "Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20le%20MBC.")
+    cta = cta.replace("Inscrire mon enfant", "Rejoindre le MBC")
+
+    # La nav du modele n'offre ni Matchs ni Actualites : depuis une fiche de
+    # match, le calendrier complet n'etait atteignable que par le fil d'Ariane.
+    entete = entete.replace(
+        '<a href="/#contact">Contact</a>',
+        '<a href="/matchs/">Matchs</a><a href="/actualites/">Actualit\u00e9s</a>'
+        '<a href="/#contact">Contact</a>', 1)
     pied = s[s.index('<footer class="seo-foot">'):s.index("</footer>") + len("</footer>")]
     scripts = s[s.index("<script>\n/* Barre CTA mobile"):s.index("</body>")]
     version = re.search(r'href="/style\.css\?v=([0-9a-f]+)"', s).group(1)
