@@ -189,11 +189,84 @@ ANALYTICS = u"\n".join([
 ])
 
 
-def tete(titre, description, url, jsonlds, prof=2):
-    """<head> commun. `prof` = profondeur du dossier, pour les preloads de
-    police en chemin relatif (matchs/ = 1, matchs/<slug>/ = 2)."""
+SOCIALE_DEFAUT = "assets/images/social-preview.png"
+
+
+def dimensions(chemin):
+    """(largeur, hauteur, type MIME) d'une image du depot, ou None.
+
+    Les 12 pages ecrites a la main declarent og:image:width et og:image:height ;
+    les 12 pages generees ne le faisaient pas. Sans ces deux balises, Facebook
+    et WhatsApp doivent d'abord telecharger l'image pour connaitre son format,
+    et affichent frequemment un lien nu le temps de le faire.
+
+    On lit le fichier plutot que de recopier une valeur du JSON : l'affiche
+    d'un match ne fait pas le meme format que l'image sociale par defaut
+    (1080x1350 contre 1200x630), et le cran le plus large d'un article
+    d'actualite ne fait pas la taille annoncee par son champ « largeur ».
+    Pillow est deja utilise par quatre autres generateurs ; s'il manquait, on
+    se contente d'omettre les deux balises plutot que d'echouer.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        return None
+    try:
+        with Image.open(chemin) as im:
+            return (im.size[0], im.size[1],
+                    {"PNG": "image/png", "JPEG": "image/jpeg",
+                     "WEBP": "image/webp"}.get(im.format))
+    except Exception:
+        return None
+
+
+def page_web(titre, description, url, image_absolue):
+    """Le noeud WebPage que portent deja les 12 pages ecrites a la main.
+
+    Il raccroche la page aux deux entites declarees une seule fois, sur
+    l'accueil : #website pour le site, #club pour le club. Sans lui, une fiche
+    de match etait un document orphelin aux yeux d'un moteur — il voyait un fil
+    d'Ariane et un evenement, jamais a quel site ils appartenaient.
+    """
+    return {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": url + "#webpage",
+        "url": url,
+        "name": titre,
+        "description": description,
+        "inLanguage": "fr-RE",
+        "isPartOf": {"@id": SITE + "/#website"},
+        "about": {"@id": SITE + "/#club"},
+        "primaryImageOfPage": image_absolue,
+    }
+
+
+def tete(titre, description, url, jsonlds, prof=2, image=None, image_alt=None):
+    """<head> commun.
+
+    `prof`      profondeur du dossier, pour les preloads de police en chemin
+                relatif (matchs/ = 1, matchs/<slug>/ = 2).
+    `image`     chemin, depuis la racine du depot, de l'image de partage.
+                Par defaut l'image sociale du club.
+    `image_alt` sa description, pour og:image:alt.
+    """
     rel = "../" * prof
+    chemin_img = image or SOCIALE_DEFAUT
+    image_absolue = SITE + "/" + chemin_img
+    jsonlds = [page_web(titre, description, url, image_absolue)] + list(jsonlds)
     blocs = "\n".join('<script type="application/ld+json">%s</script>' % jsonld(j) for j in jsonlds)
+
+    dim = dimensions(chemin_img)
+    lignes = ['<meta property="og:image" content="%s">' % image_absolue]
+    if dim:
+        if dim[2]:
+            lignes.append('<meta property="og:image:type" content="%s">' % dim[2])
+        lignes.append('<meta property="og:image:width" content="%d">' % dim[0])
+        lignes.append('<meta property="og:image:height" content="%d">' % dim[1])
+    lignes.append('<meta property="og:image:alt" content="%s">'
+                  % ech(image_alt or u"MBC La Montagne Basket Club"))
+    balises_img = "\n".join(lignes)
     return u"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -216,8 +289,7 @@ def tete(titre, description, url, jsonlds, prof=2):
 <meta property="og:description" content="%(desc)s">
 <meta property="og:url" content="%(url)s">
 <meta property="og:locale" content="fr_FR">
-<meta property="og:image" content="%(image)s">
-<meta property="og:image:alt" content="MBC La Montagne Basket Club">
+%(balisesImage)s
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="%(titre)s">
@@ -242,7 +314,7 @@ def tete(titre, description, url, jsonlds, prof=2):
 <a class="skip-link" href="#contenu">Aller au contenu principal</a>
 """ % {"titre": ech(titre), "desc": ech(description), "url": url, "rel": rel,
        "v": VERSION_CSS, "jsonld": blocs, "analytics": ANALYTICS,
-       "image": SITE + "/assets/images/social-preview.png"}
+       "balisesImage": balises_img, "image": image_absolue}
 
 
 def fil(elements):
@@ -269,6 +341,20 @@ def fil(elements):
 # --------------------------------------------------------------------------
 # Donnees structurees d'une rencontre
 # --------------------------------------------------------------------------
+# Le champ « statut » de data/matchs.json existe depuis l'origine et sert deja
+# a ecarter les rencontres annulees du bandeau « prochain match ». Le
+# SportsEvent, lui, publiait EventScheduled quoi qu'il arrive : un match annule
+# aurait continue d'annoncer aux moteurs qu'il se tenait. On fait la
+# correspondance ici. Un match joue reste EventScheduled : schema.org n'a pas
+# d'etat « termine », l'evenement a bien eu lieu comme prevu.
+STATUT_SCHEMA = {
+    "a-venir": "https://schema.org/EventScheduled",
+    "joue": "https://schema.org/EventScheduled",
+    "annule": "https://schema.org/EventCancelled",
+    "reporte": "https://schema.org/EventPostponed",
+}
+
+
 def event(m, d):
     """SportsEvent — uniquement quand le lieu est connu.
 
@@ -291,7 +377,8 @@ def event(m, d):
         "url": m["_url"],
         "startDate": m["_debutIso"],
         "endDate": m["_finIso"],
-        "eventStatus": "https://schema.org/EventScheduled",
+        "eventStatus": STATUT_SCHEMA.get(m.get("statut"),
+                                        "https://schema.org/EventScheduled"),
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "sport": "Basketball",
         "location": {
@@ -303,14 +390,17 @@ def event(m, d):
             "geo": {"@type": "GeoCoordinates", "latitude": L["latitude"], "longitude": L["longitude"]},
             "hasMap": L["carte"],
         },
-        "organizer": {"@type": "SportsOrganization", "name": club["nom"], "url": club["url"]},
+        # @id : c'est LE club declare sur l'accueil, pas un homonyme. Sans
+        # identifiant, un moteur voyait huit organisations differentes.
+        "organizer": {"@id": SITE + "/#club", "@type": "SportsOrganization",
+                      "name": club["nom"], "url": club["url"]},
         "performer": [
             {"@type": "SportsTeam", "name": club["nom"], "sport": "Basketball", "url": club["url"]},
             {"@type": "SportsTeam", "name": m["adversaire"], "sport": "Basketball"},
         ],
         "homeTeam": {"@type": "SportsTeam", "name": club["nom"] if m["domicile"] else m["adversaire"]},
         "awayTeam": {"@type": "SportsTeam", "name": m["adversaire"] if m["domicile"] else club["nom"]},
-        "image": [SITE + "/" + (m["affiche"] or "assets/images/social-preview.png")],
+        "image": [SITE + "/" + (m["affiche"] or SOCIALE_DEFAUT)],
     }
     if m["entreeLibre"]:
         ev["isAccessibleForFree"] = True
@@ -591,7 +681,12 @@ def page_match(m, d, precedent, suivant):
         "benev": benev, "voisins": u"".join(voisins), "fleche": FLECHE,
     }
     entete, cta, pied, scripts = GABARIT
-    return (tete(titre, desc, m["_url"], lds, prof=2)
+    # Quand la rencontre a une affiche, c'est ELLE qu'on partage : le lien
+    # colle dans un groupe WhatsApp montre le match, pas le logo du club.
+    return (tete(titre, desc, m["_url"], lds, prof=2,
+                 image=m["affiche"] or None,
+                 image_alt=(u"Affiche du match %s, %s" % (m["_titre"], m["_dateLongue"])
+                            if m["affiche"] else None))
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
             + u"\n\n" + scripts + u"</body>\n</html>\n")
 

@@ -105,7 +105,7 @@ def article_jsonld(a, d):
         "@type": "NewsArticle",
         "@id": a["_url"] + "#article",
         "headline": a["titre"],
-        "description": a["chapeau"],
+        "description": a.get("meta") or a["chapeau"],
         "url": a["_url"],
         "datePublished": a["date"],
         "inLanguage": "fr",
@@ -123,19 +123,20 @@ def article_jsonld(a, d):
 def page_article(a, d, precedent, suivant):
     visible, ld_fil = bm.fil([("Accueil", "/"), ("Actualités", "/actualites/"),
                               (a["titreCourt"], None)])
-    tete = bm.tete(u"%s — MBC974" % a["titre"], a["chapeau"], a["_url"],
-                   [ld_fil, article_jsonld(a, d)], prof=2)
-    # og:type et og:image propres a l'article
+    # La description de partage : le chapeau, sauf si l'article fournit un
+    # « meta » plus court. Un chapeau est ecrit pour etre lu en haut de page,
+    # une meta description pour tenir dans un resultat de recherche — au-dela
+    # d'environ 160 caracteres, Google la tronque et la fin est perdue.
+    resume = a.get("meta") or a["chapeau"]
+    # L'image de l'article, au cran le plus large, passee a tete() : elle y est
+    # mesuree pour og:image:width et :height. La remplacer APRES coup, comme on
+    # le faisait, aurait laisse ces deux balises decrire l'image par defaut.
+    tete = bm.tete(u"%s — MBC974" % a["titre"], resume, a["_url"],
+                   [ld_fil, article_jsonld(a, d)], prof=2,
+                   image=u"%s-%d.webp" % (a["image"]["base"], a["image"]["crans"][-1]),
+                   image_alt=a["image"]["alt"])
     tete = tete.replace('<meta property="og:type" content="website">',
                         '<meta property="og:type" content="article">')
-    tete = tete.replace(
-        '<meta property="og:image" content="%s/assets/images/social-preview.png">' % SITE,
-        '<meta property="og:image" content="%s/%s-%d.webp">'
-        % (SITE, a["image"]["base"], a["image"]["crans"][-1]))
-    tete = tete.replace(
-        '<meta name="twitter:image" content="%s/assets/images/social-preview.png">' % SITE,
-        '<meta name="twitter:image" content="%s/%s-%d.webp">'
-        % (SITE, a["image"]["base"], a["image"]["crans"][-1]))
 
     voisins = []
     if precedent:
