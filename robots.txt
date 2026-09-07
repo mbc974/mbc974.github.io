@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /print/
+# /print/ n'est pas bloque ici : ces pages portent deja un meta noindex,
+# et un Disallow empecherait justement les moteurs de le lire.
 
 Sitemap: https://mbc974.com/sitemap.xml

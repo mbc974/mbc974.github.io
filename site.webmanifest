@@ -9,7 +9,6 @@
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#0D1526",
   "theme_color": "#0D1526",
   "icons": [

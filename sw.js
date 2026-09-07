@@ -59,13 +59,21 @@ self.addEventListener('fetch', function (e) {
 
   // Pages (navigations) : réseau d'abord → cache en repli → page hors-ligne en dernier recours.
   if (req.mode === 'navigate') {
+    // La cle de cache ignore la query : sans cela « /?source=pwa » (le
+    // start_url du manifeste) et chaque lien partage avec un ?fbclid= ou un
+    // ?utm_* creaient une entree distincte. Deux consequences reelles : la
+    // PWA installee tombait sur la page hors-ligne a son premier lancement
+    // sans reseau, et le cache grossissait sans limite.
+    var cle = new Request(url.origin + url.pathname, { headers: req.headers });
     e.respondWith(
       fetch(req).then(function (res) {
-        var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(req, copy); });
+        if (res && res.ok && !res.redirected) {
+          var copy = res.clone();
+          caches.open(CACHE).then(function (c) { c.put(cle, copy); });
+        }
         return res;
       }).catch(function () {
-        return caches.match(req).then(function (r) { return r || caches.match(OFFLINE_URL); });
+        return caches.match(cle).then(function (r) { return r || caches.match(OFFLINE_URL); });
       })
     );
     return;

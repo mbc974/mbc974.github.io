@@ -437,7 +437,13 @@ def page_match(m, d, precedent, suivant):
     club, comp = d["club"], d["competition"]
     L = m["_lieu"]
     lieu = L["nom"] if L else u"Chez l'adversaire"
-    titre = u"%s, %s %s — MBC974" % (m["_titre"], m["_dateLongue"], m["_heureFr"])
+    # Le depot suit une regle de titres <= 52 caracteres : au-dela, le libelle
+    # est tronque dans les resultats mobiles, ou le CTR mesure etait moitie
+    # moindre a position egale. La date longue avec le jour de la semaine et
+    # l'heure faisait monter ces titres a 61-71 caracteres ; la date courte
+    # suffit, l'heure vit dans la description et dans le SportsEvent.
+    titre = u"%s · %d %s %d — MBC974" % (m["_titre"], m["_dt"].day,
+                                         MOIS_COURT[m["_dt"].month - 1], m["_dt"].year)
     desc = (u"%s, J%d de %s : %s à %s, %s. %s"
             % (m["_titre"], m["journee"], comp["nom"], m["_dateLongue"], m["_heureFr"], lieu,
                u"Entrée libre." if m["entreeLibre"] else u"Rencontre en déplacement."))

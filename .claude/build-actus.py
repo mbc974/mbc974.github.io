@@ -108,7 +108,7 @@ def article_jsonld(a, d):
         "description": a["chapeau"],
         "url": a["_url"],
         "datePublished": a["date"],
-        "inLanguage": "fr-RE",
+        "inLanguage": "fr",
         "image": ["%s/%s-%d.webp" % (SITE, a["image"]["base"], a["image"]["crans"][-1])],
         "articleSection": a["categorie"],
         "isAccessibleForFree": True,
