@@ -207,5 +207,44 @@ aucun débordement horizontal en 320 / 375 / 768 / 1024 / 1440 / 1920 px, aucune
 | Citations locales / backlinks | relations extérieures | basse |
 
 ---
+## 9. La signature manuscrite du hero
+
+Les trois phrases écrites à la main sous le titre (« Ansanm nou lé pli for. », « La Montagne
+en lèr. », « Nou lé ansanm. ») ne sont **pas du texte** : ce sont les contours des glyphes de
+**Caveat 700** (Google Fonts, SIL OFL 1.1), convertis en chemins SVG une fois pour toutes et
+posés en dur dans `index.html`, dans `<span class="hw" data-hw>`.
+
+C'est ce qui permet d'animer le tracé sans embarquer de police manuscrite ni de bibliothèque :
+le hero ne fait **aucune requête** de plus, et un changement de phrase n'en déclenche aucune.
+Le style est dans la couche V137 de `style.css`, la rotation en fin de `script.js`.
+
+### Changer les phrases (ou la police)
+
+1. Lancer le serveur local (§ 2), puis ouvrir <http://localhost:8010/.claude/hw-signature.html>.
+2. Modifier `PHRASES` (et au besoin `POLICE`) en haut du script de cette page.
+3. Recharger. **Vérifier que le bandeau d'état est au vert** : il relit chaque contour tel que
+   le navigateur le comprend et signale tout chemin refusé ou déformé. Un séparateur mal placé
+   dans un `d` suffit à faire disparaître une lettre — c'est précisément ce que ce contrôle
+   attrape.
+4. Copier le contenu du champ du bas et remplacer les trois `<svg class="hw__f" …>` d'`index.html`,
+   **en gardant** le `<span class="sr-only">` qui les précède : c'est lui que lisent les lecteurs
+   d'écran, il doit reprendre la phrase principale.
+5. Passer le `?v=` (§ 1) et vérifier le hero à 360 / 390 / 430 px.
+
+Une police manuscrite différente se dépose dans `.claude/fonts/` (source seule, jamais servie).
+La choisir **monoline et pas trop grasse** : c'est ce qui rend le tracé crédible, le contour se
+lisant alors comme un trait de plume.
+
+### Points à ne pas casser
+
+- **Le `viewBox` est commun aux trois phrases.** C'est lui qui garantit qu'elles se rendent à la
+  même taille et qu'aucun changement ne décale le sous-titre, les boutons ou la hauteur du hero.
+  Le générateur le calcule sur les trois : ne pas le réécrire à la main.
+- **La première phrase porte `is-on` en dur.** Sans elle, un hero muet si le JS ne répond pas.
+- **La taille se règle en pourcentage de la largeur** de la colonne (`.hw{width}`), jamais en
+  hauteur : seule la largeur peut faire déborder une phrase.
+- `prefers-reduced-motion` doit afficher la phrase encrée d'emblée, sans tracé.
+
+---
 
 *Passion · Respect · Solidarité · Engagement*

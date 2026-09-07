@@ -6437,27 +6437,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   font-size:inherit;line-height:1;letter-spacing:0;
   text-shadow:none;text-wrap:balance}
 
-/* La ligne qui tourne. Le « fantome » est la piece maitresse : invisible mais
-   dans le flux, il reserve la hauteur de la plus longue des phrases, si bien
-   qu'aucun changement ne peut decaler le CTA (donc aucun CLS). Les phrases
-   visibles sont posees par-dessus, en absolu. */
-.hero__rot{
-  position:relative;display:block;margin-top:.14em;
-  font-family:var(--ff-display);text-transform:uppercase;
-  font-size:clamp(2.5rem,4.4vw,5rem);line-height:.92;
-  letter-spacing:.004em;color:var(--orange-vif)}
-.hero__rot-ghost{display:block;visibility:hidden;pointer-events:none}
-.hero__rot-i{
-  position:absolute;left:0;top:0;right:0;
-  opacity:0;visibility:hidden;transform:translateY(.30em);
-  text-shadow:0 2px 22px rgba(4,9,18,.55);
-  transition:opacity .82s var(--ease-out),transform .82s var(--ease-out),
-             visibility 0s linear .82s}
-.hero__rot-i.is-on{
-  opacity:1;visibility:visible;transform:none;
-  transition:opacity .82s var(--ease-out),transform .82s var(--ease-out),
-             visibility 0s linear 0s}
-
 /* --- 5. Les deux appels a l'action --------------------------------------- */
 .hero__cta{
   display:flex;flex-wrap:wrap;align-items:center;
@@ -6538,7 +6517,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     max-width:100%;font-size:.68rem;letter-spacing:.11em;gap:.5em;
     padding:.42em .8em .42em .7em}
   .hero__lead{font-size:clamp(1.1rem,4.6vw,1.45rem)}
-  .hero__rot{font-size:clamp(2.1rem,9.4vw,3.1rem);margin-top:.16em}
   .hero__cta{
     flex-direction:column;align-items:stretch;max-width:none;
     gap:.7rem;margin-top:clamp(1.2rem,4vw,1.7rem)}
@@ -6554,7 +6532,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 
 /* --- 9. Mouvement reduit -------------------------------------------------- */
 @media (prefers-reduced-motion:reduce){
-  .hero__rot-i{transition:none}
   .hero__cta .btn--primary:hover,
   .hero__second:hover{transform:none}
 }
@@ -6588,7 +6565,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
       le long du bas a gauche, nulle avant les joueurs et avant la bache
       « ANSANM NOU LE PLI FOR », qui restent en pleine lumiere. */
 .hero__h1{max-width:min(52%,720px)}
-.hero__rot{font-size:clamp(2.2rem,3.3vw,4.05rem)}
 
 .hero::after{
   background:
@@ -6614,15 +6590,12 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    telephone (52 % de 354 px = 184 px de colonne : le titre y tombait sur
    trois lignes). */
 .hero__h1{max-width:min(52%,720px)}
-.hero__rot{font-size:clamp(2.2rem,3.3vw,4.05rem)}
 
 @media (min-width:641px) and (max-width:1000px){
-  .hero__h1{max-width:min(78%,640px)}
-  .hero__rot{font-size:clamp(2.1rem,6.2vw,3.6rem)}}
+  .hero__h1{max-width:min(78%,640px)}}
 
 @media (max-width:640px){
   .hero__h1{max-width:none}
-  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}
 
   /* Sur une colonne, la lisibilite vient du bas. Le voile monte donc plus haut
      qu'en V111 : le titre se posait sur le short blanc de CLAIN. Le tiers
@@ -6636,15 +6609,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
         rgba(7,13,24,0)   95%),
       linear-gradient(to bottom,
         rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}}
-
-/* La ligne restait timide entre 1000 et 1400 px (3,3vw = 34 px a 1024, pour
-   une colonne qui en autorise 45). On remonte a 4,2vw, et on abaisse le
-   plafond tablette pour que la bascule des 1000 px ne fasse plus un saut. */
-.hero__rot{font-size:clamp(2.2rem,4.2vw,4.05rem)}
-@media (min-width:641px) and (max-width:1000px){
-  .hero__rot{font-size:clamp(2.1rem,6.2vw,3rem)}}
-@media (max-width:640px){
-  .hero__rot{font-size:clamp(1.6rem,8.2vw,2.6rem)}}
 
 /* --------------------------------------------------------------------------
    V111.4 — telephone : le cadrage coupait ALEX, et le voile mangeait la photo
@@ -6671,7 +6635,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
         rgba(6,12,22,.50) 0%, rgba(6,12,22,.18) 8%, rgba(6,12,22,0) 15%)}
   .hero__badge{background:rgba(7,13,24,.54);border-color:rgba(255,255,255,.20)}
   .hero__lead{text-shadow:0 1px 3px rgba(4,9,18,.72),0 2px 16px rgba(4,9,18,.80)}
-  .hero__rot-i{text-shadow:0 1px 3px rgba(4,9,18,.70),0 2px 18px rgba(4,9,18,.78)}
 }
 
 /* Le bandeau passait sur deux lignes sur tablette, avec un point median
@@ -6680,14 +6643,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    meta description et le JSON-LD. */
 @media (max-width:860px){
   .hero__badge-opt{display:none}
-}
-
-/* `.hero__rot-i.is-on` (0,2,0) l'emportait sur le `.hero__rot-i` (0,1,0) du
-   bloc prefers-reduced-motion : la transition restait declaree, meme si rien
-   ne la declenchait. On aligne les specificites. */
-@media (prefers-reduced-motion:reduce){
-  .hero__rot-i,
-  .hero__rot-i.is-on{transition:none}
 }
 
 /* --------------------------------------------------------------------------
@@ -6700,7 +6655,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 @media (min-width:1001px) and (max-width:1200px) and (orientation:portrait){
   .hero__photo img{object-position:82% 55%}
   .hero__h1{max-width:min(78%,640px)}
-  .hero__rot{font-size:clamp(2.1rem,5.4vw,3.4rem)}
 }
 
 /* ============================================================================
@@ -6770,30 +6724,22 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 }
 
 /* --------------------------------------------------------------------------
-   V112.1 — deux constats confirmes par la revue adversariale
+   V112.1 — un constat confirme par la revue adversariale
    --------------------------------------------------------------------------
-   a) GABARIT DES DEUX BOUTONS. La V111 ecrivait `.hero__cta .btn--primary`
-      (specificite 0,2,0) pour passer le bouton principal a 58 px, mais la
-      regle V109 `.hero__cta a.btn--primary` (0,2,1) est plus specifique et
-      gagnait quelle que soit sa position : le principal restait a 56 px avec
-      un rayon de 6 px, pendant que le secondaire, lui, passait bien a 58 px
-      et 8 px. Resultat mesure : le secondaire depassait d'1 px en haut ET en
-      bas, avec des coins visiblement plus ronds. On reprend le meme selecteur
-      pour reprendre la main.
-   b) SOUS 321 px, la phrase la plus large (« la jeunesse en mouvement »)
-      passait sur deux lignes. Comme c'est elle le fantome, la ligne reservait
-      48 px alors que les neuf autres phrases n'en occupent que 24 : un trou
-      d'une ligne entiere pendant neuf rotations sur dix — precisement ce que
-      la V111.3 declarait interdit. On resserre la taille sous 340 px.
+   GABARIT DES DEUX BOUTONS. La V111 ecrivait `.hero__cta .btn--primary`
+   (specificite 0,2,0) pour passer le bouton principal a 58 px, mais la
+   regle V109 `.hero__cta a.btn--primary` (0,2,1) est plus specifique et
+   gagnait quelle que soit sa position : le principal restait a 56 px avec
+   un rayon de 6 px, pendant que le secondaire, lui, passait bien a 58 px
+   et 8 px. Resultat mesure : le secondaire depassait d'1 px en haut ET en
+   bas, avec des coins visiblement plus ronds. On reprend le meme selecteur
+   pour reprendre la main.
    -------------------------------------------------------------------------- */
 .hero__cta a.btn--primary{
   height:58px;min-height:58px;border-radius:8px;
   padding:0 clamp(1.5rem,2.3vw,2.3rem)}
 @media (max-width:640px){
   .hero__cta a.btn--primary,.hero__second{height:54px;min-height:54px}}
-@media (max-width:340px){
-  .hero__rot{font-size:clamp(1.35rem,7.4vw,1.9rem)}}
-
 /* L'entrante : elle monte et se decouvre du bas vers le haut. */
 @keyframes bhIn{
   0%   {opacity:0;transform:translateY(14px) scale(1.055);
@@ -7853,47 +7799,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 }
 
 /* ============================================================================
-   V126.1 — LA CHUTE DU TITRE QUI TOURNE
-   ----------------------------------------------------------------------------
-   Même dispositif que la version précédente, et pour la même raison : un
-   « fantôme » invisible mais DANS LE FLUX réserve la hauteur de la formule la
-   plus large, et les six formules visibles sont posées par-dessus en absolu.
-   Sans lui, chaque changement décalerait le sous-titre et les boutons — donc
-   du CLS à chaque rotation.
-
-   Les six tiennent sur une ligne à toutes les largeurs (vérifié au banc) :
-   c'est la condition pour qu'aucune ne flotte au-dessus d'un trou.
-   ============================================================================ */
-.hero__rot{
-  position:relative;display:block;
-  color:var(--orange-vif)}
-.hero__rot-ghost{display:block;visibility:hidden;pointer-events:none}
-.hero__rot-i{
-  position:absolute;left:0;top:0;right:0;
-  opacity:0;visibility:hidden;transform:translateY(.26em);
-  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out),
-             visibility 0s linear .8s}
-.hero__rot-i.is-on{
-  opacity:1;visibility:visible;transform:none;
-  transition:opacity .8s var(--ease-out),transform .8s var(--ease-out),
-             visibility 0s linear 0s}
-
-@media (prefers-reduced-motion:reduce){
-  .hero__rot-i,.hero__rot-i.is-on{transition:none}}
-
-/* V126.2 — la chute doit avoir la taille du titre, pas celle de l'ancien
-   rotateur. Les règles `.hero__rot{font-size:…}` des V111.3 et V124 étaient
-   calées sur une composition différente (une amorce petite + une phrase
-   moyenne) ; ici la troisième ligne EST le titre, elle doit donc simplement
-   hériter. Mesure : 96 px à 1920, comme « LE BASKET À ». */
-.hero__rot{
-  font-size:inherit;line-height:inherit;letter-spacing:inherit;
-  margin-top:0}
-@media (min-width:641px) and (max-width:1000px){.hero__rot{font-size:inherit}}
-@media (max-width:640px){.hero__rot{font-size:inherit}}
-@media (max-width:340px){.hero__rot{font-size:inherit}}
-
-/* ============================================================================
    V127 — LES DEUX PHOTOS DE GYMNASE PRENNENT DE LA PLACE
    ----------------------------------------------------------------------------
    Elles ne faisaient que 465 × 291 px dans un wrap de 1220 : la colonne
@@ -8769,4 +8674,90 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .pl-slot__ou{background:none;border-color:transparent;padding:.35rem 0;
     border-radius:0;font-size:.94rem}
   .pl-slot__nom{color:var(--bleu-glacier)}
+}
+/* ============================================================================
+   V137 — LA SIGNATURE MANUSCRITE REMPLACE LA CHUTE QUI TOURNAIT
+   ----------------------------------------------------------------------------
+   L'ancien rotateur (.hero__rot) empilait six formules en Anton majuscule et
+   les faisait se relayer en fondu. Il disparait entierement : HTML, CSS et JS.
+   A sa place, et exactement au meme endroit, trois phrases s'ecrivent a la
+   main, une par une.
+
+   POURQUOI DES CONTOURS SVG ET PAS DU TEXTE. Le trace n'est credible que si
+   l'on peut animer le CHEMIN de chaque lettre. Les glyphes de Caveat 700 ont
+   donc ete convertis en chemins une fois pour toutes, hors ligne (procedure
+   dans MAINTENANCE.md), et poses en dur dans index.html. Consequence : le
+   hero n'attend ni police manuscrite, ni librairie de trace, ni requete
+   supplementaire — et il ne peut pas s'afficher « nu » si l'une des deux
+   manquait, puisqu'il n'y en a aucune.
+
+   COMMENT LA PLUME AVANCE. Chaque contour porte deux nombres poses au moment
+   de la conversion : --d, l'instant ou la plume l'atteint, et --t, le temps
+   qu'elle met a le parcourir. Tous deux sont des FRACTIONS de --hw-trace, et
+   tous deux sont proportionnels a la position et a la largeur du contour :
+   la plume avance donc a vitesse constante de gauche a droite, au lieu de
+   dessiner toutes les lettres en meme temps. `pathLength="1"` normalise la
+   longueur de chaque chemin, ce qui evite d'avoir a mesurer quoi que ce soit
+   au chargement.
+
+   L'ENCRE SUIT LE TRAIT. stroke-dashoffset dessine le contour ; fill-opacity
+   le remplit juste derriere (a 42 % du passage de la plume sur ce contour).
+   C'est ce leger decalage qui donne la sensation de l'encre qui prend.
+
+   AUCUN SAUT POSSIBLE. Les trois phrases partagent le MEME viewBox : elles se
+   rendent a la taille identique, sur la meme ligne de base. La premiere reste
+   dans le flux et reserve la hauteur, les deux autres sont posees par-dessus
+   en absolu. Changer de phrase ne peut donc decaler ni le sous-titre, ni les
+   boutons, ni la hauteur du hero (qui est de toute facon en min-height fixe).
+
+   TAILLE. Elle se regle sur la LARGEUR de la colonne, jamais sur une hauteur :
+   c'est la largeur qui, seule, peut faire deborder une phrase. 71 % de la
+   colonne sur desktop — la signature reste nettement en dessous du H1 —, 93 %
+   sur telephone ou la colonne est etroite.
+   ============================================================================ */
+.hw{
+  position:relative;display:block;
+  width:71%;max-width:none;margin-top:.16em;
+  color:var(--blanc);
+  --hw-trace:1.65s;   /* duree du trace complet d'une phrase */
+  --hw-sw:7;          /* epaisseur de plume, en unites du viewBox */
+}
+.hw__f{
+  position:absolute;left:0;top:0;
+  display:block;width:100%;height:auto;overflow:visible;
+  opacity:0;visibility:hidden}
+.hw__f:first-of-type{position:relative}   /* celle-la tient la hauteur */
+.hw__f.is-on{opacity:1;visibility:visible}
+
+.hw__p{
+  fill:currentColor;fill-opacity:0;
+  stroke:currentColor;stroke-width:var(--hw-sw);
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:1;stroke-dashoffset:1}
+.hw__pt{color:var(--orange-vif)}          /* le point final, et lui seul */
+
+.hw__f.is-on .hw__p{
+  animation:
+    hw-trait calc(var(--hw-trace) * var(--t)) linear
+             calc(var(--hw-trace) * var(--d)) both,
+    hw-encre calc(var(--hw-trace) * var(--t) * 1.9) var(--ease-out)
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .42)) both}
+@keyframes hw-trait{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes hw-encre{from{fill-opacity:0}  to{fill-opacity:1}}
+
+/* La sortie : un fondu seul, sans glissement — la phrase suivante sera
+   REECRITE, elle n'a pas a etre annoncee par un mouvement. */
+.hw__f.is-out{animation:hw-sortie .55s ease-in both}
+@keyframes hw-sortie{from{opacity:1}to{opacity:0;visibility:visible}}
+
+@media (min-width:641px) and (max-width:1000px){.hw{width:82%}}
+@media (max-width:640px){
+  .hw{width:93%;margin-top:.20em;--hw-trace:1.5s;--hw-sw:9}}
+
+/* Mouvement reduit : la phrase est simplement LA, encree, des le chargement.
+   Le script, lui, n'installe aucune rotation dans ce cas. */
+@media (prefers-reduced-motion:reduce){
+  .hw__p{stroke-dashoffset:0;fill-opacity:1}
+  .hw__f.is-on .hw__p,
+  .hw__f.is-out{animation:none}
 }

@@ -1343,37 +1343,66 @@
 
 
 /* ============================================================
-   HERO — la chute du titre alterne francais et creole
+   HERO — la signature manuscrite s'ecrit, puis cede la place
    ============================================================
-   Les six formules sont dans le HTML : elles doivent exister sans JS. La
-   scene est aria-hidden, donc muette pour les lecteurs d'ecran ; et depuis la
-   V134 elle est HORS du H1, ce qui regle le cas des moteurs de recherche —
-   aria-hidden ne les concernait pas, ils lisent le DOM.
-   Ici on ne fait que deplacer la classe .is-on ; le fondu et le glissement
-   sont en CSS, et le « fantome » invisible reserve deja la hauteur, donc rien
-   ne bouge autour.
+   Les trois phrases sont dans le HTML, en contours SVG (voir la couche V137
+   de style.css). Tout le trace est en CSS : ici on ne fait que deplacer deux
+   classes, .is-on et .is-out. Retirer .is-on puis le rendre a un autre SVG
+   suffit a relancer ses animations depuis zero — la phrase suivante est donc
+   bel et bien REECRITE, jamais simplement rallumee.
 
-   Sous prefers-reduced-motion on n'installe rien : « Ensemble. » reste
-   affiche. Et le minuteur s'arrete franchement quand l'onglet passe en
-   arriere-plan plutot que de tourner dans le vide. */
+   Sous prefers-reduced-motion on n'installe rien : la premiere phrase reste
+   affichee, deja encree par le CSS. Idem si ce script ne s'execute pas — le
+   .is-on pose en dur dans le HTML prend alors le relais.
+
+   Le minuteur s'arrete franchement quand l'onglet passe en arriere-plan ou
+   quand le hero sort de l'ecran : on ne reecrit pour personne. */
 (function () {
-  var scene = document.querySelector('[data-hero-rot]');
+  var scene = document.querySelector('[data-hw]');
   if (!scene) return;
-  var formules = scene.querySelectorAll('.hero__rot-i');
-  if (formules.length < 2) return;
+  var phrases = scene.querySelectorAll('.hw__f');
+  if (phrases.length < 2) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var i = 0, minuteur = null;
-  function suivante() {
-    formules[i].classList.remove('is-on');
-    i = (i + 1) % formules.length;
-    formules[i].classList.add('is-on');
-  }
-  function demarrer() { if (!minuteur) minuteur = window.setInterval(suivante, 3400); }
-  function arreter() { if (minuteur) { window.clearInterval(minuteur); minuteur = null; } }
+  var TRACE = 1650, LECTURE = 3100, FONDU = 550;   /* cf. --hw-trace en CSS */
+  var i = 0, minuteur = null, ongletVisible = true, heroAEcran = true;
 
-  demarrer();
+  function attendre(ms, quoi) { minuteur = window.setTimeout(quoi, ms); }
+  function arreter() { if (minuteur) { window.clearTimeout(minuteur); minuteur = null; } }
+
+  function sortir() {
+    minuteur = null;
+    phrases[i].classList.add('is-out');
+    attendre(FONDU, entrer);
+  }
+  function entrer() {
+    minuteur = null;
+    phrases[i].classList.remove('is-on', 'is-out');
+    i = (i + 1) % phrases.length;
+    phrases[i].classList.add('is-on');
+    attendre(TRACE + LECTURE, sortir);
+  }
+  function demarrer() {
+    if (minuteur) return;
+    /* Si l'arret est tombe pendant le fondu, la phrase courante est restee
+       transparente : on enchaine tout de suite plutot que d'afficher un vide
+       pendant le temps de lecture. */
+    if (phrases[i].classList.contains('is-out')) { entrer(); return; }
+    attendre(LECTURE, sortir);
+  }
+  function arbitrer() { if (ongletVisible && heroAEcran) demarrer(); else arreter(); }
+
+  attendre(TRACE + LECTURE, sortir);
+
   document.addEventListener('visibilitychange', function () {
-    if (document.hidden) arreter(); else demarrer();
+    ongletVisible = !document.hidden;
+    arbitrer();
   });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entrees) {
+      heroAEcran = entrees[0].isIntersecting;
+      arbitrer();
+    }).observe(scene);
+  }
 })();
