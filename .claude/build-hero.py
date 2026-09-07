@@ -21,30 +21,31 @@ L'original est un panoramique 4080x1630 (2,5:1). Dans un cadre de telephone, un
 serie, recadree sur une fenetre portrait. La bascule se fait a 640 px, dans le
 <picture> ET dans la feuille de style : les deux valeurs doivent rester egales.
 
-LA FENETRE MOBILE, ET POURQUOI ELLE COMMENCE A 960
---------------------------------------------------
-Le blason MBC, dans le dos du coach, occupe x=1050..1483 de l'original. La
-premiere fenetre mobile (1387..2489) le laissait entierement hors champ : sur
-un telephone, le logo du club n'apparaissait nulle part dans le hero. La
-fenetre part donc de 960, soit 90 px de marge avant le blason.
+LA FENETRE MOBILE : UNE BANDE, PAS UN PORTRAIT
+----------------------------------------------
+Le recadrage mobile etait un portrait (960..2240) pose en fond derriere le
+texte du hero. Deux defauts, mesures : le blason du dos de l'entraineur
+tombait exactement sous le titre, et on ne voyait que 57 % des enfants.
 
-Le point a comprendre, parce qu'il est contre-intuitif : avec object-fit:cover
-et un cadre plus etroit que la source, l'echelle est fixee par la HAUTEUR. La
-largeur de scene visible vaut
+La cause est geometrique, et elle ne se contourne pas : avec object-fit:cover
+dans un cadre portrait, la largeur de scene visible vaut
 
     largeur_ecran x 1630 / hauteur_du_hero
 
-et elle ne depend PAS de la largeur du fichier livre. Elargir ce recadrage ne
-dezoome donc rien : ca donne seulement de la matiere sur laquelle deplacer le
-cadre. Le seul vrai levier de dezoom serait de RACCOURCIR le hero — mais le
-bloc de texte, lui, garde ses 350 px : le titre remonterait alors PAR-DESSUS le
-blason. Essaye et mesure avant de changer cette valeur.
+Elle ne depend PAS de la largeur du fichier livre. Pour tout voir a 390 px il
+aurait fallu un hero de 320 px de haut, alors que le seul bloc de texte en
+occupe 480. Elargir le recadrage ne servait donc a rien tant que la photo
+restait DERRIERE le texte.
 
-Avec object-position:0% (voir V132 dans style.css), le bord gauche est fige :
-la fenetre demarre toujours a 960 et c'est vers la DROITE qu'elle s'ouvre quand
-l'ecran s'elargit ou que le hero raccourcit — donc vers les enfants, jamais
-vers le parquet vide. La fenetre s'arrete a 2240 parce que c'est le maximum
-utile : 430 px de large sur un hero de 560 px montre 1252 px de scene.
+Depuis, sur telephone, la photo a sa propre bande et le texte vit dessous
+(voir V138 dans style.css). La contrainte disparait : la fenetre peut etre
+large. Elle va de 980 a 2950, ce qui tient l'entraineur, son blason
+(x=1060..1500) et la totalite du groupe d'enfants (jusqu'a x=2950).
+
+Le prefixe des fichiers passe de « -mob- » a « -bande- » : le cadrage change,
+donc le CONTENU change. Le service worker met les images en cache par leur
+nom ; garder l'ancien nom aurait servi l'ancien cadrage a tout visiteur deja
+venu.
 
 Qualites
 --------
@@ -66,7 +67,7 @@ SORTIE = os.path.join(RACINE, 'assets', 'images')
 BASE = 'mbc-hero-regroupement'
 
 # La fenetre du recadrage mobile dans l'original, en pixels.
-FENETRE_MOBILE = (960, 0, 2240, 1630)
+FENETRE_MOBILE = (980, 0, 2950, 1630)
 
 LARGEURS_DESKTOP = (1280, 1672, 2048, 2400, 2800)
 # Deux crans mobiles suffisent. Le `sizes` du <picture> vaut 585px (la largeur
@@ -75,7 +76,7 @@ LARGEURS_DESKTOP = (1280, 1672, 2048, 2400, 2800)
 # ce qui n'existe pas. Le cran haut est a 1280, soit la resolution NATIVE de la
 # fenetre : au-dela on inventerait des pixels, en deca on livre une image
 # agrandie x1,5 sur les telephones denses.
-LARGEURS_MOBILE = (700, 1280)
+LARGEURS_MOBILE = (760, 1400)
 REPLI_JPEG = 1672
 
 Q_AVIF = 45
@@ -142,7 +143,7 @@ def main():
     # fichiers a change. Le service worker met les images en cache par leur nom
     # (stale-while-revalidate) : garder les anciens noms aurait servi l'ancien
     # cadrage, celui sans le logo, a tout visiteur deja venu.
-    t2, a2 = serie(m, LARGEURS_MOBILE, '-mob-', essai)
+    t2, a2 = serie(m, LARGEURS_MOBILE, '-bande-', essai)
 
     print('\nrepli JPEG')
     j = o.resize((REPLI_JPEG, hauteur(o, REPLI_JPEG)), Image.LANCZOS)

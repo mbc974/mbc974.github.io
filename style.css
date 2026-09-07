@@ -8818,3 +8818,55 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .hw__f.is-on .hw__p,
   .hw__f.is-out{animation:none}
 }
+
+
+/* ==========================================================================
+   V138 — SUR TELEPHONE, LA PHOTO PREND SA PROPRE BANDE
+   ==========================================================================
+   Le hero plein cadre avait atteint sa limite geometrique. Avec
+   object-fit:cover dans un cadre portrait, la largeur de scene visible vaut
+   « largeur_ecran x 1630 / hauteur_du_hero » : elle ne depend pas du fichier
+   livre, seulement de la hauteur du cadre. A 390 px, un hero de 500 px ne
+   montrait que 57 % du groupe d'enfants, et le blason du dos de l'entraineur
+   tombait exactement sous le titre — donc invisible. Pour tout voir il aurait
+   fallu un hero de 320 px, alors que le seul bloc de texte en occupe 480.
+
+   La contrainte vient de ce que le texte est POSE SUR la photo. Sous 640 px,
+   il passe donc dessous : la photo occupe une bande, le texte vit sur le bleu
+   nuit. La bande peut alors etre large et courte, et montre la scene entiere
+   — le blason en grand, et tous les enfants (recadrage x=980..2950, voir
+   FENETRE_MOBILE dans .claude/build-hero.py).
+
+   Le desktop n'est pas touche : au-dessus de 640 px, le hero reste la scene
+   unique en plein cadre, avec son voile et son texte par-dessus. */
+@media (max-width:640px){
+  .hero{
+    display:block !important;
+    min-height:0 !important;
+    padding:0 0 clamp(1.6rem,5vw,2.4rem) !important}
+
+  /* La photo cesse d'etre un fond absolu : elle devient un bloc en flux. */
+  .hero__photo,
+  .hero .hero__photo,
+  .hero.in .hero__photo,
+  .hero.is-idle .hero__photo{
+    position:relative;inset:auto;
+    width:100%;height:clamp(230px,68vw,300px);
+    max-height:none;margin:0}
+  .hero__photo img{
+    object-fit:cover;
+    /* 34 % : la bande se cale sur la hauteur des visages et du blason, en
+       laissant tomber le parquet du bas — qui ne raconte rien. */
+    object-position:50% 34%}
+
+  /* Le voile de lisibilite n'a plus lieu d'etre : plus rien n'est ecrit sur
+     la photo. On garde un degrade court a la jonction, pour que la bande ne
+     se termine pas sur une arete. */
+  .hero::after{
+    content:"";display:block;position:absolute;left:0;right:0;
+    top:clamp(190px,58vw,255px);height:clamp(46px,12vw,58px);
+    z-index:1;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(3,10,20,0),#030a14)}
+
+  .hero__inner{position:relative;z-index:2;padding-top:1.25rem}
+}
