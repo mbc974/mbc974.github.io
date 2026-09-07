@@ -8905,3 +8905,32 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     font-size:.68rem;
     letter-spacing:.08em}
 }
+
+
+/* ==========================================================================
+   V140 — L'ANNEAU DE SURVOL REDEVIENT UN ANNEAU DE SURVOL
+   ==========================================================================
+   .spotglow__fx est un anneau de 2,5 px (masque en xor) injecte par
+   script.js dans une dizaine de composants : cartes partenaires, cartes
+   categories, formulaire, piliers, photos du staff, boutons fantomes. Il est
+   prevu pour n'apparaitre qu'au survol — .spotglow>.spotglow__fx est a
+   opacity:0, et .spotglow:hover>.spotglow__fx a 1.
+
+   Une passe de sobriete l'a ensuite ramene « au seuil du perceptible » avec
+   « .spotglow__fx{opacity:.18!important} ». L'intention etait bonne, mais la
+   regle ne distingue pas le repos du survol : elle a donc allume l'anneau EN
+   PERMANENCE. Sur les cartes partenaires, dont la boite est par ailleurs
+   invisible, il ne restait visible que sous la plaque du logo — d'ou un
+   liseré qui descendait sous chaque vignette et passait derriere le nom, et
+   qui descendait plus bas encore quand le nom tenait sur deux lignes.
+
+   On garde l'attenuation voulue, mais au bon endroit : rien au repos, .18 au
+   survol. Les halos de la carte video, eux, sont des decors permanents et
+   gardent leur .18 constant. */
+.spotglow > .spotglow__fx{opacity:0 !important}
+.spotglow:hover > .spotglow__fx{opacity:.18 !important}
+
+/* Les cartes partenaires n'ont plus de boite depuis longtemps : un anneau
+   autour d'une boite invisible n'a plus de sens, meme au survol. Ce qui
+   reagit au survol, c'est la plaque du logo. */
+.sponsors-row .sponsor-card > .spotglow__fx{display:none !important}
