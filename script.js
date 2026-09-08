@@ -1124,3 +1124,67 @@
     }).observe(scene);
   }
 })();
+
+
+/* ============================================================
+   GALERIE — zoom parallaxe vers « Votre enfant »
+   ------------------------------------------------------------
+   Le seul role de ce bloc : traduire l'avancee du defilement a
+   travers la scene collee en une variable CSS --p, de 0 a 1.
+   Toute la mise en scene est dans style.css (bloc « GALERIE —
+   zoom parallaxe ») ; ici, aucune geometrie.
+
+   Il pose aussi .is-on. Sans lui — pas de JS, ou visiteur qui a
+   demande a reduire les animations — la galerie reste la mosaique
+   d'origine, legendes comprises. L'effet est un surcroit, jamais
+   un prerequis pour voir les photos.
+
+   VOLONTAIREMENT SANS IntersectionObserver. Une premiere version
+   s'en servait pour ne calculer que section visible ; mais si
+   l'observateur ne repond pas, --p ne bouge plus et les six
+   photos restent empilees au centre d'une zone collee de 240vh :
+   la panne ne ressemble pas a « pas d'animation », elle ressemble
+   a une page cassee. Le rectangle qu'on lit de toute facon dit
+   deja si l'on est hors ecran — ce test-la ne peut pas tomber en
+   panne. Une lecture par image (requestAnimationFrame) suffit.
+   ============================================================ */
+(function () {
+  const zone = document.getElementById('galerieZoom');
+  if (!zone) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  zone.classList.add('is-on');
+
+  let demande = false;
+  let vivante = false;
+
+  function calculer() {
+    demande = false;
+    const r = zone.getBoundingClientRect();
+    const h = window.innerHeight;
+
+    /* hors champ : on ne touche a rien, et on rend la main au navigateur
+       (le will-change des six calques coute de la memoire graphique). */
+    if (r.bottom < 0 || r.top > h) {
+      if (vivante) { vivante = false; zone.classList.remove('is-live'); }
+      return;
+    }
+    if (!vivante) { vivante = true; zone.classList.add('is-live'); }
+
+    /* course utile = ce qui depasse la fenetre : la scene reste collee
+       pendant exactement cette distance. */
+    const course = r.height - h;
+    if (course <= 0) { zone.style.setProperty('--p', '0'); return; }
+    let p = -r.top / course;
+    if (p < 0) p = 0; else if (p > 1) p = 1;
+    zone.style.setProperty('--p', p.toFixed(4));
+  }
+
+  function auDefilement() {
+    if (!demande) { demande = true; requestAnimationFrame(calculer); }
+  }
+
+  window.addEventListener('scroll', auDefilement, { passive: true });
+  window.addEventListener('resize', auDefilement);
+  calculer();
+})();

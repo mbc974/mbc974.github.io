@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=e9216cba">
+<link rel="stylesheet" href="style.min.css?v=61620cd5">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -1192,6 +1192,75 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <!-- ===== 2. COMPTEURS ===== -->
 
 
+<!-- ===== Galerie — Sur le terrain ===== -->
+<section class="section gallery" id="galerie">
+  <span class="bg-word" style="top:4%;left:-3%" aria-hidden="true">TERRAIN</span>
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker">L'esprit MBC en images</p>
+      <h2 class="h2">Sur le <span class="hl">terrain</span></h2>
+    </header>
+
+  </div>
+
+  <!-- La scene du zoom. Hors de .wrap : en mode zoom elle occupe toute la
+       fenetre. Le .wrap interieur redonne la contrainte de largeur quand le
+       zoom n'est pas actif (sans JS, mouvement reduit) et que la mosaique
+       s'affiche normalement. -->
+  <div class="gzoom" id="galerieZoom">
+   <div class="gzoom__stage">
+    <p class="gzoom__cue" aria-hidden="true">Faites d&eacute;filer
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </p>
+    <div class="wrap gzoom__wrap">
+     <div class="gallery-mosaic reveal">
+      <!-- Panoramique 2,50:1 place en ouverture : c'est le seul cliche qui
+           montre l'ecole de basket au complet avec son encadrant, et la tuile
+           pleine largeur a justement ce rapport. Sur mobile (max-width:640px)
+           c'est la PREMIERE tuile qui passe pleine largeur : un panoramique y
+           tient mieux que le portrait qui occupait cette place. -->
+      <figure class="g-tile g-team">
+        <picture>
+          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-640.webp 640w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1000.webp 1000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1400.webp 1400w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1900.webp 1900w" sizes="(min-width:1240px) 1124px, 94vw" type="image/webp">
+          <img src="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne.jpg"
+               alt="Un coach du MBC La Montagne rassemble en cercle les enfants de l'école de basket avant l'entraînement, au gymnase de La Montagne à Saint-Denis."
+               loading="lazy" decoding="async" width="1900" height="759">
+        </picture>
+        <figcaption>Le cercle d'avant-séance</figcaption>
+      </figure>
+      <figure class="g-tile g-banner">
+        <picture><source srcset="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-640.webp 640w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1000.webp 1000w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1400.webp 1400w" sizes="(min-width:901px) 48vw, 94vw" type="image/webp"><img src="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket.jpg" alt="Le gymnase de La Montagne pendant l'école de basket : deux groupes d'enfants en atelier de part et d'autre du terrain, à Saint-Denis." loading="lazy" decoding="async" width="1400" height="745"></picture>
+        <figcaption>Le gymnase un samedi matin</figcaption>
+      </figure>
+      <figure class="g-tile g-tall">
+        <picture><source srcset="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420.webp 420w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-660.webp 660w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-900.webp 900w" sizes="(min-width:901px) 24vw, 47vw" type="image/webp"><img src="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis.jpg" alt="Deux encadrants du MBC La Montagne réunissent les enfants de l'école de basket en cercle au bord du terrain, au gymnase de Saint-Denis." loading="lazy" decoding="async" width="900" height="978"></picture>
+        <figcaption>Tout le monde au centre</figcaption>
+      </figure>
+      <figure class="g-tile g-shoot">
+        <picture><source srcset="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-420.webp 420w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-660.webp 660w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-900.webp 900w" sizes="(min-width:901px) 24vw, 47vw" type="image/webp"><img src="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club.jpg" alt="Le plateau couvert de Ruisseau Blanc aux couleurs du MBC : deux joueurs devant le panier et l'écusson du club peint au sol, à La Montagne." loading="lazy" decoding="async" width="900" height="1000"></picture>
+        <figcaption>Le plateau aux couleurs du club</figcaption>
+      </figure>
+      <figure class="g-tile g-inaug">
+        <picture><source srcset="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-400.webp 400w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-560.webp 560w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-760.webp 760w" sizes="(min-width:900px) 33vw, 50vw" type="image/webp"><img src="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc.jpg" alt="Inauguration du plateau couvert de Ruisseau Blanc à La Montagne, Saint-Denis : le MBC et les habitants du quartier" loading="lazy" decoding="async" width="760" height="1009"></picture>
+        <figcaption>L'inauguration du plateau</figcaption>
+      </figure>
+      <figure class="g-tile g-gym">
+        <!-- <picture> ajoute pour que les six tuiles aient la MEME structure :
+             le zoom parallaxe dimensionne l'element interieur de chaque tuile,
+             et celle-ci etait la seule a porter un <img> nu. -->
+        <picture><img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
+             srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
+             sizes="(min-width:900px) 33vw, 50vw"
+             alt="Le plateau couvert de Ruisseau Blanc ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne." loading="lazy" decoding="async" width="1300" height="866"
+             onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'"></picture>
+        <figcaption>Ruisseau Blanc, ouvert sur la mer</figcaption>
+      </figure>
+     </div>
+    </div>
+   </div>
+  </div>
+</section>
+
 <!-- ===== Parents (réassurance + FAQ) ===== -->
 <section class="section parents" id="parents">
   <span class="bg-word" style="top:4%;right:-3%" aria-hidden="true">CONFIANCE</span>
@@ -1344,61 +1413,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </section>
 
-<!-- ===== Galerie — Sur le terrain ===== -->
-<section class="section gallery" id="galerie">
-  <span class="bg-word" style="top:4%;left:-3%" aria-hidden="true">TERRAIN</span>
-  <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">L'esprit MBC en images</p>
-      <h2 class="h2">Sur le <span class="hl">terrain</span></h2>
-    </header>
-
-    <div class="gallery-mosaic reveal">
-      <!-- Panoramique 2,50:1 place en ouverture : c'est le seul cliche qui
-           montre l'ecole de basket au complet avec son encadrant, et la tuile
-           pleine largeur a justement ce rapport. Sur mobile (max-width:640px)
-           c'est la PREMIERE tuile qui passe pleine largeur : un panoramique y
-           tient mieux que le portrait qui occupait cette place. -->
-      <figure class="g-tile g-team">
-        <picture>
-          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-640.webp 640w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1000.webp 1000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1400.webp 1400w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1900.webp 1900w" sizes="(min-width:1240px) 1124px, 94vw" type="image/webp">
-          <img src="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne.jpg"
-               alt="Un coach du MBC La Montagne rassemble en cercle les enfants de l'école de basket avant l'entraînement, au gymnase de La Montagne à Saint-Denis."
-               loading="lazy" decoding="async" width="1900" height="759">
-        </picture>
-        <figcaption>Le cercle d'avant-séance</figcaption>
-      </figure>
-      <figure class="g-tile g-banner">
-        <picture><source srcset="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-640.webp 640w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1000.webp 1000w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1400.webp 1400w" sizes="(min-width:901px) 48vw, 94vw" type="image/webp"><img src="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket.jpg" alt="Le gymnase de La Montagne pendant l'école de basket : deux groupes d'enfants en atelier de part et d'autre du terrain, à Saint-Denis." loading="lazy" decoding="async" width="1400" height="745"></picture>
-        <figcaption>Le gymnase un samedi matin</figcaption>
-      </figure>
-      <figure class="g-tile g-tall">
-        <picture><source srcset="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420.webp 420w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-660.webp 660w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-900.webp 900w" sizes="(min-width:901px) 24vw, 47vw" type="image/webp"><img src="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis.jpg" alt="Deux encadrants du MBC La Montagne réunissent les enfants de l'école de basket en cercle au bord du terrain, au gymnase de Saint-Denis." loading="lazy" decoding="async" width="900" height="978"></picture>
-        <figcaption>Tout le monde au centre</figcaption>
-      </figure>
-      <figure class="g-tile g-shoot">
-        <picture><source srcset="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-420.webp 420w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-660.webp 660w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-900.webp 900w" sizes="(min-width:901px) 24vw, 47vw" type="image/webp"><img src="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club.jpg" alt="Le plateau couvert de Ruisseau Blanc aux couleurs du MBC : deux joueurs devant le panier et l'écusson du club peint au sol, à La Montagne." loading="lazy" decoding="async" width="900" height="1000"></picture>
-        <figcaption>Le plateau aux couleurs du club</figcaption>
-      </figure>
-      <figure class="g-tile g-inaug">
-        <picture><source srcset="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-400.webp 400w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-560.webp 560w, assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc-760.webp 760w" sizes="(min-width:900px) 33vw, 50vw" type="image/webp"><img src="assets/galerie/mbc-saint-denis-inauguration-ruisseau-blanc.jpg" alt="Inauguration du plateau couvert de Ruisseau Blanc à La Montagne, Saint-Denis : le MBC et les habitants du quartier" loading="lazy" decoding="async" width="760" height="1009"></picture>
-        <figcaption>L'inauguration du plateau</figcaption>
-      </figure>
-      <figure class="g-tile g-gym">
-        <img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
-             srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
-             sizes="(min-width:900px) 33vw, 50vw"
-             alt="Le plateau couvert de Ruisseau Blanc ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne." loading="lazy" decoding="async" width="1300" height="866"
-             onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'">
-        <figcaption>Ruisseau Blanc, ouvert sur la mer</figcaption>
-      </figure>
-    </div>
-
-    <div class="sec-cta reveal">
-      <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-    </div>
-  </div>
-</section>
 
 <!-- ===== Soutenir — bénévolat, don, partenariat (détail sur pages dédiées) ===== -->
 <section class="section soutenir" id="soutenir" aria-labelledby="soutenirTitle">
@@ -1637,6 +1651,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=82c6c123" defer></script>
+<script src="script.js?v=9c7c45cb" defer></script>
 </body>
 </html>

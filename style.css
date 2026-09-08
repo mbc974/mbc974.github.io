@@ -357,7 +357,11 @@ a{color:inherit;text-decoration:none}
 /* ---------------- Section base ---------------- */
 .section{position:relative;padding:clamp(4.5rem,10vw,8rem) 0}
 @supports (content-visibility:auto){.section{content-visibility:auto;contain-intrinsic-size:900px}
-.section.contact{contain-intrinsic-size:760px}}
+.section.contact{contain-intrinsic-size:760px}
+/* la galerie fait ~240vh en mode zoom : une estimation a 900 px ferait bondir
+   la hauteur du document au moment ou elle entre dans le viewport, pile
+   pendant le defilement qui pilote l'effet. On ne l'estime donc pas. */
+.section.gallery{content-visibility:visible}}
 .sec-head{max-width:64ch;margin-bottom:clamp(2.4rem,5vw,3.6rem)}
 .sec-head--center{margin-inline:auto;text-align:center}
 .sec-head__sub{font-size:1.1rem;margin-top:.9rem;color:var(--txt-soft)}
@@ -1162,6 +1166,15 @@ body{text-rendering:optimizeLegibility}
 .lightbox__toolbar span{min-width:46px}}
 /* Anti-débordement : les éléments décoratifs et le menu fermé ne créent plus de scroll horizontal. */
 html,body{max-width:100%;overflow-x:hidden}
+/* ... mais `overflow-x:hidden` sur <body> en fait un CONTENEUR DE DEFILEMENT
+   (l'axe y passe implicitement a `auto`), et un position:sticky place dedans
+   se cale alors sur ce conteneur — qui ne defile jamais. Le sticky ne colle
+   donc pas du tout. Mesure : le bord haut de l'element descendait a -720 px
+   au lieu de rester a 0. `clip` decoupe exactement pareil MAIS ne cree aucun
+   scrollport, donc le sticky retrouve la fenetre comme reference. Verifie :
+   body passe a overflow-y:visible et le sticky se bloque bien a 0.
+   En @supports pour ne rien changer la ou clip n'existe pas. */
+@supports (overflow-x:clip){html,body{overflow-x:clip}}
 section[id]{scroll-margin-top:92px}
 .marquee{overflow:hidden;contain:paint}
 .bg-word{max-width:100vw;overflow:hidden;contain:paint}
@@ -8961,4 +8974,100 @@ html:has(.ccb){scroll-padding-bottom:215px}
 }
 @media (prefers-reduced-motion:reduce){
   .sq-card,.sq-card__media::after{transition:none}
+}
+
+/* ============================================================
+   GALERIE — zoom parallaxe vers « Votre enfant » (V110)
+   ------------------------------------------------------------
+   La galerie est passee AVANT la section parents, et elle s'y
+   jette : six cliches partent d'une constellation de vignettes,
+   grossissent ensemble, et cinq d'entre eux sortent du cadre
+   pendant que le sixieme — « Le cercle d'avant-seance », un coach
+   qui rassemble les enfants — finit exactement plein ecran. On
+   entre alors dans « Votre enfant. Notre responsabilite. » sur
+   l'image qui en est la preuve.
+
+   C'est la tuile n°1 qui reste, et le calcul le garantit : elle
+   part de 25vh x 25vw et grandit x4, donc 100vh x 100vw. Les
+   autres portent des facteurs 5 a 8 ET un decalage : ce decalage
+   est multiplie par l'echelle, donc plus elles grossissent, plus
+   elles s'ecartent. A la fin il ne reste qu'elle.
+
+   LE MODE DE BASE RESTE LA MOSAIQUE. Tout ce bloc est suspendu a
+   .is-on, que script.js ne pose que s'il y a du JS et que le
+   visiteur n'a pas demande a reduire les animations. Sans ca :
+   mosaique d'origine, avec ses legendes visibles.
+
+   Prerequis indispensable : `overflow-x:clip` sur html/body (voir
+   plus haut). Avec `hidden`, <body> devient un conteneur de
+   defilement et le position:sticky de la scene ne colle pas.
+   ============================================================ */
+.gzoom.is-on{position:relative;height:var(--gz-course,240vh)}
+.gzoom.is-on .gzoom__stage{position:sticky;top:0;height:100svh;overflow:hidden}
+.gzoom.is-on .gzoom__wrap{max-width:none;padding:0;height:100%}
+/* le fondu d'apparition n'a plus lieu d'etre : le zoom EST l'entree en scene,
+   et un filter/transform sur la mosaique creerait un bloc conteneur inutile */
+.gzoom.is-on .gallery-mosaic{display:block;height:100%;margin:0;gap:0;
+  opacity:1;transform:none;filter:none;transition:none}
+/* chaque tuile est un calque plein cadre, centre, que l'on met a l'echelle.
+   --p (0 -> 1) est pose par script.js sur .gzoom au fil du defilement. */
+.gzoom.is-on .g-tile{position:absolute;inset:0;margin:0;min-height:0;
+  border:0!important;border-radius:0;background:none;box-shadow:none;
+  display:grid;place-items:center;overflow:visible;
+  transform:scale(calc(1 + (var(--gs,4) - 1) * var(--p,0)))}
+/* will-change seulement quand la scene est a l'ecran : six calques de la
+   taille de la fenetre promus en permanence, c'est de la memoire graphique
+   retenue pour rien pendant tout le reste de la page. .is-live est pose et
+   retire par script.js. */
+.gzoom.is-on.is-live .g-tile{will-change:transform}
+/* les habillages de la mosaique (lisere, degrade de legende) n'ont pas de sens
+   ici : grossis x4, ils voileraient l'image d'arrivee */
+.gzoom.is-on .g-tile::before,.gzoom.is-on .g-tile::after{display:none}
+.gzoom.is-on .g-tile picture{position:relative;display:block;overflow:hidden;
+  top:var(--gt,0);left:var(--gl,0);height:var(--gh,25vh);width:var(--gw,25vw)}
+.gzoom.is-on .g-tile img{width:100%;height:100%;object-fit:cover;
+  transition:none;filter:none;transform:none}
+/* la legende quitte l'ecran mais PAS le document : illisible a ces echelles,
+   elle reste lue par les lecteurs d'ecran. C'est .sr-only, recopie ici. */
+.gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;
+  margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;inset:auto;background:none}
+/* ---- La constellation de depart (valeurs du composant d'origine) ---- */
+.gzoom.is-on .g-tile:nth-child(1){--gs:4}
+.gzoom.is-on .g-tile:nth-child(2){--gs:5;--gt:-30vh;--gl:5vw;--gh:30vh;--gw:35vw}
+.gzoom.is-on .g-tile:nth-child(3){--gs:6;--gt:-10vh;--gl:-25vw;--gh:45vh;--gw:20vw}
+.gzoom.is-on .g-tile:nth-child(4){--gs:5;--gl:27.5vw;--gh:25vh;--gw:25vw}
+.gzoom.is-on .g-tile:nth-child(5){--gs:6;--gt:27.5vh;--gl:5vw;--gh:25vh;--gw:20vw}
+.gzoom.is-on .g-tile:nth-child(6){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
+/* ---- Repere de defilement : une scene collee de 240vh sans indice donne
+        l'impression que la page est bloquee. Il s'efface des que ca bouge. ---- */
+.gzoom__cue{position:absolute;left:50%;bottom:clamp(1.2rem,4vh,2.6rem);z-index:5;
+  transform:translateX(-50%);display:none;align-items:center;gap:.5rem;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.18em;font-size:.72rem;color:var(--bleu-glacier);
+  text-shadow:0 2px 12px rgba(3,7,15,.9);pointer-events:none;
+  opacity:calc(1 - var(--p,0) * 5)}
+.gzoom.is-on .gzoom__cue{display:flex}
+.gzoom__cue svg{width:14px;height:14px;animation:gzoomCue 1.9s var(--ease-out) infinite}
+@keyframes gzoomCue{0%,100%{transform:translateY(-2px);opacity:.55}50%{transform:translateY(3px);opacity:1}}
+/* ---- Petit ecran : la geometrie du composant est pensee pour du paysage.
+        En portrait, 25vw ne fait que ~95 px : on elargit les vignettes, on
+        raccourcit la course, et l'echelle de la tuile centrale passe a 4,6
+        pour qu'elle couvre encore la fenetre a l'arrivee. ---- */
+/* ---- Petit ecran : SEULE la course change.
+        Premiere version : des vignettes redessinees en paysage (70vw x 22vh)
+        pour qu'elles paraissent moins etroites. Deux erreurs. D'abord la
+        specificite — le --gs:4.6 pose sur .g-tile ne pouvait pas battre le
+        --gs:4 de :nth-child(1), plus specifique : la photo d'arrivee montait
+        a 88vh et laissait deux bandes vides, en haut et en bas. Ensuite le
+        fond : une tuile qui doit finir plein cadre est forcement homothetique
+        a la fenetre. 25vw x 25vh vaut 300x200 sur un ecran large et 94x203 sur
+        un telephone — c'est la MEME fraction de l'ecran (un quart), et
+        l'echelle x4 la fait coincider au pixel dans les deux cas. La geometrie
+        d'origine se transpose donc telle quelle ; il n'y a rien a corriger. ---- */
+@media (max-width:759px){
+  .gzoom.is-on{--gz-course:185vh}
+}
+@media (prefers-reduced-motion:reduce){
+  .gzoom.is-on .g-tile{transform:none}
+  .gzoom__cue svg{animation:none}
 }
