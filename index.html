@@ -56,11 +56,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <meta property="og:image:alt" content="MBC La Montagne Basket Club — Le basket prend de la hauteur">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:video" content="https://mbc974.com/assets/videos/promo-adhesion-2026-2027.mp4">
-<meta property="og:video:secure_url" content="https://mbc974.com/assets/videos/promo-adhesion-2026-2027.mp4">
-<meta property="og:video:type" content="video/mp4">
-<meta property="og:video:width" content="1080">
-<meta property="og:video:height" content="1920">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="MBC La Montagne Basket Club — Le basket prend de la hauteur">
@@ -92,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=047df75a">
+<link rel="stylesheet" href="style.min.css?v=41bf437b">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -206,32 +201,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 }
 </script>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "VideoObject",
-  "name": "Adhésions 2026/2027 — MBC La Montagne Basket Club",
-  "description": "Vidéo officielle d'adhésion du MBC La Montagne Basket Club pour la saison 2026/2027. Prenez votre licence FFBB et rejoignez le club de basket de La Montagne, à Saint-Denis de La Réunion.",
-  "thumbnailUrl": ["https://mbc974.com/assets/videos/promo-adhesion-2026-2027-poster.webp"],
-  "uploadDate": "2026-06-16T10:00:00+04:00",
-  "duration": "PT31S",
-  "contentUrl": "https://mbc974.com/assets/videos/promo-adhesion-2026-2027.mp4",
-  "encodingFormat": "video/mp4",
-  "publisher": {
-    "@type": "SportsClub",
-    "@id": "https://mbc974.com/#club",
-    "name": "MBC La Montagne Basket Club",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://mbc974.com/assets/logos/mbc-logo.png"
-    }
-  },
-  "potentialAction": {
-    "@type": "WatchAction",
-    "target": "https://mbc974.com/#adhesion-2026-video"
-  }
-}
-</script>
 
 <script type="application/ld+json">
 {
@@ -1258,54 +1227,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </section>
 
-<!-- ===== Vidéo adhésion 2026/2027 ===== -->
-<section class="section adhesion-video" id="adhesion-2026-video" aria-labelledby="adhesionVideoTitle">
-  <div class="wrap">
-    <div class="cine-card reveal" id="cineCard">
-      <span class="cine-card__glow cine-card__glow--o" aria-hidden="true"></span>
-      <span class="cine-card__glow cine-card__glow--b" aria-hidden="true"></span>
-      <span class="cine-card__sheen" aria-hidden="true"></span>
-      <div class="cine-grid">
-        <div class="cine-copy">
-          <p class="kicker">Adhésion 2026 / 2027</p>
-          <h2 class="h2" id="adhesionVideoTitle">La licence MBC, <span class="hl">ça commence ici</span></h2>
-          <p class="lead">Le MBC accueille chaque marmay, chaque famille et chaque passionné de La Montagne.</p>
-          <div class="cine-actions">
-            <a href="adhesion.html" class="btn btn--primary btn--lg">Je m'inscris · saison 2026/2027</a>
-          </div>
-          <p class="cine-note"><span lang="rcf">Nout kartié, nout basket</span> <i aria-hidden="true"></i> places limitées par catégorie pour garder un vrai suivi sur le terrain.</p>
-        </div>
-
-        <figure class="cine-stage">
-          <div class="cine-phone" id="cinePhone">
-            <span class="cine-phone__island" aria-hidden="true"><i></i></span>
-            <div class="cine-phone__screen">
-              <!-- L'ancienne jauge « Chargement… 0→100 % » était factice (aucun chargement réel,
-                   vidéo en preload="none") : supprimée au profit d'un simple fondu d'apparition. -->
-              <div class="cine-video">
-                <!-- NOTE TECHNIQUE — la vidéo pèse ~15 Mo : à ré-encoder à 4-5 Mo avant la communication officielle, ex. :
-                     ffmpeg -i promo-adhesion-2026-2027.mp4 -vf scale=720:1280 -c:v libx264 -crf 27 -preset slow -c:a aac -b:a 96k sortie.mp4
-                     puis remplacer le fichier au même chemin assets/videos/promo-adhesion-2026-2027.mp4 (aucun changement de code). -->
-                <video class="adhesion-video__player" controls preload="none" playsinline poster="assets/videos/promo-adhesion-2026-2027-poster-540.webp" aria-label="Vidéo officielle d'adhésion MBC La Montagne Basket Club saison 2026/2027">
-                  <source src="assets/videos/promo-adhesion-2026-2027.mp4" type="video/mp4">
-                  <!-- SOUS-TITRES (accessibilité) : créer le fichier WebVTT assets/videos/promo-adhesion-2026-2027.fr.vtt
-                       (transcrire les paroles de la vidéo), puis décommenter la ligne suivante :
-                  <track src="assets/videos/promo-adhesion-2026-2027.fr.vtt" kind="captions" srclang="fr" label="Français" default> -->
-                  Votre navigateur ne peut pas lire cette vidéo. <a href="assets/videos/promo-adhesion-2026-2027.mp4">Télécharger la vidéo d'adhésion MBC 2026/2027</a>.
-                </video>
-              </div>
-            </div>
-          </div>
-        </figure>
-      </div>
-    </div>
-    <details class="faq__item" style="max-width:72ch;margin:1rem auto 0">
-      <summary>Lire le résumé de la vidéo (texte)</summary>
-      <p>Le MBC La Montagne Basket Club invite les enfants, les jeunes, les seniors et les familles de La Montagne à rejoindre la saison 2026/2027. La licence inclut l'affiliation FFBB et l'assurance. Les pré-inscriptions se font en ligne.</p>
-    </details>
-  </div>
-</section>
-
 <!-- ===== 7. STAFF ===== -->
 <!-- Roster horizontal : scroll natif + scroll-snap. Les fleches et la barre de
      progression ne sont revelees que si script.js a pu s'initialiser
@@ -1636,6 +1557,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=f30bf95f" defer></script>
+<script src="script.js?v=82c6c123" defer></script>
 </body>
 </html>

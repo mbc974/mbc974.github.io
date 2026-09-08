@@ -900,7 +900,6 @@ a:focus-visible,button:focus-visible,.cat__link:focus-visible{outline:3px solid 
 /* hover premium homogène pour TOUTES les cartes (liseré orange au survol) */
 .cat:hover{border-color:rgba(232,130,42,.5)!important}
 /* couleurs officielles des plateformes */
-@media (min-width:880px){}
 /* ============================================================
    V10 "MICRO-FINITIONS" — terrain, typo, TikTok
    ============================================================ */
@@ -976,7 +975,6 @@ body{text-rendering:optimizeLegibility}
 /* Écusson : socle lumineux plus net */
 /* Titre : balayage premium sur la ligne accent */
 /* Eyebrow : pastille subtile au lieu d'un simple texte */
-@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    SYSTÈME DE CARTES — un seul langage visuel partout
    (mêmes ombres, même profondeur, même logique de survol)
@@ -1095,7 +1093,6 @@ body{text-rendering:optimizeLegibility}
 
 /* Pourquoi : plus de respiration et badge Respect décollé */
 /* Sponsors : nouvelle conversion, offres et logo wall premium */
-
 
 .packs-grid--four{grid-template-columns:1fr}
 @media(min-width:700px){.packs-grid--four{grid-template-columns:repeat(2,1fr)}}
@@ -1377,35 +1374,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 @media(min-width:900px) and (max-height:840px){.hero{padding-top:5rem !important;}}
 @media(max-width:680px){.hero{padding-top:5rem !important;
     padding-bottom:1.2rem !important;}}
-/* ============================================================
-   V21 "VIDEO ADHESION" — intégration premium + SEO-friendly
-   ============================================================ */
-.adhesion-video{overflow:hidden;
-  background:
-    radial-gradient(80% 80% at 12% 0,rgba(232,130,42,.13),transparent 58%),
-    radial-gradient(90% 90% at 88% 22%,rgba(27,81,158,.2),transparent 60%),
-    linear-gradient(180deg,#07101d,#0b1728 56%,var(--nuit-0));}
-.adhesion-video::before{content:"ADHESION";
-  position:absolute;
-  right:-.06em;
-  top:.08em;
-  z-index:0;
-  font-family:var(--ff-display);
-  font-size:clamp(5.5rem,17vw,17rem);
-  line-height:.8;
-  color:rgba(255,255,255,.028);
-  pointer-events:none;}
-.adhesion-video__player{display:block;
-  width:100%;
-  aspect-ratio:9/16;
-  max-height:min(76vh,720px);
-  border:0;
-  border-radius:24px;
-  background:#050b14;
-  object-fit:cover;
-  box-shadow:0 0 0 1px rgba(255,255,255,.06);}
-@media(max-width:640px){.adhesion-video__player{border-radius:20px;
-    max-height:68vh;}}
+
 /* ============================================================
    V9 "FINITION PRO" — header lockup, chiffres, encarts, 3D
    ============================================================ */
@@ -1611,7 +1580,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ---- 4. Maillots : reflet diagonal au survol + badge saison animé ---- */
 @keyframes kitSheen{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
 
-
 @keyframes seasonShine{0%,84%{transform:translateX(-130%)}93%,100%{transform:translateX(130%)}}
 /* ---- 5. Sponsors : mur premium — cascade des logos & des formules ---- */
 @media (prefers-reduced-motion:no-preference){.packs.in .packs-grid--four .pack{animation:sigFadeIn .5s var(--ease-out) backwards}
@@ -1703,7 +1671,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* ============================================================
    V18 — carte « logo sponsor sur le maillot » pro + nettoyage
    ============================================================ */
-
 
 /* ---- Encarts adhésion : espace propre entre le chiffre et l'unité (95 € / 3 ans et + / 48 h) ---- */
 /* ============================================================
@@ -1869,7 +1836,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Prix XL, dégradé orange STATIQUE (poli) + glow doux → premium discret */
 @supports ((-webkit-background-clip:text) or (background-clip:text)){}
 /* mobile : 95 € encore plus grand dans « Votre enfant entre de bonnes mains » */
-@media (max-width:559px){}
 /* halo statique très doux derrière le prix (aucun mouvement) */
 /* Repère « pas cher » sous le prix */
 /* Colonne de droite : centrée, claire, lisible */
@@ -1926,7 +1892,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* Fallback sans JS : seul le 1er slogan s'affiche, la scène s'ajuste à lui. */
 /* JS actif : carrousel vertical (slide + fade), phrase centrée v+h. */
 /* Accessibilité : pas de mouvement si l'utilisateur le demande. */
-@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V30 — HERO : micro-animation lumineuse "aurora" MBC (CSS natif)
    Inspiration "AuroraBackground" mais SANS React/Tailwind : on ne rajoute
@@ -1985,7 +1950,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* pleine largeur : sinon la scène (mots en position:absolute) se réduit à 0 */
 /* Page adhésion : timeline "Comment s'inscrire" + FAQ (cartes centrées). */
 .adh-faq{max-width:640px;margin:2.2rem auto 0}
-
 
 .adh-faq .faq__item{margin-top:.6rem}
 /* ============================================================
@@ -2340,28 +2304,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .grid-fx__glow--orange{right:-12%;top:-18%;width:38%;height:48%;background:radial-gradient(circle,rgba(232,130,42,.45),transparent 70%)}
 .grid-fx__glow--blue{left:-12%;bottom:-20%;width:38%;height:48%;background:radial-gradient(circle,rgba(27,107,255,.4),transparent 70%)}
 @media (prefers-reduced-motion:reduce){.grid-fx__layer{animation:none}}
-/* ============================================================
-   V52 — Carte cinématique "La licence MBC" (adaptation NATIVE de
-   cinematic-landing-hero, sans GSAP/React). Carte bleu nuit premium
-   (profondeur 3D + reflet souris) + mockup iPhone qui charge 0->100%
-   puis révèle la vidéo officielle d'adhésion. Funnel : titre -> preuve
-   (stats + vidéo) -> CTA (Je prends ma licence / Voir les garanties).
-   ============================================================ */
-.cine-card{position:relative;overflow:hidden;border-radius:clamp(20px,2.5vw,30px);
-  padding:clamp(1.5rem,4vw,3.2rem);
-  background:linear-gradient(150deg,#16306d 0%,#0a121f 100%);
-  border:1px solid rgba(255,255,255,.07);
-  box-shadow:0 40px 100px -22px rgba(0,0,0,.7),0 20px 40px -22px rgba(0,0,0,.6),inset 0 1px 2px rgba(255,255,255,.12),inset 0 -2px 4px rgba(0,0,0,.6)}
-.cine-card__glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;opacity:.5}
-.cine-card__glow--o{top:-22%;right:-8%;width:46%;height:60%;background:radial-gradient(circle,rgba(232,130,42,.5),transparent 70%)}
-.cine-card__glow--b{bottom:-26%;left:-8%;width:46%;height:60%;background:radial-gradient(circle,rgba(31,95,214,.55),transparent 70%)}
-.cine-card__sheen{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:6;mix-blend-mode:screen;
-  background:radial-gradient(700px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(255,255,255,.06),transparent 42%)}
-.cine-grid{position:relative;z-index:2;display:grid;gap:clamp(1.6rem,4vw,3rem);align-items:center}
-@media (min-width:880px){.cine-grid{grid-template-columns:1.04fr .96fr}}
-/* --- colonne texte --- */
-.cine-copy .kicker{color:var(--orange-vif)}
-.cine-copy .lead{color:rgba(219,232,244,.86)}
+
+@media (min-width:880px){}
+
 /* chips premium "effet verre" (non cliquables) — propre et pro */
 /* ---- Stats adhésion : cartes ultra premium (plus grandes) ---- */
 /* ============================================================
@@ -2378,67 +2323,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 /* lueur douce derrière le chiffre : spotlight haut + halo bleu nuit discret */
 /* carte VALEUR : icône d'accent orange + titre court (remplace l'ancien gros chiffre) */
 @media (max-width:520px){}
-.cine-actions{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:.3rem}
+
 /* mobile : « En savoir plus » bien centré sous « Je m'inscris » */
-@media (max-width:559px){.cine-actions{justify-content:center}}
-.cine-note{margin:1.2rem 0 0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.72rem;color:rgba(191,210,228,.78)}
-/* --- scène / mockup --- */
-.cine-stage{position:relative;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:clamp(440px,52vw,560px);perspective:1100px}
-.cine-phone{position:relative;width:clamp(244px,30vw,288px);aspect-ratio:280/580;border-radius:2.6rem;background:#111;transform-style:preserve-3d;transition:transform .5s var(--ease-out,ease);
-  box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 80px -16px rgba(0,0,0,.85),0 15px 25px -6px rgba(0,0,0,.6)}
-.cine-phone__island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:88px;height:25px;background:#000;border-radius:99px;z-index:8;display:flex;align-items:center;justify-content:flex-end;padding-right:9px}
-.cine-phone__island i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px rgba(34,197,94,.8);animation:cinePulse 2s ease-in-out infinite}
-.cine-phone__screen{position:absolute;inset:7px;border-radius:2.15rem;overflow:hidden;background:#04060d;box-shadow:inset 0 0 15px rgba(0,0,0,1);contain:layout paint}
-.cine-phone__screen::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.07),rgba(255,255,255,0) 45%)}
-.cine-video{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;background:#04060d;opacity:0;transition:opacity .6s ease}
-.cine-video video{width:100%;height:100%;object-fit:contain;object-position:center;background:#04060d}
-.cine-card.is-loaded .cine-video{opacity:1}
+@media (max-width:559px){}
+
 /* --- badges flottants --- */
 @keyframes cinePulse{0%,100%{opacity:1}50%{opacity:.35}}
-@media (prefers-reduced-motion:reduce){.cine-phone__island i{animation:none}
-.cine-phone{transition:none}}
-@media (max-width:879px){.cine-stage{min-height:480px;margin-top:.5rem}}
-/* ============================================================
-   V67 — Le téléphone « s'approche » jusqu'au plein écran (mobile).
-   L'overlay + .is-fs sont pilotés par script.js (FLIP). Le téléphone
-   est re-parenté sur <body> pour échapper au perspective/overflow.
-   ============================================================ */
-.cine-fs{position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;
-  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
-  background:radial-gradient(120% 90% at 50% 0%,rgba(27,81,158,.32),transparent 60%),rgba(4,8,16,.97);
-  opacity:0;transition:opacity .56s cubic-bezier(.33,0,.2,1)}
-.cine-fs.is-open{display:flex}
-.cine-fs.is-visible{opacity:1}
-body.cine-fs-lock{overflow:hidden}
-/* téléphone agrandi : on remplace le ratio téléphone par la taille du viewport
-   (le « dépliage » ci-dessous fait disparaître le cadre à la fin du transit) */
-.cine-phone.is-fs{position:relative;z-index:2;width:100vw;height:100vh;height:100dvh;max-width:none;aspect-ratio:auto;margin:0;
-  box-shadow:inset 0 0 0 2px #52525b,inset 0 0 0 7px #000,0 40px 120px -22px rgba(0,0,0,.9)}
-/* la révélation vidéo dépend de .cine-card ; en plein écran le téléphone est
-   re-parenté hors de la carte -> on force ici l'état « chargé » (sinon le
-   loader « Chargement… 100% » resterait visible par-dessus la vidéo). */
-.cine-phone.is-fs .cine-video{opacity:1!important}
-/* « dépliage » plein écran (classe .is-flat ajoutée par script.js) : l'écran
-   pousse jusqu'aux bords, les coins se carrent, l'encoche disparaît -> à la fin
-   plus aucun téléphone visible, juste la vidéo. Pendant le transit, l'écran est
-   encore encadré (inset 7px + coins arrondis + encoche) -> on voit le téléphone. */
-.cine-phone__screen{transition:inset .6s cubic-bezier(.33,0,.2,1),border-radius .6s cubic-bezier(.33,0,.2,1),box-shadow .6s ease}
-.cine-phone__screen::after{transition:opacity .5s ease}
-.cine-phone__island{transition:opacity .45s ease}
-.cine-phone.is-flat .cine-phone__screen{inset:0;border-radius:0;box-shadow:none}
-.cine-phone.is-flat .cine-phone__screen::after{opacity:0}
-.cine-phone.is-flat .cine-phone__island{opacity:0}
-@media (prefers-reduced-motion:reduce){.cine-phone__screen,.cine-phone__screen::after,.cine-phone__island{transition:none}}
-/* garde la place du téléphone dans la carte pendant l'ouverture */
-.cine-phone-ph{flex:none;pointer-events:none}
-/* bouton fermer */
-.cine-fs__close{position:absolute;top:max(14px,env(safe-area-inset-top,0));right:max(14px,env(safe-area-inset-right,0));z-index:3;
-  width:46px;height:46px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;cursor:pointer;color:#fff;
-  background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 6px 18px rgba(0,0,0,.45);transition:background .2s,transform .2s}
-.cine-fs__close svg{width:22px;height:22px}
-.cine-fs__close:hover{background:rgba(255,255,255,.24)}
-.cine-fs__close:active{transform:scale(.92)}
-@media (prefers-reduced-motion:reduce){.cine-fs{transition:none}}
+
+@media (prefers-reduced-motion:reduce){}
+
+@media (prefers-reduced-motion:reduce){}
 /* ============================================================
    V47 — Cartes catégories avec photo (bandeau haut premium)
    Photo en haut de chaque carte (n° + âge en surimpression),
@@ -2919,8 +2813,7 @@ main > .section,.site-footer{
    téléphone a réellement des coins de ce rayon. Le Hero n'est pas concerné. */
 main > .section .essentiel-card{border-radius:12px}
 main > .section .cat{border-radius:14px}
-main > .section .cine-card,main > .section .cine-card__sheen{border-radius:16px}
-main > .section .adhesion-video__player{border-radius:14px}
+
 /* ============================================================
    V82 — Discipline du mouvement
    Le systeme d'apparition melangeait entrees laterales gauche ET
@@ -2962,7 +2855,7 @@ main > .section .reveal.in,main > .section .reveal--l.in,main > .section .reveal
    coeur du pied de page. Trois mouvements de fond pendant qu'on lit.
    Le seul marquee conserve est le bandeau de valeurs (§23). */
 main > .section .grid-fx__layer{animation:none !important}
-main > .section .cine-phone__island i{animation:none !important}
+
 .site-footer .sig-heart{animation:none !important}
 /* ============================================================
    V83 — « Le MBC dans son quartier » : mini-reportage éditorial
@@ -3818,7 +3711,6 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
    une boucle de 55 s, c'est invisible. */
 .hero.is-idle .hero__scroll span::before{animation-play-state:paused!important}
 
-
 /* ============================================================================
    V100 — REFONTE PREMIUM
    ----------------------------------------------------------------------------
@@ -3876,7 +3768,7 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
 
 /* Halos, reflets, grilles reactives : conserves dans le DOM (le JS s'y
    accroche) mais ramenes au seuil du perceptible. */
-.spotglow__fx,.cine-card__glow,.cine-card__sheen{opacity:.18!important}
+.spotglow__fx{opacity:.18!important}
 .grid-fx{opacity:.25}
 .grid-fx__glow{display:none}
 
@@ -3915,7 +3807,7 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
 .sec-head--center .sec-head__sub{margin-inline:auto}
 .sec-head__sub--tight{max-width:48ch}
 
-.sb__comp i,.sb__when i,.footer__place i,.footer__addr i,.footer__ident i,.footer__signature i,.sponsors-wall__label i,.cine-note i,.lp-kicker i{
+.sb__comp i,.sb__when i,.footer__place i,.footer__addr i,.footer__ident i,.footer__signature i,.sponsors-wall__label i,.lp-kicker i{
   display:inline-block;width:3px;height:3px;border-radius:50%;
   background:currentColor;opacity:.45;vertical-align:middle;
   margin-inline:.6em;flex:none}
@@ -4412,18 +4304,6 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
 .sponsors-row .sponsor-card:hover img{filter:none;opacity:1}
 @media (max-width:760px){.sponsors-row{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:420px){.sponsors-row{grid-template-columns:repeat(2,1fr)}}
-
-/* ---------------------------------------------------------------------------
-   15. CTA FINAL — la carte video, sans le chrome
-   --------------------------------------------------------------------------- */
-
-.cine-card{
-  background:var(--surf-2);border:1px solid var(--hair);
-  border-radius:var(--r-lg);box-shadow:none}
-.cine-phone__island{display:none}
-.cine-phone{border-radius:var(--r-md);box-shadow:var(--e2)}
-.cine-note{font-size:.9rem;color:var(--txt-soft);display:flex;flex-wrap:wrap;align-items:center}
-.cine-actions{margin-top:1.6rem}
 
 /* ---------------------------------------------------------------------------
    16. CONTACT
@@ -4998,7 +4878,6 @@ h3.faq__title{
 @media (max-width:900px){
   .form-officiel,.pl .pl-note{font-size:1rem;line-height:1.55}}
 
-
 /* ============================================================================
    V101 — PASSE DE FINITION
    ============================================================================ */
@@ -5266,7 +5145,6 @@ h3.faq__title{
 .pquote__ph::before,.pquote__ph::after{display:none}
 .pquote__ph picture{border:1px solid var(--hair)}
 
-
 /* ============================================================================
    V102 — LES TROIS CHIFFRES DEVIENNENT TROIS PORTES
    ----------------------------------------------------------------------------
@@ -5495,7 +5373,6 @@ h3.faq__title{
   .cal-lieu{min-height:120px}
 }
 
-
 /* ============================================================================
    V105 — LE BAS DE LA PHOTO DU HERO : SUPPRIMER LA BANDE DE MACH
    ----------------------------------------------------------------------------
@@ -5561,7 +5438,6 @@ h3.faq__title{
    donc identique des deux cotes de la couture. Si l'une des deux change un
    jour, la demarcation revient — c'est ici qu'il faudra regarder. */
 
-
 /* ============================================================================
    V105.1 — REGRESSION MOBILE INTRODUITE PAR LA V101
    ----------------------------------------------------------------------------
@@ -5616,7 +5492,6 @@ h3.faq__title{
       rgba(0,0,0,1) 14%);
     -webkit-mask-composite:source-over;mask-composite:add}
 }
-
 
 /* ============================================================================
    V106 — LES DEUX LIEUX : GRANDES CARTES, TEXTE QUI RESPIRE
@@ -5746,7 +5621,6 @@ h3.faq__title{
   width:100%;padding:0;aspect-ratio:16/10;height:auto}
 
 .cal-lieu .cal-lieu__adr,.cal-lieu .cal-lieu__tag,.cal-lieu .cal-lieu__map{padding-left:0}
-
 
 /* ============================================================================
    V107 — LE FILTRE DU PLANNING ANIME LES DEUX LIEUX
@@ -8413,7 +8287,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .float-cta{transition:none}
 }
 
-
 /* ==========================================================================
    V132 — LE HERO SUR TÉLÉPHONE : LE BLASON DANS LE CADRE
    ==========================================================================
@@ -8442,7 +8315,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 @media (max-width:640px){
   .hero__photo img{object-position:0% 42%}
 }
-
 
 /* ==========================================================================
    V133 — LE HERO SUR TÉLÉPHONE : DÉZOOMER, PAS DÉPLACER
@@ -8481,7 +8353,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .hero{min-height:clamp(500px,100vw * 1.273,620px) !important}
 }
 
-
 /* ==========================================================================
    V134 — LE H1 NE CONTIENT PLUS QUE LA PHRASE STABLE
    ==========================================================================
@@ -8507,7 +8378,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    Il est donc repose ici explicitement, a l'identique. */
 .hero__h1{font-weight:700}
 .hero__h1-t{font:inherit;margin:0}
-
 
 /* ==========================================================================
    V135 — LA HOME MOBILE, MIEUX EDITEE
@@ -8614,7 +8484,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .parents-grid{grid-template-columns:repeat(2,1fr)}
 }
 
-
 /* ==========================================================================
    V136 — LA HOME MOBILE, SUITE : LES DOUBLONS D'AFFICHAGE
    ==========================================================================
@@ -8653,7 +8522,7 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 @media (max-width:640px){
   .support-card{padding:1.1rem 1rem}
   .support-card__ico{width:2.2rem;height:2.2rem}
-  .cine-copy{padding:1.2rem 1rem}
+  
   .pquote{padding:1.1rem 1rem}
 }
 
@@ -8689,12 +8558,8 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   /* Le mur de sponsors et les cartes « soutenir ». */
   .section.soutenir .sponsors-wall{margin-top:1.6rem;padding-top:1.6rem}
   .support-card{padding:1rem .95rem}
-
-  /* La carte « Adhesion 2026/2027 » : la page adhesion.html est le vrai
-     tunnel de conversion, la home n'a pas a en redire le detail. Le titre,
-     la video et le CTA restent ; seul le rembourrage se resserre. */
-  .cine-copy{padding:1.1rem 1rem}
-  .cine-copy p{font-size:.97rem;line-height:1.5}
+  
+  
 
   /* Le bloc de marque du pied de page. */
   .footer__brand{margin-bottom:.8rem}
@@ -8854,7 +8719,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .hw__f.is-out{animation:none}
 }
 
-
 /* ==========================================================================
    V138 — SUR TELEPHONE, LA PHOTO PREND SA PROPRE BANDE
    ==========================================================================
@@ -8909,7 +8773,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   .hero__inner{position:relative;z-index:2;padding-top:1.25rem}
 }
 
-
 /* ==========================================================================
    V139 — LES LEGENDES DE LA GALERIE REDEVIENNENT DES PASTILLES
    ==========================================================================
@@ -8944,7 +8807,6 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     font-size:.68rem;
     letter-spacing:.08em}
 }
-
 
 /* ==========================================================================
    V140 — L'ANNEAU DE SURVOL REDEVIENT UN ANNEAU DE SURVOL

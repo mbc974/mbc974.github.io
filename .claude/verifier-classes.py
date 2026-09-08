@@ -43,7 +43,7 @@ POSEES_PAR_JS = {
     'in', 'is-on', 'is-open', 'is-past', 'is-next', 'is-loaded', 'is-empty',
     'is-visible', 'is-paused', 'is-flat', 'is-fs', 'is-dragging', 'is-complet',
     'scrolled', 'hide', 'open', 'show', 'roster-ready', 'img-fallback',
-    'cine-fs', 'cine-fs__close', 'cine-fs-lock', 'nav-open',
+    'nav-open',
 }
 
 
