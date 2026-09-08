@@ -5000,12 +5000,13 @@ html:has(.ccb){scroll-padding-bottom:215px}
   transition:none;filter:none;transform:none}
 .gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;
   margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;inset:auto;background:none}
-.gzoom.is-on .g-tile:nth-child(1){--gs:4}
+.gzoom.is-on .g-tile:nth-child(1){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
 .gzoom.is-on .g-tile:nth-child(2){--gs:5;--gt:-30vh;--gl:5vw;--gh:30vh;--gw:35vw}
 .gzoom.is-on .g-tile:nth-child(3){--gs:6;--gt:-10vh;--gl:-25vw;--gh:45vh;--gw:20vw}
 .gzoom.is-on .g-tile:nth-child(4){--gs:5;--gl:27.5vw;--gh:25vh;--gw:25vw}
 .gzoom.is-on .g-tile:nth-child(5){--gs:6;--gt:27.5vh;--gl:5vw;--gh:25vh;--gw:20vw}
-.gzoom.is-on .g-tile:nth-child(6){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
+.gzoom.is-on .g-tile:nth-child(6){--gs:4;--gt:0vh;--gl:0vw;--gh:25vh;--gw:25vw;z-index:0}
+.gzoom.is-on .g-tile{z-index:1}
 .gzoom__cue{position:absolute;left:50%;bottom:clamp(1.2rem,4vh,2.6rem);z-index:5;
   transform:translateX(-50%);display:none;align-items:center;gap:.5rem;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;

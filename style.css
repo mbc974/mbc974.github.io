@@ -9054,13 +9054,23 @@ html:has(.ccb){scroll-padding-bottom:215px}
    elle reste lue par les lecteurs d'ecran. C'est .sr-only, recopie ici. */
 .gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;
   margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;inset:auto;background:none}
-/* ---- La constellation de depart (valeurs du composant d'origine) ---- */
-.gzoom.is-on .g-tile:nth-child(1){--gs:4}
+/* ---- La constellation de depart (valeurs du composant d'origine) ----
+   LA TUILE CENTRALE EST LA 6e : « Ruisseau Blanc, ouvert sur la mer », le
+   plateau couvert. C'est elle qui finit plein cadre. Elle a pris la place du
+   panoramique du cercle d'avant-seance (1re tuile) pour une raison de piqué :
+   ce panoramique ne fait que 759 px de haut, il fallait l'agrandir 1,6 fois
+   pour couvrir une fenetre de 900 px, et cela se voyait. Un 3/2 de 866 px de
+   haut n'a besoin que de 1,04 fois. Les deux geometries ont donc ete
+   echangees ; le reste de la constellation ne bouge pas. */
+.gzoom.is-on .g-tile:nth-child(1){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
 .gzoom.is-on .g-tile:nth-child(2){--gs:5;--gt:-30vh;--gl:5vw;--gh:30vh;--gw:35vw}
 .gzoom.is-on .g-tile:nth-child(3){--gs:6;--gt:-10vh;--gl:-25vw;--gh:45vh;--gw:20vw}
 .gzoom.is-on .g-tile:nth-child(4){--gs:5;--gl:27.5vw;--gh:25vh;--gw:25vw}
 .gzoom.is-on .g-tile:nth-child(5){--gs:6;--gt:27.5vh;--gl:5vw;--gh:25vh;--gw:20vw}
-.gzoom.is-on .g-tile:nth-child(6){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
+.gzoom.is-on .g-tile:nth-child(6){--gs:4;--gt:0vh;--gl:0vw;--gh:25vh;--gw:25vw;z-index:0}
+/* la centrale passe DESSOUS : les cinq autres doivent la survoler en sortant
+   du cadre, pas etre recouvertes par elle a mesure qu'elle grandit */
+.gzoom.is-on .g-tile{z-index:1}
 /* ---- Repere de defilement : une scene collee de 240vh sans indice donne
         l'impression que la page est bloquee. Il s'efface des que ca bouge. ---- */
 .gzoom__cue{position:absolute;left:50%;bottom:clamp(1.2rem,4vh,2.6rem);z-index:5;

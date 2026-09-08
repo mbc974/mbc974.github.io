@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=afa4380f">
+<link rel="stylesheet" href="style.min.css?v=363ecd21">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -1322,10 +1322,18 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <figure class="g-tile g-gym">
         <!-- <picture> ajoute pour que les six tuiles aient la MEME structure :
              le zoom parallaxe dimensionne l'element interieur de chaque tuile,
-             et celle-ci etait la seule a porter un <img> nu. -->
+             et celle-ci etait la seule a porter un <img> nu.
+
+             sizes="100vw" et non 33vw : c'est LA tuile centrale du zoom, celle
+             qui finit exactement plein cadre. Avec 33vw le navigateur choisit
+             un fichier trois fois trop petit puis l'etire sur toute la largeur
+             — c'est la vraie cause du flou constate, avant meme la definition
+             de la source. En mosaique (sans JS, mouvement reduit) cela coute
+             une centaine de kilo-octets de plus ; sur la tuile qui porte tout
+             l'effet, le change vaut la peine. -->
         <picture><img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
              srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
-             sizes="(min-width:900px) 33vw, 50vw"
+             sizes="100vw"
              alt="Le plateau couvert de Ruisseau Blanc ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne." loading="lazy" decoding="async" width="1300" height="866"
              onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'"></picture>
         <figcaption>Ruisseau Blanc, ouvert sur la mer</figcaption>
