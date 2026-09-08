@@ -8854,3 +8854,111 @@ html:has(.ccb){scroll-padding-bottom:215px}
 @media (min-width:900px){
   html:has(.ccb){scroll-padding-bottom:135px}
 }
+
+/* ============================================================
+   EFFECTIF SENIORS — accordeon d'affiches (V109)
+   ------------------------------------------------------------
+   Ce ne sont pas des portraits bruts mais des AFFICHES deja
+   composees : prenom, nom, numero geant, ecusson, logos sponsors
+   et mention de saison sont GRAVES dans l'image. Deux consequences,
+   qui expliquent la totalite de ce bloc.
+
+   1. AUCUN texte en surimpression. Les cartes du staff ont deja
+      fait ce chemin (cf. .team__cap plus haut) : la legende posee
+      sur le bas du portrait tombait pile sur le bandeau grave dans
+      l'illustration, et les deux textes se mangeaient. Ici ce
+      serait pire — le seul nom MOINE occupe la bande 70-88 % de
+      son affiche, et le #1 de Debieuvre la bande 51-69 %. La
+      legende est donc SOUS l'image, jamais dessus.
+
+   2. Les quatre affiches n'ont pas le meme rapport : 0,80 pour
+      Fernandes, 0,667 pour Moine, 0,563 pour Debieuvre et Nazir.
+      Aucun cadrage unique ne peut leur aller. Chaque carte porte
+      donc son propre point focal, releve sur l'affiche :
+        --fx  sert quand la carte est REPLIEE. Le cadre est alors
+              une bande verticale (~0,31 de rapport) : toutes les
+              affiches sont plus larges que lui, on rogne donc les
+              COTES et --fx dit ou garder le visage.
+        --fy  sert quand la carte est DEPLIEE. Le cadre passe a
+              ~0,76 : les affiches 9/16 deviennent plus etroites
+              que lui, on rogne cette fois le HAUT et le BAS.
+      Les deux etats ne rognent pas sur le meme axe : c'est
+      exactement pour cela qu'il faut deux valeurs et non une.
+
+   Mecanique : flex pur. Toutes les cartes valent --sq-shut des que
+   le rail est survole, la survolee vaut --sq-open. Ni JS, ni :has().
+   Le survol ne revele aucune information neuve — le nom, le numero
+   et le poste sont dans la legende a tout moment — il agrandit
+   seulement l'affiche. Rien n'est donc perdu sans souris.
+   ============================================================ */
+/* le conteneur s'elargit un peu, comme celui du staff : quatre affiches en
+   portrait ont besoin de largeur pour que la carte repliee reste lisible */
+.squad-sec .wrap{max-width:min(95vw,1280px)}
+.squad{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,2vw,1rem);
+  list-style:none;margin:0;padding:0}
+.sq-card{position:relative;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;
+  border-radius:var(--r-md);border:1px solid var(--line);
+  background:linear-gradient(180deg,#0c1828,#070d18);
+  box-shadow:0 14px 28px -20px rgba(0,0,0,.8)}
+.sq-card__media{position:relative;aspect-ratio:3/4;overflow:hidden}
+.sq-card__media img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:var(--fx,50%) var(--fy,20%)}
+/* ---- Legende : numero en pastille, puis nom et poste ---- */
+.sq-card__cap{display:flex;align-items:center;gap:.55rem;min-width:0;
+  padding:.62rem .72rem .72rem;border-top:1px solid rgba(191,210,228,.09)}
+.sq-num{flex:none;font-family:var(--ff-display);line-height:1;color:var(--orange-vif);
+  font-size:clamp(1rem,1.5vw,1.38rem)}
+.sq-num::before{content:"#";opacity:.5;font-size:.68em;vertical-align:.14em;margin-right:.04em}
+.sq-txt{display:flex;flex-direction:column;gap:.1rem;min-width:0}
+.sq-nom{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+  line-height:1.05;color:#fff;font-size:clamp(.82rem,1vw,1.02rem);text-wrap:balance}
+.sq-poste{font-family:var(--ff-cond);font-weight:600;line-height:1.15;color:var(--bleu-glacier);
+  font-size:clamp(.7rem,.8vw,.86rem)}
+/* ---- L'accordeon, seulement la ou il y a un vrai survol et de la place.
+       Au doigt il n'y a pas d'etat « survole » : la grille 2 colonnes
+       ci-dessus montre les quatre affiches en entier, ce qui vaut mieux
+       qu'un accordeon qu'on ne peut pas ouvrir. ---- */
+@media (min-width:880px) and (hover:hover){
+  /* La hauteur vient d'un aspect-ratio pose sur le RAIL, pas d'une valeur en
+     vw. C'est la seule facon de tenir la promesse du point focal : le rapport
+     de la carte depliee (~0,77) doit rester le meme a 900 px comme a 1600 px
+     de large, sinon --fy est calcule pour un cadre qui n'existe plus. Une
+     hauteur en vw derivait de 0,75 a 0,97 selon l'ecran, et l'affiche 9/16
+     de Debieuvre y perdait jusqu'a 42 % de sa hauteur. */
+  .squad{display:flex;aspect-ratio:1.66;
+    --sq-gap:clamp(.5rem,.9vw,.9rem);
+    --sq-open:1.9;   /* la carte survolee : ~45 % du rail */
+    --sq-shut:.78;   /* les trois autres  : ~18 % chacune */
+    gap:var(--sq-gap)}
+  .sq-card{flex:1 1 0;min-width:0;height:100%;
+    transition:flex-grow .42s var(--ease-out),border-color .3s var(--ease-out),box-shadow .3s var(--ease-out)}
+  .sq-card__media{aspect-ratio:auto;flex:1 1 auto;min-height:0}
+  /* ici, et seulement ici, la legende tient sur une ligne : les quatre
+     legendes doivent garder la MEME hauteur quand les cartes changent de
+     largeur, sinon le bas du rail tressaute a chaque survol */
+  .sq-nom,.sq-poste{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* UNE carte est ouverte au repos. Ce n'est pas une coquetterie : a quatre
+     cartes egales, la bande fait 0,43 de rapport et laisse voir ~77 % de la
+     largeur de l'affiche — assez pour montrer un nom coupe en plein milieu
+     (NAZIR s'y lisait « NAZI »). Ouverte, la premiere affiche se lit en
+     entier ; refermees, les trois autres tombent a 0,32 et ne montrent plus
+     que deux ou trois lettres, que l'oeil lit comme une matiere et non comme
+     un mot tronque. Le repos montre donc une affiche complete et trois
+     amorces, ce qui est aussi la meilleure invitation a survoler. */
+  .sq-card:first-child{flex-grow:var(--sq-open)}
+  .squad:hover .sq-card{flex-grow:var(--sq-shut)}
+  /* meme specificite que la regle ci-dessus (0,3,0) : on la double
+     pour ne pas dependre de l'ordre des lignes si le bloc est deplace */
+  .squad:hover .sq-card:hover{flex-grow:var(--sq-open);
+    border-color:rgba(232,130,42,.42);box-shadow:var(--e2),var(--glow-o)}
+  /* voile sur les cartes en retrait : c'est le contraste, et non un flou,
+     qui designe la carte ouverte — le fond des affiches est deja sombre */
+  .sq-card__media::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(7,13,24,.30),rgba(7,13,24,.58));
+    opacity:0;transition:opacity .38s var(--ease-out)}
+  .squad:hover .sq-card__media::after{opacity:1}
+  .squad:hover .sq-card:hover .sq-card__media::after{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .sq-card,.sq-card__media::after{transition:none}
+}
