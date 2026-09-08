@@ -8909,6 +8909,18 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .squad-sec .wrap{max-width:min(95vw,1280px)}
 .squad{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(.6rem,2vw,1rem);
   list-style:none;margin:0;padding:0}
+/* Deux rangees, et un intitule qui dit pourquoi : l'effectif est groupe par
+   poste, pas coupe au hasard. C'est aussi ce qui permet de placer les deux
+   affiches 9/16 dans la rangee dont le cadre ouvert leur convient. */
+.squad__lab{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;
+  margin:clamp(1.5rem,3vw,2.4rem) 0 .85rem;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:.82rem;color:var(--blanc)}
+.squad__lab:first-child{margin-top:0}
+.squad__lab span{font-weight:600;letter-spacing:.08em;font-size:.74rem;
+  color:var(--orange-vif);text-transform:none}
+.squad__lab::before{content:"";width:26px;height:2px;flex:none;
+  background:var(--grad-orange);border-radius:2px;align-self:center}
 .sq-card{position:relative;display:flex;flex-direction:column;overflow:hidden;isolation:isolate;
   border-radius:var(--r-md);border:1px solid var(--line);
   background:linear-gradient(180deg,#0c1828,#070d18);
@@ -8938,12 +8950,23 @@ html:has(.ccb){scroll-padding-bottom:215px}
      de large, sinon --fy est calcule pour un cadre qui n'existe plus. Une
      hauteur en vw derivait de 0,75 a 0,97 selon l'ecran, et l'affiche 9/16
      de Debieuvre y perdait jusqu'a 42 % de sa hauteur. */
-  .squad{display:flex;aspect-ratio:1.66;
+  .squad{display:flex;aspect-ratio:2;
     --sq-gap:clamp(.5rem,.9vw,.9rem);
-    --sq-open:1.9;   /* la carte survolee : ~45 % du rail */
-    --sq-shut:.78;   /* les trois autres  : ~18 % chacune */
+    --sq-open:1.9;   /* la carte ouverte  : ~38 % du rail */
+    --sq-shut:.78;   /* les quatre autres : ~15,5 % chacune */
     gap:var(--sq-gap)}
-  .sq-card{flex:1 1 0;min-width:0;height:100%;
+  /* La rangee de QUATRE doit donner la MEME largeur ouverte que celle de cinq,
+     sinon les deux rangees n'ont ni la meme hauteur d'affiche ni le meme
+     cadrage, et --fy vise un cadre different d'une rangee a l'autre. Il suffit
+     que la somme des poids soit identique : 1,9 + 4x0,78 = 5,02 d'un cote,
+     1,9 + 3x1,04 = 5,02 de l'autre. La carte ouverte vaut alors 37,8 % dans
+     les deux cas ; seules les cartes repliees sont un peu plus larges. */
+  .squad--4{--sq-shut:1.04}
+  /* flex-grow vaut --sq-shut DES LE REPOS, pas seulement au survol. Sinon les
+     cartes fermees pesent 1 au repos et --sq-shut au survol : la carte ouverte
+     changeait de largeur entre les deux etats, et les deux rangees n'avaient
+     plus la meme (mesure : 361 px a cinq cartes contre 441 px a quatre). */
+  .sq-card{flex-basis:0;flex-shrink:1;flex-grow:var(--sq-shut);min-width:0;height:100%;
     transition:flex-grow .42s var(--ease-out),border-color .3s var(--ease-out),box-shadow .3s var(--ease-out)}
   .sq-card__media{aspect-ratio:auto;flex:1 1 auto;min-height:0}
   /* ici, et seulement ici, la legende tient sur une ligne : les quatre
