@@ -35,6 +35,7 @@ parlent d'une rencontre precise — l'encart « prochain rendez-vous » et le
 fichier .ics — parce qu'eux aussi mentent quand une date bouge.
 """
 import datetime
+import glob
 import io
 import json
 import os
@@ -75,6 +76,26 @@ FUSEAU = '+04:00'                          # La Reunion, toute l'annee
 # ces 2 h 30. Depuis que les SportsEvent vivent sur les pages /matchs/<slug>/,
 # la valeur qui fait foi est le champ « duree » (en minutes) de
 # data/matchs.json ; elle est rappelee ici pour memoire du raisonnement.
+
+def instants(date, iso_heure, duree_min):
+    """Les deux bornes ABSOLUES d'une rencontre, fuseau compris.
+
+    Pourquoi absolues, et pourquoi elles sortent jusque dans le HTML : le JS de
+    la home decidait « cette rencontre est passee » avec un
+    new Date('2026-09-11T20:30:00') — une chaine SANS fuseau, que le navigateur
+    lit donc dans le fuseau du VISITEUR. Depuis Paris la rencontre restait « a
+    venir » deux heures apres le coup de sifflet final ; depuis Tokyo elle
+    passait au passe cinq heures trop tot. Le gymnase, lui, est a La Reunion :
+    l'instant doit etre le meme pour tout le monde.
+
+    La duree ne s'invente pas ici : elle vient du champ « duree » (en minutes)
+    de data/matchs.json, qui fait foi — voir le bloc de commentaire ci-dessus.
+    """
+    deb = datetime.datetime.strptime(date + ' ' + iso_heure, '%Y-%m-%d %H:%M')
+    fin = deb + datetime.timedelta(minutes=duree_min)
+    fmt = '%Y-%m-%dT%H:%M:00'
+    return deb.strftime(fmt) + FUSEAU, fin.strftime(fmt) + FUSEAU
+
 
 ADRESSE_GYMNASE = {
     '@type': 'PostalAddress',
@@ -158,7 +179,7 @@ def bloc_score(m):
             % (issue, libelle, s['mbc'], s['adverse']))
 
 
-def lignes_html(mbc, postes, benevoles, slugs):
+def lignes_html(mbc, postes, benevoles, slugs, durees, courts, libres):
     """Chaque rencontre porte desormais un lien vers sa page dediee. Les slugs
     viennent de data/matchs.json, dont verifier_source_matchs() garantit qu'il
     parle des memes dates que le PDF."""
@@ -169,7 +190,8 @@ def lignes_html(mbc, postes, benevoles, slugs):
             else (crest_adverse(m['sigle']) + '<span class="mx-vs">vs</span>' + CREST_MBC)
         roles = bloc_benevoles(m, postes, benevoles.get(m['date'], {})) if dom else ''
         out.append(
-            u'        <li class="mx-row mx-row--%(cls)s" id="%(ancre)s" data-date="%(date)s">\n'
+            u'        <li class="mx-row mx-row--%(cls)s" id="%(ancre)s" data-date="%(date)s"'
+            u' data-debut="%(debut_iso)s" data-fin="%(fin_iso)s" data-court="%(court)s" data-libre="%(libre)s">\n'
             u'          <span class="mx-j">J%(journee)d</span>\n'
             u'          <time class="mx-date" datetime="%(date)sT%(iso_heure)s">\n'
             u'            <span class="mx-date__d">%(jour)s</span>\n'
@@ -188,6 +210,17 @@ def lignes_html(mbc, postes, benevoles, slugs):
             u'        </li>' % dict(
                 m, cls='dom' if dom else 'ext', duel=duel, roles=roles,
                 ancre=ancre(m), score=bloc_score(m), slug=slugs[m['date']],
+                court=courts.get(m['date'], m['adversaire']),
+                # « Entree libre » est une DONNEE (champ entreeLibre de
+                # data/matchs.json), pas une consequence du fait de jouer a
+                # domicile. On la publie telle quelle plutot que de la deduire :
+                # le jour ou une rencontre a domicile sera payante, le bandeau
+                # ne l'annoncera pas gratuite.
+                libre='1' if libres.get(m['date']) else '',
+                debut_iso=instants(m['date'], m['iso_heure'],
+                                   durees[m['date']])[0],
+                fin_iso=instants(m['date'], m['iso_heure'],
+                                 durees[m['date']])[1],
                 mois=acc(m['mois']),
                 sidecls=' mx-side--dom' if dom else '',
                 side=u'À domicile' if dom else u'En déplacement',
@@ -272,19 +305,42 @@ def verifier_coherence(html, mbc):
                 alertes.append(u'encart : l\'adversaire du %s est %s, l\'encart dit Sainte-Suzanne'
                                % (d, r['adversaire']))
 
-    if os.path.exists(ICS):
-        ics = io.open(ICS, encoding='utf-8').read()
-        m_ics = re.search(r'DTSTART:(\d{8})T(\d{6})Z', ics)
-        if m_ics:
-            utc = datetime.datetime.strptime(m_ics.group(1) + m_ics.group(2), '%Y%m%d%H%M%S')
-            local = utc + datetime.timedelta(hours=4)
-            d = local.strftime('%Y-%m-%d')
-            r = par_date.get(d)
-            if not r:
-                alertes.append(u'%s : le %s n\'est plus une rencontre du MBC' % (ICS, d))
-            elif local.strftime('%H:%M') != r['iso_heure']:
-                alertes.append(u'%s : coup d\'envoi %s, le PDF dit %s'
-                               % (ICS, local.strftime('%H:%M'), r['iso_heure']))
+    # Les .ics deposes dans l'agenda des supporters. Deux corrections ici.
+    #
+    # 1. La regex ne pouvait PAS correspondre. Elle cherchait
+    #       DTSTART:20260911T203000Z
+    #    alors que build-matchs.py ecrit, a juste titre,
+    #       DTSTART;TZID=Indian/Reunion:20260911T203000
+    #    (heure locale + VTIMEZONE, ce qui survit a un changement de fuseau
+    #    du cote du lecteur d'agenda). Le `if m_ics:` etait donc toujours
+    #    faux : le garde-fou existait dans le fichier et nulle part ailleurs.
+    # 2. Il ne controlait qu'UN fichier, celui de la premiere journee, ecrit
+    #    en dur dans ICS. Les autres rencontres a domicile pouvaient deriver
+    #    sans que rien ne le dise. On les relit toutes.
+    for chemin in sorted(glob.glob('assets/documents/*.ics')):
+        ics = io.open(chemin, encoding='utf-8').read()
+        # 3. Chercher dans le VEVENT, et pas dans tout le fichier : le bloc
+        #    VTIMEZONE qui le precede porte lui aussi un DTSTART, celui de
+        #    l'epoque Unix (19700101T000000). Une premiere reparation de la
+        #    regex tombait dessus et annoncait quatre rencontres « du
+        #    1970-01-01 » — un garde-fou qui crie faux n'est pas meilleur
+        #    qu'un garde-fou muet, il est pire : on finit par l'ignorer.
+        ics = ics.partition('BEGIN:VEVENT')[2] or ics
+        m_ics = re.search(r'DTSTART(?:;TZID=[^:]+)?:(\d{8})T(\d{6})(Z?)', ics)
+        if not m_ics:
+            alertes.append(u'%s : aucun DTSTART lisible' % chemin)
+            continue
+        t = datetime.datetime.strptime(m_ics.group(1) + m_ics.group(2), '%Y%m%d%H%M%S')
+        # Un DTSTART suffixe Z est en UTC : on le ramene a l'heure de La
+        # Reunion. Sans Z, il est deja local (c'est le cas de nos fichiers).
+        local = t + datetime.timedelta(hours=4) if m_ics.group(3) else t
+        d = local.strftime('%Y-%m-%d')
+        r = par_date.get(d)
+        if not r:
+            alertes.append(u'%s : le %s n\'est plus une rencontre du MBC' % (chemin, d))
+        elif local.strftime('%H:%M') != r['iso_heure']:
+            alertes.append(u'%s : coup d\'envoi %s, le PDF dit %s'
+                           % (chemin, local.strftime('%H:%M'), r['iso_heure']))
     return alertes
 
 
@@ -316,6 +372,16 @@ def verifier_source_matchs(mbc):
         if int(f['journee']) != int(m['journee']):
             ecarts.append(u'%s : journee divergente (PDF J%s, %s J%s)'
                           % (m['date'], m['journee'], SOURCE_MATCHS, f['journee']))
+        # L'HEURE, que cette comparaison ignorait. C'est pourtant elle qui
+        # bouge le plus souvent : l'article 4 du reglement autorise une
+        # derogation jusqu'a 5 jours avant la rencontre, et elle porte
+        # aussi bien sur l'horaire que sur le camp. Sans ce controle, un
+        # coup d'envoi avance d'une heure donnait une home juste (elle
+        # vient du PDF) et sept fiches fausses (elles viennent du JSON),
+        # sans une seule alerte.
+        if str(f['heure']) != str(m['iso_heure']):
+            ecarts.append(u'%s : heure divergente (PDF %s, %s %s)'
+                          % (m['date'], m['iso_heure'], SOURCE_MATCHS, f['heure']))
     for date in sorted(set(par_date) - {m['date'] for m in mbc}):
         ecarts.append(u'%s : rencontre de %s absente du PDF' % (date, SOURCE_MATCHS))
     return ecarts
@@ -415,10 +481,22 @@ def main():
     if ecarts:
         print("  !! corrigez data/matchs.json avant de republier le calendrier")
         return 1
-    slugs = {m['date']: m['slug'] for m in
-             json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))['matchs']}
+    _src = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))['matchs']
+    slugs = {m['date']: m['slug'] for m in _src}
+    # La duree vient de data/matchs.json et de nulle part ailleurs : c'est elle
+    # qui fixe l'heure de fin publiee dans data-fin, donc l'instant precis ou la
+    # home cesse d'annoncer la rencontre.
+    durees = {m['date']: (m.get('duree') or 120) for m in _src}
+    # Le nom COURT de l'adversaire (« Sainte-Suzanne », pas « Basket Club
+    # Sainte-Suzanne »). Le PDF de la ligue ne connait que le nom long ; la forme
+    # courte vit dans data/matchs.json, et c'est elle qu'affiche le bandeau du
+    # prochain match. En la publiant sur la ligne, ce bandeau peut se reconstruire
+    # tout seul quand la rencontre annoncee est passee, sans reinventer de libelle.
+    courts = {m['date']: (m.get('adversaireCourt') or m['adversaire']) for m in _src}
+    libres = {m['date']: bool(m.get('entreeLibre')) for m in _src}
 
-    html = remplacer(html, 'calendrier:lignes', lignes_html(mbc, postes, affect, slugs))
+    html = remplacer(html, 'calendrier:lignes',
+                     lignes_html(mbc, postes, affect, slugs, durees, courts, libres))
     mot = {1: 'un', 2: 'deux', 3: 'trois', 4: 'quatre',
            5: 'cinq', 6: 'six', 7: 'sept'}[r['domicile']]
     html = remplacer_compte(html, mot)
@@ -448,7 +526,6 @@ def main():
     shutil.copyfile(pdf, ARCHIVE)
     print('  PDF archive -> %s' % ARCHIVE)
 
-    import glob
     import importlib.util
     spec = importlib.util.spec_from_file_location('aff', '.claude/affiche-calendrier.py')
     aff = importlib.util.module_from_spec(spec)

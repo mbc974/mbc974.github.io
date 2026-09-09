@@ -51,6 +51,7 @@ suivante.
 |---|---|---|
 | Une rencontre (date, heure, adversaire, bénévoles) | `data/matchs.json` | `python .claude/build-matchs.py` |
 | Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
+| Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/build-creneaux.py` |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
@@ -116,8 +117,10 @@ Puis ouvrir `http://localhost:8010`. Aucun build, aucune dépendance npm : les f
 
 ## 3. Analytics — catalogue des événements
 
-**Plausible est préparé mais volontairement désactivé** : la balise est commentée dans le `<head>`
-de chaque page. Aucune donnée n'est collectée aujourd'hui.
+**Google Analytics 4 est posé sur les 25 pages, en Consent Mode.** Rien de Google n'est chargé
+tant que le visiteur n'a pas accepté : `set-analytics.py --etat` le dit page par page.
+Plausible avait été préparé puis abandonné au profit de GA4 ; ce paragraphe le décrivait
+encore comme « préparé mais désactivé », en contradiction avec le § 5 du même document.
 
 Le code de suivi est **centralisé dans `script.js`** (un seul écouteur délégué sur `document`,
 pas de snippets dispersés dans le HTML). Il est inerte tant que `window.plausible` n'existe pas :
@@ -143,9 +146,8 @@ function track(name){ if (typeof window.plausible === 'function') window.plausib
 | `Dossier sponsor` | téléchargement du PDF partenaire | piste B2B |
 | `Formulaire contact` | envoi du formulaire | contact abouti |
 
-**Pour activer** : créer un compte Plausible, puis décommenter la ligne `<script defer data-domain="mbc974.com" …>`
-dans le `<head>` de chaque page. Les événements remontent alors sans autre modification.
-⚠️ Mettre aussi à jour `/confidentialite/` en conséquence.
+**Pour retirer la mesure** : `python .claude/set-analytics.py --off` la retire des 25 pages d'un
+geste. ⚠️ Mettre alors `/confidentialite/` à jour en conséquence.
 
 ---
 
@@ -245,6 +247,7 @@ node --check script.js                 # syntaxe JS
 python -c "s=open('style.css',encoding='utf-8').read(); print(s.count('{'), s.count('}'))"
 python -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
 python .claude/verifier-jsonld.py      # données structurées, les 25 pages
+python .claude/build-creneaux.py --essai # les pages catégories disent-elles encore la vérité ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?

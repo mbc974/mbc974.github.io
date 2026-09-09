@@ -1,0 +1,170 @@
+{
+  "_lisezmoi": "Source UNIQUE des creneaux d'entrainement et des categories. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-creneaux.py » pour regenerer le planning de l'accueil, la page /creneaux/, la ligne « Creneau » des huit cartes categories, celle des six panneaux du selecteur d'age, et le bloc openingHoursSpecification des donnees structurees. Avant ce fichier, un meme horaire etait recopie a la main a neuf endroits ; changer l'heure du lundi demandait neuf modifications coherentes, et rien ne les verifiait.",
+
+  "saison": "2026/2027",
+  "tarif": 95,
+  "devise": "EUR",
+
+  "_lieux": "Les deux equipements du club. « carte » est le lien Google Maps affiche partout ; il n'y en a qu'un par lieu, volontairement : index.html en portait deux differents pour Ruisseau Blanc (2gHjGAH8hY4iMpT36 et YMZpWLT9YncQdy8G8). Verification faite, ils pointent au meme endroit a 1,2 m pres (-20.894377,55.413988 contre -20.894366,55.413993) ; on n'en garde qu'un.",
+  "lieux": {
+    "gymnase": {
+      "nom": "Gymnase de La Montagne",
+      "court": "Gymnase",
+      "tag": "Salle couverte",
+      "adresse": "Chemin des Bauhinias",
+      "codePostal": "97417",
+      "ville": "Saint-Denis",
+      "region": "La Réunion",
+      "latitude": -20.891557,
+      "longitude": 55.423974,
+      "carte": "https://maps.app.goo.gl/KcTePvY47wzi6JMu9"
+    },
+    "ruisseau": {
+      "nom": "Terrain Ruisseau Blanc",
+      "court": "Ruisseau Blanc",
+      "tag": "Plateau couvert, en plein air",
+      "adresse": "Ruisseau Blanc, La Montagne",
+      "codePostal": "97417",
+      "ville": "Saint-Denis",
+      "region": "La Réunion",
+      "latitude": -20.894377,
+      "longitude": 55.413988,
+      "carte": "https://maps.app.goo.gl/2gHjGAH8hY4iMpT36"
+    }
+  },
+
+  "_categories": "L'ordre de cette liste est celui des cartes de l'accueil et du tableau de /adhesion.html. « formule » doit reprendre AU CARACTERE PRES le libelle du tunnel Yapla : c'est ce que l'adherent doit retrouver a l'ecran au moment de payer. « naissance » est la formulation officielle FFBB (l'annee de naissance determine la categorie, pas l'age du jour).",
+  "categories": [
+    {
+      "id": "baby",
+      "nom": "Baby Basket",
+      "court": "Baby",
+      "onglet": "3–6 ans",
+      "chip": "Baby Basket",
+      "ages": "3 — 6 ans",
+      "naissance": "Nés de 2020 à 2023",
+      "naissanceCourt": "2020 → 2023",
+      "pratique": "Éveil, sans compétition",
+      "formule": "Baby Basket 2026/2027",
+      "tarif": 95,
+      "page": "baby-basket-la-reunion/",
+      "pageLibelle": "Le Baby Basket"
+    },
+    {
+      "id": "ecole",
+      "nom": "École de Basket",
+      "court": "École",
+      "onglet": "7–10 ans",
+      "chip": "École de Basket",
+      "ages": "7 — 10 ans",
+      "naissance": "Nés de 2016 à 2019",
+      "naissanceCourt": "2016 → 2019",
+      "pratique": "Apprentissage, plateaux",
+      "formule": "École de Basket 2026/2027",
+      "tarif": 95,
+      "page": "ecole-de-basket-saint-denis/",
+      "pageLibelle": "L'école de basket"
+    },
+    {
+      "id": "u13",
+      "nom": "U13",
+      "court": "U13",
+      "onglet": "11–12 ans",
+      "ages": "11 — 12 ans",
+      "naissance": "Nés en 2014 et 2015",
+      "naissanceCourt": "2014 → 2015",
+      "pratique": "Compétition FFBB",
+      "formule": "U13 Compétition 2026/2027",
+      "tarif": 95,
+      "page": "basket-enfant-saint-denis/",
+      "pageLibelle": "Le basket enfant"
+    },
+    {
+      "id": "u15",
+      "nom": "U15",
+      "court": "U15",
+      "onglet": "13–14 ans",
+      "ages": "13 — 14 ans",
+      "naissance": "Nés en 2012 et 2013",
+      "naissanceCourt": "2012 → 2013",
+      "pratique": "Compétition FFBB",
+      "formule": "U15 Compétition 2026/2027",
+      "tarif": 95,
+      "page": "basket-enfant-saint-denis/",
+      "pageLibelle": "Le basket enfant"
+    },
+    {
+      "id": "u18",
+      "nom": "U18",
+      "court": "U18",
+      "onglet": "15–17 ans",
+      "ages": "15 — 17 ans",
+      "naissance": "Nés de 2009 à 2011",
+      "naissanceCourt": "2009 → 2011",
+      "pratique": "Compétition FFBB",
+      "formule": "U18 2026/2027",
+      "tarif": 95,
+      "page": "basket-enfant-saint-denis/",
+      "pageLibelle": "Le basket jeune"
+    },
+    {
+      "id": "seniors",
+      "nom": "Seniors compétition",
+      "court": "Seniors",
+      "onglet": "Adulte",
+      "ages": "Dès 16 ans",
+      "naissance": "Équipe fanion · accès sur validation du coach",
+      "naissanceCourt": "2010 et avant",
+      "pratique": "Compétition, sur validation du coach",
+      "formule": "Senior Compétition 2026/2027",
+      "tarif": 95,
+      "page": "basket-adulte-loisirs-saint-denis/",
+      "pageLibelle": "Basket adulte & loisirs"
+    },
+    {
+      "id": "loisir",
+      "nom": "Basket loisirs",
+      "court": "Loisir",
+      "onglet": "Adulte",
+      "ages": "Dès 16 ans",
+      "naissance": "Sans championnat · tous niveaux",
+      "naissanceCourt": "2010 et avant",
+      "pratique": "Loisir, sans championnat",
+      "formule": "Basket Loisirs 2026/2027",
+      "tarif": 95,
+      "page": "basket-adulte-loisirs-saint-denis/",
+      "pageLibelle": "Basket adulte & loisirs"
+    },
+    {
+      "id": "dirigeant",
+      "nom": "Dirigeant / bénévole",
+      "court": "Dirigeant",
+      "onglet": null,
+      "ages": "Tout âge",
+      "naissance": "Sans jouer · 0 €",
+      "naissanceCourt": "Tout âge",
+      "pratique": "Sans jouer — gratuit",
+      "formule": "Dirigeant / Bénévole 2026/2027",
+      "tarif": 0,
+      "page": "benevoles/",
+      "pageLibelle": "Devenir bénévole",
+      "sansCreneau": "Couvert dans le cadre de vos missions au club"
+    }
+  ],
+
+  "_creneaux": "Les neuf creneaux hebdomadaires, dans l'ordre de la semaine. « nature » vaut entrainement, loisir ou match. Les lignes « match » sont des RESERVATIONS DE SALLE pour recevoir les rencontres officielles : la salle n'est pas occupee toutes les semaines, et c'est le calendrier FFBB (data/matchs.json) qui dit lesquelles. Ne pas les confondre avec les rencontres elles-memes.",
+  "creneaux": [
+    { "jour": "lundi",     "debut": "17:30", "fin": "19:00", "categories": ["u13", "u15"],     "lieu": "gymnase",  "nature": "entrainement" },
+    { "jour": "lundi",     "debut": "19:00", "fin": "20:30", "categories": ["seniors", "u18"], "lieu": "gymnase",  "nature": "entrainement" },
+    { "jour": "mercredi",  "debut": "14:30", "fin": "16:00", "categories": ["u13", "u15"],     "lieu": "ruisseau", "nature": "entrainement" },
+    { "jour": "mercredi",  "debut": "19:00", "fin": "20:30", "categories": ["seniors", "u18"], "lieu": "gymnase",  "nature": "entrainement" },
+    { "jour": "mercredi",  "debut": "20:30", "fin": "22:00", "categories": ["loisir"],         "lieu": "ruisseau", "nature": "loisir",
+      "etiquette": "Dès 16 ans", "titre": "Loisir mixte", "precision": "Ouvert à tous, filles et garçons" },
+    { "jour": "vendredi",  "debut": "20:00", "fin": "23:00", "categories": ["seniors", "u18"], "lieu": "gymnase",  "nature": "match",
+      "titre": "Match à domicile", "precision": "Selon calendrier FFBB" },
+    { "jour": "samedi",    "debut": "09:00", "fin": "10:00", "categories": ["baby"],           "lieu": "gymnase",  "nature": "entrainement" },
+    { "jour": "samedi",    "debut": "10:00", "fin": "11:30", "categories": ["ecole"],          "lieu": "gymnase",  "nature": "entrainement" },
+    { "jour": "dimanche",  "debut": "09:00", "fin": "11:00", "categories": ["u13"],            "lieu": "gymnase",  "nature": "match",
+      "titre": "Match à domicile", "precision": "Selon calendrier FFBB" }
+  ]
+}

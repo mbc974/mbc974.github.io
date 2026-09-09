@@ -40,7 +40,8 @@ git push
 ├── CNAME                   Domaine personnalisé (mbc974.com)
 ├── .nojekyll               Désactive le traitement Jekyll de GitHub Pages
 ├── README.md               Ce fichier
-├── data/                   Sources JSON des pages générées (matchs, actualités)
+├── data/                   Sources JSON des pages générées (matchs, actualités, créneaux)
+├── creneaux/               GÉNÉRÉ — planning hebdomadaire de toutes les catégories
 ├── matchs/                 GÉNÉRÉ — /matchs/ + une page par rencontre
 ├── actualites/             GÉNÉRÉ — /actualites/ + une page par article
 └── assets/
@@ -66,7 +67,7 @@ correspondant dans `data/`, puis on relance le script indiqué dans
 ## Modifier le contenu
 
 - **Textes** : modifiez directement le texte entre les balises dans `index.html` / `adhesion.html`.
-- **Créneaux / calendrier** : section `id="calendrier"` dans `index.html`. ⚠️ Pensez à mettre à jour en cohérence le bloc `openingHoursSpecification` du JSON-LD (dans le `<head>`).
+- **Créneaux / catégories** : `data/creneaux.json`, puis `python .claude/build-creneaux.py`. Un seul fichier alimente le planning de l'accueil, la page `/creneaux/`, les huit cartes catégories, les six panneaux du sélecteur d'âge **et** le bloc `openingHoursSpecification` du JSON-LD. Il n'y a plus rien à mettre à jour « en cohérence » : c'est le script qui s'en charge.
 - **Matchs** : `data/matchs.json`, puis `python .claude/build-matchs.py`. ⚠️ Le `slug` d'une rencontre **est** son URL publique : le changer casse un lien déjà partagé.
 - **Actualités** : `data/actualites.json`, puis `python .claude/build-actus.py`. Chaque article doit avoir sa source citée dans le bloc `_sources` du fichier — on ne publie rien qu'on ne puisse pas montrer.
 - **Staff** : photos dans `assets/staff/`, noms/rôles affichés via `.team__cap` (et déclarés dans le `member` du JSON-LD).

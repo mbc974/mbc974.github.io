@@ -521,17 +521,23 @@ def bandeau(m, d):
     L = m["_lieu"]
     lieu = L["nom"] if L else u"Chez l'adversaire"
     club = d["club"]
-    itineraire = u""
-    if L:
-        itineraire = (u'<a class="nx__second" href="%s" target="_blank" rel="noopener">Itineraire'
-                      u'<span class="sr-only"> vers %s (Google Maps, nouvel onglet)</span></a>'
-                      ) % (L["carte"], ech(lieu))
-        itineraire = itineraire.replace(u"Itineraire", u"Itinéraire")
+    # « Itineraire » et « Entree libre » sont TOUJOURS ecrits, masques par
+    # l'attribut hidden quand ils ne s'appliquent pas (rencontre en
+    # deplacement). Raison : le bandeau se reconstruit tout seul cote client
+    # quand la rencontre annoncee est passee — il bascule alors de la ligne
+    # suivante du calendrier. Un element absent du DOM ne peut pas etre
+    # reaffiche ; un element present et masque, si. On ne montre donc jamais
+    # une information fausse, et on n'en perd aucune entre deux publications.
+    gym = d["lieux"].get("gymnase") or {}
+    carte = (L or gym).get("carte", "")
+    itineraire = (u'<a class="nx__second" href="%s" target="_blank" rel="noopener"%s>Itinéraire'
+                  u'<span class="sr-only"> vers %s (Google Maps, nouvel onglet)</span></a>'
+                  ) % (carte, u"" if L else u" hidden", ech(lieu if L else gym.get("nom", "")))
     crest_adv = ecusson_nx(m["logo"], m["sigle"])
     crest_dom = ECUSSON_MBC_NX if m["domicile"] else crest_adv
     crest_ext = crest_adv if m["domicile"] else ECUSSON_MBC_NX
     return u"""<!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
-<section class="nx" aria-labelledby="nxBandTitle">
+<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-fin="%(finIso)s">
   <div class="wrap nx__in">
     <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J%(j)d</p>
     <h2 class="nx__t" id="nxBandTitle"><span class="nx__club">%(crestDom)s%(dom)s</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp">%(crestExt)s%(ext)s</span></h2>
@@ -546,10 +552,25 @@ def bandeau(m, d):
         "crestDom": crest_dom,
         "crestExt": crest_ext,
         "iso": m["_debutIso"],
+        # data-fin : l'instant ABSOLU du coup de sifflet final, fuseau compris.
+        #
+        # Ce bandeau etait le seul bloc « prochain match » de la home a ne pas
+        # savoir se perimer. Le scoreboard plus bas, lui, portait deja un
+        # data-match-date et disparaissait tout seul — mais c'est CELUI-CI que
+        # l'on voit en premier, juste sous le hero. Le 12 septembre au matin il
+        # aurait donc continue d'annoncer « Prochain match J1, vendredi 11
+        # septembre », jusqu'a la prochaine execution d'un script.
+        #
+        # On publie l'instant plutot que la date seule pour deux raisons : le
+        # match se termine a 23h00 et non a minuit, et un supporter qui lit le
+        # site depuis la metropole doit voir exactement ce que voit un
+        # supporter a La Montagne.
+        "finIso": m["_finIso"],
         "dateLongue": ech(m["_dateLongue"][0].upper() + m["_dateLongue"][1:]),
         "heure": m["_heureFr"],
         "lieu": ech(lieu),
-        "libre": u'<span class="nx__libre">Entrée libre</span>' if m["entreeLibre"] else u"",
+        "libre": (u'<span class="nx__libre"%s>Entrée libre</span>'
+                  % (u"" if m["entreeLibre"] else u" hidden")),
         "slug": m["slug"],
         "fleche": FLECHE,
         "itineraire": itineraire,

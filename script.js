@@ -748,6 +748,68 @@
 })();
 
 /* ============================================================
+   L'heure de La Réunion, pour tout le monde
+   ------------------------------------------------------------
+   Trois modules de ce fichier décidaient qu'une rencontre était
+   passée avec un `new Date('2026-09-11T20:30:00')` — une chaîne
+   SANS fuseau, que le navigateur lit donc dans le fuseau du
+   VISITEUR. Depuis Paris la rencontre restait « à venir » deux
+   heures après le coup de sifflet final ; depuis Tokyo elle
+   basculait au passé cinq heures trop tôt. Le gymnase, lui, est
+   à La Montagne : l'instant doit être le même partout.
+
+   Les blocs générés publient désormais l'instant complet, suffixé
+   +04:00 (data-debut / data-fin sur les lignes du calendrier,
+   data-fin sur le bandeau du prochain match). MBC.instant() le
+   lit tel quel ; il sait aussi retomber sur une date seule, pour
+   un HTML qui n'aurait pas encore été régénéré.
+
+   +04:00 est écrit en dur, et c'est volontaire : La Réunion n'a
+   pas d'heure d'été. Cette valeur ne bouge jamais.
+   ============================================================ */
+window.MBC = window.MBC || {};
+MBC.FUSEAU = '+04:00';
+
+MBC.instant = function (iso, heureDefaut) {
+  if (!iso) return null;
+  var s = String(iso);
+  if (!/[+-]\d{2}:\d{2}$|Z$/.test(s)) {
+    s = (s.length > 10 ? s : s + 'T' + (heureDefaut || '00:00') + ':00') + MBC.FUSEAU;
+  }
+  var d = new Date(s);
+  return isNaN(d) ? null : d;
+};
+
+/* « 20h30 » tel qu'il est écrit dans la ligne -> « 20:30 ».
+   Sert de repli quand data-debut manque : l'heure lue dans la page
+   vaut toujours mieux qu'une heure inventée dans le script — c'est
+   exactement l'erreur que faisait le bandeau du Match Center, qui
+   annonçait « 20h30 » en dur pendant que la ligne juste en dessous
+   affichait l'horaire réel lu dans le PDF de la ligue. */
+MBC.heureDe = function (racine) {
+  var e = racine && racine.querySelector('.mx-h');
+  var t = e ? e.textContent.trim() : '';
+  return /^\d{1,2}\s*h\s*\d{0,2}$/.test(t)
+    ? t.replace(/\s/g, '').replace('h', ':').replace(/:$/, ':00').replace(/^(\d):/, '0$1:')
+    : null;
+};
+
+/* « vendredi 18 septembre 2026 », toujours lu à l'heure de La Réunion.
+   Sans timeZone, un visiteur à Tokyo verrait « samedi 19 » pour un match
+   du vendredi soir : le jour affiché aurait changé avec le fuseau. */
+MBC.dateLongue = function (d, avecAnnee) {
+  var o = { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Indian/Reunion' };
+  if (avecAnnee) o.year = 'numeric';
+  var t;
+  try { t = d.toLocaleDateString('fr-FR', o); }
+  catch (e) {
+    try { t = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }); }
+    catch (e2) { return ''; }
+  }
+  return t.charAt(0).toUpperCase() + t.slice(1);
+};
+
+/* ============================================================
    Affiche « prochain rendez-vous » : elle s'efface d'elle-meme
    ------------------------------------------------------------
    Le bloc annonce UNE rencontre precise. Passee cette date il
@@ -761,9 +823,19 @@
   if (!bloc) return;
   var d = bloc.getAttribute('data-match-date');
   if (!d) return;
-  var coup = new Date(d + 'T20:30:00');
-  var fin = new Date(d + 'T23:59:59');
-  if (isNaN(fin)) return;
+  /* Le coup d'envoi et le coup de sifflet final, en instants ABSOLUS.
+     On les emprunte à la ligne correspondante du calendrier, plus bas dans
+     la page : c'est le générateur qui les y publie, fuseau compris. Écrire
+     « 20h30 » ici serait faux dès la première dérogation d'horaire — et
+     l'article 4 du règlement en autorise jusqu'à 5 jours avant la
+     rencontre. Le repli ne devine donc pas non plus : il relit l'heure
+     affichée dans la ligne. */
+  var ligne = document.getElementById('match-' + d);
+  var coup = MBC.instant(ligne && ligne.getAttribute('data-debut')) ||
+             MBC.instant(d, MBC.heureDe(ligne) || '20:30');
+  var fin = MBC.instant(ligne && ligne.getAttribute('data-fin')) ||
+            MBC.instant(d, '23:59');
+  if (!coup || !fin) return;
 
   var now = new Date();
   if (fin < now) {
@@ -845,6 +917,135 @@
 })();
 
 /* ============================================================
+   Le bandeau « prochain match » sous le hero : il se périme,
+   et il se ré-arme
+   ------------------------------------------------------------
+   Ce bandeau est écrit par .claude/build-matchs.py. Il était le
+   SEUL des trois blocs « prochain match » de la page à n'avoir
+   aucune date de péremption — le scoreboard plus bas en portait
+   une depuis toujours. Or c'est lui qu'on voit en premier, juste
+   sous le hero : le 12 septembre au matin, il aurait encore
+   annoncé « Prochain match · J1 · vendredi 11 septembre », et ce
+   jusqu'à la prochaine publication du site.
+
+   Il ne se contente pas de disparaître : disparaître laisserait
+   la home sans aucune annonce de rencontre. Il se reconstruit à
+   partir de la ligne suivante du calendrier, plus bas dans la
+   même page.
+
+   RIEN N'EST INVENTÉ ICI. L'écusson est cloné de cette ligne, le
+   nom court, l'heure, le lieu, le lien et « entrée libre » en
+   sont lus — ce sont les attributs que le générateur y publie
+   exprès. Si une seule de ces pièces manque, on se rabat sur
+   l'effacement : un bandeau muet vaut mieux qu'un bandeau faux.
+   ============================================================ */
+(function () {
+  var band = document.getElementById('nxBand');
+  if (!band) return;
+
+  var fin = MBC.instant(band.getAttribute('data-fin'));
+  if (!fin) return;                    // pas d'instant publié : on ne touche à rien
+  if (fin >= new Date()) return;       // la rencontre annoncée n'est pas encore finie
+
+  if (!rearmer()) band.hidden = true;
+
+  /* Le libellé d'un camp, débarrassé de son écusson. */
+  function libelle(span) {
+    var c = span.cloneNode(true), cr = c.querySelector('.nx__crest');
+    if (cr && cr.parentNode) cr.parentNode.removeChild(cr);
+    return c.textContent.trim();
+  }
+
+  function estMbc(n) {
+    var i = n && n.querySelector('img');
+    return !!(i && /mbc-logo/.test(i.getAttribute('src') || ''));
+  }
+
+  function rearmer() {
+    var maintenant = new Date();
+    var rows = document.querySelectorAll('.mx-list .mx-row[data-date]');
+    var row = null;
+    for (var i = 0; i < rows.length; i++) {
+      var f = MBC.instant(rows[i].getAttribute('data-fin')) ||
+              MBC.instant(rows[i].getAttribute('data-date'), '23:59');
+      if (f && f >= maintenant) { row = rows[i]; break; }
+    }
+    if (!row) return false;            // la phase est terminée : plus rien à annoncer
+
+    var debut = MBC.instant(row.getAttribute('data-debut')) ||
+                MBC.instant(row.getAttribute('data-date'), MBC.heureDe(row));
+    var journee = row.querySelector('.mx-j');
+    var crests = row.querySelectorAll('.mx-duel .mx-crest');
+    var heure = row.querySelector('.mx-h');
+    var lieu = row.querySelector('.mx-lieu');
+    var fiche = row.querySelector('.mx-fiche');
+    var court = row.getAttribute('data-court');
+    var dom = row.classList.contains('mx-row--dom');
+
+    var spanClub = band.querySelector('.nx__club');
+    var spanOpp = band.querySelector('.nx__opp');
+    var eyebrow = band.querySelector('.nx__eyebrow');
+    var temps = band.querySelector('.nx__meta time');
+    var ou = band.querySelector('.nx__ou');
+    var cta = band.querySelector('.nx__a .btn');
+
+    if (!debut || !journee || crests.length < 2 || !heure || !lieu || !fiche ||
+        !court || !spanClub || !spanOpp || !eyebrow || !temps || !ou || !cta) return false;
+
+    // Le nom du club tel que CETTE page l'écrit, relevé avant de rien changer.
+    var nomMbc = estMbc(spanClub) ? libelle(spanClub)
+               : (estMbc(spanOpp) ? libelle(spanOpp) : 'MBC');
+
+    /* Les deux écussons de la ligne sont déjà dans l'ordre d'affichage :
+       le club qui reçoit est nommé en premier. On peut donc les recopier
+       tels quels, sans avoir à décider qui va à gauche. */
+    function poser(span, crest, nom) {
+      var cible = span.querySelector('.nx__crest');
+      var img = crest.querySelector('img');
+      if (cible) {
+        while (cible.firstChild) cible.removeChild(cible.firstChild);
+        if (img) {
+          var c = img.cloneNode(true);
+          c.setAttribute('sizes', '40px');   // le crest du bandeau, pas celui de la ligne
+          cible.appendChild(c);
+        }
+      }
+      // le libellé est le dernier nœud texte du camp
+      var n = span.lastChild;
+      while (n && n.nodeType !== 3) n = n.previousSibling;
+      if (n) n.nodeValue = nom;
+      else span.appendChild(document.createTextNode(nom));
+    }
+
+    poser(spanClub, crests[0], dom ? nomMbc : court);
+    poser(spanOpp, crests[1], dom ? court : nomMbc);
+
+    var nEye = eyebrow.lastChild;
+    while (nEye && nEye.nodeType !== 3) nEye = nEye.previousSibling;
+    if (nEye) nEye.nodeValue = journee.textContent.trim();
+
+    temps.setAttribute('datetime', row.getAttribute('data-debut') || '');
+    var sep = temps.querySelector('i');
+    while (temps.firstChild) temps.removeChild(temps.firstChild);
+    temps.appendChild(document.createTextNode(MBC.dateLongue(debut, true) + ' '));
+    if (sep) temps.appendChild(sep);
+    temps.appendChild(document.createTextNode(' ' + heure.textContent.trim()));
+
+    ou.textContent = lieu.textContent.trim();
+    cta.setAttribute('href', fiche.getAttribute('href'));
+
+    var libre = band.querySelector('.nx__libre');
+    if (libre) libre.hidden = !row.getAttribute('data-libre');
+    // L'itinéraire ne vaut que pour une rencontre dont on connaît la salle.
+    var itin = band.querySelector('.nx__second');
+    if (itin) itin.hidden = !dom;
+
+    band.hidden = false;
+    return true;
+  }
+})();
+
+/* ============================================================
    Ancre dans un volet replie
    ------------------------------------------------------------
    La refonte replie ce qui n'a pas a s'imposer : les huit
@@ -891,19 +1092,25 @@
   var rows = Array.prototype.slice.call(list.querySelectorAll('.mx-row[data-date]'));
   if (!rows.length) return;
 
-  var today = new Date();
-  today.setHours(0, 0, 0, 0);
+  var maintenant = new Date();
   var next = null;
 
   rows.forEach(function (row) {
-    var d = new Date(row.getAttribute('data-date') + 'T20:30:00');
-    if (isNaN(d)) return;
-    var fin = new Date(d.getTime());
-    fin.setHours(23, 59, 59, 999);
-    if (fin < today) {
+    /* L'instant publié par le générateur (fuseau +04:00 compris). Le repli
+       relit la ligne elle-même plutôt que de supposer 20h30 : c'est l'heure
+       imprimée dans le PDF de la ligue qui fait foi, pas une habitude. */
+    var debut = MBC.instant(row.getAttribute('data-debut')) ||
+                MBC.instant(row.getAttribute('data-date'), MBC.heureDe(row) || '20:30');
+    var fin = MBC.instant(row.getAttribute('data-fin')) ||
+              MBC.instant(row.getAttribute('data-date'), '23:59');
+    if (!debut || !fin) return;
+    /* Au coup de sifflet FINAL, pas à minuit : c'est la règle que suit déjà
+       le générateur (voir MAINTENANCE.md § 1 ter). Un supporter qui ouvre le
+       site à 20h45 un vendredi voit la rencontre en cours comme « à venir ». */
+    if (fin < maintenant) {
       row.classList.add('is-past');
     } else if (!next) {
-      next = { row: row, date: d };
+      next = { row: row, date: debut };
     }
   });
 
@@ -916,16 +1123,26 @@
   // present dans le textContent (on lisait « Sainte-SuzanneBC2S »)
   var opp = next.row.querySelector('.mx-opp__n');
   var dom = next.row.classList.contains('mx-row--dom');
-  var fmt;
-  try {
-    fmt = next.date.toLocaleDateString('fr-FR',
-      { weekday: 'long', day: 'numeric', month: 'long' });
-  } catch (e) {
-    fmt = next.row.getAttribute('data-date');
-  }
-  bandeau.innerHTML = 'Prochaine rencontre — <b>' + fmt + '</b>, 20h30, ' +
-    (dom ? 'au Gymnase de La Montagne' : 'en déplacement') +
-    (opp ? ', face à ' + opp.textContent.trim() : '') + '.';
+  var lieu = next.row.querySelector('.mx-lieu');
+  /* L'heure vient de la LIGNE, pas d'une constante. « 20h30 » était écrit en
+     dur ici alors que la ligne juste en dessous affiche l'horaire réel lu
+     dans le PDF de la ligue : à la première dérogation, la bannière et la
+     ligne se seraient contredites dans le même bloc. */
+  var heure = next.row.querySelector('.mx-h');
+  var fmt = MBC.dateLongue(next.date) || next.row.getAttribute('data-date');
+
+  /* Construit par nœuds et non par innerHTML : le nom de l'adversaire faisait
+     un aller-retour textContent -> innerHTML, ce qui réinterprétait comme du
+     balisage tout caractère « & » ou « < » d'un nom de club. */
+  bandeau.textContent = 'Prochaine rencontre — ';
+  var b = document.createElement('b');
+  b.textContent = fmt;
+  bandeau.appendChild(b);
+  bandeau.appendChild(document.createTextNode(
+    (heure ? ', ' + heure.textContent.trim() : '') +
+    ', ' + (dom ? 'au ' + (lieu ? lieu.textContent.trim() : 'Gymnase de La Montagne')
+                : 'en déplacement') +
+    (opp ? ', face à ' + opp.textContent.trim() : '') + '.'));
   bandeau.hidden = false;
 })();
 
@@ -978,10 +1195,11 @@
      Choisir « U13 » ne dit pas seulement QUAND on joue, mais OU. On compte
      donc les creneaux restes visibles par lieu et on le montre sur les
      cartes juste au-dessus : celle qui accueille la categorie s'elargit,
-     l'autre s'attenue. Les lieux sont apparies par data-lieu et non par le
-     lien Maps — les deux blocs n'utilisent pas la meme URL courte pour
-     Ruisseau Blanc — ni par le libelle, qui bougerait a la premiere
-     reformulation.
+     l'autre s'attenue. Les lieux sont apparies par data-lieu, jamais par le
+     lien Maps ni par le libelle — l'un comme l'autre peuvent changer sans
+     que le lieu change. Ce fut d'ailleurs le cas : les deux blocs portaient
+     deux URL courtes differentes pour Ruisseau Blanc, jusqu'a ce que
+     data/creneaux.json n'en garde qu'une.
      Tout ce bloc est optionnel : s'il n'y a pas de cartes, le filtre
      fonctionne comme avant. */
   var cartes = document.querySelectorAll('.cal-lieu[data-lieu]');

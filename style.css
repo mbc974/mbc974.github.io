@@ -91,6 +91,21 @@
   --dimple-url:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAABTUlEQVR4nO3aMU7DUBRFwTgrYP+rZAemCShYRmkeUnz+TJdwRPNpeLrbvu8ft4dt2z5vB88/112vux9/QMvPA5/9FZx9r7tmBwDAoO34xav/i3XX6u5/RWefddfrHDriPHDcrwd+l6uL7n86AACGbN//FL/D1UU3392fP7z6ZbrrdQ4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHjn0BHngeNsshbpAAAYZJMV72yy4p1DR5wHjrPJWqgDAGCITVa8s8mKdw4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHjn0BHngeNsshbpAAAYZJMV72yy4p1DR5wHjrPJWqgDAGCITVa8s8mKdw4dcR44ziZrkQ4AgEE2WfHOJiveOXTEeeA4m6yFOgAAhthkxTubrHj3BYSzBjC1ykfuAAAAAElFTkSuQmCC');}
 html{color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* L'attribut hidden bat TOUJOURS un display de la feuille.
+   ------------------------------------------------------------------------
+   Sans cette regle, `element.hidden = true` ne masque rien des que la classe
+   porte son propre `display` : la valeur de la feuille, plus specifique que
+   le `display:none` que le navigateur attache a [hidden], gagne en silence.
+   Trois rustines locales existaient deja pour ce motif (.pl [hidden],
+   .age__panel[hidden], .cal-lieu__cnt[hidden]) : chacune a ete ajoutee apres
+   s'etre fait prendre une fois. La quatrieme se serait payee cher — le lien
+   « Itineraire » du bandeau du prochain match, masque en JS pour une
+   rencontre en deplacement, restait visible a cause de
+   `.nx__second{display:inline-flex}` et envoyait le public au Gymnase de La
+   Montagne un soir ou le MBC joue ailleurs.
+   C'est l'un des rares emplois legitimes de !important : on declare une
+   intention de l'auteur du HTML, pas une preference de mise en page. */
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:80px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{font-family:var(--ff-body);background:var(--nuit-0);color:var(--txt);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -9055,19 +9070,26 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;
   margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;inset:auto;background:none}
 /* ---- La constellation de depart (valeurs du composant d'origine) ----
-   LA TUILE CENTRALE EST LA 6e : « Ruisseau Blanc, ouvert sur la mer », le
-   plateau couvert. C'est elle qui finit plein cadre. Elle a pris la place du
-   panoramique du cercle d'avant-seance (1re tuile) pour une raison de piqué :
-   ce panoramique ne fait que 759 px de haut, il fallait l'agrandir 1,6 fois
-   pour couvrir une fenetre de 900 px, et cela se voyait. Un 3/2 de 866 px de
-   haut n'a besoin que de 1,04 fois. Les deux geometries ont donc ete
-   echangees ; le reste de la constellation ne bouge pas. */
-.gzoom.is-on .g-tile:nth-child(1){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
+   LA TUILE CENTRALE EST LA 1re : « Le cercle d'avant-seance ». C'est elle
+   qui finit plein cadre, et c'est une question de DEFINITION, pas de gout.
+
+   Elle etait passee brievement a la 6e (le plateau couvert) parce que le
+   panoramique paraissait flou une fois agrandi. Le diagnostic etait double et
+   les deux moities etaient fausses au meme endroit : d'une part la tuile
+   declarait le `sizes` de la mosaique alors qu'elle finit a 100vw, d'autre
+   part on ne servait qu'un derive de 759 px de haut. Or l'ORIGINAL de ce
+   cliche vit dans .claude/sources/ en 4080x1630 : regenere depuis lui, il
+   couvre un ecran 2560x1300 en le REDUISANT (x0,80), quand le plateau
+   couvert, dont on n'a que 1300x866, devrait etre etire x1,97.
+
+   Regle : la tuile qui finit plein cadre se choisit sur la DEFINITION de son
+   original, pas sur celle du derive qu'on servait jusque-la. */
+.gzoom.is-on .g-tile:nth-child(1){--gs:4;--gt:0vh;--gl:0vw;--gh:25vh;--gw:25vw;z-index:0}
 .gzoom.is-on .g-tile:nth-child(2){--gs:5;--gt:-30vh;--gl:5vw;--gh:30vh;--gw:35vw}
 .gzoom.is-on .g-tile:nth-child(3){--gs:6;--gt:-10vh;--gl:-25vw;--gh:45vh;--gw:20vw}
 .gzoom.is-on .g-tile:nth-child(4){--gs:5;--gl:27.5vw;--gh:25vh;--gw:25vw}
 .gzoom.is-on .g-tile:nth-child(5){--gs:6;--gt:27.5vh;--gl:5vw;--gh:25vh;--gw:20vw}
-.gzoom.is-on .g-tile:nth-child(6){--gs:4;--gt:0vh;--gl:0vw;--gh:25vh;--gw:25vw;z-index:0}
+.gzoom.is-on .g-tile:nth-child(6){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
 /* la centrale passe DESSOUS : les cinq autres doivent la survoler en sortant
    du cadre, pas etre recouvertes par elle a mesure qu'elle grandit */
 .gzoom.is-on .g-tile{z-index:1}
@@ -9104,3 +9126,32 @@ html:has(.ccb){scroll-padding-bottom:215px}
   .gzoom.is-on .g-tile{transform:none}
   .gzoom__cue svg{animation:none}
 }
+
+/* ==========================================================================
+   V145 · La page /creneaux/
+   --------------------------------------------------------------------------
+   Elle reprend telles quelles les briques du planning de l'accueil (.pl,
+   .pl-jour, .pl-slot, .cal-lieux) : c'est le MEME markup, ecrit par le meme
+   generateur, donc il ne fallait surtout pas en dupliquer le style. Ne sont
+   definies ici que les deux briques propres a cette page : le rappel du
+   creneau categorie par categorie, et son titre.
+   ========================================================================== */
+.cx-h2{margin-top:clamp(40px,6vw,72px)}
+.cx-cats{list-style:none;display:grid;gap:10px;margin-top:22px;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.cx-cat a{display:grid;gap:2px;padding:14px 16px;border-radius:var(--r-md,14px);
+  background:rgba(255,255,255,.035);border:1px solid rgba(240,246,252,.10);
+  color:inherit;text-decoration:none;
+  transition:border-color .2s,background .2s,transform .2s}
+.cx-cat a:hover{border-color:rgba(232,130,42,.5);background:rgba(232,130,42,.07);
+  transform:translateY(-2px)}
+.cx-cat a:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.cx-cat b{font-family:var(--ff-con,inherit);font-size:1.02rem;letter-spacing:.01em}
+/* Le contraste de ces deux lignes est calcule, pas choisi a l'oeil : sur le
+   fond de la carte, .72 donne 5,1:1 et .58 donne 4,6:1 — au-dessus du 4,5:1
+   exige, alors que la valeur .5 utilisee ailleurs dans la feuille tombait a
+   3,9:1. Une ligne d'horaire est de l'information, pas de la decoration. */
+.cx-cat__q{font-size:.86rem;color:rgba(240,246,252,.72)}
+.cx-cat__h{font-size:.92rem;color:var(--orange-vif);font-weight:600}
+@media (prefers-reduced-motion:reduce){.cx-cat a{transition:none}
+  .cx-cat a:hover{transform:none}}

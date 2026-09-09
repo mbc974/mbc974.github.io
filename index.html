@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=363ecd21">
+<link rel="stylesheet" href="style.min.css?v=43dba81f">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -177,7 +177,8 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     {"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"19:00","closes":"20:30"},
     {"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"20:30","closes":"22:00"},
     {"@type":"OpeningHoursSpecification","dayOfWeek":"Friday","opens":"20:00","closes":"23:00"},
-    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"11:30"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"10:00"},
+    {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"11:30"},
     {"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"09:00","closes":"11:00"}
   ],
   "member": [
@@ -244,7 +245,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   <nav class="nav" id="nav" aria-label="Navigation principale">
     <a href="club-basket-la-montagne/">Le club</a>
     <a href="#categories">Catégories</a>
-    <a href="#calendrier">Créneaux</a>
+    <a href="/creneaux/">Créneaux</a>
     <a href="#matchs">Matchs</a>
     <a href="actualites/">Actus</a>
     <a href="#parents">Infos parents</a>
@@ -328,12 +329,16 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <a href="club-basket-la-montagne/" class="hero__second">Découvrir le club<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
-  </div>
+  <!-- Il y avait ici un troisieme </div>, orphelin : la pile du hero se
+       refermait deja sur les deux precedents (hero__cta puis hero__inner).
+       Les navigateurs l'ignoraient en silence, donc rien ne se voyait ;
+       c'etait quand meme du HTML invalide, et le genre de balise qui fait
+       fermer une section trop tot le jour ou on deplace un bloc. -->
   <a class="hero__scroll" href="#essentiel" aria-label="Découvrir : faire défiler vers l'essentiel"><span aria-hidden="true"></span><span class="hero__scroll-label">Découvrir</span></a>
 </section>
 
 <!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
-<section class="nx" aria-labelledby="nxBandTitle">
+<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-fin="2026-09-11T23:00:00+04:00">
   <div class="wrap nx__in">
     <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J1</p>
     <h2 class="nx__t" id="nxBandTitle"><span class="nx__club"><span class="nx__crest" aria-hidden="true"><img src="/assets/logos/mbc-logo.webp" alt="" width="288" height="296" loading="lazy" decoding="async"></span>MBC</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp"><span class="nx__crest" aria-hidden="true"><img src="/assets/logos/clubs/bc2s-144.webp" srcset="/assets/logos/clubs/bc2s-144.webp 144w, /assets/logos/clubs/bc2s.webp 288w" sizes="40px" alt="" width="288" height="288" loading="lazy" decoding="async"></span>Sainte-Suzanne</span></h2>
@@ -412,10 +417,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-5" id="age-t-5">15&ndash;17 ans</button>
         <button type="button" role="tab" class="age__tab"       aria-selected="false" aria-controls="age-p-6" id="age-t-6">Adulte</button>
       </div>
-      <div class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
+      <div data-cat="baby" class="age__panel is-on" role="tabpanel" id="age-p-1" aria-labelledby="age-t-1">
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Baby Basket</b><span class="age__cat-n">nés de 2020 à 2023</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Samedi 09h00 – 10h00</b></li>
+          <li><span>Créneau</span><b>Samedi · 09h00 – 10h00 · Gymnase</b></li>
           <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
           <li><span>Formule</span><b>Baby Basket 2026/2027</b></li>
         </ul>
@@ -425,10 +430,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20essayer%20le%20Baby%20Basket%20%C3%A0%20mon%20enfant%20n%C3%A9%20en%20..." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
         </p>
       </div>
-      <div class="age__panel" role="tabpanel" id="age-p-2" aria-labelledby="age-t-2" hidden>
+      <div data-cat="ecole" class="age__panel" role="tabpanel" id="age-p-2" aria-labelledby="age-t-2" hidden>
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>École de Basket</b><span class="age__cat-n">nés de 2016 à 2019</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Samedi 10h00 – 11h30</b></li>
+          <li><span>Créneau</span><b>Samedi · 10h00 – 11h30 · Gymnase</b></li>
           <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
           <li><span>Formule</span><b>École de Basket 2026/2027</b></li>
         </ul>
@@ -438,10 +443,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20pour%20inscrire%20mon%20enfant%20%C3%A0%20l%27%C3%A9cole%20de%20basket%20du%20MBC." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
         </p>
       </div>
-      <div class="age__panel" role="tabpanel" id="age-p-3" aria-labelledby="age-t-3" hidden>
+      <div data-cat="u13" class="age__panel" role="tabpanel" id="age-p-3" aria-labelledby="age-t-3" hidden>
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U13</b><span class="age__cat-n">nés en 2014 et 2015</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Créneau</span><b>Lundi 17h30 – 19h00 · Mercredi 14h30 – 16h00</b></li>
           <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
           <li><span>Formule</span><b>U13 Compétition 2026/2027</b></li>
         </ul>
@@ -451,10 +456,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U13%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
         </p>
       </div>
-      <div class="age__panel" role="tabpanel" id="age-p-4" aria-labelledby="age-t-4" hidden>
+      <div data-cat="u15" class="age__panel" role="tabpanel" id="age-p-4" aria-labelledby="age-t-4" hidden>
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U15</b><span class="age__cat-n">nés en 2012 et 2013</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 17h30 &amp; mercredi 14h30</b></li>
+          <li><span>Créneau</span><b>Lundi 17h30 – 19h00 · Mercredi 14h30 – 16h00</b></li>
           <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
           <li><span>Formule</span><b>U15 Compétition 2026/2027</b></li>
         </ul>
@@ -464,10 +469,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20mon%20enfant%20n%C3%A9%20en%20...%20au%20basket%20au%20MBC%20%28cat%C3%A9gorie%20U15%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
         </p>
       </div>
-      <div class="age__panel" role="tabpanel" id="age-p-5" aria-labelledby="age-t-5" hidden>
+      <div data-cat="u18" class="age__panel" role="tabpanel" id="age-p-5" aria-labelledby="age-t-5" hidden>
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>U18</b><span class="age__cat-n">nés de 2009 à 2011</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi &amp; mercredi 19h00</b></li>
+          <li><span>Créneau</span><b>Lundi &amp; mercredi 19h00 – 20h30 · Gymnase</b></li>
           <li><span>Lieu</span><b>Gymnase de La Montagne</b></li>
           <li><span>Formule</span><b>U18 2026/2027</b></li>
         </ul>
@@ -477,10 +482,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a class="btn btn--ghost btn--sm" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20inscrire%20un%20joueur%20n%C3%A9%20en%20...%20au%20MBC%20%28cat%C3%A9gorie%20U18%29." target="_blank" rel="noopener">Séance d'essai<span class="sr-only"> — nous écrire sur WhatsApp (nouvel onglet)</span></a>
         </p>
       </div>
-      <div class="age__panel" role="tabpanel" id="age-p-6" aria-labelledby="age-t-6" hidden>
+      <div data-cat="seniors loisir" class="age__panel" role="tabpanel" id="age-p-6" aria-labelledby="age-t-6" hidden>
         <p class="age__cat"><span class="age__cat-l">Catégorie</span><b>Seniors ou Loisirs</b><span class="age__cat-n">dès 16 ans</span></p>
         <ul class="age__facts">
-          <li><span>Créneau</span><b>Lundi 19h00, mercredi 19h00 ou 20h30</b></li>
+          <li><span>Créneau</span><b>Seniors : lundi &amp; mercredi 19h00 – 20h30 · Gymnase · Loisir : mercredi · 20h30 – 22h00 · Ruisseau Blanc</b></li>
           <li><span>Lieu</span><b>Gymnase &amp; Terrain Ruisseau Blanc</b></li>
           <li><span>Formule</span><b>Senior Compétition ou Basket Loisirs</b></li>
         </ul>
@@ -521,7 +526,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="cat-group reveal">
       <h3 class="cat-rail"><span class="cat-rail__n">01</span><span class="cat-rail__t">Les enfants</span><span class="cat-rail__s">Baby Basket &amp; École de Basket · 3 à 10 ans</span></h3>
       <div class="cat-grid">
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="baby" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-baby.webp" alt="Baby Basket au MBC : un enfant de 3 à 6 ans avec un ballon, au Gymnase de La Montagne à Saint-Denis" width="820" height="1230" loading="lazy" decoding="async"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-baby.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -534,7 +539,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <p class="cat__pick"><span>Formule à choisir</span><b>Baby Basket 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="ecole" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-ecole.webp" alt="École de basket du MBC : un enfant de 7 à 10 ans à l'entraînement, au Gymnase de La Montagne" width="820" height="1230" loading="lazy" decoding="async" style="object-position:center 12%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-ecole.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -578,7 +583,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="cat-group reveal">
       <h3 class="cat-rail"><span class="cat-rail__n">02</span><span class="cat-rail__t">Les jeunes</span><span class="cat-rail__s">Compétition FFBB · 11 à 17 ans</span></h3>
       <div class="cat-grid">
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="u13" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-u13.webp" alt="Catégorie U13 du MBC : jeunes joueurs de 11 à 12 ans à l'entraînement à La Montagne, Saint-Denis" width="820" height="1159" loading="lazy" decoding="async" style="object-position:center 5%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-u13.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -587,11 +592,11 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h4>U13</h4>
         <p class="cat__born">Nés en 2014 et 2015</p>
         <p class="cat__desc">Entraînements structurés et premiers matchs officiels du week-end, à domicile comme en déplacement sur l'île. Filles et garçons bienvenus — les équipes engagées en compétition dépendent des effectifs de la saison.</p>
-        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi 17h30 &amp; mercredi 14h30</p>
+        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi 17h30 – 19h00 · Mercredi 14h30 – 16h00</p>
         <p class="cat__pick"><span>Formule à choisir</span><b>U13 Compétition 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="u15" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-u15.webp" alt="Catégorie U15 du MBC : jeunes joueurs de 13 à 14 ans en match à Saint-Denis" width="943" height="1668" loading="lazy" decoding="async" style="object-position:center 13%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-u15.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -600,11 +605,11 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h4>U15</h4>
         <p class="cat__born">Nés en 2012 et 2013</p>
         <p class="cat__desc">On monte en intensité : technique, tactique et championnat FFBB le week-end.</p>
-        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi 17h30 &amp; mercredi 14h30</p>
+        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi 17h30 – 19h00 · Mercredi 14h30 – 16h00</p>
         <p class="cat__pick"><span>Formule à choisir</span><b>U15 Compétition 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="u18" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-u18.webp" alt="Catégorie U18 du MBC : joueurs de 15 à 17 ans à l'entraînement au Gymnase de La Montagne" width="820" height="1230" loading="lazy" decoding="async" style="object-position:center 15%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-u18.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -613,7 +618,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h4>U18</h4>
         <p class="cat__born">Nés de 2009 à 2011</p>
         <p class="cat__desc">La marche vers le basket senior : entraînements exigeants, progression individuelle et matchs officiels.</p>
-        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi &amp; mercredi 19h00</p>
+        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi &amp; mercredi 19h00 – 20h30 · Gymnase</p>
         <p class="cat__pick"><span>Formule à choisir</span><b>U18 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
@@ -623,7 +628,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="cat-group reveal">
       <h3 class="cat-rail"><span class="cat-rail__n">03</span><span class="cat-rail__t">Les adultes</span><span class="cat-rail__s">Compétition ou loisir · dès 16 ans</span></h3>
       <div class="cat-grid">
-      <article class="cat cat--featured cat--photo reveal reveal--scale">
+      <article data-cat="seniors" class="cat cat--featured cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/categories/cat-seniors.webp" alt="Équipe seniors du MBC La Montagne Basket Club en match de Pré-Régionale à Saint-Denis" width="820" height="1230" loading="lazy" decoding="async" style="object-position:center 5%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/categories/cat-seniors.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -632,11 +637,11 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h4>Seniors compétition</h4>
         <p class="cat__born">Équipe fanion · accès sur validation du coach</p>
         <p class="cat__desc">Entraînements et championnat FFBB, avec les matchs à domicile au Gymnase de La Montagne.</p>
-        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi &amp; mercredi 19h00</p>
+        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Lundi &amp; mercredi 19h00 – 20h30 · Gymnase</p>
         <p class="cat__pick"><span>Formule à choisir</span><b>Senior Compétition 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
-      <article class="cat cat--photo reveal reveal--scale">
+      <article data-cat="loisir" class="cat cat--photo reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/images/joueuse-action.webp" alt="Joueuse du MBC ballon en main pendant un match, à La Montagne (Saint-Denis, La Réunion)" width="900" height="1350" loading="lazy" decoding="async" style="object-position:center 20%"
                onerror="if(!this.dataset.f){this.dataset.f=1;this.src='assets/images/joueuse-action.jpg'}else{this.closest('.cat__photo').classList.add('is-empty')}">
@@ -645,7 +650,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h4>Basket loisirs</h4>
         <p class="cat__born">Sans championnat · tous niveaux</p>
         <p class="cat__desc">Le basket plaisir entre adultes : du jeu, du cardio et de la convivialité, sans engagement en compétition. <a href="basket-adulte-loisirs-saint-denis/">Le basket adulte &amp; loisirs à Saint-Denis</a>.</p>
-        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Mercredi · 20h30 – 22h00 · créneau loisir mixte</p>
+        <p class="cat__meta"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg> Mercredi · 20h30 – 22h00 · Ruisseau Blanc</p>
         <p class="cat__pick"><span>Formule à choisir</span><b>Basket Loisirs 2026/2027</b></p>
         <a href="adhesion.html" class="cat__link">Je m'inscris <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </article>
@@ -655,7 +660,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="cat-group reveal">
       <h3 class="cat-rail"><span class="cat-rail__n">04</span><span class="cat-rail__t">Sans jouer</span><span class="cat-rail__s">Dirigeants &amp; bénévoles · adhésion gratuite</span></h3>
       <div class="cat-grid">
-      <article class="cat cat--photo cat--wide reveal reveal--scale">
+      <article data-cat="dirigeant" class="cat cat--photo cat--wide reveal reveal--scale">
         <figure class="cat__photo">
           <img src="assets/galerie/benevole-mbc-accueil-la-montagne-400.webp"
                srcset="assets/galerie/benevole-mbc-accueil-la-montagne-400.webp 400w, assets/galerie/benevole-mbc-accueil-la-montagne-600.webp 600w, assets/galerie/benevole-mbc-accueil-la-montagne.webp 900w"
@@ -752,6 +757,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <div class="pl-filtres" role="group" aria-label="Filtrer le planning par catégorie">
         <span class="pl-filtres__lab" aria-hidden="true">Je cherche</span>
         <div class="pl-filtres__l">
+          <!-- creneaux:filtres — genere par .claude/build-creneaux.py -->
           <button type="button" class="pl-f is-on" data-cat="tous" aria-pressed="true">Tous</button>
           <button type="button" class="pl-f" data-cat="baby" aria-pressed="false">Baby</button>
           <button type="button" class="pl-f" data-cat="ecole" aria-pressed="false">École</button>
@@ -760,10 +766,12 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <button type="button" class="pl-f" data-cat="u18" aria-pressed="false">U18</button>
           <button type="button" class="pl-f" data-cat="seniors" aria-pressed="false">Seniors</button>
           <button type="button" class="pl-f" data-cat="loisir" aria-pressed="false">Loisir</button>
+          <!-- /creneaux:filtres -->
         </div>
       </div>
       <p class="pl-aucun" role="status" hidden>Aucun créneau pour cette catégorie.</p>
 
+      <!-- creneaux:jours — genere par .claude/build-creneaux.py, ne pas editer a la main -->
       <section class="pl-jour" aria-labelledby="pl-j-lundi">
         <h4 class="pl-jour__n" id="pl-j-lundi">Lundi<span class="pl-jour__n2">2 créneaux</span></h4>
         <ol class="pl-jour__l">
@@ -788,7 +796,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="pl-slot__h"><time datetime="14:30">14:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="16:00">16:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">U13</span><span class="pl-chip">U15</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Entraînement</b></p>
-            <a class="pl-slot__ou" href="https://maps.app.goo.gl/YMZpWLT9YncQdy8G8" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Terrain Ruisseau Blanc</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
+            <a class="pl-slot__ou" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Terrain Ruisseau Blanc</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
           <li class="pl-slot pl-slot--train" data-cat="seniors u18" data-lieu="gymnase">
             <p class="pl-slot__h"><time datetime="19:00">19:00</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="20:30">20:30</time></p>
@@ -800,7 +808,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="pl-slot__h"><time datetime="20:30">20:30</time><span class="pl-slot__sep" aria-hidden="true">—</span><time datetime="22:00">22:00</time></p>
             <p class="pl-slot__cats"><span class="pl-chip">Dès 16 ans</span></p>
             <p class="pl-slot__nat"><span class="pl-dot" aria-hidden="true"></span><b>Loisir mixte</b><span class="pl-slot__prec">Ouvert à tous, filles et garçons</span></p>
-            <a class="pl-slot__ou" href="https://maps.app.goo.gl/YMZpWLT9YncQdy8G8" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Terrain Ruisseau Blanc</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
+            <a class="pl-slot__ou" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer" title="Ouvrir l'itinéraire dans Google Maps"><svg class="pl-slot__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg><span class="pl-slot__nom">Terrain Ruisseau Blanc</span><span class="pl-slot__go">Itinéraire</span><svg class="pl-slot__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg><span class="sr-only"> (Google Maps, nouvel onglet)</span></a>
           </li>
         </ol>
       </section>
@@ -844,6 +852,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         </ol>
       </section>
       <p class="pl-note">Les créneaux <b>Match à domicile</b> sont réservés aux rencontres officielles selon le calendrier FFBB&nbsp;: la salle n'est pas occupée toutes les semaines.</p>
+      <!-- /creneaux:jours -->
     </div>
 
     <p class="cal-note reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> Les créneaux peuvent évoluer en cours de saison — contactez-nous pour confirmer celui de votre catégorie.</p>
@@ -924,7 +933,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <p class="mx-next" id="mxNext" hidden></p>
       <ol class="mx-list">
         <!-- calendrier:lignes -->
-        <li class="mx-row mx-row--dom" id="match-2026-09-11" data-date="2026-09-11">
+        <li class="mx-row mx-row--dom" id="match-2026-09-11" data-date="2026-09-11" data-debut="2026-09-11T20:30:00+04:00" data-fin="2026-09-11T23:00:00+04:00" data-court="Sainte-Suzanne" data-libre="1">
           <span class="mx-j">J1</span>
           <time class="mx-date" datetime="2026-09-11T20:30">
             <span class="mx-date__d">ven.</span>
@@ -945,7 +954,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="mx-roles__cta">Une mission vous tente&nbsp;? <a href="mailto:contact@mbc974.com?subject=B%C3%A9n%C3%A9volat%20-%20match%20du%2011%20septembre">Écrivez-nous</a> ou dites-le au coach à l'entraînement. Aucune expérience requise&nbsp;: le club vous forme à la table de marque.</p>
           </details>
         </li>
-        <li class="mx-row mx-row--ext" id="match-2026-09-18" data-date="2026-09-18">
+        <li class="mx-row mx-row--ext" id="match-2026-09-18" data-date="2026-09-18" data-debut="2026-09-18T20:30:00+04:00" data-fin="2026-09-18T23:00:00+04:00" data-court="Dionysien 3" data-libre="">
           <span class="mx-j">J2</span>
           <time class="mx-date" datetime="2026-09-18T20:30">
             <span class="mx-date__d">ven.</span>
@@ -957,7 +966,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <span class="mx-side">En déplacement</span>
           <span class="mx-meta"><span class="mx-h">20h30</span><span class="mx-lieu">Chez l'adversaire</span><a class="mx-fiche" href="/matchs/mbc-dionysien-3-18-septembre-2026/">Fiche du match<span class="sr-only"> Basket Club Dionysien 3</span></a></span>
         </li>
-        <li class="mx-row mx-row--dom" id="match-2026-10-02" data-date="2026-10-02">
+        <li class="mx-row mx-row--dom" id="match-2026-10-02" data-date="2026-10-02" data-debut="2026-10-02T20:30:00+04:00" data-fin="2026-10-02T23:00:00+04:00" data-court="Saint-Benoît" data-libre="1">
           <span class="mx-j">J3</span>
           <time class="mx-date" datetime="2026-10-02T20:30">
             <span class="mx-date__d">ven.</span>
@@ -978,7 +987,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="mx-roles__cta">Une mission vous tente&nbsp;? <a href="mailto:contact@mbc974.com?subject=B%C3%A9n%C3%A9volat%20-%20match%20du%202%20octobre">Écrivez-nous</a> ou dites-le au coach à l'entraînement. Aucune expérience requise&nbsp;: le club vous forme à la table de marque.</p>
           </details>
         </li>
-        <li class="mx-row mx-row--dom" id="match-2026-10-09" data-date="2026-10-09">
+        <li class="mx-row mx-row--dom" id="match-2026-10-09" data-date="2026-10-09" data-debut="2026-10-09T20:30:00+04:00" data-fin="2026-10-09T23:00:00+04:00" data-court="MTG Basketball" data-libre="1">
           <span class="mx-j">J4</span>
           <time class="mx-date" datetime="2026-10-09T20:30">
             <span class="mx-date__d">ven.</span>
@@ -999,7 +1008,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="mx-roles__cta">Une mission vous tente&nbsp;? <a href="mailto:contact@mbc974.com?subject=B%C3%A9n%C3%A9volat%20-%20match%20du%209%20octobre">Écrivez-nous</a> ou dites-le au coach à l'entraînement. Aucune expérience requise&nbsp;: le club vous forme à la table de marque.</p>
           </details>
         </li>
-        <li class="mx-row mx-row--ext" id="match-2026-10-23" data-date="2026-10-23">
+        <li class="mx-row mx-row--ext" id="match-2026-10-23" data-date="2026-10-23" data-debut="2026-10-23T20:30:00+04:00" data-fin="2026-10-23T23:00:00+04:00" data-court="Sainte-Rose" data-libre="">
           <span class="mx-j">J5</span>
           <time class="mx-date" datetime="2026-10-23T20:30">
             <span class="mx-date__d">ven.</span>
@@ -1011,7 +1020,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <span class="mx-side">En déplacement</span>
           <span class="mx-meta"><span class="mx-h">20h30</span><span class="mx-lieu">Chez l'adversaire</span><a class="mx-fiche" href="/matchs/mbc-sainte-rose-23-octobre-2026/">Fiche du match<span class="sr-only"> BC Jeunesse Sportive Sainte-Rosienne</span></a></span>
         </li>
-        <li class="mx-row mx-row--dom" id="match-2026-10-30" data-date="2026-10-30">
+        <li class="mx-row mx-row--dom" id="match-2026-10-30" data-date="2026-10-30" data-debut="2026-10-30T20:30:00+04:00" data-fin="2026-10-30T23:00:00+04:00" data-court="Sainte-Marie 2" data-libre="1">
           <span class="mx-j">J6</span>
           <time class="mx-date" datetime="2026-10-30T20:30">
             <span class="mx-date__d">ven.</span>
@@ -1032,7 +1041,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
             <p class="mx-roles__cta">Une mission vous tente&nbsp;? <a href="mailto:contact@mbc974.com?subject=B%C3%A9n%C3%A9volat%20-%20match%20du%2030%20octobre">Écrivez-nous</a> ou dites-le au coach à l'entraînement. Aucune expérience requise&nbsp;: le club vous forme à la table de marque.</p>
           </details>
         </li>
-        <li class="mx-row mx-row--ext" id="match-2026-11-06" data-date="2026-11-06">
+        <li class="mx-row mx-row--ext" id="match-2026-11-06" data-date="2026-11-06" data-debut="2026-11-06T20:30:00+04:00" data-fin="2026-11-06T23:00:00+04:00" data-court="Picks La Possession 3" data-libre="">
           <span class="mx-j">J7</span>
           <time class="mx-date" datetime="2026-11-06T20:30">
             <span class="mx-date__d">ven.</span>
@@ -1296,7 +1305,21 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
            tient mieux que le portrait qui occupait cette place. -->
       <figure class="g-tile g-team">
         <picture>
-          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-640.webp 640w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1000.webp 1000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1400.webp 1400w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1900.webp 1900w" sizes="(min-width:1240px) 1124px, 94vw" type="image/webp">
+          <!-- C'est LA tuile centrale du zoom : elle finit exactement plein cadre.
+               D'ou sizes="100vw" et non 1124px — sinon le navigateur choisit un
+               fichier calibre pour la mosaique puis l'etire sur tout l'ecran.
+               Les grandes largeurs (2000 a 3400) viennent d'etre regenerees
+               depuis l'ORIGINAL 4080x1630 de .claude/sources/.
+
+               Et le sizes n'est pas 100vw mais « 250vh en dessous du rapport
+               2503/1000 ». Raison : sizes decrit une LARGEUR, or en object-fit
+               cover c'est la HAUTEUR qui commande des que la fenetre est moins
+               large que la photo (2,5:1). A 2560x1300, 100vw faisait choisir le
+               fichier de 2600 px — large assez, mais haut de 1039 px seulement,
+               donc encore etire x1,27. Il faut 2,503 x la hauteur de fenetre,
+               soit 250vh : le navigateur prend alors le 3400 et REDUIT. -->
+          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-800.avif 800w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1200.avif 1200w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1600.avif 1600w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-2000.avif 2000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-2600.avif 2600w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-3400.avif 3400w" sizes="(min-aspect-ratio:2503/1000) 100vw, 250vh" type="image/avif">
+          <source srcset="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-640.webp 640w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1000.webp 1000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1400.webp 1400w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-1900.webp 1900w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-2000.webp 2000w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-2600.webp 2600w, assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne-3400.webp 3400w" sizes="(min-aspect-ratio:2503/1000) 100vw, 250vh" type="image/webp">
           <img src="assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne.jpg"
                alt="Un coach du MBC La Montagne rassemble en cercle les enfants de l'école de basket avant l'entraînement, au gymnase de La Montagne à Saint-Denis."
                loading="lazy" decoding="async" width="1900" height="759">
@@ -1324,16 +1347,14 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
              le zoom parallaxe dimensionne l'element interieur de chaque tuile,
              et celle-ci etait la seule a porter un <img> nu.
 
-             sizes="100vw" et non 33vw : c'est LA tuile centrale du zoom, celle
-             qui finit exactement plein cadre. Avec 33vw le navigateur choisit
-             un fichier trois fois trop petit puis l'etire sur toute la largeur
-             — c'est la vraie cause du flou constate, avant meme la definition
-             de la source. En mosaique (sans JS, mouvement reduit) cela coute
-             une centaine de kilo-octets de plus ; sur la tuile qui porte tout
-             l'effet, le change vaut la peine. -->
+             Cette tuile est redevenue un SATELLITE du zoom : elle garde donc
+             le sizes de la mosaique. On n'a d'elle qu'un 1300x866, ce qui
+             obligeait a l'etirer x1,97 sur un ecran de 2560 quand elle etait
+             centrale — c'est le cliche du cercle d'avant-seance, dont
+             l'original fait 4080x1630, qui tient ce role. -->
         <picture><img src="assets/images/ruisseau-blanc-vue-mer-900.webp"
              srcset="assets/images/ruisseau-blanc-vue-mer-560.webp 560w, assets/images/ruisseau-blanc-vue-mer-900.webp 900w, assets/images/ruisseau-blanc-vue-mer.webp 1300w"
-             sizes="100vw"
+             sizes="(min-width:900px) 33vw, 50vw"
              alt="Le plateau couvert de Ruisseau Blanc ouvert sur la mer : terrain de basket abrité du soleil et de la pluie, à La Montagne." loading="lazy" decoding="async" width="1300" height="866"
              onerror="this.onerror=null;this.srcset='';this.src='assets/images/ruisseau-blanc-vue-mer.jpg'"></picture>
         <figcaption>Ruisseau Blanc, ouvert sur la mer</figcaption>
@@ -1653,7 +1674,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h3>Le club</h3>
         <a href="club-basket-la-montagne/">Le club &amp; les maillots</a>
         <a href="#categories">Catégories</a>
-        <a href="#calendrier">Créneaux</a>
+        <a href="/creneaux/">Créneaux</a>
         <a href="#matchs">Matchs</a>
         <a href="actualites/">Actualités</a>
         <a href="#staff">L'équipe</a>
@@ -1734,6 +1755,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=9c7c45cb" defer></script>
+<script src="script.js?v=12803293" defer></script>
 </body>
 </html>
