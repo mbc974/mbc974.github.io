@@ -427,3 +427,78 @@ Le JSON-LD `SportsTeam` de `/effectif/` ne déclare **pas** d'entraîneur : le
 site présente Fred comme « Coach principal » et Luigi comme « Coach des
 jeunes », mais nulle part qui entraîne l'équipe seniors. À confirmer par le
 bureau avant de l'ajouter.
+
+---
+
+## 12. Le design system : couleurs, texte, espacements
+
+Trois chantiers successifs ont donné un nom aux valeurs qui se répétaient dans
+`style.css`. Chacun a son **instrument de mesure** (qui n'écrit rien) et son
+**migrateur** (qui accepte `--essai`) :
+
+| Sujet | Inventaire | Migration |
+|---|---|---|
+| Couleurs | `inventaire-couleurs.py` | `migrer-couleurs.py canaux` |
+| Typographie | `inventaire-typo.py` | `migrer-typo.py tokens \| <palier>…` |
+| Espacements | `inventaire-espacements.py` | `migrer-espacements.py unites \| tokens` |
+
+### La règle qui les gouverne tous
+
+**Le rendu d'abord, le nombre de valeurs ensuite.** Une consolidation ne se
+décide pas sur la ressemblance de deux valeurs, mais sur ce qu'elles font. La
+phase couleurs l'a appris à ses dépens : 250 occurrences de navies
+« indiscernables » au calcul CIE76 se sont révélées être les paliers voulus
+d'un dégradé. Elles n'ont pas été fusionnées.
+
+### Ce que chaque phase s'est autorisé
+
+- **Couleurs** — les canaux (`rgb(var(--orange-vif-rgb) / .42)`) : iso-visuel
+  au bit près. Aucune teinte fusionnée.
+- **Texte** — sept paliers `--text-*`, tirés des masses d'usage mesurées dans
+  le navigateur. Une taille ne migre que si son écart au palier reste **sous
+  4 %**. La bande display (scores, numéros, hero, mot de fond) est hors échelle.
+- **Espacements** — **aucun déplacement, pas même de 0,1 px.** C'est la seule
+  des trois phases à s'interdire toute tolérance, et la mesure l'explique :
+  aucune grille raisonnable n'absorbe plus de 66 % des espacements sous 4 %
+  d'écart, il faut tolérer 20 % pour en absorber 89 %. Or un `gap` se **répète**
+  entre N éléments — 3 px d'écart six fois de suite déplacent une carte de
+  18 px. On a donc seulement uniformisé l'écriture et nommé les valeurs.
+
+### Les tokens d'espacement
+
+Neuf valeurs dominantes, numérotées en **centièmes de rem** :
+
+```
+--sp-50 .5rem   --sp-80  .8rem    --sp-100 1rem
+--sp-60 .6rem   --sp-85  .85rem   --sp-110 1.1rem
+--sp-70 .7rem   --sp-90  .9rem    --sp-140 1.4rem
+```
+
+Pourquoi pas `--sp-16` comme partout ailleurs : le vocabulaire du MBC ne tombe
+pas sur des multiples de 4 px. `.7rem` vaut 11,2 px, et `--sp-14` désignerait à
+la fois `.85rem` (13,6 px) et `.9rem` (14,4 px). Un nom en pixels serait faux
+ou en collision.
+
+Au-dessus d'eux, **`--sp-sec` / `--sp-blk` / `--sp-gap` sont des tokens
+d'intention**, pas de valeur : ils portent le rythme vertical des sections et
+restent en `clamp()`. Ils ne sont pas renumérotés.
+
+### Ce qui reste volontairement hors système
+
+Le **hero** et la **galerie** sont exclus des trois phases : leur respiration
+et leur géométrie leur sont propres. Les valeurs `clamp()`/`calc()` ne sont pas
+touchées non plus — c'est le rythme fluide voulu, pas une accumulation.
+
+### Prouver qu'on n'a rien cassé
+
+Le seul contrôle qui vaut est l'**empreinte des styles calculés** avant/après,
+sur plusieurs pages et deux largeurs. Deux pièges vécus :
+
+1. `html{scroll-behavior:smooth}` fait que `scrollTo(0,0)` **n'a pas encore eu
+   lieu** quand on mesure : les `getBoundingClientRect()` sortent décalés de
+   toute la hauteur de défilement. Forcer `scrollBehavior='auto'` et attendre.
+2. Un écart n'est une régression qu'après un **témoin à code identique**. En
+   rechargeant la *même* feuille, l'animation du hero et l'arrondi
+   sous-pixel produisent à eux seuls ~94 écarts de géométrie. La comparaison
+   réelle en produisait 2. Sans le témoin, on aurait « trouvé » 93 régressions
+   qui n'existent pas.
