@@ -52,6 +52,7 @@ suivante.
 | Une rencontre (date, heure, adversaire, bénévoles) | `data/matchs.json` | `python .claude/build-matchs.py` |
 | Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
 | Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/build-creneaux.py` |
+| Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
@@ -248,6 +249,7 @@ python -c "s=open('style.css',encoding='utf-8').read(); print(s.count('{'), s.co
 python -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
 python .claude/verifier-jsonld.py      # données structurées, les 25 pages
 python .claude/build-creneaux.py --essai # les pages catégories disent-elles encore la vérité ?
+python .claude/build-vignettes.py --essai # les crans responsives sont-ils tous là ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
@@ -347,3 +349,51 @@ lisant alors comme un trait de plume.
 ---
 
 *Passion · Respect · Solidarité · Engagement*
+
+
+---
+
+## 10. Ce qui a été retiré du site en attendant une décision
+
+Deux visuels ont été **retirés de l'affichage** le 09/09/2026, parce qu'ils
+contredisaient le reste du site. Leur markup est conservé en commentaire à
+l'endroit exact où il vivait, avec la preuve du désaccord et la marche à suivre
+pour les rétablir.
+
+### L'affiche des créneaux (`index.html`, section `#calendrier`)
+
+`assets/images/creneaux.avif` annonce l'entraînement Seniors/U18 du **lundi à
+20h30–22h00** ; `data/creneaux.json`, le planning, les `openingHoursSpecification`
+et la page basket adulte disent tous **19h00–20h30**. Elle place aussi le créneau
+Seniors du mercredi au Terrain Ruisseau Blanc (il est au Gymnase) et publie une
+adresse e-mail — `mbc974.re@gmail.com` — qui n'apparaît nulle part ailleurs.
+
+**Pour la rétablir** : refaire l'affiche depuis `data/creneaux.json`, la déposer
+sous un **nouveau nom de fichier** (règle du § 1 : nouvelle image = nouveau nom),
+puis décommenter le bouton et corriger ses deux `data-lightbox-*`.
+
+### Le one-page partenaire (`sponsor-club-basket-reunion/`)
+
+`assets/images/one-page-partenaire.jpg` contredit **le PDF qu'il résume**, et que
+la page propose au téléchargement juste à côté :
+
+| | Dossier PDF (source) | Image publiée |
+|---|---|---|
+| Licenciés | « **Objectif** +60 licenciés » | « **+60 LICENCIÉS** et en croissance » |
+| Baby Basket | 3-6 ans | 4-6 ans |
+
+Le premier écart transforme un objectif en chiffre acquis, dans un document
+commercial remis à une entreprise. C'est exactement ce que la page s'interdit
+soixante lignes plus haut à propos des chiffres Search Console.
+
+Le **lien vers le PDF est resté** : c'est la source, et elle est juste. La
+récompense de fidélité (−10 % / −20 %), qui n'existait que dans le PDF et dans
+cette image, est désormais écrite en toutes lettres sur la page.
+
+### Une divergence à trancher par le bureau
+
+Le dossier PDF annonce une catégorie **« U11 (9-10 ans) »** que le site ne
+connaît pas : le site, `data/creneaux.json` et les formules Yapla parlent
+d'**« École de Basket (7-10 ans) »**. L'un des deux doit être corrigé. Ce dépôt
+ne peut pas en décider : il ne sait pas laquelle des deux structures le club
+engage réellement auprès de la FFBB.

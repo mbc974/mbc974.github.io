@@ -400,7 +400,11 @@ def event(m, d):
         },
         # @id : c'est LE club declare sur l'accueil, pas un homonyme. Sans
         # identifiant, un moteur voyait huit organisations differentes.
-        "organizer": {"@id": SITE + "/#club", "@type": "SportsOrganization",
+        #
+        # Et @type SportsClub, comme l'accueil : un meme @id ne peut pas
+        # changer de type selon la page qui le cite. Le site melangeait neuf
+        # « SportsClub » et dix « SportsOrganization » pour cette seule entite.
+        "organizer": {"@id": SITE + "/#club", "@type": "SportsClub",
                       "name": club["nom"], "url": club["url"]},
         "performer": [
             {"@type": "SportsTeam", "name": club["nom"], "sport": "Basketball", "url": club["url"]},
@@ -776,7 +780,7 @@ def page_liste(d, maintenant=None):
                      u'<span class="sr-only">%s du MBC, score </span>'
                      u'%d<span class="ml__score__s">\u2013</span>%d</span>'
                      % (cls, mot, dom_pour, ext_pour))
-        return u"""        <li class="ml__i%(cls)s">
+        return u"""        <li class="ml__i%(cls)s" data-fin="%(fin)s">
           <a class="ml__a" href="/matchs/%(slug)s/">
             <span class="ml__j">J%(j)d</span>
             <time class="ml__d" datetime="%(iso)s"><b>%(jour)s %(n)d</b><span>%(mois)s</span></time>
@@ -787,6 +791,9 @@ def page_liste(d, maintenant=None):
           </a>
         </li>""" % {
             "cls": u"" if futur else u" ml__i--passe",
+            # L'instant de fin, fuseau compris : c'est lui qui permet a la page
+            # de se corriger seule entre deux publications (voir plus bas).
+            "fin": m["_finIso"],
             "slug": m["slug"], "j": m["journee"], "iso": m["_debutIso"],
             "jour": ech(m["_jour"][:3] + u"."), "n": m["_dt"].day,
             "mois": ech(MOIS_COURT[m["_dt"].month - 1]),
@@ -797,17 +804,28 @@ def page_liste(d, maintenant=None):
             "score": score, "fleche": FLECHE,
         }
 
-    sections = []
-    if a_venir:
-        sections.append(u"""      <h2 class="ml__h2" id="mlVenir">À venir</h2>
-      <ul class="ml" aria-labelledby="mlVenir">
-%s
-      </ul>""" % u"\n".join(carte(m, True) for m in a_venir))
-    if passes:
-        sections.append(u"""      <h2 class="ml__h2" id="mlPasses">Déjà joués</h2>
-      <ul class="ml" aria-labelledby="mlPasses">
-%s
-      </ul>""" % u"\n".join(carte(m, False) for m in passes))
+    # Les DEUX sections sont TOUJOURS ecrites, masquees quand elles sont vides.
+    #
+    # Pourquoi : ce partage etait fige au build. Une rencontre jouee le vendredi
+    # soir restait annoncee « A venir » jusqu'a la publication suivante — sur la
+    # page qu'on ouvre justement le soir du match, et souvent depuis le gymnase.
+    # Le module inline pose en bas de page deplace desormais les cartes perimees
+    # d'une liste a l'autre, en lisant leur data-fin. Il lui faut donc les deux
+    # conteneurs presents dans le DOM : on ne deplace pas une carte vers une
+    # liste qui n'existe pas. Un conteneur vide et masque ne coute rien ; une
+    # page qui ment le soir du premier match, si.
+    vide_v = u"" if a_venir else u" hidden"
+    vide_p = u"" if passes else u" hidden"
+    sections = [
+        u'      <h2 class="ml__h2" id="mlVenir"%s>À venir</h2>' % vide_v,
+        u'      <ul class="ml" id="mlVenirL" aria-labelledby="mlVenir"%s>' % vide_v,
+        u"\n".join(carte(m, True) for m in a_venir),
+        u'      </ul>',
+        u'      <h2 class="ml__h2" id="mlPasses"%s>Déjà joués</h2>' % vide_p,
+        u'      <ul class="ml" id="mlPassesL" aria-labelledby="mlPasses"%s>' % vide_p,
+        u"\n".join(carte(m, False) for m in passes),
+        u'      </ul>',
+    ]
 
     visible, ld_fil = fil([(u"Accueil", "/"), (u"Matchs", None)])
     ld_liste = {
@@ -844,7 +862,42 @@ def page_liste(d, maintenant=None):
     entete, cta, pied, scripts = GABARIT
     return (tete(titre, desc, SITE + "/matchs/", [ld_fil, ld_liste], prof=1)
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
-            + u"\n\n" + scripts + u"</body>\n</html>\n")
+            + u"\n\n" + scripts + RECLASSEMENT + u"</body>\n</html>\n")
+
+
+# Vingt lignes en ligne, plutot que les 60 Ko de script.js : cette page s'ouvre
+# surtout depuis un telephone, le vendredi soir, parfois depuis le gymnase.
+RECLASSEMENT = u"""<script>
+/* Le calendrier se corrige lui-meme entre deux publications.
+   ------------------------------------------------------------------
+   Le partage « A venir » / « Deja joues » est decide au moment ou ce
+   fichier est ecrit. Sans ceci, une rencontre terminee resterait
+   annoncee comme a venir jusqu'a la prochaine execution du script —
+   c'est-a-dire, en pratique, jusqu'au lendemain matin au mieux.
+
+   On compare des instants ABSOLUS : data-fin porte le +04:00 de La
+   Reunion, donc un supporter qui lit la page depuis la metropole voit
+   exactement la meme chose qu'un supporter a La Montagne. */
+(function(){
+  var venir=document.getElementById('mlVenirL'),
+      passes=document.getElementById('mlPassesL');
+  if(!venir||!passes) return;
+  var maintenant=new Date(), bouge=0;
+  [].slice.call(venir.children).forEach(function(li){
+    var f=li.getAttribute('data-fin'); if(!f) return;
+    var d=new Date(f); if(isNaN(d)||d>=maintenant) return;
+    li.className+=' ml__i--passe';
+    passes.insertBefore(li,passes.firstChild);   /* la plus recente en tete */
+    bouge++;
+  });
+  if(!bouge) return;
+  function eta(id,vide){var e=document.getElementById(id); if(e) e.hidden=vide;}
+  eta('mlPasses',false); eta('mlPassesL',false);
+  var reste=venir.children.length===0;
+  eta('mlVenir',reste); eta('mlVenirL',reste);
+})();
+</script>
+"""
 
 
 # --------------------------------------------------------------------------

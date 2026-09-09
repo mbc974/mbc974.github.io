@@ -108,15 +108,29 @@ def article_jsonld(a, d):
         "description": a.get("meta") or a["chapeau"],
         "url": a["_url"],
         "datePublished": a["date"],
+        # dateModified est recommandee par Google, et son absence etait
+        # signalee. On ne l'invente pas pour autant : a defaut d'une date de
+        # revision dans data/actualites.json, elle vaut la date de publication
+        # — ce qui est exact tant que l'article n'a pas ete revu.
+        "dateModified": a.get("dateModifiee") or a["date"],
         "inLanguage": "fr",
         "image": ["%s/%s-%d.webp" % (SITE, a["image"]["base"], a["image"]["crans"][-1])],
         "articleSection": a["categorie"],
         "isAccessibleForFree": True,
-        "author": {"@type": "SportsOrganization", "@id": SITE + "/#club",
+        # @type SportsClub, et non SportsOrganization : c'est le MEME @id que
+        # l'entite declaree sur l'accueil, et un @id ne peut pas porter deux
+        # types selon la page qui le cite. Le site en annoncait dix-neuf, neuf
+        # « SportsClub » et dix « SportsOrganization ». Un consommateur de
+        # donnees structurees qui fusionne par @id — c'est ce que fait Google —
+        # recevait donc une entite au type contradictoire.
+        "author": {"@type": "SportsClub", "@id": SITE + "/#club",
                    "name": d["site"]["nom"], "url": SITE + "/"},
-        "publisher": {"@type": "SportsOrganization", "@id": SITE + "/#club",
+        "publisher": {"@type": "SportsClub", "@id": SITE + "/#club",
                       "name": d["site"]["nom"], "url": SITE + "/"},
-        "mainEntityOfPage": {"@type": "WebPage", "@id": a["_url"]},
+        # Le noeud WebPage de la page porte l'@id « …/#webpage » (voir
+        # page_web() dans build-matchs.py). Pointer sur « …/ » creait un SECOND
+        # noeud WebPage, vide, a cote du vrai.
+        "mainEntityOfPage": {"@id": a["_url"] + "#webpage"},
     }
 
 

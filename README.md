@@ -83,6 +83,11 @@ La plupart des images utilisent le schéma `<picture>` avec jusqu'à trois forma
 
 Bonnes pratiques en place : chargement différé (`loading="lazy"`), dimensions `width`/`height` définies (zéro décalage de mise en page), image LCP préchargée.
 
+Les **portraits du staff** et les **photos de catégories** sont déclinés en plusieurs largeurs par
+`python .claude/build-vignettes.py`, qui recâble aussi le `srcset`/`sizes` de `index.html`. Avant lui,
+un téléphone téléchargeait 760 px de large pour 274 affichés : les six portraits pesaient 593 Ko.
+On remplace le `.jpg`, on relance le script — on ne retouche jamais un cran à la main.
+
 Les variantes du hero **ne se retouchent pas une par une** : `python .claude/build-hero.py` les
 régénère toutes (panoramique + recadrage mobile, AVIF et WebP) à partir de l'original conservé
 dans `.claude/sources/`. Réencoder à partir d'un fichier déjà compressé dégrade l'image à chaque

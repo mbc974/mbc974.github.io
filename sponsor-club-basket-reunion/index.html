@@ -66,7 +66,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="../assets/fonts/anton-400-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="../assets/fonts/barlow-condensed-700-latin.woff2">
-<link rel="stylesheet" href="/style.min.css?v=43dba81f">
+<link rel="stylesheet" href="/style.min.css?v=64c1a22b">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Sponsor d'un club de basket à La Réunion — MBC La Montagne Basket Club","url":"https://mbc974.com/sponsor-club-basket-reunion/","inLanguage":"fr","description":"Devenir sponsor ou partenaire du MBC La Montagne Basket Club à La Réunion : visibilité, formules et contact.","isPartOf":{"@type":"WebSite","@id":"https://mbc974.com/#website","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
@@ -90,11 +90,15 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <header class="seo-top">
   <a class="seo-top__brand" href="/"><img src="/assets/logos/mbc-logo.webp" alt="Logo MBC La Montagne Basket Club" width="42" height="42" onerror="this.onerror=null;this.src='/assets/logos/mbc-logo.png'">MBC La Montagne</a>
   <nav class="seo-top__nav" aria-label="Navigation principale">
-    <a href="/">Accueil</a>
-    <a href="/#soutenir">Soutenir</a>
+    <a href="/club-basket-la-montagne/">Le club</a>
+    <a href="/#categories">Catégories</a>
+    <a href="/creneaux/">Créneaux</a>
+    <a href="/matchs/">Matchs</a>
+    <a href="/actualites/">Actus</a>
+    <a href="/soutenir-le-club/">Soutenir</a>
     <a href="/#contact">Contact</a>
-    <a href="/#contact" class="btn btn--primary">Devenir partenaire</a>
-</nav>
+  </nav>
+    <a href="/adhesion.html" class="btn btn--primary">Je m'inscris</a>
 </header>
 
 <!-- Barre CTA mobile : deux intentions, pas une. « Je m'inscris » seul
@@ -186,10 +190,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="wrap">
       <div class="packs">
         <div class="packs-grid packs-grid--four">
-          <article class="pack sponsor-pack sponsor-pack--rookie"><span class="pack__name">Rookie</span><span class="pack__price">200 €</span><span class="pack__desc">Pour un premier soutien local.</span><ul><li>Réseaux sociaux</li><li>Logo site web</li><li>Remerciements fin de saison</li></ul><a href="/#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
-          <article class="pack sponsor-pack sponsor-pack--mvp pack--feat"><span class="pack__tag">Populaire</span><span class="pack__name">MVP</span><span class="pack__price">500 €</span><span class="pack__desc">Le meilleur rapport visibilité / budget.</span><ul><li>Logo affiches</li><li>Logo flyers</li><li>Publication dédiée</li><li>Invitations événements</li><li>Inclut Rookie</li></ul><a href="/#contact" class="btn btn--primary pack__cta">Choisir cette formule</a></article>
-          <article class="pack sponsor-pack sponsor-pack--allstar"><span class="pack__name">All-Star</span><span class="pack__price">1 000 €</span><span class="pack__desc">Présence forte, jusque sur le terrain.</span><ul><li>Bâche gymnase</li><li>Logo maillots</li><li>Mise en avant saison</li><li>Inclut MVP</li></ul><a href="/#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
-          <article class="pack sponsor-pack sponsor-pack--hof"><span class="pack__name">Hall Of Fame</span><span class="pack__price">2 000 €+</span><span class="pack__desc">Partenaire majeur, exclusivité secteur.</span><ul><li>Partenaire titre événement</li><li>Prise de parole cérémonies</li><li>Visibilité premium</li><li>Exclusivité secteur</li><li>Inclut All-Star</li></ul><a href="/#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
+          <article class="pack sponsor-pack sponsor-pack--rookie"><span class="pack__name">Rookie</span><span class="pack__price">200 €</span><span class="pack__desc">Pour un premier soutien local.</span><ul><li>Réseaux sociaux</li><li>Logo site web</li><li>Remerciements fin de saison</li></ul><a href="/?formule=Rookie#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
+          <article class="pack sponsor-pack sponsor-pack--mvp pack--feat"><span class="pack__tag">Populaire</span><span class="pack__name">MVP</span><span class="pack__price">500 €</span><span class="pack__desc">Le meilleur rapport visibilité / budget.</span><ul><li>Logo affiches</li><li>Logo flyers</li><li>Publication dédiée</li><li>Invitations événements</li><li>Inclut Rookie</li></ul><a href="/?formule=MVP#contact" class="btn btn--primary pack__cta">Choisir cette formule</a></article>
+          <article class="pack sponsor-pack sponsor-pack--allstar"><span class="pack__name">All-Star</span><span class="pack__price">1 000 €</span><span class="pack__desc">Présence forte, jusque sur le terrain.</span><ul><li>Bâche gymnase</li><li>Logo maillots</li><li>Mise en avant saison</li><li>Inclut MVP</li></ul><a href="/?formule=All-Star#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
+          <article class="pack sponsor-pack sponsor-pack--hof"><span class="pack__name">Hall of Fame</span><span class="pack__price">2 000 €+</span><span class="pack__desc">Partenaire majeur, exclusivité secteur.</span><ul><li>Partenaire titre événement</li><li>Prise de parole cérémonies</li><li>Visibilité premium</li><li>Exclusivité secteur</li><li>Inclut All-Star</li></ul><a href="/?formule=Hall%20of%20Fame#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
         </div>
         <div class="visi">
           <h3 class="visi__title">Vos supports de visibilité</h3>
@@ -200,15 +204,63 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       </div>
     </div>
     <div class="wrap seo-prose">
+      <h2 class="h2">Parler à <span class="hl">quelqu'un</span></h2>
+      <!-- Cette page n'offrait AUCUN moyen de contact direct : ni e-mail, ni
+           telephone, et son seul lien WhatsApp vit dans la barre CTA flottante,
+           que la feuille de style masque au-dessus de 920 px. Un dirigeant
+           d'entreprise qui lit cette page sur son ordinateur n'avait donc que le
+           formulaire de l'accueil, a deux clics. -->
+      <ul class="pk-contact">
+        <li><a href="mailto:contact@mbc974.com?subject=Partenariat%20MBC%202026%2F2027">
+          <b>E-mail</b><span>contact@mbc974.com</span></a></li>
+        <li><a href="tel:+262692556458"><b>Téléphone</b><span>0692 55 64 58</span></a></li>
+        <li><a href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaiterais%20%C3%A9changer%20sur%20un%20partenariat%20avec%20le%20MBC." target="_blank" rel="noopener">
+          <b>WhatsApp</b><span>Réponse en général sous 48&nbsp;h<span class="sr-only"> (nouvel onglet)</span></span></a></li>
+      </ul>
+
+      <h2 class="h2">Récompense <span class="hl">de fidélité</span></h2>
+      <!-- Reprise MOT POUR MOT du dossier partenaire (page 1) : « Engagement sur
+           2 saisons : -10%. Engagement sur 3 saisons : -20% et mention Partenaire
+           fidele. » Elle figurait dans le PDF et sur l'image, mais nulle part
+           dans le texte de la page — donc invisible pour qui ne telecharge pas. -->
+      <ul class="pk-fid">
+        <li><b>2 saisons</b><span>−10&nbsp;% sur la formule choisie</span></li>
+        <li><b>3 saisons</b><span>−20&nbsp;% et mention «&nbsp;Partenaire fidèle&nbsp;»</span></li>
+      </ul>
+
       <h2 class="h2">Le one-page <span class="hl">partenaire</span></h2>
       <p>Tout tient sur une page&nbsp;: le projet, les formules, les contreparties. À montrer à votre direction ou à votre comptable.</p>
-      <figure style="margin:1.4rem auto 0;max-width:520px">
+      <!-- ============ IMAGE RETIREE TEMPORAIREMENT — 09/09/2026 ============
+           Le rendu one-page (assets/images/one-page-partenaire.jpg) contredit le
+           PDF qu'il est cense resumer, et que le lien ci-dessous propose au
+           telechargement. Verifie en lisant les deux, pas suppose :
+
+             PDF  : « Objectif +60 licenciés »   IMAGE : « +60 LICENCIÉS
+                                                          et en croissance »
+             PDF  : « Baby Basket (3-6 ans) »    IMAGE : « BABY BASKET (4-6 ANS) »
+
+           Le premier ecart est le plus grave : il transforme un OBJECTIF en
+           chiffre acquis, dans un document commercial remis a une entreprise.
+           C'est exactement la regle que cette page s'impose 60 lignes plus haut
+           a propos des chiffres Search Console — « on dit apparitions et
+           recherches, jamais personnes ». Elle doit valoir ici aussi.
+
+           L'image n'est pas regenerable depuis ce depot. Le lien vers le PDF,
+           lui, reste : c'est la source, et elle est juste.
+
+           A CONFIRMER PAR LE BUREAU (voir le rapport) : le PDF annonce une
+           categorie « U11 (9-10 ans) » que le site ne connait pas — le site
+           parle d'« Ecole de Basket (7-10 ans) ». L'un des deux doit changer,
+           et ce n'est pas a ce depot d'en decider.
+
+           <figure style="margin:1.4rem auto 0;max-width:520px">
         <picture>
           <source srcset="/assets/images/one-page-partenaire.avif" type="image/avif">
-          <img src="/assets/images/one-page-partenaire.jpg" alt="One-page partenaire du MBC La Montagne Basket Club, saison 2026/2027" width="1024" height="1536" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:18px">
-        </picture>
-        <figcaption style="font-size:.85rem;color:var(--txt-soft);margin-top:.6rem;text-align:center">Le one-page partenaire MBC 2026/2027. <a href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download>Télécharger le dossier complet (PDF)</a>.</figcaption>
-      </figure>
+          <img src="/assets/images/one-page-partenaire.jpg" alt="One-page partenaire du MBC La Montagne Basket Club, saison 2026/2027" width="1024" height="1536" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:18px […]
+           ==================================================================== -->
+      <p style="text-align:center;margin:1.4rem 0 0">
+        <a class="btn btn--primary btn--lg" href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download>
+          Télécharger le dossier partenaire (PDF)</a></p>
       <p style="margin-top:1.6rem"><b>Plusieurs formes de soutien sont possibles</b>&nbsp;: financier, matériel ou en services. Chaque partenariat se construit avec le club, selon vos moyens et vos objectifs.</p>
       <p style="font-size:.92rem">Selon la nature du soutien et la situation du partenaire, certaines contributions peuvent relever du mécénat. Chaque entreprise est invitée à se rapprocher de son conseil comptable ou fiscal afin de vérifier les conditions applicables.</p>
       <h2 class="h2">Questions <span class="hl">fréquentes</span></h2>
@@ -228,7 +280,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <footer class="seo-foot">
   <div class="wrap">
     <div class="seo-foot__links">
-      <a href="/">Accueil</a><a href="/#soutenir">Soutenir</a><a href="/club-basket-la-montagne/">Le club</a><a href="/basket-enfant-saint-denis/">Basket enfant</a><a href="/baby-basket-la-reunion/">Baby Basket</a><a href="/soutenir-le-club/">Faire un don</a><a href="/benevoles/">Bénévoles</a><a href="/matchs/">Matchs</a><a href="/actualites/">Actualités</a><a href="/#contact">Contact</a>
+      <a href="/">Accueil</a><a href="/#soutenir">Soutenir</a><a href="/club-basket-la-montagne/">Le club</a><a href="/basket-enfant-saint-denis/">Basket enfant</a><a href="/baby-basket-la-reunion/">Baby Basket</a><a href="/soutenir-le-club/">Faire un don</a><a href="/benevoles/">Bénévoles</a><a href="/matchs/">Matchs</a><a href="/actualites/">Actualités</a><a href="/#contact">Contact</a><a href="/benevoles/">Devenir bénévole</a><a href="/soutenir-le-club/">Faire un don</a><a href="/sponsor-club-basket-reunion/">Devenir partenaire</a><a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> — connexion Yapla (nouvel onglet)</span></a>
     </div>
     <p>MBC La Montagne Basket Club · Association loi 1901 · Club affilié FFBB n° REU0974104<br>Gymnase de La Montagne, Chemin des Bauhinias, 97417 Saint-Denis (974) · © 2026 — <a href="/#legal">Mentions légales</a> · <a href="/confidentialite/">Confidentialité</a> · <a href="/confidentialite/#cookies" data-mbc-cookies>Gérer mes cookies</a></p>
   </div>

@@ -660,7 +660,12 @@ a.info-line:hover .info-line__val{color:var(--orange-vif)}
   font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.05em;
   text-transform:uppercase;text-decoration:none;white-space:nowrap;
   transition:background .25s var(--ease-out)}
-.float-cta__b .ic{width:1.05em;height:1.05em;flex:none}
+/* Le selecteur porte sur .float-cta et non sur .float-cta__b : une icone
+   posee directement dans la barre n'etait dimensionnee par personne et
+   s'etirait a 245 px de cote (mesure sur adhesion.html a 375 px). Le
+   markup est corrige, mais la regle doit couvrir le cas : c'est elle le
+   garde-fou, pas la discipline de celui qui ecrit le HTML. */
+.float-cta .ic{width:1.05em;height:1.05em;flex:none}
 .float-cta__b--alt{color:var(--txt);border-right:1px solid rgba(191,210,228,.14)}
 .float-cta__b--alt:hover,.float-cta__b--alt:focus-visible{background:rgba(191,210,228,.08)}
 .float-cta__b--main{color:#190f04;background:var(--grad-orange)}
@@ -2572,7 +2577,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .seo-top__nav a:not(.btn){font-size:.86rem;padding:.4em .5em;min-height:44px;display:inline-flex;align-items:center}
 .seo-top__nav .btn{min-height:42px;padding:.5em .95em}}
 /* Très petits écrans : on garde Accueil + Contact + le CTA, le lien intermédiaire est masqué */
-@media (max-width:430px){.seo-top__nav a:not(.btn):nth-child(2){display:none}}
+/* La regle qui masquait ici le 2e lien du menu sous 430 px a ete retiree :
+   ecrite pour une nav a 4 entrees, elle en escamotait une au hasard depuis
+   que la nav en compte 7. Le menu defile desormais horizontalement (V147),
+   ce qui les garde toutes atteignables. */
 /* Figures ajoutées sur les pages SEO */
 .seo-prose figure{margin-inline:auto}
 .seo-prose figcaption{font-family:var(--ff-body)}
@@ -9155,3 +9163,156 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .cx-cat__h{font-size:.92rem;color:var(--orange-vif);font-weight:600}
 @media (prefers-reduced-motion:reduce){.cx-cat a{transition:none}
   .cx-cat a:hover{transform:none}}
+
+/* ==========================================================================
+   V146 · Une information au second plan reste LISIBLE
+   --------------------------------------------------------------------------
+   Trois blocs marquaient « ce contenu est secondaire » avec une opacité sur
+   le conteneur entier. C'est le raccourci le plus courant, et c'est une
+   faute d'accessibilité : l'opacité compose le texte AVEC son fond, donc
+   elle divise le contraste. Mesuré sur la ligne d'une rencontre jouée, fond
+   #070d18 :
+
+       élément                  avant      avec opacity:.42
+       journée (J1)             4,99:1  ->  1,81:1
+       adversaire               19,45:1 ->  4,07:1
+       heure                    11,51:1 ->  2,86:1
+       lieu                     9,97:1  ->  2,60:1
+       lien « Fiche du match »  7,09:1  ->  2,10:1
+
+   Tout passait sous le 4,5:1 exigé, y compris un LIEN — donc un élément
+   qu'on doit pouvoir viser et lire. Or l'intention (« c'est passé ») ne
+   demandait pas d'effacer le texte : elle demandait de le distinguer.
+
+   La règle est donc : on atténue ce qui est DÉCORATIF (les écussons, la
+   photo d'un lieu), et on change la COULEUR du texte pour une teinte
+   secondaire choisie en la mesurant. #8aa0b6 donne 7,21:1 sur ce fond —
+   nettement en retrait du blanc (19,45:1), très au-dessus du seuil.
+   Le score et les liens, eux, gardent toute leur force : ce sont
+   précisément les deux choses qu'on vient lire sur une rencontre jouée.
+   ========================================================================== */
+:root{--txt-passe:#8aa0b6}     /* 7,21:1 sur --nuit-0, mesuré */
+
+/* --- 1. Les lignes du Match Center de l'accueil --------------------------- */
+.mx-row.is-past{opacity:1}
+.mx-row.is-past .mx-duel{opacity:.55}                 /* écussons : décoratif */
+.mx-row.is-past .mx-j,
+.mx-row.is-past .mx-date,
+.mx-row.is-past .mx-date__d,
+.mx-row.is-past .mx-date__n,
+.mx-row.is-past .mx-date__m,
+.mx-row.is-past .mx-opp__n,
+.mx-row.is-past .mx-opp__s,
+.mx-row.is-past .mx-h,
+.mx-row.is-past .mx-lieu{color:var(--txt-passe)}
+
+/* --- 2. Les cartes de /matchs/ -------------------------------------------- */
+.ml__i--passe .ml__a{opacity:1}
+.ml__i--passe .ml__duel{opacity:.55}
+.ml__i--passe .ml__j,
+.ml__i--passe .ml__d,
+.ml__i--passe .ml__cote,
+.ml__i--passe .ml__ou{color:var(--txt-passe)}
+.ml__i--passe .ml__a:hover .ml__j,
+.ml__i--passe .ml__a:hover .ml__d,
+.ml__i--passe .ml__a:hover .ml__cote,
+.ml__i--passe .ml__a:hover .ml__ou{color:var(--txt)}
+.ml__i--passe .ml__a:hover .ml__duel{opacity:1}
+
+/* --- 3. La carte du lieu non concerné par le filtre ----------------------- */
+/* Elle reste un lien cliquable : son adresse tombait à 2,98:1. La photo,
+   elle, peut s'effacer — elle est déjà désaturée juste en dessous. */
+.cal-lieu.is-attenue{opacity:1}
+.cal-lieu.is-attenue .cal-lieu__ph{opacity:.5}
+.cal-lieu.is-attenue .cal-lieu__tag,
+.cal-lieu.is-attenue .cal-lieu__nom,
+.cal-lieu.is-attenue .cal-lieu__adr,
+.cal-lieu.is-attenue .cal-lieu__map{color:var(--txt-passe)}
+.cal-lieu.is-attenue:hover .cal-lieu__ph,
+.cal-lieu.is-attenue:focus-visible .cal-lieu__ph{opacity:1}
+
+/* --- 4. La signature du pied de page -------------------------------------- */
+/* Elle cumulait un canal alpha ET une opacité : 2,59:1. Une seule teinte,
+   mesurée, suffit à la mettre en retrait sans la rendre illisible. */
+.footer__signature{opacity:1;color:var(--txt-passe)}
+
+/* ==========================================================================
+   V147 · L'en-tête des pages enfants, et l'atterrissage des ancres
+   --------------------------------------------------------------------------
+   Mesuré à 375 px : cet en-tête faisait 143 px sur TROIS rangées, en sticky —
+   soit 17,6 % de la hauteur d'écran occupée en permanence, contre 72 px pour
+   celui de l'accueil. Il enveloppait la marque, puis le menu sur deux lignes.
+
+   Le menu tient maintenant sur une seule ligne qui défile horizontalement, à
+   côté de la marque : une rangée au lieu de trois. Aucune entrée n'est
+   sacrifiée — c'est justement ce que faisait la règle retirée plus haut, qui
+   masquait le deuxième lien au hasard.
+
+   Le dégradé sur le bord droit n'est pas un ornement : sans lui, rien ne dit
+   qu'il reste des entrées à droite. C'est la seule affordance possible pour
+   un défilement tactile qui n'a pas de barre.
+   ========================================================================== */
+@media (max-width:680px){
+  .seo-top{flex-wrap:nowrap;gap:.5rem;padding:.4rem clamp(12px,4vw,20px)}
+  .seo-top__brand{flex:0 0 auto;font-size:.86rem;gap:.4rem}
+  .seo-top__brand img{width:32px;height:32px}
+  .seo-top__nav{flex:1 1 auto;min-width:0;flex-wrap:nowrap;justify-content:flex-start;
+    overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+    /* flex-start et non flex-end : avec flex-end, le debut de la liste sort
+       du cadre par la GAUCHE, la ou aucun geste de defilement ne va le
+       chercher — « Le club », « Categories », « Creneaux » et « Matchs »
+       etaient invisibles ET inatteignables. Le CTA, lui, a quitte le <nav>
+       pour rester ancre a droite : c'est une action, pas une entree de
+       navigation, et elle ne doit jamais defiler hors de vue. */
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 22px),transparent 100%);
+            mask-image:linear-gradient(90deg,transparent 0,#000 18px,#000 calc(100% - 22px),transparent 100%)}
+  .seo-top__nav::-webkit-scrollbar{display:none}
+  .seo-top__nav a:not(.btn){white-space:nowrap;font-size:.8rem;padding:.4em .45em;
+    min-height:44px;display:inline-flex;align-items:center}
+  .seo-top>.btn{white-space:nowrap;min-height:40px;padding:.45em .8em;flex:0 0 auto}
+}
+/* Sous 430 px, la marque se réduit à son écusson : le nom du club est répété
+   trois lignes plus bas dans le <h1> de chaque page, et ces 110 px rendus au
+   menu valent mieux qu'une redite. Le nom reste lu par les lecteurs d'écran. */
+@media (max-width:430px){
+  .seo-top__brand{font-size:0;gap:0}
+  .seo-top__brand img{width:34px;height:34px}
+}
+
+/* --- L'atterrissage des ancres -------------------------------------------
+   html{scroll-padding-top:88px} était calé sur l'en-tête de l'ACCUEIL (72 px
+   + 16 de marge). Sur les 23 pages à en-tête .seo-top, haut de 143 px et
+   sticky lui aussi, toute ancre atterrissait donc 55 px DESSOUS — le titre
+   visé passait sous la barre. Cela touchait le lien d'évitement (« Aller au
+   contenu ») et l'ancre #cookies du pied de page, c'est-à-dire les deux
+   parcours qui comptent le plus pour l'accessibilité.
+   Une valeur par type d'en-tête, et plus une seule pour les deux. */
+html:has(.seo-top){scroll-padding-top:104px}
+@media (max-width:680px){html:has(.seo-top){scroll-padding-top:72px}}
+
+/* V148 · La récompense de fidélité de la page partenaire.
+   Deux lignes reprises mot pour mot du dossier PDF : elles n'existaient
+   jusqu'ici que dans le PDF et dans une image, donc invisibles pour qui ne
+   télécharge pas. */
+.pk-fid{list-style:none;display:grid;gap:10px;margin:1.2rem 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.pk-fid li{display:grid;gap:2px;padding:14px 16px;border-radius:var(--r-md,14px);
+  background:rgba(255,255,255,.035);border:1px solid rgba(240,246,252,.10)}
+.pk-fid b{font-family:var(--ff-cond);text-transform:uppercase;letter-spacing:.08em;
+  font-size:.82rem;color:var(--orange-vif)}
+.pk-fid span{font-size:.95rem}
+
+/* V148b · Le contact direct de la page partenaire. Même grille que .pk-fid :
+   un composant de plus n'apporterait rien, et le brief demande explicitement
+   d'en avoir MOINS. */
+.pk-contact{list-style:none;display:grid;gap:10px;margin:1.2rem 0 0;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.pk-contact a{display:grid;gap:2px;padding:14px 16px;border-radius:var(--r-md,14px);
+  background:rgba(255,255,255,.035);border:1px solid rgba(240,246,252,.10);
+  color:inherit;text-decoration:none;min-height:44px;
+  transition:border-color .2s,background .2s}
+.pk-contact a:hover{border-color:rgba(232,130,42,.5);background:rgba(232,130,42,.07)}
+.pk-contact a:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+.pk-contact b{font-family:var(--ff-cond);text-transform:uppercase;letter-spacing:.08em;
+  font-size:.78rem;color:var(--orange-vif)}
+.pk-contact span{font-size:.95rem;color:var(--txt)}

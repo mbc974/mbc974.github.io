@@ -73,7 +73,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.min.css?v=43dba81f">
+<link rel="stylesheet" href="style.min.css?v=64c1a22b">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -127,24 +127,39 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <span class="sr-only"> — retour à l'accueil</span>
   </a>
   <nav class="nav" id="nav" aria-label="Navigation principale">
+    <a href="/club-basket-la-montagne/">Le club</a>
     <a href="/#categories">Catégories</a>
     <a href="/creneaux/">Créneaux</a>
-    <a href="/#parents">Parents</a>
-    <a href="/#staff">L'équipe</a>
-    <a href="/#soutenir">Soutenir</a>
+    <a href="/matchs/">Matchs</a>
+    <a href="/actualites/">Actus</a>
+    <a href="/soutenir-le-club/">Soutenir</a>
     <a href="/#contact">Contact</a>
-    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/authentication/" target="_blank" rel="noopener">Espace adhérent<span class="sr-only"> (nouvel onglet)</span></a>
-    <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="nav__cta">Je m'inscris<span class="sr-only"> — inscription en ligne sur Yapla (nouvel onglet)</span></a>
+    <a href="/adhesion.html" class="nav__cta">Je m'inscris</a>
   </nav>
   <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
 </header>
 <div class="nav-backdrop" id="navBackdrop"></div>
 
-<!-- ===== Floating mobile CTA — pointe directement vers l'inscription Yapla ===== -->
-<a class="float-cta" id="floatCta" href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener">
-  <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-  Je m'inscris sur Yapla<span class="sr-only"> (nouvel onglet)</span>
-</a>
+<!-- ===== Barre CTA mobile =====
+     Elle etait la SEULE des 25 pages a etre un <a class="float-cta"> nu, la ou
+     toutes les autres portent deux <a class="float-cta__b"> dans un conteneur.
+     Consequence mesuree a 375 px : la regle de taille des icones vise
+     « .float-cta__b .ic », ce lien n'en avait aucun, et son SVG s'etirait a
+     245x245 px — une barre de 351x247 px en travers de la page d'inscription.
+     C'etait la page de CONVERSION du site.
+
+     On l'aligne donc sur le motif commun. Elle y gagne le second CTA que le
+     reste du site propose partout : poser une question avant de payer. -->
+<div class="float-cta" id="floatCta" role="group" aria-label="Actions rapides">
+  <a class="float-cta__b float-cta__b--alt" href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20MBC%20avant%20de%20m%27inscrire." target="_blank" rel="noopener">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.7-5.2A8.5 8.5 0 1 1 21 11.5Z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Une question<span class="sr-only"> — WhatsApp (nouvel onglet)</span>
+  </a>
+  <a class="float-cta__b float-cta__b--main" href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener">
+    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+    S'inscrire<span class="sr-only"> sur Yapla (nouvel onglet)</span>
+  </a>
+</div>
 
 <main id="contenu">
 <section class="section adhesion-page">
@@ -184,7 +199,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       </li>
       <li class="essentiel-card">
         <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
-        <span class="essentiel-card__val">Séance d'essai</span><span class="sr-only"> — </span>
+        <span class="essentiel-card__val">Faire une séance d'essai</span><span class="sr-only"> — </span>
         <span class="essentiel-card__lbl">Possible avant de vous engager, selon les créneaux</span>
       </li>
     </ul>
@@ -375,6 +390,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </footer>
 
-<script src="script.js?v=12803293" defer></script>
+<script src="script.js?v=cc3dfc7e" defer></script>
 </body>
 </html>

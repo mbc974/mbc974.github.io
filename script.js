@@ -293,6 +293,12 @@
   const form = document.getElementById('contactForm');
   const feedback = document.getElementById('formFeedback');
   if (form && feedback) {
+    /* Le script prend la main : il coupe alors la validation native, qu'il
+       remplace par la sienne (messages en francais, focus sur le champ fautif,
+       annonce aux lecteurs d'ecran). Tant qu'il ne tourne pas, c'est celle du
+       navigateur qui protege l'utilisateur — d'ou l'absence de novalidate dans
+       le HTML. */
+    form.noValidate = true;
     const nomEl = form.nom, emailEl = form.email;
     function setFieldError(el, on) {
       if (!el) return;
@@ -308,8 +314,12 @@
       const nom = form.nom.value.trim();
       const email = form.email.value.trim();
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      /* Un seul message est affiche a la fois : seul le champ qu'il CONCERNE
+         doit le prendre pour description. Les deux le prenaient, si bien qu'un
+         lecteur d'ecran annoncait « Email — Merci d'indiquer votre nom et
+         prenom » quand les deux champs etaient vides. */
       setFieldError(nomEl, !nom);
-      setFieldError(emailEl, !emailOk);
+      setFieldError(emailEl, nom && !emailOk);
       if (!nom || !emailOk) {
         feedback.textContent = !nom
           ? 'Merci d’indiquer votre nom et prénom.'
@@ -1043,6 +1053,44 @@ MBC.dateLongue = function (d, avecAnnee) {
     band.hidden = false;
     return true;
   }
+})();
+
+/* ============================================================
+   La formule choisie arrive AVEC le visiteur
+   ------------------------------------------------------------
+   Les dix boutons de la page partenaire menaient tous au même
+   formulaire vide : le club recevait « Partenariat / Sponsoring »
+   sans savoir laquelle des quatre formules avait été cliquée, et
+   devait redemander. Chaque carte passe désormais son nom dans
+   ?formule=… ; on présélectionne la bonne ligne du menu et on
+   amorce le message.
+
+   Ce paramètre ne contient qu'un nom de formule — jamais une
+   donnée personnelle. L'URL d'un formulaire n'est pas un endroit
+   où faire transiter autre chose.
+   ============================================================ */
+(function () {
+  var form = document.getElementById('contactForm');
+  if (!form) return;
+  var p;
+  try { p = new URLSearchParams(location.search).get('formule'); }
+  catch (e) { return; }
+  if (!p) return;
+  p = p.slice(0, 40);
+
+  var sel = form.cat;
+  if (sel && sel.options) {
+    for (var i = 0; i < sel.options.length; i++) {
+      if (/partenariat/i.test(sel.options[i].text)) { sel.selectedIndex = i; break; }
+    }
+  }
+  var msg = form.msg;
+  if (msg && !msg.value) {
+    msg.value = 'Bonjour, je souhaite en savoir plus sur la formule ' + p + '.';
+  }
+  /* On ne vole pas le focus : le visiteur vient de cliquer sur un lien
+     d'ancre, c'est le titre de la section qu'il doit voir arriver. Le
+     champ pré-rempli se découvre en descendant. */
 })();
 
 /* ============================================================
