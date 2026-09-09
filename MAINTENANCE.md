@@ -53,6 +53,7 @@ suivante.
 | Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
 | Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/build-creneaux.py` |
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
+| L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
@@ -250,6 +251,7 @@ python -c "import xml.dom.minidom; xml.dom.minidom.parse('sitemap.xml')"
 python .claude/verifier-jsonld.py      # données structurées, les 25 pages
 python .claude/build-creneaux.py --essai # les pages catégories disent-elles encore la vérité ?
 python .claude/build-vignettes.py --essai # les crans responsives sont-ils tous là ?
+python .claude/build-og-matchs.py --essai  # les 7 affiches de partage existent-elles ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?

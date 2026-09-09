@@ -1094,6 +1094,36 @@ MBC.dateLongue = function (d, avecAnnee) {
 })();
 
 /* ============================================================
+   « Cette semaine » : on marque le jour même
+   ------------------------------------------------------------
+   Le bloc liste la semaine entière, écrite par le générateur.
+   Le script n'AJOUTE qu'un repère : sans lui, la semaine reste
+   entièrement lisible — même règle que le sélecteur d'âge, où
+   le script retire `hidden` mais ne l'ajoute jamais.
+
+   Le jour est celui de La Réunion, pas celui du visiteur. Un
+   supporter en métropole qui ouvre le site le vendredi à 21h
+   est déjà samedi à La Montagne : c'est le samedi du club qu'il
+   doit voir marqué, pas son vendredi à lui.
+   ============================================================ */
+(function () {
+  var bloc = document.querySelector('.cw');
+  if (!bloc) return;
+  var JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+  var jour;
+  try {
+    /* en-CA donne AAAA-MM-JJ, le seul format qu'on puisse reparser sans
+       ambiguïté ; on en refait une date pour en lire le jour de semaine. */
+    var iso = new Date().toLocaleDateString('en-CA', { timeZone: 'Indian/Reunion' });
+    jour = JOURS[new Date(iso + 'T12:00:00Z').getUTCDay()];
+  } catch (e) {
+    jour = JOURS[new Date().getDay()];
+  }
+  var cible = bloc.querySelector('.cw__j[data-jour="' + jour + '"]');
+  if (cible) cible.classList.add('is-today');
+})();
+
+/* ============================================================
    Ancre dans un volet replie
    ------------------------------------------------------------
    La refonte replie ce qui n'a pas a s'imposer : les huit

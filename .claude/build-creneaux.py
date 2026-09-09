@@ -354,9 +354,62 @@ def remplacer_dans_bloc(src, ouverture, motif, texte, quoi):
     return src[:i] + neuf + src[j:]
 
 
+def semaine_html(d):
+    """« Cette semaine au MBC » : la version courte, pour l'accueil.
+
+    L'accueil portait le planning COMPLET — filtres, cinq journees, neuf
+    creneaux detailles, 1,9 ecran — c'est-a-dire exactement ce que /creneaux/
+    affiche depuis qu'elle existe. Repeter une grille ne renseigne personne :
+    cela oblige a defiler devant une information qu'on n'etait pas venu
+    chercher.
+
+    Ce bloc ne resume pas le planning, il repond a une AUTRE question. Le
+    planning dit « quels sont les creneaux du club » ; celui-ci dit « qu'est-ce
+    qui se passe cette semaine », et le JS y marque le jour meme (.is-today).
+    C'est la question qu'on se pose depuis un telephone, un mercredi a 17h.
+
+    Sans JavaScript, la semaine entiere reste lisible : rien n'est masque, le
+    script ne fait qu'AJOUTER un reperage. Meme regle que le selecteur d'age.
+    """
+    lignes = []
+    for jour in JOURS:
+        cs = [c for c in d["creneaux"] if c["jour"] == jour]
+        if not cs:
+            continue
+        slots = []
+        for c in cs:
+            L = d["lieux"][c["lieu"]]
+            etiq = (c.get("etiquette") or
+                    u" · ".join(d["_cat"][i]["court"] for i in c["categories"]))
+            nature = u"" if c["nature"] == "entrainement" else (
+                u'<span class="cw__t">%s</span>' % ech(c.get("titre") or NATURES[c["nature"]][1]))
+            # Pas de modificateur pour l'entrainement : c'est la nature par
+            # defaut, et .cw__s lui suffit. En emettre un vide donnait une
+            # classe sans regle CSS — verifier-classes.py le signale, et il a
+            # raison : une classe qui ne style rien est un faux repere pour
+            # celui qui lira le markup ensuite.
+            mod = u"" if c["nature"] == "entrainement" else u" cw__s--%s" % c["nature"]
+            slots.append(
+                u'          <li class="cw__s%(nat)s">'
+                u'<span class="cw__h"><time datetime="%(deb)s">%(debfr)s</time>'
+                u'<i aria-hidden="true">–</i>'
+                u'<time datetime="%(fin)s">%(finfr)s</time></span>'
+                u'<span class="cw__c">%(cats)s</span>%(nature)s'
+                u'<span class="cw__o">%(lieu)s</span></li>' % {
+                    "nat": mod, "deb": c["debut"], "fin": c["fin"],
+                    "debfr": hhmm(c["debut"]), "finfr": hhmm(c["fin"]),
+                    "cats": ech(etiq), "nature": nature, "lieu": ech(L["court"])})
+        lignes.append(
+            u'      <li class="cw__j" data-jour="%(id)s">\n'
+            u'        <b class="cw__n">%(nom)s</b>\n'
+            u'        <ul class="cw__l">\n%(slots)s\n        </ul>\n'
+            u'      </li>' % {"id": jour, "nom": maj(jour), "slots": "\n".join(slots)})
+    return (u'    <ol class="cw reveal" aria-label="Les créneaux de la semaine">\n'
+            + "\n".join(lignes) + u'\n    </ol>')
+
+
 def ecrire_index(d, html):
-    html = remplacer_balise(html, "creneaux:filtres", filtres_html(d))
-    html = remplacer_balise(html, "creneaux:jours", jours_html(d))
+    html = remplacer_balise(html, "creneaux:semaine", semaine_html(d))
 
     # Le tableau openingHoursSpecification, dans le JSON-LD du club.
     motif = re.compile(r'  "openingHoursSpecification": \[.*?\n  \],', re.S)

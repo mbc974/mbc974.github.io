@@ -32,8 +32,6 @@
 @font-face{font-family:'Barlow';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/barlow-600-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:'Barlow';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/barlow-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:'Barlow';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/barlow-700-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
-@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/barlow-condensed-500-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
-@font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:500;font-display:swap;src:url('assets/fonts/barlow-condensed-500-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/barlow-condensed-600-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
 @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:600;font-display:swap;src:url('assets/fonts/barlow-condensed-600-latin-ext.woff2') format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}
 @font-face{font-family:'Barlow Condensed';font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/barlow-condensed-700-latin.woff2') format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}
@@ -64,6 +62,10 @@
   --grad-fire:linear-gradient(120deg,#E8822A,#D96A1B 55%,#1B519E);
 
   --ff-display:'Anton','Anton Fallback',Impact,sans-serif;
+  /* Barlow Condensed n'a plus que 600 et 700. La graisse 500 existait
+     pour UNE regle (.essentiel-card__lbl) et faisait telecharger
+     21,4 Ko sur chaque page ; l'ecart visuel entre 500 et 600 sur un
+     libelle de 0,95 rem ne valait pas ce prix. */
   --ff-cond:'Barlow Condensed','Barlow Condensed Fallback','Arial Narrow',sans-serif;
   --ff-body:'Barlow','Barlow Fallback','Arial',sans-serif;
 
@@ -1588,7 +1590,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .essentiel-card:hover::after{transform:scaleY(1)}
 .essentiel-card__ic{width:34px;height:34px;color:var(--orange-vif);flex:none}
 .essentiel-card__val{font-family:var(--ff-display);text-transform:uppercase;font-size:clamp(1.5rem,4.5vw,2rem);line-height:1;color:#fff;letter-spacing:.5px}
-.essentiel-card__lbl{font-family:var(--ff-cond);font-weight:500;font-size:.95rem;line-height:1.4;color:var(--bleu-glacier)}
+.essentiel-card__lbl{font-family:var(--ff-cond);font-weight:600;font-size:.95rem;line-height:1.4;color:var(--bleu-glacier)}
 .essentiel-cta{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;margin-top:2rem}
 @media (min-width:560px){.essentiel-grid{grid-template-columns:repeat(2,1fr)}}
 @media (min-width:900px){.essentiel-grid{grid-template-columns:repeat(3,1fr)}}
@@ -9316,3 +9318,60 @@ html:has(.seo-top){scroll-padding-top:104px}
 .pk-contact b{font-family:var(--ff-cond);text-transform:uppercase;letter-spacing:.08em;
   font-size:.78rem;color:var(--orange-vif)}
 .pk-contact span{font-size:.95rem;color:var(--txt)}
+
+/* ==========================================================================
+   V149 · « Cette semaine » sur l'accueil
+   --------------------------------------------------------------------------
+   Remplace le planning complet, qui pesait 1,9 écran et répétait mot pour mot
+   ce que /creneaux/ affiche. La grille détaillée reste là-bas ; ici on répond
+   à une autre question — « qu'est-ce qui se passe cette semaine » — et on
+   marque le jour même.
+
+   Une ligne par jour, les créneaux alignés en colonne : la lecture se fait
+   de haut en bas, sans avoir à croiser un tableau. Sur mobile tout s'empile,
+   ce qui reste lisible parce qu'une ligne ne porte que quatre informations
+   (heure, catégorie, nature, lieu).
+   ========================================================================== */
+.cw{list-style:none;margin:clamp(1.4rem,3vw,2.2rem) 0 0;display:grid;gap:2px;
+  border-radius:var(--r-md,16px);overflow:hidden;
+  border:1px solid rgba(240,246,252,.10)}
+.cw__j{display:grid;grid-template-columns:minmax(104px,150px) 1fr;gap:0;
+  background:rgba(255,255,255,.028)}
+.cw__n{display:flex;align-items:center;padding:14px 16px;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.09em;font-size:.86rem;color:var(--txt);
+  background:rgba(255,255,255,.03)}
+.cw__l{list-style:none;display:grid;gap:1px}
+.cw__s{display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .8rem;
+  padding:11px 16px;font-size:.94rem}
+.cw__h{font-family:var(--ff-cond);font-weight:700;letter-spacing:.03em;
+  color:var(--orange-vif);white-space:nowrap}
+.cw__h i{margin:0 .25em;opacity:.6;font-style:normal}
+.cw__c{font-weight:600}
+/* --txt-passe, défini en V146 : 7,21:1 sur le fond de page. Le lieu et la
+   nature sont des précisions, pas le sujet de la ligne — mais elles restent
+   au-dessus du seuil AA, contrairement à l'opacité qu'on aurait mise ici. */
+.cw__o,.cw__t{color:var(--txt-passe);font-size:.88rem}
+.cw__t::after{content:" ·";opacity:.5}
+.cw__s--match .cw__h,.cw__s--loisir .cw__h{color:var(--bleu-glacier)}
+
+/* Le jour même, marqué par script.js. Le liseré orange porte l'information ;
+   le fond ne fait que l'appuyer — un daltonien lit la position du liseré. */
+.cw__j.is-today{background:rgba(232,130,42,.09)}
+.cw__j.is-today .cw__n{background:rgba(232,130,42,.16);color:var(--blanc);
+  box-shadow:inset 3px 0 0 var(--orange-vif)}
+.cw__j.is-today .cw__n::after{content:"aujourd’hui";display:block;
+  font-size:.62rem;letter-spacing:.12em;color:var(--orange-vif);
+  font-weight:600;margin-top:2px}
+.cw__j.is-today .cw__n{flex-direction:column;align-items:flex-start;
+  justify-content:center;gap:0}
+
+@media (max-width:680px){
+  .cw__j{grid-template-columns:1fr}
+  .cw__n{padding:10px 14px;font-size:.8rem;
+    border-bottom:1px solid rgba(240,246,252,.08)}
+  .cw__j.is-today .cw__n{flex-direction:row;align-items:center;gap:.6rem}
+  .cw__j.is-today .cw__n::after{margin-top:0}
+  .cw__s{padding:10px 14px;font-size:.9rem}
+}
+.cal-cta{margin-top:clamp(1.2rem,2.5vw,1.8rem);text-align:center}

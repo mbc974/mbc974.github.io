@@ -751,12 +751,26 @@ def page_match(m, d, precedent, suivant):
         "benev": benev, "voisins": u"".join(voisins), "fleche": FLECHE,
     }
     entete, cta, pied, scripts = GABARIT
-    # Quand la rencontre a une affiche, c'est ELLE qu'on partage : le lien
-    # colle dans un groupe WhatsApp montre le match, pas le logo du club.
+    # L'IMAGE DE PARTAGE, par ordre de preference :
+    #   1. l'affiche officielle de la rencontre, quand le club en a fait une ;
+    #   2. la carte dessinee par .claude/build-og-matchs.py depuis ce meme
+    #      fichier de donnees — adversaire, date, heure, lieu, entree libre,
+    #      et le score des qu'il est publie ;
+    #   3. la banniere generique du site, en tout dernier recours.
+    #
+    # Avant le point 2, SIX fiches sur sept partageaient la meme banniere : un
+    # lien colle dans une conversation WhatsApp ne disait ni contre qui, ni
+    # quand, ni ou — sur la page qu'on partage justement le vendredi soir.
+    og = "assets/og/og-%s.jpg" % m["slug"]
+    if not os.path.exists(os.path.join(RACINE, og)):
+        og = None
+    partage = m["affiche"] or og
     return (tete(titre, desc, m["_url"], lds, prof=2,
-                 image=m["affiche"] or None,
-                 image_alt=(u"Affiche du match %s, %s" % (m["_titre"], m["_dateLongue"])
-                            if m["affiche"] else None))
+                 image=partage,
+                 image_alt=(u"%s, %s à %s — %s"
+                            % (m["_titre"], m["_dateLongue"], m["_heureFr"],
+                               (m["_lieu"] or {}).get("nom", u"chez l’adversaire"))
+                            if partage else None))
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
             + u"\n\n" + scripts + u"</body>\n</html>\n")
 
