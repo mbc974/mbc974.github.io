@@ -2305,7 +2305,6 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
 .mx-roles__s{min-height:44px}
 .mx-roles__lab::before{content:"\1F91D";margin-right:.5em;font-size:1.05em}
 .mx-roles__etat{color:var(--orange-vif);font-weight:700}
-.mx-roles__etat.is-complet{color:var(--bleu-glacier)}
 .parents-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2.4vw,1.6rem)}
 .p-pillar{

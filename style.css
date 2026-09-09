@@ -3337,12 +3337,14 @@ main > .section .grid-fx__layer{animation:none !important}
 .mx-roles__lab{margin-right:auto}
 .mx-roles__etat{font-size:.74rem;letter-spacing:.04em;color:#9FB2C8;
   text-transform:none;font-weight:600}
-/* REGLE MORTE — a traiter en phase de purge. Elle est ecrasee 900 lignes
-   plus bas par « .mx-roles__etat.is-complet{color:var(--bleu-glacier)} »,
-   de meme specificite mais posterieure. L'etat « equipe complete » s'affiche
-   donc en glacier, jamais en vert : le #7FD1A0 releve par l'inventaire etait
-   une valeur que personne n'a jamais vue. On ne change pas le rendu ici — on
-   nomme le doublon pour qu'il soit tranche, pas oublie. */
+/* « Equipe complete » : un etat VALIDE, donc la semantique de succes.
+   Cette regle a longtemps ete morte — un doublon posterieur la surchargeait
+   en glacier, si bien que le #7FD1A0 releve par l'inventaire des couleurs
+   etait une valeur que personne n'avait jamais vue a l'ecran. Le doublon a
+   ete retire le 09/09/2026 ; c'est cette regle-ci qui rend, desormais.
+   Doctrine arretee : valide / complet / inclus -> success
+                      information neutre        -> glacier
+                      erreur                    -> error */
 .mx-roles__etat.is-complet{color:var(--color-success)}
 .mx-roles__l{list-style:none;margin:0;padding:0 .85rem .2rem;
   display:grid;gap:.3rem}
@@ -4257,7 +4259,10 @@ main > .section .reveal,main > .section .reveal--l,main > .section .reveal--r,ma
 .mx-roles__s{min-height:44px}
 .mx-roles__lab::before{content:"\1F91D";margin-right:.5em;font-size:1.05em}
 .mx-roles__etat{color:var(--orange-vif);font-weight:700}
-.mx-roles__etat.is-complet{color:var(--bleu-glacier)}
+/* L'ecrasement « .is-complet{color:var(--bleu-glacier)} » a ete retire ici : il
+   gagnait sur la regle posee 900 lignes plus haut, de meme specificite mais
+   anterieure, et affichait un etat VALIDE avec la couleur de l'information
+   NEUTRE. Le vert vient desormais de cette regle amont. */
 
 /* ---------------------------------------------------------------------------
    10. PARENTS — quatre piliers, une phrase chacun
