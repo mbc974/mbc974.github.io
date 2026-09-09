@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=1b335b92">
+<link rel="stylesheet" href="style.min.css?v=a1f549fa">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -343,11 +343,12 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 </section>
 
 <!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
-<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-fin="2026-09-11T23:00:00+04:00">
+<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-debut="2026-09-11T20:30:00+04:00" data-fin="2026-09-11T23:00:00+04:00">
   <div class="wrap nx__in">
     <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J1</p>
     <h2 class="nx__t" id="nxBandTitle"><span class="nx__club"><span class="nx__crest" aria-hidden="true"><img src="/assets/logos/mbc-logo.webp" alt="" width="288" height="296" loading="lazy" decoding="async"></span>MBC</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp"><span class="nx__crest" aria-hidden="true"><img src="/assets/logos/clubs/bc2s-144.webp" srcset="/assets/logos/clubs/bc2s-144.webp 144w, /assets/logos/clubs/bc2s.webp 288w" sizes="40px" alt="" width="288" height="288" loading="lazy" decoding="async"></span>Sainte-Suzanne</span></h2>
     <p class="nx__meta"><time datetime="2026-09-11T20:30:00+04:00">Vendredi 11 septembre 2026 <i aria-hidden="true"></i> 20h30</time><span class="nx__ou">Gymnase de La Montagne</span><span class="nx__libre">Entrée libre</span></p>
+    <p class="nx__cd" id="nxCountdown" hidden></p>
     <p class="nx__a"><a class="btn btn--primary" href="/matchs/mbc-sainte-suzanne-11-septembre-2026/">Voir le match<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a class="nx__second" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a></p>
   </div>
 </section>
@@ -823,50 +824,19 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     </header>
 
 
-    <!-- LE SCOREBOARD. L'ancien bloc mettait l'affiche du match au premier
-         plan et les informations à côté, en petit. Ici c'est la rencontre
-         elle-même qui compose : deux écussons, un VS, la date, le lieu.
-         Contrat JS à ne pas casser (script.js) : #prochain-match,
-         data-match-date, data-state, #nxCountdown, #nxTitle. Le bloc
-         s'efface tout seul le lendemain de la rencontre. -->
-    <aside class="sb reveal" id="prochain-match" data-match-date="2026-09-11"
-           data-state="upcoming" aria-labelledby="nxTitle">
-      <p class="sb__comp" id="nxKicker">Pré-Régionale Masculine <i aria-hidden="true"></i> Journée 1</p>
+    <!-- ===== LE SCOREBOARD A ETE RETIRE — 09/09/2026 =====
+         C'etait le TROISIEME bloc « prochain match » de cette page, apres le
+         bandeau genere sous le hero et la ligne « is-next » du calendrier
+         juste en dessous. Il redisait la meme rencontre, avec les memes
+         ecussons et la meme date — mais ecrit A LA MAIN : il fallait donc y
+         penser a chaque journee, et rien ne le verifiait.
 
-      <div class="sb__duel">
-        <div class="sb__team">
-          <span class="sb__crest"><img src="assets/logos/mbc-logo.webp" alt="" width="288" height="296" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/logos/mbc-logo.png'"></span>
-          <span class="sb__name">MBC</span>
-          <span class="sb__side">Domicile</span>
-        </div>
-        <span class="sb__vs" aria-hidden="true">VS</span>
-        <div class="sb__team">
-          <span class="sb__crest"><img src="assets/logos/clubs/bc2s-144.webp" srcset="assets/logos/clubs/bc2s-144.webp 144w, assets/logos/clubs/bc2s.webp 288w" sizes="88px" alt="" width="288" height="288" loading="lazy" decoding="async" onerror="this.closest('.sb__crest').classList.add('sb__crest--sigle');this.closest('.sb__crest').textContent='BC2S'"></span>
-          <span class="sb__name">Sainte-Suzanne</span>
-          <span class="sb__side">Visiteur</span>
-        </div>
-      </div>
+         Ce qu'il apportait de vraiment sien, le compte a rebours, a demenage
+         dans le bandeau genere : il y est desormais alimente par data-debut,
+         donc juste par construction. Le reste etait de la redite.
 
-      <h3 class="sr-only" id="nxTitle">MBC contre Sainte-Suzanne, vendredi 11 septembre 2026</h3>
-
-      <p class="sb__when">
-        <time datetime="2026-09-11T20:30">Ven. 11 sept. <i aria-hidden="true"></i> 20h30</time>
-      </p>
-      <p class="sb__where">Gymnase de La Montagne <span>Chemin des Bauhinias &middot; 97417 Saint-Denis</span></p>
-      <p class="sb__free">Entrée libre</p>
-
-      <!-- Compte à rebours : rempli par script.js, masqué tant qu'il n'a pas
-           de valeur sûre et retiré dès que la rencontre est passée. -->
-      <div class="sb__cd" id="nxCountdown" hidden></div>
-
-      <p class="sb__a">
-        <a class="btn btn--primary" href="assets/documents/mbc-sainte-suzanne-11-septembre-2026.ics" download>Ajouter au calendrier<span class="sr-only"> (fichier .ics)</span></a>
-        <a class="btn btn--ghost" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener">Itinéraire<span class="sr-only"> vers le Gymnase de La Montagne (Google Maps, nouvel onglet)</span></a>
-      </p>
-      <p class="sb__poster">
-        <a href="assets/affiches/mbc-premier-match-sainte-suzanne-2026.jpg" target="_blank" rel="noopener">Voir l'affiche du match<span class="sr-only"> en grand (nouvel onglet)</span></a>
-      </p>
-    </aside>
+         Gain : environ 900 px sur l'accueil, un bloc a tenir a jour en moins,
+         et une seule reponse a la question « quand joue-t-on ». -->
 
     <!-- Les sept rencontres restent dans le DOM : chaque ligne porte l'ancre
          #match-AAAA-MM-JJ, qui a circule pendant une saison (liens entrants,
@@ -1720,6 +1690,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=5ca7444e" defer></script>
+<script src="script.js?v=6a9ee2ee" defer></script>
 </body>
 </html>

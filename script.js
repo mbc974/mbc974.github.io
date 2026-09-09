@@ -820,113 +820,6 @@ MBC.dateLongue = function (d, avecAnnee) {
 };
 
 /* ============================================================
-   Affiche « prochain rendez-vous » : elle s'efface d'elle-meme
-   ------------------------------------------------------------
-   Le bloc annonce UNE rencontre precise. Passee cette date il
-   deviendrait faux, et personne ne pense a retirer un bloc dans
-   une page de 1500 lignes. Il porte donc sa propre date de
-   peremption dans data-match-date : le lendemain, il disparait
-   et le calendrier juste en dessous prend le relais.
-   ============================================================ */
-(function () {
-  var bloc = document.getElementById('prochain-match');
-  if (!bloc) return;
-  var d = bloc.getAttribute('data-match-date');
-  if (!d) return;
-  /* Le coup d'envoi et le coup de sifflet final, en instants ABSOLUS.
-     On les emprunte à la ligne correspondante du calendrier, plus bas dans
-     la page : c'est le générateur qui les y publie, fuseau compris. Écrire
-     « 20h30 » ici serait faux dès la première dérogation d'horaire — et
-     l'article 4 du règlement en autorise jusqu'à 5 jours avant la
-     rencontre. Le repli ne devine donc pas non plus : il relit l'heure
-     affichée dans la ligne. */
-  var ligne = document.getElementById('match-' + d);
-  var coup = MBC.instant(ligne && ligne.getAttribute('data-debut')) ||
-             MBC.instant(d, MBC.heureDe(ligne) || '20:30');
-  var fin = MBC.instant(ligne && ligne.getAttribute('data-fin')) ||
-            MBC.instant(d, '23:59');
-  if (!coup || !fin) return;
-
-  var now = new Date();
-  if (fin < now) {
-    // La rencontre est passee. Le bloc s'efface plutot que d'annoncer
-    // un match qui a eu lieu. Le jour ou le club voudra afficher un
-    // resultat, il suffira de passer data-state a "result" et de mettre
-    // le score dans .nx__body : la structure ne bouge pas.
-    if (bloc.getAttribute('data-state') !== 'result') bloc.hidden = true;
-    return;
-  }
-
-  // Compte a rebours jours / heures / minutes.
-  //
-  // Trois garde-fous, parce qu'un compteur faux est pire que pas de compteur :
-  //  - au-dela de 60 jours il ne s'affiche pas (personne ne compte 8 mois) ;
-  //  - des que l'ecart devient negatif il se retire et l'intervalle s'arrete ;
-  //  - il se rafraichit a la minute, pas a la seconde : aucun cout perceptible,
-  //    et rien qui clignote dans le coin de l'oeil.
-  var cd = document.getElementById('nxCountdown');
-  if (!cd || isNaN(coup)) return;
-
-  var MIN = 6e4, H = 36e5, J = 864e5;
-  var timer = null;
-
-  function unite(valeur, libelle) {
-    return '<span class="sb__cd-u"><span class="sb__cd-n">' +
-      (valeur < 10 ? '0' : '') + valeur +
-      '</span><span class="sb__cd-s">' + libelle + '</span></span>';
-  }
-
-  function rendre() {
-    var reste = coup - new Date();
-
-    if (reste <= 0) {
-      // Le coup d'envoi est passe : soit c'est ce soir (le bloc entier
-      // reste, il s'effacera demain), soit il n'y a plus rien a compter.
-      cd.className = 'sb__cd sb__cd--soir';
-      cd.textContent = new Date() <= fin ? "C'est ce soir" : '';
-      cd.hidden = new Date() > fin;
-      if (timer) { clearInterval(timer); timer = null; }
-      return;
-    }
-    if (reste > 60 * J) {
-      /* Plus rien a afficher : on arrete aussi le minuteur, qui sinon
-         tournait chaque minute jusqu'a la fermeture de l'onglet. */
-      cd.hidden = true;
-      if (timer) { clearInterval(timer); timer = null; }
-      return;
-    }
-
-    var j = Math.floor(reste / J);
-    var h = Math.floor((reste % J) / H);
-    var m = Math.floor((reste % H) / MIN);
-    var sep = '<span class="sb__cd-sep" aria-hidden="true">\u00b7</span>';
-
-    cd.className = 'sb__cd';
-    cd.innerHTML =
-      '<span class="sb__cd-lab">Prochain match dans</span>' +
-      '<span class="sb__cd-val">' +
-        unite(j, j > 1 ? 'jours' : 'jour') + sep +
-        unite(h, 'h') + sep +
-        unite(m, 'min') +
-      '</span>';
-    cd.hidden = false;
-  }
-
-  rendre();
-  timer = setInterval(rendre, MIN);
-  /* Meme regle que le rotateur du hero : rien ne tourne dans le vide
-     quand l'onglet est en arriere-plan. */
-  document.addEventListener('visibilitychange', function () {
-    if (document.hidden) {
-      if (timer) { clearInterval(timer); timer = null; }
-    } else if (!timer && !cd.hidden) {
-      rendre();
-      timer = setInterval(rendre, MIN);
-    }
-  });
-})();
-
-/* ============================================================
    Le bandeau « prochain match » sous le hero : il se périme,
    et il se ré-arme
    ------------------------------------------------------------
@@ -1034,6 +927,12 @@ MBC.dateLongue = function (d, avecAnnee) {
     while (nEye && nEye.nodeType !== 3) nEye = nEye.previousSibling;
     if (nEye) nEye.nodeValue = journee.textContent.trim();
 
+    /* Les instants du bandeau suivent la rencontre qu'il annonce. Sans cela,
+       le compte a rebours continuait de lire ceux de la rencontre PRECEDENTE,
+       les trouvait passes, et se masquait — le bandeau annoncait J2 sans
+       jamais dire dans combien de temps. */
+    band.setAttribute('data-debut', row.getAttribute('data-debut') || '');
+    band.setAttribute('data-fin', row.getAttribute('data-fin') || '');
     temps.setAttribute('datetime', row.getAttribute('data-debut') || '');
     var sep = temps.querySelector('i');
     while (temps.firstChild) temps.removeChild(temps.firstChild);
@@ -1121,6 +1020,87 @@ MBC.dateLongue = function (d, avecAnnee) {
   }
   var cible = bloc.querySelector('.cw__j[data-jour="' + jour + '"]');
   if (cible) cible.classList.add('is-today');
+})();
+
+/* ============================================================
+   Le compte à rebours du prochain match
+   ------------------------------------------------------------
+   Il vivait dans le scoreboard écrit à la main, retiré le
+   09/09/2026 : c'était le troisième bloc de la page à annoncer
+   la même rencontre. Il s'attache désormais au bandeau généré,
+   et lit `data-debut` / `data-fin` — donc l'instant absolu,
+   fuseau de La Réunion compris.
+
+   Trois garde-fous, parce qu'un compteur faux est pire que pas
+   de compteur :
+     - au-delà de 60 jours il ne s'affiche pas ; personne ne
+       compte huit mois ;
+     - dès que l'écart devient négatif il se retire et
+       l'intervalle s'arrête ;
+     - il se rafraîchit à la minute, pas à la seconde : aucun
+       coût perceptible, et rien qui clignote dans l'œil.
+   ============================================================ */
+(function () {
+  var band = document.getElementById('nxBand');
+  var cd = document.getElementById('nxCountdown');
+  if (!band || !cd) return;
+
+  var coup = MBC.instant(band.getAttribute('data-debut'));
+  var fin = MBC.instant(band.getAttribute('data-fin'));
+  if (!coup || !fin) return;
+
+  var MIN = 6e4, H = 36e5, J = 864e5;
+  var timer = null;
+
+  function unite(v, lib) {
+    return '<span class="nx__cd-u"><span class="nx__cd-n">' +
+      (v < 10 ? '0' : '') + v + '</span><span class="nx__cd-s">' + lib + '</span></span>';
+  }
+
+  function rendre() {
+    /* Le bandeau a pu se ré-armer sur la rencontre suivante : on relit
+       l'attribut à chaque passage plutôt que de garder la valeur du départ. */
+    var d = MBC.instant(band.getAttribute('data-debut'));
+    var f = MBC.instant(band.getAttribute('data-fin'));
+    if (!d || !f) { cd.hidden = true; return; }
+    var maintenant = new Date();
+    var reste = d - maintenant;
+
+    if (reste <= 0) {
+      cd.className = 'nx__cd nx__cd--soir';
+      cd.textContent = maintenant <= f ? 'C’est ce soir' : '';
+      cd.hidden = maintenant > f;
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
+    if (reste > 60 * J) {
+      cd.hidden = true;
+      if (timer) { clearInterval(timer); timer = null; }
+      return;
+    }
+    var j = Math.floor(reste / J);
+    var h = Math.floor((reste % J) / H);
+    var m = Math.floor((reste % H) / MIN);
+    var sep = '<span class="nx__cd-sep" aria-hidden="true">\u00b7</span>';
+    cd.className = 'nx__cd';
+    cd.innerHTML = '<span class="nx__cd-lab">Coup d’envoi dans</span>' +
+      '<span class="nx__cd-val">' + unite(j, j > 1 ? 'jours' : 'jour') + sep +
+      unite(h, 'h') + sep + unite(m, 'min') + '</span>';
+    cd.hidden = false;
+  }
+
+  rendre();
+  timer = setInterval(rendre, MIN);
+  /* Même règle que le rotateur du hero : rien ne tourne dans le vide quand
+     l'onglet est en arrière-plan. */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      if (timer) { clearInterval(timer); timer = null; }
+    } else if (!timer) {
+      rendre();
+      if (!cd.hidden) timer = setInterval(rendre, MIN);
+    }
+  });
 })();
 
 /* ============================================================

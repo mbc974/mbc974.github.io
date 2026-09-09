@@ -5141,3 +5141,20 @@ html:has(.seo-top){scroll-padding-top:104px}
   .cw__s{padding:10px 14px;font-size:.9rem}
 }
 .cal-cta{margin-top:clamp(1.2rem,2.5vw,1.8rem);text-align:center}
+.nx__cd{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;
+  margin-top:.55rem}
+.nx__cd-lab{font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:.72rem;color:var(--txt-passe)}
+.nx__cd-val{display:inline-flex;align-items:flex-end;gap:.15rem}
+.nx__cd-u{display:inline-flex;align-items:baseline;gap:.18em}
+.nx__cd-n{font-family:var(--ff-display);font-size:1.22rem;line-height:1;
+  color:var(--blanc);font-variant-numeric:tabular-nums}
+.nx__cd-s{font-family:var(--ff-cond);font-weight:600;font-size:.72rem;
+  text-transform:uppercase;letter-spacing:.08em;color:var(--orange-vif)}
+.nx__cd-sep{color:var(--txt-passe);margin:0 .3em}
+.nx__cd--soir{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.12em;font-size:.92rem;color:var(--orange-vif)}
+@media (max-width:680px){
+  .nx__cd{margin-top:.4rem;gap:.35rem .6rem}
+  .nx__cd-n{font-size:1.05rem}
+}

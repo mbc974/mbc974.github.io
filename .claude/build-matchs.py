@@ -548,11 +548,12 @@ def bandeau(m, d):
     crest_dom = ECUSSON_MBC_NX if m["domicile"] else crest_adv
     crest_ext = crest_adv if m["domicile"] else ECUSSON_MBC_NX
     return u"""<!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
-<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-fin="%(finIso)s">
+<section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-debut="%(iso)s" data-fin="%(finIso)s">
   <div class="wrap nx__in">
     <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J%(j)d</p>
     <h2 class="nx__t" id="nxBandTitle"><span class="nx__club">%(crestDom)s%(dom)s</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp">%(crestExt)s%(ext)s</span></h2>
     <p class="nx__meta"><time datetime="%(iso)s">%(dateLongue)s <i aria-hidden="true"></i> %(heure)s</time><span class="nx__ou">%(lieu)s</span>%(libre)s</p>
+    <p class="nx__cd" id="nxCountdown" hidden></p>
     <p class="nx__a"><a class="btn btn--primary" href="/matchs/%(slug)s/">Voir le match%(fleche)s</a>%(itineraire)s</p>
   </div>
 </section>
