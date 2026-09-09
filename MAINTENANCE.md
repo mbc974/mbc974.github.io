@@ -502,3 +502,60 @@ sur plusieurs pages et deux largeurs. Deux pièges vécus :
    sous-pixel produisent à eux seuls ~94 écarts de géométrie. La comparaison
    réelle en produisait 2. Sans le témoin, on aurait « trouvé » 93 régressions
    qui n'existent pas.
+
+### Rayons et ombres — le système existait déjà
+
+Contrairement aux trois autres sujets, celui-ci n'a pas eu besoin d'être créé :
+`--r-sm/md/lg/pill` et `--e1/e2/e3`, `--glow-o/--glow-b`, `--bevel` étaient là.
+
+**Le piège, et il est sérieux : ces tokens ont DEUX valeurs.** Le bloc V79
+les redéfinit sur `main > .section, .site-footer` :
+
+| | hors sections | dans les sections et le pied de page |
+|---|---|---|
+| `--r-sm` | 14px | **10px** |
+| `--r-md` | 18px | **12px** |
+| `--r-lg` | 24px | **16px** |
+| `--e2` | `0 8px 24px` | `0 4px 12px` |
+
+C'est volontaire — le scope exclut le hero, qui est `main > .hero`. La
+conséquence : **remplacer un `14px` littéral par `var(--r-sm)` le fait passer à
+10px si la règle est dans une section.** Toute tokenisation de rayon doit donc
+être décidée règle par règle, en résolvant le token à l'endroit où il
+s'applique. Ce n'est pas iso-visuel par construction, contrairement aux
+espacements.
+
+`--r-round:50%` fait exception : il n'est pas redéfini par V79 et vaut 50 %
+partout. Il existe séparément de `--r-pill` parce que ce sont deux formes
+différentes — `999px` sur un rectangle fait un **stade**, `50%` sur un carré
+fait un **cercle**, et sur un rectangle une **ellipse**.
+
+**Les ombres ne sont pas tokenisables.** Mesuré élément par élément : sur 71
+éléments ombrés de l'accueil, 8 seulement rendent exactement une valeur de
+token. Les 77 compositions sont sur mesure. Les mettre en système reviendrait à
+les changer, pas à les centraliser. Et les 8 règles à 3 ou 4 couches
+(`.cat:hover`, `.sponsor-pack.pack--feat`, `.essentiel-card`, `.mx-crest--logo`,
+`.p-pillar:hover`) sont des **compositions** — élévation + liseré + bevel — à ne
+jamais découper en tokens indépendants.
+
+### Une classe absente du markup n'est pas forcément morte
+
+`verifier-classes.py` et les inventaires lisent les `class="…"` du HTML et des
+générateurs. Ils ne lisent **pas** le JavaScript. Or `script.js` et
+`consent.js` créent des éléments à l'exécution :
+
+```
+consent.js:51    b.className = 'ccb'              le bandeau RGPD
+script.js:178    toolbar.className = 'lightbox__toolbar'
+```
+
+Ces deux-là figuraient dans une liste de « règles mortes ». Les retirer aurait
+cassé la visionneuse et le bandeau de consentement. **Avant de supprimer une
+règle jugée morte, la confronter à `script.js` et `consent.js`** — et distinguer
+une classe *créée* par le JS (vivante) d'une classe seulement *interrogée* par
+lui (`querySelectorAll('.btn--roi')` : dormante, pas vivante).
+
+Restent en place, dormantes et documentées comme telles : `.btn--roi` (variante
+bleue, encore ciblée par `script.js:393`) et le bloc `.sb` (« SCOREBOARD »,
+jamais employé). Leur unité de décision est le bloc entier, pas une propriété :
+leur retirer leur ombre les dégraderait sans les nettoyer.
