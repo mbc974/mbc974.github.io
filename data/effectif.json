@@ -1,0 +1,179 @@
+{
+  "_lisezmoi": "Source UNIQUE de l'effectif seniors. Extrait du markup de index.html le 09/09/2026, sans ressaisie. Lancer « python .claude/build-effectif.py » pour regenerer le teaser de l'accueil et la page /effectif/. ATTENTION : les affiches portent le nom ET le numero GRAVES dans l'image (voir assets/joueurs/) — changer un numero ici sans refaire l'affiche ferait dire deux choses differentes a la meme carte.",
+  "saison": "2026/2027",
+  "competition": "Pré-Régionale Masculine, zone Nord",
+  "groupes": [
+    {
+      "libelle": "Meneurs & arrières postes 1 à 3",
+      "joueurs": [
+        {
+          "numero": "1",
+          "nom": "Alexandre Debieuvre",
+          "poste": "Meneur · poste 1-2",
+          "image": "mbc-senior-alexandre-debieuvre",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-alexandre-debieuvre-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur Alexandre Debieuvre, meneur numéro 1 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "45%",
+          "fy": "25%"
+        },
+        {
+          "numero": "4",
+          "nom": "Mathieu Fernandes",
+          "poste": "Meneur · poste 1-2",
+          "image": "mbc-senior-mathieu-fernandes",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-mathieu-fernandes-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Mathieu Fernandes, meneur numéro 4 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "50.3%",
+          "fy": "12%"
+        },
+        {
+          "numero": "8",
+          "nom": "Laurent Monvoisin",
+          "poste": "Arrière · poste 2-3",
+          "image": "mbc-senior-laurent-monvoisin",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-laurent-monvoisin-960.jpg",
+          "largeur": 960,
+          "hauteur": 1440,
+          "alt": "Affiche du joueur Laurent Monvoisin, arrière numéro 8 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "44%",
+          "fy": "28%"
+        },
+        {
+          "numero": "10",
+          "nom": "Guillaume Moine",
+          "poste": "Arrière · poste 2-3",
+          "image": "mbc-senior-guillaume-moine-v2",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-guillaume-moine-v2-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Guillaume Moine, arrière numéro 10 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "50%",
+          "fy": "12%"
+        },
+        {
+          "numero": "14",
+          "nom": "Matthieu Andéol",
+          "poste": "Arrière · poste 2-3",
+          "image": "mbc-senior-matthieu-andeol",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-matthieu-andeol-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Matthieu Andéol, arrière numéro 14 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "38%",
+          "fy": "12%"
+        }
+      ]
+    },
+    {
+      "libelle": "Ailiers & intérieurs postes 3 à 5",
+      "joueurs": [
+        {
+          "numero": "11",
+          "nom": "Kevin Nazir",
+          "poste": "Ailier · poste 3-4",
+          "image": "mbc-senior-kevin-nazir",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-kevin-nazir-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur Kevin Nazir, ailier numéro 11 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "39%",
+          "fy": "12%"
+        },
+        {
+          "numero": "9",
+          "nom": "Gianni Carpinelli",
+          "poste": "Intérieur · poste 4-5",
+          "image": "mbc-senior-gianni-carpinelli",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-gianni-carpinelli-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Gianni Carpinelli, intérieur numéro 9 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "48%",
+          "fy": "12%"
+        },
+        {
+          "numero": "10",
+          "nom": "Hakim Derras",
+          "poste": "Intérieur · poste 4-5",
+          "image": "mbc-senior-hakim-derras",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-hakim-derras-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Hakim Derras, intérieur numéro 10 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "48%",
+          "fy": "12%"
+        },
+        {
+          "numero": "34",
+          "nom": "Oswald Hoarau",
+          "poste": "Intérieur · poste 4-5",
+          "image": "mbc-senior-oswald-hoarau",
+          "crans": [
+            360,
+            560,
+            760,
+            960
+          ],
+          "repli": "mbc-senior-oswald-hoarau-960.jpg",
+          "largeur": 960,
+          "hauteur": 1200,
+          "alt": "Affiche du joueur Oswald Hoarau, intérieur numéro 34 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "47%",
+          "fy": "12%"
+        }
+      ]
+    }
+  ]
+}

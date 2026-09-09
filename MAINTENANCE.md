@@ -54,6 +54,7 @@ suivante.
 | Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/build-creneaux.py` |
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
 | L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
+| Un joueur de l'effectif seniors | `data/effectif.json` | `python .claude/build-effectif.py` |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
@@ -252,6 +253,7 @@ python .claude/verifier-jsonld.py      # données structurées, les 25 pages
 python .claude/build-creneaux.py --essai # les pages catégories disent-elles encore la vérité ?
 python .claude/build-vignettes.py --essai # les crans responsives sont-ils tous là ?
 python .claude/build-og-matchs.py --essai  # les 7 affiches de partage existent-elles ?
+python .claude/build-effectif.py --essai   # les 9 joueurs sont-ils tous là ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
@@ -399,3 +401,29 @@ connaît pas : le site, `data/creneaux.json` et les formules Yapla parlent
 d'**« École de Basket (7-10 ans) »**. L'un des deux doit être corrigé. Ce dépôt
 ne peut pas en décider : il ne sait pas laquelle des deux structures le club
 engage réellement auprès de la FFBB.
+
+
+---
+
+## 11. L'effectif : ce qu'on ne change pas sans refaire l'affiche
+
+`data/effectif.json` porte les neuf joueurs, **extraits du markup, jamais
+ressaisis**. Deux points à connaître avant d'y toucher :
+
+- Les affiches de `assets/joueurs/` portent le nom **et le numéro gravés dans
+  l'image**. Modifier un numéro dans le JSON sans refaire l'affiche ferait dire
+  deux choses différentes à la même carte.
+- **Deux joueurs portent le numéro 10** (Guillaume Moine et Hakim Derras).
+  C'est l'état constaté sur les affiches ; il est repris tel quel. C'est au
+  club de trancher, pas au dépôt.
+
+`squad--4` sur la seconde rangée n'est pas décoratif : `.squad` est un
+accordéon dont les deux rangées doivent avoir la **même somme de `flex-grow`**
+(5,02), sinon la carte ouverte n'a pas la même largeur d'une rangée à l'autre
+et `--fy` vise un cadre qui n'existe pas. Le générateur le pose tout seul dès
+qu'un groupe compte quatre joueurs.
+
+Le JSON-LD `SportsTeam` de `/effectif/` ne déclare **pas** d'entraîneur : le
+site présente Fred comme « Coach principal » et Luigi comme « Coach des
+jeunes », mais nulle part qui entraîne l'équipe seniors. À confirmer par le
+bureau avant de l'ajouter.

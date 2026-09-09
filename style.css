@@ -9409,3 +9409,78 @@ html:has(.seo-top){scroll-padding-top:104px}
   .nx__cd{margin-top:.4rem;gap:.35rem .6rem}
   .nx__cd-n{font-size:1.05rem}
 }
+
+/* ==========================================================================
+   V151 · Le rail de l'effectif, sur l'accueil
+   --------------------------------------------------------------------------
+   Les neuf affiches occupaient 1 974 px groupées par poste. Elles vivent
+   maintenant sur /effectif/ ; ici elles défilent sur UNE rangée.
+
+   Les neuf, et pas trois : choisir lesquels ne regarde pas un script, et cela
+   se verrait — dans un club, une carte absente se remarque.
+
+   Les affiches portent le nom et le numéro GRAVÉS dans l'image. La légende
+   sous la carte les redit en petit, pour qui lit à 132 px de large où le
+   texte gravé devient illisible ; elle ne se pose jamais PAR-DESSUS.
+   ========================================================================== */
+.sq-rail{list-style:none;display:flex;gap:10px;margin:clamp(1.4rem,3vw,2rem) 0 0;
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  padding-bottom:6px;scrollbar-width:thin;
+  scrollbar-color:rgba(232,130,42,.5) transparent}
+.sq-rail::-webkit-scrollbar{height:6px}
+.sq-rail::-webkit-scrollbar-thumb{background:rgba(232,130,42,.5);border-radius:3px}
+.sq-rail__i{flex:0 0 120px;scroll-snap-align:start;position:relative;
+  border-radius:var(--r-md,14px);overflow:hidden;
+  border:1px solid rgba(240,246,252,.10);background:rgba(255,255,255,.03)}
+/* aspect-ratio, et non une hauteur en vw : la mémoire du projet est explicite
+   là-dessus — une hauteur en vw fait viser à --fx un cadre qui n'existe plus. */
+.sq-rail__i picture{display:block;aspect-ratio:3/4;overflow:hidden}
+.sq-rail__i img{width:100%;height:100%;object-fit:cover;
+  object-position:var(--fx,50%) 18%}
+.sq-rail__c{display:flex;align-items:baseline;gap:.4em;padding:8px 10px 10px;
+  font-family:var(--ff-cond);font-weight:600;letter-spacing:.04em;
+  font-size:.76rem;color:var(--txt);text-transform:uppercase}
+.sq-rail__c b{font-family:var(--ff-display);font-size:1rem;color:var(--orange-vif);
+  line-height:1}
+@media (max-width:680px){
+  .sq-rail{gap:8px}
+  .sq-rail__i{flex:0 0 112px}
+  .sq-rail__c{font-size:.7rem;padding:7px 8px 9px}
+}
+/* La section garde ses deux actions côte à côte, la principale d'abord. */
+.squad-sec .sec-cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;
+  margin-top:clamp(1.3rem,3vw,2rem)}
+
+/* V152 · #inauguration repliée : le récit en une seule colonne.
+   La double page (texte + seconde photo) est retirée ; la colonne restante
+   ne doit pas garder la largeur d'une demi-grille. */
+.lp-copy--solo{max-width:68ch;margin-inline:auto;text-align:left}
+.lp-cta{margin-top:clamp(1.2rem,2.5vw,1.8rem)}
+
+/* V152b · #inauguration : la photo se resserre, le texte respire moins.
+   La section pesait 1 573 px pour un écran de 1 274. On ne retire pas une
+   phrase — le récit est l'identité territoriale du club — on reprend les
+   pixels là où ils ne portent pas de sens : le rapport de la photo et les
+   interlignes du bloc de texte. Le cadrage reste centré : c'est une photo de
+   groupe, couper par le haut décapiterait le dernier rang. */
+/* La photo etait DEJA en 21:9 : poser 2.35:1 ne changeait rien (1 330 px de
+   large en pleine-marge / 2,33 = 570 px, contre 566 en 2,35). Il faut 3:1 pour
+   gagner reellement, soit 443 px. Le cadrage descend a 46 % : sur ce cliche de
+   groupe, c'est la ligne des visages, et couper par le haut decapiterait le
+   dernier rang. */
+.local-proof .lp-stage{aspect-ratio:3/1}
+.local-proof .lp-stage picture,.local-proof .lp-stage img{width:100%;height:100%;
+  object-fit:cover}
+.local-proof .lp-stage img{object-position:center 46%}
+.lp-copy--solo .lp-txt{margin-bottom:.7rem}
+/* La signature du club et le lien tiennent sur la MEME rangee : deux blocs
+   pleine largeur l'un sous l'autre coutaient 79 px pour dire deux choses
+   courtes. */
+.lp-copy--solo .lp-fin{display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:space-between;gap:1rem;margin-top:1.1rem}
+.lp-copy--solo .lp-fin .lp-sign{margin:0}
+.lp-copy--solo .lp-fin .lp-cta{margin:0}
+/* Cette section respire moins verticalement que les autres : son contenu est
+   dense (une photo pleine marge et un recit), et c'est la hauteur de la photo
+   qui donne deja la respiration. */
+.section.local-proof{padding-block:clamp(2.6rem,5vw,4.2rem)}

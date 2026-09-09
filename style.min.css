@@ -5158,3 +5158,39 @@ html:has(.seo-top){scroll-padding-top:104px}
   .nx__cd{margin-top:.4rem;gap:.35rem .6rem}
   .nx__cd-n{font-size:1.05rem}
 }
+.sq-rail{list-style:none;display:flex;gap:10px;margin:clamp(1.4rem,3vw,2rem) 0 0;
+  overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  padding-bottom:6px;scrollbar-width:thin;
+  scrollbar-color:rgba(232,130,42,.5) transparent}
+.sq-rail::-webkit-scrollbar{height:6px}
+.sq-rail::-webkit-scrollbar-thumb{background:rgba(232,130,42,.5);border-radius:3px}
+.sq-rail__i{flex:0 0 120px;scroll-snap-align:start;position:relative;
+  border-radius:var(--r-md,14px);overflow:hidden;
+  border:1px solid rgba(240,246,252,.10);background:rgba(255,255,255,.03)}
+.sq-rail__i picture{display:block;aspect-ratio:3/4;overflow:hidden}
+.sq-rail__i img{width:100%;height:100%;object-fit:cover;
+  object-position:var(--fx,50%) 18%}
+.sq-rail__c{display:flex;align-items:baseline;gap:.4em;padding:8px 10px 10px;
+  font-family:var(--ff-cond);font-weight:600;letter-spacing:.04em;
+  font-size:.76rem;color:var(--txt);text-transform:uppercase}
+.sq-rail__c b{font-family:var(--ff-display);font-size:1rem;color:var(--orange-vif);
+  line-height:1}
+@media (max-width:680px){
+  .sq-rail{gap:8px}
+  .sq-rail__i{flex:0 0 112px}
+  .sq-rail__c{font-size:.7rem;padding:7px 8px 9px}
+}
+.squad-sec .sec-cta{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;
+  margin-top:clamp(1.3rem,3vw,2rem)}
+.lp-copy--solo{max-width:68ch;margin-inline:auto;text-align:left}
+.lp-cta{margin-top:clamp(1.2rem,2.5vw,1.8rem)}
+.local-proof .lp-stage{aspect-ratio:3/1}
+.local-proof .lp-stage picture,.local-proof .lp-stage img{width:100%;height:100%;
+  object-fit:cover}
+.local-proof .lp-stage img{object-position:center 46%}
+.lp-copy--solo .lp-txt{margin-bottom:.7rem}
+.lp-copy--solo .lp-fin{display:flex;flex-wrap:wrap;align-items:center;
+  justify-content:space-between;gap:1rem;margin-top:1.1rem}
+.lp-copy--solo .lp-fin .lp-sign{margin:0}
+.lp-copy--solo .lp-fin .lp-cta{margin:0}
+.section.local-proof{padding-block:clamp(2.6rem,5vw,4.2rem)}
