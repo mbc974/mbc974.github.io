@@ -465,7 +465,10 @@ a{color:inherit;text-decoration:none}
 .categories{position:relative;background:var(--nuit-2);overflow:hidden}
 .cat-grid{position:relative;z-index:2;display:grid;gap:1.3rem;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
 .cat{position:relative;border:1px solid var(--line);border-radius:var(--r-md);background:var(--grad-card);padding:2rem 1.8rem 1.8rem;overflow:hidden;display:flex;flex-direction:column;min-height:300px;transition:transform .4s var(--ease),border-color .4s,box-shadow .4s}
-.cat__num{position:absolute;right:1rem;top:.4rem;font-family:var(--ff-display);font-size:5rem;line-height:1;color:rgb(var(--blanc-rgb) / .04);z-index:0}
+/* font-size retire : mort. Les HUIT cartes de la section portent .cat--photo,
+   dont la regle « .cat--photo .cat__num » (specificite 0,2,0) impose un
+   clamp(3.4rem,6vw,4.4rem). Ce 5rem n'a jamais rendu. */
+.cat__num{position:absolute;right:1rem;top:.4rem;font-family:var(--ff-display);line-height:1;color:rgb(var(--blanc-rgb) / .04);z-index:0}
 .cat::before{content:"";position:absolute;right:-50px;top:-50px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgb(var(--bleu-roi-rgb) / .45),transparent 70%);transition:transform .5s var(--ease)}
 .cat:hover{transform:translateY(-8px);border-color:var(--line-strong);box-shadow:0 26px 56px rgba(0,0,0,.5)}
 .cat:hover::before{transform:scale(1.6)}
@@ -2357,7 +2360,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 .cat-grid{gap:1.5rem}
 .cat{padding:2.1rem 1.8rem 1.7rem!important;border-radius:20px}
 /* numéro filigrane en contour */
-.cat__num{font-size:6.4rem;right:1.1rem;top:.1rem;font-weight:800;color:rgb(var(--blanc-rgb) / .05);-webkit-text-stroke:1px rgb(var(--blanc-rgb) / .07)}
+/* Idem : ce 6.4rem surchargeait le 5rem ci-dessus, et se faisait surcharger a
+   son tour par le clamp de .cat--photo. Deux valeurs empilees, aucune visible.
+   font-weight:800, lui, est bien vivant : rien d'autre ne le declare. */
+.cat__num{right:1.1rem;top:.1rem;font-weight:800;color:rgb(var(--blanc-rgb) / .05);-webkit-text-stroke:1px rgb(var(--blanc-rgb) / .07)}
 /* icône en pastille orange (cohérent avec les autres cartes) */
 /* pastille d'âge pleine */
 .cat__age{background:linear-gradient(135deg,rgb(var(--orange-vif-rgb) / .2),rgb(var(--orange-vif-rgb) / .07));border-color:rgb(var(--orange-vif-rgb) / .42)}
