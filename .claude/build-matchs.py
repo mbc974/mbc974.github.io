@@ -144,12 +144,19 @@ def gabarit():
         "Bonjour%2C%20je%20souhaite%20avoir%20des%20informations%20sur%20le%20MBC.")
     cta = cta.replace("Inscrire mon enfant", "Rejoindre le MBC")
 
-    # La nav du modele n'offre ni Matchs ni Actualites : depuis une fiche de
-    # match, le calendrier complet n'etait atteignable que par le fil d'Ariane.
-    entete = entete.replace(
-        '<a href="/#contact">Contact</a>',
-        '<a href="/matchs/">Matchs</a><a href="/actualites/">Actualit\u00e9s</a>'
-        '<a href="/#contact">Contact</a>', 1)
+    # Il y avait ici un rustinage de la nav : le modele n'offrant ni Matchs ni
+    # Actualites, on les injectait avant \u00ab Contact \u00bb pour qu'une fiche de match
+    # ne renvoie pas au calendrier par le seul fil d'Ariane.
+    #
+    # Le 09/09/2026, la nav des 25 pages a ete unifiee et porte desormais ces
+    # deux entrees d'origine. Le rustinage s'est donc mis a les AJOUTER une
+    # seconde fois : les pages generees sortaient avec neuf liens dont un
+    # \u00ab Matchs \u00bb en double et un \u00ab Actualites \u00bb a cote d'\u00ab Actus \u00bb. Les pages
+    # ecrites a la main, elles, etaient justes \u2014 ce qui rendait l'ecart
+    # invisible tant qu'on ne comparait pas les deux familles.
+    #
+    # Lecon : un correctif qui compense un defaut de la source doit mourir avec
+    # ce defaut. On ne le garde pas \u00ab au cas ou \u00bb, il devient le defaut suivant.
     pied = s[s.index('<footer class="seo-foot">'):s.index("</footer>") + len("</footer>")]
     scripts = s[s.index("<script>\n/* Barre CTA mobile"):s.index("</body>")]
     # La feuille servie est style.min.css (voir .claude/build-css.py) ; le ?v=
