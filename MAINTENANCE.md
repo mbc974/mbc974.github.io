@@ -665,3 +665,46 @@ link.setAttribute('href', '/_avant.css?t=' + Date.now())   // ← le cache-buste
 
 Contrôle complémentaire après toute purge : comparer la liste des **sélecteurs
 individuels** avant/après. Le bon résultat est « N retirés, 0 vivant perdu ».
+
+---
+
+## 15. Release candidate 2026/2027 — l'état figé, et la règle qui suit
+
+**Tag `rc-2026-2027`** (annoté, poussé sur `origin`), posé sur `1e0f98e` le
+10/09/2026. Il marque la fin du chantier technique : couleurs, typographie,
+espacements, rayons, ombres, points de rupture et purge CSS sont stabilisés et
+vérifiés en production sur les 25 URL du sitemap.
+
+### La règle à partir d'ici
+
+> Toute modification doit répondre à un **besoin concret** : une donnée, un
+> match, du contenu, un bug réel, une mesure Search Console ou analytics, ou un
+> retour d'utilisateur.
+
+Pas de refactor pour faire baisser un compteur CSS. Trois sujets sont
+explicitement **clos sans suite**, faute de défaut constaté :
+
+| Sujet | Pourquoi on n'y touche pas |
+|---|---|
+| Les 53 largeurs de breakpoint | 12 se chevauchent, mais **0 hybride réel** mesuré sur 1 719 éléments à 899/900/901 px. Ambigu à l'écriture, jamais à l'affichage. |
+| Les 47 rayons littéraux restants | Le mécanisme V79 à deux portées les rend non tokenisables **sans déplacement**. 20 autres sont invérifiables faute d'élément sur les pages testées. |
+| Les 2 ombres quasi-identiques | `.nx__second` α .5 vs `.hero__second` α .55 ; `.lightbox__viewport` α .72 vs `.lightbox img` α .70. Aligner déplacerait vraiment une valeur, pour un écart que personne ne voit. |
+
+Si l'un de ces sujets revient un jour, ce sera parce qu'un défaut aura été
+**constaté**, pas parce qu'un compteur est élevé.
+
+### Les cinq décisions qui n'appartiennent pas au dépôt
+
+Aucune ne peut être tranchée depuis le code : il manque à chaque fois une
+information que seul le bureau détient.
+
+| # | Décision | Ce que le site fait en attendant |
+|---|---|---|
+| 1 | **Horaire Seniors du lundi** — le site annonce 19h00-20h30, l'affiche retirée disait 20h30-22h00 | le site garde 19h00-20h30 ; l'affiche contradictoire a été retirée (§ 10) |
+| 2 | **L'adresse e-mail de contact** — trois coexistent : `contact@mbc974.com`, `mbc974.re@gmail.com`, `mbc.re974@gmail.com` | aucune n'a été modifiée sans validation |
+| 3 | **U11 (9-10 ans) ou École de Basket (7-10 ans)** — le PDF partenaire et le site ne disent pas la même chose | le site, `data/creneaux.json` et Yapla restent alignés sur École de Basket (§ 10) |
+| 4 | **Le n° 10, porté par Guillaume Moine ET Hakim Derras** | repris tel quel : c'est ce que montrent les affiches gravées (§ 11) |
+| 5 | **Qui entraîne l'équipe Seniors** | le `SportsTeam` de `/effectif/` ne déclare **aucun** entraîneur — une donnée incomplète mais exacte vaut mieux qu'une donnée complète et fausse (§ 11) |
+
+Ces cinq points sont documentés en détail aux § 10 et § 11. Les trancher demande
+une réponse du club, pas une modification du dépôt.
