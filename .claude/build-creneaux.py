@@ -524,9 +524,14 @@ def page_creneaux(d, maj_le):
     visible, ld_fil = bm.fil([("Accueil", "/"), (u"Créneaux", None)])
     tete = bm.tete(
         u"Créneaux d'entraînement 2026/2027 — MBC La Montagne",
-        u"Tous les créneaux du MBC : Baby Basket, école de basket, U13, U15, U18, "
-        u"seniors et loisirs, au Gymnase de La Montagne et au Terrain Ruisseau Blanc, "
-        u"à Saint-Denis de La Réunion.",
+        # 160 caracteres est la limite pratique d'affichage dans les resultats
+        # Google ; la version precedente en faisait 176 et se faisait couper sur
+        # « de La Réunion ». Reformulee a 157 sans perdre un seul fait : les sept
+        # categories, les deux lieux, et le reperage local (« 974 » remplace
+        # « de La Réunion », plus court a information egale).
+        u"Créneaux du MBC : Baby Basket, école de basket, U13, U15, U18, "
+        u"seniors et loisirs, au Gymnase de La Montagne et au Terrain Ruisseau "
+        u"Blanc, Saint-Denis (974).",
         SITE + "/creneaux/", [ld_fil], prof=1)
 
     rappels = []
