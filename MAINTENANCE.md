@@ -1544,3 +1544,171 @@ survol et souligne le libellé en orange.
   final avec `getAnimations().forEach(a => a.finish())`, ou par une capture
   headless en `--force-prefers-reduced-motion` d'une copie de la page dont le
   markup porte déjà l'état ouvert (`data-nav="open"`, sans `inert`).
+
+---
+
+## 23. Le hero en couches : la parallaxe (10–11/09/2026)
+
+### La demande
+
+Appliquer au hero l'effet « Parallax Layers » d'Osmo (composant React : GSAP
+ScrollTrigger + Lenis). **Transposé, pas installé** — même doctrine qu'aux
+§ 18 et § 22.
+
+### Comment ça a été décidé
+
+Trois workflows. Le premier : quatre lecteurs (cascade CSS du premier écran,
+JS, contraintes du dépôt, support des navigateurs en 2026), trois conceptions
+indépendantes, trois juges, une synthèse. Puis deux revues contradictoires au
+banc temps réel : la première a fait corriger la lisière, l'absence de
+bandeau, l'état final, les tablettes, le relais du bouton, le clavier et le
+filet du bandeau ; la seconde n'a plus rien trouvé de grave, et ses points
+mineurs sont intégrés ci-dessous.
+
+### Ce que l'œil lit
+
+Un hero qui ralentit, et le bandeau du match qui le rattrape.
+
+| plan | élément | ordinateur et téléphone | tablette (561–919 px) |
+|---|---|---|---|
+| fond | `<picture>` de la photo | 12svh (88 % de la vitesse) | 5svh |
+| milieu | `.hero__inner` (titre, phrase, boutons) | 17svh (83 %) | 7svh |
+| lisière | `#nxBand::before`, dégradé de 3svh | opacité 0 → 1 → 0 | idem |
+| devant | `#nxBand`, le bandeau | vitesse de la page | idem |
+
+Entre photo et texte, 5 px pour 100 px défilés : la profondeur « titre entre
+deux plans » d'Osmo n'est pas reproduite, et c'est voulu (règle 1). Une
+timeline de défilement CSS (`animation-timeline:scroll(root block)`) fait le
+travail de ScrollTrigger. Le mouvement passe par `translate`, jamais par
+`transform` : `heroZoom` (img) et `heroMonte` (titre, boutons) tiennent
+`transform` et `opacity` en `fill both`, et `.hero__photo` a `transform:none`
+à (0,3,0) quatre fois.
+
+### Les deux règles qui fixent les amplitudes
+
+1. **Le texte descend au moins autant que la photo.** Sinon le titre remonte
+   vers le logo MBC du dos de l'entraîneur, qu'il frôle déjà au repos (6 px à
+   1366 × 657, § 21). Ici l'écart logo-titre ne fait que grandir.
+2. **Le texte ne descend pas de plus de 19svh.** Tout ce qui descend va vers
+   le bandeau, et la première chose qu'il y rencontre est « Je m'inscris » :
+   à 1440 × 860, son libellé passe sous le bandeau vers 425 px de défilement
+   (sans V177, il passait sous la barre du haut vers 600 px).
+
+Pour retoucher : `photo < texte ≤ 19svh`, dans les `@keyframes v177-*`. Les
+couches courent sur `0 → 110svh` : l'étape du pic vaut 100 / 110 = 90.9091 %
+(à recalculer si la plage change) et la pente vaut amplitude / 100svh. Le
+`+1px` du `bottom` de la lisière suit l'épaisseur du `border-top` de `.nx`.
+
+### Le relais « Je m'inscris »
+
+Le bouton du hero partant plus tôt, il ne fallait pas de trou :
+- **dès 561 px de large** (là où la barre du haut porte son propre « Je
+  m'inscris ») : sur l'accueil, la barre ne se masque plus en descente qu'une
+  fois le hero sorti de l'écran (`seuilMasque()` dans script.js ; c'était
+  400 px). Ce seuil vaut pour tout l'accueil, parallaxe active ou non ;
+- **tablette (561–919 px)** : en plus, 5 et 7svh. À 17svh, le libellé du hero
+  commençait à disparaître entre ~270 et ~370 px, avant l'arrivée de la barre
+  flottante à 600 px ; à 7svh, il reste lisible au-delà de 600 px (jusqu'à
+  ~740–1070 px) ;
+- **téléphone** : rien à régler, le libellé du bouton du hero reste lisible
+  plus longtemps qu'avant (~560 px contre ~470 à 390 × 844).
+
+### La lisière
+
+Sans elle, le bord du bandeau tranchait net le bouton orange à mi-course —
+une languette sans libellé, des lettres coupées en deux : ça se lisait comme
+un bug. C'est le `.parallax__fade` d'Osmo : un dégradé `#030a14` de 3svh (20 à
+36 px), peint au-dessus du texte, posé juste au-dessus du filet orange du
+bandeau (qui reste visible). Une languette assombrie reste visible un
+instant, sans libellé.
+- 3svh et pas plus : au repos, le bas du bouton est à 21 px du bandeau à
+  1440 × 860 (14 à 1366 × 657, 31 à 820 × 1180). À 5svh, la lisière
+  assombrissait le bouton dès le premier cran de molette ; à 3svh, seul un
+  portable bas (1366 × 657) voit encore le tiers bas du bouton s'assombrir
+  dès le premier cran, le libellé restant net.
+- Opacité 0 jusqu'à 6 % de la course, pleine à 14 %, éteinte progressivement
+  de 95 à 100 %.
+- Elle ne passe devant le texte que parce que le hero isole sa pile
+  (`isolation:isolate`, reposé dans V177 même si d'anciennes couches le
+  disent déjà).
+
+### L'état final est le repos
+
+Safari 26.0 à 26.4 peut mal restaurer une timeline au retour arrière (état
+arbitraire, dont l'état final ; corrigé en 26.5 : webkit.org/blog/17938).
+Chaque animation revient donc à son point de départ en fin de course : les
+deux couches courent sur `0 → 110svh` (pente inchangée jusqu'à 100svh, retour
+à 0 ensuite, hero déjà hors écran) et la lisière s'éteint à 100 %. Pire cas :
+un hero au repos.
+
+### Sans bandeau, pas de parallaxe
+
+En fin de phase et hors saison, script.js masque le bandeau (`hidden`) ou
+build-matchs.py n'écrit rien entre les marqueurs. Plus de plan de devant ni de
+lisière : le texte serait tranché net au bord du hero. Un `:has()` remet alors
+les deux couches au repos.
+
+### Deux pièges
+
+- **Une view-timeline sur le hero se décroche quand le menu s'ouvre.**
+  `syncBodyLock` (script.js) pose `overflow:hidden` sur `<body>` ; `<html>`
+  étant en `overflow-x:clip`, le body devient un conteneur de défilement et la
+  timeline s'y rattache. `scroll(root)` suit la fenêtre.
+- **`overflow:hidden` laissait le hero défiler de l'intérieur** : un
+  `scrollIntoView` (recherche dans la page, ancre) sur le lien d'essai le
+  décalait de 37 à 55 px à 1440 × 860 selon la position, jusqu'au retour en
+  haut. `overflow:clip` coupe au même bord sans rien de défilable.
+
+### Où l'effet ne s'applique pas
+
+Mouvement réduit ; navigateurs sans `animation-timeline` (Firefox stable en
+septembre 2026 — activation annoncée par Mozilla pour fin 2026, à repasser au
+banc ce jour-là — et Safari avant 26) ; fenêtres de 520 px de haut ou moins ;
+sans bandeau ; impression ; et tant qu'un élément du hero a le focus clavier
+(couches au repos, lisière éteinte : WCAG 2.4.11).
+
+Support : Chrome/Edge 115+, Samsung Internet 23+, Safari 26+ (sur le fil du
+compositeur à partir de 26.4 : webkit.org/blog/17862).
+
+### Ce qui a été écarté
+
+Lenis (réécrit le défilement, bloque les ancres, ne fait rien au doigt) ; GSAP
+(~70 Ko de JS pour ce que le navigateur fait seul) ; un pilote JS (une image
+de retard sur le défilement) ; l'opacité sur le titre et les boutons ; un zoom
+(flou au-delà de ce que décrit `sizes`) ; des calques d'image supplémentaires
+(une seule vraie photo, doctrine V108) ; un fondu permanent au bord du
+bandeau (il assombrissait le bouton au repos).
+
+### Vérifier : `.claude/banc-parallaxe.mjs`
+
+Le seul banc qui voit l'effet : les captures à temps virtuel
+(`--virtual-time-budget`) ne ré-échantillonnent pas une timeline de
+défilement et ne montrent que le repos, sans erreur. Mode d'emploi en tête du
+fichier ; il faut le serveur local « mbc-static » (port 8000) :
+
+    node .claude/banc-parallaxe.mjs apres 1440x860,390x844 0,0.25,0.5,0.75 --shots
+    node .claude/banc-parallaxe.mjs avant 1440x860,390x844 0 --shots --off
+    node .claude/banc-parallaxe.mjs sansbande 1440x860 0,0.5 --sans-bandeau
+
+`--off` coupe la couche CSS, pas le seuil de script.js. Les seuils de relais
+cités plus haut sont « la première position, au pas de 5 % de la hauteur du
+hero, où… » ; « visible » est géométrique (le champ `libelleSousLisierePx`
+dit ce que la lisière assombrit).
+
+Mesuré le 11/09 : au repos, même géométrie qu'avant aux 8 formats du banc
+(1440 × 860, 2560 × 1300, 1366 × 657, 820 × 1180, 768 × 1024, 912 × 1368,
+390 × 844, 375 × 667) ; pixels identiques à 1/255 près, hors décompte du
+bandeau, sauf à 1440 × 860 et 2560 × 1300 où la photo, devenue un calque
+composite, est rééchantillonnée (22 et 28/255 au plus sur des contours,
+reproductible, invisible). En défilant : pentes exactes (0,12 et 0,17 ; 0,05
+et 0,07 sur tablette), aucun défilement interne, aucun débordement
+horizontal, filet du bandeau intact.
+
+### Limites acceptées
+
+- Une languette assombrie du bouton reste visible un instant au bord du
+  bandeau.
+- Sur ordinateur, le bouton du hero part plus tôt qu'avant (425 px contre 600
+  à 1440 × 860) ; la barre du haut assure le relais.
+- Deux calques composites de plus tant que le hero est dans la page : non
+  mesuré sur un vrai Android d'entrée de gamme.

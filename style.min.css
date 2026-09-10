@@ -5585,3 +5585,36 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
 @media (prefers-reduced-motion:reduce){
   .mn,.mn *,.mn *::before,.mn-btn *{transition-duration:0s!important;transition-delay:0s!important}
 }
+@media screen and (prefers-reduced-motion:no-preference) and (min-height:521px){
+@supports (animation-timeline:scroll()) and (animation-range:0 1px){
+  .ecran1 > .hero{isolation:isolate}
+  .ecran1 > .hero,
+  .ecran1 > .hero > .hero__photo{overflow:clip}
+  .ecran1 .hero__photo picture{
+    animation:v177-photo 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 110svh}
+  .ecran1 .hero__inner{
+    animation:v177-texte 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 110svh}
+  #nxBand::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% + 1px);
+    height:clamp(20px,3svh,36px);pointer-events:none;opacity:0;
+    background:linear-gradient(to top,rgb(3 10 20),rgb(3 10 20 / 0));
+    animation:v177-lisiere 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 100svh}
+  @media (min-width:561px) and (max-width:919px){
+    .ecran1 .hero__photo picture{animation-name:v177-photo-t}
+    .ecran1 .hero__inner{animation-name:v177-texte-t}
+  }
+  .ecran1:not(:has(> #nxBand:not([hidden]))) :is(.hero__photo picture,.hero__inner){animation:none}
+  .ecran1 .hero:has(:focus-visible) .hero__photo picture,
+  .ecran1 .hero:has(:focus-visible) .hero__inner,
+  .ecran1:has(> .hero :focus-visible) > #nxBand::before{animation:none}
+}}
+@keyframes v177-photo{0%{translate:0 0}90.9091%{translate:0 12svh}100%{translate:0 0}}
+@keyframes v177-texte{0%{translate:0 0}90.9091%{translate:0 17svh}100%{translate:0 0}}
+@keyframes v177-photo-t{0%{translate:0 0}90.9091%{translate:0 5svh}100%{translate:0 0}}
+@keyframes v177-texte-t{0%{translate:0 0}90.9091%{translate:0 7svh}100%{translate:0 0}}
+@keyframes v177-lisiere{0%,6%{opacity:0}14%,95%{opacity:1}100%{opacity:0}}

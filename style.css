@@ -10778,3 +10778,219 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
 @media (prefers-reduced-motion:reduce){
   .mn,.mn *,.mn *::before,.mn-btn *{transition-duration:0s!important;transition-delay:0s!important}
 }
+
+/* ============================================================================
+   V177 — LE HERO EN COUCHES : LA PHOTO, LE TEXTE, PUIS LE BANDEAU
+   ----------------------------------------------------------------------------
+   Demande : « applique cet effet parallax au hero actuel » — le composant Osmo
+   « Parallax Layers » (React + GSAP ScrollTrigger + Lenis). Transpose, pas
+   installe, comme le menu de la V176 : ni GSAP, ni Lenis, et aucun JS pour le
+   mouvement (script.js n'a change qu'un seuil : voir la regle 2).
+   Une timeline de defilement CSS (animation-timeline) fait le travail de
+   ScrollTrigger : aucun ecouteur de scroll, aucun calcul par image en JS.
+   Support en septembre 2026 : Chrome/Edge 115+, Samsung Internet 23+, Safari
+   26+ (sur le fil du compositeur a partir de 26.4 : webkit.org/blog/17862 ;
+   restauration au retour arriere corrigee en 26.5 : webkit.org/blog/17938).
+   Firefox stable : non (activation annoncee par Mozilla pour fin 2026, a
+   repasser au banc ce jour-la) — le @supports echoue et c'est le hero d'avant.
+
+   CORRESPONDANCE AVEC LE COMPOSANT
+     ScrollTrigger, scrub:0 (lien direct)  animation-timeline:scroll(root block)
+     start « 0% 0% », end « 100% 0% »     course utile : 0 -> 100svh defiles ;
+                                            le hero (100svh moins le bandeau) a
+                                            quitte l'ecran avant la fin
+     ease « none »                        linear
+     yPercent 70 / 55 / 40 / 10           translate 12svh et 17svh, sur DEUX
+                                            calques : il n'y a qu'une photo, on
+                                            n'en invente pas (V108)
+     la section qui recouvre l'en-tete    #nxBand lui-meme : opaque, peint APRES
+                                            le hero, il monte a vitesse normale
+     .parallax__fade                      pour la photo, le bas du voile
+                                            .hero::after (#030a14 -> 0 sur 36 %) ;
+                                            pour le texte, la lisiere
+                                            #nxBand::before
+     Lenis                                non (voir plus bas)
+
+   CE QUE L'OEIL LIT : un hero qui ralentit, et le bandeau qui le rattrape.
+     1 la photo (<picture>)        descend de 12 px pour 100 px defiles    88 %
+     2 le voile (.hero::after)     immobile dans le hero                  100 %
+     3 titre, phrase, boutons      descendent de 17 px pour 100           83 %
+       (.hero__inner, z-index 8 l.1462 : il passe AU-DESSUS du voile)
+     4 la lisiere, puis le bandeau peints apres le hero, par-dessus     100 %
+   Entre photo et texte, l'ecart n'est que de 5 px pour 100 : la profondeur
+   « titre entre deux plans » d'Osmo n'est PAS reproduite, et c'est voulu
+   (regle 1). Ce qui se voit, c'est le bandeau qui avale le hero.
+
+   LES DEUX REGLES QUI FIXENT LES AMPLITUDES
+   1. Course du texte >= course de la photo. Chez Osmo le fond est le plan le
+      plus lent ; ici le titre remonterait alors vers le logo MBC dans le dos
+      de l'entraineur, qu'il frole deja au repos (V173 : 6 px a 1366 x 657).
+      Le texte descend donc un peu PLUS que la photo : l'ecart logo-titre ne
+      fait que grandir, de 5 px pour 100 px defiles.
+   2. Course du texte <= 19svh. Tout ce qui descend dans le hero va vers le
+      bandeau, et la premiere chose qu'il y rencontre est « Je m'inscris » :
+      a 1440 x 860, son libelle est sous le bandeau vers 425 px de defilement
+      (sans V177, il passait sous la barre du haut vers 600 px). Des 561 px
+      de large, la barre du haut — et son propre « Je m'inscris » — ne se
+      masque donc plus qu'une fois le hero sorti de l'ecran (script.js,
+      seuilMasque, qui vaut pour tout l'accueil, V177 actif ou non). Au-dela
+      de 19svh, le bouton principal quitterait l'ecran trop tot.
+   Pour retoucher : photo < texte <= 19svh, dans les @keyframes v177-*. Les
+   couches courent sur 0 -> 110svh : l'etape du pic vaut 100 / 110 = 90.9091 %
+   (a recalculer si la plage change), et la pente = amplitude / 100svh.
+
+   TABLETTES (561 a 919 px) : 5 et 7svh seulement
+   A 17svh, le libelle du bouton du hero commencait a disparaitre entre ~270 et
+   ~370 px de defilement, avant que la barre flottante (et son « Je
+   m'inscris ») n'arrive a 600 px. A 7svh, il reste lisible au-dela de 600 px
+   (jusqu'a ~740 a 1070 px), et la barre du haut reste la jusqu'a la sortie du
+   hero (regle 2).
+   Sur telephone (560 px et moins) rien a regler : le libelle du bouton du hero
+   y reste lisible PLUS longtemps qu'avant (~560 px contre ~470 a 390 x 844).
+
+   LA LISIERE (#nxBand::before)
+   Sans elle, la coupe au bord du bandeau tranchait net le bouton orange a
+   mi-course — une languette sans libelle, des lettres coupees en deux : ca se
+   lisait comme un bug. C'est le .parallax__fade d'Osmo : un degrade de
+   #030a14 (la couleur du bas du voile) vers transparent, peint au-dessus du
+   texte, pose juste AU-DESSUS du filet orange du bandeau (calc(100% + 1px) :
+   le filet reste visible). Ce qui descend vers le bandeau s'y enfonce dans le
+   noir ; une languette assombrie reste visible un instant, sans libelle.
+   - 3svh (20 a 36 px), pas plus : au repos, le bas du bouton est a 21 px du
+     bandeau a 1440 x 860, 14 px a 1366 x 657, 31 px a 820 x 1180. A 5svh la
+     lisiere « brulait » le bouton des le premier cran de molette ; a 3svh,
+     seul un portable bas (1366 x 657) voit encore le tiers bas du bouton
+     s'assombrir des le premier cran — le libelle reste net.
+   - Opacite 0 au repos et jusqu'a 6 % de la course, pleine a 14 %, eteinte
+     progressivement de 95 a 100 % (le hero est alors hors ecran jusqu'a
+     ~3 300 px de haut).
+   - Le +1px de bottom suit l'epaisseur du border-top de .nx (l.7742).
+   - Etat de base opacity:0 : si l'animation ne tourne pas, rien ne s'affiche.
+   - Elle ne passe devant le texte que parce que le hero isole sa pile : sinon
+     le z-index:8 de .hero__inner en sortirait. isolation:isolate est donc
+     pose ici, meme si d'anciennes couches le disent deja (l.6274, l.6941).
+
+   L'ETAT FINAL EST LE REPOS
+   Safari 26.0 a 26.4 peut mal restaurer une timeline au retour arriere (etat
+   arbitraire, dont l'etat final). Chaque animation revient donc a son point
+   de depart en fin de course : les deux couches courent sur 0 -> 110svh
+   (pente inchangee jusqu'a 100svh, retour a 0 entre 100 et 110svh, quand le
+   hero est deja hors ecran), et la lisiere s'eteint a 100 %. Pire cas : un
+   hero au repos.
+
+   SANS BANDEAU, PAS DE PARALLAXE
+   En fin de phase et hors saison, script.js masque le bandeau ([hidden]) ou
+   build-matchs.py n'ecrit rien entre les marqueurs. Plus de plan de devant,
+   plus de lisiere : le texte serait tranche net au bord du hero. Les deux
+   couches restent alors au repos (:has(), meme support que les timelines).
+
+   overflow:clip SUR LE HERO ET SUR SA PHOTO
+   Le texte depasse maintenant le bord bas du hero, la photo celui de
+   .hero__photo. En overflow:hidden, ces deux boites restent des conteneurs de
+   defilement : un scrollIntoView (recherche dans la page, ancre) sur le lien
+   d'essai faisait DEFILER le hero de l'interieur (37 a 55 px a 1440 x 860
+   selon la position, mesure) jusqu'au retour en haut de page. clip coupe au
+   meme bord sans rien de defilable.
+
+   POURQUOI scroll(root) ET PAS UNE view-timeline SUR LE HERO
+   script.js (syncBodyLock) pose overflow:hidden sur <body> quand le menu ou
+   la visionneuse s'ouvre ; <html> etant en overflow-x:clip (l.1277), le body
+   ne se propage pas a la fenetre : il devient un conteneur de defilement, et
+   une view-timeline du hero s'y rattacherait (couches ramenees a 0 derriere le
+   menu). scroll(root) suit la fenetre. Consequence : la course part du haut
+   du DOCUMENT ; si un element s'insere un jour au-dessus de .ecran1 dans le
+   flux, le repos reste juste mais la course se decale d'autant.
+
+   LE CLAVIER
+   Un lien du hero qui recoit le focus clavier alors qu'il est deja sous le
+   bandeau serait cache (WCAG 2.4.11). Tant qu'un element du hero a le focus
+   clavier, les deux couches reprennent ENSEMBLE leur place de repos (la photo
+   seule, restee basse, glisserait le logo sous le titre) et la lisiere
+   s'eteint. :focus-visible et pas :focus : au clic, un bouton qui bougerait
+   sous le curseur entre mousedown et mouseup perdrait le clic.
+
+   CE QUI NE BOUGE PAS
+   - au repos (defilement 0) : meme geometrie qu'avant aux 8 formats du banc.
+     Pixels identiques a 1/255 pres (hors decompte du bandeau, qui change a la
+     minute), sauf a 1440 x 860 et 2560 x 1300 ou la photo, devenue un calque
+     composite, est reechantillonnee (22 et 28/255 au plus sur des contours,
+     reproductible, invisible) ;
+   - le mouvement est porte par <picture> et .hero__inner, jamais par l'img ni
+     par le titre : heroZoom (img) et heroMonte (.hero__h1, .hero__cta) tiennent
+     transform et opacity en fill both, et .hero__photo a transform:none a
+     (0,3,0) quatre fois. translate est une propriete a part : il se compose ;
+   - la photo ne depend toujours de rien (ni JS, ni rAF, ni observateur) ;
+   - pas de zoom : sizes sous-estime deja la largeur affichee sur grand ecran ;
+   - #nxBand : balisage genere et regles intouches (la lisiere est un
+     pseudo-element ajoute, au-dessus du filet).
+
+   OU IL NE S'APPLIQUE PAS
+   - mouvement reduit : rien (WCAG 2.3.3). La regle globale de la l.4441
+     (duree .001ms) n'arreterait pas une animation liee au defilement, d'ou la
+     condition explicite ;
+   - navigateur sans animation-timeline : le @supports echoue ;
+   - fenetre de 520 px de haut ou moins (telephone couche) : meme seuil que le
+     menu de la V176 ; le premier ecran y deborde deja ;
+   - sans bandeau affiche (ci-dessus) ;
+   - impression (screen) : le hero s'imprime au repos.
+
+   CE QU'ON N'A PAS REPRIS, ET POURQUOI
+   - Lenis : il reecrit le defilement a chaque image depuis le fil principal,
+     bloque les liens d'ancre par defaut (l'accueil en vit), ignore le
+     scroll-snap de l'effectif, et ne fait rien au doigt ;
+   - GSAP et ScrollTrigger : ~70 Ko de JS pour ce que le navigateur fait seul ;
+   - un pilote JS (variable ecrite a chaque image) : une image de retard ;
+   - les vitesses d'Osmo (yPercent 70/55/40/10) : bouton sous le bandeau apres
+     ~50 px de defilement, et, avec l'ordre d'Osmo, logo couvert apres 5 a 30 px ;
+   - l'effacement du texte (opacite) : heroMonte tient deja l'opacite du titre
+     et des boutons, et un etat final a opacite 0 les laisserait invisibles ;
+   - un fondu PERMANENT au bord du bandeau : il assombrissait le bouton au repos.
+
+   VERIFIER
+   Uniquement au banc temps reel : .claude/banc-parallaxe.mjs (Chrome pilote en
+   CDP, viewport exact, prefers-reduced-motion:no-preference, page defilee par
+   elle-meme ; mode d'emploi en tete du fichier, et MAINTENANCE § 23). Les
+   captures a temps virtuel (--virtual-time-budget) ne re-echantillonnent pas
+   une timeline de defilement : elles ne montrent que le repos, sans erreur.
+   Pieges : animation-timeline et animation-range APRES le raccourci animation
+   (qui les remet a auto et normal) ; 1ms et non auto (Firefox n'accepte pas
+   auto) ; svh partout, pour que ni la plage ni les courses ne bougent quand la
+   barre d'adresse mobile se replie.
+   ============================================================================ */
+@media screen and (prefers-reduced-motion:no-preference) and (min-height:521px){
+@supports (animation-timeline:scroll()) and (animation-range:0 1px){
+  .ecran1 > .hero{isolation:isolate}
+  .ecran1 > .hero,
+  .ecran1 > .hero > .hero__photo{overflow:clip}
+  .ecran1 .hero__photo picture{
+    animation:v177-photo 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 110svh}
+  .ecran1 .hero__inner{
+    animation:v177-texte 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 110svh}
+  /* La lisiere : au-dessus du texte, juste au-dessus du filet du bandeau. */
+  #nxBand::before{content:"";position:absolute;left:0;right:0;bottom:calc(100% + 1px);
+    height:clamp(20px,3svh,36px);pointer-events:none;opacity:0;
+    background:linear-gradient(to top,rgb(3 10 20),rgb(3 10 20 / 0));
+    animation:v177-lisiere 1ms linear both;
+    animation-timeline:scroll(root block);
+    animation-range:0 100svh}
+  /* Tablettes : la barre flottante n'arrive qu'a 600 px (voir plus haut). */
+  @media (min-width:561px) and (max-width:919px){
+    .ecran1 .hero__photo picture{animation-name:v177-photo-t}
+    .ecran1 .hero__inner{animation-name:v177-texte-t}
+  }
+  /* Sans bandeau affiche : pas de parallaxe. */
+  .ecran1:not(:has(> #nxBand:not([hidden]))) :is(.hero__photo picture,.hero__inner){animation:none}
+  /* Focus clavier dans le hero : les deux couches a leur place, lisiere eteinte. */
+  .ecran1 .hero:has(:focus-visible) .hero__photo picture,
+  .ecran1 .hero:has(:focus-visible) .hero__inner,
+  .ecran1:has(> .hero :focus-visible) > #nxBand::before{animation:none}
+}}
+@keyframes v177-photo{0%{translate:0 0}90.9091%{translate:0 12svh}100%{translate:0 0}}
+@keyframes v177-texte{0%{translate:0 0}90.9091%{translate:0 17svh}100%{translate:0 0}}
+@keyframes v177-photo-t{0%{translate:0 0}90.9091%{translate:0 5svh}100%{translate:0 0}}
+@keyframes v177-texte-t{0%{translate:0 0}90.9091%{translate:0 7svh}100%{translate:0 0}}
+@keyframes v177-lisiere{0%,6%{opacity:0}14%,95%{opacity:1}100%{opacity:0}}

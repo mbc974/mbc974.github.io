@@ -93,11 +93,23 @@
       if (footerVisible) floatCta.classList.remove('show');
     }, { rootMargin: '0px 0px -40px 0px' }).observe(footerEl);
   }
+  /* Sur l'accueil, dès 561 px de large (là où la barre du haut porte son propre
+     « Je m'inscris »), la barre ne se masque en descente qu'une fois le hero
+     sorti de l'écran. Avec la parallaxe du hero (V177 dans style.css), le
+     libellé du bouton du hero passe sous le bandeau du match vers 425 px de
+     défilement à 1440 × 860 : masquée à 400 px, la barre ouvrait un trou sans
+     aucun « Je m'inscris » lisible ~250 px plus tôt qu'avant, et sur tablette la
+     barre flottante n'arrive qu'à 600 px. Le seuil vaut pour tout l'accueil,
+     parallaxe active ou non. Sous 561 px (téléphone) : 400 px, inchangé. */
+  const heroEcran = document.getElementById('hero');
+  function seuilMasque() {
+    return (heroEcran && window.innerWidth >= 561) ? Math.max(400, heroEcran.offsetHeight) : 400;
+  }
   function updateScroll() {
     const y = window.scrollY;
     if (header) header.classList.toggle('scrolled', y > 30);
     if (header && !navOpen) {
-      if (y > lastY && y > 400) header.classList.add('hide'); else header.classList.remove('hide');
+      if (y > lastY && y > seuilMasque()) header.classList.add('hide'); else header.classList.remove('hide');
     }
     lastY = y;
     if (scrollBar) {
