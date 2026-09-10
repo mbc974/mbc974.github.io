@@ -126,18 +126,31 @@ def groupes_html(d, vers="/effectif/"):
             # a l'effectif complet. Aucune information n'est pour autant cachee
             # derriere l'interaction : le numero, le nom et le poste sont dans
             # la legende en permanence.
+            # MAIS SUR /effectif/ IL N'Y A PLUS OU ALLER. Le meme gabarit y
+            # posait neuf liens vers la page en cours, annonces « voir
+            # l'effectif complet » a un lecteur d'ecran deja dessus : neuf
+            # taquets de tabulation qui ne menent nulle part, et une promesse
+            # fausse. La carte y redevient inerte — sans tabindex de
+            # consolation : rien n'est cache derriere l'interaction (numero,
+            # nom et poste sont dans la legende en permanence), l'ouverture au
+            # survol ne decouvre que l'affiche. Donc rien n'est perdu.
+            if vers:
+                ouvre = u'            <a class="sq-card__go" href="%s">\n' % vers
+                ferme = (u'            <span class="sr-only"> — voir l’effectif complet</span>\n'
+                         u'            </a>\n')
+            else:
+                ouvre = ferme = u''
             cartes.append(
                 u'          <li class="sq-card"%(st)s>\n'
-                u'            <a class="sq-card__go" href="%(vers)s">\n'
+                u'%(ouvre)s'
                 u'            <div class="sq-card__media">%(pic)s</div>\n'
                 u'            <p class="sq-card__cap"><span class="sq-num">%(num)s</span>'
                 u'<span class="sq-txt"><span class="sq-nom">%(nom)s</span>'
                 u'<span class="sq-poste">%(poste)s</span></span></p>\n'
-                u'            <span class="sr-only"> — voir l’effectif complet</span>\n'
-                u'            </a>\n'
+                u'%(ferme)s'
                 u'          </li>' % {
                     "st": (' style="%s"' % ";".join(st)) if st else "",
-                    "vers": vers,
+                    "ouvre": ouvre, "ferme": ferme,
                     "pic": picture(p, SIZES_PAGE), "num": ech(p["numero"]),
                     "nom": ech(p["nom"]), "poste": ech(p["poste"])})
         # « squad--4 » n'est pas decoratif : .squad est un ACCORDEON dont les
@@ -221,7 +234,7 @@ def page(d):
 """ % {"entete": bm.GABARIT[0], "cta": bm.GABARIT[1], "pied": bm.GABARIT[2],
        "scripts": bm.GABARIT[3], "fil": visible, "n": n,
        "comp": ech(d["competition"]), "saison": d["saison"],
-       "groupes": groupes_html(d)}
+       "groupes": groupes_html(d, vers=None)}
 
 
 def remplacer_balise(src, balise, contenu):
