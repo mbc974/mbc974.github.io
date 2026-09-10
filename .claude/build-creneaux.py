@@ -520,6 +520,31 @@ def carte_lieu(L, cle):
                    u'stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>')}
 
 
+
+def affiche_html():
+    """Le lien vers l'affiche des creneaux, s'il y en a une.
+
+    Le nom du fichier porte une empreinte de son contenu (voir
+    affiche-creneaux.py) : l'ecrire en dur ici casserait le lien a la premiere
+    regeneration. On le retrouve donc par glob, et on n'ecrit rien s'il n'y a
+    pas d'affiche — la page reste valide sans elle.
+
+    L'affiche est PRODUITE a partir de ce meme data/creneaux.json. C'est ce qui
+    autorise a la republier : l'ancienne avait ete retiree du site le
+    08/09/2026 parce qu'elle contredisait le planning sur trois points. Une
+    image derivee de la donnee ne peut plus diverger."""
+    import glob as _g
+    trouves = sorted(_g.glob(os.path.join(RACINE, 'assets', 'affiches',
+                                          'creneaux-2026-2027-*.png')))
+    if not trouves:
+        return u''
+    nom = os.path.basename(trouves[-1])
+    return (u'\n      <p class="sec-cta"><a class="btn btn--ghost" '
+            u'href="/assets/affiches/%s" target="_blank" rel="noopener">'
+            u'Voir l’affiche des créneaux — à partager '
+            u'ou imprimer</a></p>\n' % nom)
+
+
 def page_creneaux(d, maj_le):
     visible, ld_fil = bm.fil([("Accueil", "/"), (u"Créneaux", None)])
     tete = bm.tete(
@@ -578,7 +603,7 @@ def page_creneaux(d, maj_le):
         <p class="pl-aucun" role="status" hidden>Aucun créneau pour cette catégorie.</p>
 %(jours)s
       </div>
-
+%(affiche)s
       <h2 class="h2 cx-h2">Le créneau <span class="hl">de chaque catégorie</span></h2>
       <ul class="cx-cats">
 %(rappels)s
@@ -611,7 +636,8 @@ def page_creneaux(d, maj_le):
        "scripts": bm.GABARIT[3], "fil": visible, "saison": d["saison"],
        "lieux": "\n".join(carte_lieu(d["lieux"][k], k) for k in ("gymnase", "ruisseau")),
        "filtres": filtres_html(d), "jours": jours_html(d),
-       "rappels": "\n".join(rappels), "maj": maj_le}
+       "rappels": "\n".join(rappels), "maj": maj_le,
+       "affiche": affiche_html()}
 
 
 def main():

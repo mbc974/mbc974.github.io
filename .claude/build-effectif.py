@@ -160,10 +160,14 @@ def equipe_jsonld(d):
         "sport": "Basketball",
         "url": SITE + "/effectif/",
         "memberOf": {"@id": SITE + "/#club"},
-        # PAS de "coach" ici. Le site presente Luigi comme « Coach des
-        # jeunes » ; rien n'y dit qui entraine les seniors. Declarer un
-        # entraineur qu'aucune page n'affirme serait inventer une donnee
-        # dans un format que les moteurs lisent comme un fait.
+        # « coach » est reste ABSENT jusqu'au 10/09/2026, et c'etait le bon
+        # choix : le site presentait Luigi comme « Coach des jeunes » et Fred
+        # comme « Coach principal », sans que rien ne dise qui entraine les
+        # SENIORS. Declarer un entraineur qu'aucune page n'affirme aurait ete
+        # inventer une donnee dans un format que les moteurs lisent comme un
+        # fait. Le bureau a tranche : c'est Frederic Sornom — le « Fred » de la
+        # carte staff, dont on connait desormais le nom complet.
+        "coach": {"@type": "Person", "name": u"Frédéric Sornom"},
         "athlete": [{"@type": "Person", "name": p["nom"]} for p in tous(d)],
     }
 

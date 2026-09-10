@@ -51,7 +51,7 @@ suivante.
 |---|---|---|
 | Une rencontre (date, heure, adversaire, bénévoles) | `data/matchs.json` | `python .claude/build-matchs.py` |
 | Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
-| Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/build-creneaux.py` |
+| Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/affiche-creneaux.py` **puis** `build-creneaux.py` |
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
 | L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
 | Un joueur de l'effectif seniors | `data/effectif.json` | `python .claude/build-effectif.py` |
@@ -364,17 +364,41 @@ contredisaient le reste du site. Leur markup est conservé en commentaire à
 l'endroit exact où il vivait, avec la preuve du désaccord et la marche à suivre
 pour les rétablir.
 
-### L'affiche des créneaux (`index.html`, section `#calendrier`)
+### L'affiche des créneaux — RÉTABLIE le 10/09/2026
 
-`assets/images/creneaux.avif` annonce l'entraînement Seniors/U18 du **lundi à
-20h30–22h00** ; `data/creneaux.json`, le planning, les `openingHoursSpecification`
-et la page basket adulte disent tous **19h00–20h30**. Elle place aussi le créneau
-Seniors du mercredi au Terrain Ruisseau Blanc (il est au Gymnase) et publie une
-adresse e-mail — `mbc974.re@gmail.com` — qui n'apparaît nulle part ailleurs.
+**C'est réglé, et la cause l'est avec.** L'ancienne `assets/images/creneaux.avif`
+contredisait le site sur trois points (Seniors/U18 du lundi à 20h30–22h00 au lieu
+de 19h00–20h30 ; créneau du mercredi placé à Ruisseau Blanc alors qu'il est au
+Gymnase ; une adresse `mbc974.re@gmail.com` qui n'existait nulle part ailleurs).
+Elle avait été retirée du site le 08/09/2026.
 
-**Pour la rétablir** : refaire l'affiche depuis `data/creneaux.json`, la déposer
-sous un **nouveau nom de fichier** (règle du § 1 : nouvelle image = nouveau nom),
-puis décommenter le bouton et corriger ses deux `data-lightbox-*`.
+Le vrai défaut n'était pas l'image : c'était qu'**une affiche dessinée à la main
+est une seconde source de vérité**. Elle dérive dès qu'un horaire change, et rien
+ne le signale.
+
+`\.claude/affiche-creneaux.py` supprime la cause : l'affiche est **produite à
+partir de `data/creneaux.json`**, le fichier qui alimente déjà le planning,
+`/creneaux/` et les `openingHoursSpecification`. Elle ne peut plus diverger.
+
+```bash
+python .claude/affiche-creneaux.py     # après toute modif de data/creneaux.json
+python .claude/build-creneaux.py       # la page reprend le nouveau nom de fichier
+```
+
+Le lien est publié sur **`/creneaux/`** — et non sur l'accueil, dont le planning
+complet a été replié en `665b34b`. C'est un lien simple, pas une visionneuse :
+`/creneaux/` n'a pas de `#lightbox`, et une affiche sert surtout à être partagée
+ou imprimée.
+
+Le nom du fichier porte une **empreinte de son contenu**
+(`creneaux-2026-2027-<sha>.png`) : le service worker sert les images versionnées
+par leur nom, donc une affiche corrigée qui garderait son nom continuerait d'être
+servie dans son ancienne version — c'est-à-dire avec les mauvais horaires.
+`build-creneaux.py` retrouve ce nom **par glob**, jamais en dur.
+
+La charte (couleurs, polices, fond à deux halos) est **importée** de
+`affiche-calendrier.py`. La recopier aurait recréé le même problème à l'échelle
+du graphisme : deux affiches du même club qui divergent lentement.
 
 ### Le one-page partenaire (`sponsor-club-basket-reunion/`)
 
@@ -413,9 +437,23 @@ ressaisis**. Deux points à connaître avant d'y toucher :
 - Les affiches de `assets/joueurs/` portent le nom **et le numéro gravés dans
   l'image**. Modifier un numéro dans le JSON sans refaire l'affiche ferait dire
   deux choses différentes à la même carte.
-- **Deux joueurs portent le numéro 10** (Guillaume Moine et Hakim Derras).
-  C'est l'état constaté sur les affiches ; il est repris tel quel. C'est au
-  club de trancher, pas au dépôt.
+- **Hakim Derras est passé au n° 94** le 10/09/2026, sur décision du bureau —
+  il partageait le 10 avec Guillaume Moine, qui le conserve. ⚠️ **Son affiche
+  n'a pas été refaite** : `assets/joueurs/mbc-senior-hakim-derras-*.jpg` porte
+  encore « #10 » gravé à trois endroits (maillot, nom, grand chiffre). La
+  légende dit donc 94 et l'image dit 10, sur l'accueil comme sur `/effectif/`.
+  Le bureau a validé cet écart en connaissance de cause, le temps qu'un
+  nouveau visuel existe.
+
+  Le texte alternatif de cette affiche a été **neutralisé** : il ne cite plus
+  de numéro. Un `alt` décrit l'image — lui faire dire 94 aurait été faux, lui
+  laisser 10 aurait fait entendre à un lecteur d'écran l'inverse de ce que lit
+  un voyant. Le nom et le poste suffisent.
+
+  `data/effectif.json` porte une clé `_affiche_a_refaire` sur ce joueur. **La
+  retirer le jour où la nouvelle affiche est déposée**, en même temps que les
+  crans responsive (`build-vignettes.py` ne traite pas les affiches joueurs :
+  elles sont livrées déjà déclinées).
 
 `squad--4` sur la seconde rangée n'est pas décoratif : `.squad` est un
 accordéon dont les deux rangées doivent avoir la **même somme de `flex-grow`**
@@ -693,18 +731,22 @@ explicitement **clos sans suite**, faute de défaut constaté :
 Si l'un de ces sujets revient un jour, ce sera parce qu'un défaut aura été
 **constaté**, pas parce qu'un compteur est élevé.
 
-### Les cinq décisions qui n'appartiennent pas au dépôt
+### Les cinq décisions — tranchées le 10/09/2026
 
-Aucune ne peut être tranchée depuis le code : il manque à chaque fois une
-information que seul le bureau détient.
+Le bureau a répondu. Quatre points sont clos, un reste ouvert.
 
-| # | Décision | Ce que le site fait en attendant |
-|---|---|---|
-| 1 | **Horaire Seniors du lundi** — le site annonce 19h00-20h30, l'affiche retirée disait 20h30-22h00 | le site garde 19h00-20h30 ; l'affiche contradictoire a été retirée (§ 10) |
-| 2 | **L'adresse e-mail de contact** — trois coexistent : `contact@mbc974.com`, `mbc974.re@gmail.com`, `mbc.re974@gmail.com` | aucune n'a été modifiée sans validation |
-| 3 | **U11 (9-10 ans) ou École de Basket (7-10 ans)** — le PDF partenaire et le site ne disent pas la même chose | le site, `data/creneaux.json` et Yapla restent alignés sur École de Basket (§ 10) |
-| 4 | **Le n° 10, porté par Guillaume Moine ET Hakim Derras** | repris tel quel : c'est ce que montrent les affiches gravées (§ 11) |
-| 5 | **Qui entraîne l'équipe Seniors** | le `SportsTeam` de `/effectif/` ne déclare **aucun** entraîneur — une donnée incomplète mais exacte vaut mieux qu'une donnée complète et fausse (§ 11) |
+| # | Décision | Réponse du club | État dans le dépôt |
+|---|---|---|---|
+| 1 | Horaire Seniors du lundi | **19h00-20h30** confirmé. Et le mercredi passe à **20h30-22h00** pour Seniors + U18 au Gymnase | `data/creneaux.json` à jour ; affiche refaite depuis la donnée et republiée sur `/creneaux/` (§ 10) |
+| 2 | Adresse e-mail | **`contact@mbc974.com`** | ✅ aucune modification : c'était **déjà** la seule adresse du site (39 occurrences en HTML, 5 en JS). Les deux autres n'existaient que dans ce document |
+| 3 | U11 (9-10 ans) ou École de Basket (7-10 ans) | **toujours ouverte** | le site, `data/creneaux.json` et Yapla restent alignés sur École de Basket |
+| 4 | Le n° 10 partagé | **Derras passe au 94**, Moine garde le 10 | `data/effectif.json` à jour ; ⚠️ affiche non refaite, voir § 11 |
+| 5 | Entraîneur des Seniors | **Frédéric Sornom** — le « Fred » de la carte staff | `coach` renseigné dans le `SportsTeam` de `/effectif/` |
 
-Ces cinq points sont documentés en détail aux § 10 et § 11. Les trancher demande
-une réponse du club, pas une modification du dépôt.
+**Le mercredi à 22h00 concerne aussi les U18 (15-17 ans)**, et cet horaire est
+public. C'est un choix du club, pris explicitement : la question a été posée
+avec ses trois réponses possibles avant d'écrire quoi que ce soit.
+
+**Il reste donc une seule décision ouverte**, la n° 3. La trancher demande de
+savoir laquelle des deux structures le club engage réellement auprès de la
+FFBB — le dépôt ne peut pas le déduire.

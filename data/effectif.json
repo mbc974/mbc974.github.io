@@ -138,7 +138,7 @@
           "fy": "12%"
         },
         {
-          "numero": "10",
+          "numero": "94",
           "nom": "Hakim Derras",
           "poste": "Intérieur · poste 4-5",
           "image": "mbc-senior-hakim-derras",
@@ -151,9 +151,10 @@
           "repli": "mbc-senior-hakim-derras-960.jpg",
           "largeur": 960,
           "hauteur": 1200,
-          "alt": "Affiche du joueur Hakim Derras, intérieur numéro 10 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "alt": "Affiche du joueur Hakim Derras, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
           "fx": "48%",
-          "fy": "12%"
+          "fy": "12%",
+          "_affiche_a_refaire": "Le visuel assets/joueurs/mbc-senior-hakim-derras-*.jpg porte « #10 » grave a trois endroits (maillot, nom, grand chiffre). Le bureau a valide le passage au 94 le 10/09/2026 en connaissance de cause : la legende dit 94, l'image dit 10, jusqu'a ce qu'une nouvelle affiche soit deposee. Retirer cette cle le jour ou c'est fait."
         },
         {
           "numero": "34",
