@@ -10479,7 +10479,8 @@ html:has(.seo-top){scroll-padding-top:104px}
 
    LA CONTRAINTE, MESUREE
    Sur le panoramique, le logo occupe 25,5 -> 36,5 % de la largeur et 29 -> 53 %
-   de la hauteur. Le titre le chevauche en largeur a toutes les resolutions : la
+   de la hauteur. Le titre le chevauche en largeur sur presque tous les formats
+   (pas a 1366 x 657, ou il s'arrete 30 px avant — revue du 10/09) : la
    seule chose qui le garde visible est donc que le HAUT du titre reste sous le
    BAS du logo. Or le hero change de hauteur avec l'ecran, et la marge aussi :
 
@@ -10528,10 +10529,16 @@ html:has(.seo-top){scroll-padding-top:104px}
      posé sur « DEPUIS ». A 2560 px ce t-shirt commence vers 1190 px ; 640 px de
      phrase finissent a 1184. */
   .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 640px);max-width:100%}
-  .ecran1 .hero__cta a.btn--primary{
+  /* Le bouton. .btn--lg (l.~1840) fixe police ET marges en !important : sans
+     !important ici, seule la hauteur changeait — la revue du 10/09 a mesure
+     271 px de large a toutes les tailles d'ordinateur. La police part du
+     plafond de .btn--lg (1,42rem) et suit le titre (20 % de --hf, recalcule
+     ici : .hero__cta n'est pas dans .hero__h1, il n'herite pas de la
+     variable) ; les marges, en em, suivent la police. A 2560 x 1300 le
+     bouton passe de 271 x 60 a ~305 x 74 px. */
+  .ecran1 .hero__cta a.btn--primary.btn--lg{
     height:clamp(62px, calc(3.4svh + 32px), 74px);min-height:0;
-    font-size:clamp(1.1rem, calc(1.25svh + .3rem), 1.35rem);
-    padding-inline:clamp(1.9rem, 2.7vw, 3rem)}
+    font-size:clamp(1.42rem, calc((12.4svh - 33px) * .2), 1.75rem)!important}
 }
 
 /* Tablette : meme principe, calibre sur le bandeau a deux etages (241 px) et
@@ -10545,10 +10552,10 @@ html:has(.seo-top){scroll-padding-top:104px}
   /* 52vw : sur un iPad debout la phrase finissait sur le t-shirt « DEPUIS 1954 »
      (428 px, fin a 459 ; le mot commence a 452). Plafonnee, elle s’arrete a 430. */
   .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 52vw);max-width:100%}
+  /* Hauteur seulement : police et marges restent celles de .btn--lg, qui les
+     fixe en !important (voir le bloc ordinateur ci-dessus). */
   .ecran1 .hero__cta a.btn--primary{
-    height:clamp(58px, calc(2.4svh + 34px), 66px);min-height:0;
-    font-size:clamp(1.06rem, calc(.9svh + .3rem), 1.25rem);
-    padding-inline:clamp(1.7rem, 3.2vw, 2.4rem)}
+    height:clamp(58px, calc(2.4svh + 34px), 66px);min-height:0}
 }
 
 /* ============================================================================
@@ -10565,5 +10572,209 @@ html:has(.seo-top){scroll-padding-top:104px}
    ne transparait pas a travers des lettres remplies par un degrade, et il vaut
    aussi pour les contours SVG de la phrase manuscrite.
    ============================================================================ */
-.ecran1 .hero__h1-t{filter:drop-shadow(0 2px 18px rgba(3,10,20,.45))}
+/* text-shadow:none — celui qu'herite le titre de .hero__h1 (0 2px 24px) etait
+   peint PAR-DESSUS les lettres voisines : l'interligne vaut .9, les deux lignes
+   se touchent, et l'ombre de « LA MONTAGNE. » grisait le bas de « LE BASKET À »
+   (11 a 26 % de la hauteur des lettres, 9 formats sur 10 — revue du 10/09).
+   Le drop-shadow, lui, se dessine sous l'element ENTIER : il ne peut pas
+   recouvrir une lettre. L'ombre serree (1 px) remplace le liseré que le
+   text-shadow mobile apportait. */
+.ecran1 .hero__h1-t{filter:drop-shadow(0 1px 2px rgba(3,10,20,.5)) drop-shadow(0 2px 18px rgba(3,10,20,.45));text-shadow:none}
 .ecran1 .hw__f{filter:drop-shadow(0 1px 1.5px rgba(3,10,20,.6)) drop-shadow(0 3px 14px rgba(3,10,20,.5))}
+
+/* ============================================================================
+   V176 — LE MENU PLEIN ECRAN
+   ----------------------------------------------------------------------------
+   Demande : remplacer la barre de liens par le menu du composant React
+   « Sterling Gate kinetic navigation ». Le site n'a ni React, ni Tailwind, ni
+   etape de build, et n'en prendra pas pour un menu : le composant est
+   transpose en HTML + CSS, et script.js ne gere que l'etat et l'accessibilite.
+   Pas de GSAP non plus (~70 Ko pour quatre mouvements) : chaque tween devient
+   une transition CSS, pilotee par UN attribut, data-nav, sur #menu.
+
+   Correspondance avec le composant :
+     trois panneaux entrent par la droite,      .mn__couche x 3 (orange ballon,
+       0,12 s d'ecart                              bleu roi, nuit) : 0/.12/.24 s
+     les liens montent de 140 % en tournant     .mn__lien, a .35 s + 0,05 s par
+       de 10°, 0,05 s d'ecart                      rang (--i, pose dans le HTML)
+     le pied apparait en fondu                  [data-mn-fade], apres les liens
+     « Menu » glisse vers « Close », la croix   .mn-btn[aria-expanded] :
+       tourne de 315°                              « Menu » / « Fermer »
+     une forme abstraite par lien au survol     des motifs du club : ballon, six
+                                                   ages, terrain, crete…
+     a la fermeture, le panneau sort d'un bloc  transform sur .mn__panel ; chaque
+                                                   piece reprend sa place de depart
+                                                   une fois invisible (transition
+                                                   de 0 s retardee de --mn-dur)
+   Courbe « main » du composant : cubic-bezier(.65,.01,.05,.99), 0,7 s.
+
+   Ce qui a change, et pourquoi :
+   - les libelles de demo -> les 7 entrees de l'ancienne barre, memes adresses,
+     meme ordre : aucune URL ne bouge ;
+   - « click me » -> « Je m'inscris », qui reste VISIBLE dans la barre : c'est
+     l'action n°1 du site, on ne la range pas derriere un clic ;
+   - le composant n'avait ni inert, ni retour du focus, ni piege de Tab, ni nom
+     accessible qui suit l'etat : tout est dans script.js ;
+   - le focus clavier ne peut pas etre un outline — chaque lien est masque par
+     son <li> (overflow:hidden, c'est la fenetre de la montee) : il allume la
+     bande de survol et souligne le libelle en orange ;
+   - Anton n'existe qu'en 400 : les liens restent en 400, un 700 serait un
+     faux gras synthetise par le navigateur.
+   ============================================================================ */
+:root{--mn-ease:cubic-bezier(.65,.01,.05,.99);--mn-dur:.7s}
+
+/* --- La barre ------------------------------------------------------------ */
+.hd-act{display:flex;align-items:center;gap:clamp(.55rem,1.1vw,.9rem);flex:none;
+  margin-right:max(0px,calc((100vw - 1560px) / 2))}
+.hd-cta{display:inline-flex;align-items:center;min-height:44px;padding:0 1.25em;
+  border-radius:6px;background:var(--grad-orange);color:#170D03;text-decoration:none;
+  font-family:var(--ff-cond);font-weight:700;font-size:var(--text-md);
+  letter-spacing:.09em;text-transform:uppercase;white-space:nowrap;
+  transition:transform .3s var(--ease-pop),box-shadow .3s var(--ease-out),opacity .3s,visibility .3s}
+.hd-cta:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgb(var(--orange-ballon-rgb) / .45)}
+.hd-cta:focus-visible{outline:2px solid var(--blanc);outline-offset:3px}
+.mn-btn{display:inline-flex;align-items:center;gap:.75rem;height:44px;margin:0;
+  padding:0 .95rem 0 1.1rem;border:1px solid rgb(var(--bleu-glacier-rgb) / .24);
+  border-radius:6px;background:rgb(var(--nuit-0-rgb) / .35);color:var(--blanc);
+  font-family:var(--ff-cond);font-weight:700;font-size:var(--text-md);
+  letter-spacing:.16em;text-transform:uppercase;cursor:pointer;
+  transition:border-color .3s,background-color .3s}
+.mn-btn:hover{border-color:rgb(var(--orange-ballon-rgb) / .75);background-color:rgb(var(--nuit-0-rgb) / .6)}
+.mn-btn:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px}
+/* Deux libelles empiles dans une fenetre d'une ligne : le bouton prend la
+   largeur du plus long (« FERMER ») et ne saute pas a l'ouverture. */
+.mn-btn__txt{display:block;height:1.2em;line-height:1.2;overflow:hidden}
+.mn-btn__txt>span{display:block;transition:transform var(--mn-dur) var(--mn-ease)}
+.mn-btn[aria-expanded="true"] .mn-btn__txt>span{transform:translateY(-100%)}
+.mn-btn[aria-expanded="true"] .mn-btn__txt>span+span{transition-delay:.2s}
+.mn-btn__ic{width:14px;height:14px;flex:none;color:var(--orange-vif);
+  transition:transform var(--mn-dur) var(--mn-ease)}
+.mn-btn[aria-expanded="true"] .mn-btn__ic{transform:rotate(315deg)}
+/* Sous 560 px, marque + inscription + Menu ne tiennent plus sur une ligne :
+   le hero et la barre CTA du bas portent deja l'inscription. */
+@media (max-width:560px){.hd-cta{display:none}}
+
+/* Menu ouvert : la barre reste au-dessus (le bouton y est) mais s'efface.
+   Les !important repondent a ceux du bloc mobile « header sans flou ». */
+.mn-open .site-header{background:transparent!important;border-bottom-color:transparent!important;
+  box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;
+  transform:none!important}
+.mn-open .hd-cta{opacity:0;visibility:hidden;pointer-events:none}
+.mn-open .float-cta{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+/* La page ne defile plus sous le menu, et sa barre de defilement disparait.
+   script.js mesure sa largeur juste avant (--mn-sbw) : la page et la barre du
+   haut la recuperent, sinon elles sauteraient de 15 px vers la droite. Pas de
+   scrollbar-gutter:stable : il garde bien la place, mais un calque fixe ne
+   peint pas dans la gouttiere — le panneau s'arretait a 15 px du bord, sur une
+   bande du fond de page (captures a 1440 et 2560 px). */
+html.mn-open{overflow:hidden}
+html.mn-open body{padding-right:var(--mn-sbw,0px)}
+.mn-open .site-header{right:var(--mn-sbw,0px)}
+
+/* --- Le calque ----------------------------------------------------------- */
+.mn{--mn-px:clamp(1.5rem,5vw,4rem);position:fixed;inset:0;z-index:99;
+  visibility:hidden;pointer-events:none;transition:visibility 0s linear var(--mn-dur)}
+.mn[data-nav="open"]{visibility:visible;pointer-events:auto;transition:none}
+.mn__voile{position:absolute;inset:0;background:rgb(3 8 16 / .66);opacity:0;
+  transition:opacity var(--mn-dur) var(--mn-ease)}
+.mn[data-nav="open"] .mn__voile{opacity:1}
+/* 46rem, puis un tiers de l'ecran sur les grands formats (870 px a 2560).
+   Sous 940 px, il ne resterait qu'une lamelle de page a gauche (84 px sur un
+   iPad debout) : le panneau prend toute la largeur. */
+.mn__panel{position:absolute;top:0;right:0;bottom:0;width:min(100%,max(46rem,34vw));overflow:hidden;
+  transform:translateX(120%);transition:transform var(--mn-dur) var(--mn-ease)}
+.mn[data-nav="open"] .mn__panel{transform:none;transition:none}
+@media (max-width:940px){.mn__panel{width:100%}}
+
+.mn__fond{position:absolute;inset:0}
+.mn__couche{position:absolute;inset:0;transform:translateX(101%);transition:transform 0s var(--mn-dur)}
+.mn__couche--1{background:var(--orange-ballon)}
+.mn__couche--2{background:var(--bleu-roi)}
+.mn__couche--3{background:
+    radial-gradient(90% 55% at 100% 0%,rgb(var(--bleu-roi-rgb) / .30),transparent 70%),
+    linear-gradient(180deg,var(--nuit-2),var(--nuit-0));
+  box-shadow:inset 1px 0 0 rgb(var(--bleu-glacier-rgb) / .08)}
+.mn[data-nav="open"] .mn__couche{transform:none;transition:transform .575s var(--mn-ease)}
+.mn[data-nav="open"] .mn__couche--2{transition-delay:.12s}
+.mn[data-nav="open"] .mn__couche--3{transition-delay:.24s}
+
+/* Les motifs du survol : un par entree, allume par data-forme (script.js). */
+.mn__formes{position:absolute;inset:0;overflow:hidden}
+.mn__forme{position:absolute;right:-6%;bottom:-5%;display:block;width:min(96%,40rem);height:auto}
+.mn__forme>*{opacity:0;transform:scale(.6) rotate(-10deg);transform-box:fill-box;transform-origin:center;
+  transition:opacity .3s cubic-bezier(.55,.06,.68,.19),transform .3s cubic-bezier(.55,.06,.68,.19)}
+.mn[data-forme="1"] .mn__forme--1>*,.mn[data-forme="2"] .mn__forme--2>*,
+.mn[data-forme="3"] .mn__forme--3>*,.mn[data-forme="4"] .mn__forme--4>*,
+.mn[data-forme="5"] .mn__forme--5>*,.mn[data-forme="6"] .mn__forme--6>*,
+.mn[data-forme="7"] .mn__forme--7>*{opacity:1;transform:none;
+  transition:opacity .45s var(--ease-out) calc(var(--j,0) * 80ms),
+    transform .6s cubic-bezier(.34,1.56,.64,1) calc(var(--j,0) * 80ms)}
+
+/* --- Les entrees --------------------------------------------------------- */
+.mn__in{position:relative;height:100%;overflow-y:auto;overscroll-behavior:contain;
+  display:flex;flex-direction:column;justify-content:space-between;gap:2rem;
+  padding:calc(72px + clamp(.75rem,3.5svh,2.75rem)) var(--mn-px) clamp(1.5rem,4svh,2.75rem)}
+@media (max-width:520px){.mn__in{padding-top:calc(66px + .9rem)}}
+.mn__liste{list-style:none;margin:0 calc(-1 * var(--mn-px));padding:0}
+/* Le <li> est la fenetre de la montee : le lien part de 140 % sous lui. Il
+   porte la taille du lien, pour que .1em de marge haute laisse passer les
+   accents (CATÉGORIES, CRÉNEAUX) sans les rogner. */
+.mn__it{overflow:hidden;padding:.1em var(--mn-px) 0;
+  font-size:clamp(2.1rem,min(calc(6.2svh + .2rem),12vw),5.4rem)}
+.mn__lien{position:relative;isolation:isolate;display:flex;align-items:flex-start;gap:.5em;
+  color:var(--blanc);text-decoration:none;
+  font-family:var(--ff-display);font-weight:400;font-size:1em;line-height:1.02;
+  letter-spacing:.01em;text-transform:uppercase;
+  transform:translateY(140%) rotate(10deg);
+  transition:transform 0s var(--mn-dur),opacity .3s}
+.mn[data-nav="open"] .mn__lien{transform:none;
+  transition:transform var(--mn-dur) var(--mn-ease) calc(.35s + var(--i,0) * .05s),opacity .3s}
+.mn__lien::before{content:"";position:absolute;z-index:-1;inset:0 calc(-1 * var(--mn-px));
+  background:linear-gradient(90deg,rgb(var(--bleu-roi-rgb) / .42),rgb(var(--bleu-roi-rgb) / 0) 80%);
+  transform:scaleX(0);transform-origin:left;transition:transform .5s var(--mn-ease)}
+.mn__num{flex:none;min-width:2.1em;padding-top:.62em;line-height:1;
+  font-family:var(--ff-cond);font-weight:700;font-size:max(.8rem,.24em);letter-spacing:.14em;
+  color:var(--orange-vif)}
+.mn__txt{display:block;transition:transform .5s var(--mn-ease)}
+@media (hover:hover){
+  .mn__lien:hover::before{transform:scaleX(1)}
+  .mn__lien:hover .mn__txt{transform:translateX(.16em)}
+  .mn__liste:has(.mn__lien:hover) .mn__lien:not(:hover){opacity:.42}
+}
+.mn__lien:focus{outline:none}
+.mn__lien:focus-visible::before{transform:scaleX(1)}
+.mn__lien:focus-visible .mn__txt{text-decoration:underline;text-decoration-color:var(--orange-vif);
+  text-decoration-thickness:.07em;text-underline-offset:.1em}
+
+/* --- Le pied ------------------------------------------------------------- */
+.mn__pied{display:flex;flex-direction:column;align-items:flex-start;gap:1.1rem}
+.mn__pied p{margin:0}
+.mn__cta{min-height:52px}
+.mn__meta{display:flex;flex-wrap:wrap;gap:.35rem 1.35rem;
+  font-family:var(--ff-cond);font-weight:600;font-size:var(--text-lg);
+  letter-spacing:.1em;text-transform:uppercase}
+.mn__meta a{display:inline-flex;align-items:center;gap:.45em;min-height:32px;
+  color:var(--bleu-glacier);text-decoration:none;transition:color .2s}
+.mn__meta a:hover{color:var(--blanc)}
+.mn__meta a:focus-visible{outline:2px solid var(--orange-vif);outline-offset:3px;border-radius:4px}
+.mn__meta .ic{width:1.15em;height:1.15em;flex:none}
+.mn__lieu{font-family:var(--ff-cond);font-size:var(--text-sm);letter-spacing:.16em;
+  text-transform:uppercase;color:rgb(var(--bleu-glacier-rgb) / .6)}
+[data-mn-fade]{opacity:0;transform:translateY(50%);
+  transition:opacity 0s var(--mn-dur),transform 0s var(--mn-dur)}
+.mn[data-nav="open"] [data-mn-fade]{opacity:1;transform:none;
+  transition:opacity var(--mn-dur) var(--mn-ease) calc(.6s + var(--i,0) * .06s),
+    transform var(--mn-dur) var(--mn-ease) calc(.6s + var(--i,0) * .06s)}
+@media (max-width:520px){.mn__go,.mn__cta{width:100%}}
+/* Telephone a l'horizontale (~390 px de haut) : sept entrees sur une colonne
+   font 525 px, le panneau defilait. Deux colonnes (01 02 / 03 04…) et le pied
+   sur une ligne : tout tient sans defiler. */
+@media (max-height:520px) and (orientation:landscape){
+  .mn__in{gap:1rem;padding-top:calc(66px + .5rem)}
+  .mn__liste{display:grid;grid-template-columns:1fr 1fr}
+  .mn__pied{flex-direction:row;flex-wrap:wrap;align-items:center;gap:.5rem 1.4rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .mn,.mn *,.mn *::before,.mn-btn *{transition-duration:0s!important;transition-delay:0s!important}
+}

@@ -1394,7 +1394,8 @@ Le logo occupe, dans chaque visuel :
 | panoramique (`mbc-hero-regroupement-*`) | 25,5 → 36,5 % | 29 → 53 % |
 | recadré (`-bande-*`) | 3 → 26 % | 29 → 53 % |
 
-Le titre chevauche le logo **en largeur** à toutes les résolutions : la seule
+Le titre chevauche le logo **en largeur** sur presque tous les formats (pas à
+1366 × 657, où il s'arrête 30 px avant le logo) : la seule
 chose qui garde le logo visible, c'est que le **haut du titre reste sous le bas
 du logo**. Or le hero change de hauteur avec l'écran — et cette marge aussi :
 
@@ -1473,3 +1474,73 @@ dégradé et ne vaut pas pour les contours SVG de la phrase.
   marge entre le logo et le titre, format par format.
 - `_banc-essai.css` (racine, exclue de git) : une CSS injectée dans les iframes
   du banc avec `--essai`, pour essayer une formule sans reconstruire le site.
+
+---
+
+## 22. Le menu plein écran (10/09/2026)
+
+### La demande
+
+Remplacer la barre de liens par le menu du composant React « Sterling Gate
+kinetic navigation » (GSAP). Le site n'a ni React, ni Tailwind, ni étape de
+build : le composant est **transposé**, pas installé — même doctrine que pour
+le « 3 fois sans frais » (§ 18).
+
+### Ce qui correspond à quoi
+
+| composant React | ici (V176) |
+|---|---|
+| GSAP (~70 Ko) pour quatre mouvements | des transitions CSS pilotées par **un** attribut, `data-nav` sur `#menu` |
+| trois panneaux qui entrent par la droite | `.mn__couche` × 3 — orange ballon, bleu roi, nuit — à 0 / 0,12 / 0,24 s |
+| liens qui montent de 140 % en tournant de 10° | `.mn__lien`, à 0,35 s + 0,05 s par rang (`--i`, posé dans le HTML) |
+| « Menu » ↔ « Close », croix qui tourne de 315° | « Menu » ↔ « Fermer », sur `.mn-btn[aria-expanded]` |
+| formes abstraites au survol | 7 motifs du club : ballon, six âges, terrain, vitesse, crête de La Montagne, ondes, bulles |
+| libellés de démo | les 7 entrées de l'ancienne barre : mêmes adresses, même ordre |
+| « click me » | « Je m'inscris », **qui reste visible dans la barre** (masqué sous 560 px, où le hero et la barre du bas le portent) |
+
+Pages concernées : `index.html` et `adhesion.html`, les deux seules qui
+portaient l'ancienne barre (`.site-header`). Les 23 pages enfants gardent leur
+`.seo-top` : les aligner reste une décision à prendre.
+
+Le composant n'avait aucune accessibilité ; elle est dans `script.js` :
+`inert` quand c'est fermé, focus sur le premier lien à l'ouverture et retour au
+bouton à la fermeture, Échap, voile cliquable, Tab piégé, nom accessible qui
+suit l'état. Le focus clavier d'un lien n'est **pas** un outline — le `<li>`
+masque ce qui dépasse, c'est la fenêtre de la montée : il allume la bande de
+survol et souligne le libellé en orange.
+
+### Deux pièges
+
+1. **`scrollbar-gutter:stable` ne suffit pas.** Il garde bien la place de la
+   barre de défilement quand on bloque la page, mais un calque `position:fixed`
+   ne peint pas dans cette gouttière : le panneau s'arrêtait à 15 px du bord
+   droit, sur une bande du fond de page. `script.js` mesure donc la largeur de
+   la barre juste avant de la retirer (`--mn-sbw`) et la rend à la page
+   (`padding-right`) et à la barre du haut (`right`).
+2. **`.btn--lg` fixe police et marges en `!important`** (l.~1840). Le bouton du
+   hero de V173 n'avait grandi qu'en hauteur ; toute retouche de ce bouton
+   passe par `!important`.
+
+### Les finitions du premier écran (revue contradictoire de V173/V174)
+
+- Le bas de « LE BASKET À » était grisé : le `text-shadow` hérité de
+  `.hero__h1` était peint **par-dessus** les lettres de la ligne du dessus
+  (interligne 0,9, les lignes se touchent). Il est retiré ; le
+  `filter:drop-shadow` se dessine sous l'élément entier et ne peut recouvrir
+  aucune lettre.
+- « Je m'inscris » passe de 271 × 60 à **305 × 74 px** à 2560 × 1300 (police
+  indexée sur le titre : 20 % de `--hf`). Sur portable, sa largeur ne change
+  pas : le titre n'y grandit pas non plus.
+
+### Tester dans le panneau d'aperçu : trois leurres
+
+- Avec une taille **émulée** (`resize_window` à 1440 × 860…), les clics par
+  référence sont décalés du rapport d'échelle du panneau (visé 1325 px, reçu
+  1413) : le clic tombe à côté du bouton. Tester les clics à la taille native.
+- La touche Entrée n'y envoie que `keydown` et `keyup` : un `<button>` ne
+  s'active pas. Ce n'est pas le site.
+- Panneau masqué (`visibilityState: hidden`) : une transition lancée par script
+  reste bloquée à `currentTime` 0 et garde sa valeur de départ. Vérifier l'état
+  final avec `getAnimations().forEach(a => a.finish())`, ou par une capture
+  headless en `--force-prefers-reduced-motion` d'une copie de la page dont le
+  markup porte déjà l'état ouvert (`data-nav="open"`, sans `inert`).

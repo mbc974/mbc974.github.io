@@ -11,42 +11,69 @@
     document.body.style.overflow = (navOpen || lightboxOpen) ? 'hidden' : '';
   }
 
-  /* ---- Mobile nav ---- */
-  const burger = document.getElementById('burger');
-  const nav = document.getElementById('nav');
-  const backdrop = document.getElementById('navBackdrop');
+  /* ---- Menu plein écran (V176) ----
+     Un seul état, porté par data-nav sur #menu : tout le mouvement est en CSS
+     (voir V176 dans style.css). Ce bloc ne fait que l'état et l'accessibilité :
+     inert quand c'est fermé (ni focus ni lecteur d'écran), focus sur le premier
+     lien à l'ouverture, retour au bouton à la fermeture, Échap, voile cliquable,
+     Tab piégé dans le menu ouvert. */
+  const menu = document.getElementById('menu');
+  const menuBtn = document.getElementById('menuBtn');
   function setNav(open) {
-    if (!burger || !nav) return;
+    if (!menu || !menuBtn) return;
     var wasOpen = navOpen;
     navOpen = Boolean(open);
-    nav.classList.toggle('open', navOpen);
-    if (backdrop) backdrop.classList.toggle('show', navOpen);
-    burger.setAttribute('aria-expanded', String(navOpen));
-    burger.setAttribute('aria-label', navOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+    if (navOpen === wasOpen) return;
+    menu.setAttribute('data-nav', navOpen ? 'open' : 'closed');
+    if (navOpen) menu.removeAttribute('inert');
+    else { menu.setAttribute('inert', ''); menu.removeAttribute('data-forme'); }
+    /* Largeur de la barre de défilement, mesurée AVANT de la retirer : la page
+       et la barre du haut la récupèrent, sinon elles sauteraient de 15 px vers
+       la droite à l'ouverture (voir V176). 0 sur mobile et sur Mac. */
+    if (navOpen) document.documentElement.style.setProperty('--mn-sbw', (window.innerWidth - document.documentElement.clientWidth) + 'px');
+    document.documentElement.classList.toggle('mn-open', navOpen);
+    menuBtn.setAttribute('aria-expanded', String(navOpen));
+    menuBtn.setAttribute('aria-label', navOpen ? 'Fermer le menu' : 'Ouvrir le menu');
     syncBodyLock();
-    /* Accessibilité clavier : focus sur le premier lien à l'ouverture,
-       retour du focus au burger à la fermeture (si le focus était dans le menu). */
     if (navOpen) {
-      var first = nav.querySelector('a');
-      if (first) first.focus();
-    } else if (wasOpen && document.activeElement && nav.contains(document.activeElement)) {
-      burger.focus();
+      /* preventScroll : à cet instant le lien est encore descendu dans son
+         <li> masqué ; sans l'option, le focus ferait défiler le <li>. */
+      var first = menu.querySelector('.mn__lien');
+      if (first) first.focus({ preventScroll: true });
+    } else if (document.activeElement && menu.contains(document.activeElement)) {
+      menuBtn.focus();
     }
   }
-  if (burger && nav) {
-    burger.addEventListener('click', function () { setNav(!nav.classList.contains('open')); });
-    nav.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
-    if (backdrop) backdrop.addEventListener('click', function () { setNav(false); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && navOpen) setNav(false); });
-    /* Piège de focus léger : Tab reste dans le menu mobile ouvert (burger + liens) */
+  if (menu && menuBtn) {
+    menuBtn.addEventListener('click', function () { setNav(!navOpen); });
+    menu.querySelectorAll('a, [data-mn-close]').forEach(function (el) {
+      el.addEventListener('click', function () { setNav(false); });
+    });
+    var brand = document.querySelector('.site-header .brand');
+    if (brand) brand.addEventListener('click', function () { setNav(false); });
     document.addEventListener('keydown', function (e) {
-      if (!navOpen || e.key !== 'Tab') return;
-      var items = [burger].concat(Array.prototype.slice.call(nav.querySelectorAll('a')));
+      if (!navOpen) return;
+      if (e.key === 'Escape') { setNav(false); return; }
+      if (e.key !== 'Tab') return;
+      var items = [menuBtn].concat(Array.prototype.slice.call(menu.querySelectorAll('a')));
       var first = items[0], last = items[items.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
-    window.addEventListener('resize', function () { if (window.innerWidth > 1180) setNav(false); });
+    /* Survol ou focus d'une entrée : son motif s'allume dans le fond du
+       panneau ; --j échelonne l'arrivée de ses pièces (80 ms d'écart). */
+    menu.querySelectorAll('.mn__it[data-forme]').forEach(function (li) {
+      var f = li.getAttribute('data-forme');
+      function on() { menu.setAttribute('data-forme', f); }
+      function off() { if (menu.getAttribute('data-forme') === f) menu.removeAttribute('data-forme'); }
+      li.addEventListener('mouseenter', on);
+      li.addEventListener('mouseleave', off);
+      li.addEventListener('focusin', on);
+      li.addEventListener('focusout', off);
+    });
+    menu.querySelectorAll('.mn__forme').forEach(function (svg) {
+      Array.prototype.forEach.call(svg.children, function (el, j) { el.style.setProperty('--j', j); });
+    });
   }
 
   /* ---- Header + scroll bar + floating CTA ---- */
@@ -69,7 +96,7 @@
   function updateScroll() {
     const y = window.scrollY;
     if (header) header.classList.toggle('scrolled', y > 30);
-    if (header && !(nav && nav.classList.contains('open'))) {
+    if (header && !navOpen) {
       if (y > lastY && y > 400) header.classList.add('hide'); else header.classList.remove('hide');
     }
     lastY = y;

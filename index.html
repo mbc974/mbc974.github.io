@@ -28,7 +28,7 @@ window.mbcChargerGA=function(){
 };
 try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){window.mbcChargerGA();}}catch(e){}
 </script>
-<script defer src="/consent.js?v=b4baff7f"></script>
+<script defer src="/consent.js?v=e72f7ebb"></script>
 <!-- /Google Analytics 4 -->
 <title>Club de basket à Saint-Denis — MBC La Montagne (974)</title>
 <meta name="description" content="Le club de basket de La Montagne, à Saint-Denis (974). Filles et garçons dès 3 ans, licence FFBB 95 € tout compris. Inscriptions 2026/2027 ouvertes.">
@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=17fd4fca">
+<link rel="stylesheet" href="style.min.css?v=26450757">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -242,19 +242,59 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <span class="brand__txt"><span class="brand__sub">MBC&nbsp;<span class="brand__num">974</span></span> <span class="brand__sub2">La Montagne · Saint-Denis</span></span>
     <span class="sr-only"> — retour en haut de page</span>
   </a>
-  <nav class="nav" id="nav" aria-label="Navigation principale">
-    <a href="/club-basket-la-montagne/">Le club</a>
-    <a href="/#categories">Catégories</a>
-    <a href="/creneaux/">Créneaux</a>
-    <a href="/matchs/">Matchs</a>
-    <a href="/actualites/">Actus</a>
-    <a href="/soutenir-le-club/">Soutenir</a>
-    <a href="/#contact">Contact</a>
-    <a href="/adhesion.html" class="nav__cta">Je m'inscris</a>
-  </nav>
-  <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+  <!-- V176 : la barre ne garde que la marque, l'inscription et le bouton Menu.
+       L'inscription reste VISIBLE : c'est l'action n°1 du site, on ne la range
+       pas derriere un clic. Le reste de la navigation est dans #menu. -->
+  <div class="hd-act">
+    <a href="/adhesion.html" class="hd-cta">Je m'inscris</a>
+    <button type="button" class="mn-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span class="mn-btn__txt" aria-hidden="true"><span>Menu</span><span>Fermer</span></span><svg class="mn-btn__ic" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7.33 0h1.34v16H7.33zM0 7.33h16v1.34H0zM6 7.33h1.33V6c0 .74-.6 1.33-1.33 1.33zM10 7.33H8.67V6c0 .74.6 1.33 1.33 1.33zM6 8.67h1.33V10c0-.74-.6-1.33-1.33-1.33zM10 8.67H8.67V10c0-.74.6-1.33 1.33-1.33z"/></svg></button>
+  </div>
 </header>
-<div class="nav-backdrop" id="navBackdrop"></div>
+
+<!-- ===== Menu plein ecran (V176) =====
+     Transposition native du composant « kinetic navigation » (React + GSAP) :
+     tout le mouvement est en CSS, pilote par data-nav ; script.js ne gere que
+     l'etat et l'accessibilite. Les 7 entrees sont celles de l'ancienne barre,
+     memes adresses, meme ordre. --i donne le rang de chaque piece dans la
+     cascade d'entree. Ferme, le calque est inert : ni focus, ni lecteur d'ecran. -->
+<div class="mn" id="menu" data-nav="closed" inert>
+  <div class="mn__voile" data-mn-close></div>
+  <nav class="mn__panel" id="nav" aria-label="Navigation principale">
+    <div class="mn__fond" aria-hidden="true">
+      <span class="mn__couche mn__couche--1"></span><span class="mn__couche mn__couche--2"></span><span class="mn__couche mn__couche--3"></span>
+      <div class="mn__formes">
+        <svg class="mn__forme mn__forme--1" viewBox="0 0 400 400" fill="none" focusable="false"><circle cx="280" cy="270" r="118" fill="rgba(217,106,27,.16)"/><path d="M162 270h236M280 152v236" stroke="rgba(217,106,27,.34)" stroke-width="3"/><path d="M196 188c44 46 44 118 0 164M364 188c-44 46-44 118 0 164" stroke="rgba(217,106,27,.34)" stroke-width="3"/><circle cx="336" cy="112" r="24" fill="rgba(191,210,228,.08)"/><circle cx="376" cy="58" r="12" fill="rgba(217,106,27,.22)"/></svg>
+        <svg class="mn__forme mn__forme--2" viewBox="0 0 400 400" fill="none" focusable="false"><circle cx="70" cy="330" r="6" fill="rgba(191,210,228,.3)"/><circle cx="130" cy="298" r="9" fill="rgba(191,210,228,.24)"/><circle cx="190" cy="260" r="13" fill="rgba(27,81,158,.5)"/><circle cx="250" cy="214" r="18" fill="rgba(27,81,158,.42)"/><circle cx="310" cy="158" r="24" fill="rgba(217,106,27,.3)"/><circle cx="364" cy="94" r="31" fill="rgba(217,106,27,.24)"/></svg>
+        <svg class="mn__forme mn__forme--3" viewBox="0 0 400 400" fill="none" stroke="rgba(191,210,228,.2)" stroke-width="3" focusable="false"><path d="M30 398h340"/><rect x="150" y="238" width="100" height="160"/><circle cx="200" cy="238" r="50"/><path d="M58 398v-68a142 142 0 0 1 284 0v68"/><circle cx="200" cy="368" r="10" stroke="rgba(217,106,27,.55)"/></svg>
+        <svg class="mn__forme mn__forme--4" viewBox="0 0 400 400" fill="none" focusable="false"><path d="M60 400L400 60" stroke="rgba(217,106,27,.18)" stroke-width="28"/><path d="M160 400L400 160" stroke="rgba(27,81,158,.34)" stroke-width="20"/><path d="M260 400L400 260" stroke="rgba(191,210,228,.12)" stroke-width="14"/></svg>
+        <svg class="mn__forme mn__forme--5" viewBox="0 0 400 400" fill="none" focusable="false"><path d="M0 330l70-64 46 30 84-112 62 76 52-40 86 70v110H0z" fill="rgba(27,81,158,.3)"/><path d="M0 372l92-52 58 26 96-74 70 50 84-30v108H0z" fill="rgba(191,210,228,.07)"/><circle cx="318" cy="118" r="26" fill="rgba(217,106,27,.28)"/></svg>
+        <svg class="mn__forme mn__forme--6" viewBox="0 0 400 400" fill="none" stroke-width="3" focusable="false"><circle cx="290" cy="290" r="30" stroke="rgba(217,106,27,.5)"/><circle cx="290" cy="290" r="70" stroke="rgba(217,106,27,.3)"/><circle cx="290" cy="290" r="115" stroke="rgba(217,106,27,.18)"/><circle cx="290" cy="290" r="165" stroke="rgba(191,210,228,.1)"/></svg>
+        <svg class="mn__forme mn__forme--7" viewBox="0 0 400 400" fill="none" focusable="false"><circle cx="368" cy="206" r="32" fill="rgba(27,81,158,.32)"/><circle cx="300" cy="96" r="58" fill="rgba(217,106,27,.14)"/><circle cx="210" cy="300" r="78" fill="rgba(191,210,228,.07)"/><circle cx="352" cy="286" r="28" fill="rgba(217,106,27,.24)"/></svg>
+      </div>
+    </div>
+    <div class="mn__in">
+      <ul class="mn__liste">
+        <li class="mn__it" data-forme="1" style="--i:0"><a class="mn__lien" href="/club-basket-la-montagne/"><span class="mn__num" aria-hidden="true">01</span><span class="mn__txt">Le club</span></a></li>
+        <li class="mn__it" data-forme="2" style="--i:1"><a class="mn__lien" href="/#categories"><span class="mn__num" aria-hidden="true">02</span><span class="mn__txt">Catégories</span></a></li>
+        <li class="mn__it" data-forme="3" style="--i:2"><a class="mn__lien" href="/creneaux/"><span class="mn__num" aria-hidden="true">03</span><span class="mn__txt">Créneaux</span></a></li>
+        <li class="mn__it" data-forme="4" style="--i:3"><a class="mn__lien" href="/matchs/"><span class="mn__num" aria-hidden="true">04</span><span class="mn__txt">Matchs</span></a></li>
+        <li class="mn__it" data-forme="5" style="--i:4"><a class="mn__lien" href="/actualites/"><span class="mn__num" aria-hidden="true">05</span><span class="mn__txt">Actus</span></a></li>
+        <li class="mn__it" data-forme="6" style="--i:5"><a class="mn__lien" href="/soutenir-le-club/"><span class="mn__num" aria-hidden="true">06</span><span class="mn__txt">Soutenir</span></a></li>
+        <li class="mn__it" data-forme="7" style="--i:6"><a class="mn__lien" href="/#contact"><span class="mn__num" aria-hidden="true">07</span><span class="mn__txt">Contact</span></a></li>
+      </ul>
+      <div class="mn__pied">
+        <p class="mn__go" data-mn-fade style="--i:0"><a class="btn btn--primary mn__cta" href="/adhesion.html">Je m'inscris<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+        <p class="mn__meta" data-mn-fade style="--i:1">
+          <a href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20le%20MBC%20avant%20de%20m%27inscrire." target="_blank" rel="noopener"><svg class="ic ic--wa" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8zm5.7-7.7c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.2 3.3 5.3 4.7.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>WhatsApp<span class="sr-only"> (nouvel onglet)</span></a>
+          <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener">Instagram<span class="sr-only"> (nouvel onglet)</span></a>
+          <a href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener">Facebook<span class="sr-only"> (nouvel onglet)</span></a>
+          <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener">TikTok<span class="sr-only"> (nouvel onglet)</span></a>
+        </p>
+        <p class="mn__lieu" data-mn-fade style="--i:2">La Montagne · Saint-Denis · La Réunion</p>
+      </div>
+    </div>
+  </nav>
+</div>
 
 <!-- Barre CTA mobile : deux intentions, pas une. « Je m'inscris » seul
      ne servait pas ceux qui hesitent encore — or c'est la majorite.
@@ -1681,6 +1721,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=be3f84a0" defer></script>
+<script src="script.js?v=b91848b5" defer></script>
 </body>
 </html>
