@@ -1374,3 +1374,102 @@ avant d'arriver à Python : `/index.html` devient
 `C:/Program Files/Git/index.html`, et les iframes chargent une adresse
 inexistante — sans erreur, juste « aucun résultat ». Préfixer par
 `MSYS_NO_PATHCONV=1`.
+
+---
+
+## 21. Le titre du hero grandit autant que le logo le permet (10/09/2026)
+
+### La demande
+
+« Agrandir nettement la typo *Le basket à La Montagne*, la remonter un peu, et le
+bouton *Je m'inscris* aussi — il faut que le logo MBC dans le dos de la personne
+tout à gauche soit toujours visible. »
+
+### La contrainte, mesurée
+
+Le logo occupe, dans chaque visuel :
+
+| visuel | largeur | hauteur |
+|---|---|---|
+| panoramique (`mbc-hero-regroupement-*`) | 25,5 → 36,5 % | 29 → 53 % |
+| recadré (`-bande-*`) | 3 → 26 % | 29 → 53 % |
+
+Le titre chevauche le logo **en largeur** à toutes les résolutions : la seule
+chose qui garde le logo visible, c'est que le **haut du titre reste sous le bas
+du logo**. Or le hero change de hauteur avec l'écran — et cette marge aussi :
+
+| fenêtre | marge avant V173 |
+|---|---|
+| 2560 × 1300 | 264 px |
+| 1717 × 892 | 28 px |
+| 1366 × 657 (fenêtre de portable) | **−24 px : le titre couvrait déjà le logo** |
+
+⚠️ **Tester des fenêtres réelles, pas des résolutions d'écran.** Une fenêtre de
+navigateur fait ~110 px de moins que l'écran (1920 × 1080 → ~1920 × 950,
+1366 × 768 → ~1366 × 657). C'est sur ces fenêtres-là que le logo était couvert.
+
+### La formule (V173)
+
+Une taille en `vw` ne peut pas être juste partout : grande là où il y a de la
+place, elle couvre le logo là où il n'y en a pas. La taille dépend donc de la
+**hauteur**, bornée par la largeur :
+
+```css
+--hf: clamp(3.3rem, calc(12.4svh - 33px), min(7.2vw, 9.5rem));   /* >= 1001 px */
+--hf: clamp(2.8rem, calc(9svh - 20px), 5.6rem);                  /* 641-1000 px */
+```
+
+Dérivation : le bloc titre + phrase + bouton vaut ~2,7 fois la taille du titre
+plus une constante ; le bas du logo tombe à 53 % du hero ; le hero vaut 100svh
+moins le bandeau. « Haut du titre ≥ bas du logo + marge » donne une droite en
+`svh`, calée ensuite au banc sur 21 formats. Le plancher de 3,3rem est le plus
+petit titre qui laisse le logo visible sur une fenêtre de portable.
+
+| fenêtre | titre avant → après | marge sous le logo |
+|---|---|---|
+| 2560 × 1440 | 74 → 146 px | 50 px |
+| 2560 × 1300 | 74 → 128 px | 30 px |
+| 1920 × 1080 | 74 → 101 px | 12 px |
+| 1717 × 892 | 74 → 78 px | 19 px |
+| 1366 × 768 | 57 → 62 px | 32 px |
+| 1366 × 657 | 57 → 53 px | −24 → +6 px |
+| iPad 820 × 1180 | 44 → 86 px | 82 px |
+| iPad 768 × 1024 | 42 → 72 px | 59 px |
+
+Ce qui suit le titre :
+- la **phrase manuscrite** est dimensionnée sur lui (5,95 fois sa taille, la
+  proportion d'avant), plafonnée à **640 px** sur ordinateur et **52vw** sur
+  tablette : au-delà, elle finit sur le t-shirt blanc « DEPUIS 1954 » d'un
+  enfant — blanc sur blanc, point orange posé sur « DEPUIS » ;
+- la **marge sous le bloc** (« remonter un peu ») et la **hauteur du bouton**
+  (62 → 74 px) ne grandissent qu'avec la hauteur d'écran : sur un portable,
+  elles consommeraient les pixels qui séparent le titre du logo.
+
+`--hf` est posée sur `.hero__h1` et reprise par `.hero__h1-t` et `.hw`. Toute
+retouche de taille passe par elle.
+
+### Le cadrage suit le logo
+
+Sur téléphone, le visuel recadré était centré (`50 %`) : le logo, à 3–26 % de
+sa largeur, sortait du cadre — **11 à 58 % visible**. Cadré à `8 %` sur
+téléphone et `12 %` sur tablette debout : **97 à 100 %**.
+
+**Limite assumée** : sur les petits téléphones (375 × 667, 360 × 740), le hero
+ne fait que 415 à 489 px ; titre, phrase et bouton en occupent forcément la
+moitié basse, et le logo, dans le cadre, reste en partie sous le titre.
+
+### Le contraste (V174)
+
+En grandissant, le texte sort du maillot noir de l'entraîneur et passe sur le
+parquet clair et les t-shirts blancs. Pas de voile : il assombrirait aussi le
+logo. Une ombre portée douce, collée aux lettres — `filter:drop-shadow`, et non
+`text-shadow`, qui transparaîtrait à travers des lettres remplies par un
+dégradé et ne vaut pas pour les contours SVG de la phrase.
+
+### Les outils
+
+- `banc-typo.py` calcule la position **à l'écran** du logo à partir du cadre,
+  de la taille réelle de l'image et de son `object-position` calculé, puis la
+  marge entre le logo et le titre, format par format.
+- `_banc-essai.css` (racine, exclue de git) : une CSS injectée dans les iframes
+  du banc avec `--essai`, pour essayer une formule sans reconstruire le site.

@@ -10334,7 +10334,8 @@ html:has(.seo-top){scroll-padding-top:104px}
    sert donc aux tablettes en portrait le visuel -bande (1,21:1), cadre sur le
    regroupement ; ici on ne fait que le centrer. */
 @media (min-width:641px) and (max-width:1100px) and (orientation:portrait){
-  .ecran1 .hero .hero__photo img{object-position:50% 42%}}
+  /* 12 % et non 50 % : le logo MBC reste entier dans le cadre (51-72 % -> 98-100 %). */
+  .ecran1 .hero .hero__photo img{object-position:12% 42%}}
 
 /* --- Telephone : une seule scene, comme sur ordinateur -----------------------
    Sous 640 px la photo etait une vignette EMPILEE au-dessus du texte (230 a
@@ -10357,7 +10358,10 @@ html:has(.seo-top){scroll-padding-top:104px}
   .ecran1 .hero .hero__photo,
   .ecran1 .hero.in .hero__photo{
     position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0}
-  .ecran1 .hero .hero__photo img{object-position:50% 40%}
+  /* Cadre a gauche (8 %) : le logo MBC dans le dos de l entraineur est a 3-26 %
+     de la largeur du visuel -bande. Centre (50 %), il sortait du cadre : 11 a
+     58 % visible selon le telephone. A 8 %, 97 a 100 %. */
+  .ecran1 .hero .hero__photo img{object-position:8% 40%}
   /* Le voile : la bande de 46-58 px qui fondait le bas de la vignette empilee
      (ligne ~8767) redevient un voile plein cadre. Sombre en bas, ou le texte
      se pose ; leger au milieu, ou sont les visages ; un peu plus dense en haut,
@@ -10465,3 +10469,101 @@ html:has(.seo-top){scroll-padding-top:104px}
   #nxBand .nx__a .btn--primary{flex:1 1 auto;min-height:54px}
   #nxBand .nx__second{margin-inline:0;flex:none;font-size:var(--text-md)}
 }
+
+/* ============================================================================
+   V173 — LE TITRE GRANDIT AUTANT QUE LE LOGO LE PERMET
+   ----------------------------------------------------------------------------
+   Demande du president : agrandir nettement « Le basket a La Montagne », le
+   remonter un peu, grossir le bouton — a condition que le logo MBC dans le dos
+   de l'entraineur reste visible.
+
+   LA CONTRAINTE, MESUREE
+   Sur le panoramique, le logo occupe 25,5 -> 36,5 % de la largeur et 29 -> 53 %
+   de la hauteur. Le titre le chevauche en largeur a toutes les resolutions : la
+   seule chose qui le garde visible est donc que le HAUT du titre reste sous le
+   BAS du logo. Or le hero change de hauteur avec l'ecran, et la marge aussi :
+
+       2560 x 1300  (l'ecran du president)   264 px entre logo et titre
+       1717 x 892                             28 px
+       1366 x 657   (fenetre de portable)    -24 px : le titre le couvrait deja
+
+   Une taille fixee en vw ne peut pas etre juste partout : grande la ou il y a de
+   la place, elle couvre le logo la ou il n'y en a pas. La taille depend donc de
+   la HAUTEUR disponible, bornee par la largeur.
+
+   LA FORMULE
+   Le bloc titre + phrase manuscrite + bouton fait environ 2,7 fois la taille du
+   titre plus une constante ; le bas du logo tombe a 53 % du hero ; le hero vaut
+   100svh moins le bandeau. En posant « haut du titre >= bas du logo + marge »
+   on obtient une droite en svh, calee ensuite au banc (21 formats) :
+
+       --hf : clamp(3.3rem, 12.4svh - 33px, min(7.2vw, 9.5rem))
+
+   Resultat mesure (taille du titre, marge sous le logo) :
+       2560 x 1300   74 -> 128 px   12 px
+       1920 x 1080   74 -> 101 px   12 px
+       1717 x 892    74 ->  78 px   19 px
+       1366 x 768    57 ->  62 px   32 px
+       1366 x 657    57 ->  53 px   -24 -> +6 px : le logo se degage
+   Le plancher de 3,3rem est le plus petit titre qui laisse le logo visible sur
+   une fenetre de portable, une fois le reste du bloc resserre (ci-dessous).
+
+   CE QUI SUIT LE TITRE
+   - la phrase manuscrite est dimensionnee sur le titre (5,95 fois sa taille,
+     la proportion d'avant) : elle ne reste plus a 440 px sous un titre qui
+     double, et elle ne mange plus la place d'un titre qui ne grandit pas ;
+   - la marge sous le bloc (« remonter un peu ») et la hauteur du bouton ne
+     grandissent QUE sur les ecrans hauts, la ou il y a de la place : sur un
+     portable, elles consommeraient les quelques pixels qui separent le titre
+     du logo.
+   ============================================================================ */
+@media (min-width:1001px){
+  .ecran1 > .hero{padding-bottom:clamp(.9rem, calc(9svh - 3.5rem), 4.5rem) !important}
+  .ecran1 .hero__h1{
+    --hf:clamp(3.3rem, calc(12.4svh - 33px), min(7.2vw, 9.5rem));
+    max-width:none;font-size:var(--hf)}
+  .ecran1 .hero__h1-t{font-size:var(--hf);line-height:.9}
+  /* Plafond de 640 px : au-dela, sur les tres grands ecrans, la phrase atteignait
+     le t-shirt blanc « DEPUIS 1954 » — blanc sur blanc, et le point orange
+     posé sur « DEPUIS ». A 2560 px ce t-shirt commence vers 1190 px ; 640 px de
+     phrase finissent a 1184. */
+  .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 640px);max-width:100%}
+  .ecran1 .hero__cta a.btn--primary{
+    height:clamp(62px, calc(3.4svh + 32px), 74px);min-height:0;
+    font-size:clamp(1.1rem, calc(1.25svh + .3rem), 1.35rem);
+    padding-inline:clamp(1.9rem, 2.7vw, 3rem)}
+}
+
+/* Tablette : meme principe, calibre sur le bandeau a deux etages (241 px) et
+   sur le visuel recadre. La marge est large (59 a 82 px sous le logo) : le
+   titre passe de 42-44 px a 72-86 px. */
+@media (min-width:641px) and (max-width:1000px){
+  .ecran1 .hero__h1{
+    --hf:clamp(2.8rem, calc(9svh - 20px), 5.6rem);
+    max-width:none;font-size:var(--hf)}
+  .ecran1 .hero__h1-t{font-size:var(--hf);line-height:.9}
+  /* 52vw : sur un iPad debout la phrase finissait sur le t-shirt « DEPUIS 1954 »
+     (428 px, fin a 459 ; le mot commence a 452). Plafonnee, elle s’arrete a 430. */
+  .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 52vw);max-width:100%}
+  .ecran1 .hero__cta a.btn--primary{
+    height:clamp(58px, calc(2.4svh + 34px), 66px);min-height:0;
+    font-size:clamp(1.06rem, calc(.9svh + .3rem), 1.25rem);
+    padding-inline:clamp(1.7rem, 3.2vw, 2.4rem)}
+}
+
+/* ============================================================================
+   V174 — LE TEXTE GARDE SON CONTRASTE LA OU LA PHOTO S’ECLAIRCIT
+   ----------------------------------------------------------------------------
+   En grandissant, le titre et la phrase manuscrite sortent de la zone sombre de
+   la photo (le maillot noir de l’entraineur) et passent sur le parquet clair et
+   les t-shirts blancs des enfants. Pas de voile supplementaire : il assombrirait
+   aussi le logo, juste au-dessus. Une ombre portee douce, collee aux lettres,
+   leur rend du contraste exactement la ou elles en manquent, et nulle part
+   ailleurs.
+
+   filter:drop-shadow et non text-shadow : filter s’applique au rendu final, il
+   ne transparait pas a travers des lettres remplies par un degrade, et il vaut
+   aussi pour les contours SVG de la phrase manuscrite.
+   ============================================================================ */
+.ecran1 .hero__h1-t{filter:drop-shadow(0 2px 18px rgba(3,10,20,.45))}
+.ecran1 .hw__f{filter:drop-shadow(0 1px 1.5px rgba(3,10,20,.6)) drop-shadow(0 3px 14px rgba(3,10,20,.5))}

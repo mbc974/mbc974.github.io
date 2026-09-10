@@ -5367,7 +5367,7 @@ html:has(.seo-top){scroll-padding-top:104px}
 .ecran1 > .hero{flex:1 0 auto;min-height:0 !important}
 .ecran1 > .nx{flex:0 0 auto}
 @media (min-width:641px) and (max-width:1100px) and (orientation:portrait){
-  .ecran1 .hero .hero__photo img{object-position:50% 42%}}
+  .ecran1 .hero .hero__photo img{object-position:12% 42%}}
 @media (max-width:640px){
   .ecran1 > .hero{
     display:flex !important;flex-direction:column;justify-content:flex-end;
@@ -5375,7 +5375,7 @@ html:has(.seo-top){scroll-padding-top:104px}
   .ecran1 .hero .hero__photo,
   .ecran1 .hero.in .hero__photo{
     position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0}
-  .ecran1 .hero .hero__photo img{object-position:50% 40%}
+  .ecran1 .hero .hero__photo img{object-position:8% 40%}
   .ecran1 .hero::after{
     top:0;right:0;bottom:0;left:0;height:auto;
     background:linear-gradient(to top,
@@ -5440,3 +5440,28 @@ html:has(.seo-top){scroll-padding-top:104px}
   #nxBand .nx__a .btn--primary{flex:1 1 auto;min-height:54px}
   #nxBand .nx__second{margin-inline:0;flex:none;font-size:var(--text-md)}
 }
+@media (min-width:1001px){
+  .ecran1 > .hero{padding-bottom:clamp(.9rem, calc(9svh - 3.5rem), 4.5rem) !important}
+  .ecran1 .hero__h1{
+    --hf:clamp(3.3rem, calc(12.4svh - 33px), min(7.2vw, 9.5rem));
+    max-width:none;font-size:var(--hf)}
+  .ecran1 .hero__h1-t{font-size:var(--hf);line-height:.9}
+  .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 640px);max-width:100%}
+  .ecran1 .hero__cta a.btn--primary{
+    height:clamp(62px, calc(3.4svh + 32px), 74px);min-height:0;
+    font-size:clamp(1.1rem, calc(1.25svh + .3rem), 1.35rem);
+    padding-inline:clamp(1.9rem, 2.7vw, 3rem)}
+}
+@media (min-width:641px) and (max-width:1000px){
+  .ecran1 .hero__h1{
+    --hf:clamp(2.8rem, calc(9svh - 20px), 5.6rem);
+    max-width:none;font-size:var(--hf)}
+  .ecran1 .hero__h1-t{font-size:var(--hf);line-height:.9}
+  .ecran1 .hw{width:min(calc(var(--hf) * 5.95), 52vw);max-width:100%}
+  .ecran1 .hero__cta a.btn--primary{
+    height:clamp(58px, calc(2.4svh + 34px), 66px);min-height:0;
+    font-size:clamp(1.06rem, calc(.9svh + .3rem), 1.25rem);
+    padding-inline:clamp(1.7rem, 3.2vw, 2.4rem)}
+}
+.ecran1 .hero__h1-t{filter:drop-shadow(0 2px 18px rgba(3,10,20,.45))}
+.ecran1 .hw__f{filter:drop-shadow(0 1px 1.5px rgba(3,10,20,.6)) drop-shadow(0 3px 14px rgba(3,10,20,.5))}
