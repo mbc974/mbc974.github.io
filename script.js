@@ -390,7 +390,7 @@
 
   /* ---- CTA majeurs : halo lumineux qui suit le curseur (desktop uniquement) ---- */
   if (finePointer && !reduceMotion) {
-    document.querySelectorAll('.btn--primary,.btn--roi').forEach(function (btn) {
+    document.querySelectorAll('.btn--primary').forEach(function (btn) {
       btn.addEventListener('pointermove', function (e) {
         const r = btn.getBoundingClientRect();
         btn.style.setProperty('--bx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');

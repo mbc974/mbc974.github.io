@@ -164,12 +164,119 @@ def phase_mortes(essai):
     return ecrire(css, essai)
 
 
+def phase_pill(essai):
+    """99px et 999px disent tous deux « arrondi complet ». Ils passent sous
+    --r-pill.
+
+    999px -> var(--r-pill) est un alias strict : le token vaut exactement 999px
+    et n'est pas redefini par V79.
+
+    99px -> var(--r-pill) est un vrai changement de valeur, mais pas un
+    changement de RENDU : un rayon est plafonne a la moitie du plus petit cote
+    de l'element. Les deux valeurs se comportent donc identiquement tant que ce
+    cote reste sous 198 px. Mesure faite sur 4 pages et 2 largeurs : le cote
+    court maximal des elements concernes est de 54 px. La marge est de 3,6x."""
+    css = io.open(CSS, encoding='utf-8').read()
+    mc = masque(css)
+    rx = re.compile(r'(?<![-\w])(' + '|'.join(sorted(RADIUS_PROPS, key=len, reverse=True))
+                    + r')\s*:\s*(9{2,4}px)\s*(?=[;}])')
+    faits = []
+    for m in reversed(list(rx.finditer(mc))):
+        ouv = mc.rfind('{', 0, m.start())
+        prec = max(mc.rfind('}', 0, ouv), mc.rfind('{', 0, ouv))
+        sel = re.sub(r'\s+', ' ', mc[prec + 1:ouv]).strip()
+        css = css[:m.start()] + m.group(1) + ':var(--r-pill)' + css[m.end():]
+        faits.append((mc[:m.start()].count('\n') + 1, sel, m.group(2)))
+
+    print(u"  PHASE pill — 99px et 999px rejoignent --r-pill")
+    print(u"  %d substitution(s)" % len(faits))
+    for ligne, sel, v in reversed(faits):
+        print(u"     L%-5d %-8s %s" % (ligne, v, sel[:56]))
+
+    # NOTE — « .licence-path .lp-who » ecrivait 99px (L2751) puis 999px (L4875).
+    # L'inventaire l'avait signale comme un doublon ; verification faite, c'en
+    # est un a moitie seulement. Ce ne sont pas deux regles redondantes : la
+    # seconde RESTYLE le badge (padding, graisse, interlettrage) et redeclare
+    # son rayon au passage. Seule la declaration border-radius de la premiere
+    # etait ecrasee. Les deux disant desormais var(--r-pill), la surcharge est
+    # devenue sans effet — rien a retirer ici, et surtout pas la regle.
+    return ecrire(css, essai)
+
+
+# Les SEULES regles dont le litteral vaut exactement ce que le token vaut LA OU
+# ELLES S'APPLIQUENT. Cette liste n'est pas deduite du texte de la feuille : elle
+# a ete etablie dans le navigateur, sur 12 pages, en lisant --r-sm/md/lg sur
+# chaque element reellement touche par la regle (getPropertyValue rend la valeur
+# heritee au point d'application, donc la bonne des deux portees V79).
+#
+# 80 regles portent un rayon litteral en px. 47 ne correspondent a aucun token
+# la ou elles s'appliquent — les tokeniser les DEPLACERAIT. 20 ne touchent
+# aucun element sur les pages testees : invérifiables, donc laissees. Restent
+# ces 13, unanimes, zero mixte.
+#
+# Deux selecteurs y figurent deux fois avec des valeurs differentes : dans le
+# pied de page, --r-sm vaut 10px et --r-md 12px. Les deux substitutions sont
+# justes ; c'est le mecanisme V79 qui veut ca.
+TOKENISABLES = [
+    ('.footer__social a', '12px', 'r-md'),
+    ('.footer__social a', '10px', 'r-sm'),
+    ('.hero__scroll span', '14px', 'r-sm'),
+    ('.essentiel-card__ico', '16px', 'r-lg'),
+    ('.roster__btn', '12px', 'r-md'),
+    ('.team__photo', '16px', 'r-lg'),
+    ('main > .section .essentiel-card', '12px', 'r-md'),
+    ('.lp-stage', '12px', 'r-md'),
+    ('.mx-date', '10px', 'r-sm'),
+    ('.mx-crest', '16px', 'r-lg'),
+    ('.p-pillar__ico', '10px', 'r-sm'),
+    ('.p-pillar__ico', '12px', 'r-md'),
+    ('.pl-slot', '10px', 'r-sm'),
+]
+
+
+def phase_tokens(essai):
+    css = io.open(CSS, encoding='utf-8').read()
+    mc = masque(css)
+
+    # (selecteur normalise, valeur) -> token
+    cible = {}
+    for sel, val, tok in TOKENISABLES:
+        cible[(re.sub(r'\s+', ' ', sel).strip(), val)] = tok
+
+    rx = re.compile(r'(?<![-\w])border-radius\s*:\s*(\d+(?:\.\d+)?px)\s*(?=[;}])')
+    faits, vus = [], set()
+    for m in reversed(list(rx.finditer(mc))):
+        ouv = mc.rfind('{', 0, m.start())
+        prec = max(mc.rfind('}', 0, ouv), mc.rfind('{', 0, ouv))
+        sel = re.sub(r'\s+', ' ', mc[prec + 1:ouv]).strip()
+        tok = cible.get((sel, m.group(1)))
+        if not tok:
+            continue
+        css = css[:m.start()] + 'border-radius:var(--%s)' % tok + css[m.end():]
+        faits.append((mc[:m.start()].count('\n') + 1, sel, m.group(1), tok))
+        vus.add((sel, m.group(1)))
+
+    print(u"  PHASE tokens — les 13 regles dont le litteral EGALE le token sur place")
+    print(u"  %d substitution(s)" % len(faits))
+    for ligne, sel, val, tok in reversed(faits):
+        print(u"     L%-5d %-6s -> --%-5s %s" % (ligne, val, tok, sel[:48]))
+    manquants = set(cible) - vus
+    if manquants:
+        print(u"  !! %d regle(s) attendue(s) INTROUVABLE(s) : %s"
+              % (len(manquants), sorted(manquants)[:4]))
+    return ecrire(css, essai)
+
+
 def main():
     if len(sys.argv) < 2:
         raise SystemExit(__doc__)
     essai = '--essai' in sys.argv
     if sys.argv[1] == 'round':
         return phase_round(essai)
+    if sys.argv[1] == 'pill':
+        return phase_pill(essai)
+    if sys.argv[1] == 'tokens':
+        return phase_tokens(essai)
     if sys.argv[1] == 'mortes':
         return phase_mortes(essai)
     raise SystemExit("!! phase inconnue : %s" % sys.argv[1])

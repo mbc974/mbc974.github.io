@@ -555,7 +555,42 @@ règle jugée morte, la confronter à `script.js` et `consent.js`** — et disti
 une classe *créée* par le JS (vivante) d'une classe seulement *interrogée* par
 lui (`querySelectorAll('.btn--roi')` : dormante, pas vivante).
 
-Restent en place, dormantes et documentées comme telles : `.btn--roi` (variante
-bleue, encore ciblée par `script.js:393`) et le bloc `.sb` (« SCOREBOARD »,
-jamais employé). Leur unité de décision est le bloc entier, pas une propriété :
-leur retirer leur ombre les dégraderait sans les nettoyer.
+`.btn--roi` (variante bleue) et le bloc `.sb` (« SCOREBOARD ») étaient dans ce
+troisième cas. Ils ont été **retirés en entier le 2026-09-10**, sur décision —
+et en bloc, jamais propriété par propriété : leur retirer leur seule ombre les
+aurait dégradés sans les nettoyer. La ligne `querySelectorAll('.btn--primary,
+.btn--roi')` de `script.js` a été nettoyée en même temps.
+
+**Le piège du retrait : un sélecteur mort est rarement seul dans sa règle.**
+Onze règles mélangeaient les deux vocabulaires —
+`.sb__comp i, .sb__when i, .footer__place i, …` ou
+`.h2, .hero__h1, .lp-title, .sb__name, .keyfig__v`. Supprimer la règle entière
+aurait emporté le pied de page et les grands titres. `purger-blocs-dormants.py`
+retire donc les **sélecteurs** morts de la liste et ne supprime le bloc que si
+tous le sont. Contrôle systématique après purge : comparer la liste des
+sélecteurs individuels avant/après (45 retirés, **0 vivant perdu**).
+
+### Tokeniser un rayon : 13 règles sur 80, et pourquoi si peu
+
+À cause des deux portées V79, on ne peut pas décider depuis le texte de la
+feuille. La méthode qui marche est de demander au **navigateur** ce que le token
+vaut là où la règle s'applique :
+
+```js
+document.querySelectorAll(rule.selectorText)          // les éléments touchés
+getComputedStyle(el).getPropertyValue('--r-md')       // la valeur héritée là
+```
+
+Sur 12 pages : 80 règles portent un rayon littéral en px ; **47** ne
+correspondent à aucun token là où elles s'appliquent (les tokeniser les
+déplacerait) ; **20** ne touchent aucun élément sur les pages testées, donc
+invérifiables ; **13** sont unanimes et ont migré. Zéro cas mixte.
+
+Deux pièges rencontrés en écrivant ce contrôle :
+- `if (r.cssRules)` est **vrai pour toute règle de style** depuis le support du
+  nesting — chaque `CSSStyleRule` expose une `cssRules` vide mais truthy. Un
+  `continue` derrière ce test saute silencieusement toutes les règles. Tester
+  `r.cssRules && r.cssRules.length`.
+- Le CSSOM n'est pas prêt immédiatement après `navigate` : une première lecture
+  a rendu 93 règles là où la feuille en compte 2 176. Attendre, et **valider le
+  compte** contre un comptage indépendant avant d'exploiter le résultat.
