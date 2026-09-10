@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
-"""Retrait d'un bloc de composant devenu inutilisable, selecteur par selecteur.
+"""Retrait de CSS devenue inatteignable, selecteur par selecteur.
 
-    python .claude/purger-blocs-dormants.py --essai
-    python .claude/purger-blocs-dormants.py
+    python .claude/purger-blocs-dormants.py dormants --essai
+    python .claude/purger-blocs-dormants.py dormants
+    python .claude/purger-blocs-dormants.py purge-finale --essai
+    python .claude/purger-blocs-dormants.py purge-finale
 
-CE QU'IL RETIRE, ET POURQUOI CES DEUX-LA
------------------------------------------
-  .btn--roi   la variante bleue du bouton. Aucun element ne la porte : les
-              seules occurrences trouvees etaient dans une copie perimee de
-              .claude/worktrees/. script.js la CHERCHE encore
-              (querySelectorAll('.btn--primary,.btn--roi')) mais chercher
-              n'est pas porter — la ligne est nettoyee ici aussi.
+LES DEUX LOTS
+-------------
+« dormants » (10/09) — .btn--roi, la variante bleue du bouton : aucun element
+ne la porte, les seules occurrences etaient dans une copie perimee de
+.claude/worktrees/. script.js la CHERCHAIT encore
+(querySelectorAll('.btn--primary,.btn--roi')) — mais chercher n'est pas
+porter, et la ligne est nettoyee ici aussi. Plus le bloc « SCOREBOARD »
+(.sb*), dont aucune des 30 classes n'apparait nulle part.
 
-  .sb*        le bloc « SCOREBOARD ». Aucune de ses 30 classes n'apparait
-              dans le markup, ni dans les generateurs, ni dans le JS.
+« purge-finale » (10/09) — seize classes orphelines, plus les @media devenues
+vides. Ce lot balaye aussi les 27 @media vides qui preexistaient : c'est le
+dernier passage, plus rien ne viendra en creer d'autres.
 
 LA REGLE QUI REND CE SCRIPT NON TRIVIAL
 ----------------------------------------
@@ -46,7 +50,36 @@ RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CSS = os.path.join(RACINE, 'style.css')
 JS = os.path.join(RACINE, 'script.js')
 
-MORT = re.compile(r'\.btn--roi\b|\.sb\b|\.sb__|\.sb--')
+LOTS = {
+    # 10/09/2026 — la variante bleue du bouton et le bloc SCOREBOARD.
+    'dormants': [r'\.btn--roi\b', r'\.sb\b', r'\.sb__', r'\.sb--'],
+
+    # 10/09/2026 — purge finale. Seize classes sans aucune trace : ni dans le
+    # markup publie, ni dans les generateurs de markup (build-*, set-*), ni
+    # dans script.js / consent.js.
+    #
+    # Deux precautions ont fait tomber la liste de 51 candidates a 16 :
+    #   - verifier-classes.py --mortes listait 51 « regles sans usage ». 35
+    #     etaient posees a l'execution (.ccb*, .lightbox__*, .is-*, .nx__cd-*,
+    #     .spotglow*). Les retirer aurait casse le bandeau RGPD, la
+    #     visionneuse, le compte a rebours et le halo de survol ;
+    #   - .marquee apparaissait 8 fois dans « tous les .html »… et zero fois
+    #     hors de .claude/worktrees/. Une copie perimee du depot n'est pas le
+    #     site. Toujours exclure worktrees d'un comptage d'usage.
+    #
+    # Et ne JAMAIS chercher ces classes dans les instruments d'analyse
+    # (inventaire-*, migrer-*, purger-*) : leurs docstrings les citent, ce qui
+    # les ferait passer pour vivantes. Seuls build-* et set-* ecrivent du
+    # markup.
+    'purge-finale': [
+        r'\.hero__badge\b', r'\.hero__badge-opt\b', r'\.hero__court\b',
+        r'\.hero__creole\b', r'\.hero__fine\b', r'\.hero__meta\b',
+        r'\.hero__panel\b', r'\.hero__lead\b',
+        r'\.lp-aside\b', r'\.lp-aside__n\b', r'\.lp-below\b', r'\.lp-note\b',
+        r'\.nav__sep\b', r'\.nx__body\b', r'\.pl-affiche\b', r'\.marquee\b',
+    ],
+}
+MORT = None  # arme par main() selon le lot demande
 
 
 def masque(css):
@@ -58,7 +91,7 @@ def masque(css):
     return ''.join(out)
 
 
-def purger(essai):
+def purger(lot, essai):
     css = io.open(CSS, encoding='utf-8').read()
     mc = masque(css)
 
@@ -100,18 +133,28 @@ def purger(essai):
         io.open(CSS, encoding='utf-8').read())))
     vides_apres = len(re.findall(r'@media[^{]*\{\s*\}', masque(css)))
 
-    print(u"  PURGE — .btn--roi et le bloc SCOREBOARD")
+    print(u"  PURGE — lot « %s »" % lot)
     print(u"  %3d regle(s) supprimee(s) en entier" % entiers)
     print(u"  %3d regle(s) allegee(s) : seul le selecteur mort est retire" % alleges)
-    print(u"  @media vides : %d avant -> %d apres (dont %d creees ici) — laissees"
-          u" a la purge finale" % (vides_avant, vides_apres, vides_apres - vides_avant))
+    if lot == 'purge-finale':
+        # C'est le moment : plus rien ne viendra en creer d'autres.
+        n = 1
+        while n:
+            css, n = re.subn(r'\n?[ \t]*@media[^{]*\{\s*\}', '', css)
+        print(u"  @media vides : %d retiree(s)" % vides_apres)
+    else:
+        print(u"  @media vides : %d avant -> %d apres (dont %d creees ici) —"
+              u" laissees a la purge finale"
+              % (vides_avant, vides_apres, vides_apres - vides_avant))
 
-    js = io.open(JS, encoding='utf-8').read()
-    avant = js
-    js = js.replace("'.btn--primary,.btn--roi'", "'.btn--primary'")
-    tj = (js != avant)
-    print(u"  script.js : %s" % (u"selecteur .btn--roi retire" if tj
-                                 else u"!! selecteur .btn--roi INTROUVABLE, a verifier"))
+    tj = False
+    if lot == 'dormants':
+        js = io.open(JS, encoding='utf-8').read()
+        avant = js
+        js = js.replace("'.btn--primary,.btn--roi'", "'.btn--primary'")
+        tj = (js != avant)
+        print(u"  script.js : %s" % (u"selecteur .btn--roi retire" if tj
+                                     else u"!! .btn--roi INTROUVABLE (deja fait ?)"))
 
     if essai:
         print(u"\n  (essai : rien n'a ete ecrit)")
@@ -123,6 +166,15 @@ def purger(essai):
     return 0
 
 
+def main():
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    if not args or args[0] not in LOTS:
+        raise SystemExit("!! lot attendu : %s" % " | ".join(sorted(LOTS)))
+    global MORT
+    MORT = re.compile('|'.join(LOTS[args[0]]))
+    return purger(args[0], '--essai' in sys.argv)
+
+
 if __name__ == '__main__':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
-    sys.exit(purger('--essai' in sys.argv))
+    sys.exit(main())

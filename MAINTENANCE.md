@@ -594,3 +594,74 @@ Deux pièges rencontrés en écrivant ce contrôle :
 - Le CSSOM n'est pas prêt immédiatement après `navigate` : une première lecture
   a rendu 93 règles là où la feuille en compte 2 176. Attendre, et **valider le
   compte** contre un comptage indépendant avant d'exploiter le résultat.
+
+---
+
+## 13. Les points de rupture — inventaire, et pourquoi on n'y touche pas
+
+343 `@media`, 84 conditions, **53 largeurs distinctes**. Le chiffre fait peur ;
+la mesure dit autre chose.
+
+**Ce qui n'est pas un breakpoint** et ne le sera jamais : `prefers-reduced-motion`
+(65), `hover` (13), `pointer` (7), `orientation` (3), les requêtes de hauteur (7).
+Ce sont des capacités et des préférences — ni échelle, ni ordre, rien à
+rationaliser.
+
+**Douze largeurs servent à la fois en `min` et en `max`** (360, 560, 640, 680,
+700, 720, 760, 820, 900, 980, 1000, 1080). À ces largeurs exactes, les deux jeux
+de règles s'appliquent : c'est l'ordre du fichier qui tranche, pas l'intention.
+En face, **18 paires sont correctement formées** (`max:N-1` / `min:N`) et il n'y
+a **aucun trou**.
+
+**Mais ce chevauchement ne produit aucun défaut.** Vérifié en résolvant chaque
+règle en éléments réels : un seul de ces douze points génère des collisions —
+900 px, quatre propriétés sur `.hero` et `.hero__scroll`. Puis, en comparant les
+propriétés discrètes de 1 719 éléments à 899, 900 et 901 px :
+
+```
+bascule entre 899 et 900 :  5 éléments
+bascule entre 900 et 901 :  2 éléments
+VRAIS HYBRIDES           :  0
+```
+
+Aucun élément ne se trouve, à 900 px, dans un état qu'il n'occupe ni à 899 ni à
+901. Le découpage est ambigu à l'écriture, jamais à l'affichage.
+
+**Conclusion : pas de rationalisation.** Déplacer une de ces bornes changerait
+les règles appliquées à une largeur précise, sans aucun défaut à corriger. C'est
+exactement ce que la règle du dépôt interdit : le rendu passe avant la pureté du
+CSS. Le vocabulaire de 53 largeurs est documenté ; il n'est pas réduit.
+
+Attention en mesurant : `clientWidth` **exclut** la barre de défilement alors que
+les media queries l'**incluent** — à un viewport émulé de 900 px, `clientWidth`
+lit 884. Se fier à `matchMedia('(max-width:900px)')`, qui fait autorité.
+
+## 14. Vérifier un changement de CSS : le protocole qui marche
+
+Échanger la seule feuille sur un DOM déjà chargé, plutôt que recharger la page :
+même DOM, même état JS, aucun rotateur ni animation pour polluer la comparaison.
+
+```js
+link.setAttribute('href', '/_avant.css?t=' + Date.now())   // ← le cache-buster
+```
+
+**Quatre pièges, tous rencontrés :**
+
+1. **Le cache.** Sans `?t=`, le navigateur ressert `/_avant.css` d'un essai
+   précédent — la comparaison porte alors sur un fichier périmé et affiche des
+   écarts qui n'existent plus. Toujours vérifier au passage le nombre d'octets
+   réellement chargés.
+2. **Le témoin.** Un écart n'est une régression qu'après une comparaison à
+   **code identique**. Recharger la *même* feuille produit à lui seul 1 à 94
+   écarts de géométrie (animation du hero, arrondi sous-pixel). Sans témoin, on
+   « trouve » des régressions imaginaires.
+3. **`scroll-behavior:smooth`** fait que `scrollTo(0,0)` n'a pas encore eu lieu
+   au moment de la mesure : tous les `getBoundingClientRect()` sortent décalés
+   de la hauteur de défilement. Forcer `scrollBehavior='auto'` et attendre.
+4. **Les propriétés résolues.** `gridTemplateColumns` rend des largeurs en
+   pixels qui varient continûment avec le viewport : les comparer directement
+   fait passer 64 éléments pour des « hybrides ». Ne comparer que le **nombre**
+   de colonnes.
+
+Contrôle complémentaire après toute purge : comparer la liste des **sélecteurs
+individuels** avant/après. Le bon résultat est « N retirés, 0 vivant perdu ».
