@@ -1012,3 +1012,130 @@ Et le classique : le script d'injection vit dans `<head>`, donc au premier appel
 synchrone `document.body` est `null`. Une ligne qui le touche sans garde lève une
 exception — et décroche du même coup l'enregistrement de tous les handlers qui
 suivent.
+
+---
+
+## 18. Le paiement en trois fois — et trois règles qui en sortent
+
+### 18.1 Les quatre faits, décidés par le bureau le 10/09/2026
+
+Le dépôt ne contenait **aucune** mention d'un paiement échelonné, et affirmait
+même l'inverse (« Un seul règlement, au club, au moment de l'inscription »).
+Ces quatre points ont été tranchés par le président ; ils ne se déduisent de
+rien et ne doivent pas être réinventés :
+
+| Question | Réponse |
+|---|---|
+| Où se choisit le 3× ? | **Dans le tunnel Yapla**, au moment de régler. Pas d'arrangement hors ligne, donc le parcours d'inscription reste le même pour tout le monde. |
+| Découpage exact | **31,67 € + 31,67 € + 31,66 €** = 95,00 €. Pas 3 × 31,67 (qui ferait 95,01). |
+| Licence FFBB | Elle part **dès la première échéance**. Le joueur est couvert immédiatement. |
+| Périmètre | **Toutes les formules joueurs.** |
+
+Ce qui reste inconnu et n'est donc **écrit nulle part** : les dates des 2ᵉ et
+3ᵉ échéances. Elles sont nommées par leur rang, jamais datées. Seule la
+première est située — « à l'inscription » — parce que c'est vrai par
+construction.
+
+### 18.2 Où l'information vit, et où elle est seulement citée
+
+Source canonique : `adhesion.html#paiement`, un `div.adh-block` frère de
+`#tarif`. Tout le reste y renvoie plutôt que de recopier des montants — au
+prochain changement de tarif, il y a **un** endroit à corriger, pas onze.
+
+Les montants apparaissent à trois endroits, tous sur `adhesion.html` :
+le bloc `#paiement`, la FAQ visible, et son jumeau JSON-LD `FAQPage`.
+**Les deux versions de la FAQ doivent rester strictement synchrones.**
+
+Deux phrases disaient le contraire et ont été reformulées — les rouvrir sans
+y penser recréerait la contradiction :
+- `#tarif`, le chapeau : disait « Un seul règlement, au club, au moment de
+  l'inscription ». Son propos réel était « pas de second interlocuteur », pas
+  « un seul versement ». Reformulé en ce sens.
+- `#parcours`, étape 1 : « Vous vous inscrivez et réglez 95 € ». Précise
+  désormais « en une fois ou en trois fois sans frais », et dit que la suite
+  est identique dans les deux cas.
+
+Sur l'accueil, seul le chiffre-clé le mentionne (« Un seul tarif, ou 3 fois
+sans frais ») et renvoie à `#tarif`. Aucun montant d'échéance sur l'accueil.
+
+**Le JSON-LD `makesOffer` de l'accueil n'a PAS été touché** et ne doit pas
+l'être : schema.org n'a pas de propriété pour un paiement fractionné, et
+`price` doit rester « 95 ». Ne pas confondre avec les `offers` à `price:"0"`
+des fiches match, qui sont générés et concernent l'entrée gratuite.
+
+### 18.3 Le composant `.pay` — ce qu'il fait et ce qu'il ne calcule pas
+
+Adaptation en HTML/CSS/JS natif d'un composant React « Pricing » transmis par
+le président (bascule mensuel/annuel, prix animé). Le site est statique et le
+reste : ce qui a été repris est le **geste**, pas le code — une bascule à deux
+positions, et un chiffre qui change sous les yeux.
+
+⚠️ **Les montants ne sont pas calculés par le script.** 95 ÷ 3 = 31,666… : le
+découpage réel est une décision du bureau, pas une division. Il est écrit dans
+le HTML ; `script.js` ne fait que le montrer. On ne veut pas qu'un arrondi de
+JavaScript décide d'un engagement de paiement.
+
+Le compteur `data-count` de l'accueil n'est pas réutilisable ici : il va de 0
+vers une cible entière, une seule fois, au défilement. Celui-ci fait des
+allers-retours entre deux valeurs décimales, à la demande.
+
+Deux pièges de cascade rencontrés en l'écrivant, tous deux réglés par la
+spécificité et jamais par `!important` :
+- `.section p` (0,1,1) impose `--txt-soft` : **toute** règle de couleur portant
+  sur un `<p>` du bloc doit valoir au moins (0,2,0), d'où le préfixe `.pay`.
+  Le prix sortait gris.
+- En `--ff-display` (Anton), le signe `×` (U+00D7) **n'existe pas** et tombe
+  dans la police de repli : « 3 » sortait grand et « × » minuscule à côté. Le
+  multiplicateur est donc en `--ff-cond`.
+
+### 18.4 L'invariant des cartes catégories
+
+`.cat--typo` = **pas d'image**. `.cat--photo` = **une image**. Jamais l'inverse,
+jamais les deux.
+
+La passe V154 avait converti les huit cartes en `.cat--typo` parce que six
+portaient des images de synthèse — mais la carte « Dirigeant / bénévole » a une
+vraie photo. `.cat--typo` recycle `.cat__photo` en bandeau typographique
+(`display:flex`, `position:static` sur le numéro) : l'image devenait un
+troisième item de flex, et `.cat--wide > .cat__photo{grid-row:1/-1;height:100%}`
+étirant la figure sur toute la hauteur, `align-items:center` projetait le « 08 »
+et la pastille au milieu vertical de la carte, en plein texte.
+
+### 18.5 Les liens de lieu ont une source unique
+
+`data/creneaux.json`, clé `carte` de chaque lieu. Deux URL, une par lieu :
+
+    gymnase   https://maps.app.goo.gl/KcTePvY47wzi6JMu9
+    ruisseau  https://maps.app.goo.gl/2gHjGAH8hY4iMpT36
+
+Ne pas les recopier à la main : `build-creneaux.py` les pose sur le planning de
+l'accueil et sur `/creneaux/`. Le `https://maps.google.com/?cid=...` est autre
+chose — c'est la **fiche Google Business Profile** du club, qui porte les avis
+et sert de `hasMap` au JSON-LD ; ne pas l'uniformiser vers le lien court.
+
+⚠️ Le bloc `<ul class="cal-lieux">` de l'accueil est encore écrit **à la main**
+alors que son jumeau de `/creneaux/` est généré depuis `data/creneaux.json`.
+Les deux disent la même chose aujourd'hui, rien ne le garantit demain. C'est
+exactement le scénario qui avait produit deux URL divergentes pour Ruisseau
+Blanc. À entourer d'un marqueur `<!-- creneaux:lieux -->` un jour.
+
+### 18.6 Une modification faite sur github.com ne part PAS en ligne
+
+Le commit `5c0d95a` (« Update style.css ») a corrigé le cadrage du hero entre
+641 et 1000 px. Il a été fait **directement dans l'éditeur web de GitHub** —
+donc sans lancer `build-css.py`.
+
+Or c'est `style.min.css` qui est servi. Vérifié en production : quatre heures
+après le commit, `https://mbc974.com/style.min.css` portait toujours l'ancienne
+règle `clamp(600px,82svh,780px)`. **Le correctif était dans le dépôt sans être
+sur le site.**
+
+**Règle :** après tout commit qui touche `style.css` sans passer par la chaîne
+locale, lancer `python .claude/build-css.py` puis `python .claude/bump-assets.py`
+et republier. Le contrôle qui tranche en une seconde :
+
+```bash
+curl -s https://mbc974.com/style.min.css | grep -c "<un motif de la nouvelle règle>"
+```
+
+Zéro = la modification n'est pas en ligne.

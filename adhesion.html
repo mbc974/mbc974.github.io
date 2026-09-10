@@ -73,7 +73,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.min.css?v=b6fae043">
+<link rel="stylesheet" href="style.min.css?v=8781822c">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -94,6 +94,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   "@type": "FAQPage",
   "mainEntity": [
     {"@type":"Question","name":"Dois-je payer la licence FFBB en plus des 95 € ?","acceptedAnswer":{"@type":"Answer","text":"Non. La licence FFBB et l'assurance qui va avec sont comprises dans les 95 €. Le club ne demande aucun autre règlement pour la licence. Seules les garanties d'assurance complémentaires proposées par la fédération pendant la demande de licence sont payantes, et elles sont facultatives."}},
+    {"@type":"Question","name":"Puis-je payer en plusieurs fois ?","acceptedAnswer":{"@type":"Answer","text":"Oui, en trois fois sans frais. Le choix se fait directement dans le tunnel Yapla, au moment de régler : 31,67 € + 31,67 € + 31,66 €, soit 95 € au total. Aucun frais de dossier, aucun intérêt, aucune majoration. La licence FFBB et l'assurance partent dès la première échéance : le joueur est couvert immédiatement, sans attendre le solde. C'est ouvert à toutes les formules joueurs."}},
     {"@type":"Question","name":"J'ai payé, pourquoi n'ai-je pas encore ma licence ?","acceptedAnswer":{"@type":"Answer","text":"Le paiement sur Yapla enregistre votre adhésion au club ; la licence FFBB est créée ensuite via la procédure e-Licence. Vous recevez un e-mail de la FFBB avec un lien personnel à compléter, puis le club et la fédération valident. Comptez plusieurs jours."}},
     {"@type":"Question","name":"Mon enfant a 12 ans, quelle formule dois-je choisir ?","acceptedAnswer":{"@type":"Answer","text":"Regardez son année de naissance, pas son âge : né en 2014 ou 2015, c'est U13 Compétition. Né en 2016, c'est encore l'École de Basket. Le tableau complet est juste ici, et en cas de doute on confirme avec vous avant le paiement."}},
     {"@type":"Question","name":"Puis-je faire une séance d'essai ?","acceptedAnswer":{"@type":"Answer","text":"Oui, selon les créneaux disponibles, avant de vous engager. Contactez le club par WhatsApp ou depuis le formulaire de contact pour convenir d'une date."}},
@@ -207,7 +208,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <!-- ===== Ce que couvrent les 95 € — lève l'ambiguïté « faut-il payer la licence FFBB en plus ? » ===== -->
     <div class="adh-block reveal" id="tarif">
       <h2 class="adh-prepare__title">Ce que couvrent les 95&nbsp;€</h2>
-      <p class="adh-block__lead">Un seul règlement, au club, au moment de l'inscription. <b>Il n'y a pas de licence FFBB à régler en plus</b> : elle est comprise dans les 95&nbsp;€.</p>
+      <p class="adh-block__lead">Un seul interlocuteur, le club, et rien d'autre à régler ailleurs : <b>il n'y a pas de licence FFBB à payer en plus</b>, elle est comprise dans les 95&nbsp;€. Vous réglez <b>en une fois ou en trois fois sans frais</b>, au choix, au moment de l'inscription.</p>
       <div class="covers">
         <div class="covers__col covers__col--in">
           <h3><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Compris dans le tarif</h3>
@@ -231,6 +232,44 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       </div>
       <p class="covers__note"><b>À retenir&nbsp;:</b> le MBC ne vous demandera aucun autre règlement pour la licence. Si une option payante vous est proposée pendant la démarche FFBB, c'est une garantie d'assurance complémentaire — libre à vous de l'accepter ou non. <b>L'adhésion Dirigeant&nbsp;/&nbsp;Bénévole est gratuite&nbsp;: 0&nbsp;€.</b></p>
     </div>
+
+
+    <!-- ===== Le paiement en trois fois — un choix dans le tunnel Yapla, pas une démarche ===== -->
+    <div class="adh-block reveal" id="paiement">
+      <h2 class="adh-prepare__title">Régler en une fois, ou en trois</h2>
+      <p class="adh-block__lead">Le tarif ne bouge pas&nbsp;: <b>95&nbsp;€ dans les deux cas</b>. Le paiement en trois fois se choisit directement dans le tunnel Yapla, <b>sans le moindre frais supplémentaire</b>, et il est ouvert à toutes les formules joueurs.</p>
+
+      <div class="pay" id="pay">
+        <p class="pay__q" id="payQ">Comment souhaitez-vous régler&nbsp;?</p>
+        <div class="pay__seg" role="radiogroup" aria-labelledby="payQ">
+          <button type="button" role="radio" class="pay__opt is-on" id="pay-opt-1" data-mode="1" aria-checked="true" tabindex="0">En une fois</button>
+          <button type="button" role="radio" class="pay__opt" id="pay-opt-3" data-mode="3" aria-checked="false" tabindex="-1">En 3 fois <em>sans frais</em></button>
+        </div>
+
+        <div class="pay__stage" aria-live="polite">
+          <p class="sr-only" id="payDit">95 € réglés en une fois, à l'inscription.</p>
+          <p class="pay__price" aria-hidden="true">
+            <span class="pay__mult" hidden>3 &times;</span><span class="pay__n">95</span><span class="pay__cur">€</span>
+          </p>
+          <p class="pay__sub" aria-hidden="true">réglés en une fois, à l'inscription</p>
+
+          <ol class="pay__ech" aria-hidden="true" hidden>
+            <li><span class="pay__r">1<sup>re</sup></span><b>31,67&nbsp;€</b><span class="pay__w">à l'inscription</span></li>
+            <li><span class="pay__r">2<sup>e</sup></span><b>31,67&nbsp;€</b><span class="pay__w">échéance suivante</span></li>
+            <li><span class="pay__r">3<sup>e</sup></span><b>31,66&nbsp;€</b><span class="pay__w">dernière échéance</span></li>
+          </ol>
+          <p class="pay__tot" aria-hidden="true" hidden><b>95,00&nbsp;€ au total.</b> Aucun frais de dossier, aucun intérêt, aucune majoration.</p>
+        </div>
+
+        <p class="pay__note"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg> <span>Dans les deux cas, <b>la licence FFBB et l'assurance partent dès la première échéance</b>&nbsp;: le joueur est couvert immédiatement, sans attendre le solde.</span></p>
+
+        <p class="pay__cta">
+          <a href="https://la-montagne-basket-club.s2.yapla.com/fr/espace-membres/adhesion/" target="_blank" rel="noopener" class="btn btn--primary">Je m'inscris sur Yapla<span class="sr-only"> (nouvel onglet)</span></a>
+          <a class="pay__second" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20r%C3%A9gler%20l%27adh%C3%A9sion%20en%203%20fois%20sans%20frais%20%3A%20pouvez-vous%20me%20confirmer%20la%20marche%20%C3%A0%20suivre%20%3F" target="_blank" rel="noopener">Une question sur le paiement&nbsp;?<span class="sr-only"> — WhatsApp (nouvel onglet)</span></a>
+        </p>
+      </div>
+    </div>
+
 
     <!-- ===== Quelle formule choisir ? — le tableau année de naissance → formule Yapla ===== -->
     <div class="adh-block reveal" id="formules">
@@ -268,8 +307,8 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <p class="adh-block__lead">Payer sur Yapla, c'est votre adhésion au club — <b>ce n'est pas encore votre licence FFBB définitive</b>. La licence est créée ensuite, avec vous, via la procédure e-Licence de la fédération. Voici les cinq étapes, dans l'ordre.</p>
       <ol class="licence-path">
         <li>
-          <b>Vous vous inscrivez et réglez 95 €</b>
-          <span>En ligne sur Yapla, en quelques minutes. Vous recevez immédiatement une confirmation de paiement par e-mail. Votre place est réservée dans votre catégorie.</span>
+          <b>Vous vous inscrivez et réglez les 95 €</b>
+          <span>En ligne sur Yapla, en quelques minutes, <b>en une fois ou en trois fois sans frais</b>. Vous recevez immédiatement une confirmation de paiement par e-mail. Votre place est réservée dans votre catégorie — et la suite est exactement la même dans les deux cas.</span>
           <span class="lp-who lp-who--vous">Vous</span>
         </li>
         <li>
@@ -318,6 +357,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="adh-faq reveal">
       <h2 class="adh-prepare__title">Questions fréquentes</h2>
       <details class="faq__item"><summary>Dois-je payer la licence FFBB en plus des 95&nbsp;€&nbsp;?</summary><p><b>Non.</b> La licence FFBB et l'assurance qui va avec sont comprises dans les 95 €. Le club ne vous demandera aucun autre règlement pour la licence. Seules les <b>garanties d'assurance complémentaires</b> proposées par la fédération pendant la demande de licence sont payantes — et elles sont facultatives.</p></details>
+      <details class="faq__item"><summary>Puis-je payer en plusieurs fois&nbsp;?</summary><p><b>Oui, en trois fois sans frais.</b> Le choix se fait directement dans le tunnel Yapla, au moment de régler&nbsp;: <b>31,67&nbsp;€ + 31,67&nbsp;€ + 31,66&nbsp;€</b>, soit 95&nbsp;€ au total. Aucun frais de dossier, aucun intérêt, aucune majoration. La <b>licence FFBB et l'assurance partent dès la première échéance</b>&nbsp;: le joueur est couvert immédiatement, sans attendre le solde. C'est ouvert à toutes les formules joueurs. <a href="#paiement">Voir le détail des trois échéances</a>.</p></details>
       <details class="faq__item"><summary>J'ai payé, pourquoi n'ai-je pas encore ma licence&nbsp;?</summary><p>C'est normal. Le paiement sur Yapla enregistre votre adhésion au club ; la licence FFBB est créée ensuite, via la procédure e-Licence. Vous recevrez un e-mail de la FFBB avec un lien personnel à compléter, puis le club et la fédération valident. Comptez plusieurs jours. <a href="#parcours">Voir les 5 étapes détaillées</a>.</p></details>
       <details class="faq__item"><summary>Mon enfant a 12 ans, quelle formule dois-je choisir&nbsp;?</summary><p>Regardez son <b>année de naissance</b>, pas son âge : né en 2014 ou 2015, c'est U13 Compétition. Né en 2016, c'est encore l'École de Basket. <a href="#formules">Le tableau complet est juste ici</a>, et en cas de doute on confirme avec vous avant le paiement.</p></details>
       <details class="faq__item"><summary>Puis-je faire une séance d'essai&nbsp;?</summary><p>Oui, selon les créneaux disponibles, avant de vous engager. Contactez le club par <a href="https://wa.me/262692556458" target="_blank" rel="noopener">WhatsApp<span class="sr-only"> (nouvel onglet)</span></a> ou depuis le <a href="/#contact">formulaire de contact</a> pour convenir d'une date.</p></details>
@@ -390,6 +430,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </footer>
 
-<script src="script.js?v=57bb1b08" defer></script>
+<script src="script.js?v=be3f84a0" defer></script>
 </body>
 </html>

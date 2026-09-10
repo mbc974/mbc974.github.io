@@ -1555,3 +1555,129 @@ MBC.dateLongue = function (d, avecAnnee) {
   window.addEventListener('resize', auDefilement);
   calculer();
 })();
+
+/* ============================================================
+   Régler en une fois, ou en trois — page adhésion
+   ------------------------------------------------------------
+   Une bascule à deux positions et un chiffre qui change. Le
+   montant de l'échéance est la seule information qui manque à
+   la décision d'un parent : elle mérite mieux qu'une phrase.
+
+   Les VALEURS ne sont pas calculées ici. 95 ÷ 3 = 31,666… : le
+   découpage réel (31,67 / 31,67 / 31,66) est une décision du
+   bureau, pas une division. Il est donc écrit dans le HTML, et
+   ce script ne fait que le montrer — on ne veut pas qu'un
+   arrondi de JavaScript décide d'un engagement de paiement.
+
+   Le compteur de la page d'accueil (data-count) n'est pas
+   réutilisable ici : il va de 0 vers une cible entière, une
+   seule fois, au défilement. Celui-ci fait des allers-retours
+   entre deux valeurs décimales, à la demande.
+   ============================================================ */
+(function () {
+  var bloc = document.getElementById('pay');
+  if (!bloc) return;
+
+  var opts = Array.prototype.slice.call(bloc.querySelectorAll('.pay__opt'));
+  var nb = bloc.querySelector('.pay__n');
+  var mult = bloc.querySelector('.pay__mult');
+  var sub = bloc.querySelector('.pay__sub');
+  var ech = bloc.querySelector('.pay__ech');
+  var tot = bloc.querySelector('.pay__tot');
+  var dit = document.getElementById('payDit');
+  if (!opts.length || !nb || !sub) return;
+
+  var doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var anim = null;
+
+  var VUES = {
+    '1': {
+      valeur: 95,
+      libelle: '95',
+      sous: 'réglés en une fois, à l’inscription',
+      dit: '95 € réglés en une fois, à l’inscription.'
+    },
+    '3': {
+      valeur: 31.67,
+      libelle: '31,67',
+      sous: 'par échéance, soit 95 € au total',
+      dit: 'Trois fois 31,67 €, soit 95 € au total, sans aucun frais supplémentaire.'
+    }
+  };
+
+  /* Le format d'affichage pendant le vol : deux décimales, virgule
+     française. « 95 » ne s'écrit 95,00 qu'un instant — la valeur finale
+     exacte est réécrite à l'atterrissage, jamais recalculée. */
+  function ecrire(v) {
+    nb.textContent = v.toFixed(2).replace('.', ',');
+  }
+
+  function versLaValeur(depart, arrivee, libelleFinal) {
+    if (anim) { cancelAnimationFrame(anim); anim = null; }
+    if (!doux || depart === arrivee) { nb.textContent = libelleFinal; return; }
+    var duree = 420, t0 = null;
+    function pas(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / duree);
+      /* même easing que le reste du site : sortie franche, arrivée douce */
+      var e = 1 - Math.pow(1 - p, 3);
+      ecrire(depart + (arrivee - depart) * e);
+      if (p < 1) { anim = requestAnimationFrame(pas); }
+      else { anim = null; nb.textContent = libelleFinal; }
+    }
+    anim = requestAnimationFrame(pas);
+  }
+
+  var courant = '1';
+
+  function poser(mode, deplacerFocus) {
+    var vue = VUES[mode];
+    if (!vue) return;
+    var avant = VUES[courant].valeur;
+    courant = mode;
+
+    opts.forEach(function (b) {
+      var on = b.getAttribute('data-mode') === mode;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-checked', String(on));
+      /* tabindex mobile : un radiogroup ne prend qu'UNE tabulation, les
+         flèches font le reste. */
+      b.tabIndex = on ? 0 : -1;
+      if (on && deplacerFocus) b.focus();
+    });
+
+    versLaValeur(avant, vue.valeur, vue.libelle);
+    sub.textContent = vue.sous;
+    if (mult) mult.hidden = (mode !== '3');
+    if (ech) ech.hidden = (mode !== '3');
+    if (tot) tot.hidden = (mode !== '3');
+    if (dit) dit.textContent = vue.dit;
+  }
+
+  opts.forEach(function (b) {
+    b.addEventListener('click', function () {
+      poser(b.getAttribute('data-mode'), false);
+    });
+  });
+
+  /* Clavier : flèches pour circuler, Home/End aux extrémités, Espace et
+     Entrée pour confirmer — ce qu'attend un radiogroup. */
+  bloc.querySelector('.pay__seg').addEventListener('keydown', function (e) {
+    var i = opts.indexOf(document.activeElement);
+    if (i < 0) return;
+    var j = null;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') j = (i + 1) % opts.length;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') j = (i - 1 + opts.length) % opts.length;
+    else if (e.key === 'Home') j = 0;
+    else if (e.key === 'End') j = opts.length - 1;
+    else if (e.key === ' ' || e.key === 'Enter') { j = i; }
+    else return;
+    e.preventDefault();
+    poser(opts[j].getAttribute('data-mode'), true);
+  });
+
+  /* Le HTML arrive en position « une fois » : rien à repeindre au chargement,
+     on se contente d'accorder les états ARIA au cas où la page aurait été
+     rouverte sur une ancre. */
+  poser('1', false);
+})();

@@ -10127,3 +10127,151 @@ html:has(.seo-top){scroll-padding-top:104px}
   width:1.15em;height:1.15em;
   margin:0 .35em 0 0;vertical-align:-.2em}
 .cat-foot a:has(.ic--wa){white-space:nowrap}
+
+/* ============================================================================
+   V170 — LE 3 FOIS SANS FRAIS : LE CHIFFRE REPOND A LA QUESTION
+   ----------------------------------------------------------------------------
+   Le club propose de regler les 95 € en trois fois, sans frais, directement
+   dans le tunnel Yapla. Restait a le dire sans transformer une bonne nouvelle
+   en paragraphe de conditions generales.
+
+   D'OU VIENT CE COMPOSANT
+   Le president a transmis un composant React « Pricing » (bascule mensuel /
+   annuel, grand prix qui s'anime). Le site est statique et le reste : pas de
+   React, pas de Tailwind, pas de build. Ce qui a ete repris n'est donc pas le
+   code mais son GESTE — une bascule a deux positions, et un chiffre qui
+   change sous les yeux. Ici il ne bascule pas entre deux offres : il bascule
+   entre deux facons de payer LA MEME, ce qui est exactement la question que se
+   pose un parent devant 95 €.
+
+   POURQUOI UNE BASCULE PLUTOT QU'UNE PHRASE
+   « 95 € ou 3 × 31,67 € sans frais » se lit ; « 95 € » qui devient
+   « 3 × 31,67 € » se COMPREND. Le montant de l'echeance est la seule
+   information qui manque a la decision, et c'est celle qu'un texte enterre.
+
+   CE QUE LE COMPOSANT NE FAIT PAS
+   Inventer un calendrier. Le depot ne dit pas a quelles dates tombent les
+   deuxieme et troisieme echeances : elles sont donc nommees par leur rang,
+   jamais datees. Seule la premiere est situee — a l'inscription — parce que
+   c'est vrai par construction.
+
+   ACCESSIBILITE
+   Un vrai radiogroup : fleches, Home/End, tabindex mobile, aria-checked. La
+   scene porte aria-live="polite" et une phrase sr-only unique ; le prix et la
+   liste sont aria-hidden pour que rien ne soit lu deux fois.
+   ============================================================================ */
+.pay{
+  margin-top:clamp(1.5rem,3vw,2.2rem);
+  padding:clamp(1.3rem,3vw,2.1rem);
+  background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-lg);
+  box-shadow:var(--e2)}
+.pay .pay__q{
+  margin:0 0 var(--sp-90);text-align:center;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.14em;font-size:var(--text-md);color:var(--txt-soft)}
+
+/* --- La bascule ------------------------------------------------------------
+   Deux positions dans un meme rail : c'est le rail qui dit « il y a un choix »,
+   avant meme qu'on lise les libelles. */
+.pay__seg{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:6px;max-width:32rem;margin:0 auto;
+  padding:6px;background:rgb(var(--blanc-rgb) / .04);
+  border:1px solid var(--hair-2);border-radius:calc(var(--r-md) + 6px)}
+.pay__opt{
+  font:inherit;cursor:pointer;min-height:52px;padding:.55rem .7rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;
+  background:transparent;border:0;border-radius:var(--r-md);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.06em;font-size:var(--text-md);color:var(--txt);
+  transition:background .22s var(--ease-out),color .22s var(--ease-out)}
+.pay__opt em{
+  font-style:normal;font-size:var(--text-2xs);letter-spacing:.14em;
+  color:var(--orange-vif);transition:color .22s var(--ease-out)}
+.pay__opt.is-on{background:var(--orange-vif);color:#160C02}
+.pay__opt.is-on em{color:#160C02;opacity:.72}
+@media (hover:hover){
+  .pay__opt:not(.is-on):hover{background:rgb(var(--blanc-rgb) / .06);color:var(--blanc)}}
+.pay__opt:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+
+/* --- La scene : le chiffre, puis ce qu'il implique ------------------------- */
+.pay__stage{
+  margin-top:clamp(1.3rem,2.6vw,1.9rem);text-align:center}
+.pay .pay__price{
+  margin:0;display:flex;align-items:baseline;justify-content:center;gap:.16em;
+  font-family:var(--ff-display);line-height:.9;color:var(--blanc);
+  font-size:clamp(3rem,8vw,5rem);
+  /* tabular-nums : sans lui, « 95 » et « 31,67 » ne font pas la meme chasse et
+     le bloc entier sautille a chaque image de l'animation. */
+  font-variant-numeric:tabular-nums}
+/* Le « x » multiplicateur : en --ff-display (Anton), le signe U+00D7 n'existe
+   pas et tombe dans la police de repli — le « 3 » sortait grand et le « x »
+   minuscule a cote. Le groupe entier passe donc en condense, qui porte les
+   deux glyphes a la meme chasse. */
+.pay__mult{
+  font-family:var(--ff-cond);font-weight:700;
+  font-size:.4em;letter-spacing:.04em;color:var(--orange-vif);
+  align-self:center;margin-right:.22em}
+/* Le seul noeud que le script reecrit. Il porte sa propre regle plutot que
+   d'heriter en silence : une classe presente dans le markup sans aucune
+   regle CSS est signalee par verifier-classes.py, et a raison — on ne
+   distingue pas un style herite volontairement d'un oubli. */
+.pay__n{display:inline-block;white-space:nowrap}
+.pay__cur{font-size:.52em;color:var(--orange-vif)}
+.pay .pay__sub{
+  margin:.5rem 0 0;font-family:var(--ff-cond);font-weight:600;
+  text-transform:uppercase;letter-spacing:.11em;
+  font-size:var(--text-md);color:var(--bleu-glacier)}
+
+/* --- Les trois echeances --------------------------------------------------- */
+.pay__ech{
+  list-style:none;margin:clamp(1.2rem,2.4vw,1.7rem) auto 0;padding:0;
+  max-width:34rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(.5rem,1vw,.8rem)}
+.pay__ech li{
+  display:flex;flex-direction:column;align-items:center;gap:.25rem;
+  padding:.85rem .5rem;
+  background:rgb(var(--blanc-rgb) / .035);border-radius:var(--r-md);
+  border-top:2px solid rgb(var(--orange-vif-rgb) / .5)}
+/* Pas de text-transform ici : « 1re » passait en « 1RE », qui n'est pas la
+   forme francaise de l'ordinal. */
+.pay__r{
+  font-family:var(--ff-cond);font-weight:700;letter-spacing:.1em;
+  font-size:var(--text-xs);color:var(--txt-passe)}
+.pay__r sup{font-size:.72em;vertical-align:.42em;margin-left:.02em}
+.pay__ech b{
+  font-family:var(--ff-display);font-size:var(--text-xl);color:var(--blanc);
+  font-variant-numeric:tabular-nums;line-height:1}
+.pay__w{font-size:var(--text-xs);color:var(--txt-soft);line-height:1.3}
+.pay .pay__tot{
+  margin:var(--sp-100) 0 0;font-size:var(--text-base);color:var(--txt-soft)}
+.pay__tot b{color:var(--blanc)}
+
+/* --- Ce qui rassure vraiment ---------------------------------------------- */
+.pay .pay__note{
+  display:flex;align-items:flex-start;gap:.7rem;
+  margin:clamp(1.3rem,2.6vw,1.9rem) 0 0;padding-top:clamp(1.1rem,2.2vw,1.5rem);
+  border-top:1px solid var(--hair);
+  font-size:var(--text-base);color:var(--txt-soft);text-align:left}
+.pay__note .ic{width:1.25em;height:1.25em;flex:none;color:var(--orange-vif);margin-top:.15em}
+.pay__note b{color:var(--txt)}
+.pay .pay__cta{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:clamp(.8rem,1.8vw,1.5rem);margin:clamp(1.2rem,2.4vw,1.7rem) 0 0}
+.pay__second{
+  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.11em;font-size:var(--text-md);color:rgba(240,246,252,.82);
+  box-shadow:inset 0 -1px 0 0 rgba(240,246,252,0);
+  transition:color .22s,box-shadow .22s}
+.pay__second:hover{color:var(--blanc);box-shadow:inset 0 -1px 0 0 rgba(240,246,252,.5)}
+.pay__second:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:4px}
+
+@media (max-width:560px){
+  .pay__ech{grid-template-columns:1fr;max-width:22rem}
+  .pay__ech li{flex-direction:row;justify-content:space-between;text-align:left;
+    border-top:0;border-left:2px solid rgb(var(--orange-vif-rgb) / .5)}
+  .pay__w{text-align:right}
+  .pay__cta .btn{flex:1 1 100%;justify-content:center}
+  .pay__second{margin-inline:auto}}
+@media (prefers-reduced-motion:reduce){
+  .pay__opt,.pay__opt em,.pay__second{transition:none}}
