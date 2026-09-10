@@ -50,6 +50,7 @@ suivante.
 | Ce qu'on veut changer | Le fichier à modifier | La commande |
 |---|---|---|
 | Une rencontre (date, heure, adversaire, bénévoles) | `data/matchs.json` | `python .claude/build-matchs.py` |
+|  ↳ *le ruban de saison de l'accueil se régénère avec* | — | *(appelé par `build-matchs.py`, ne pas lancer à la main)* |
 | Un article d'actualité | `data/actualites.json` | `python .claude/build-actus.py` |
 | Un créneau d'entraînement, une catégorie, un tarif | `data/creneaux.json` | `python .claude/affiche-creneaux.py` **puis** `build-creneaux.py` |
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
@@ -855,3 +856,159 @@ opaques.
 est à 69 % de pixels sombres et `cpa-paysage` à 61 % — sur fond nuit, deux
 partenaires payants disparaîtraient. Et on ne repeint pas le logo de quelqu'un
 d'autre.
+
+---
+
+## 17. Passe « premium & épuré » (10/09/2026) — six défauts, et l'outil qui mentait
+
+Six points relevés à l'écran par le président. Ce qui suit dit ce qui a changé,
+et surtout **ce qu'il ne faut pas défaire**.
+
+### 17.1 Le bandeau « prochain match » : trois zones, un seul axe
+
+La grille nommait **trois** rangées (`"eyebrow actions" "titre actions"
+"meta actions"`) pour un bloc qui en contient **quatre** : le compte à rebours
+n'avait aucun `grid-area` et se plaçait seul dans une quatrième rangée
+implicite, que la colonne d'actions ne couvrait pas.
+
+Mesure à 1717 × 892, avant :
+
+| bloc            | haut | bas | centre |
+|-----------------|------|-----|--------|
+| colonne gauche  | 499  | 656 | **578** |
+| bloc d'actions  | 524  | 578 | **551** |
+
+27 px d'écart : c'est le décentrage visible de « Voir le match » et
+« Itinéraire ». Et le compte à rebours, seul sur sa ligne, laissait une ligne
+orpheline en bas à gauche pendant qu'un vide de 330 px s'ouvrait au centre.
+
+**V161** passe la grille à **trois colonnes** — identité / compte à rebours /
+actions — toutes couvrant les mêmes rangées. Après : les deux centres valent
+574. Sous 820 px, tout s'empile dans l'ordre eyebrow / titre / meta / compte à
+rebours / actions.
+
+⚠️ Le point médian « · » entre les groupes du décompte a été **retiré du
+markup** (`script.js`), pas masqué : « jour », « h » et « min » séparent déjà.
+La règle `.nx__cd-sep` est partie avec lui.
+
+### 17.2 La signature manuscrite ne fait plus de pâtés
+
+Voir aussi § 9. Le tracé de plume refermait les contre-formes du **e** et du
+**o** en Caveat 400. **V160** anime `stroke-opacity: 1 → 0` après l'encrage :
+la plume reste un outil de tracé, l'encre seule subsiste. `prefers-reduced-motion`
+pose directement `stroke-opacity:0`.
+
+### 17.3 La catégorie choisie prend la place disponible
+
+**V163** : `.age__cat` devient une grille — libellé au-dessus, **titre à
+gauche** (`clamp(2.2rem, 5vw, 3.9rem)`), **années de naissance à droite** en
+condensé orange. Le panneau passe à `64rem`. Sous 640 px, les années repassent
+sous le titre.
+
+**V167** : les trois faits (Créneau / Lieu / Formule) se présentent pareil à
+toutes les largeurs — libellé au-dessus, valeur en dessous. Avant, sous 700 px,
+seule la valeur longue passait à la ligne : trois faits, deux présentations
+(hauteurs mesurées 62 / 39 / 39).
+
+### 17.4 Plus aucune image de synthèse sur le site
+
+`assets/images/joueuse-action.*` et **tout** `assets/categories/` (48 fichiers)
+sont supprimés du dépôt. Trois pages les servaient encore :
+
+| page | remplacée par |
+|------|---------------|
+| accueil, carte « Basket loisirs » | plus d'image : la carte passe en `.cat--typo` comme les six autres |
+| `basket-adulte-loisirs-saint-denis/` | `assets/galerie/equipe-cohesion` |
+| `baby-basket-la-reunion/` | `assets/galerie/initiation-basket-enfants` |
+| `basket-enfant-saint-denis/` | `assets/galerie/ecole-basket-enfant-mbc-saint-denis` |
+
+La carte « Seniors compétition » gardait `.cat--photo` avec un `<figure>` vide :
+elle réservait 132 à 180 px pour une photo absente. Passée en `.cat--typo`.
+
+**Règle** : chaque `alt` réutilisé vient d'une description déjà publiée pour
+cette photo ailleurs sur le site. On ne réécrit pas ce qu'une photo montre.
+
+Restent à vérifier un jour : `assets/maillots/maillot-*.jpg` sont des **rendus
+produit** (maquettes de maillot), pas des photos — ni des personnes générées.
+Laissés en place.
+
+### 17.5 Le ruban de saison — la section « matchs » n'est plus vide
+
+`.claude/build-ruban-saison.py`, entre les marqueurs `SAISON-RUBAN:DEBUT/FIN`
+d'`index.html`. Source : `data/matchs.json`, et rien d'autre.
+
+Sept vignettes (journée, écusson, nom court, date, camp), une par rencontre.
+Le détail — horaire, lieu, postes bénévoles — reste dans l'accordéon, dont le
+libellé devient « Voir le détail de chaque rencontre » : il n'y avait pas de
+raison qu'il répète le titre de la section.
+
+Coût : environ 150 px. Tout déplier en coûterait 2 600.
+
+**Les états `is-next` / `is-past` ne sont PAS générés** : le site est statique,
+la réponse dépend de l'heure d'ouverture de la page. `script.js` les pose, avec
+la fonction `situer()` — **la même** que pour les lignes de l'accordéon, sur les
+mêmes attributs `data-debut` / `data-fin`. Ne pas en faire une seconde copie.
+
+Vérifié en reculant J1–J3 d'un an dans une copie jetable : les trois s'éteignent
+et J4 prend l'anneau orange.
+
+### 17.6 Les traits qui ne séparaient rien
+
+Recensement fait au navigateur : toute bordure visible de plus de 90 px, plus
+tout pseudo-élément servant de filet. Retirés :
+
+1. **Traits verticaux du bandeau de chiffres** (`.keyfig__i + .keyfig__i::before`).
+   Les trois blocs portent déjà un filet horizontal de 2 px qui, lui, **sert** :
+   il change de couleur au survol et au focus.
+2. **Soulignés du sélecteur d'âge** — et ils étaient dissymétriques,
+   `:last-child` annulant le troisième.
+3. **Bordure des bandes alternées** (`.section.categories/.matchs/.contact`).
+   Mesure au pixel à la jonction chiffres-clés / catégories :
+   `y=183 rgb(27,36,51)` pleine largeur, `y=184 rgb(38,46,63)` au centre —
+   **deux traits à un pixel d'écart**. On garde le filet dégradé (il s'arrête à
+   la largeur du contenu et s'efface aux bouts), on retire la bordure.
+4. **Pied de page** : `.footer__ident` avait un bord haut tombant exactement sur
+   le bord bas de `.footer__top` ; `.footer-legal` redisait 24 px plus bas, sur
+   un cinquième de la largeur, la coupe que `.footer__seo` venait de marquer.
+
+**Ce qui reste, et pourquoi** : les cadres de cartes délimitent une surface ; les
+bordures de champs de formulaire sont l'affordance ; les filets de section
+marquent un chapitre ; les 2 px du bandeau de chiffres portent un état. Un trait
+qui informe reste.
+
+### 17.7 L'outil de capture mentait sur la largeur — à lire avant toute mesure
+
+**Chrome headless clampe le viewport à 500 px de large.** Vérifié en écrivant
+`innerWidth` dans le DOM et en le relisant par `--dump-dom` :
+
+```
+--window-size=390,700   ->  innerWidth réel : 500
+--window-size=375,700   ->  innerWidth réel : 500
+--window-size=1717,700  ->  innerWidth réel : 1701
+```
+
+`--headless=old` fait pareil. La **hauteur**, elle, est respectée.
+
+Conséquence : **toute capture « mobile » de ce dépôt faite par `shot.py` montre
+une page mise en page pour 500 px, recadrée à 390** — d'où des textes coupés et
+un bouton qui déborde, alors que le vrai navigateur à 390 px ne déborde pas
+(`scrollWidth == innerWidth`, mesuré dans le panneau).
+
+La parade est `cadre.py` : un `<iframe>` à la taille voulue. Le viewport d'une
+iframe vaut exactement sa taille CSS. On photographie une fenêtre large, on
+recadre sur l'iframe. Contrôle : bouton mesuré 39 → 740 en dpr2, soit
+19,5 → 370 en CSS — identique au navigateur (20 → 371).
+
+Deux autres pièges du même outillage, corrigés :
+
+- le mode `?only=` remettait `body{padding:0}` : sur mobile c'est la gouttière,
+  donc l'isolement **élargissait** le contenu et fabriquait des débordements
+  imaginaires. Un instrument qui déplace ce qu'il mesure ne sert à rien ;
+- deux tirs de même largeur partageaient le profil Chrome, donc le cache : le
+  second rechargeait le `_cadre.html` du premier et photographiait la mauvaise
+  section. Le gabarit est désormais horodaté.
+
+Et le classique : le script d'injection vit dans `<head>`, donc au premier appel
+synchrone `document.body` est `null`. Une ligne qui le touche sans garde lève une
+exception — et décroche du même coup l'enregistrement de tous les handlers qui
+suivent.

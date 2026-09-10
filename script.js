@@ -1159,11 +1159,13 @@ MBC.dateLongue = function (d, avecAnnee) {
     var j = Math.floor(reste / J);
     var h = Math.floor((reste % J) / H);
     var m = Math.floor((reste % H) / MIN);
-    var sep = '<span class="nx__cd-sep" aria-hidden="true">\u00b7</span>';
+    /* Pas de separateur entre les trois groupes : « jour », « h » et
+       « min » les distinguent deja. Un point median de plus ne separait
+       rien — il flottait entre deux chiffres et se lisait comme une scorie. */
     cd.className = 'nx__cd';
     cd.innerHTML = '<span class="nx__cd-lab">Coup d’envoi dans</span>' +
-      '<span class="nx__cd-val">' + unite(j, j > 1 ? 'jours' : 'jour') + sep +
-      unite(h, 'h') + sep + unite(m, 'min') + '</span>';
+      '<span class="nx__cd-val">' + unite(j, j > 1 ? 'jours' : 'jour') +
+      unite(h, 'h') + unite(m, 'min') + '</span>';
     cd.hidden = false;
   }
 
@@ -1229,29 +1231,40 @@ MBC.dateLongue = function (d, avecAnnee) {
   if (!rows.length) return;
 
   var maintenant = new Date();
-  var next = null;
 
-  rows.forEach(function (row) {
-    /* L'instant publié par le générateur (fuseau +04:00 compris). Le repli
-       relit la ligne elle-même plutôt que de supposer 20h30 : c'est l'heure
-       imprimée dans le PDF de la ligue qui fait foi, pas une habitude. */
-    var debut = MBC.instant(row.getAttribute('data-debut')) ||
-                MBC.instant(row.getAttribute('data-date'), MBC.heureDe(row) || '20:30');
-    var fin = MBC.instant(row.getAttribute('data-fin')) ||
-              MBC.instant(row.getAttribute('data-date'), '23:59');
-    if (!debut || !fin) return;
-    /* Au coup de sifflet FINAL, pas à minuit : c'est la règle que suit déjà
-       le générateur (voir MAINTENANCE.md § 1 ter). Un supporter qui ouvre le
-       site à 20h45 un vendredi voit la rencontre en cours comme « à venir ». */
-    if (fin < maintenant) {
-      row.classList.add('is-past');
-    } else if (!next) {
-      next = { row: row, date: debut };
-    }
-  });
+  /* Situer une liste d'elements dates : passes attenues, premier a venir
+     marque. Le ruban de saison et l'accordeon publient les MEMES attributs
+     data-debut / data-fin, poses par les memes generateurs : ils se datent
+     donc avec ce code-ci, pas avec une copie. */
+  function situer(elements) {
+    var premier = null;
+    elements.forEach(function (row) {
+      /* L'instant publié par le générateur (fuseau +04:00 compris). Le repli
+         relit la ligne elle-même plutôt que de supposer 20h30 : c'est l'heure
+         imprimée dans le PDF de la ligue qui fait foi, pas une habitude. */
+      var debut = MBC.instant(row.getAttribute('data-debut')) ||
+                  MBC.instant(row.getAttribute('data-date'), MBC.heureDe(row) || '20:30');
+      var fin = MBC.instant(row.getAttribute('data-fin')) ||
+                MBC.instant(row.getAttribute('data-date'), '23:59');
+      if (!debut || !fin) return;
+      /* Au coup de sifflet FINAL, pas à minuit : c'est la règle que suit déjà
+         le générateur (voir MAINTENANCE.md § 1 ter). Un supporter qui ouvre le
+         site à 20h45 un vendredi voit la rencontre en cours comme « à venir ». */
+      if (fin < maintenant) {
+        row.classList.add('is-past');
+      } else if (!premier) {
+        premier = { row: row, date: debut };
+      }
+    });
+    if (premier) premier.row.classList.add('is-next');
+    return premier;
+  }
+
+  var next = situer(rows);
+  situer(Array.prototype.slice.call(
+    document.querySelectorAll('.msn .msn__i[data-date]')));
 
   if (!next) return;
-  next.row.classList.add('is-next');
 
   var bandeau = document.getElementById('mxNext');
   if (!bandeau) return;

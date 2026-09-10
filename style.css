@@ -8670,9 +8670,20 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
     hw-trait calc(var(--hw-trace) * var(--t)) linear
              calc(var(--hw-trace) * var(--d)) both,
     hw-encre calc(var(--hw-trace) * var(--t) * 1.9) var(--ease-out)
-             calc(var(--hw-trace) * (var(--d) + var(--t) * .42)) both}
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .42)) both,
+    hw-plume calc(var(--hw-trace) * var(--t) * 1.1) var(--ease-out)
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .6)) both}
 @keyframes hw-trait{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
 @keyframes hw-encre{from{fill-opacity:0}  to{fill-opacity:1}}
+/* V160 — LA PLUME SE RETIRE UNE FOIS L'ENCRE POSEE.
+   Le contour n'est qu'un OUTIL DE TRACE : il dessine la lettre avant que le
+   remplissage ne la prenne. Le laisser jusqu'au bout epaississait le glyphe
+   des deux cotes de son contour — et refermait les contre-formes. Sur Caveat
+   400, le « o » et le « e » devenaient des pates pleines.
+   Le trait s'efface donc juste apres le passage de l'encre. On anime
+   stroke-opacity et non stroke-width : la geometrie du trace ne bouge pas,
+   seule sa visibilite. */
+@keyframes hw-plume{from{stroke-opacity:1}to{stroke-opacity:0}}
 
 /* La sortie : un fondu seul, sans glissement — la phrase suivante sera
    REECRITE, elle n'a pas a etre annoncee par un mouvement. */
@@ -8686,7 +8697,8 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 /* Mouvement reduit : la phrase est simplement LA, encree, des le chargement.
    Le script, lui, n'installe aucune rotation dans ce cas. */
 @media (prefers-reduced-motion:reduce){
-  .hw__p{stroke-dashoffset:0;fill-opacity:1}
+  /* Etat final direct : encre posee, plume deja retiree. */
+  .hw__p{stroke-dashoffset:0;fill-opacity:1;stroke-opacity:0}
   .hw__f.is-on .hw__p,
   .hw__f.is-out{animation:none}
 }
@@ -9334,7 +9346,6 @@ html:has(.seo-top){scroll-padding-top:104px}
   color:var(--blanc);font-variant-numeric:tabular-nums}
 .nx__cd-s{font-family:var(--ff-cond);font-weight:600;font-size:var(--text-xs);
   text-transform:uppercase;letter-spacing:.08em;color:var(--orange-vif)}
-.nx__cd-sep{color:var(--txt-passe);margin:0 .3em}
 /* « C'est ce soir » : le seul moment où ce bloc devient une nouvelle, pas un
    décompte. Il prend donc la voix du titrage, et l'orange du club. */
 .nx__cd--soir{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
@@ -9747,3 +9758,290 @@ html:has(.seo-top){scroll-padding-top:104px}
 
 .sponsor-card__name{opacity:.82;transition:opacity .25s var(--ease-out)}
 .sponsor-card:hover .sponsor-card__name{opacity:1}
+
+/* ============================================================================
+   V161 — LE BANDEAU MATCH : TROIS ZONES SUR UN MEME AXE
+   ----------------------------------------------------------------------------
+   DEUX DEFAUTS MESURES, UNE SEULE CAUSE : LA GRILLE
+   La grille ne nommait que TROIS rangees — "eyebrow actions" / "titre actions"
+   / "meta actions" — alors que le bloc en contient quatre. Le compte a rebours
+   n'avait aucun grid-area : il se placait tout seul dans une quatrieme rangee
+   implicite, que la colonne d'actions ne couvrait pas.
+
+   Mesure a 1717x892, avant :
+       bloc de gauche  499 -> 656   centre 578
+       bloc d'actions  524 -> 578   centre 551   (27 px trop haut)
+   « Voir le match » et « Itineraire » flottaient donc au-dessus de l'axe.
+
+   Et le compte a rebours, seul sur sa rangee, laissait une ligne orpheline en
+   bas a gauche pendant qu'un vide de 330 px s'ouvrait au centre du bandeau.
+
+   CE QUE FAIT CETTE COUCHE
+   Elle passe de deux colonnes a trois : identite / compte a rebours / actions.
+   Le vide central se remplit de la seule information qui le meritait — le
+   temps qui reste — la ligne orpheline disparait, et les trois zones partagent
+   le meme axe optique parce qu'elles couvrent toutes les memes rangees.
+
+   Aucune ligne de separation n'est ajoutee entre les zones : l'alignement et
+   le blanc suffisent a les distinguer.
+   ============================================================================ */
+.nx__in{
+  grid-template-columns:1fr auto auto;
+  grid-template-areas:"eyebrow cd actions" "titre cd actions" "meta cd actions";
+  column-gap:clamp(1.4rem,3.2vw,3.4rem);
+  row-gap:.28rem}
+/* Le compte a rebours devient un bloc, pas une ligne : le libelle au-dessus,
+   les valeurs dessous, cales a droite pour donner un bord franc face au
+   bouton. */
+.nx__cd{
+  grid-area:cd;margin:0;
+  flex-direction:column;flex-wrap:nowrap;align-items:flex-end;
+  gap:.34rem;text-align:right}
+.nx__cd-lab{white-space:nowrap}
+/* Le point median entre les groupes a ete retire du markup : c'est
+   desormais le blanc qui separe « 01 jour » de « 06 h ». */
+.nx__cd-val{gap:clamp(.6rem,1vw,.95rem);white-space:nowrap}
+.nx__a{align-items:center}
+
+@media (max-width:820px){
+  .nx__in{
+    grid-template-columns:1fr;
+    grid-template-areas:"eyebrow" "titre" "meta" "cd" "actions"}
+  /* Empile : le compte a rebours reprend sa lecture en ligne, a gauche. */
+  .nx__cd{
+    flex-direction:row;flex-wrap:wrap;align-items:center;
+    justify-content:flex-start;text-align:left;
+    gap:var(--sp-50) var(--sp-80);margin-top:.45rem}
+  .nx__a{margin-top:var(--sp-100)}
+}
+
+/* ============================================================================
+   V162 — LE RUBAN DE SAISON
+   ----------------------------------------------------------------------------
+   « La section matchs de la saison parait vide maintenant. » Elle l'etait :
+   depuis le repliage du 09/09, elle annoncait sept rencontres et n'en montrait
+   aucune. Le ruban les remet a l'ecran — sept vignettes, une par journee — sans
+   rendre les 2 600 px que couterait le depliage complet.
+
+   Ce que porte une vignette, et pourquoi :
+     la journee   c'est le reperage naturel d'un championnat ;
+     l'ecusson    on reconnait un club a son blason avant son nom ;
+     le nom court « Sainte-Suzanne », pas « Basket Club Sainte-Suzanne » ;
+     la date      sans l'heure : elle est la meme pour les sept, et le detail
+                  la redonne ;
+     le camp      domicile ou deplacement — la seule chose qui change ce que
+                  le lecteur doit faire (venir, ou suivre de loin).
+
+   Le camp se lit AUSSI sans lire : le filet superieur est orange a domicile,
+   sourd en deplacement. C'est un signe qui porte une information, pas une
+   decoration — seul type de trait que cette page accepte encore.
+   ============================================================================ */
+.msn{
+  list-style:none;margin:0 0 clamp(1.6rem,3.2vw,2.4rem);padding:0;
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:clamp(.45rem,.9vw,.8rem)}
+.msn__i{display:flex;min-width:0}
+.msn__a{
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  width:100%;padding:clamp(.85rem,1.6vw,1.15rem) .5rem clamp(.7rem,1.4vw,1rem);
+  text-align:center;text-decoration:none;color:inherit;
+  background:var(--surf-2);border-radius:var(--r-md);
+  border-top:3px solid rgb(var(--bleu-glacier-rgb) / .22);
+  transition:transform .24s var(--ease-out),background .24s var(--ease-out),
+             border-color .24s var(--ease-out)}
+.msn__i--dom .msn__a{border-top-color:rgb(var(--orange-vif-rgb) / .85)}
+/* Le deplacement garde le filet sourd defini plus haut. La regle est ecrite
+   quand meme : une classe presente dans le markup sans aucune regle CSS est
+   signalee par .claude/verifier-classes.py, et a raison — on ne distingue
+   pas un defaut par defaut d'un oubli. */
+.msn__i--ext .msn__a{border-top-color:rgb(var(--bleu-glacier-rgb) / .22)}
+.msn__j{
+  font-family:var(--ff-cond);font-weight:700;letter-spacing:.14em;
+  font-size:var(--text-2xs);color:var(--txt-passe);text-transform:uppercase}
+.msn__crest{
+  display:grid;place-items:center;flex:none;width:52px;height:52px;padding:5px;
+  background:rgb(var(--blanc-rgb) / .92);border-radius:10px}
+.msn__crest img{width:100%;height:100%;object-fit:contain;display:block}
+.msn__crest--sigle{
+  background:rgb(var(--orange-vif-rgb) / .14);color:var(--orange-vif);
+  font-family:var(--ff-cond);font-weight:700;font-size:var(--text-xs);
+  letter-spacing:.04em}
+.msn__opp{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.03em;font-size:var(--text-sm);line-height:1.2;
+  color:var(--blanc);
+  /* Deux lignes reservees pour tout le monde : « Picks La Possession 3 » en
+     prend deux, « MTG Basketball » une seule. Sans reserve, les sept
+     vignettes ne se terminaient pas a la meme hauteur. */
+  min-height:2.4em;display:flex;align-items:center}
+.msn__d{
+  font-family:var(--ff-cond);font-weight:600;font-size:var(--text-2xs);
+  letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-glacier)}
+.msn__ou,.msn__score{
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:var(--text-2xs);color:var(--txt-passe)}
+.msn__i--dom .msn__ou{color:var(--orange-vif)}
+.msn__score{color:var(--blanc);font-family:var(--ff-display);
+  font-size:var(--text-lg);letter-spacing:0}
+
+/* Etats poses par script.js, avec le meme calcul d'instant que l'accordeon. */
+.msn__i.is-next .msn__a{
+  background:linear-gradient(180deg,#152340,#101b30);
+  box-shadow:0 0 0 1px rgb(var(--orange-vif-rgb) / .38)}
+.msn__i.is-past .msn__a{opacity:.5}
+.msn__i.is-past .msn__crest{filter:saturate(.35)}
+
+@media (hover:hover){
+  .msn__a:hover{background:#152340;transform:translateY(-3px)}
+  .msn__a:hover .msn__opp{color:var(--blanc)}}
+.msn__a:focus-visible{outline:3px solid var(--bleu-glacier);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){
+  .msn__a{transition:none}
+  .msn__a:hover{transform:none}}
+
+@media (max-width:1080px){
+  .msn{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){
+  .msn{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .msn__crest{width:44px;height:44px}}
+
+/* ============================================================================
+   V163 — LA CATEGORIE CHOISIE PREND ENFIN LA PLACE QU'ELLE MERITE
+   ----------------------------------------------------------------------------
+   « Categorie / U15 / nes en 2012 et 2013 ressort a gauche en petit alors
+   qu'on a de la place. » Exactement : le bloc etait une seule ligne en
+   flex-baseline, calee a gauche, et les deux tiers droits du panneau restaient
+   vides pendant que l'annee de naissance — la reponse a la question que le
+   parent vient de poser — se lisait en gris a la suite du titre.
+
+   Le bloc devient une grille : le titre a gauche, les annees de naissance a
+   droite, sur le meme axe optique. Le titre grandit d'un tiers, les annees
+   passent en majuscules condensees orange : elles cessent d'etre une note de
+   bas de ligne pour devenir la CONFIRMATION du choix qu'on vient de faire.
+
+   Le filet qui soulignait le bloc disparait : le contraste de taille entre le
+   titre et le reste du panneau suffit a le detacher.
+   ============================================================================ */
+.age{max-width:64rem}
+.age__cat{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:"lab lab" "titre annees";
+  align-items:end;column-gap:var(--sp-100);row-gap:.2rem;
+  padding-bottom:0;margin-bottom:clamp(1.5rem,3vw,2.1rem);border-bottom:0}
+.age__cat-l{grid-area:lab;width:auto}
+.age__cat b{
+  grid-area:titre;
+  font-size:clamp(2.2rem,5vw,3.9rem);line-height:.94}
+.age__cat-n{
+  grid-area:annees;justify-self:end;text-align:right;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:var(--text-md);color:var(--orange-vif);
+  padding-bottom:.35em}
+@media (max-width:640px){
+  /* Sous 640 px, le titre occupe deja toute la largeur : les annees passent
+     dessous plutot que de comprimer les deux. */
+  .age__cat{grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"lab" "titre" "annees";align-items:start}
+  .age__cat-n{justify-self:start;text-align:left;padding-bottom:0;margin-top:.35rem}}
+
+/* ============================================================================
+   V164 — LES TRAITS QUI NE SEPARENT RIEN
+   ----------------------------------------------------------------------------
+   « Attention a ne pas mettre de signes inutiles, rendre l'aspect premium et
+   epure. On voit des lignes horizontales et verticales qui n'ont peut-etre pas
+   lieu d'etre. »
+
+   Recensement fait au navigateur sur toute la page : chaque bordure visible de
+   plus de 90 px et chaque pseudo-element servant de filet. Trois seulement ne
+   separaient rien :
+
+   1. LES TRAITS VERTICAUX DU BANDEAU DE CHIFFRES. Les trois chiffres portent
+      DEJA un filet horizontal de 2 px chacun — qui, lui, sert : il change de
+      couleur au survol et au focus. Le trait vertical entre les colonnes
+      faisait un second systeme de separation pour les memes trois blocs.
+
+   2. LES SOULIGNES DU SELECTEUR D'AGE. « Creneau », « Lieu » et « Formule »
+      etaient soulignes... sauf le dernier (:last-child annulait la bordure).
+      Trois colonnes, deux traits : la dissymetrie se voyait plus que la
+      separation ne servait.
+
+   3. LE FILET SOUS LA CATEGORIE, traite en V163 ci-dessus.
+
+   Tout le reste est conserve : les cadres de cartes delimitent une surface,
+   les filets de section marquent un changement de chapitre, les 2 px du
+   bandeau de chiffres portent un etat. Un trait qui informe reste.
+   ============================================================================ */
+@media (min-width:681px){
+  .keyfig__i + .keyfig__i::before{content:none}}
+.age__facts li{border-bottom:0}
+
+/* ============================================================================
+   V165 — UNE SEULE LIGNE ENTRE DEUX SECTIONS, PAS DEUX
+   ----------------------------------------------------------------------------
+   La page avait DEUX systemes de separation de sections, poses a des moments
+   differents, et qui se superposaient :
+
+     .section + .section::before   un filet centre de 1220 px, degrade,
+                                   transparent aux deux bouts ;
+     .section.categories/.matchs/  une bordure haute ET basse pleine largeur,
+     .contact                      sur une bande sur deux.
+
+   Mesure au pixel, a la jonction chiffres-cles / categories (1717 px) :
+
+       y=182   rgb(7,13,24)    le fond de la section du dessus
+       y=183   rgb(27,36,51)   la bordure, PLEINE LARGEUR, x=60 comme x=1650
+       y=184   rgb(38,46,63)   le filet degrade, au CENTRE seulement
+       y=185   rgb(10,17,32)   le fond de la section du dessous
+
+   Deux traits a un pixel l'un de l'autre, le second plus clair que le premier.
+   C'est ce qui se voyait, et c'est ce qui n'avait pas lieu d'etre.
+
+   On garde le filet degrade : il s'arrete a la largeur du contenu et s'efface
+   a ses extremites. On retire la bordure pleine largeur. Le fond des bandes
+   alternees reste — c'est lui, avec le filet, qui marque desormais la coupe.
+   Six traits durs en moins (trois sections, en haut et en bas).
+   ============================================================================ */
+.section.categories,.section.matchs,.section.staff,.section.contact{border-block:0}
+
+/* Les annees de naissance repondent au titre : a ce format, --text-md se
+   lisait comme une note. */
+.age__cat-n{font-size:var(--text-lg)}
+
+/* ============================================================================
+   V166 — LE PIED DE PAGE : SIX FILETS EN 700 PX, DONT DEUX EN DOUBLE
+   ----------------------------------------------------------------------------
+   Geometrie relevee dans le navigateur, de haut en bas :
+
+       16289  .site-footer     bord haut, 1702 px
+       16468  .footer__social  bord haut,  305 px
+       16746  .footer__top     bord BAS,  1124 px   ) au MEME pixel :
+       16746  .footer__ident   bord HAUT, 1124 px   ) deux traits superposes
+       16802  .footer__ident   bord bas,  1124 px
+       16958  .footer__seo     bord bas,  1124 px   ) 24 px d'ecart,
+       16982  .footer-legal    bord haut,  229 px   ) deux largeurs
+
+   Deux coupes, quatre traits. On garde une coupe = un trait :
+     - le bord haut de .footer__ident tombe exactement sur le bord bas de
+       .footer__top : il ne separe rien de plus, il epaissit ;
+     - le bord haut de .footer-legal redit, 24 px plus bas et sur un cinquieme
+       de la largeur, la coupe que .footer__seo vient de marquer.
+
+   Les autres restent : ils separent des blocs qui se suivent vraiment.
+   ============================================================================ */
+.footer__ident{border-top:0}
+.footer-legal{border-top:0}
+
+/* ============================================================================
+   V167 — LES TROIS FAITS DU SELECTEUR SE LISENT PAREIL SUR TELEPHONE
+   ----------------------------------------------------------------------------
+   Au-dessus de 700 px, une couche anterieure impose deja libelle au-dessus,
+   valeur en dessous. En dessous, la ligne restait en flex-row a retour a la
+   ligne : la premiere valeur (« Samedi 09h00 - 10h00 - Gymnase », longue)
+   passait sous son libelle, les deux autres restaient a cote du leur. Trois
+   faits, deux presentations. Mesure a 390 px : hauteurs 62 / 39 / 39.
+
+   Le filet qui soulignait chaque ligne masquait un peu ce desordre ; il est
+   parti avec V164, il fallait donc regler la cause.
+   ============================================================================ */
+.age__facts li{flex-direction:column;align-items:flex-start;gap:.15rem}
+.age__facts span{min-width:0}

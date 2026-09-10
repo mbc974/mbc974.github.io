@@ -1004,6 +1004,22 @@ def main():
     io.open(p, "w", encoding="utf-8", newline="").write(s)
     ecrits.append("index.html (bandeau prochain match + ItemList du calendrier)")
 
+    # 5. le ruban de saison de la home, qui lit la MEME source. Il est appele
+    #    ici et pas a la main : un calendrier qui bouge doit bouger partout du
+    #    meme coup, sinon la home affiche deux verites. C'est la lecon des
+    #    trois rencontres qui avaient change de camp entre deux editions du PDF.
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            'ruban', os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                  'build-ruban-saison.py'))
+        ruban = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ruban)
+        ruban.main()
+        ecrits.append("index.html (ruban de saison)")
+    except Exception as e:
+        print("!! ruban de saison non regenere : %s" % e)
+
     pm = prochain(d)
     print("Source        : data/matchs.json (%d rencontres)" % len(d["matchs"]))
     print("Prochain match: %s" % (("J%d %s, %s" % (pm["journee"], pm["_titre"], pm["_dateLongue"]))
