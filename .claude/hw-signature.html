@@ -34,7 +34,12 @@ coller. Verifier que l'etat est au vert avant de copier.</p>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
 <script>
 /* --- reglages ------------------------------------------------------------ */
-const POLICE  = '/.claude/fonts/caveat700.ttf';   /* Caveat 700, SIL OFL 1.1 */
+const POLICE  = '/.claude/fonts/caveat-variable.ttf';
+/* Caveat variable, SIL OFL 1.1. opentype.js en lit l'instance PAR DEFAUT,
+   soit le poids 400 : c'est voulu. Le 700 rendait un trace trop gras, plus
+   proche du feutre large que de la plume. La doc de ce depot le disait deja :
+   « la choisir monoline et pas trop grasse ». caveat700.ttf reste la, comme
+   trace de l'ancienne version. */
 const PHRASES = ['Ansanm nou lé pli for.', 'La Montagne en lèr.', 'Nou lé ansanm.'];
 const FS      = 300;   /* taille de reference dans le viewBox */
 const DEC     = 0;     /* decimales : 0 a FS=300 = 1/3 % de precision */

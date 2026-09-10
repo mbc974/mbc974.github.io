@@ -750,3 +750,108 @@ avec ses trois réponses possibles avant d'écrire quoi que ce soit.
 **Il reste donc une seule décision ouverte**, la n° 3. La trancher demande de
 savoir laquelle des deux structures le club engage réellement auprès de la
 FFBB — le dépôt ne peut pas le déduire.
+
+---
+
+## 16. Passe de direction artistique (10/09/2026) — ce qu'il faut savoir
+
+### Le premier écran se calcule par soustraction
+
+`.hero` portait **quatorze** déclarations `min-height` concurrentes, la dernière
+gagnant à `clamp(700px,90svh,880px)`. Une fraction de la fenêtre ignore ce qui
+vient après : à 892 px de haut, le bas des trois preuves tombait à **1 318 px**.
+
+La hauteur du hero vaut désormais `calc(100svh - 410px)` — la fenêtre **moins**
+ce que le bandeau match (191), la gouttière (46) et les preuves (154) occupent.
+Le premier écran tient donc à toutes les hauteurs, pas à une seule.
+
+| résolution | dépassement |
+|---|---|
+| 1366 × 768 | 0 |
+| 1440 × 900 | −19 |
+| 1717 × 892 | −19 |
+| 1920 × 1080 | −6 |
+
+**Si un bloc du premier écran change de hauteur, c'est la constante 410 qu'il
+faut reprendre** — elle est commentée dans la couche V153.
+
+### La galerie : le `sizes` doit décrire l'état ZOOMÉ
+
+Chaque tuile affiche une boîte de `--gw` puis subit `scale(--gs)`. Sa largeur
+réelle vaut donc `--gw × --gs`, soit **jusqu'à 240 vw**. Les tuiles déclaraient
+le `sizes` de la mosaïque (24vw) : le navigateur chargeait un dérivé de 412 px
+et l'étirait à 2 146.
+
+Mesuré, à 1717 px et par état d'animation :
+
+```
+          avant           après
+g-tall    ×5,0  ->  ×1,9  ×0,8   (p=0,25, la tuile couvre encore 12 % de l'écran)
+g-shoot   ×5,2  ->  ×2,1  ×0,9
+g-banner  ×3,7  ->  ×1,5  ×0,8
+g-team    ×0,77 (jamais floue : c'est elle qui finit plein cadre)
+```
+
+**Nuance importante** : l'étirement *maximal* n'est pas ce qu'on voit — les
+tuiles périphériques sortent du cadre en grandissant. Le flou se jouait entre
+p = 0,2 et p = 0,5. Toute correction future se juge là, pas à p = 1.
+
+`.claude/build-galerie.py` regénère les dérivés AVIF manquants et réécrit les
+`sizes`. Coût : **+190 Ko** sur la galerie (553 → 744 Ko), en chargement
+différé, sous la ligne de flottaison. Le LCP (le hero) n'est pas touché.
+
+Les fichiers de base font 900×978, 900×1000, 1400×745, 760×951 : **on ne peut
+pas faire mieux sans originaux plus définis.** Aucun sharpening CSS n'a été
+posé pour masquer le résidu.
+
+### Le cadre de la galerie
+
+Pendant le zoom la scène est collée : le haut de la section reste à l'écran, et
+avec lui son `::before` d'1 px et son `radial-gradient` orange — lus comme le
+cadre d'une fenêtre. Ils sont neutralisés par `:has(.gzoom.is-on)`, avec
+`!important` **parce que la règle d'origine l'est aussi**.
+
+Ne pas donner de fond à `.gzoom__stage` : essayé, cela dessine une couture nette
+là où la scène commence, c'est-à-dire un second cadre à la place du premier.
+
+### Photographier ce site : Chrome headless, pas le panneau d'aperçu
+
+Le panneau plafonne à 800 px de large et **ne peint pas** cette page en
+profondeur. `.claude/` n'embarque pas l'outil, mais la méthode est :
+
+```bash
+chrome --headless=new --window-size=1717,892 --screenshot=x.png <url>
+```
+
+Et il faut une **copie jetable** de la page (jamais `index.html` retouché) dans
+laquelle sont posés : les `.reveal`, les `<details>`, le retrait du bandeau
+RGPD, l'état final de la signature manuscrite, la valeur d'arrivée du compteur.
+
+Quatre pièges rencontrés, tous coûteux :
+1. **Allonger `--virtual-time-budget` est une fausse bonne idée** : le temps
+   accéléré fait tourner le rotateur de signature plusieurs fois (les trois
+   phrases se superposaient) et pousse le compteur au-delà de sa cible — il
+   affichait « −68 € ». On supprime le temps (aucune animation) au lieu de
+   l'allonger.
+2. Le compteur : retirer `data-count` donne « NAN € », script.js lisant
+   l'attribut. Il faut **remplacer le nœud par un clone** sans attribut.
+3. `scroll-behavior:smooth` + temps virtuel = un défilement qui n'arrive jamais.
+4. Headless ne défile pas avant de photographier. Le seul mode fiable est
+   d'**isoler la section** (masquer tout le reste), pas de scroller.
+
+### Les logos partenaires
+
+Trois des cinq portaient un **fond blanc intégré** — mesure : 87 % (oxysom),
+80 % (saint-françois), plus un carré arrondi autour du disque des Agitateurs.
+Les coins étant transparents, un contrôle rapide ne le voyait pas : c'est
+l'intérieur qu'il faut sonder.
+
+`.claude/detourer-sponsors.py` les détache par **remplissage depuis les bords**,
+jamais par un « blanc → transparent » global qui trouerait les blancs
+intérieurs du logo. Il refuse d'écrire s'il retire plus de 92 % des pixels
+opaques.
+
+**La plaque claire reste** : mesure de la luminance des logos, `agitateurs-midi`
+est à 69 % de pixels sombres et `cpa-paysage` à 61 % — sur fond nuit, deux
+partenaires payants disparaîtraient. Et on ne repeint pas le logo de quelqu'un
+d'autre.

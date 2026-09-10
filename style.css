@@ -8644,7 +8644,12 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
   width:71%;max-width:none;margin-top:.16em;
   color:var(--blanc);
   --hw-trace:1.65s;   /* duree du trace complet d'une phrase */
-  --hw-sw:7;          /* epaisseur de plume, en unites du viewBox */
+  /* V153 — la plume s'affine. Le trace etait en Caveat 700 avec un contour
+     de 7 unites : la graisse du glyphe ET l'epaisseur du trait s'ajoutaient,
+     ce qui donnait un feutre large la ou il faut une signature. Le tirage
+     est repasse en Caveat 400 (voir MAINTENANCE.md § 9) et le contour tombe
+     a 3 : le trait se lit desormais comme une plume, pas comme un marqueur. */
+  --hw-sw:3;          /* epaisseur de plume, en unites du viewBox */
 }
 .hw__f{
   position:absolute;left:0;top:0;
@@ -8676,7 +8681,7 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 
 @media (min-width:641px) and (max-width:1000px){.hw{width:82%}}
 @media (max-width:640px){
-  .hw{width:93%;margin-top:.20em;--hw-trace:1.5s;--hw-sw:9}}
+  .hw{width:93%;margin-top:.20em;--hw-trace:1.5s;--hw-sw:4.5}}
 
 /* Mouvement reduit : la phrase est simplement LA, encree, des le chargement.
    Le script, lui, n'installe aucune rotation dans ce cas. */
@@ -9413,3 +9418,332 @@ html:has(.seo-top){scroll-padding-top:104px}
    dense (une photo pleine marge et un recit), et c'est la hauteur de la photo
    qui donne deja la respiration. */
 .section.local-proof{padding-block:clamp(2.6rem,5vw,4.2rem)}
+
+/* ============================================================================
+   V153 — LE PREMIER ECRAN TIENT DANS L'ECRAN
+   ----------------------------------------------------------------------------
+   Objectif verifie a la mesure : sur un ecran de 892 px de haut, on doit voir
+   sans defiler le hero, le bandeau du prochain match ET le bas des trois
+   preuves (95 € / Dès 3 ans / 2 terrains). Avant cette couche il manquait
+   426 px — le bas des preuves tombait a 1318 px.
+
+   D'OU VIENNENT LES 426 PX. Mesure, pas estimation :
+
+       hero        803   (min-height clamp(700px,90svh,880px), la 14e
+                          declaration de min-height posee sur .hero)
+       bandeau     182
+       gouttiere   110   (padding-top de .keyfig-sec + marge)
+       preuves     223
+                  ----
+                  1318   pour 892 disponibles
+
+   CE QUI EST REPRIS, ET OU. On ne rabote pas tout uniformement : le hero doit
+   rester spectaculaire. Les 426 px viennent surtout du MOU — le hero avait
+   449 px de contenu dans 803 px de boite, soit 204 px de vide pur — et des
+   respirations les plus larges, jamais des tailles de texte utiles.
+
+   LA HAUTEUR DU HERO SE CALCULE DESORMAIS PAR SOUSTRACTION. Au lieu d'une
+   fraction de la fenetre (90svh) qui ignore ce qui vient apres, elle vaut la
+   fenetre MOINS ce que le bandeau, la gouttiere et les preuves occupent. Le
+   premier ecran tient donc a toutes les hauteurs, au lieu de tenir a une seule.
+   ============================================================================ */
+.hero{
+  /* 404px = bandeau (191, ecussons agrandis) + gouttiere (46) + preuves (154)
+     + 13 de marge. Chiffres releves dans le navigateur apres coup, pas estimes :
+     la premiere valeur posee (372) laissait encore 19 px de debordement. */
+  min-height:clamp(400px,calc(100svh - 410px),780px) !important;
+  padding-top:calc(72px + clamp(.6rem,1.6vh,1.4rem)) !important;
+  padding-bottom:clamp(1.2rem,2.6vh,2.2rem) !important;
+}
+/* Le titre perd un cran : il occupait 242 px a lui seul avec la signature. */
+.hero__h1-t{font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:.92}
+.hero__kicker{margin-bottom:clamp(.5rem,1.1vh,.85rem)}
+.hero__sub{margin-top:clamp(.7rem,1.6vh,1.15rem)}
+.hero__cta{margin-top:clamp(.9rem,2vh,1.5rem)}
+
+/* --- Le bandeau match : plus dense en hauteur, plus grand a l'interieur ---
+   Il perd de la marge et gagne en presence. Les ecussons passaient a 22 px
+   pour un fichier de 288 px de cote : on affichait 8 % du pixel disponible. */
+#nxBand{padding-block:clamp(.85rem,1.8vh,1.15rem) !important}
+.nx__crest{width:44px;height:44px;flex:0 0 44px}
+.nx__crest img{width:100%;height:100%;object-fit:contain}
+.nx__t{font-size:clamp(1.35rem,2.4vw,1.9rem);gap:clamp(.55rem,1.4vw,1rem)}
+.nx__vs{font-size:.78em;opacity:.62}
+
+/* Le compte a rebours : l'etiquette reste discrete, les CHIFFRES portent. */
+.nx__cd{align-items:baseline;gap:.7rem}
+.nx__cd-lab{font-size:var(--text-2xs);letter-spacing:.16em;opacity:.72}
+.nx__cd-val{font-size:clamp(1.15rem,1.7vw,1.5rem);font-family:var(--ff-display);
+  letter-spacing:.01em;color:var(--blanc)}
+.nx__cd-n{font-size:1em;color:var(--orange-vif)}
+.nx__cd-u{font-size:.62em;opacity:.8;margin-left:.1em}
+
+/* Le CTA : il faisait deja 52 px de haut, mais 182 px de large pour un texte
+   de 16,8 px — il se lisait comme un lien, pas comme l'action du bandeau. */
+#nxBand .nx__a .btn{min-height:54px;padding-inline:clamp(1.5rem,2.4vw,2.1rem);
+  font-size:clamp(1rem,1.15vw,1.12rem)}
+#nxBand .nx__a .btn svg,#nxBand .nx__a .btn .ic{width:1.15em;height:1.15em}
+
+/* --- Les trois preuves : la valeur domine, le reste s'efface --- */
+.keyfig-sec{padding-top:clamp(1rem,2.4vh,1.8rem) !important;
+            padding-bottom:clamp(1.6rem,3.4vw,2.8rem) !important}
+.keyfig__a{padding-block:clamp(.5rem,1.2vh,.9rem)}
+.keyfig__v{font-size:clamp(1.9rem,3.2vw,2.9rem);line-height:1}
+.keyfig__l{margin-top:.35rem;font-size:var(--text-base)}
+.keyfig__l span{font-size:var(--text-2xs);opacity:.72;margin-top:.1rem}
+.keyfig__go{margin-top:.45rem;font-size:var(--text-2xs);letter-spacing:.1em}
+
+/* --- Ecrans courts (portables 768 px de haut) ---------------------------
+   A 1366x768 le hero touchait son plancher : son CONTENU (352 px) plus les
+   marges depassait deja la place laissee par la soustraction, et il restait
+   64 px de trop. On ne peut donc plus gagner sur la boite du hero — il faut
+   reprendre sur ce qu'elle contient, et un peu sur les deux blocs suivants.
+   Mesure a 1366x768 : 64 px a trouver, 66 repris. */
+@media (min-width:1001px) and (max-height:820px){
+  .hero__h1-t{font-size:clamp(2.4rem,4.2vw,3.6rem)}
+  .hero__kicker{margin-bottom:.45rem}
+  .hero__sub{margin-top:.6rem}
+  .hero__cta{margin-top:.8rem}
+  .hero{padding-bottom:clamp(.9rem,1.8vh,1.4rem) !important}
+  #nxBand{padding-block:.7rem !important}
+  .nx__crest{width:38px;height:38px;flex:0 0 38px}
+  .keyfig-sec{padding-top:.8rem !important}
+  .keyfig__a{padding-block:.4rem}
+}
+
+/* ============================================================================
+   V154 — LES CARTES CATEGORIES PERDENT LEURS IMAGES GENEREES
+   ----------------------------------------------------------------------------
+   Les six visuels de assets/categories/ etaient des images de synthese : le
+   logo MBC y est deforme et « BASKET CLUB » s'y lit « BASKET CLU ». Un club
+   reel ne montre pas des enfants qui n'existent pas, sous un blason qui n'est
+   pas le sien. Le depot n'ayant pas six photos authentiques — une par
+   categorie —, on ne remplace pas une image par une autre : la carte devient
+   TYPOGRAPHIQUE. Mieux vaut une belle carte sans image qu'une image fausse.
+
+   Le numero de categorie cesse d'etre un filigrane a 4 % d'opacite derriere
+   une photo : il n'a plus de photo a habiter, il devient la tete de la carte,
+   en orange, avec la tranche d'age en vis-a-vis. Ce que la carte doit dire —
+   quel age, quelle categorie, quel creneau, quel tarif — n'a jamais eu besoin
+   d'une photographie pour se lire.
+   ============================================================================ */
+.cat--typo{padding-top:1.6rem !important}
+.cat--typo .cat__photo{
+  position:static;margin:0 0 1.15rem;height:auto;overflow:visible;background:none;
+  display:flex;align-items:center;gap:.85rem;
+  padding-bottom:.9rem;border-bottom:1px solid var(--hair)}
+.cat--typo .cat__num{
+  position:static;font-family:var(--ff-display);line-height:.82;
+  font-size:clamp(1.9rem,2.8vw,2.6rem);
+  color:var(--orange-vif);-webkit-text-stroke:0;text-shadow:none;
+  letter-spacing:-.01em}
+.cat--typo:hover .cat__num{color:var(--orange-vif)}
+.cat--typo .cat__age{margin-left:auto}
+/* Le halo bleu du coin visait le bandeau photo ; sans lui il tombe sur le
+   numero et le delave. On le recule. */
+.cat--typo::before{right:-70px;top:-70px;opacity:.55}
+
+/* ============================================================================
+   V155 — L'ACCORDEON DE L'EFFECTIF REVIENT SUR L'ACCUEIL
+   ----------------------------------------------------------------------------
+   Le rail de neuf vignettes a 120 px remplacait, depuis le 09/09, l'accordeon
+   d'affiches. Il tenait moins de place, mais il ne montrait plus rien : a
+   120 px de large, une affiche verticale de 941 px ne donne ni le visage, ni
+   le nom grave, ni le numero. Et le POSTE de chaque joueur, present dans la
+   donnee, n'y figurait pas du tout.
+
+   On reprend donc le composant d'origine — celui de 8059637^, avec sa
+   mecanique flex, ses deux rangees accordees a 5,02 de flex-grow et ses deux
+   axes de recadrage --fx/--fy. Rien n'est reinvente : c'est le meme
+   groupes_html() qui sert deja /effectif/, et le meme bloc CSS, jamais
+   supprime, qui l'habille.
+
+   CE QUI EST AJOUTE, ET QUI MANQUAIT
+   ----------------------------------
+   L'accordeon d'origine s'ouvrait au SURVOL et a rien d'autre. Il etait donc
+   inerte au clavier, et inerte au doigt : sur telephone, appuyer sur un joueur
+   ne faisait rien. Chaque carte est desormais un lien vers /effectif/ —
+   le focus clavier l'ouvre, l'appui y mene. Aucune information n'est cachee
+   derriere l'interaction pour autant : numero, nom et poste restent dans la
+   legende en permanence, ce qui reste la raison pour laquelle ce survol est
+   acceptable.
+   ============================================================================ */
+.sq-card__go{display:flex;flex-direction:column;height:100%;min-height:0;
+  color:inherit;text-decoration:none}
+.sq-card__go:focus-visible{outline:none}
+.sq-card:focus-within{border-color:var(--orange-vif);
+  box-shadow:var(--e2),0 0 0 3px rgb(var(--orange-vif-rgb) / .5)}
+
+@media (min-width:880px) and (hover:hover){
+  /* Le clavier doit ouvrir la carte comme la souris. Meme mecanique, meme
+     specificite (0,3,0) que les regles de survol du bloc d'origine. */
+  .squad:focus-within .sq-card{flex-grow:var(--sq-shut)}
+  .squad:focus-within .sq-card:focus-within{flex-grow:var(--sq-open)}
+  .squad:focus-within .sq-card__media::after{opacity:1}
+  .squad:focus-within .sq-card:focus-within .sq-card__media::after{opacity:0}
+}
+/* Au doigt, la grille a deux colonnes du composant d'origine reste la bonne
+   reponse : elle montre les affiches entieres au lieu d'un accordeon qu'on ne
+   peut pas ouvrir. Le lien, lui, fonctionne dans les deux cas. */
+
+/* ============================================================================
+   V156 — « CETTE SEMAINE » DIT CE QUI SE PASSE MAINTENANT
+   ----------------------------------------------------------------------------
+   Le jour courant etait deja marque, a l'heure de La Reunion. Manquait ce qui
+   rend un planning VIVANT : savoir si un creneau est en train de se derouler.
+
+   Deux etats, jamais les deux a la fois — deux reperes forts simultanes n'en
+   font plus aucun :
+     .is-live   start <= maintenant < end   « En cours »
+     .is-next   le prochain creneau du jour  « A suivre », seulement s'il n'y
+                a rien en cours
+
+   L'ETAT N'EST PAS PORTE PAR LA SEULE COULEUR. Chaque creneau marque recoit un
+   VRAI element de texte (.cw__etat), pas un ::before : c'est ce que lit un
+   lecteur d'ecran, et c'est ce qui subsiste si la feuille ne charge pas. Le
+   jour, lui, porte aria-current="date" en plus du mot « aujourd'hui ».
+   ============================================================================ */
+.cw__etat{display:inline-flex;align-items:center;gap:.4em;flex:none;
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:var(--text-2xs);
+  padding:.2em .6em;border-radius:var(--r-pill);white-space:nowrap}
+.cw__s.is-live .cw__etat{
+  color:#160c02;background:var(--orange-vif)}
+.cw__s.is-next .cw__etat{
+  color:var(--orange-vif);background:rgb(var(--orange-vif-rgb) / .12);
+  border:1px solid rgb(var(--orange-vif-rgb) / .38)}
+/* Le point qui bat, discretement, et uniquement sur le creneau en cours. */
+.cw__s.is-live .cw__etat::before{content:"";width:.5em;height:.5em;flex:none;
+  border-radius:var(--r-round);background:currentColor;
+  animation:cw-battement 2.4s var(--ease-out) infinite}
+@keyframes cw-battement{0%,72%,100%{opacity:1}84%{opacity:.25}}
+.cw__s.is-live{background:rgb(var(--orange-vif-rgb) / .10);
+  box-shadow:inset 3px 0 0 var(--orange-vif)}
+.cw__s.is-next{background:rgb(var(--blanc-rgb) / .03);
+  box-shadow:inset 3px 0 0 rgb(var(--orange-vif-rgb) / .34)}
+@media (prefers-reduced-motion:reduce){
+  .cw__s.is-live .cw__etat::before{animation:none}
+}
+
+/* ============================================================================
+   V157 — LA GALERIE SORT DE SA BOITE
+   ----------------------------------------------------------------------------
+   Pendant le zoom, la scene est COLLEE en haut de la fenetre. Le haut de la
+   section reste donc a l'ecran tout du long — et avec lui deux ornements qui
+   n'etaient dessines que pour une section normale :
+
+     .section.gallery::before   un filet de 1 px en degrade, plein cadre
+     .section.gallery           un radial-gradient orange ancre en haut
+
+   Immobiles au-dessus d'une composition qui bouge, ils se lisent comme le
+   cadre d'une fenetre : l'animation parait enfermee dans une boite au lieu de
+   se fondre dans la page.
+
+   On ne les retire que pendant le zoom (:has(.gzoom.is-on)). En mouvement
+   reduit, ou script.js ne pose jamais .is-on, la section garde son filet et
+   son halo : c'est alors une section comme les autres, et le separateur y a
+   toute sa raison d'etre.
+   ============================================================================ */
+.section.gallery:has(.gzoom.is-on)::before{display:none}
+/* !important est necessaire ici, et ce n'est pas de la paresse : la regle
+   d'origine « .gallery{background:radial-gradient(...)} » est elle-meme en
+   !important. Sans cela, la surcharge ne passait pas — verifie dans le
+   navigateur, le degrade orange restait affiche. */
+.section.gallery:has(.gzoom.is-on){background:var(--nuit-0) !important}
+/* La scene reste TRANSPARENTE. Premiere tentative : lui donner le fond de la
+   page. Mauvaise idee — cela dessinait une couture nette a l'endroit exact ou
+   la scene commence, c'est-a-dire un second cadre a la place du premier. En
+   la laissant transparente, elle prend le fond de la section, desormais uni :
+   il n'y a plus aucune limite a voir. */
+
+/* ============================================================================
+   V158 — « NOUT KARTIÉ » : LA PHOTO RECUPERE SA HAUTEUR
+   ----------------------------------------------------------------------------
+   Le cadre etait en 3:1. Or le cliche fait 1400x933, soit 1,50:1 : avec
+   object-fit:cover, la part visible de sa hauteur vaut 1,50 / rapport_du_cadre.
+   En 3:1 on n'en montrait donc que 50 % — la moitie de la photographie etait
+   jetee pour gagner 176 px de page.
+
+   Ce que la photo contient, mesure sur le fichier : les tetes commencent vers
+   20 % de la hauteur, les pieds finissent vers 95 %. Il faut donc au moins
+   70 % de visible pour tenir la promesse « aucune tete coupee, maillots MBC
+   lisibles ».
+
+       1,50 / 2,15 = 0,698  ->  fenetre de 651 px sur 933
+       centree a 52 %       ->  de 159 a 810 px
+       tetes a 190 px : 31 px de marge au-dessus. Maillots entiers.
+
+   Le rapport passe donc a 2,15:1. La section grandit de 176 px — c'est le prix
+   de la photographie, et c'est ce qui etait demande : compacte, mais pas au
+   prix du cliche.
+   ============================================================================ */
+.local-proof .lp-stage{aspect-ratio:2.15/1}
+.local-proof .lp-stage img{object-position:center 52%}
+
+/* ============================================================================
+   V159 — LE MUR DES PARTENAIRES
+   ----------------------------------------------------------------------------
+   Le defaut : une plaque blanche de 158 px de haut derriere chaque logo. Le
+   logo y flottait au milieu d'un rectangle bien plus grand que lui — d'ou
+   l'impression de captures d'ecran collees.
+
+   POURQUOI ON NE PASSE PAS SIMPLEMENT AUX CARTES SOMBRES. Mesure de la
+   luminance des pixels opaques de chaque logo :
+
+       agitateurs-midi   69 % de pixels sombres   -> invisible sur fond nuit
+       cpa-paysage       61 %                     -> invisible sur fond nuit
+       resto-chen        15 %
+       saint-francois     7 %
+       oxysom             0 %
+
+   Deux partenaires sur cinq disparaitraient. Les repeindre n'est pas une
+   option : on ne retouche pas le logo de quelqu'un d'autre. Le support clair
+   reste donc — mais il cesse d'etre un CARRE IMPOSE pour devenir une pastille
+   qui epouse le logo : largeur au contenu, coins doux, blanc casse plutot que
+   blanc pur, et une ombre portee qui la pose sur le fond au lieu de l'y coller.
+
+   NORMALISATION OPTIQUE. Les logos n'ont pas la meme forme : a hauteur egale,
+   un logo carre pese plus lourd a l'oeil qu'un logo large. On ne leur donne
+   donc pas la meme boite mathematique — les carres sont legerement reduits,
+   le paysage garde sa largeur.
+   ============================================================================ */
+.sponsors-row{gap:clamp(1.1rem,2.4vw,2rem);align-items:stretch}
+.sponsors-row .sponsor-card{
+  background:none;border:0;padding:0;gap:clamp(.7rem,1.1vw,1rem)}
+.sponsors-row .sponsor-card:hover{background:none;border:0}
+
+.sponsor-card__plate{
+  /* Une plaque IDENTIQUE pour les cinq. Premiere tentative : width:fit-content,
+     donc une plaque par logo, toutes de tailles differentes — le mur y perdait
+     son alignement et paraissait bricole. L'uniformite est ce qui fait lire une
+     rangee de partenaires comme une decision de mise en page. */
+  min-height:0;aspect-ratio:1;
+  width:100%;max-width:clamp(104px,9.5vw,132px);margin-inline:auto;
+  padding:clamp(.85rem,1.2vw,1.15rem);
+  background:#eef2f6;                       /* blanc casse : moins clinique */
+  border:1px solid rgb(var(--blanc-rgb) / .10);
+  border-radius:var(--r-md);
+  box-shadow:0 14px 30px -22px rgba(0,0,0,.9);
+  transition:transform .25s var(--ease-out),box-shadow .25s var(--ease-out),
+             border-color .25s var(--ease-out)}
+.sponsor-card:hover .sponsor-card__plate,
+.sponsor-card:focus-visible .sponsor-card__plate{
+  background:#f7fafc;border-color:rgb(var(--orange-vif-rgb) / .55);
+  transform:translateY(-3px);
+  box-shadow:0 18px 34px -20px rgba(0,0,0,.95)}
+
+/* Le logo occupe la plaque, en respectant ses proportions. Quatre logos sur
+   cinq sont carres ; « cpa-paysage » fait 1,87:1 et se pose donc en bandeau
+   dans le meme carre — c'est le comportement optique attendu, pas un defaut. */
+.sponsors-row img{
+  display:block;width:100%;height:100%;
+  object-fit:contain;filter:none;opacity:1}
+/* Normalisation optique : un disque plein et un carre de couleur pleine pesent
+   plus lourd a l'oeil qu'un dessin au trait. On les rentre de quelques pour
+   cent plutot que de leur donner la meme boite mathematique. */
+.sponsors-row img[src*="agitateurs"],
+.sponsors-row img[src*="resto-chen"]{transform:scale(.90)}
+.sponsors-row img[src*="cpa-paysage"]{transform:scale(1.04)}
+
+.sponsor-card__name{opacity:.82;transition:opacity .25s var(--ease-out)}
+.sponsor-card:hover .sponsor-card__name{opacity:1}

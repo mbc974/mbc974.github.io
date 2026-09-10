@@ -1009,17 +1009,95 @@ MBC.dateLongue = function (d, avecAnnee) {
   var bloc = document.querySelector('.cw');
   if (!bloc) return;
   var JOURS = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-  var jour;
-  try {
-    /* en-CA donne AAAA-MM-JJ, le seul format qu'on puisse reparser sans
-       ambiguïté ; on en refait une date pour en lire le jour de semaine. */
-    var iso = new Date().toLocaleDateString('en-CA', { timeZone: 'Indian/Reunion' });
-    jour = JOURS[new Date(iso + 'T12:00:00Z').getUTCDay()];
-  } catch (e) {
-    jour = JOURS[new Date().getDay()];
+
+  /* L'heure de La Réunion, en minutes depuis minuit, et son jour.
+     Tout part d'ici : jamais `new Date().getHours()`, qui donnerait l'heure
+     de l'ordinateur du visiteur. Un parent en métropole qui ouvre le site à
+     18h un mercredi est déjà à 20h à La Montagne — c'est le créneau de
+     20h30 qui le concerne, pas celui de 19h. */
+  function maintenant() {
+    var j, min;
+    try {
+      var iso = new Date().toLocaleDateString('en-CA', { timeZone: 'Indian/Reunion' });
+      var hm = new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Indian/Reunion', hour12: false,
+        hour: '2-digit', minute: '2-digit'
+      });
+      j = JOURS[new Date(iso + 'T12:00:00Z').getUTCDay()];
+      min = parseInt(hm.slice(0, 2), 10) * 60 + parseInt(hm.slice(3, 5), 10);
+    } catch (e) {
+      var d = new Date();
+      j = JOURS[d.getDay()];
+      min = d.getHours() * 60 + d.getMinutes();
+    }
+    return { jour: j, minutes: min };
   }
-  var cible = bloc.querySelector('.cw__j[data-jour="' + jour + '"]');
-  if (cible) cible.classList.add('is-today');
+
+  /* « 17:30 » -> 1050. Rend null si l'attribut manque ou n'a pas cette forme :
+     un créneau qu'on ne sait pas lire ne doit pas être déclaré en cours. */
+  function enMinutes(t) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec((t && t.getAttribute('datetime')) || '');
+    return m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : null;
+  }
+
+  function poser() {
+    var now = maintenant();
+    bloc.querySelectorAll('.cw__j').forEach(function (li) {
+      li.classList.remove('is-today');
+      li.removeAttribute('aria-current');
+    });
+    bloc.querySelectorAll('.cw__s').forEach(function (s) {
+      s.classList.remove('is-live', 'is-next');
+      var b = s.querySelector('.cw__etat');
+      if (b) b.remove();
+    });
+
+    var jourLi = bloc.querySelector('.cw__j[data-jour="' + now.jour + '"]');
+    if (!jourLi) return;
+    jourLi.classList.add('is-today');
+    /* La couleur ne suffit pas : le jour est aussi annoncé. Le mot
+       « aujourd'hui » est par ailleurs écrit en CSS pour l'œil. */
+    jourLi.setAttribute('aria-current', 'date');
+
+    var suivant = null, suivantDebut = Infinity;
+    jourLi.querySelectorAll('.cw__s').forEach(function (s) {
+      var t = s.querySelectorAll('.cw__h time');
+      var d = enMinutes(t[0]), f = enMinutes(t[1]);
+      if (d === null || f === null) return;
+      if (now.minutes >= d && now.minutes < f) {
+        s.classList.add('is-live');
+        etiquette(s, 'En cours');
+      } else if (d > now.minutes && d < suivantDebut) {
+        suivant = s; suivantDebut = d;
+      }
+    });
+    /* Le prochain créneau n'est mis en avant que s'il n'y a rien en cours :
+       deux repères forts en même temps n'en font plus aucun. */
+    if (suivant && !jourLi.querySelector('.is-live')) {
+      suivant.classList.add('is-next');
+      etiquette(suivant, 'À suivre');
+    }
+  }
+
+  /* Un vrai élément de texte, pas un ::before : c'est ce que lit un lecteur
+     d'écran, et c'est ce qui reste si les styles ne chargent pas. */
+  function etiquette(s, mot) {
+    var b = document.createElement('span');
+    b.className = 'cw__etat';
+    b.textContent = mot;
+    var h = s.querySelector('.cw__h');
+    if (h && h.parentNode) h.parentNode.insertBefore(b, h.nextSibling);
+    else s.appendChild(b);
+  }
+
+  poser();
+  /* Une minute suffit : les créneaux durent une heure et demie. Sans cela,
+     un onglet laissé ouvert le mercredi soir montrerait « en cours » sur un
+     entraînement terminé depuis longtemps. */
+  setInterval(poser, 60000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') poser();
+  });
 })();
 
 /* ============================================================

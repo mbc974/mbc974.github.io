@@ -108,7 +108,7 @@ def rail_html(d):
 # --------------------------------------------------------------------------
 # La page /effectif/
 # --------------------------------------------------------------------------
-def groupes_html(d):
+def groupes_html(d, vers="/effectif/"):
     out = []
     for g in d["groupes"]:
         cartes = []
@@ -118,14 +118,26 @@ def groupes_html(d):
                 st.append("--fx:%s" % p["fx"])
             if p.get("fy"):
                 st.append("--fy:%s" % p["fy"])
+            # La carte est un LIEN. L'accordeon d'origine ne l'etait pas : il
+            # s'ouvrait au survol et rien d'autre. Consequence, il etait inerte
+            # au clavier et inerte au doigt — sur telephone, appuyer sur un
+            # joueur ne faisait rien. Le lien regle les deux d'un coup : le
+            # focus clavier ouvre la carte (via :focus-within), et l'appui mene
+            # a l'effectif complet. Aucune information n'est pour autant cachee
+            # derriere l'interaction : le numero, le nom et le poste sont dans
+            # la legende en permanence.
             cartes.append(
                 u'          <li class="sq-card"%(st)s>\n'
+                u'            <a class="sq-card__go" href="%(vers)s">\n'
                 u'            <div class="sq-card__media">%(pic)s</div>\n'
                 u'            <p class="sq-card__cap"><span class="sq-num">%(num)s</span>'
                 u'<span class="sq-txt"><span class="sq-nom">%(nom)s</span>'
                 u'<span class="sq-poste">%(poste)s</span></span></p>\n'
+                u'            <span class="sr-only"> — voir l’effectif complet</span>\n'
+                u'            </a>\n'
                 u'          </li>' % {
                     "st": (' style="%s"' % ";".join(st)) if st else "",
+                    "vers": vers,
                     "pic": picture(p, SIZES_PAGE), "num": ech(p["numero"]),
                     "nom": ech(p["nom"]), "poste": ech(p["poste"])})
         # « squad--4 » n'est pas decoratif : .squad est un ACCORDEON dont les
@@ -238,7 +250,7 @@ def main():
     brut = bm.gabarit()
     bm.GABARIT = brut[:4]
     bm.VERSION_CSS = brut[4]
-    bm.ecrire("index.html", remplacer_balise(bm.lire("index.html"), "effectif:rail", rail_html(d)))
+    bm.ecrire("index.html", remplacer_balise(bm.lire("index.html"), "effectif:rail", groupes_html(d)))
     bm.ecrire("effectif/index.html", page(d))
     print(u"  ecrit : index.html (rail de %d affiches)" % n)
     print(u"  ecrit : effectif/index.html")
