@@ -395,10 +395,21 @@ def semaine_html(d):
                 u'<i aria-hidden="true">–</i>'
                 u'<time datetime="%(fin)s">%(finfr)s</time></span>'
                 u'<span class="cw__c">%(cats)s</span>%(nature)s'
-                u'<span class="cw__o">%(lieu)s</span></li>' % {
+                # Le lieu devient un lien vers sa carte. L'URL vient de
+                # data/creneaux.json (cle "carte" du lieu) : la meme que celle
+                # des deux cartes de lieu juste au-dessus, donc une seule verite.
+                # Un parent qui lit « Ruisseau Blanc » a 20h30 un mercredi doit
+                # pouvoir y aller sans chercher ou c'est.
+                u'<a class="cw__o" href="%(carte)s" target="_blank" rel="noopener">'
+                # Le meme pin que la page /creneaux/, pas un second dessin.
+                u'%(pin)s%(lieu)s'
+                u'<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span>'
+                u'</a></li>' % {
+                    "pin": PIN.replace('pl-slot__pin', 'cw__pin'),
                     "nat": mod, "deb": c["debut"], "fin": c["fin"],
                     "debfr": hhmm(c["debut"]), "finfr": hhmm(c["fin"]),
-                    "cats": ech(etiq), "nature": nature, "lieu": ech(L["court"])})
+                    "cats": ech(etiq), "nature": nature, "lieu": ech(L["court"]),
+                    "carte": ech(L["carte"])})
         lignes.append(
             u'      <li class="cw__j" data-jour="%(id)s">\n'
             u'        <b class="cw__n">%(nom)s</b>\n'

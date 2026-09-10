@@ -10061,3 +10061,69 @@ html:has(.seo-top){scroll-padding-top:104px}
    ============================================================================ */
 .age__facts li{flex-direction:column;align-items:flex-start;gap:.15rem}
 .age__facts span{min-width:0}
+
+/* ============================================================================
+   V168 — LE LIEU DE CHAQUE CRENEAU MENE A SA CARTE
+   ----------------------------------------------------------------------------
+   « Mets un lien Google Maps pour trouver facilement l'endroit, pour Ruisseau
+   Blanc et le Gymnase de La Montagne. »
+
+   Le planning de l'accueil finissait chaque ligne par « Gymnase » ou
+   « Ruisseau Blanc » en texte mort. Les deux adresses existaient pourtant deja
+   dans data/creneaux.json (cle « carte » de chaque lieu), et la page /creneaux/
+   les utilisait deja sur chacun de ses creneaux. Il n'y avait donc rien a
+   trouver ni a saisir : juste a relier.
+
+   Le lieu reste une PRECISION, pas le sujet de la ligne : il garde --txt-passe
+   au repos et ne prend la couleur du club qu'au survol. Un lien qui crie plus
+   fort que l'horaire ferait le contraire de ce qu'on cherche.
+   ============================================================================ */
+.cw__o{
+  display:inline-flex;align-items:center;gap:.32em;
+  text-decoration:none;
+  transition:color .2s var(--ease-out)}
+.cw__pin{
+  width:1.05em;height:1.05em;flex:none;
+  color:rgb(var(--bleu-glacier-rgb) / .55);
+  transition:color .2s var(--ease-out),transform .2s var(--ease-out)}
+@media (hover:hover){
+  .cw__o:hover{color:var(--blanc)}
+  .cw__o:hover .cw__pin{color:var(--orange-vif);transform:translateY(-1px)}}
+.cw__o:focus-visible{
+  outline:3px solid var(--bleu-glacier);outline-offset:3px;
+  border-radius:var(--r-sm);color:var(--blanc)}
+@media (prefers-reduced-motion:reduce){
+  .cw__o,.cw__pin{transition:none}
+  .cw__o:hover .cw__pin{transform:none}}
+
+/* ============================================================================
+   V169 — L'ICONE WHATSAPP, ET UN SEUL DESSIN POUR UNE SEULE MARQUE
+   ----------------------------------------------------------------------------
+   Le site portait DEUX versions du meme glyphe : celle du bouton flottant,
+   complete (bulle + combine), et une variante tronquee dans la fiche contact —
+   la bulle seule, sans le combine, donc un cercle qui ne dit plus WhatsApp.
+   Les deux sont desormais le glyphe complet.
+
+   La couleur ne s'ecrit pas en dur : --color-whatsapp existait deja dans la
+   palette (ligne 111) sans etre utilisee nulle part. C'est elle qui sert.
+   La marque garde son vert : c'est ce qui la rend reconnaissable avant meme
+   d'etre lue — et c'est exactement ce qu'on demande a une icone dans une
+   phrase.
+   ============================================================================ */
+.ic--wa{
+  width:1.15em;height:1.15em;flex:none;
+  color:var(--color-whatsapp);
+  vertical-align:-.2em}
+/* Dans l'encart « un doute sur la categorie ? », l'icone precede le libelle
+   a l'interieur du lien : elle doit se decoller du texte et ne pas retomber
+   seule a la ligne. */
+/* .cat-foot .ic vaut (0,2,0) et impose --orange-vif a toute icone de l'encart :
+   l'icone WhatsApp en sortait orange. On repasse devant par la specificite,
+   pas par !important. La marge haute de .cat-foot .ic vise l'icone d'entete,
+   posee en tete de bloc ; celle-ci vit DANS une phrase et s'aligne sur la
+   ligne de base. */
+.cat-foot .ic--wa{
+  color:var(--color-whatsapp);
+  width:1.15em;height:1.15em;
+  margin:0 .35em 0 0;vertical-align:-.2em}
+.cat-foot a:has(.ic--wa){white-space:nowrap}
