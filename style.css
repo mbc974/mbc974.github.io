@@ -8693,12 +8693,17 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 @keyframes hw-encre{from{fill-opacity:0}  to{fill-opacity:1}}
 /* V160 — LA PLUME SE RETIRE UNE FOIS L'ENCRE POSEE.
    Le contour n'est qu'un OUTIL DE TRACE : il dessine la lettre avant que le
-   remplissage ne la prenne. Le laisser jusqu'au bout epaississait le glyphe
-   des deux cotes de son contour — et refermait les contre-formes. Sur Caveat
-   400, le « o » et le « e » devenaient des pates pleines.
-   Le trait s'efface donc juste apres le passage de l'encre. On anime
-   stroke-opacity et non stroke-width : la geometrie du trace ne bouge pas,
-   seule sa visibilite. */
+   remplissage ne la prenne, puis s'efface. On anime stroke-opacity et non
+   stroke-width : la geometrie du trace ne bouge pas, seule sa visibilite.
+
+   ⚠️ CE COMMENTAIRE DISAIT, A TORT, QUE CE TRAIT BOUCHAIT LES CONTRE-FORMES.
+   Mesure au navigateur, il fait 0,6 px a l'ecran : il ne peut rien boucher.
+   Les « pates » du a, du e, du o venaient d'ailleurs — le generateur ecrivait
+   UN <path> PAR CONTOUR, si bien que l'interieur de chaque lettre etait une
+   forme remplie a part entiere. Voir .claude/fusionner-contreformes.py et
+   MAINTENANCE.md § 19. La verification d'alors etait circulaire : l'outil de
+   capture forcait stroke-opacity:0 et ne pouvait donc montrer que l'effet
+   attendu. */
 @keyframes hw-plume{from{stroke-opacity:1}to{stroke-opacity:0}}
 
 /* La sortie : un fondu seul, sans glissement — la phrase suivante sera

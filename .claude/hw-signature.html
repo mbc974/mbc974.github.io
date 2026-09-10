@@ -102,6 +102,42 @@ function serialiser(cmds, dec) {
   return out;
 }
 
+/* Une contre-forme — l'interieur d'un a, d'un o, d'un e — est un contour a part
+   entiere. Ecrite dans son propre <path>, elle etait REMPLIE pour son propre
+   compte et bouchait la lettre : ce sont les « pates » signales deux fois par
+   le president (voir MAINTENANCE.md § 19). On la rattache donc a la lettre qui
+   la contient, dans le meme attribut d : la regle nonzero en fait alors un
+   trou, parce qu'elle tourne en sens inverse de son conteneur. Un contour
+   contenu qui tournerait dans le MEME sens est un recouvrement a remplir : on
+   le laisse tel quel. .claude/fusionner-contreformes.py fait exactement la
+   meme chose sur un HTML deja publie. */
+function aireSignee(cmds) {
+  const pts = cmds.filter(c => c.type !== 'Z').map(c => [c.x, c.y]);
+  let s = 0;
+  for (let k = 0; k < pts.length; k++) {
+    const [x0, y0] = pts[k], [x1, y1] = pts[(k + 1) % pts.length];
+    s += x0 * y1 - x1 * y0;
+  }
+  return s / 2;
+}
+function rattacherContreFormes(ds) {
+  const surf = o => (o.x1 - o.x0) * (o.y1 - o.y0);
+  const dans = (a, b) => b.x0 >= a.x0 - .5 && b.y0 >= a.y0 - .5 &&
+                         b.x1 <= a.x1 + .5 && b.y1 <= a.y1 + .5 && surf(b) < surf(a);
+  const parents = new Map();
+  ds.forEach((e, i) => {
+    const cands = ds.filter((f, j) => j !== i && dans(f, e));
+    if (!cands.length) return;
+    const f = cands.reduce((p, q) => surf(q) < surf(p) ? q : p);
+    if ((e.aire > 0) === (f.aire > 0)) return;          /* meme sens : recouvrement */
+    parents.set(e, f);
+  });
+  /* chaque contour est serialise depuis l'origine : son « m » initial est
+     deja absolu, on le reecrit « M » pour qu'il le reste une fois colle. */
+  parents.forEach((f, e) => { f.d += 'M' + e.d.slice(1); });
+  return ds.filter(e => !parents.has(e));
+}
+
 /* Un « contour » = tout ce qui suit un M jusqu'au M suivant : l'unite que
    l'oeil lit comme un trait de plume. */
 function contours(path) {
@@ -135,8 +171,9 @@ function contours(path) {
         else if (Math.abs(m.x0-t.x0) > 1.5 || Math.abs(m.y0-t.y0) > 1.5 ||
                  Math.abs(m.x1-t.x1) > 1.5 || Math.abs(m.y1-t.y1) > 1.5)
           alertes.push(texte + ' : un contour est deforme');
-        return { d, ...m };
+        return { d, ...m, aire: aireSignee(cmds) };
       });
+      ds = rattacherContreFormes(ds);
       const px0 = Math.min(...ds.map(o=>o.x0)), px1 = Math.max(...ds.map(o=>o.x1)), W = px1 - px0;
       ds.sort((a, b) => a.x0 - b.x0);                       /* ordre d'ecriture */
       ds.forEach(o => { X0=Math.min(X0,o.x0); X1=Math.max(X1,o.x1);

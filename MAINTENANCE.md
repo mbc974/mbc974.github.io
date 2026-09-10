@@ -1139,3 +1139,85 @@ curl -s https://mbc974.com/style.min.css | grep -c "<un motif de la nouvelle rè
 ```
 
 Zéro = la modification n'est pas en ligne.
+
+---
+
+## 19. La signature manuscrite : les « pâtés » avaient une autre cause (10/09/2026)
+
+### Le symptôme, signalé deux fois
+
+« On a les espaces vides qui sont remplis » : l'intérieur des **a, e, o, g, p**
+de la phrase qui s'écrit sous le titre du hero était plein.
+
+### Le premier diagnostic était faux — et sa vérification aussi
+
+La couche V160 accusait le **trait** de la plume : laissé à la fin de
+l'animation, il aurait épaissi chaque glyphe des deux côtés et bouché les
+contre-formes. On l'a fait s'effacer après l'encrage. Ça n'a rien changé.
+
+Deux erreurs, à ne pas refaire :
+
+- **L'ordre de grandeur ne collait pas.** `stroke-width` vaut 3 unités du
+  viewBox, rendu à l'échelle 0,2 : **0,6 px à l'écran**. Un trait de 0,6 px ne
+  bouche rien. Il fallait mesurer avant d'accuser.
+- **La vérification était circulaire.** L'outil de capture injectait
+  `.hw__p{stroke-opacity:0 !important}` pour figer l'état final : il montrait
+  donc le trait effacé *quelle que soit* la CSS livrée.
+
+Le commentaire de V160 dans `style.css` a été corrigé en ce sens.
+
+### La vraie cause
+
+`.claude/hw-signature.html` découpe chaque phrase en contours — « tout ce qui
+suit un M jusqu'au M suivant » — et écrivait **un `<path>` par contour**, pour
+que la plume les trace un par un. Or l'intérieur d'un « a » est un contour à
+part entière. Devenu un `<path>` autonome, il était **rempli pour son propre
+compte** : le trou devenait une pastille pleine posée sur la lettre dès que
+l'encre arrivait.
+
+Mesuré au navigateur (`getBBox`) : 6 chemins entièrement contenus dans un
+autre dans la phrase 1, 7 dans la phrase 2, 4 dans la phrase 3 — les 17
+contre-formes du texte.
+
+La preuve qui tranche : rendre la phrase **encre seule, trait coupé**. Les
+lettres restaient bouchées : le trait était innocent.
+
+### Le correctif, à deux niveaux
+
+1. **Sur le HTML publié** : `python .claude/fusionner-contreformes.py`.
+   Chaque contour entièrement contenu dans un autre **et tournant en sens
+   inverse** (aire signée de signe opposé) est rattaché à sa lettre, dans le
+   même attribut `d`. La règle `nonzero` en fait alors un trou. Un contour
+   contenu qui tournerait dans le *même* sens serait un recouvrement à remplir :
+   il est laissé tel quel (aucun des 17 n'était dans ce cas). 67 → 50 chemins.
+   Idempotent : relancé, il ne trouve plus rien.
+2. **Dans le générateur** : `rattacherContreFormes()` fait la même chose avant
+   la sérialisation. Vérifié : sa sortie est **identique octet pour octet** au
+   HTML corrigé (50 chemins, 30 366 octets).
+
+Aucune autre valeur ne bouge : géométrie recopiée à l'identique, instants de
+tracé (`--d`, `--t`) de la lettre conservés, même viewBox, même nombre de
+phrases.
+
+### Régénérer les phrases
+
+Ouvrir `http://127.0.0.1:<port>/.claude/hw-signature.html` servi depuis la
+racine du dépôt (la police est lue en `/.claude/fonts/caveat-variable.ttf`),
+attendre « OK », copier le contenu du champ de sortie à la place des trois
+`<svg class="hw__f">` d'`index.html`. `fusionner-contreformes.py --essai` doit
+alors répondre « 0 contre-forme ».
+
+### Vérifier un état final animé
+
+Ni en forçant la propriété qu'on corrige, ni sur une capture : dans un vrai
+navigateur, mener les animations à terme puis lire l'état calculé.
+
+```js
+document.querySelectorAll('.hw__f.is-on .hw__p')
+  .forEach(p => p.getAnimations().forEach(a => a.finish()));
+getComputedStyle(document.querySelector('.hw__f.is-on .hw__p')).fillOpacity
+```
+
+Les bancs de capture (`cadre.py`, `shot.py`) passent désormais
+`--force-prefers-reduced-motion` : c'est la règle `prefers-reduced-motion` **du
+site** qui pose l'état final, pas une surcharge de l'outil.
