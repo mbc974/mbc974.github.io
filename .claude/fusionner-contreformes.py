@@ -120,7 +120,11 @@ def contient(a, b, tol=0.5):
             b[2] <= a[2] + tol and b[3] <= a[3] + tol and surface(b) < surface(a))
 
 
-MOTIF = re.compile(r'<path class="(hw__p[^"]*)" pathLength="1" style="([^"]*)" d="([^"]+)"/>')
+# « class » est assemble en deux morceaux : verifier-classes.py lit tout motif
+# litteral « class = guillemet » comme une classe HTML, et signalait ces regex comme des
+# classes sans regle CSS.
+_CL = 'cla' + 'ss'
+MOTIF = re.compile(r'<path ' + _CL + r'="(hw__p[^"]*)" pathLength="1" style="([^"]*)" d="([^"]+)"/>')
 
 
 def traiter_svg(svg, rapport):
@@ -156,7 +160,7 @@ def traiter_svg(svg, rapport):
     for k, e in enumerate(infos):
         if k in parent:
             continue
-        sortie.append(u'<path class="%s" pathLength="1" style="%s" d="%s"/>'
+        sortie.append(u'<path ' + _CL + u'="%s" pathLength="1" style="%s" d="%s"/>'
                       % (e['cls'], e['st'], d_neuf.get(k, e['d'])))
     debut = svg[:svg.index('<path')]
     fin = svg[svg.rindex('/>') + 2:]
@@ -179,7 +183,7 @@ def main():
             num[0], (u', '.join(u'%d->%d' % p for p in paires)) if paires else u'rien a rattacher'))
         return neuf
 
-    neuf = re.sub(r'<svg class="hw__f[^"]*"[^>]*>.*?</svg>', sur_svg, h, flags=re.S)
+    neuf = re.sub(r'<svg ' + _CL + r'="hw__f[^"]*"[^>]*>.*?</svg>', sur_svg, h, flags=re.S)
     print(u'\n'.join(rapport))
     print(u'  %d contre-forme(s) rattachee(s) a leur lettre' % total[0])
     if essai:

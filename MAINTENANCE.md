@@ -317,7 +317,9 @@ aucun débordement horizontal en 320 / 375 / 768 / 1024 / 1440 / 1920 px, aucune
 
 Les trois phrases écrites à la main sous le titre (« Ansanm nou lé pli for. », « La Montagne
 en lèr. », « Nou lé ansanm. ») ne sont **pas du texte** : ce sont les contours des glyphes de
-**Caveat 700** (Google Fonts, SIL OFL 1.1), convertis en chemins SVG une fois pour toutes et
+**Caveat 400** — l’instance par défaut de `.claude/fonts/caveat-variable.ttf` (Google Fonts,
+SIL OFL 1.1 ; le 700 donnait un feutre, pas une plume, voir V153 et § 19), convertis en chemins
+SVG une fois pour toutes et
 posés en dur dans `index.html`, dans `<span class="hw" data-hw>`.
 
 C'est ce qui permet d'animer le tracé sans embarquer de police manuscrite ni de bibliothèque :
@@ -1221,3 +1223,154 @@ getComputedStyle(document.querySelector('.hw__f.is-on .hw__p')).fillOpacity
 Les bancs de capture (`cadre.py`, `shot.py`) passent désormais
 `--force-prefers-reduced-motion` : c'est la règle `prefers-reduced-motion` **du
 site** qui pose l'état final, pas une surcharge de l'outil.
+
+---
+
+## 20. Le premier écran fait une page (10/09/2026)
+
+### La demande
+
+« Sur le hero, je veux simplement la photo, le CTA et la prochaine rencontre »,
+et que ce premier écran fasse **une page entière à chaque résolution** —
+téléphone, iPad, PC. Le bandeau « 95 € / dès 3 ans / 2 terrains » passe
+dessous : il deviendra une section à cartes.
+
+### Avant, mesuré
+
+| | premier écran |
+|---|---|
+| téléphones 360 → 430 | **débordait** de 170 à 364 px |
+| tablettes et ordinateurs | **s'arrêtait trop tôt** : 124 à 517 px de vide, occupés par le haut du bandeau de chiffres |
+
+Cause : la hauteur du hero était une formule — V153,
+`clamp(400px, calc(100svh - 410px), 780px) !important` — qui réservait 410 px
+« pour la suite » sans connaître ni la taille réelle du bandeau, ni son
+existence.
+
+⚠️ **Au passage, V153 rendait inerte la règle tablette du commit `5c0d95a`**
+(`clamp(500px,66vw,680px) !important` en 641–1000) : même `!important`, même
+spécificité, mais plus bas dans le fichier **et sans media query**, donc
+appliquée à toutes les largeurs. Mesuré : 768×1024 → hero 614 px =
+1024 − 410. **Toute règle `!important` sans media query posée en fin de
+fichier écrase les règles de palier écrites plus haut.**
+
+### La règle qui remplace les formules (V171)
+
+```html
+<div class="ecran1">            <!-- ouvert juste avant <section class="hero"> -->
+  <section class="hero">…</section>
+  <!-- PROCHAIN-MATCH:DEBUT … -->  <section class="nx" id="nxBand">…</section>
+  <!-- PROCHAIN-MATCH:FIN -->
+</div>                           <!-- fermé juste après le marqueur FIN -->
+```
+
+```css
+.ecran1{display:flex;flex-direction:column;min-height:100vh;min-height:100svh}
+.ecran1 > .hero{flex:1 0 auto;min-height:0 !important}
+.ecran1 > .nx{flex:0 0 auto}
+```
+
+- Le bandeau prend sa hauteur naturelle, le hero **tout le reste**. S'il n'y a
+  plus de match à annoncer (bandeau masqué), le hero remplit l'écran seul.
+- `min-height:0 !important` à (0,2,0) **neutralise sans les supprimer** les 21
+  `min-height … !important` à (0,1,0) des couches précédentes. En supprimer un
+  ressusciterait le précédent de chaque palier.
+- `flex-shrink:0` : le hero est en `overflow:hidden`, il ne doit jamais
+  descendre sous son contenu, sinon les boutons sont rognés. Jamais de `height`
+  ni de `max-height` sur `.hero`.
+- `svh` et pas `dvh` : le premier écran tient barres du navigateur déployées ;
+  `dvh` ferait sauter la mise en page à chaque repli de la barre d'adresse.
+- Le conteneur n'a **pas** la classe `.section` (elle porte
+  `content-visibility:auto` et la portée `main > .section` de V79), et il
+  enveloppe les marqueurs du générateur sans se trouver entre eux :
+  `build-matchs.py` ne réécrit que ce qui est *entre* `DEBUT` et `FIN`.
+
+### Ce qui a quitté le hero
+
+Le sur-titre « La Montagne lé là » et le sous-titre « De 3 ans aux Seniors ·
+Loisir & compétition · Saint-Denis ». Il reste : la photo, le titre (H1), la
+phrase manuscrite, le bouton d'inscription et le lien d'essai. Les âges et la
+mixité iront dans la future section à cartes.
+
+### Téléphone : une seule scène, comme sur ordinateur
+
+Sous 640 px, la photo était une vignette **empilée** au-dessus du texte.
+Empilés, photo + titre + signature + bouton + bandeau ne tenaient pas dans
+667 px : il fallait une vignette de 100 px ou déborder. La photo passe donc
+**derrière** le texte, plein cadre, avec un voile qui monte du bas. Sélecteurs
+préfixés `.ecran1 .hero.in .hero__photo` (0,4,0) : `.hero.in .hero__photo`
+(0,3,0) est redéclarée six fois plus haut.
+
+### Le bandeau, en plus gros (V172)
+
+Tout est préfixé `#nxBand`, qui passe les trois couches précédentes sans
+`!important`. Trois dispositions :
+
+| largeur | disposition |
+|---|---|
+| ≥ 1001 | trois zones côte à côte (V161), grossies : titre `clamp(1.85rem,3vw,3rem)`, écussons jusqu'à 64 px, bouton 60 px |
+| 641–1000 | deux étages : l'affiche en haut, décompte et bouton dessous |
+| ≤ 640 | empilé serré ; bouton et « Itinéraire » sur la même ligne |
+
+Plus un cran en dessous pour les ordinateurs à fenêtre basse
+(`max-height:820px`).
+
+**Le bandeau suit la boîte du hero, pas `.wrap`** : `max-width:1560px`,
+gouttière `clamp(18px,4vw,44px)` (≤ 640 : `clamp(20px,5.4vw,24px)`). Avant,
+à 1717 px, le titre du hero partait de 115 px et le bandeau de 289 px — deux
+bords gauches décalés de 174 px, et une zone « identité » de 518 px où
+« MBC VS SAINTE-SUZANNE » passait sur deux lignes (bandeau à 274 px au lieu
+de 165).
+
+### Tablette tenue debout : l'image recadrée
+
+Le hero remplissant l'écran, un iPad debout donne un cadre presque carré : le
+panoramique 2,5:1 n'y montrait plus que 34 à 41 % de sa largeur — des enfants
+sortaient du cadre, le défaut que corrigeait `5c0d95a`. Le `<picture>` sert
+donc aux tablettes en portrait le visuel `-bande` (1400 × 1158, 1,21:1).
+
+Les quatre attributs `media` doivent rester **exactement** ceux-ci — les deux
+`<source>` et le preload « portrait » identiques, le preload « paysage » leur
+**complément exact**, sinon soit le mauvais fichier est préchargé, soit les
+deux sont téléchargés :
+
+```
+portrait : (max-width:640px), (orientation:portrait) and (max-width:1100px)
+paysage  : (min-width:1101px), (min-width:641px) and (orientation:landscape)
+```
+
+`sizes` des sources `-bande` et `imagesizes` du preload portrait : `150vw`
+(la photo affichée fait hauteur du hero × 1,21, soit 1,1 à 1,8 fois la largeur
+d'écran). `build-hero.py` n'écrit pas ces attributs : ils vivent dans
+`index.html`.
+
+### Résultat, mesuré
+
+**PILE aux 16 résolutions du banc**, de 360×740 à 2560×1440, portraits de
+tablette compris, et **PILE sur tablette couchée** (1024×600, 1180×820).
+Chaque format charge la bonne image (colonne relevée par le banc).
+
+**Limites connues, assumées :**
+- **Téléphone couché** (568×320 → 932×430) : le premier écran dépasse de 181 à
+  315 px. Le bandeau seul occupe 55 à 72 % d'un écran de 320 à 430 px de haut.
+  Rien n'est rogné — le bloc s'allonge.
+- `sizes` des sources ordinateur (`(max-width:1550px) 1550px, 100vw`) sous-estime
+  désormais la largeur affichée de 10 à 20 % sur grand écran (le hero est plus
+  haut, la photo en `cover` plus large). Écart invisible en DPR 1, sans effet en
+  DPR 2. Une formule en `max()` serait juste, mais un `sizes` que le navigateur
+  refuserait retomberait sur `100vw` : pas touché.
+- À la première visite, le bandeau de consentement couvre le bas de l'écran —
+  donc le bandeau du match — jusqu'au choix du visiteur. Non modifié.
+
+### Le banc de mesure
+
+`_banc.html` (racine du dépôt, exclue de git par `.git/info/exclude`) charge
+l'accueil dans des `<iframe>` à la taille exacte et écrit la géométrie en JSON ;
+`banc.py` le lit par `--dump-dom`. C'est la seule mesure fiable sous 500 px de
+large en headless (§ 17.7).
+
+⚠️ Sous **Git Bash**, un argument qui ressemble à un chemin absolu est réécrit
+avant d'arriver à Python : `/index.html` devient
+`C:/Program Files/Git/index.html`, et les iframes chargent une adresse
+inexistante — sans erreur, juste « aucun résultat ». Préfixer par
+`MSYS_NO_PATHCONV=1`.

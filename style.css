@@ -8624,8 +8624,8 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    main, une par une.
 
    POURQUOI DES CONTOURS SVG ET PAS DU TEXTE. Le trace n'est credible que si
-   l'on peut animer le CHEMIN de chaque lettre. Les glyphes de Caveat 700 ont
-   donc ete convertis en chemins une fois pour toutes, hors ligne (procedure
+   l'on peut animer le CHEMIN de chaque lettre. Les glyphes de Caveat 400 (instance
+   par defaut de caveat-variable.ttf) ont donc ete convertis en chemins une fois pour toutes, hors ligne (procedure
    dans MAINTENANCE.md), et poses en dur dans index.html. Consequence : le
    hero n'attend ni police manuscrite, ni librairie de trace, ni requete
    supplementaire — et il ne peut pas s'afficher « nu » si l'une des deux
@@ -10280,3 +10280,188 @@ html:has(.seo-top){scroll-padding-top:104px}
   .pay__second{margin-inline:auto}}
 @media (prefers-reduced-motion:reduce){
   .pay__opt,.pay__opt em,.pay__second{transition:none}}
+
+/* ============================================================================
+   V171 — LE PREMIER ECRAN FAIT UNE PAGE, NI PLUS NI MOINS
+   ----------------------------------------------------------------------------
+   Demande du president : au premier ecran, la photo, le CTA et la prochaine
+   rencontre — et rien d'autre. Le bandeau « 95 € / des 3 ans / 2 terrains »
+   passe dessous (il deviendra une section a cartes). Et ce premier ecran doit
+   remplir EXACTEMENT la fenetre, du telephone au grand ecran.
+
+   CE QUE LE BANC A MESURE AVANT (16 resolutions, iframes a la taille exacte) :
+     telephones 360 -> 430   hero + bandeau DEBORDAIENT de 170 a 364 px
+     tablettes et PC         ils s'arretaient TROP TOT : 124 a 517 px de vide,
+                             occupes par le haut du bandeau de chiffres
+   La cause : la hauteur du hero etait une formule fixe — V153,
+   clamp(400px, calc(100svh - 410px), 780px) — qui reservait 410 px « pour la
+   suite ». Elle ne savait ni la taille reelle du bandeau, ni s'il existait.
+   Elle ecrasait au passage, a toutes les largeurs, la regle tablette du commit
+   5c0d95a (66vw) : meme !important, plus bas dans le fichier, sans media query.
+
+   LA REGLE QUI REMPLACE LES FORMULES
+   Le hero et le bandeau vivent desormais dans un meme conteneur, .ecran1, qui
+   fait au moins 100svh et les empile en colonne. Le bandeau prend sa hauteur
+   naturelle ; le hero prend TOUT le reste. Plus aucun nombre magique : si le
+   bandeau grossit, le hero cede d'autant ; s'il n'y a plus de match a
+   annoncer (fin de saison, bandeau masque), le hero remplit l'ecran seul.
+
+   svh et non dvh : svh est la hauteur AVEC les barres du navigateur mobile
+   deployees. Le premier ecran tient donc entier au moment ou on le decouvre ;
+   quand les barres se replient, quelques pixels de la suite apparaissent —
+   c'est l'invitation a defiler, pas un defaut. dvh, lui, ferait sauter la
+   mise en page a chaque repli.
+
+   min-height, et pas height : si le contenu ne tient pas (telephone couche),
+   le premier ecran s'allonge au lieu de couper le bouton d'inscription.
+   ============================================================================ */
+.ecran1{
+  display:flex;flex-direction:column;
+  min-height:100vh;min-height:100svh}
+/* flex-shrink a 0 : le hero ne peut JAMAIS descendre sous son contenu. Il est
+   en overflow:hidden : s'il retrecissait, ce sont les boutons qui seraient
+   rognes. min-height:0 !important, a (0,2,0), neutralise sans les supprimer
+   les 21 min-height (0,1,0) !important des couches precedentes — en supprimer
+   un ressusciterait le precedent de chaque palier. */
+.ecran1 > .hero{flex:1 0 auto;min-height:0 !important}
+.ecran1 > .nx{flex:0 0 auto}
+
+/* --- Tablette en portrait : le visuel recadre des telephones ----------------
+   Le hero remplit maintenant l'ecran : sur un iPad debout (768 x 1024, 820 x
+   1180, 1024 x 1366), son cadre devient presque carre. Le panoramique 2,5:1
+   n'y montrait plus que 34 a 41 % de sa largeur — des enfants sortaient du
+   cadre, exactement le defaut que corrigeait le commit 5c0d95a. Le <picture>
+   sert donc aux tablettes en portrait le visuel -bande (1,21:1), cadre sur le
+   regroupement ; ici on ne fait que le centrer. */
+@media (min-width:641px) and (max-width:1100px) and (orientation:portrait){
+  .ecran1 .hero .hero__photo img{object-position:50% 42%}}
+
+/* --- Telephone : une seule scene, comme sur ordinateur -----------------------
+   Sous 640 px la photo etait une vignette EMPILEE au-dessus du texte (230 a
+   300 px). Photo + titre + signature + bouton + bandeau ne pouvaient pas tenir
+   dans un ecran de 667 px empiles : il fallait soit une vignette de 100 px,
+   soit deborder. La photo passe donc DERRIERE le texte, plein cadre, avec un
+   voile qui monte du bas — exactement le parti du hero ordinateur.
+
+   Le visuel -bande (1400 x 1158, 1,21:1) le permet : dans un cadre de
+   telephone on en garde 52 a 74 % de la largeur selon la hauteur, et le cercle
+   des enfants autour de l'entraineur est au centre.
+
+   Specificite : .hero.in .hero__photo vaut (0,3,0) et est redeclaree six fois
+   plus haut (piege documente). On passe donc par .ecran1 .hero.in .hero__photo,
+   (0,4,0), qui gagne sans !important. */
+@media (max-width:640px){
+  .ecran1 > .hero{
+    display:flex !important;flex-direction:column;justify-content:flex-end;
+    padding:calc(72px + 1rem) 0 clamp(1.2rem,4vw,1.7rem) !important}
+  .ecran1 .hero .hero__photo,
+  .ecran1 .hero.in .hero__photo{
+    position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0}
+  .ecran1 .hero .hero__photo img{object-position:50% 40%}
+  /* Le voile : la bande de 46-58 px qui fondait le bas de la vignette empilee
+     (ligne ~8767) redevient un voile plein cadre. Sombre en bas, ou le texte
+     se pose ; leger au milieu, ou sont les visages ; un peu plus dense en haut,
+     sous l'entete. */
+  .ecran1 .hero::after{
+    top:0;right:0;bottom:0;left:0;height:auto;
+    background:linear-gradient(to top,
+      rgba(3,10,20,.97) 0%, rgba(3,10,20,.92) 18%, rgba(3,10,20,.74) 36%,
+      rgba(3,10,20,.34) 58%, rgba(3,10,20,.12) 74%, rgba(3,10,20,.42) 100%)}
+  .ecran1 .hero__inner{padding-top:0}
+  /* Le bouton et le lien d'essai sur une meme ligne quand ils tiennent : la
+     colonne coutait une ligne de 54 px au premier ecran. */
+  .ecran1 .hero__cta{flex-direction:row;flex-wrap:wrap;align-items:center;
+    gap:.55rem 1.2rem;margin-top:clamp(1rem,3.4vw,1.4rem)}
+}
+
+/* ============================================================================
+   V172 — LE PROCHAIN MATCH, EN PLUS GROS
+   ----------------------------------------------------------------------------
+   « Mettre en plus gros le prochain match. » Le bandeau passe du statut de
+   bandeau a celui de pied du premier ecran : c'est la deuxieme chose qu'on y
+   lit apres le titre, et la seule qui change chaque semaine.
+
+   Tout est prefixe #nxBand. Trois couches successives ont deja retouche ce
+   bandeau (V153, V161 et la base) avec des specificites de (0,1,0) a (1,2,1) ;
+   l'identifiant les passe toutes sans !important, et laisse V161 — la grille a
+   trois zones — intacte sur ordinateur.
+
+   Trois dispositions, parce que trois largeurs n'ont pas la meme place :
+     ordinateur  >= 1001  trois zones cote a cote (identite / decompte / actions)
+     tablette  641-1000   deux etages : l'affiche en haut, decompte et bouton
+                          dessous — trois zones grossies ne tenaient plus sur
+                          900 px sans ecraser l'identite
+     telephone  <= 640    empile, compact : le bouton et « Itineraire » sur la
+                          meme ligne, pour rendre au hero une ligne de 54 px
+   ============================================================================ */
+#nxBand{padding-block:clamp(1.35rem,2.3vw,2.15rem)}
+#nxBand .nx__eyebrow{font-size:var(--text-xs);letter-spacing:.2em}
+#nxBand .nx__dot{width:8px;height:8px}
+#nxBand .nx__t{
+  font-size:clamp(1.85rem,3vw,3rem);gap:clamp(.6rem,1.2vw,1.05rem);
+  margin-top:.3rem}
+#nxBand .nx__crest{
+  width:clamp(48px,3.8vw,64px);height:clamp(48px,3.8vw,64px);
+  flex:0 0 clamp(48px,3.8vw,64px);padding:clamp(4px,.4vw,6px);border-radius:12px}
+#nxBand .nx__vs{font-size:.5em}
+#nxBand .nx__meta{font-size:var(--text-md);margin-top:.55rem}
+#nxBand .nx__libre{font-size:var(--text-xs)}
+#nxBand .nx__cd-lab{font-size:var(--text-xs)}
+#nxBand .nx__cd-val{font-size:clamp(1.5rem,2.3vw,2.25rem)}
+#nxBand .nx__a .btn{
+  min-height:60px;padding-inline:clamp(1.7rem,2.8vw,2.5rem);
+  font-size:clamp(1.05rem,1.25vw,1.2rem)}
+#nxBand .nx__second{font-size:var(--text-lg)}
+
+/* Ordinateur a fenetre basse (portable 1366 x 768, 1280 x 720) : un cran
+   dessous, sinon le bandeau mange la photo. */
+@media (min-width:1001px) and (max-height:820px){
+  #nxBand{padding-block:clamp(1rem,1.9vh,1.4rem)}
+  #nxBand .nx__t{font-size:clamp(1.65rem,2.5vw,2.45rem)}
+  #nxBand .nx__crest{width:48px;height:48px;flex-basis:48px}
+  #nxBand .nx__cd-val{font-size:clamp(1.35rem,2vw,1.85rem)}
+  #nxBand .nx__a .btn{min-height:54px}
+}
+
+/* Le bandeau suit la colonne du HERO, pas celle du reste de la page.
+   Mesure a 1717 px : le titre du hero commencait a 115 px (boite de 1560 px,
+   gouttiere clamp(18px,4vw,44px)), le bandeau a 289 px (.wrap de 1220 px,
+   gouttiere 48 px). Deux bords gauches decales de 174 px dans le meme ecran —
+   et une zone « identite » reduite a 518 px, ou « MBC VS SAINTE-SUZANNE »,
+   grossi, passait sur deux lignes et faisait monter le bandeau a 274 px.
+   Meme boite, meme gouttiere que .hero__inner : les deux bords coincident a
+   toutes les largeurs, et l'identite retrouve ~880 px. */
+.ecran1 #nxBand .nx__in{max-width:1560px;padding-inline:clamp(18px,4vw,44px)}
+@media (max-width:640px){
+  .ecran1 #nxBand .nx__in{padding-inline:clamp(20px,5.4vw,24px)}}
+
+/* --- Tablette : l'affiche en haut, le decompte et le bouton dessous --------- */
+@media (min-width:641px) and (max-width:1000px){
+  #nxBand .nx__in{
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"eyebrow eyebrow" "titre titre" "meta meta" "cd actions";
+    row-gap:.35rem;column-gap:1.6rem;align-items:end}
+  #nxBand .nx__t{font-size:clamp(1.9rem,4.8vw,2.7rem)}
+  #nxBand .nx__crest{width:52px;height:52px;flex-basis:52px}
+  #nxBand .nx__cd{
+    flex-direction:column;flex-wrap:nowrap;align-items:flex-start;
+    text-align:left;gap:.3rem;margin-top:1rem}
+  #nxBand .nx__a{margin-top:1rem;flex-wrap:nowrap;justify-content:flex-end}
+  #nxBand .nx__a .btn--primary{flex:0 0 auto}
+  #nxBand .nx__second{margin-inline:0}
+}
+
+/* --- Telephone : empile, mais serre ----------------------------------------- */
+@media (max-width:640px){
+  #nxBand{padding-block:1.05rem 1.2rem}
+  #nxBand .nx__in{row-gap:.3rem}
+  #nxBand .nx__t{font-size:clamp(1.45rem,6.6vw,1.95rem);gap:.45rem}
+  #nxBand .nx__crest{width:clamp(34px,9.4vw,40px);height:clamp(34px,9.4vw,40px);
+    flex-basis:clamp(34px,9.4vw,40px);padding:4px;border-radius:9px}
+  #nxBand .nx__meta{font-size:var(--text-sm);gap:.25rem .9rem;margin-top:.35rem}
+  #nxBand .nx__cd{margin-top:.35rem;gap:.3rem .7rem}
+  #nxBand .nx__cd-val{font-size:clamp(1.25rem,5.4vw,1.5rem)}
+  #nxBand .nx__a{margin-top:.75rem;flex-wrap:nowrap;align-items:center;gap:1rem}
+  #nxBand .nx__a .btn--primary{flex:1 1 auto;min-height:54px}
+  #nxBand .nx__second{margin-inline:0;flex:none;font-size:var(--text-md)}
+}

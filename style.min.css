@@ -5361,3 +5361,82 @@ html:has(.seo-top){scroll-padding-top:104px}
   .pay__second{margin-inline:auto}}
 @media (prefers-reduced-motion:reduce){
   .pay__opt,.pay__opt em,.pay__second{transition:none}}
+.ecran1{
+  display:flex;flex-direction:column;
+  min-height:100vh;min-height:100svh}
+.ecran1 > .hero{flex:1 0 auto;min-height:0 !important}
+.ecran1 > .nx{flex:0 0 auto}
+@media (min-width:641px) and (max-width:1100px) and (orientation:portrait){
+  .ecran1 .hero .hero__photo img{object-position:50% 42%}}
+@media (max-width:640px){
+  .ecran1 > .hero{
+    display:flex !important;flex-direction:column;justify-content:flex-end;
+    padding:calc(72px + 1rem) 0 clamp(1.2rem,4vw,1.7rem) !important}
+  .ecran1 .hero .hero__photo,
+  .ecran1 .hero.in .hero__photo{
+    position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0}
+  .ecran1 .hero .hero__photo img{object-position:50% 40%}
+  .ecran1 .hero::after{
+    top:0;right:0;bottom:0;left:0;height:auto;
+    background:linear-gradient(to top,
+      rgba(3,10,20,.97) 0%, rgba(3,10,20,.92) 18%, rgba(3,10,20,.74) 36%,
+      rgba(3,10,20,.34) 58%, rgba(3,10,20,.12) 74%, rgba(3,10,20,.42) 100%)}
+  .ecran1 .hero__inner{padding-top:0}
+  .ecran1 .hero__cta{flex-direction:row;flex-wrap:wrap;align-items:center;
+    gap:.55rem 1.2rem;margin-top:clamp(1rem,3.4vw,1.4rem)}
+}
+#nxBand{padding-block:clamp(1.35rem,2.3vw,2.15rem)}
+#nxBand .nx__eyebrow{font-size:var(--text-xs);letter-spacing:.2em}
+#nxBand .nx__dot{width:8px;height:8px}
+#nxBand .nx__t{
+  font-size:clamp(1.85rem,3vw,3rem);gap:clamp(.6rem,1.2vw,1.05rem);
+  margin-top:.3rem}
+#nxBand .nx__crest{
+  width:clamp(48px,3.8vw,64px);height:clamp(48px,3.8vw,64px);
+  flex:0 0 clamp(48px,3.8vw,64px);padding:clamp(4px,.4vw,6px);border-radius:12px}
+#nxBand .nx__vs{font-size:.5em}
+#nxBand .nx__meta{font-size:var(--text-md);margin-top:.55rem}
+#nxBand .nx__libre{font-size:var(--text-xs)}
+#nxBand .nx__cd-lab{font-size:var(--text-xs)}
+#nxBand .nx__cd-val{font-size:clamp(1.5rem,2.3vw,2.25rem)}
+#nxBand .nx__a .btn{
+  min-height:60px;padding-inline:clamp(1.7rem,2.8vw,2.5rem);
+  font-size:clamp(1.05rem,1.25vw,1.2rem)}
+#nxBand .nx__second{font-size:var(--text-lg)}
+@media (min-width:1001px) and (max-height:820px){
+  #nxBand{padding-block:clamp(1rem,1.9vh,1.4rem)}
+  #nxBand .nx__t{font-size:clamp(1.65rem,2.5vw,2.45rem)}
+  #nxBand .nx__crest{width:48px;height:48px;flex-basis:48px}
+  #nxBand .nx__cd-val{font-size:clamp(1.35rem,2vw,1.85rem)}
+  #nxBand .nx__a .btn{min-height:54px}
+}
+.ecran1 #nxBand .nx__in{max-width:1560px;padding-inline:clamp(18px,4vw,44px)}
+@media (max-width:640px){
+  .ecran1 #nxBand .nx__in{padding-inline:clamp(20px,5.4vw,24px)}}
+@media (min-width:641px) and (max-width:1000px){
+  #nxBand .nx__in{
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"eyebrow eyebrow" "titre titre" "meta meta" "cd actions";
+    row-gap:.35rem;column-gap:1.6rem;align-items:end}
+  #nxBand .nx__t{font-size:clamp(1.9rem,4.8vw,2.7rem)}
+  #nxBand .nx__crest{width:52px;height:52px;flex-basis:52px}
+  #nxBand .nx__cd{
+    flex-direction:column;flex-wrap:nowrap;align-items:flex-start;
+    text-align:left;gap:.3rem;margin-top:1rem}
+  #nxBand .nx__a{margin-top:1rem;flex-wrap:nowrap;justify-content:flex-end}
+  #nxBand .nx__a .btn--primary{flex:0 0 auto}
+  #nxBand .nx__second{margin-inline:0}
+}
+@media (max-width:640px){
+  #nxBand{padding-block:1.05rem 1.2rem}
+  #nxBand .nx__in{row-gap:.3rem}
+  #nxBand .nx__t{font-size:clamp(1.45rem,6.6vw,1.95rem);gap:.45rem}
+  #nxBand .nx__crest{width:clamp(34px,9.4vw,40px);height:clamp(34px,9.4vw,40px);
+    flex-basis:clamp(34px,9.4vw,40px);padding:4px;border-radius:9px}
+  #nxBand .nx__meta{font-size:var(--text-sm);gap:.25rem .9rem;margin-top:.35rem}
+  #nxBand .nx__cd{margin-top:.35rem;gap:.3rem .7rem}
+  #nxBand .nx__cd-val{font-size:clamp(1.25rem,5.4vw,1.5rem)}
+  #nxBand .nx__a{margin-top:.75rem;flex-wrap:nowrap;align-items:center;gap:1rem}
+  #nxBand .nx__a .btn--primary{flex:1 1 auto;min-height:54px}
+  #nxBand .nx__second{margin-inline:0;flex:none;font-size:var(--text-md)}
+}
