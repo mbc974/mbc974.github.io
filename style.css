@@ -7081,9 +7081,25 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
 .hero.in .hero__photo img{animation:heroZoom 1.6s var(--ease-out) both}
 
 /* --- 8. Tablette : 641 → 1000 px ----------------------------------------- */
+/* La hauteur suit la LARGEUR (66vw), elle ne suit plus la hauteur d'ecran.
+   Pourquoi : `82svh` donnait un cadre presque carre — 738 x 805 sur une
+   fenetre de 820 px — alors que la photo est un panoramique 2,5:1. `cover`
+   compensait en zoomant a fond : on n'en voyait plus que 43 % de la largeur,
+   le blason MBC du maillot passait sous le titre et le tiers droit du
+   regroupement — cinq enfants — tombait hors cadre, a 277 px du bord.
+
+   Indexee sur la largeur, la hauteur garde un cadre de proportions stables :
+   le champ reste a ~59 % de 800 a 1000 px au lieu de fondre avec la fenetre.
+   Le regroupement tient alors EN ENTIER, blason compris. Le plancher de
+   500 px est celui du contenu (384 px de texte + le degagement de la nav),
+   pas un choix esthetique : sous 790 px c'est lui qui limite le champ.
+
+   L'ancrage 54 % cale le bord droit du groupe sur le bord droit du cadre.
+   Le second nombre est sans effet ici — l'image deborde en largeur, jamais
+   en hauteur — il reste a 50 % par honnetete de lecture. */
 @media (min-width:641px) and (max-width:1000px){
-  .hero{min-height:clamp(600px,82svh,780px) !important}
-  .hero__photo img{object-position:38% 52%}
+  .hero{min-height:clamp(500px,66vw,680px) !important}
+  .hero__photo img{object-position:54% 50%}
   .hero__inner > *{max-width:min(84%,560px)}
   .hero__h1{font-size:clamp(2.6rem,7.4vw,4.4rem);max-width:none}
   .hero__sub{max-width:none}
