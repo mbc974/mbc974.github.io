@@ -5618,3 +5618,29 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
 @keyframes v177-photo-t{0%{translate:0 0}90.9091%{translate:0 5svh}100%{translate:0 0}}
 @keyframes v177-texte-t{0%{translate:0 0}90.9091%{translate:0 7svh}100%{translate:0 0}}
 @keyframes v177-lisiere{0%,6%{opacity:0}14%,95%{opacity:1}100%{opacity:0}}
+.mn-btn{position:relative;gap:.8rem;padding:0 8px 0 1.15rem;
+  border:1px solid transparent;
+  background:
+    linear-gradient(180deg,rgb(var(--nuit-0-rgb) / .66),rgb(var(--nuit-0-rgb) / .4)) padding-box,
+    linear-gradient(135deg,rgb(var(--bleu-glacier-rgb) / .42),rgb(var(--bleu-glacier-rgb) / .1) 45%,rgb(var(--orange-ballon-rgb) / .45)) border-box;
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .07),0 10px 28px -14px rgb(0 0 0 / .75);
+  -webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  font-size:.9rem;letter-spacing:.2em;
+  transition:box-shadow .35s var(--ease-out)}
+.mn-btn::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg,rgb(var(--bleu-glacier-rgb) / .6),rgb(var(--orange-ballon-rgb) / .4) 45%,var(--orange-vif));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .35s var(--ease-out)}
+.mn-btn:hover::before,.mn-btn[aria-expanded="true"]::before{opacity:1}
+.mn-btn:hover{border-color:transparent;background-color:transparent;
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .09),0 12px 30px -12px rgb(var(--orange-ballon-rgb) / .5)}
+.mn-btn__ic{box-sizing:content-box;width:12px;height:12px;padding:8px;border-radius:50%;
+  background:rgb(255 255 255 / .06);box-shadow:inset 0 0 0 1px rgb(var(--bleu-glacier-rgb) / .3);
+  transition:transform var(--mn-dur) var(--mn-ease),background-color .35s var(--ease-out),
+    color .35s var(--ease-out),box-shadow .35s var(--ease-out)}
+.mn-btn:hover .mn-btn__ic{transform:rotate(90deg);background:rgb(var(--orange-ballon-rgb) / .16);
+  box-shadow:inset 0 0 0 1px rgb(var(--orange-ballon-rgb) / .75)}
+.mn-btn[aria-expanded="true"] .mn-btn__ic{transform:rotate(315deg);background:var(--orange-ballon);
+  color:#170D03;box-shadow:0 6px 18px -6px rgb(var(--orange-ballon-rgb) / .85)}
+@media (max-width:760px){.mn-btn{-webkit-backdrop-filter:none;backdrop-filter:none}}
