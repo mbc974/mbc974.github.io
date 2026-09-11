@@ -1809,3 +1809,130 @@ section posée, interrupteur caché, échéances en clair.
 - L'ancienne CSS `.keyfig*` / `.keyfig-sec` (une trentaine de couches) ne
   sert plus : à purger, avec une empreinte des styles calculés avant/après.
 - Firefox et Safari n'ont pas été passés au banc (Chrome seulement).
+
+## 25. La grille bento de la page adhésion (11/09/2026)
+
+### La demande
+
+Remplacer la grille « essentiel » d'adhesion.html (95 €, 8 formules, 2 lieux,
+Sous 48 h, séance d'essai) par le composant « BentoGrid » de Magic UI (React,
+Tailwind, shadcn, Radix). **Transposé, pas installé** — même doctrine qu'aux
+§ 18, 22, 23 et 24.
+
+### Comment ça a été décidé
+
+Un workflow de conception (quatre lecteurs, trois conceptions, trois juges,
+une synthèse), une revue contradictoire (cinq relecteurs, un vérificateur
+adverse chacun, un critique), puis une vérification finale sur le code
+corrigé. La revue a été coupée par un disque C: plein (voir « Ce qui
+reste ») : les bancs de captures consomment vite de l'espace.
+
+### Ce que l'œil lit
+
+- **1024 px et plus** : trois colonnes. Le tarif tient la colonne de GAUCHE
+  sur les trois rangées (la démo met la carte haute au centre : ici l'ordre
+  du DOM reste l'ordre visuel et la tabulation ne saute pas) ; formules sur
+  deux rangées puis lieux ; délai puis essai sur deux rangées. Rangées
+  `minmax(15rem,auto)` (22rem dans la démo) : grille de 752 px.
+- Chaque carte : un fond décoratif (photos du club déjà dans le dépôt, ou le
+  terrain au trait en SVG pour le tarif), une icône, un nom, une description,
+  un pied avec son ou ses liens, un voile.
+- **Au survol** (souris, 1024 px et plus, sans mouvement réduit, à l'écran
+  seulement) : le texte monte de 2.5rem, le pied glisse dessous, l'icône
+  passe à .75, le voile teinte la carte. Le tarif garde son texte en haut.
+- **Partout ailleurs** (doigt, clavier via `:focus-within`, mouvement
+  réduit, impression) : les liens sont simplement visibles.
+- **640 à 1023 px** : deux colonnes, le tarif sur deux rangées, les bandes
+  photo limitées aux 55 % du haut de la carte.
+- **Sous 640 px** : une colonne compacte, icône à gauche, lien en rangée de
+  44 px ; les photos ne sont pas téléchargées. Idem au téléphone tenu en
+  paysage (`(hover:none) and (max-height:540px) and (max-width:1023px)`).
+
+### Le contenu
+
+Les textes des cinq cartes sont ceux de l'ancienne grille. Chaque carte gagne
+un lien vers une destination qui existait déjà : #tarif (« Ce que couvrent
+les 95 € »), #formules (« Quelle formule choisir ? »), les deux liens Google
+Maps de l'accueil et de /creneaux/, #parcours (« Voir les 5 étapes
+détaillées », comme dans la FAQ) et WhatsApp pour la séance d'essai (même
+texte prérempli qu'index.html). « Sous 48 h » est repris de la grille
+d'origine ; le même délai figure en #parcours (étape 2), dans la ligne de
+réassurance de la page et sur cinq autres pages (enfant, école de basket,
+club, bénévoles, sponsors) : s'il change, huit endroits sont à modifier.
+
+### Les photos de fond
+
+| carte | fichiers |
+|---|---|
+| formules | `assets/galerie/initiation-basket-enfants-600.avif` / `.webp` |
+| lieux | `assets/images/gymnase-la-montagne-clair-400/640.webp`, `assets/images/ruisseau-blanc-terrain-400/640.webp` |
+| délai | `assets/galerie/benevole-mbc-accueil-la-montagne-400/600.avif` / `.webp` |
+| essai | `assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420/660.avif` / `.webp` |
+
+Décoratives (`alt=""`, `aria-hidden`), en `loading=lazy`. Renommer un de ces
+fichiers impose de mettre à jour adhesion.html (verifier-liens.py lit les
+`src`/`srcset`). Les `sizes` des lieux (202 et 228 px) suivent la hauteur de
+la bande duo (9,5rem) : à recalculer si elle change.
+
+### Ce que la revue a fait corriger
+
+| constat | correctif |
+|---|---|
+| A4 paysage : les liens des cartes ne s'imprimaient pas (Chrome évalue hover et pointer sur l'appareil, même à l'impression) | `@media screen and (...)` sur la montée |
+| Impression : photos imprimées sous le texte, cartes coupées par le saut de page | `@media print` : fonds retirés, rangées auto, cartes insécables |
+| Au bureau, le « 95 € » sortait du premier écran ; grandes cartes vides de 250 à 440 px | rangées de 15rem, bandes de 17rem, tarif en haut de sa carte et terrain ancré en pied |
+| Tablette en portrait : la photo des formules devenait l'élément LCP (+1 s) | bandes photo limitées aux 55 % du haut |
+| Zoom texte 200 % : mots et liens rognés par le cadre de la carte | `overflow-wrap` sur les descriptions et les liens ; les liens des lieux gardent le droit de passer sur deux rangées (un `nowrap`, d'abord essayé, rognait « Ruisseau Blanc » à 200 %) |
+| Téléphone en paysage : 244 Ko de photos | photos masquées |
+| Tablette 7 pouces en paysage (3 colonnes, 540 px de haut au plus) : cartes vides sans photos | règle du téléphone en paysage bornée à 1023 px |
+| Premier écran à 1366 × 768 : grille pas encore révélée | l'IIFE V180 révèle la liste dès son premier pixel à l'écran |
+
+Acceptés : au téléphone la grille passe de 606 à 912 px (le prix des liens
+toujours visibles au doigt) ; au bureau les photos retardent d'environ
+165 ms les polices non préchargées (LCP toujours bon) ; la photo des
+formules n'existe qu'en 600 px de large. Reporté à une tâche séparée : la
+barre flottante #floatCta peut masquer le focus clavier sous 640 px (défaut
+de tout le site). Réfuté : les noms accessibles des liens Maps.
+
+### Vérifier : `.claude/banc-bento.mjs`
+
+Chrome piloté en CDP (serveur local « mbc-static », port 8000 ; captures
+dans `%TEMP%\mbc-banc-bento`) : mise en page, survol de chaque carte, vraie
+touche Tab, tactile (`Emulation.setTouchEmulationEnabled`), mouvement
+réduit, sans JavaScript.
+
+    node .claude/banc-bento.mjs v3 1440x1300,1024x1250,768x1500,390x1900 --tactile --extras --sel='{"grille":".adh-bento","carte":".adh-bento__card","cta":".adh-bento__cta","corps":".adh-bento__body"}'
+
+Trois pièges de mesure : l'opacité du pied est sur `.adh-bento__foot`, pas
+sur le lien (le banc calcule l'opacité effective) ; `captureBeyondViewport`
+fait tomber la media query du survol le temps de la capture (le banc capture
+la fenêtre entière) ; `html{scroll-behavior:smooth}` impose
+`behavior:'instant'`.
+
+Mesuré le 11/09 : grille de 752 px à 1440 et 1024, 848 en tablette, 912 à
+390 ; aucun texte rogné ni débordement horizontal ; au repos en mode survol
+les cinq pieds à opacité 0, révélés au survol et au focus clavier ; au
+doigt, en mouvement réduit et sans JS, liens visibles. « 95 € » sans
+défiler : visible à 1440 × 900, 1536 × 864 et 1024 × 768 (à 1366 × 768 et
+1280 × 800 il reste sous le pli, comme avec l'ancienne grille, qui commence
+elle-même à 690-722 px). Impression A4 : les six liens présents dans le PDF,
+aucune photo de la grille, aucune carte coupée.
+
+### Ce qui reste
+
+- L'ancienne CSS `.essentiel-grid` / `.essentiel-card` (une cinquantaine de
+  règles, beaucoup en `!important`) ne sert plus : à purger avec le motif
+  `\.essentiel-(grid|card)` SEULEMENT (`.essentiel-cta` sert encore, ici et
+  sur l'accueil), preuve d'empreinte des styles calculés à l'appui.
+- Firefox et Safari n'ont pas été passés au banc.
+- Limites acceptées du lien révélé au survol (1024 px et plus, pointeur
+  fin) : sur un portable tactile ou un iPad avec trackpad, un premier tap
+  révèle le lien, un second l'active ; un lecteur d'écran en mode lecture
+  (curseur virtuel) peut lire un lien encore à opacité 0 à l'écran si le
+  focus système ne le suit pas. Au clavier (Tab), le lien est révélé.
+- Coût mesuré des photos en 4G lente : +144 à +160 ms sur le LCP (du
+  texte) et un CLS de 0,005 : accepté.
+- Disque : le 11/09, C: s'est rempli (0 Go libre), surtout à cause du cache
+  de shaders NVIDIA (`%LOCALAPPDATA%\NVIDIA\DXCache`, 39 Go) ; les bancs de
+  la revue avaient laissé 2,5 Go de captures dans `%TEMP%`. Vérifier
+  l'espace libre avant une revue à plusieurs agents.

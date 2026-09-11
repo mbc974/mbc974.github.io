@@ -73,7 +73,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.min.css?v=f753799c">
+<link rel="stylesheet" href="style.min.css?v=ad536786">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -210,31 +210,78 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <a href="https://wa.me/262692556458?text=Bonjour%2C%20j%27ai%20une%20question%20avant%20de%20finaliser%20mon%20inscription%20au%20MBC%20pour%20la%20saison%202026%2F2027." target="_blank" rel="noopener" class="btn btn--ghost btn--lg">Une question avant l'inscription&nbsp;?<span class="sr-only"> — WhatsApp (nouvel onglet)</span></a>
     </div>
 
-    <ul class="essentiel-grid reveal" aria-label="Informations clés de l'adhésion MBC">
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.7 9.2c0-1.1-1.2-1.7-2.7-1.7s-2.7.7-2.7 1.8c0 2.5 5.4 1.6 5.4 4.2 0 1.1-1.2 1.8-2.7 1.8s-2.7-.6-2.7-1.7"/></svg></span>
-        <span class="essentiel-card__val essentiel-card__val--price">95 €</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Tarif unique joueurs, licence FFBB &amp; assurance incluses</span>
+    <!-- V180 · Les cinq repères de l'adhésion en grille bento : le composant
+         BentoGrid de Magic UI transposé sans React ni dépendance (détail dans
+         style.css, bloc V180). Textes et ordre du DOM inchangés : le tarif
+         d'abord, puis formules, lieux, délai, essai. Sur grand écran le tarif
+         tient la colonne de GAUCHE sur trois rangées (la démo le met au
+         centre) : l'ordre du DOM reste l'ordre visuel, colonne après colonne,
+         et la tabulation ne saute pas, comme pour les cartes de l'accueil.
+         Chaque carte gagne un lien vers une destination qui existait déjà sur
+         le site. Les fonds sont décoratifs (alt vide, aria-hidden) : des
+         photos du club déjà dans le dépôt et un terrain dessiné au trait ; au
+         téléphone, les photos ne sont pas rendues, donc pas téléchargées. -->
+    <ul class="adh-bento reveal" role="list" aria-label="Informations clés de l'adhésion MBC">
+      <li class="adh-bento__card adh-bento__card--tarif">
+        <span class="adh-bento__bg adh-bento__bg--court" aria-hidden="true"><svg class="adh-bento__court" viewBox="0 0 150 280" fill="none" stroke="currentColor" stroke-width=".5"><rect x="1" y="1" width="148" height="278"/><path d="M1 140h148M50.5 1v58h49V1M50.5 279v-58h49v58M66 12h18M66 268h18M10 1v32.95a67.5 67.5 0 0 0 130 0V1M10 279v-32.95a67.5 67.5 0 0 1 130 0v32.95"/><circle cx="75" cy="140" r="18"/><circle cx="75" cy="59" r="18"/><circle cx="75" cy="221" r="18"/><circle cx="75" cy="15.75" r="2.25"/><circle cx="75" cy="264.25" r="2.25"/></svg></span>
+        <div class="adh-bento__body">
+          <span class="adh-bento__ico"><svg class="adh-bento__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M14.7 9.2c0-1.1-1.2-1.7-2.7-1.7s-2.7.7-2.7 1.8c0 2.5 5.4 1.6 5.4 4.2 0 1.1-1.2 1.8-2.7 1.8s-2.7-.6-2.7-1.7"/></svg></span>
+          <span class="adh-bento__name">95<span class="adh-bento__cur">&nbsp;€</span></span><span class="sr-only"> — </span>
+          <span class="adh-bento__desc">Tarif unique joueurs, licence FFBB &amp; assurance incluses</span>
+        </div>
+        <div class="adh-bento__foot">
+          <a class="adh-bento__cta" href="#tarif">Ce que couvrent les 95&nbsp;€<svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <span class="adh-bento__veil" aria-hidden="true"></span>
       </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span>
-        <span class="essentiel-card__val">8 formules</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Du Baby Basket aux Seniors, loisir, compétition et bénévolat</span>
+      <li class="adh-bento__card adh-bento__card--formules">
+        <span class="adh-bento__bg adh-bento__bg--band" aria-hidden="true"><picture><source type="image/avif" srcset="assets/galerie/initiation-basket-enfants-600.avif"><img src="assets/galerie/initiation-basket-enfants-600.webp" alt="" width="600" height="452" loading="lazy" decoding="async"></picture></span>
+        <div class="adh-bento__body">
+          <span class="adh-bento__ico"><svg class="adh-bento__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2 .7-3.8 2-5"/></svg></span>
+          <span class="adh-bento__name">8 formules</span><span class="sr-only"> — </span>
+          <span class="adh-bento__desc">Du Baby Basket aux Seniors, loisir, compétition et bénévolat</span>
+        </div>
+        <div class="adh-bento__foot">
+          <a class="adh-bento__cta" href="#formules">Quelle formule choisir&nbsp;?<svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <span class="adh-bento__veil" aria-hidden="true"></span>
       </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
-        <span class="essentiel-card__val">2 lieux</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Gymnase de La Montagne &amp; Terrain Ruisseau Blanc</span>
+      <li class="adh-bento__card adh-bento__card--lieux">
+        <span class="adh-bento__bg adh-bento__bg--duo" aria-hidden="true"><img src="assets/images/gymnase-la-montagne-clair-400.webp" srcset="assets/images/gymnase-la-montagne-clair-400.webp 400w, assets/images/gymnase-la-montagne-clair-640.webp 640w" sizes="202px" alt="" width="400" height="301" loading="lazy" decoding="async"><img src="assets/images/ruisseau-blanc-terrain-400.webp" srcset="assets/images/ruisseau-blanc-terrain-400.webp 400w, assets/images/ruisseau-blanc-terrain-640.webp 640w" sizes="228px" alt="" width="400" height="267" loading="lazy" decoding="async"></span>
+        <div class="adh-bento__body">
+          <span class="adh-bento__ico"><svg class="adh-bento__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <span class="adh-bento__name">2 lieux</span><span class="sr-only"> — </span>
+          <span class="adh-bento__desc">Gymnase de La Montagne &amp; Terrain Ruisseau Blanc</span>
+        </div>
+        <div class="adh-bento__foot">
+          <a class="adh-bento__cta" href="https://maps.app.goo.gl/KcTePvY47wzi6JMu9" target="_blank" rel="noopener noreferrer">Gymnase<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span><svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+          <a class="adh-bento__cta" href="https://maps.app.goo.gl/2gHjGAH8hY4iMpT36" target="_blank" rel="noopener noreferrer">Ruisseau Blanc<span class="sr-only"> — voir sur Google Maps (nouvel onglet)</span><svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+        <span class="adh-bento__veil" aria-hidden="true"></span>
       </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-        <span class="essentiel-card__val">Sous 48 h</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Réponse du club après réception de votre demande</span>
+      <li class="adh-bento__card adh-bento__card--delai">
+        <span class="adh-bento__bg" aria-hidden="true"><picture><source type="image/avif" srcset="assets/galerie/benevole-mbc-accueil-la-montagne-400.avif 400w, assets/galerie/benevole-mbc-accueil-la-montagne-600.avif 600w" sizes="(min-width:1024px) 379px, (min-width:960px) calc(50vw - 56px), (min-width:640px) calc(45vw - 8px), calc(100vw - 36px)"><img src="assets/galerie/benevole-mbc-accueil-la-montagne-400.webp" srcset="assets/galerie/benevole-mbc-accueil-la-montagne-400.webp 400w, assets/galerie/benevole-mbc-accueil-la-montagne-600.webp 600w" sizes="(min-width:1024px) 379px, (min-width:960px) calc(50vw - 56px), (min-width:640px) calc(45vw - 8px), calc(100vw - 36px)" alt="" width="400" height="372" loading="lazy" decoding="async"></picture></span>
+        <div class="adh-bento__body">
+          <span class="adh-bento__ico"><svg class="adh-bento__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <span class="adh-bento__name">Sous 48&nbsp;h</span><span class="sr-only"> — </span>
+          <span class="adh-bento__desc">Réponse du club après réception de votre demande</span>
+        </div>
+        <div class="adh-bento__foot">
+          <a class="adh-bento__cta" href="#parcours">Voir les 5 étapes détaillées<svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <span class="adh-bento__veil" aria-hidden="true"></span>
       </li>
-      <li class="essentiel-card">
-        <span class="essentiel-card__ico"><svg class="essentiel-card__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
-        <span class="essentiel-card__val">Faire une séance d'essai</span><span class="sr-only"> — </span>
-        <span class="essentiel-card__lbl">Possible avant de vous engager, selon les créneaux</span>
+      <li class="adh-bento__card adh-bento__card--essai">
+        <span class="adh-bento__bg adh-bento__bg--band" aria-hidden="true"><picture><source type="image/avif" srcset="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420.avif 420w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-660.avif 660w" sizes="(min-width:1024px) 368px, (min-width:960px) calc(50vw - 56px), (min-width:640px) calc(45vw - 8px), calc(100vw - 36px)"><img src="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420.webp" srcset="assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-420.webp 420w, assets/galerie/mbc-cercle-ecole-de-basket-saint-denis-660.webp 660w" sizes="(min-width:1024px) 368px, (min-width:960px) calc(50vw - 56px), (min-width:640px) calc(45vw - 8px), calc(100vw - 36px)" alt="" width="420" height="457" loading="lazy" decoding="async"></picture></span>
+        <div class="adh-bento__body">
+          <span class="adh-bento__ico"><svg class="adh-bento__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5 6c3 3 3 9 0 12M19 6c-3 3-3 9 0 12"/></svg></span>
+          <span class="adh-bento__name">Faire une séance d'essai</span><span class="sr-only"> — </span>
+          <span class="adh-bento__desc">Possible avant de vous engager, selon les créneaux</span>
+        </div>
+        <div class="adh-bento__foot">
+          <a class="adh-bento__cta" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20faire%20une%20s%C3%A9ance%20d%27essai%20au%20MBC." target="_blank" rel="noopener">Écrivez-nous sur WhatsApp<span class="sr-only"> (nouvel onglet)</span><svg class="adh-bento__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+        <span class="adh-bento__veil" aria-hidden="true"></span>
       </li>
     </ul>
 
@@ -463,6 +510,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </footer>
 
-<script src="script.js?v=a25d4c18" defer></script>
+<script src="script.js?v=07c1b7b3" defer></script>
 </body>
 </html>

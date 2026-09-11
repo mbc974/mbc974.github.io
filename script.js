@@ -620,7 +620,7 @@
      revanche .hero-offer, .tarifs, .cal-venue, .solidaire et .social-card
      ont ete retires du site — les citer laissait croire a des composants
      qui n'existent plus. */
-  var SEL = '.essentiel-card,.cat,.visi,' +
+  var SEL = '.adh-bento__card,.cat,.visi,' +
             '.contact-form,.contact-info,.pack,.p-pillar,' +
             '.team__photo,.sponsor-card,.btn--ghost';
   var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
@@ -1916,4 +1916,39 @@ MBC.dateLongue = function (d, avecAnnee) {
     }, { rootMargin: '0px 0px -12% 0px' });
     items.forEach(function (li) { io.observe(li); });
   }
+})();
+
+/* ============================================================
+   V180 — La grille bento d'adhesion.html (.adh-bento)
+   ------------------------------------------------------------
+   Toute la grille est en CSS ; ce script ne règle qu'une chose.
+   Au bureau, la liste passe d'environ 370-480 px à 752 px de
+   haut, et le seuil commun du .reveal (12 % de l'élément, soit
+   90 px, avec une marge basse de 8 %) arrive trop tard. Mesuré
+   au chargement, sans défiler : 69 px de la liste dans la zone
+   observée à 1536 x 864, 67 px à 1024 x 768 (103 px à 1440 x
+   900, où le seuil commun suffit) ; à 1366 x 768, le haut de la
+   liste est à 722 px, sous la marge de 8 %. Sans ce script, le
+   premier écran se termine sur une bande vide sous les boutons.
+   On pose donc .in dès que le premier pixel de la liste paraît à
+   l'écran (marge nulle). L'observateur générique la trouvera déjà
+   posée :
+   ajouter .in deux fois ne change rien.
+   Mouvement réduit ou navigateur sans IntersectionObserver : le
+   bloc « Scroll reveal » a déjà tout posé, on sort.
+   ============================================================ */
+(function () {
+  'use strict';
+  var liste = document.querySelector('.adh-bento.reveal');
+  if (!liste || liste.classList.contains('in') || !('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entrees) {
+    for (var i = 0; i < entrees.length; i++) {
+      if (entrees[i].isIntersecting) {
+        liste.classList.add('in');
+        io.disconnect();
+        return;
+      }
+    }
+  }, { threshold: 0, rootMargin: '0px' });
+  io.observe(liste);
 })();
