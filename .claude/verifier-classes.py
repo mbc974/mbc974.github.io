@@ -44,6 +44,10 @@ POSEES_PAR_JS = {
     'is-visible', 'is-paused', 'is-flat', 'is-fs', 'is-dragging', 'is-complet',
     'scrolled', 'hide', 'open', 'show', 'roster-ready', 'img-fallback',
     'nav-open',
+    # V179, cartes de l'essentiel (#kc) : etats de l'entree et du tarif,
+    # colonnes des chiffres roulants et calque des confettis.
+    'is-3', 'kc--pre', 'kc--anim', 'kc--zero', 'kc--roule',
+    'kc__d', 'kc__dg', 'kc__ds', 'kc__fr', 'kc-fx',
 }
 
 

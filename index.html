@@ -87,8 +87,8 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=9209a16d">
-<noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade,.keyfig__i{opacity:1!important;transform:none!important}.keyfig__n::after{width:24px!important}.keyfig__i+.keyfig__i::before{transform:none!important}</style></noscript>
+<link rel="stylesheet" href="style.min.css?v=f753799c">
+<noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
 {
@@ -400,42 +400,87 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 </div><!-- /.ecran1 -->
 
 <!-- ===== 2. CHIFFRES CLÉS =====
-     V100 · L'ancienne section « L'essentiel » cumulait un titre, un
-     chapô, trois lignes de fiche technique, une photo portrait, une
-     barre de réassurance de trois items et deux CTA : 1068 px pour
-     redire ce que le hero venait de dire. Trois chiffres suffisent.
-     Le titre de niveau 2 reste dans l arbre (structure de titres + aria-labelledby)
-     mais c'est le chiffre qui parle à l'œil. -->
-<section class="section keyfig-sec" id="essentiel" aria-labelledby="essentielTitle">
+     V100 · Trois chiffres à la place de l'ancienne section « L'essentiel »
+     (1068 px qui redisaient le hero).
+     V179 · Les trois chiffres deviennent trois cartes, sur le modèle du
+     composant « Pricing » demandé, transposé sans React ni dépendance (le
+     détail des effets est dans style.css, bloc V179) :
+       - la carte du tarif au centre, surélevée, bordée d'orange, avec sa
+         pastille ; les deux autres se tournent vers elle et prennent la
+         pose à l'arrivée à l'écran ;
+       - l'interrupteur « 3 fois sans frais » fait rouler les chiffres,
+         95 € puis 3 × 31,67 € : mêmes montants et mêmes phrases que le
+         module de paiement de adhesion.html ;
+       - tout le texte vient du site (FAQ tarif, sélecteur d'âge,
+         calendrier). Rien n'est inventé.
+     L'ordre du DOM est l'ordre visuel (âge, tarif, lieux) : la carte du
+     centre ne fait pas sauter la tabulation. Les trois destinations
+     d'origine sont conservées (adhesion.html#tarif, #categories,
+     #calendrier), ainsi que l'ancre #essentiel visée par le hero. -->
+<section class="section kc-sec" id="essentiel" aria-labelledby="essentielTitle">
   <div class="wrap">
-    <h2 class="sr-only" id="essentielTitle">Le MBC en trois chiffres</h2>
-    <!-- Les trois chiffres sont devenus des portes d'entree. Chacun mene la
-         ou la question se resout vraiment : le tarif sur la page adhesion,
-         l'age sur le selecteur, les lieux sur les creneaux. La liste de
-         definitions est devenue une liste de liens — c'est desormais de la
-         navigation, et chaque element doit etre atteignable au clavier.
-         Le data-count du premier reste : c'est lui que script.js anime. -->
-    <ul class="keyfig reveal">
-      <li class="keyfig__i">
-        <a class="keyfig__a" href="adhesion.html#tarif">
-          <span class="keyfig__v"><span data-count="95" data-count-delay="380">95</span> €</span>
-          <span class="keyfig__l">Licence FFBB + assurance<span>Un seul tarif, ou 3 fois sans frais</span></span>
-          <span class="keyfig__go">Ce que couvre la licence<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
+    <header class="sec-head sec-head--center kc-head reveal">
+      <p class="kicker kicker--center">L'essentiel</p>
+      <h2 class="h2" id="essentielTitle">Le MBC en <span class="hl">trois chiffres</span></h2>
+      <p class="sec-head__sub sec-head__sub--tight">Un tarif unique, une catégorie pour chaque âge, deux terrains à La Montagne.</p>
+    </header>
+    <ul class="kc" id="kc">
+      <li class="kc__i kc__i--l">
+        <div class="kc__card">
+          <p class="kc__name">Baby → Seniors</p>
+          <p class="kc__val">Dès 3 ans</p>
+          <p class="kc__per">loisir &amp; compétition</p>
+          <ul class="kc__list">
+            <li>Baby Basket&nbsp;: nés de 2020 à 2023</li>
+            <li>École de Basket, U13, U15, U18</li>
+            <li>Seniors ou Loisirs dès 16&nbsp;ans</li>
+            <li>Débutants bienvenus</li>
+          </ul>
+          <div class="kc__foot">
+            <a class="kc__cta" href="#categories">Trouver sa catégorie<svg class="kc__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <p class="kc__desc">C'est l'année de naissance qui détermine la catégorie FFBB.</p>
+          </div>
+        </div>
       </li>
-      <li class="keyfig__i">
-        <a class="keyfig__a" href="#categories">
-          <span class="keyfig__v">Dès 3 ans</span>
-          <span class="keyfig__l">Baby → Seniors<span>Loisir &amp; compétition</span></span>
-          <span class="keyfig__go">Trouver sa catégorie<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
+      <li class="kc__i kc__i--star">
+        <div class="kc__card kc__card--star">
+          <p class="kc__badge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.84 5.75 6.35.92-4.6 4.48 1.09 6.32L12 17.29l-5.68 2.98 1.09-6.32-4.6-4.48 6.35-.92z"/></svg>Tarif unique</p>
+          <p class="kc__name">Saison 2026/2027</p>
+          <div class="kc__stage" aria-live="polite">
+            <p class="sr-only" id="kcDit">95 € réglés en une fois, à l'inscription.</p>
+            <p class="kc__price" aria-hidden="true"><span class="kc__mult" hidden><span>3&nbsp;×</span></span><span class="kc__n">95</span><span class="kc__cur">€</span></p>
+            <p class="kc__per kc__per--duo" aria-hidden="true"><span>réglés en une fois, à l'inscription</span><span>par échéance, soit 95&nbsp;€ au total</span></p>
+          </div>
+          <button type="button" class="kc__sw" id="kcSw" role="switch" aria-checked="false" hidden><span class="kc__sw-t" aria-hidden="true"><span class="kc__sw-k"></span></span><span class="kc__sw-l">En 3 fois <b>sans frais</b></span></button>
+          <noscript><p class="kc__per">Ou en 3 fois sans frais&nbsp;: 31,67&nbsp;€, 31,67&nbsp;€ puis 31,66&nbsp;€.</p></noscript>
+          <ul class="kc__list">
+            <li>Adhésion au club</li>
+            <li>Licence FFBB</li>
+            <li>Assurance liée à la licence</li>
+            <li>Aucun autre règlement demandé</li>
+          </ul>
+          <div class="kc__foot">
+            <a class="kc__cta" href="adhesion.html#tarif">Ce que couvre la licence<svg class="kc__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <p class="kc__desc">Adhésion dirigeant / bénévole gratuite.</p>
+          </div>
+        </div>
       </li>
-      <li class="keyfig__i">
-        <a class="keyfig__a" href="#calendrier">
-          <span class="keyfig__v">2 terrains</span>
-          <span class="keyfig__l">100 % La Montagne<span>Gymnase + plateau de Ruisseau Blanc</span></span>
-          <span class="keyfig__go">Voir les créneaux<svg class="keyfig__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
+      <li class="kc__i kc__i--r">
+        <div class="kc__card">
+          <p class="kc__name">100 % La Montagne</p>
+          <p class="kc__val">2 terrains</p>
+          <p class="kc__per">gymnase + plateau de Ruisseau Blanc</p>
+          <ul class="kc__list">
+            <li>Gymnase de La Montagne, chemin des Bauhinias</li>
+            <li>Terrain Ruisseau Blanc&nbsp;: plateau couvert, en plein air</li>
+            <li>Entraînements lundi, mercredi et samedi</li>
+            <li>Matchs à domicile vendredi soir et dimanche matin</li>
+          </ul>
+          <div class="kc__foot">
+            <a class="kc__cta" href="#calendrier">Voir les créneaux<svg class="kc__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <p class="kc__desc">Les créneaux peuvent évoluer en cours de saison.</p>
+          </div>
+        </div>
       </li>
     </ul>
   </div>
@@ -1721,6 +1766,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=94dbe388" defer></script>
+<script src="script.js?v=a25d4c18" defer></script>
 </body>
 </html>

@@ -1712,3 +1712,100 @@ horizontal, filet du bandeau intact.
   à 1440 × 860) ; la barre du haut assure le relais.
 - Deux calques composites de plus tant que le hero est dans la page : non
   mesuré sur un vrai Android d'entrée de gamme.
+
+## 24. L'essentiel en trois cartes (11/09/2026)
+
+### La demande
+
+Faire de la bande « 95 € · Dès 3 ans · 2 terrains » une vraie section de
+cartes, avec les effets d'un composant « Pricing » (React : framer-motion,
+NumberFlow, canvas-confetti, shadcn). **Transposé, pas installé** — même
+doctrine qu'aux § 18, 22 et 23.
+
+### Ce que l'œil lit
+
+Un titre visible, « Le MBC en trois chiffres », puis trois cartes. Au centre,
+le tarif : bordure orange, pastille « Tarif unique », surélevée de 20 px, un
+halo chaud derrière. De part et d'autre, deux volets réduits à 0,94 qui se
+tournent vers elle (9° sous perspective, pivot sur le bord intérieur, glissés
+de 30 px sous la carte du centre). À l'arrivée à l'écran, les trois cartes
+montent de 50 px et prennent la pose ; le 95 roule depuis 00.
+
+| effet du composant | ici |
+|---|---|
+| framer-motion `whileInView` + ressort | transition CSS ease-out de 1,3 s lancée par un IntersectionObserver (le ressort k = 100, c = 30 est suramorti : aucun rebond) |
+| `rotate-y-[10deg]` | vrai `rotateY(±9deg)` sous `perspective` (dans la démo, le transform de framer-motion l'écrasait) |
+| NumberFlow | colonnes de chiffres 0-9 qui défilent ; « 3 × » et « ,67 » s'ouvrent en largeur |
+| Switch de shadcn | `<button role="switch" aria-checked>` |
+| canvas-confetti | même physique, rejouée en Web Animations : 50 disques aux couleurs du club, sous la barre du haut |
+| bouton « outline » à anneau | calque orange en opacité + anneau `box-shadow` décalé |
+
+### Le contenu
+
+Rien d'inventé : chaque ligne existait déjà sur le site.
+- Tarif : la FAQ de l'accueil (95 €, adhésion + licence FFBB + assurance,
+  aucun autre règlement, dirigeant / bénévole gratuit). Les montants et les
+  phrases de l'interrupteur sont ceux du module #pay d'adhesion.html
+  (3 × 31,67 €) ; le `<noscript>` donne les trois échéances (31,67 / 31,67 /
+  31,66). **Si le bureau change le tarif : la FAQ, #pay et ces cartes.**
+- Âges : le sélecteur d'âge (Baby Basket nés de 2020 à 2023, École de
+  Basket, U13, U15, U18, Seniors ou Loisirs dès 16 ans, débutants bienvenus).
+- Terrains : la section calendrier (gymnase chemin des Bauhinias, plateau
+  couvert de Ruisseau Blanc, entraînements lundi, mercredi et samedi, matchs
+  à domicile vendredi soir et dimanche matin, « les créneaux peuvent
+  évoluer »).
+
+Les trois destinations d'origine restent (adhesion.html#tarif, #categories,
+#calendrier), ainsi que l'ancre #essentiel visée par la flèche du hero.
+
+### Les règles de construction
+
+- **L'état posé est l'état par défaut de la CSS.** script.js ne pose
+  `.kc--pre` (50 px plus bas, à plat) que s'il a un IntersectionObserver pour
+  le lever. Sans JS, sans observateur ou en mouvement réduit, la section est
+  complète et posée ; seul l'interrupteur reste caché (`hidden`).
+- **Le survol se lit sur le `<li>`, jamais sur la carte pivotée** : en se
+  redressant, son bord extérieur glisserait sous le curseur et le survol
+  clignoterait. Au survol comme au focus clavier, un volet se redresse ; la
+  carte du tarif monte de 6 px.
+- **Une perspective par `<li>`**, point de fuite ramené vers le centre de la
+  rangée (165 % / −65 %) : les deux volets partagent à peu près le même, sans
+  `preserve-3d`.
+- L'ordre du DOM est l'ordre visuel (âge, tarif, lieux) : la tabulation ne
+  saute pas.
+- Sous 900 px : cartes empilées (33rem au plus), sans 3D, une simple montée
+  carte par carte.
+
+### Un piège
+
+`.section p{color:var(--txt-soft)}` (0,1,1) bat toute règle à une seule
+classe posée sur un `<p>` : les chiffres sont d'abord sortis gris-bleu, et le
+texte de la pastille gris sur orange. D'où `.kc__card .kc__val` et
+`.kc__card .kc__badge`.
+
+### Vérifier : `.claude/banc-essentiel.mjs`
+
+Chrome piloté en CDP (serveur local « mbc-static », port 8000 ; captures
+dans `%TEMP%\mbc-banc-essentiel`). Il ralentit la ligne de temps
+(`Animation.setPlaybackRate`) pour saisir l'entrée et les confettis à des
+instants connus, survole un volet et le bouton du tarif, bascule à la souris
+puis revient avec la touche Espace, et mesure les transforms, les chiffres
+affichés, `aria-checked`, la phrase annoncée et le débordement horizontal.
+
+    node .claude/banc-essentiel.mjs v2 1440x1150,768x1500,390x2400
+    node .claude/banc-essentiel.mjs v2 1440x1150 --extras
+
+`--extras` ajoute, en 1440, le mouvement réduit et le rendu sans JavaScript.
+
+Mesuré le 11/09 à 1440 × 1150, 2560 × 1300, 1024 × 1100, 768 × 1500 et
+390 × 2400 : aucun débordement horizontal ; pose finale exacte (0,94, ±30 px,
+±9° ; carte du centre à −20 px) ; bascule « 3 fois » : 3 × 31,67,
+`aria-checked="true"`, phrase annoncée, 50 confettis ; retour « 1 fois » à la
+touche Espace ; mouvement réduit : ni état d'avant ni confettis ; sans JS :
+section posée, interrupteur caché, échéances en clair.
+
+### Ce qui reste
+
+- L'ancienne CSS `.keyfig*` / `.keyfig-sec` (une trentaine de couches) ne
+  sert plus : à purger, avec une empreinte des styles calculés avant/après.
+- Firefox et Safari n'ont pas été passés au banc (Chrome seulement).

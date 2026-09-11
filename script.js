@@ -1720,3 +1720,200 @@ MBC.dateLongue = function (d, avecAnnee) {
      rouverte sur une ancre. */
   poser('1', false);
 })();
+
+/* ============================================================
+   V179 — L'essentiel en trois cartes (#kc)
+   ------------------------------------------------------------
+   Le composant « Pricing » demandé (framer-motion, NumberFlow,
+   canvas-confetti) rejoué sans aucune dépendance :
+   1. les chiffres roulants du tarif (NumberFlow) ;
+   2. l'interrupteur « 3 fois sans frais » ;
+   3. la gerbe de confettis au passage en trois fois ;
+   4. l'entrée en éventail des trois cartes (framer-motion).
+   Sans ce script la section est complète : 95 €, les listes, les
+   trois liens. L'interrupteur, lui, reste caché (attribut hidden)
+   et un <noscript> donne les trois échéances en clair.
+   ============================================================ */
+(function () {
+  'use strict';
+  var kc = document.getElementById('kc');
+  if (!kc) return;
+  var doux = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var carte = kc.querySelector('.kc__card--star');
+  var prix = carte ? carte.querySelector('.kc__price') : null;
+  var nb = prix ? prix.querySelector('.kc__n') : null;
+  var mult = prix ? prix.querySelector('.kc__mult') : null;
+  var sw = document.getElementById('kcSw');
+  var dit = document.getElementById('kcDit');
+  var roule = !!(nb && mult && sw);
+  var cols = [], fr = null;
+
+  /* --- 1. Les chiffres roulants ---------------------------------
+     Chaque chiffre devient une colonne 0-9 qu'on fait défiler ; un
+     chiffre fantôme, invisible, garde la largeur et la ligne de
+     base. Gabarit fixe « 00,00 » : les deux montants du site (95 et
+     31,67) y tiennent, la partie décimale s'ouvre ou se replie. */
+  function colonne(v) {
+    var c = document.createElement('span');
+    var g = document.createElement('span');
+    var s = document.createElement('span');
+    c.className = 'kc__d'; g.className = 'kc__dg'; s.className = 'kc__ds';
+    g.textContent = v;
+    for (var i = 0; i < 10; i++) {
+      var n = document.createElement('span');
+      n.textContent = String(i);
+      s.appendChild(n);
+    }
+    c.appendChild(g); c.appendChild(s);
+    c.style.setProperty('--d', v);
+    return c;
+  }
+  function chiffre(c, v) {
+    c.firstChild.textContent = v;
+    c.style.setProperty('--d', v);
+  }
+  /* Ouvrir ou replier en largeur : de la largeur mesurée vers celle du
+     contenu, puis retour à « auto », pour qu'un changement de taille de
+     police ne laisse pas une largeur figée en pixels. */
+  function ouvrir(el, oui, anime) {
+    window.clearTimeout(el.kcT);
+    el.style.opacity = oui ? '1' : '0';
+    if (!anime) { el.style.width = oui ? 'auto' : '0px'; return; }
+    var cible = oui ? el.firstElementChild.getBoundingClientRect().width : 0;
+    el.style.width = el.getBoundingClientRect().width + 'px';
+    void el.offsetWidth;
+    el.style.width = cible + 'px';
+    if (oui) el.kcT = window.setTimeout(function () { el.style.width = 'auto'; }, 560);
+  }
+
+  /* Mêmes montants et mêmes phrases que le module #pay d'adhesion.html. */
+  var VUES = {
+    '1': { c: '9500', dit: '95 € réglés en une fois, à l’inscription.' },
+    '3': { c: '3167', dit: 'Trois fois 31,67 €, soit 95 € au total, sans aucun frais supplémentaire.' }
+  };
+  function poser(m, anime, dire) {
+    var v = VUES[m], trois = m === '3';
+    carte.classList.toggle('is-3', trois);
+    sw.setAttribute('aria-checked', trois ? 'true' : 'false');
+    for (var i = 0; i < 4; i++) chiffre(cols[i], v.c.charAt(i));
+    ouvrir(mult, trois, anime);
+    ouvrir(fr, trois, anime);
+    if (dire && dit) dit.textContent = v.dit;
+  }
+
+  /* --- 3. La gerbe -----------------------------------------------
+     Réglages de la démo (50 particules, ouverture 60°, vitesse 30,
+     décroissance .94, gravité 1,2, disques) et physique de
+     canvas-confetti rejouée tic par tic, à 60 tics par seconde :
+       x += cos(angle) * v ;  y += sin(angle) * v + 3 * gravité ;
+       v *= décroissance.
+     On en tire des images clés, et le navigateur anime transform et
+     opacity sur le compositeur : ni canvas, ni boucle rAF. */
+  var TEINTES = ['#D96A1B', '#E8822A', '#F4A45C', '#BFD2E4', '#1B519E', '#FFFFFF'];
+  function gerbe(depuis) {
+    if (!depuis || !document.body.animate) return;
+    var r = depuis.getBoundingClientRect();
+    var x0 = r.left + r.width / 2, y0 = r.top + r.height / 2;
+    var calque = document.createElement('div');
+    calque.className = 'kc-fx';
+    calque.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(calque);
+    var TICS = 150, PAS = 3, duree = TICS * 1000 / 60, ouverture = 60 * Math.PI / 180;
+    for (var k = 0; k < 50; k++) {
+      var p = document.createElement('i');
+      var t = 5 + Math.random() * 4;
+      p.style.width = p.style.height = t.toFixed(1) + 'px';
+      p.style.marginLeft = p.style.marginTop = (-t / 2).toFixed(1) + 'px';
+      p.style.background = TEINTES[k % TEINTES.length];
+      calque.appendChild(p);
+      var angle = -Math.PI / 2 + (0.5 * ouverture - Math.random() * ouverture);
+      var v = 15 + Math.random() * 30;
+      var x = 0, y = 0;
+      var ondule = Math.random() * 6.283, vOndule = 0.05 + Math.random() * 0.06;
+      var bascule = Math.random() * 6.283, vBascule = 0.04 + Math.random() * 0.07;
+      var images = [];
+      for (var tic = 0; tic <= TICS; tic++) {
+        if (tic % PAS === 0) {
+          var q = tic / TICS;
+          images.push({
+            transform: 'translate(' + (x0 + x + 8 * Math.cos(ondule)).toFixed(1) + 'px,' +
+              (y0 + y).toFixed(1) + 'px) scaleY(' + (0.25 + 0.75 * Math.abs(Math.cos(bascule))).toFixed(2) + ')',
+            opacity: q < 0.35 ? 1 : +(1 - (q - 0.35) / 0.65).toFixed(3)
+          });
+        }
+        x += Math.cos(angle) * v;
+        y += Math.sin(angle) * v + 3.6;
+        v *= 0.94;
+        ondule += vOndule;
+        bascule += vBascule;
+      }
+      p.animate(images, { duration: duree, easing: 'linear', fill: 'forwards' });
+    }
+    window.setTimeout(function () { calque.remove(); }, duree + 150);
+  }
+
+  if (roule) {
+    cols = [colonne('9'), colonne('5'), colonne('0'), colonne('0')];
+    fr = document.createElement('span');
+    fr.className = 'kc__fr';
+    var frIn = document.createElement('span');
+    frIn.textContent = ',';
+    frIn.appendChild(cols[2]);
+    frIn.appendChild(cols[3]);
+    fr.appendChild(frIn);
+    nb.textContent = '';
+    nb.appendChild(cols[0]);
+    nb.appendChild(cols[1]);
+    nb.appendChild(fr);
+    mult.hidden = false;
+    sw.hidden = false;
+    poser('1', false, false);
+
+    /* --- 2. L'interrupteur -----------------------------------------
+       Un <button role="switch"> : Espace et Entrée le basculent
+       nativement, aria-checked porte l'état, la phrase complète part
+       dans la zone aria-live. Confettis au passage en trois fois
+       seulement, comme dans la démo. */
+    sw.addEventListener('click', function () {
+      var trois = sw.getAttribute('aria-checked') !== 'true';
+      prix.classList.remove('kc--roule');
+      poser(trois ? '3' : '1', !doux, true);
+      if (trois && !doux) gerbe(sw.querySelector('.kc__sw-t'));
+    });
+  }
+
+  /* --- 4. L'entrée en éventail -------------------------------------
+     La pose est l'état par défaut de la CSS ; on ne pose l'état
+     d'avant (.kc--pre : 50 px plus bas, à plat) que si l'on peut le
+     lever. En rangée (≥ 900 px) les trois cartes partent ensemble
+     dès que l'une paraît ; empilées, chacune à son tour. Le 95
+     roule depuis 00 pendant que sa carte se pose. */
+  function lancer(c) {
+    if (!c.classList.contains('kc--pre')) return;
+    c.classList.add('kc--anim');
+    c.classList.remove('kc--pre');
+    window.setTimeout(function () { c.classList.remove('kc--anim'); }, 1900);
+    if (c === carte && roule) {
+      prix.classList.add('kc--zero');
+      void prix.offsetWidth;
+      prix.classList.remove('kc--zero');
+      prix.classList.add('kc--roule');
+      window.setTimeout(function () { prix.classList.remove('kc--roule'); }, 2300);
+    }
+  }
+  if (!doux && 'IntersectionObserver' in window) {
+    var rangee = window.matchMedia('(min-width: 900px)');
+    var items = Array.prototype.slice.call(kc.querySelectorAll('.kc__i'));
+    items.forEach(function (li) { li.firstElementChild.classList.add('kc--pre'); });
+    var io = new IntersectionObserver(function (entrees) {
+      entrees.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        (rangee.matches ? items : [e.target]).forEach(function (li) {
+          io.unobserve(li);
+          lancer(li.firstElementChild);
+        });
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    items.forEach(function (li) { io.observe(li); });
+  }
+})();
