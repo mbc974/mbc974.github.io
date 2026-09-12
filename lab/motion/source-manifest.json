@@ -1,0 +1,14 @@
+{
+  "base_home_sha256": "a383f2ea211578de5836bca476fce33d8c4a17f870e749a9d10dd1058ef317e4",
+  "generated_from": [
+    "index.html",
+    "data/matchs.json",
+    "matchs/*/index.html"
+  ],
+  "concepts": {
+    "editorial": "A · Editorial Motion",
+    "sport": "B · Sport Motion",
+    "court": "C · Court Vision"
+  },
+  "note": "Run existing content generators first, then this script; no production write."
+}
