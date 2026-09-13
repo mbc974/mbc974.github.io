@@ -2526,11 +2526,11 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
   letter-spacing:.1em;font-size:var(--text-sm);color:var(--orange-vif);
   border-bottom:1px solid rgb(var(--orange-vif-rgb) / .4)}
 .mx-affiche__a a:hover{border-bottom-color:var(--orange-vif)}
-.seo-top ~ main .h2{
+.site-header--enfant ~ main .h2{
   font-size:clamp(2rem,5vw,3.4rem);line-height:.95;letter-spacing:.3px}
-.seo-top ~ main h1.h2{font-size:clamp(2.3rem,5.6vw,3.9rem)}
-.seo-top ~ main .sec-head{margin-bottom:clamp(1.4rem,3vw,2.2rem)}
-.seo-top ~ main .section{padding-block:clamp(3rem,6vw,5rem)}
+.site-header--enfant ~ main h1.h2{font-size:clamp(2.3rem,5.6vw,3.9rem)}
+.site-header--enfant ~ main .sec-head{margin-bottom:clamp(1.4rem,3vw,2.2rem)}
+.site-header--enfant ~ main .section{padding-block:clamp(3rem,6vw,5rem)}
 html{scroll-padding-top:88px}
 section[id],div[id],details[id],li[id],aside[id]{scroll-margin-top:0}
 .seo-photo{margin:2rem auto 0;max-width:min(100%,700px)}
@@ -6309,3 +6309,4 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
   .ms-bar,.ms-mois,.mc-cd,.mc-i__go{display:none!important}
   .ms-m.is-pre{opacity:1;transform:none}
   .mc-i,.mc-next,.mc-res{break-inside:avoid}}
+.site-header--enfant{position:sticky;top:0}

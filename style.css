@@ -4736,15 +4736,16 @@ p.faq__cta{display:flex;justify-content:center;margin-top:1.6rem}
    de l'ampleur au titre de la home, on a aussi fait monter a ~90 px les dix
    titres de prose SEO de chaque page enfant — ou l'echelle d'affiche n'a pas
    de sens.
-   Les pages enfants se reconnaissent a leur en-tete .seo-top (la home et
-   adhesion.html utilisent .site-header). Le <main> en est le frere direct :
-   « .seo-top ~ main » les cible sans :has() et sans toucher au markup.
+   Les pages enfants se reconnaissent a leur en-tete .site-header--enfant
+   (V182 ; c'etait .seo-top avant le 13/09/2026 — la home et adhesion.html
+   portent .site-header seul). Le <main> en est un frere : « .site-header--enfant
+   ~ main » les cible sans :has() et sans toucher au markup.
    --------------------------------------------------------------------------- */
-.seo-top ~ main .h2{
+.site-header--enfant ~ main .h2{
   font-size:clamp(2rem,5vw,3.4rem);line-height:.95;letter-spacing:.3px}
-.seo-top ~ main h1.h2{font-size:clamp(2.3rem,5.6vw,3.9rem)}
-.seo-top ~ main .sec-head{margin-bottom:clamp(1.4rem,3vw,2.2rem)}
-.seo-top ~ main .section{padding-block:clamp(3rem,6vw,5rem)}
+.site-header--enfant ~ main h1.h2{font-size:clamp(2.3rem,5.6vw,3.9rem)}
+.site-header--enfant ~ main .sec-head{margin-bottom:clamp(1.4rem,3vw,2.2rem)}
+.site-header--enfant ~ main .section{padding-block:clamp(3rem,6vw,5rem)}
 
 /* ---------------------------------------------------------------------------
    V100.10 — L'ATTERRISSAGE DES ANCRES
@@ -8388,7 +8389,7 @@ main > .section .cal-lieux.reveal,main > .section .cal-lieux{
    que c'est la piece maitresse de la page. */
 
 /* --- 1. Rythme vertical : celui que les 21 pages enfants servent deja ----- */
-/* .seo-top ~ main .section tourne a clamp(3rem,6vw,5rem) sur toutes les pages
+/* .site-header--enfant ~ main .section (ex-.seo-top) tourne a clamp(3rem,6vw,5rem) sur toutes les pages
    enfants ; seules la home et adhesion.html gardaient 72 px. -523 px. */
 @media (max-width:640px){
   :root{--sp-sec:3.25rem;--sp-blk:1.5rem}
@@ -12042,3 +12043,25 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
   .ms-bar,.ms-mois,.mc-cd,.mc-i__go{display:none!important}
   .ms-m.is-pre{opacity:1;transform:none}
   .mc-i,.mc-next,.mc-res{break-inside:avoid}}
+
+/* ============================================================================
+   V182 — UN SEUL EN-TÊTE POUR TOUT LE SITE (13/09/2026)
+   ----------------------------------------------------------------------------
+   « Sur cette page le header n'est pas le même que sur l'index principal »
+   (Alexandre, sur /matchs/). Les 23 pages enfants portaient l'ancienne barre de
+   liens .seo-top ; l'accueil et adhesion.html, la barre V176 et son menu plein
+   écran. Toutes portent désormais la seconde, recopiée d'adhesion.html par
+   .claude/set-entete.py et par les générateurs (build-matchs.py, entete_enfant).
+
+   Une seule différence avec l'accueil : la barre est COLLANTE (dans le flux),
+   pas fixe. Sur l'accueil elle glisse sur la photo du hero ; une page enfant
+   n'a pas de hero, et une barre fixe y aurait masqué le fil d'Ariane.
+   Collante, elle occupe sa place comme l'ancienne .seo-top : aucun espacement
+   des 23 pages n'est à recalculer, et « .site-header--enfant ~ main » (plus
+   haut, ex-« .seo-top ~ main ») garde exactement les mêmes règles.
+
+   Ce qui reste de .seo-top dans cette feuille (une trentaine de règles, plus
+   html:has(.seo-top)) est désormais mort : à purger avec la preuve
+   d'empreinte des styles calculés.
+   ============================================================================ */
+.site-header--enfant{position:sticky;top:0}

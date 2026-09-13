@@ -1533,8 +1533,8 @@ le « 3 fois sans frais » (§ 18).
 | « click me » | « Je m'inscris », **qui reste visible dans la barre** (masqué sous 560 px, où le hero et la barre du bas le portent) |
 
 Pages concernées : `index.html` et `adhesion.html`, les deux seules qui
-portaient l'ancienne barre (`.site-header`). Les 23 pages enfants gardent leur
-`.seo-top` : les aligner reste une décision à prendre.
+portaient l'ancienne barre (`.site-header`). Les 23 pages enfants gardaient
+leur `.seo-top` ; **elles sont alignées depuis le 13/09/2026 (§ 27).**
 
 Le composant n'avait aucune accessibilité ; elle est dans `script.js` :
 `inert` quand c'est fermé, focus sur le premier lien à l'ouverture et retour au
@@ -2175,3 +2175,82 @@ chargé de réfuter : 36 constats confirmés, 1 réfuté. Ce qui a été corrig�
 - La CSS `.msn` (ruban V162) est morte : à purger avec la preuve d'empreinte
   (§ « Prouver une non-régression »).
 - Firefox et Safari n'ont pas été passés au banc.
+
+---
+
+## 27. Un seul en-tête pour tout le site (13/09/2026)
+
+Branche `feature/season-match-center`, commit séparé du Match Center.
+
+### La demande
+
+« Attention, sur cette page le header n'est pas le même que sur l'index
+principal » : Alexandre sur `/matchs/`. La décision laissée ouverte au § 22 est
+prise pour **les 23 pages enfants**. Elles prennent la barre de l'accueil : la
+marque « MBC 974 », « Je m'inscris » et le bouton Menu plein écran.
+
+### Comment
+
+- **Une seule source** : `adhesion.html`, entre `<!-- EN-TETE:DEBUT -->` et
+  `<!-- EN-TETE:FIN -->`. C'était la seule page hors accueil qui portait déjà
+  la barre V176. `entete_enfant()` (dans `build-matchs.py`) en tire le bloc
+  des pages enfants, avec deux retouches : elle retire les deux `aria-current`
+  propres à la page d'adhésion et ajoute le modificateur `site-header--enfant`.
+- **Les 17 pages générées** reçoivent ce bloc par `gabarit()` (build-matchs,
+  build-actus, build-creneaux, build-effectif). **Les 6 pages écrites à la
+  main** le reçoivent par `.claude/set-entete.py`. Les deux passent par la même
+  fonction : une page ne peut pas recevoir deux formes d'en-tête.
+- **`script.js` sur toutes les pages** : le menu en dépend. `gabarit()` ou
+  `set-entete.py` pose une seule balise, et les ajouts propres à `/creneaux/`
+  et à `/matchs/` sont retirés. Deux `script.js` sur une page brancheraient
+  chaque module deux fois.
+- **Une barre collante, pas fixe**, sur les pages enfants. Sur l'accueil, elle
+  glisse sur la photo du hero ; une page enfant n'a pas de hero, et une barre
+  fixe y aurait masqué le fil d'Ariane. Collante, elle occupe sa place comme
+  l'ancienne `.seo-top` : les quatre règles d'espacement `.seo-top ~ main`
+  passent telles quelles sur `.site-header--enfant ~ main` (style.css, V182).
+
+### Pour changer le menu
+
+Modifier `index.html` ET `adhesion.html`, qui sont tous deux écrits à la main,
+puis relancer :
+
+```bash
+python .claude/set-entete.py
+python .claude/build-creneaux.py
+python .claude/build-effectif.py
+python .claude/set-calendrier-prm.py --archive
+python .claude/build-actus.py
+python .claude/bump-assets.py
+```
+
+`set-entete.py` signale une dérive entre les deux menus. `set-entete.py --check`
+sort en 1 si une page enfant n'est pas à jour.
+
+### Vérifié le 13/09
+
+Banc CDP sur les 25 pages, à 390 et à 1440 px de large :
+
+- **La barre** : collante sur les 23 pages enfants, fixe sur l'accueil et
+  `adhesion.html`, haute de 72 px. Elle ne recouvre jamais le premier contenu
+  (le fil d'Ariane de `/matchs/` commence à 120 px).
+- **Le chargement** : plus aucune `.seo-top`, une seule balise `script.js` par
+  page, 0 débordement horizontal, 0 erreur console.
+- **Le menu**, testé sur `/matchs/` à 390 px et sur `/club/` à 1440 px : il
+  s'ouvre au vrai clic, avec le focus sur « Le club » ; Échap le ferme et rend
+  le focus au bouton. La barre se masque en descendant et revient en remontant.
+- **Idempotence** : après les générateurs, `set-entete.py --check` ne trouve plus
+  aucune page à mettre à jour.
+- **Le Match Center** est inchangé : filtres, cartes et quatre instants simulés.
+
+### Ce qui reste
+
+- **CSS morte** : `.seo-top` (une trentaine de règles) et `html:has(.seo-top)`.
+  À purger avec la preuve d'empreinte des styles calculés (§ « Prouver une
+  non-régression »).
+- **Modules en ligne redondants** : les pages enfants gardent leur module
+  « Barre CTA mobile ». `script.js` fait désormais la même chose ; c'est
+  inoffensif (`/creneaux/` cumulait déjà les deux), mais c'est à retirer un
+  jour.
+- **Pieds de page différents** : `.site-footer` sur l'accueil, `.seo-foot`
+  ailleurs. Ce n'était pas demandé.

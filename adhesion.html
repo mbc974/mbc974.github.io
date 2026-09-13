@@ -73,7 +73,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.min.css?v=29bc2e76">
+<link rel="stylesheet" href="style.min.css?v=a97a4ab7">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -118,6 +118,10 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <body>
 
 <a class="skip-link" href="#contenu">Aller au contenu principal</a>
+<!-- EN-TETE:DEBUT — la barre et le menu plein écran (V176). C'est la SOURCE de
+     l'en-tête des 23 pages enfants : .claude/set-entete.py et les générateurs
+     (build-matchs.py, entete_enfant) le recopient d'ici. Ne rien mettre
+     d'autre entre ces deux marqueurs. -->
 <div class="scroll-bar" id="scrollBar" aria-hidden="true"></div>
 
 <!-- ===== Header ===== -->
@@ -173,6 +177,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     </div>
   </nav>
 </div>
+<!-- EN-TETE:FIN -->
 
 <!-- ===== Barre CTA mobile =====
      Elle etait la SEULE des 25 pages a etre un <a class="float-cta"> nu, la ou

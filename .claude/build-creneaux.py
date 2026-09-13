@@ -631,17 +631,7 @@ def page_creneaux(d, maj_le):
 
 %(pied)s
 
-%(scripts)s<!-- Cette page est la SEULE page enfant a charger script.js.
-     Les 24 autres s'en passent volontairement : le fichier fait 60 Ko et ses
-     modules servent l'accueil. Ici, le filtre du planning EST la page — sans
-     lui, les huit boutons ne feraient rien. Le dupliquer en ligne aurait
-     recree exactement la duplication que data/creneaux.json vient de
-     supprimer, cette fois dans le JavaScript. C'est le meme fichier que
-     l'accueil, donc deja en cache pour qui vient de la home, et deja precache
-     par le service worker.
-     bump-assets.py y pose le ?v= tout seul (il ancre sur src="/script.js"). -->
-<script src="/script.js" defer></script>
-</body>
+%(scripts)s</body>
 </html>
 """ % {"entete": bm.GABARIT[0], "cta": bm.GABARIT[1], "pied": bm.GABARIT[2],
        "scripts": bm.GABARIT[3], "fil": visible, "saison": d["saison"],

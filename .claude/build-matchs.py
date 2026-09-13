@@ -157,11 +157,52 @@ def prochain(d, maintenant=None):
 # pour qu'ils restent automatiquement synchrones avec le reste du site.
 # --------------------------------------------------------------------------
 MODELE = "ecole-de-basket-saint-denis/index.html"
+ENTETE_SOURCE = "adhesion.html"
+
+
+def entete_enfant():
+    """L'en-tete de l'accueil (barre V176 + menu plein ecran), pour une page
+    enfant. V182, 13/09/2026 : les 23 pages enfants gardaient l'ancienne barre
+    .seo-top, et l'on changeait d'en-tete en naviguant.
+
+    Source : adhesion.html, entre ses marqueurs EN-TETE — la seule page hors
+    accueil qui portait deja cette barre. Deux retouches, pas plus : la page
+    d'adhesion se declare page courante sur ses deux « Je m'inscris »
+    (aria-current), ce qui serait faux ailleurs ; et la barre recoit le
+    modificateur --enfant, qui la rend collante (style.css, V182).
+    set-entete.py (pages ecrites a la main) et gabarit() (pages generees)
+    passent tous deux par ici : une seule forme possible."""
+    s = lire(ENTETE_SOURCE)
+    i = s.index("-->", s.index("<!-- EN-TETE:DEBUT")) + len("-->")
+    j = s.index("<!-- EN-TETE:FIN -->")
+    bloc = s[i:j].strip("\n").replace(' aria-current="page"', "")
+    avant = '<header class="site-header" id="top">'
+    if bloc.count(avant) != 1:
+        raise SystemExit("!! %s : en-tete introuvable entre les marqueurs EN-TETE" % ENTETE_SOURCE)
+    bloc = bloc.replace(avant, '<header class="site-header site-header--enfant" id="top">')
+    return (u"<!-- EN-TETE:DEBUT — recopié d'adhesion.html par .claude/set-entete.py ou un "
+            u"générateur (build-matchs.py, entete_enfant) : ne pas éditer ici -->\n%s\n"
+            u"<!-- EN-TETE:FIN -->" % bloc)
+
+
+SCRIPT_JS_COMMUN = u"""<!-- Le menu plein écran et la barre du haut (V176) sont pilotés par script.js :
+     depuis le 13/09/2026 (V182), toutes les pages le chargent. C'est le fichier
+     de l'accueil, déjà en cache et précaché par le service worker ;
+     bump-assets.py y pose le ?v= tout seul. -->
+<script src="/script.js?v=%s" defer></script>
+"""
+
+
+def script_js_commun():
+    v = re.search(r'src="/?script\.js\?v=([A-Za-z0-9._-]+)"', lire("index.html"))
+    return SCRIPT_JS_COMMUN % (v.group(1) if v else "0")
 
 
 def gabarit():
     s = lire(MODELE)
-    entete = s[s.index('<header class="seo-top">'):s.index("</header>") + len("</header>")]
+    # L'en-tete n'est plus releve sur la page modele : c'est celui de
+    # l'accueil, tire d'adhesion.html (V182, voir entete_enfant()).
+    entete = entete_enfant()
     # la barre CTA flottante, entre le header et <main>
     # Le premier decoupage etait aussitot ecrase par le second : ligne morte,
     # retiree.
@@ -194,6 +235,14 @@ def gabarit():
     # ce defaut. On ne le garde pas \u00ab au cas ou \u00bb, il devient le defaut suivant.
     pied = s[s.index('<footer class="seo-foot">'):s.index("</footer>") + len("</footer>")]
     scripts = s[s.index("<script>\n/* Barre CTA mobile"):s.index("</body>")]
+    # script.js sur TOUTES les pages (V182) : le menu plein ecran et la barre
+    # du haut en dependent. Une seule balise, posee ici : on retire d'abord
+    # celles que la page modele porterait deja (avec leur commentaire), sinon
+    # une page regeneree en recevrait deux — et deux script.js, c'est chaque
+    # module branche deux fois.
+    scripts = re.sub(r'<!-- (?:Le menu plein écran et la barre|Cette page est la SEULE|Comme /creneaux/)[\s\S]*?-->\s*', '', scripts)
+    scripts = re.sub(r'<script src="/?script\.js(?:\?v=[A-Za-z0-9._-]+)?" defer></script>\s*', '', scripts)
+    scripts = scripts.rstrip() + u"\n" + script_js_commun()
     # La feuille servie est style.min.css (voir .claude/build-css.py) ; le ?v=
     # accepte aussi le jeton temporaire pose par un lot de modifications, que
     # bump-assets.py remplace ensuite par le vrai hachage.
@@ -880,17 +929,10 @@ def match_center():
     return _MC
 
 
-# /matchs/ charge script.js, comme /creneaux/ : les filtres et la bascule du
-# prochain match a l'heure de La Reunion SONT la page. Le module en ligne qui
-# vivait ici (« RECLASSEMENT » : il deplacait les cartes perimees entre deux
-# listes « A venir » / « Deja joues ») est remplace par le bloc commun V181 de
-# script.js — le garder aurait fait deux logiques du temps pour une page.
-SCRIPT_JS = u"""<!-- Comme /creneaux/, cette page charge script.js : les filtres et la bascule
-     automatique du prochain match (bloc V181) SONT la page. C'est le fichier de
-     l'accueil, donc deja en cache. bump-assets.py y pose le ?v= tout seul. -->
-<script src="/script.js?v=%s" defer></script>
-"""
-VERSION_JS = "0"
+# /matchs/ n'ajoute plus son propre script.js : depuis V182, gabarit() en pose
+# un sur toutes les pages (menu plein ecran). Le module en ligne qui vivait ici
+# (« RECLASSEMENT », qui deplacait les cartes perimees entre deux listes) reste
+# remplace par le bloc commun V181 de script.js.
 
 
 def page_liste(d, maintenant=None):
@@ -914,7 +956,7 @@ def page_liste(d, maintenant=None):
     entete, cta, pied, scripts = GABARIT
     return (tete(titre, desc, SITE + "/matchs/", [ld_fil, ld_liste], prof=1)
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
-            + u"\n\n" + scripts + SCRIPT_JS % VERSION_JS + u"</body>\n</html>\n")
+            + u"\n\n" + scripts + u"</body>\n</html>\n")
 
 
 # --------------------------------------------------------------------------
@@ -952,12 +994,11 @@ def liste_jsonld(d):
 
 
 def main():
-    global GABARIT, VERSION_CSS, VERSION_JS
+    global GABARIT, VERSION_CSS
     d = charger()
     GABARIT_BRUT = gabarit()
     GABARIT = GABARIT_BRUT[:4]
     VERSION_CSS = GABARIT_BRUT[4]
-    VERSION_JS = re.search(r'src="/?script\.js\?v=([A-Za-z0-9._-]+)"', lire("index.html")).group(1)
 
     ecrits = []
 
