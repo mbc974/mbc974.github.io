@@ -254,7 +254,7 @@ python .claude/verifier-jsonld.py      # données structurées, les 25 pages
 python .claude/build-creneaux.py --essai # les pages catégories disent-elles encore la vérité ?
 python .claude/build-vignettes.py --essai # les crans responsives sont-ils tous là ?
 python .claude/build-og-matchs.py --essai  # les 7 affiches de partage existent-elles ?
-python .claude/build-effectif.py --essai   # les 9 joueurs sont-ils tous là ?
+python .claude/build-effectif.py --essai   # les 10 joueurs sont-ils tous là ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
@@ -434,8 +434,10 @@ engage réellement auprès de la FFBB.
 
 ## 11. L'effectif : ce qu'on ne change pas sans refaire l'affiche
 
-`data/effectif.json` porte les neuf joueurs, **extraits du markup, jamais
-ressaisis**. Deux points à connaître avant d'y toucher :
+`data/effectif.json` porte les dix joueurs : les neuf de départ, **extraits du
+markup, jamais ressaisis**, et David Nugent (#12, intérieur), ajouté le
+13/09/2026 — nom et numéro lus sur son affiche, poste (que l'affiche ne
+porte pas) indiqué par Alexandre. Deux points à connaître avant d'y toucher :
 
 - Les affiches de `assets/joueurs/` portent le nom **et le numéro gravés dans
   l'image**. Modifier un numéro dans le JSON sans refaire l'affiche ferait dire
@@ -456,18 +458,40 @@ ressaisis**. Deux points à connaître avant d'y toucher :
   `data/effectif.json` porte une clé `_affiche_a_refaire` sur ce joueur. **La
   retirer le jour où la nouvelle affiche est déposée**, en même temps que les
   crans responsive (`build-vignettes.py` ne traite pas les affiches joueurs :
-  elles sont livrées déjà déclinées).
+  on les décline à la main, voir « Ajouter un joueur » ci-dessous).
 
 `squad--4` sur la seconde rangée n'est pas décoratif : `.squad` est un
 accordéon dont les deux rangées doivent avoir la **même somme de `flex-grow`**
 (5,02), sinon la carte ouverte n'a pas la même largeur d'une rangée à l'autre
 et `--fy` vise un cadre qui n'existe pas. Le générateur le pose tout seul dès
-qu'un groupe compte quatre joueurs.
+qu'un groupe compte quatre joueurs. Depuis l'arrivée de David Nugent
+(13/09/2026), les deux rangées comptent cinq joueurs : le modificateur ne sort
+plus, mais la règle CSS reste pour le jour où un groupe retombe à quatre.
 
-Le JSON-LD `SportsTeam` de `/effectif/` ne déclare **pas** d'entraîneur : le
-site présente Fred comme « Coach principal » et Luigi comme « Coach des
-jeunes », mais nulle part qui entraîne l'équipe seniors. À confirmer par le
-bureau avant de l'ajouter.
+**Ajouter un joueur.** Les affiches arrivent en un seul PNG (souvent sous un
+nom GUID dans Téléchargements). Dans l'ordre :
+
+1. Les décliner dans `assets/joueurs/` sous
+   `mbc-senior-<prenom>-<nom>-<cran>.{avif,webp}`, aux crans
+   360/560/760/<largeur d'origine>, en AVIF q45 speed 4 et WebP q66 method 6
+   (les réglages de `build-hero.py` — `build-vignettes.py` laisse le WebP en
+   method 4), plus un `-<largeur>.jpg` progressif **q80** de repli : la qualité
+   des neuf premières affiches, lue dans leur table de quantification
+   (luminance `6,4,4,6,10,16,20,24`), et non estimée au poids.
+2. Ajouter l'entrée au JSON **à son rang** : par poste, puis par numéro
+   croissant (Derras, passé au 94, garde la place de son ancien 10). Son `--fx`
+   vise le visage du joueur au premier plan (carte repliée) ; son `--fy` doit
+   convenir aux trois cadres dépliés (0,79 à 0,81) **et** au cadre 3/4 du
+   téléphone, le plus exigeant pour les affiches 9/16.
+3. Retoucher à la main le compte de l'accueil (« Les dix joueurs… » dans le
+   `.sec-head__sub` de `#effectif`, hors du bloc généré ; `/effectif/` calcule
+   le sien), puis lancer `build-effectif.py`, `bump-assets.py` et
+   `build-sitemap.py`, et les contrôles `--essai` / `--check` de la checklist.
+
+Le JSON-LD `SportsTeam` de `/effectif/` déclare **Frédéric Sornom** comme
+entraîneur (`coach`) depuis la décision du bureau du 10/09/2026 (voir la table
+des décisions). Avant, il n'en déclarait volontairement aucun : le site ne
+disait nulle part qui entraînait les seniors.
 
 ---
 

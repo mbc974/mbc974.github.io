@@ -22,7 +22,7 @@
           "hauteur": 1672,
           "alt": "Affiche du joueur Alexandre Debieuvre, meneur numéro 1 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
           "fx": "45%",
-          "fy": "25%"
+          "fy": "28%"
         },
         {
           "numero": "4",
@@ -155,6 +155,24 @@
           "fx": "48%",
           "fy": "12%",
           "_affiche_a_refaire": "Le visuel assets/joueurs/mbc-senior-hakim-derras-*.jpg porte « #10 » grave a trois endroits (maillot, nom, grand chiffre). Le bureau a valide le passage au 94 le 10/09/2026 en connaissance de cause : la legende dit 94, l'image dit 10, jusqu'a ce qu'une nouvelle affiche soit deposee. Retirer cette cle le jour ou c'est fait."
+        },
+        {
+          "numero": "12",
+          "nom": "David Nugent",
+          "poste": "Intérieur · poste 4-5",
+          "image": "mbc-senior-david-nugent",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-david-nugent-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur David Nugent, intérieur numéro 12 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "43%",
+          "fy": "28%"
         },
         {
           "numero": "34",
