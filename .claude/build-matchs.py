@@ -11,7 +11,9 @@ source ; ce script en derive tout le reste.
 
 CE QU'IL ECRIT
 --------------
-  matchs/index.html                 la liste des rencontres
+  matchs/index.html                 le Match Center complet : dernier resultat,
+                                    prochain match, filtres, saison mois par mois
+                                    (rendu par .claude/build-match-center.py)
   matchs/<slug>/index.html          une page par rencontre (7)
   assets/documents/<slug>.ics       un rendez-vous par match a domicile
   index.html                        le bandeau « prochain match » sous le hero,
@@ -22,6 +24,10 @@ CE QU'IL ECRIT AUSSI DANS index.html
 Le bloc « calendrier:jsonld » de la page d'accueil, qui ne contient plus des
 SportsEvent mais une ItemList pointant vers les sept fiches. Un evenement se
 declare sur SA page, pas deux fois sur deux URL differentes.
+
+Et le Match Center de l'accueil (bloc MATCH-CENTER), rendu par
+.claude/build-match-center.py a partir de la meme source : les echeances de
+2e phase, de phase finale et de Coupe de France y figurent aussi.
 
 CE QU'IL NE TOUCHE PAS
 ----------------------
@@ -100,6 +106,32 @@ def charger():
         m["_lieu"] = lieux.get(m["lieu"]) if m["lieu"] else None
         m["_titre"] = ("%s vs %s" % (club["court"], m["adversaireCourt"]) if m["domicile"]
                        else "%s vs %s" % (m["adversaireCourt"], club["court"]))
+        # La competition de la rencontre, et l'etiquette de sa journee : « J2 »
+        # en championnat, le tour en Coupe (qui n'a pas de numero de journee).
+        # Sans ce libelle commun, la premiere affiche de Coupe ajoutee a
+        # data/matchs.json aurait fait tomber le bandeau, la fiche, le .ics et
+        # l'image de partage, qui ecrivaient tous le numero de journee en dur.
+        m["_comp"] = ((d.get("competitions") or {}).get(m.get("competition") or "prm")
+                      or dict(d["competition"], court="PRM", genre="championnat"))
+        # Hors phase 1, la phase precede la journee : « J1 aller » tout court
+        # se confondait avec la J1 du brassage (bandeau, fiche, .ics, courriel).
+        _ph = (d.get("phases") or {}).get(m.get("phase") or "") or {}
+        _pre = (u"%s · " % _ph["court"]) if (_ph.get("court")
+                                             and (m.get("phase") or "brassage") != "brassage") else u""
+        if m.get("journee"):
+            suite = (" %s" % m["manche"]) if m.get("manche") else ""
+            m["_etiquette"] = _pre + "J%d%s" % (m["journee"], suite)
+            m["_etiquetteLongue"] = _pre + u"Journée %d%s" % (m["journee"], suite)
+        else:
+            m["_etiquette"] = m["_etiquetteLongue"] = _pre + (m.get("tour") or m["_comp"].get("court")
+                                                              or m["_comp"]["nom"])
+        # Un score sur une rencontre qui n'a pas COMMENCE est une erreur de
+        # saisie (mauvaise ligne, mauvaise date) : on refuse de le publier.
+        # Le coup d'envoi, et non la fin forfaitaire : une rencontre peut
+        # s'achever avant les 2 h 30, et son score doit pouvoir partir le soir.
+        if m.get("score") and dt > match_center().maintenant():
+            raise ValueError(u"data/matchs.json, %s : un score est saisi pour une rencontre "
+                             u"qui n'a pas encore commencé (%s)." % (m["slug"], m["date"]))
     d["matchs"].sort(key=lambda m: m["_dt"])
     return d
 
@@ -108,12 +140,15 @@ def prochain(d, maintenant=None):
     """Le prochain match a venir, ou None si la phase est terminee. C'est cette
     fonction qui rend le bandeau de la home reutilisable d'une journee a
     l'autre : il n'est pas code autour du 11 septembre."""
-    maintenant = maintenant or datetime.now()
+    # L'heure de La Reunion, la meme que celle du Match Center (et la meme
+    # variable MBC_MAINTENANT pour simuler une autre date) : le bandeau et le
+    # Match Center ne peuvent pas annoncer deux « prochains matchs » differents.
+    maintenant = maintenant or match_center().maintenant()
     # Sur _fin et non _dt : tant que le coup de sifflet final n'a pas sonne, le
     # match du soir reste « le prochain ». Un supporter qui ouvre le site a
     # 20h45 un vendredi veut voir la rencontre en cours, pas celle d'apres.
     futurs = [m for m in d["matchs"]
-              if m["_fin"] >= maintenant and m["statut"] != "annule"]
+              if m["_fin"] >= maintenant and m["statut"] not in ("annule", "reporte")]
     return futurs[0] if futurs else None
 
 
@@ -379,14 +414,14 @@ def event(m, d):
     structurees quand les donnees manquent »."""
     if not m["_lieu"]:
         return None
-    L, club, comp = m["_lieu"], d["club"], d["competition"]
+    L, club, comp = m["_lieu"], d["club"], m["_comp"]
     ev = {
         "@context": "https://schema.org",
         "@type": "SportsEvent",
         "@id": m["_url"] + "#event",
-        "name": u"%s – %s (%s, J%d)" % (club["nom"], m["adversaire"], comp["nom"], m["journee"]),
-        "description": (u"J%d de %s : le %s reçoit %s au %s, à %s (%s), le %s à %s.%s"
-                        % (m["journee"], comp["nom"], club["nom"], m["adversaire"], L["nom"],
+        "name": u"%s – %s (%s, %s)" % (club["nom"], m["adversaire"], comp["nom"], m["_etiquette"]),
+        "description": (u"%s de %s : le %s reçoit %s au %s, à %s (%s), le %s à %s.%s"
+                        % (m["_etiquette"], comp["nom"], club["nom"], m["adversaire"], L["nom"],
                            L["ville"], L["region"], m["_dateLongue"], m["_heureFr"],
                            u" Entrée libre." if m["entreeLibre"] else "")),
         "url": m["_url"],
@@ -486,11 +521,11 @@ def ics(m, d):
         "DTSTAMP:%sZ" % datetime(2026, 9, 1).strftime("%Y%m%dT%H%M%S"),
         "DTSTART;TZID=Indian/Reunion:%s" % _ics_heure(m["_debutIso"]),
         "DTEND;TZID=Indian/Reunion:%s" % _ics_heure(m["_finIso"]),
-        u"SUMMARY:%s" % _ics_txt(u"%s — %s (J%d)" % (d["club"]["court"],
-                                                     m["adversaireCourt"], m["journee"])),
+        u"SUMMARY:%s" % _ics_txt(u"%s — %s (%s)" % (d["club"]["court"],
+                                                    m["adversaireCourt"], m["_etiquette"])),
         u"LOCATION:%s" % _ics_txt(lieu),
         u"DESCRIPTION:%s" % _ics_txt(
-            d["competition"]["nom"] + (u" — entrée libre." if m["entreeLibre"] else u".")),
+            m["_comp"]["nom"] + (u" — entrée libre." if m["entreeLibre"] else u".")),
         "URL:%s" % m["_url"],
         "END:VEVENT", "END:VCALENDAR", ""]
     return u"\r\n".join(_ics_plier(l) for l in lignes)
@@ -550,7 +585,7 @@ def bandeau(m, d):
     return u"""<!-- PROCHAIN-MATCH:DEBUT — genere par .claude/build-matchs.py, ne pas editer a la main -->
 <section class="nx" id="nxBand" aria-labelledby="nxBandTitle" data-debut="%(iso)s" data-fin="%(finIso)s">
   <div class="wrap nx__in">
-    <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>J%(j)d</p>
+    <p class="nx__eyebrow"><span class="nx__dot" aria-hidden="true"></span>Prochain match <i aria-hidden="true"></i>%(etiq)s</p>
     <h2 class="nx__t" id="nxBandTitle"><span class="nx__club">%(crestDom)s%(dom)s</span><span class="nx__vs" aria-hidden="true">vs</span><span class="nx__opp">%(crestExt)s%(ext)s</span></h2>
     <p class="nx__meta"><time datetime="%(iso)s">%(dateLongue)s <i aria-hidden="true"></i> %(heure)s</time><span class="nx__ou">%(lieu)s</span>%(libre)s</p>
     <p class="nx__cd" id="nxCountdown" hidden></p>
@@ -558,7 +593,7 @@ def bandeau(m, d):
   </div>
 </section>
 <!-- PROCHAIN-MATCH:FIN -->""" % {
-        "j": m["journee"],
+        "etiq": ech(m["_etiquette"]),
         "dom": ech(club["court"] if m["domicile"] else m["adversaireCourt"]),
         "ext": ech(m["adversaireCourt"] if m["domicile"] else club["court"]),
         "crestDom": crest_dom,
@@ -636,9 +671,11 @@ ECUSSON_MBC = (u'<span class="mp__crest"><img src="/assets/logos/mbc-logo.webp" 
 # Une page de rencontre
 # --------------------------------------------------------------------------
 def page_match(m, d, precedent, suivant):
-    club, comp = d["club"], d["competition"]
+    club, comp = d["club"], m["_comp"]
     L = m["_lieu"]
     lieu = L["nom"] if L else u"Chez l'adversaire"
+    lieu_phrase = L["nom"] if L else u"chez l’adversaire"      # au milieu d'une phrase
+    _sc = score_texte(m)
     # Le depot suit une regle de titres <= 52 caracteres : au-dela, le libelle
     # est tronque dans les resultats mobiles, ou le CTR mesure etait moitie
     # moindre a position egale. La date longue avec le jour de la semaine et
@@ -646,9 +683,20 @@ def page_match(m, d, precedent, suivant):
     # suffit, l'heure vit dans la description et dans le SportsEvent.
     titre = u"%s · %d %s %d — MBC974" % (m["_titre"], m["_dt"].day,
                                          MOIS_COURT[m["_dt"].month - 1], m["_dt"].year)
-    desc = (u"%s, J%d de %s : %s à %s, %s. %s"
-            % (m["_titre"], m["journee"], comp["nom"], m["_dateLongue"], m["_heureFr"], lieu,
-               u"Entrée libre." if m["entreeLibre"] else u"Rencontre en déplacement."))
+    if _sc:
+        # Une rencontre jouee se decrit par son resultat : c'est ce que cherche
+        # celui qui tape « MBC Sainte-Suzanne » le lendemain du match.
+        # Apres « victoire du MBC », les chiffres du MBC d'abord, quel que soit
+        # le camp : « victoire du MBC 60–70 » se lisait comme une defaite.
+        _cls = issue(_sc[0], _sc[1])[0]
+        desc = (u"%s, %s de %s : %s %d–%d, %s, %s."
+                % (m["_titre"], m["_etiquette"], comp["nom"],
+                   {"v": u"victoire du MBC", "d": u"défaite du MBC", "n": u"match nul"}[_cls],
+                   _sc[0], _sc[1], m["_dateLongue"], lieu_phrase))
+    else:
+        desc = (u"%s, %s de %s : %s à %s, %s. %s"
+                % (m["_titre"], m["_etiquette"], comp["nom"], m["_dateLongue"], m["_heureFr"], lieu_phrase,
+                   u"Entrée libre." if m["entreeLibre"] else u"Rencontre en déplacement."))
 
     visible, ld_fil = fil([(u"Accueil", "/"), (u"Matchs", "/matchs/"), (m["_titre"], None)])
     lds = [ld_fil]
@@ -665,13 +713,16 @@ def page_match(m, d, precedent, suivant):
     if L:
         pratique.append((u"Adresse", u"%s<br>%s %s" % (ech(L["adresse"]), L["codePostal"], ech(L["ville"]))))
     pratique.append((u"Coup d’envoi", u"%s à %s" % (ech(m["_dateLongue"]), m["_heureFr"])))
-    _sc = score_texte(m)
     if _sc:
-        pratique.append((u"Résultat", u"%s %d–%d"
-                         % (issue(_sc[0], _sc[1])[1],
-                            _sc[0] if m["domicile"] else _sc[1],
-                            _sc[1] if m["domicile"] else _sc[0])))
-    pratique.append((u"Compétition", u"%s — %s" % (ech(comp["nom"]), ech(comp["zone"]))))
+        # Meme regle que la description : « Victoire du MBC, 70–60 ».
+        pratique.append((u"Résultat", u"%s, %d–%d"
+                         % ({"v": u"Victoire du MBC", "d": u"Défaite du MBC",
+                             "n": u"Match nul"}[issue(_sc[0], _sc[1])[0]], _sc[0], _sc[1])))
+    # La zone ne vaut que pour la phase 1 : les divisions 1 et 2 melent les
+    # poules Nord et Sud (reglement, art. 3). Ensuite, on nomme la phase.
+    _extra = (comp.get("zone") if (m.get("phase") or "brassage") == "brassage"
+              else ((d.get("phases") or {}).get(m.get("phase") or "") or {}).get("nom"))
+    pratique.append((u"Compétition", u" — ".join(ech(x) for x in (comp["nom"], _extra) if x)))
     pratique.append((u"Sens", u"À domicile" if m["domicile"] else u"En déplacement"))
     if m["entreeLibre"]:
         pratique.append((u"Entrée", u"Libre, sans réservation"))
@@ -679,7 +730,11 @@ def page_match(m, d, precedent, suivant):
     benev = u""
     if m["benevoles"]:
         postes = u"".join(u"<li>%s</li>" % ech(p) for p in m["benevoles"])
-        sujet = u"B%%C3%%A9n%%C3%%A9volat%%20-%%20match%%20J%d" % m["journee"]
+        # L'etiquette commune (« J3 », « 2e phase · J1 aller », le tour d'une
+        # Coupe) : une rencontre sans numero de journee faisait planter ici
+        # toute la chaine.
+        from urllib.parse import quote
+        sujet = quote(u"Bénévolat - match %s" % m["_etiquette"], safe="")
         benev = (u"\n        <section class=\"mp__bloc\" aria-labelledby=\"mpBen\">\n"
                  u"          <h2 class=\"mp__h2\" id=\"mpBen\">Donner un coup de main</h2>\n"
                  u"          <p>Un match à domicile ne tient pas tout seul : il faut une table de "
@@ -697,7 +752,8 @@ def page_match(m, d, precedent, suivant):
                    u'</a></p>') % m["affiche"]
 
     actions = []
-    if L:
+    # Apres le coup de sifflet final, ni itineraire ni agenda : le score les remplace.
+    if L and not _sc:
         actions.append(u'<a class="btn btn--primary" href="%s" target="_blank" rel="noopener">'
                        u'Itinéraire<span class="sr-only"> vers %s (Google Maps, nouvel onglet)'
                        u'</span></a>' % (L["carte"], ech(lieu)))
@@ -707,19 +763,37 @@ def page_match(m, d, precedent, suivant):
 
     voisins = []
     if precedent:
-        voisins.append(u'<a class="mp__prec" href="/matchs/%s/"><span>Journée %d</span>%s</a>'
-                       % (precedent["slug"], precedent["journee"], ech(precedent["_titre"])))
+        voisins.append(u'<a class="mp__prec" href="/matchs/%s/"><span>%s</span>%s</a>'
+                       % (precedent["slug"], ech(precedent["_etiquetteLongue"]), ech(precedent["_titre"])))
     if suivant:
-        voisins.append(u'<a class="mp__suiv" href="/matchs/%s/"><span>Journée %d</span>%s</a>'
-                       % (suivant["slug"], suivant["journee"], ech(suivant["_titre"])))
+        voisins.append(u'<a class="mp__suiv" href="/matchs/%s/"><span>%s</span>%s</a>'
+                       % (suivant["slug"], ech(suivant["_etiquetteLongue"]), ech(suivant["_titre"])))
+
+    # Le resultat, en tete de fiche : c'est LA reponse qu'on vient chercher sur
+    # la page d'un match joue. Lu en toutes lettres par un lecteur d'ecran.
+    score_html = u""
+    if _sc:
+        _cls = issue(_sc[0], _sc[1])[0]
+        _lib = {"v": u"Victoire du MBC", "d": u"Défaite du MBC", "n": u"Match nul"}[_cls]
+        # A l'ecran, les chiffres suivent le duel juste au-dessus (recevant
+        # d'abord). Le lecteur d'ecran entend une phrase complete, du point de
+        # vue du MBC : « Victoire du MBC, 70 à 60 contre Dionysien 3. »
+        _dit = ((u"Match nul, %d à %d contre %s." if _cls == "n" else _lib + u", %d à %d contre %s.")
+                % (_sc[0], _sc[1], m["adversaireCourt"]))
+        score_html = (u'\n      <p class="mp__score mp__score--%s"><span class="sr-only">%s</span>'
+                      u'<span class="mp__score__n" aria-hidden="true">%d</span><span class="mp__score__s" aria-hidden="true">–</span>'
+                      u'<span class="mp__score__n" aria-hidden="true">%d</span>'
+                      u'<span class="mp__score__l" aria-hidden="true">%s</span></p>'
+                      % (_cls, ech(_dit), _sc[0] if m["domicile"] else _sc[1],
+                         _sc[1] if m["domicile"] else _sc[0], _lib))
 
     corps = u"""<main id="contenu">
   <article class="section mp">
     <div class="wrap">
       %(fil)s
-      <p class="mp__eyebrow">%(comp)s <i aria-hidden="true"></i> Journée %(j)d</p>
+      <p class="mp__eyebrow">%(comp)s <i aria-hidden="true"></i> %(etiqL)s</p>
       <h1 class="mp__h1">%(dom)s <span class="mp__vs">vs</span> %(ext)s</h1>
-      <div class="mp__duel" aria-hidden="true">%(duel)s</div>
+      <div class="mp__duel" aria-hidden="true">%(duel)s</div>%(score)s
       <p class="mp__quand"><time datetime="%(iso)s">%(dateLongue)s <i aria-hidden="true"></i> %(heure)s</time></p>
       <p class="mp__ou">%(lieu)s <span class="mp__cote">%(cote)s</span></p>%(libre)s
       <p class="mp__a">%(actions)s</p>%(affiche)s
@@ -738,14 +812,15 @@ def page_match(m, d, precedent, suivant):
     </div>
   </article>
 </main>""" % {
-        "fil": visible, "comp": ech(comp["nom"]), "j": m["journee"],
+        "fil": visible, "comp": ech(comp["nom"]), "etiqL": ech(m["_etiquetteLongue"]),
+        "score": score_html,
         "dom": ech(club["court"] if m["domicile"] else m["adversaireCourt"]),
         "ext": ech(m["adversaireCourt"] if m["domicile"] else club["court"]),
         "duel": duel, "iso": m["_debutIso"],
         "dateLongue": ech(m["_dateLongue"][0].upper() + m["_dateLongue"][1:]),
         "heure": m["_heureFr"], "lieu": ech(lieu),
         "cote": u"À domicile" if m["domicile"] else u"En déplacement",
-        "libre": u'\n      <p class="mp__libre">Entrée libre</p>' if m["entreeLibre"] else u"",
+        "libre": u'\n      <p class="mp__libre">Entrée libre</p>' if m["entreeLibre"] and not _sc else u"",
         "actions": u"\n        ".join(actions),
         "affiche": affiche, "intro": ech(m["intro"]),
         "pratique": u"".join(u"<div><dt>%s</dt><dd>%s</dd></div>" % (k, v) for k, v in pratique),
@@ -765,90 +840,63 @@ def page_match(m, d, precedent, suivant):
     og = "assets/og/og-%s.jpg" % m["slug"]
     if not os.path.exists(os.path.join(RACINE, og)):
         og = None
-    partage = m["affiche"] or og
+    # Une rencontre jouee se partage avec son score : la carte dessinee le porte,
+    # l'affiche d'avant-match non.
+    partage = (og or m["affiche"]) if _sc else (m["affiche"] or og)
+    if _sc:
+        # L'image d'une rencontre jouee porte le score (build-og-matchs.py) : son
+        # texte de remplacement le dit, dans l'ordre de l'image.
+        _alt = (u"%s : %d–%d, %s" % (
+            m["_titre"], _sc[0] if m["domicile"] else _sc[1], _sc[1] if m["domicile"] else _sc[0],
+            {"v": u"victoire du MBC", "d": u"défaite du MBC", "n": u"match nul"}[issue(_sc[0], _sc[1])[0]]))
+    else:
+        _alt = (u"%s, %s à %s — %s" % (m["_titre"], m["_dateLongue"], m["_heureFr"],
+                                        (m["_lieu"] or {}).get("nom", u"chez l’adversaire")))
     return (tete(titre, desc, m["_url"], lds, prof=2,
                  image=partage,
-                 image_alt=(u"%s, %s à %s — %s"
-                            % (m["_titre"], m["_dateLongue"], m["_heureFr"],
-                               (m["_lieu"] or {}).get("nom", u"chez l’adversaire"))
-                            if partage else None))
+                 image_alt=_alt if partage else None)
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
             + u"\n\n" + scripts + u"</body>\n</html>\n")
 
 
 # --------------------------------------------------------------------------
-# La liste /matchs/
+# La page /matchs/ : le Match Center complet
 # --------------------------------------------------------------------------
+_MC = None
+
+
+def match_center():
+    """.claude/build-match-center.py, charge une fois. C'est lui qui rend la
+    saison (rencontres confirmees + echeances) ; ce fichier-ci l'enveloppe du
+    gabarit du site et y ajoute les donnees structurees."""
+    global _MC
+    if _MC is None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "match_center", os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                         "build-match-center.py"))
+        _MC = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(_MC)
+    return _MC
+
+
+# /matchs/ charge script.js, comme /creneaux/ : les filtres et la bascule du
+# prochain match a l'heure de La Reunion SONT la page. Le module en ligne qui
+# vivait ici (« RECLASSEMENT » : il deplacait les cartes perimees entre deux
+# listes « A venir » / « Deja joues ») est remplace par le bloc commun V181 de
+# script.js — le garder aurait fait deux logiques du temps pour une page.
+SCRIPT_JS = u"""<!-- Comme /creneaux/, cette page charge script.js : les filtres et la bascule
+     automatique du prochain match (bloc V181) SONT la page. C'est le fichier de
+     l'accueil, donc deja en cache. bump-assets.py y pose le ?v= tout seul. -->
+<script src="/script.js?v=%s" defer></script>
+"""
+VERSION_JS = "0"
+
+
 def page_liste(d, maintenant=None):
-    maintenant = maintenant or datetime.now()
+    mc = match_center()
+    maintenant = maintenant or mc.maintenant()
     comp = d["competition"]
-    club = d["club"]
-    # Meme regle que prochain() : la fin, pas le coup d'envoi.
-    a_venir = [m for m in d["matchs"] if m["_fin"] >= maintenant]
-    passes = [m for m in d["matchs"] if m["_fin"] < maintenant]
-
-    def carte(m, futur):
-        L = m["_lieu"]
-        lieu = L["nom"] if L else u"Chez l’adversaire"
-        # Le score entre DANS .ml__duel (un flex), pas comme 7e case de la
-        # grille a six colonnes : il y repartait a la ligne sous la date.
-        sc = score_texte(m)
-        score = u""
-        if sc:
-            cls, mot = issue(sc[0], sc[1])
-            dom_pour = sc[0] if m["domicile"] else sc[1]
-            ext_pour = sc[1] if m["domicile"] else sc[0]
-            score = (u'<span class="ml__score ml__score--%s">'
-                     u'<span class="sr-only">%s du MBC, score </span>'
-                     u'%d<span class="ml__score__s">\u2013</span>%d</span>'
-                     % (cls, mot, dom_pour, ext_pour))
-        return u"""        <li class="ml__i%(cls)s" data-fin="%(fin)s">
-          <a class="ml__a" href="/matchs/%(slug)s/">
-            <span class="ml__j">J%(j)d</span>
-            <time class="ml__d" datetime="%(iso)s"><b>%(jour)s %(n)d</b><span>%(mois)s</span></time>
-            <span class="ml__duel"><b>%(dom)s</b><i aria-hidden="true">vs</i><b>%(ext)s</b>%(score)s</span>
-            <span class="ml__ou">%(lieu)s</span>
-            <span class="ml__cote">%(cote)s</span>
-            <span class="ml__go" aria-hidden="true">%(fleche)s</span>
-          </a>
-        </li>""" % {
-            "cls": u"" if futur else u" ml__i--passe",
-            # L'instant de fin, fuseau compris : c'est lui qui permet a la page
-            # de se corriger seule entre deux publications (voir plus bas).
-            "fin": m["_finIso"],
-            "slug": m["slug"], "j": m["journee"], "iso": m["_debutIso"],
-            "jour": ech(m["_jour"][:3] + u"."), "n": m["_dt"].day,
-            "mois": ech(MOIS_COURT[m["_dt"].month - 1]),
-            "dom": ech(club["court"] if m["domicile"] else m["adversaireCourt"]),
-            "ext": ech(m["adversaireCourt"] if m["domicile"] else club["court"]),
-            "lieu": ech(lieu),
-            "cote": u"À domicile" if m["domicile"] else u"En déplacement",
-            "score": score, "fleche": FLECHE,
-        }
-
-    # Les DEUX sections sont TOUJOURS ecrites, masquees quand elles sont vides.
-    #
-    # Pourquoi : ce partage etait fige au build. Une rencontre jouee le vendredi
-    # soir restait annoncee « A venir » jusqu'a la publication suivante — sur la
-    # page qu'on ouvre justement le soir du match, et souvent depuis le gymnase.
-    # Le module inline pose en bas de page deplace desormais les cartes perimees
-    # d'une liste a l'autre, en lisant leur data-fin. Il lui faut donc les deux
-    # conteneurs presents dans le DOM : on ne deplace pas une carte vers une
-    # liste qui n'existe pas. Un conteneur vide et masque ne coute rien ; une
-    # page qui ment le soir du premier match, si.
-    vide_v = u"" if a_venir else u" hidden"
-    vide_p = u"" if passes else u" hidden"
-    sections = [
-        u'      <h2 class="ml__h2" id="mlVenir"%s>À venir</h2>' % vide_v,
-        u'      <ul class="ml" id="mlVenirL" aria-labelledby="mlVenir"%s>' % vide_v,
-        u"\n".join(carte(m, True) for m in a_venir),
-        u'      </ul>',
-        u'      <h2 class="ml__h2" id="mlPasses"%s>Déjà joués</h2>' % vide_p,
-        u'      <ul class="ml" id="mlPassesL" aria-labelledby="mlPasses"%s>' % vide_p,
-        u"\n".join(carte(m, False) for m in passes),
-        u'      </ul>',
-    ]
-
     visible, ld_fil = fil([(u"Accueil", "/"), (u"Matchs", None)])
     ld_liste = {
         "@context": "https://schema.org", "@type": "ItemList",
@@ -860,66 +908,13 @@ def page_liste(d, maintenant=None):
                             for i, m in enumerate(d["matchs"])],
     }
     titre = u"Calendrier des matchs %s — MBC La Montagne" % comp["saison"]
-    desc = (u"Les %d rencontres de l’équipe seniors du MBC en %s, %s. Dates, horaires, "
-            u"adversaires et lieux — entrée libre à domicile."
-            % (len(d["matchs"]), comp["nom"], comp["saison"]))
-
-    corps = u"""<main id="contenu">
-  <section class="section ml-sec">
-    <div class="wrap">
-      %(fil)s
-      <p class="kicker">%(comp)s <i aria-hidden="true"></i> %(zone)s</p>
-      <h1 class="h2">Les matchs <span class="hl">de la saison</span></h1>
-      <p class="sec-head__sub">%(sub)s</p>
-%(sections)s
-      <p class="ml__retour"><a href="/#matchs">Revenir au Match Center de l’accueil</a></p>
-    </div>
-  </section>
-</main>""" % {"fil": visible, "comp": ech(comp["nom"]), "zone": ech(comp["zone"]),
-              "sub": ech(u"%s, %s. Les rencontres à domicile se jouent au Gymnase de La "
-                         u"Montagne, le vendredi à 20h30, entrée libre."
-                         % (comp["phase"], comp["saison"])),
-              "sections": u"\n\n".join(sections)}
-
+    desc = (u"Résultats, prochain match et toute la saison des seniors du MBC La Montagne : "
+            u"Pré-Régionale Masculine et Trophée Coupe de France. Entrée libre à domicile.")
+    corps = mc.page_corps(d, mc.entrees(d), maintenant, visible)
     entete, cta, pied, scripts = GABARIT
     return (tete(titre, desc, SITE + "/matchs/", [ld_fil, ld_liste], prof=1)
             + entete + u"\n\n" + cta + u"\n\n" + corps + u"\n\n" + pied
-            + u"\n\n" + scripts + RECLASSEMENT + u"</body>\n</html>\n")
-
-
-# Vingt lignes en ligne, plutot que les 60 Ko de script.js : cette page s'ouvre
-# surtout depuis un telephone, le vendredi soir, parfois depuis le gymnase.
-RECLASSEMENT = u"""<script>
-/* Le calendrier se corrige lui-meme entre deux publications.
-   ------------------------------------------------------------------
-   Le partage « A venir » / « Deja joues » est decide au moment ou ce
-   fichier est ecrit. Sans ceci, une rencontre terminee resterait
-   annoncee comme a venir jusqu'a la prochaine execution du script —
-   c'est-a-dire, en pratique, jusqu'au lendemain matin au mieux.
-
-   On compare des instants ABSOLUS : data-fin porte le +04:00 de La
-   Reunion, donc un supporter qui lit la page depuis la metropole voit
-   exactement la meme chose qu'un supporter a La Montagne. */
-(function(){
-  var venir=document.getElementById('mlVenirL'),
-      passes=document.getElementById('mlPassesL');
-  if(!venir||!passes) return;
-  var maintenant=new Date(), bouge=0;
-  [].slice.call(venir.children).forEach(function(li){
-    var f=li.getAttribute('data-fin'); if(!f) return;
-    var d=new Date(f); if(isNaN(d)||d>=maintenant) return;
-    li.className+=' ml__i--passe';
-    passes.insertBefore(li,passes.firstChild);   /* la plus recente en tete */
-    bouge++;
-  });
-  if(!bouge) return;
-  function eta(id,vide){var e=document.getElementById(id); if(e) e.hidden=vide;}
-  eta('mlPasses',false); eta('mlPassesL',false);
-  var reste=venir.children.length===0;
-  eta('mlVenir',reste); eta('mlVenirL',reste);
-})();
-</script>
-"""
+            + u"\n\n" + scripts + SCRIPT_JS % VERSION_JS + u"</body>\n</html>\n")
 
 
 # --------------------------------------------------------------------------
@@ -941,7 +936,7 @@ def liste_jsonld(d):
         items.append({
             "@type": "ListItem",
             "position": i,
-            "name": u"J%d — %s" % (m["journee"], m["_titre"]),
+            "name": u"%s — %s" % (m["_etiquette"], m["_titre"]),
             "url": m["_url"],
         })
     c = d["competition"]
@@ -949,7 +944,7 @@ def liste_jsonld(d):
         "@context": "https://schema.org",
         "@type": "ItemList",
         "@id": SITE + "/#calendrier-matchs",
-        "name": u"Matchs du %s — %s, %s %s" % (club["nom"], c["nom"], c["phase"].lower(), c["saison"]),
+        "name": u"Matchs du %s — saison %s" % (club["nom"], d.get("saison") or c["saison"]),
         "itemListOrder": "https://schema.org/ItemListOrderAscending",
         "numberOfItems": len(items),
         "itemListElement": items,
@@ -957,11 +952,12 @@ def liste_jsonld(d):
 
 
 def main():
-    global GABARIT, VERSION_CSS
+    global GABARIT, VERSION_CSS, VERSION_JS
     d = charger()
     GABARIT_BRUT = gabarit()
     GABARIT = GABARIT_BRUT[:4]
     VERSION_CSS = GABARIT_BRUT[4]
+    VERSION_JS = re.search(r'src="/?script\.js\?v=([A-Za-z0-9._-]+)"', lire("index.html")).group(1)
 
     ecrits = []
 
@@ -1004,25 +1000,23 @@ def main():
     io.open(p, "w", encoding="utf-8", newline="").write(s)
     ecrits.append("index.html (bandeau prochain match + ItemList du calendrier)")
 
-    # 5. le ruban de saison de la home, qui lit la MEME source. Il est appele
+    # 5. le Match Center de l'accueil, qui lit la MEME source. Il est appele
     #    ici et pas a la main : un calendrier qui bouge doit bouger partout du
     #    meme coup, sinon la home affiche deux verites. C'est la lecon des
     #    trois rencontres qui avaient change de camp entre deux editions du PDF.
-    try:
-        import importlib.util
-        spec = importlib.util.spec_from_file_location(
-            'ruban', os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                  'build-ruban-saison.py'))
-        ruban = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(ruban)
-        ruban.main()
-        ecrits.append("index.html (ruban de saison)")
-    except Exception as e:
-        print("!! ruban de saison non regenere : %s" % e)
+    #    Il remplace le « ruban de saison » (V162, build-ruban-saison.py, retire),
+    #    qui ne connaissait que la phase 1 — et qui aurait plante au premier
+    #    score saisi (il passait le dictionnaire du score a l'echappement HTML) :
+    #    l'erreur etait avalee par un except, et la home serait restee figee
+    #    sans que personne le sache. Plus d'except ici : une home perimee doit
+    #    se voir au moment de la publication, pas une semaine plus tard.
+    if match_center().main() != 0:
+        raise SystemExit("!! Match Center de l'accueil non regenere (marqueurs MATCH-CENTER ?)")
+    ecrits.append("index.html (Match Center de la saison)")
 
     pm = prochain(d)
     print("Source        : data/matchs.json (%d rencontres)" % len(d["matchs"]))
-    print("Prochain match: %s" % (("J%d %s, %s" % (pm["journee"], pm["_titre"], pm["_dateLongue"]))
+    print("Prochain match: %s" % (("%s %s, %s" % (pm["_etiquette"], pm["_titre"], pm["_dateLongue"]))
                                   if pm else "aucun a venir"))
     print("Evenements    : %d SportsEvent, un par page de match a domicile (lieu connu)"
           % sum(1 for m in d["matchs"] if m["_lieu"]))

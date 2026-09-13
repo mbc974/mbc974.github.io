@@ -83,7 +83,7 @@ python .claude/bump-assets.py
 Le script recopie le score dans `data/matchs.json`, bascule le `statut` de `a-venir` à `joue`,
 puis relance `build-matchs.py`. Le résultat apparaît alors aux **trois** endroits d'un coup :
 la ligne du Match Center sur l'accueil, la carte de `/matchs/`, et la ligne « Résultat » des
-informations pratiques de la fiche. Le vert marque une victoire, le blanc énonce une défaite,
+informations pratiques de la fiche. L'orange marque une victoire (le vert a été retiré le 13/09/2026, § 26), le blanc énonce une défaite,
 le bleu un match nul — et un lecteur d'écran entend « Victoire du MBC, score » avant les
 chiffres.
 
@@ -106,6 +106,12 @@ explicite plutôt que de produire une page fausse.
 d'envoi : la bascule compare l'heure de fin (début + `duree`, 120 minutes par défaut). Un
 supporter qui ouvre le site à 20h45 un vendredi voit toujours la rencontre en cours comme
 « prochain match ».
+
+**Depuis le 13/09/2026 (§ 26)**, un score saisi à la main dans `data/matchs.json` — résultat
+communiqué par le club avant que la Ligue ne réédite son PDF — vaut partout : les deux Match
+Center (accueil et `/matchs/`), la ligne du calendrier (`set-calendrier-prm.py --archive` la
+régénère), la fiche (score en tête) et l'image de partage (`build-og-matchs.py`). Un score
+imprimé par la Ligue reste prioritaire.
 
 ---
 
@@ -977,6 +983,10 @@ mêmes attributs `data-debut` / `data-fin`. Ne pas en faire une seconde copie.
 
 Vérifié en reculant J1–J3 d'un an dans une copie jetable : les trois s'éteignent
 et J4 prend l'anneau orange.
+
+**Retiré le 13/09/2026** : le ruban est remplacé par le Match Center (§ 26) et
+`build-ruban-saison.py` n'existe plus. Sa CSS `.msn` est morte, à purger avec la
+preuve d'empreinte des styles calculés.
 
 ### 17.6 Les traits qui ne séparaient rien
 
@@ -1960,3 +1970,208 @@ aucune photo de la grille, aucune carte coupée.
   de shaders NVIDIA (`%LOCALAPPDATA%\NVIDIA\DXCache`, 39 Go) ; les bancs de
   la revue avaient laissé 2,5 Go de captures dans `%TEMP%`. Vérifier
   l'espace libre avant une revue à plusieurs agents.
+
+---
+
+## 26. Le Match Center de la saison (13/09/2026)
+
+Branche `feature/season-match-center`.
+
+### La demande
+
+Transformer le calendrier des seniors en un vrai Match Center. On doit y lire
+immédiatement le dernier résultat, le prochain match et le lieu, puis les
+rencontres suivantes, la différence entre championnat et Coupe, et ce qui est
+confirmé face à ce qui dépend encore d'un classement ou d'une qualification.
+Le prochain match doit changer SEUL, sans retoucher le HTML. Mobile d'abord.
+Sources de vérité : les PDF de la Ligue. Aucune affiche, aucune date, aucun
+camp ne doit être inventé.
+
+### Ce que disent les documents, et ce qu'ils ne disent pas
+
+| source | ce qu'on en tire |
+|---|---|
+| `CALENDRIER SENIOR PRM NORD.pdf` (25/08/2026, archivé) | les 7 journées de la phase 1, le vendredi à 20h30 ; le camp est donné par l'ORDRE des équipes (art. 10) ; aucun score imprimé |
+| calendrier général sportif 2026-2027, **V2** (lignes « PRM D1 » et « PRM D2 ») | 14 dates de 2e phase (1A → 7A, 1R → 7R), **identiques dans les deux divisions** ; phase finale sur la seule ligne D1 (½ A 02/04, ½ R 09/04, finale A 16/04, finale R 23/04/2027) ; TRCF les 26/09, 17/10, 14/11, 29/11 et 12/12 |
+| règlement particulier PRM (art. 3 et 4) | D1 = les 4 premiers de chaque poule, D2 = les 5e à 8e ; aller-retour ; horaire officiel vendredi 20h30 |
+
+Trois conséquences, visibles sur le site :
+
+- **La division du MBC en 2e phase n'est pas connue** : le site écrit « Division
+  1 ou 2 selon le classement », jamais « D1 ». Les dates, elles, sont sûres,
+  puisqu'elles sont les mêmes dans les deux lignes.
+- **Les tours de Coupe** : le 29/11 est surligné en jaune (légende « Finales
+  régionales »), le 12/12 en vert (« Finales zone »). D'où les libellés
+  « Finale régionale » et « Finale de zone », à corriger dans `data/matchs.json`
+  si la Ligue les précise. La case TRCF du 04/09, antérieure à la J1, n'est
+  pas reprise : rien ne dit si le MBC l'a disputée.
+- **La J1 (73-52)** vient du club (13/09), pas du PDF, qui n'a pas encore été
+  réédité. Voir `_sources` en tête de `data/matchs.json`.
+
+La lecture du calendrier général a été contre-vérifiée par trois agents
+indépendants : deux lecteurs à l'aveugle (rendus PyMuPDF, colonnes recoupées au
+pixel) et un contradicteur. Résultat : 31/31 cases identiques sur la ligne D1,
+27/27 sur la ligne D2, couleurs comprises. Le contradicteur a confirmé 30
+affirmations sur 31 ; la seule réserve est que le PDF ne développe jamais le
+sigle « TRCF ».
+
+### La source unique
+
+`data/matchs.json`, deux listes :
+
+- `matchs` : les rencontres confirmées, chacune avec sa fiche. Champs nouveaux :
+  `competition` (`prm` / `trcf`), `phase` (`brassage` / `phase2` / `finale`),
+  `journee` + `manche`, ou bien `tour` ;
+- `echeances` : les dates fixées par la Ligue sans affiche connue, avec leur
+  `etat` (`a-determiner`, `selon-classement`, `selon-qualification`).
+
+**Quand une affiche de 2e phase ou de Coupe est connue**, on l'ajoute à
+`matchs` avec son slug. L'échéance du même jour, de la même journée ou du même
+tour disparaît d'elle-même (`remplacee()` dans `build-match-center.py`) : il
+n'y a rien à retirer, et une dérogation qui déplace la date ne crée pas de
+doublon.
+
+### Ce qui est généré, et par quoi
+
+- `.claude/build-match-center.py` (appelé par `build-matchs.py`) écrit le bloc
+  `MATCH-CENTER` de l'accueil (dernier résultat, prochain match, « À suivre »,
+  lien vers la saison) et le `<main>` de `/matchs/` (les deux cartes, les
+  filtres, la saison mois par mois, le format, la poule, les sources).
+- `build-matchs.py` enveloppe `/matchs/` du gabarit du site, qui charge
+  désormais `script.js` comme `/creneaux/`. Une fiche de match jouée affiche
+  le score en tête, n'offre plus ni itinéraire ni agenda, et se partage avec la
+  carte portant le score. L'étiquette de journée est commune à tout le site
+  (`_etiquette`) : une rencontre de Coupe, qui n'a pas de numéro de journée, ne
+  casse plus le bandeau, la fiche, le `.ics` ni l'image de partage.
+- `set-calendrier-prm.py` ne compare au PDF que la phase 1 (`dans_le_pdf()`).
+  La ligne du calendrier reprend le score du JSON quand la Ligue n'en a pas
+  imprimé.
+- `build-ruban-saison.py` est **retiré**, remplacé par le Match Center. Il
+  aurait planté au premier score saisi (`ech()` appliqué au dictionnaire du
+  score), et l'erreur était avalée par un `except` : la home serait restée
+  figée sans que personne ne le voie. L'appel est désormais sans `except`.
+
+### Le temps
+
+Le HTML est juste à la date de publication, et complet sans JavaScript. Les
+cartes des semaines qui suivent sont écrites d'avance dans des `<template>` :
+4 rencontres sur `/matchs/`, 3 sur l'accueil (≈ 3 Ko gzippés). `script.js`
+(bloc V181) choisit, à l'heure de La Réunion, celle qui vaut, sans fabriquer
+de texte. Les libellés « En cours » et « Score à venir » sont écrits par le
+générateur (`data-live`, `data-apres`). Une fenêtre de Coupe « selon
+qualification » ne passe jamais devant une rencontre confirmée.
+Dégradation voulue : sans republication pendant plus de trois ou quatre
+semaines, la carte « prochain match » disparaît plutôt qu'annoncer une date
+passée. Le bandeau sous le hero et la saison continuent de se recaler.
+
+`MBC_MAINTENANT=AAAA-MM-JJTHH:MM` simule une autre date côté générateur (le
+bandeau et le Match Center lisent la même horloge).
+
+### Publier un résultat
+
+```bash
+python .claude/build-og-matchs.py
+python .claude/set-calendrier-prm.py --archive
+python .claude/bump-assets.py
+python .claude/build-sitemap.py
+```
+
+La carte de partage d'abord : une fiche NOUVELLE (affiche de 2e phase ou de
+Coupe) ne pointe sur sa carte que si le fichier existe au moment où elle est
+écrite ; dans l'autre ordre, il fallait deux passages.
+
+Au préalable, dans `data/matchs.json` : `"score": {"mbc": 73, "adverse": 52}`
+(toujours du point de vue du MBC) et `"statut": "joue"`. Avec un nouveau PDF de
+la Ligue, lancer `set-calendrier-prm.py` sans `--archive`.
+
+### Vérifier : `.claude/banc-match-center.mjs`
+
+```bash
+node .claude/banc-match-center.mjs --base=http://localhost:8010
+```
+
+Il prend 375, 390, 430, 768 et 1440 de large en viewport émulé exact (pas
+`--window-size`, clampé à 500 px). Il teste les filtres à la souris et à la
+touche Espace, la page sans JavaScript et en mouvement réduit. Il simule quatre
+instants en remplaçant `Date` avant les scripts de la page : J2 en cours, le
+lendemain de J2, le jour de Coupe du 26/09, la veille de J5. Enfin, il ouvre
+les pages `_banc-mc-*.html` que l'on génère à une autre date (git-ignorées).
+Captures et rapport dans `%TEMP%\mbc-banc-match-center`.
+
+Mesuré le 13/09 : aucun débordement horizontal à aucun format, 0 erreur
+console. Filtres : Coupe 5, Domicile 4, Extérieur 3, Coupe + Domicile 0 avec
+le message vide. Sans JavaScript : 30 dates visibles, barre de filtres masquée.
+Le lendemain de J2, la carte principale passe seule à J3 et J2 dit « Résultat à
+venir ». Le 7/11, la carte principale devient « Prochaine échéance · 2e phase ·
+J1 aller ».
+
+### Pièges rencontrés
+
+- `content-visibility:auto` : la première version du banc, qui sautait sur
+  `#matchs` en un seul calcul, photographiait les créneaux. Il faut répéter
+  `scrollIntoView`.
+- Des `id` dans les `<template>` se retrouvaient plusieurs fois dans le fichier
+  (`verifier-jsonld.py` les compte). Les cartes n'en portent plus : leur titre
+  suffit.
+- `.section p` (0,1,1) repeint et regrossit tout paragraphe sous 760 px :
+  chaque `<p>` du Match Center est donc visé par deux classes.
+- Le compte à rebours est construit nœud par nœud : les espaces doivent être de
+  vrais nœuds texte, sans quoi un lecteur d'écran lit « dans05jours07h ».
+
+### La revue contradictoire (13/09)
+
+Cinq relecteurs (faits sportifs, chaîne Python, logique du temps en JS,
+accessibilité et design, SEO et intégration), chacun doublé d'un vérificateur
+chargé de réfuter : 36 constats confirmés, 1 réfuté. Ce qui a été corrigé :
+
+- **deux plantages** dès qu'une rencontre de Coupe, sans numéro de journée,
+  entre dans `matchs` : le sujet du courriel bénévole et le résumé final
+  écrivaient encore `J%d` ;
+- **`reporte` et `annule` hors jeu** : une rencontre reportée était annoncée
+  comme prochain match, puis « terminée » ; le repli pouvait promouvoir une
+  rencontre annulée ;
+- **l'orientation du score** : la ligne du calendrier et la fiche d'un match à
+  l'extérieur écrivaient « victoire du MBC 60–70 ». Règle : les chiffres
+  suivent l'ordre du duel affiché (le recevant d'abord) ; une phrase « du MBC »
+  est suivie des chiffres du MBC ; le lecteur d'écran entend une phrase
+  complète ;
+- **les fenêtres de Coupe** couvertes par un tour joué la veille ou le
+  lendemain restaient affichées : tolérance de ±3 jours ;
+- **la page laissée ouverte** : le Match Center passait à la J3 au coup de
+  sifflet final pendant que le bandeau sous le hero et les lignes du
+  calendrier restaient sur la J2. Le bloc V181 émet `mbc:minute`, que ces
+  blocs écoutent désormais ; la minute est calée sur la minute pleine ;
+- **le focus clavier** tombait sur `<body>` quand une carte était remplacée ;
+  **un second clic de filtre rapide** était avalé par la transition de vue
+  (retirée : un fondu CSS des mois, qui ne capte aucun clic) ;
+- **accessibilité** : colonne « Lieu » écrasée à 200 % de texte, boutons de
+  filtre portés à 44 px, état pressé lisible en couleurs forcées, jour de la
+  semaine masqué par le quantième en couleurs forcées, accueil imprimé sans
+  Match Center (`.reveal` restait à opacité 0 à l'impression) ;
+- **les ancres de l'accueil** (`/#matchs`, `/#match-…`, `/#calendrier`)
+  atterrissaient 1 000 à 2 500 px trop haut à cause de `content-visibility` —
+  défaut antérieur, que le nouveau lien « Revenir à l'accueil » rendait
+  visible : la cible est recalée sur quatre images, pour toute ancre ;
+- **les libellés** : « 2e phase · J1 aller » au lieu de « J1 aller », plus de
+  « Zone Nord » sur une fiche de 2e phase, noms d'adversaires repris du JSON
+  dans les lignes du calendrier, « poule de brassage » définie dans le format,
+  textes de l'accueil qui parlaient encore de « 7 rencontres de la saison ».
+
+### Ce qui reste
+
+- **Rencontre reportée et bandeau** : le réarmement du bandeau (JS) lit les
+  lignes du calendrier, qui ne portent pas le statut ; une rencontre reportée
+  y reste annoncée jusqu'à la republication (le HTML publié, lui, l'écarte).
+- **Coupe saisie sans `tour`** : l'étiquette retombe sur « Coupe de France »
+  (« Trophée Coupe de France · Coupe de France ») : toujours saisir le tour.
+- **Petite finale PRM** : le règlement la prévoit, mais le calendrier général ne
+  lui donne aucune date.
+- **Salles des matchs à l'extérieur** : la Ligue ne les publie pas. Le site
+  écrit « Chez l'adversaire », sans `SportsEvent` (règle du § SEO : pas
+  d'événement sans lieu).
+- **Affiches de 2e phase** : `set-calendrier-prm.py` ne lit que la poule de la
+  phase 1. Quand la Ligue publiera la 2e phase, il faudra l'étendre, ou saisir
+  les affiches dans `data/matchs.json`, slugs compris.
+- La CSS `.msn` (ruban V162) est morte : à purger avec la preuve d'empreinte
+  (§ « Prouver une non-régression »).
+- Firefox et Safari n'ont pas été passés au banc.

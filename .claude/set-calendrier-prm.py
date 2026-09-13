@@ -174,15 +174,27 @@ def bloc_score(m):
     s = m['score']
     issue = 'v' if s['mbc'] > s['adverse'] else ('d' if s['mbc'] < s['adverse'] else 'n')
     libelle = {'v': u'Victoire', 'd': u'Défaite', 'n': u'Match nul'}[issue]
-    return (u'<span class="mx-score mx-score--%s"><span class="sr-only">%s du MBC, </span>'
-            u'%d<span class="mx-score__s">–</span>%d</span>'
-            % (issue, libelle, s['mbc'], s['adverse']))
+    # A l'ecran, les chiffres suivent le duel de la ligne (le recevant d'abord),
+    # comme le Match Center juste au-dessus ; le lecteur d'ecran entend une
+    # phrase complete, du point de vue du MBC. Avant, un 70-60 gagne a
+    # l'exterieur s'affichait « 70–60 » a cote de « Dionysien 3 vs MBC ».
+    h, a = (s['mbc'], s['adverse']) if m['domicile'] else (s['adverse'], s['mbc'])
+    dit = ((u'Match nul, %d à %d' % (s['mbc'], s['adverse'])) if issue == 'n'
+           else (u'%s du MBC, %d à %d' % (libelle, s['mbc'], s['adverse'])))
+    return (u'<span class="mx-score mx-score--%s"><span class="sr-only">%s</span>'
+            u'<span aria-hidden="true">%d<span class="mx-score__s">–</span>%d</span></span>'
+            % (issue, dit, h, a))
 
 
-def lignes_html(mbc, postes, benevoles, slugs, durees, courts, libres):
+def lignes_html(mbc, postes, benevoles, slugs, durees, courts, libres, scores=None, noms=None):
     """Chaque rencontre porte desormais un lien vers sa page dediee. Les slugs
     viennent de data/matchs.json, dont verifier_source_matchs() garantit qu'il
-    parle des memes dates que le PDF."""
+    parle des memes dates que le PDF.
+
+    `scores` : les resultats saisis dans data/matchs.json. Le score imprime par
+    la Ligue reste prioritaire ; a defaut, celui du JSON (communique par le
+    club avant la reedition du PDF) vaut pour la ligne aussi — sinon l'accueil
+    afficherait « 73-52 » dans le Match Center et une ligne muette dessous."""
     out = []
     for m in mbc:
         dom = m['domicile']
@@ -209,7 +221,13 @@ def lignes_html(mbc, postes, benevoles, slugs, durees, courts, libres):
             u'%(roles)s'
             u'        </li>' % dict(
                 m, cls='dom' if dom else 'ext', duel=duel, roles=roles,
-                ancre=ancre(m), score=bloc_score(m), slug=slugs[m['date']],
+                ancre=ancre(m), slug=slugs[m['date']],
+                # Le nom de l'adversaire vient de data/matchs.json, comme sur
+                # la fiche et dans le Match Center : le libelle du lecteur de
+                # PDF avait derive (« BC Jeunesse Sportive… » d'un cote,
+                # « Basket Club Jeunesse Sportive… » de l'autre).
+                adversaire=(noms or {}).get(m['date'], m['adversaire']),
+                score=bloc_score(dict(m, score=m.get('score') or (scores or {}).get(m['date']))),
                 court=courts.get(m['date'], m['adversaire']),
                 # « Entree libre » est une DONNEE (champ entreeLibre de
                 # data/matchs.json), pas une consequence du fait de jouer a
@@ -317,7 +335,17 @@ def verifier_coherence(html, mbc):
     # 2. Il ne controlait qu'UN fichier, celui de la premiere journee, ecrit
     #    en dur dans ICS. Les autres rencontres a domicile pouvaient deriver
     #    sans que rien ne le dise. On les relit toutes.
+    # Seuls les .ics des rencontres du PDF (phase 1) se comparent au PDF : une
+    # affiche de 2e phase ou de Coupe a son propre .ics, que le PDF ignore, et
+    # le signaler « n'est plus une rencontre du MBC » etait une fausse alerte.
+    try:
+        slugs_pdf = {x['slug'] for x in json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))['matchs']
+                     if dans_le_pdf(x)}
+    except (OSError, ValueError, KeyError):
+        slugs_pdf = None
     for chemin in sorted(glob.glob('assets/documents/*.ics')):
+        if slugs_pdf is not None and os.path.basename(chemin)[:-4] not in slugs_pdf:
+            continue
         ics = io.open(chemin, encoding='utf-8').read()
         # 3. Chercher dans le VEVENT, et pas dans tout le fichier : le bloc
         #    VTIMEZONE qui le precede porte lui aussi un DTSTART, celui de
@@ -352,13 +380,23 @@ def verifier_coherence(html, mbc):
 SOURCE_MATCHS = 'data/matchs.json'
 
 
+def dans_le_pdf(m):
+    """Une rencontre de data/matchs.json qui releve du PDF de la poule : la
+    phase 1 (brassage) du championnat. Le PDF ne connait ni la 2e phase ni la
+    Coupe de France : une affiche de 2e phase ajoutee au JSON n'a pas a y
+    figurer, et ne doit pas bloquer la publication du calendrier. Les deux
+    champs manquent aux entrees anterieures a V181 : ce sont des brassages."""
+    return ((m.get('competition') or 'prm') == 'prm'
+            and (m.get('phase') or 'brassage') == 'brassage')
+
+
 def verifier_source_matchs(mbc):
     """Compare le PDF et data/matchs.json. Ne reecrit rien : reecrire
     demanderait de fabriquer des slugs, donc des URL, donc des redirections."""
     if not os.path.exists(SOURCE_MATCHS):
         return [u'%s introuvable' % SOURCE_MATCHS]
     d = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))
-    par_date = {m['date']: m for m in d['matchs']}
+    par_date = {m['date']: m for m in d['matchs'] if dans_le_pdf(m)}
     ecarts = []
     for m in mbc:
         f = par_date.get(m['date'])
@@ -407,7 +445,7 @@ def synchroniser_scores(mbc, essai=False):
     ne republie pas les resultats des precedentes.
     """
     d = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))
-    par_date = {m['date']: m for m in d['matchs']}
+    par_date = {m['date']: m for m in d['matchs'] if dans_le_pdf(m)}
     changes = []
     for m in mbc:
         if not m.get('score'):
@@ -494,9 +532,11 @@ def main():
     # tout seul quand la rencontre annoncee est passee, sans reinventer de libelle.
     courts = {m['date']: (m.get('adversaireCourt') or m['adversaire']) for m in _src}
     libres = {m['date']: bool(m.get('entreeLibre')) for m in _src}
+    scores = {m['date']: m['score'] for m in _src if m.get('score') and dans_le_pdf(m)}
+    noms = {m['date']: m['adversaire'] for m in _src if dans_le_pdf(m)}
 
     html = remplacer(html, 'calendrier:lignes',
-                     lignes_html(mbc, postes, affect, slugs, durees, courts, libres))
+                     lignes_html(mbc, postes, affect, slugs, durees, courts, libres, scores, noms))
     mot = {1: 'un', 2: 'deux', 3: 'trois', 4: 'quatre',
            5: 'cinq', 6: 'six', 7: 'sept'}[r['domicile']]
     html = remplacer_compte(html, mot)

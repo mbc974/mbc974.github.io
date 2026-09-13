@@ -171,7 +171,7 @@ def carte(m, d_):
         x = MARGE + larg(d, u"TERMINÉ", f_kick, 6) + 22
     else:
         x = MARGE
-    texte(d, (x, 54), u"%s · J%d" % (d_["competition"]["nom"].upper(), m["journee"]),
+    texte(d, (x, 54), u"%s · %s" % (m["_comp"]["nom"].upper(), m["_etiquette"].upper()),
           f_kick, GLACIER, 5)
 
     # --- le duel -------------------------------------------------------------

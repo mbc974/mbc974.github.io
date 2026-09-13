@@ -48,6 +48,15 @@ POSEES_PAR_JS = {
     # colonnes des chiffres roulants et calque des confettis.
     'is-3', 'kc--pre', 'kc--anim', 'kc--zero', 'kc--roule',
     'kc__d', 'kc__dg', 'kc__ds', 'kc__fr', 'kc-fx',
+    # V181, Match Center : rencontre en cours, score attendu apres le coup de
+    # sifflet final, mois pas encore paru a l'ecran, mois vide sous un filtre,
+    # mois courant, et carte seule quand l'autre emplacement est vide.
+    'is-live', 'is-attente', 'is-pre', 'is-vide', 'is-courant', 'mc__duo--seul',
+    # ... et le compte a rebours de la carte « prochain match », construit
+    # noeud par noeud par script.js.
+    'mc-cd--soir', 'mc-cd__lab', 'mc-cd__val', 'mc-cd__u', 'mc-cd__n', 'mc-cd__s',
+    # ... et le fondu des mois apres un clic de filtre.
+    'ms--bouge',
 }
 
 

@@ -885,11 +885,18 @@ MBC.dateLongue = function (d, avecAnnee) {
   var band = document.getElementById('nxBand');
   if (!band) return;
 
-  var fin = MBC.instant(band.getAttribute('data-fin'));
-  if (!fin) return;                    // pas d'instant publié : on ne touche à rien
-  if (fin >= new Date()) return;       // la rencontre annoncée n'est pas encore finie
-
-  if (!rearmer()) band.hidden = true;
+  /* Au chargement, puis à chaque minute (« mbc:minute », émis par le bloc
+     V181) : page laissée ouverte, le bandeau annonçait encore la J2 une
+     heure après le coup de sifflet final, pendant que le Match Center, plus
+     bas, était déjà passé à la J3. */
+  function verifier() {
+    var fin = MBC.instant(band.getAttribute('data-fin'));
+    if (!fin) return;                    // pas d'instant publié : on ne touche à rien
+    if (fin >= new Date()) return;       // la rencontre annoncée n'est pas encore finie
+    if (!rearmer()) band.hidden = true;
+  }
+  verifier();
+  document.addEventListener('mbc:minute', verifier);
 
   /* Le libellé d'un camp, débarrassé de son écusson. */
   function libelle(span) {
@@ -1183,7 +1190,9 @@ MBC.dateLongue = function (d, avecAnnee) {
     var maintenant = new Date();
     var reste = d - maintenant;
 
-    if (reste <= 0) {
+    /* La dernière minute compte déjà comme « ce soir » : avant, le décompte
+       affichait « 00 jour 00 h 00 min » pendant soixante secondes. */
+    if (reste < MIN) {
       cd.className = 'nx__cd nx__cd--soir';
       cd.textContent = maintenant <= f ? 'C’est ce soir' : '';
       cd.hidden = maintenant > f;
@@ -1210,6 +1219,9 @@ MBC.dateLongue = function (d, avecAnnee) {
 
   rendre();
   timer = setInterval(rendre, MIN);
+  /* Le bandeau peut se ré-armer page ouverte (« mbc:minute ») : le décompte
+     repart alors sur la rencontre suivante. */
+  document.addEventListener('mbc:minute', rendre);
   /* Même règle que le rotateur du hero : rien ne tourne dans le vide quand
      l'onglet est en arrière-plan. */
   document.addEventListener('visibilitychange', function () {
@@ -1241,20 +1253,34 @@ MBC.dateLongue = function (d, avecAnnee) {
     catch (e) { return; }
     if (!cible) return;
 
-    var n = cible, ouvert = false;
+    var n = cible;
     while (n && n !== document.body) {
-      if (n.tagName === 'DETAILS' && !n.open) { n.open = true; ouvert = true; }
+      if (n.tagName === 'DETAILS' && !n.open) n.open = true;
       n = n.parentNode;
     }
-    if (!ouvert) return;
-    // Le volet vient de s'ouvrir : la position calculee avant ne vaut plus.
-    requestAnimationFrame(function () {
-      cible.scrollIntoView({ block: 'start', behavior: 'auto' });
-    });
+    /* Recaler sur QUATRE images, et pour toute ancre — pas seulement dans
+       un volet replié. Les sections sont en content-visibility:auto : tant
+       qu'elles n'ont pas été peintes, elles ont une hauteur de
+       substitution, et le saut du navigateur tombait 1 000 à 2 500 px trop
+       haut (/#matchs atterrissait dans les catégories). Chaque passage
+       rapproche la cible de sa vraie place. 'instant' : sinon le
+       défilement doux de <html> rendrait l'appel asynchrone. */
+    var k = 0;
+    (function recaler() {
+      cible.scrollIntoView({ block: 'start', behavior: 'instant' });
+      if (++k < 4) requestAnimationFrame(recaler);
+    })();
   }
 
   ouvrir(location.hash);
   window.addEventListener('hashchange', function () { ouvrir(location.hash); });
+  /* Une dernière fois au chargement complet (polices, images) — sauf si le
+     visiteur a déjà pris la main : on ne le ramène pas en arrière. */
+  var aBouge = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) {
+    window.addEventListener(t, function () { aBouge = true; }, { passive: true, once: true });
+  });
+  window.addEventListener('load', function () { if (!aBouge) ouvrir(location.hash); });
 })();
 
 /* ============================================================
@@ -1278,6 +1304,7 @@ MBC.dateLongue = function (d, avecAnnee) {
   function situer(elements) {
     var premier = null;
     elements.forEach(function (row) {
+      row.classList.remove('is-past', 'is-next');
       /* L'instant publié par le générateur (fuseau +04:00 compris). Le repli
          relit la ligne elle-même plutôt que de supposer 20h30 : c'est l'heure
          imprimée dans le PDF de la ligue qui fait foi, pas une habitude. */
@@ -1299,39 +1326,46 @@ MBC.dateLongue = function (d, avecAnnee) {
     return premier;
   }
 
-  var next = situer(rows);
-  situer(Array.prototype.slice.call(
-    document.querySelectorAll('.msn .msn__i[data-date]')));
+  /* Au chargement, puis à chaque minute (« mbc:minute », bloc V181) : une
+     rencontre qui se termine page ouverte passe au passé, et la suivante
+     prend le repère — comme dans le Match Center juste au-dessus. */
+  function marquer() {
+    maintenant = new Date();
+    var next = situer(rows);
+    situer(Array.prototype.slice.call(
+      document.querySelectorAll('.msn .msn__i[data-date]')));
 
-  if (!next) return;
+    var bandeau = document.getElementById('mxNext');
+    if (!bandeau) return;
+    if (!next) { bandeau.hidden = true; return; }
+    // le nom seul : .mx-opp porte aussi le sigle, masque en CSS mais bien
+    // present dans le textContent (on lisait « Sainte-SuzanneBC2S »)
+    var opp = next.row.querySelector('.mx-opp__n');
+    var dom = next.row.classList.contains('mx-row--dom');
+    var lieu = next.row.querySelector('.mx-lieu');
+    /* L'heure vient de la LIGNE, pas d'une constante. « 20h30 » était écrit en
+       dur ici alors que la ligne juste en dessous affiche l'horaire réel lu
+       dans le PDF de la ligue : à la première dérogation, la bannière et la
+       ligne se seraient contredites dans le même bloc. */
+    var heure = next.row.querySelector('.mx-h');
+    var fmt = MBC.dateLongue(next.date) || next.row.getAttribute('data-date');
 
-  var bandeau = document.getElementById('mxNext');
-  if (!bandeau) return;
-  // le nom seul : .mx-opp porte aussi le sigle, masque en CSS mais bien
-  // present dans le textContent (on lisait « Sainte-SuzanneBC2S »)
-  var opp = next.row.querySelector('.mx-opp__n');
-  var dom = next.row.classList.contains('mx-row--dom');
-  var lieu = next.row.querySelector('.mx-lieu');
-  /* L'heure vient de la LIGNE, pas d'une constante. « 20h30 » était écrit en
-     dur ici alors que la ligne juste en dessous affiche l'horaire réel lu
-     dans le PDF de la ligue : à la première dérogation, la bannière et la
-     ligne se seraient contredites dans le même bloc. */
-  var heure = next.row.querySelector('.mx-h');
-  var fmt = MBC.dateLongue(next.date) || next.row.getAttribute('data-date');
-
-  /* Construit par nœuds et non par innerHTML : le nom de l'adversaire faisait
-     un aller-retour textContent -> innerHTML, ce qui réinterprétait comme du
-     balisage tout caractère « & » ou « < » d'un nom de club. */
-  bandeau.textContent = 'Prochaine rencontre — ';
-  var b = document.createElement('b');
-  b.textContent = fmt;
-  bandeau.appendChild(b);
-  bandeau.appendChild(document.createTextNode(
-    (heure ? ', ' + heure.textContent.trim() : '') +
-    ', ' + (dom ? 'au ' + (lieu ? lieu.textContent.trim() : 'Gymnase de La Montagne')
-                : 'en déplacement') +
-    (opp ? ', face à ' + opp.textContent.trim() : '') + '.'));
-  bandeau.hidden = false;
+    /* Construit par nœuds et non par innerHTML : le nom de l'adversaire faisait
+       un aller-retour textContent -> innerHTML, ce qui réinterprétait comme du
+       balisage tout caractère « & » ou « < » d'un nom de club. */
+    bandeau.textContent = 'Prochaine rencontre — ';
+    var b = document.createElement('b');
+    b.textContent = fmt;
+    bandeau.appendChild(b);
+    bandeau.appendChild(document.createTextNode(
+      (heure ? ', ' + heure.textContent.trim() : '') +
+      ', ' + (dom ? 'au ' + (lieu ? lieu.textContent.trim() : 'Gymnase de La Montagne')
+                  : 'en déplacement') +
+      (opp ? ', face à ' + opp.textContent.trim() : '') + '.'));
+    bandeau.hidden = false;
+  }
+  marquer();
+  document.addEventListener('mbc:minute', marquer);
 })();
 
 /* ============================================================
@@ -1951,4 +1985,306 @@ MBC.dateLongue = function (d, avecAnnee) {
     }
   }, { threshold: 0, rootMargin: '0px' });
   io.observe(liste);
+})();
+
+/* ============================================================
+   V181 — Le Match Center (accueil #matchs et /matchs/)
+   ------------------------------------------------------------
+   Le HTML est écrit par .claude/build-match-center.py : juste à
+   la date de publication, et complet sans JavaScript. Ce bloc
+   ne fait que le tenir à l'heure de La Réunion entre deux
+   publications :
+     1. les deux cartes (dernier résultat, prochain match) : il
+        choisit, entre la carte en place et les <template> écrits
+        d'avance par le générateur, celle qui vaut à cet instant.
+        Il ne fabrique aucun texte ;
+     2. les dates de la saison : passées atténuées, prochaine
+        rencontre marquée, « En cours » pendant le match, « Score
+        à venir » après le coup de sifflet final — trois libellés
+        écrits par le générateur (data-avenir / data-live /
+        data-apres). Jamais de score deviné ;
+     3. « À suivre » (accueil) : les quatre prochaines dates ;
+     4. /matchs/ : les filtres, le mois courant, l'apparition des
+        mois au défilement, le compte à rebours.
+   Les instants sont absolus (+04:00, lus par MBC.instant()) : un
+   supporter en métropole voit exactement ce que voit La Montagne.
+   ============================================================ */
+(function () {
+  'use strict';
+  if (!document.querySelector('[data-mc]') || !window.MBC || !MBC.instant) return;
+  var doux = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var MIN = 6e4, H = 36e5, J = 864e5;
+  var minuteur = null;
+  var chaque = function (sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); };
+  function t(el, a) { return MBC.instant(el.getAttribute(a)); }
+
+  /* --- 1. Les cartes -------------------------------------------
+     La carte en place d'abord : à identifiant égal, on la garde
+     plutôt que de la remplacer par son propre gabarit. */
+  function candidats(slot, type) {
+    var vus = {}, liste = [];
+    function ajouter(el, gabarit) {
+      var id = el.getAttribute('data-id');
+      if (!id || vus[id]) return;
+      vus[id] = true;
+      liste.push({ id: id, el: gabarit ? null : el, tpl: gabarit ? el : null,
+        debut: t(el, 'data-debut'), fin: t(el, 'data-fin'),
+        rang: parseInt(el.getAttribute('data-rang') || '0', 10) });
+    }
+    var enPlace = slot.querySelector('[data-id]');
+    if (enPlace) ajouter(enPlace, false);
+    var racine = slot.closest('[data-mc]') || document;
+    Array.prototype.forEach.call(racine.querySelectorAll('template[data-mc-t="' + type + '"]'),
+      function (tp) { ajouter(tp, true); });
+    return liste;
+  }
+
+  /* Le focus clavier ne doit pas tomber sur <body> quand la minute change
+     ce qui le tenait : il passe au premier lien de ce qui prend la place. */
+  function refocaliser(boite) {
+    var cible = boite && boite.querySelector('a[href], button');
+    if (cible) cible.focus({ preventScroll: true });
+  }
+
+  function poser(slot, choix) {
+    var avait = slot.contains(document.activeElement);
+    if (!choix) {
+      slot.hidden = true;
+      if (avait) refocaliser(slot.parentNode && slot.parentNode.querySelector('.mc__slot:not([hidden])'));
+      return;
+    }
+    if (!choix.el) {
+      var carte = choix.tpl.content && choix.tpl.content.firstElementChild;
+      if (!carte) { slot.hidden = true; return; }
+      while (slot.firstChild) slot.removeChild(slot.firstChild);
+      slot.appendChild(document.importNode(carte, true));
+    }
+    slot.hidden = false;
+    if (avait && !slot.contains(document.activeElement)) refocaliser(slot);
+  }
+
+  function cartes(now) {
+    var idNext = null;
+    chaque('[data-mc-slot="prochain"]', function (slot) {
+      /* Une rencontre confirmée (rang 0) passe toujours devant une
+         échéance sans affiche (rang 1). Le coup de sifflet final fait
+         foi : un match en cours reste « le prochain ». */
+      var c = candidats(slot, 'prochain').filter(function (x) { return x.fin && x.fin >= now; });
+      c.sort(function (a, b) { return (a.rang - b.rang) || ((a.debut || 0) - (b.debut || 0)); });
+      poser(slot, c[0] || null);
+      if (c[0]) idNext = c[0].id;
+    });
+    /* La dernière rencontre terminée que la page connaît : gabarits épuisés
+       (site non republié depuis des semaines), la carte « Dernier résultat »
+       se retire plutôt que d'en montrer une plus ancienne. */
+    var derniere = null;
+    chaque('.mc-i.mc-i--match[data-fin]', function (li) {
+      if (li.querySelector('.mc-i__etat--annule, .mc-i__etat--reporte')) return;
+      var f = t(li, 'data-fin');
+      if (f && f < now && (!derniere || f > derniere)) derniere = f;
+    });
+    chaque('[data-mc-slot="dernier"]', function (slot) {
+      var c = candidats(slot, 'dernier').filter(function (x) { return x.fin && x.fin < now; });
+      c.sort(function (a, b) { return b.fin - a.fin; });
+      poser(slot, (c[0] && !(derniere && c[0].fin < derniere)) ? c[0] : null);
+    });
+    chaque('.mc__duo', function (duo) {
+      var vides = duo.querySelectorAll('.mc__slot[hidden]').length;
+      duo.classList.toggle('mc__duo--seul', vides > 0);
+      duo.hidden = vides === duo.querySelectorAll('.mc__slot').length;
+    });
+    return idNext;
+  }
+
+  /* --- 2. et 3. Les dates, et « À suivre » ---------------------- */
+  function dates(now, idNext) {
+    chaque('.mc-i[data-fin]', function (li) {
+      var d = t(li, 'data-debut'), f = t(li, 'data-fin');
+      if (!f) return;
+      var passe = f < now;
+      var live = !!d && d <= now && !passe && li.classList.contains('mc-i--match');
+      var suivant = li.getAttribute('data-id') === idNext;
+      li.classList.toggle('is-past', passe);
+      li.classList.toggle('is-live', live);
+      li.classList.toggle('is-next', suivant);
+      var puce = li.querySelector('.mc-i__next');
+      if (puce) puce.hidden = !suivant || live;
+      var etat = li.querySelector('.mc-i__etat[data-avenir]');
+      if (etat) {
+        var mot = etat.getAttribute(live ? 'data-live' : (passe ? 'data-apres' : 'data-avenir'));
+        if (mot && etat.textContent !== mot) etat.textContent = mot;
+        etat.classList.toggle('is-attente', passe);
+      }
+    });
+    chaque('.mc-list--suite', function (ol) {
+      var max = parseInt(ol.getAttribute('data-max') || '4', 10), n = 0;
+      var perdu = false;
+      Array.prototype.forEach.call(ol.children, function (li) {
+        var garder = !li.classList.contains('is-past') && li.getAttribute('data-id') !== idNext && n < max;
+        if (garder) n++;
+        if (!garder && !li.hidden && li.contains(document.activeElement)) perdu = true;
+        li.hidden = !garder;
+      });
+      if (perdu) refocaliser(ol.querySelector('li:not([hidden])') ||
+                             document.querySelector('[data-mc-slot="prochain"]'));
+      var bloc = ol.closest('.mc-suite');
+      if (bloc) bloc.hidden = n === 0;
+    });
+  }
+
+  /* --- 4. /matchs/ ---------------------------------------------- */
+  function mois(now) {
+    // Le mois de La Réunion (UTC+4 toute l'année), pas celui du visiteur.
+    var cle = '#mois-' + new Date(now.getTime() + 4 * H).toISOString().slice(0, 7);
+    chaque('.ms-mois__a', function (a) {
+      var courant = a.getAttribute('href') === cle;
+      a.classList.toggle('is-courant', courant);
+      if (courant) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
+
+  /* Mêmes garde-fous que le décompte du bandeau : rien au-delà de
+     60 jours, « C'est ce soir » pendant la rencontre, retiré après.
+     Construit par nœuds, jamais par innerHTML. */
+  function decompte(now) {
+    chaque('[data-mc-slot="prochain"] [data-mc-cd]', function (cd) {
+      var carte = cd.closest('[data-id]');
+      var d = carte && t(carte, 'data-debut'), f = carte && t(carte, 'data-fin');
+      while (cd.firstChild) cd.removeChild(cd.firstChild);
+      if (!d || !f || now > f) { cd.hidden = true; return; }
+      var reste = d - now;
+      if (reste < MIN) {                 // la dernière minute compte déjà
+        cd.className = 'mc-cd mc-cd--soir';
+        cd.textContent = 'C’est ce soir';
+        cd.hidden = false;
+        return;
+      }
+      if (reste > 60 * J) { cd.hidden = true; return; }
+      cd.className = 'mc-cd';
+      var lab = document.createElement('span');
+      lab.className = 'mc-cd__lab';
+      lab.textContent = 'Coup d’envoi dans';
+      var val = document.createElement('span');
+      val.className = 'mc-cd__val';
+      var j = Math.floor(reste / J), h = Math.floor((reste % J) / H), m = Math.floor((reste % H) / MIN);
+      /* Les espaces sont de vrais nœuds texte : invisibles dans un conteneur
+         flex, mais sans eux un lecteur d'écran lisait « dans05jours07h ». */
+      [[j, j > 1 ? 'jours' : 'jour'], [h, 'h'], [m, 'min']].forEach(function (u) {
+        var s = document.createElement('span'), n = document.createElement('span'), l = document.createElement('span');
+        s.className = 'mc-cd__u'; n.className = 'mc-cd__n'; l.className = 'mc-cd__s';
+        n.textContent = (u[0] < 10 ? '0' : '') + u[0];
+        l.textContent = u[1];
+        s.appendChild(n); s.appendChild(document.createTextNode(' ')); s.appendChild(l);
+        val.appendChild(s); val.appendChild(document.createTextNode(' '));
+      });
+      cd.appendChild(lab); cd.appendChild(document.createTextNode(' ')); cd.appendChild(val);
+      cd.hidden = false;
+    });
+  }
+
+  /* Les filtres : deux groupes de boutons à bascule (aria-pressed).
+     Sans JavaScript la barre reste masquée et la saison entière est
+     affichée — un filtre qui ne filtre pas ne doit pas se montrer. */
+  function filtres() {
+    var barre = document.querySelector('[data-ms-bar]');
+    if (!barre) return;
+    var choix = { genre: '', lieu: '' };
+    var compte = barre.querySelector('[data-ms-n]');
+    var vide = document.querySelector('[data-ms-vide]');
+    function appliquer() {
+      var n = 0;
+      chaque('.ms-m .mc-i', function (li) {
+        var ok = (!choix.genre || li.getAttribute('data-genre') === choix.genre) &&
+                 (!choix.lieu || li.getAttribute('data-lieu') === choix.lieu);
+        li.hidden = !ok;
+        if (ok) n++;
+      });
+      chaque('.ms-m', function (b) {
+        var vu = !!b.querySelector('.mc-i:not([hidden])');
+        b.hidden = !vu;
+        var lien = document.querySelector('.ms-mois__a[href="#' + b.id + '"]');
+        if (!lien) return;
+        lien.classList.toggle('is-vide', !vu);
+        if (vu) { lien.removeAttribute('aria-disabled'); lien.removeAttribute('tabindex'); }
+        else { lien.setAttribute('aria-disabled', 'true'); lien.setAttribute('tabindex', '-1'); }
+      });
+      if (compte) {
+        compte.textContent = n + (n > 1 ? ' dates' : ' date');
+        // Au repos, l'en-tête dit déjà « 30 dates » : masqué à l'œil seulement,
+        // le compte reste la région aria-live qui annonce l'effet d'un filtre.
+        compte.classList.toggle('is-repos', !choix.genre && !choix.lieu);
+      }
+      if (vide) vide.hidden = n > 0;
+    }
+    barre.addEventListener('click', function (e) {
+      var b = e.target.closest && e.target.closest('button[data-f]');
+      if (!b || b.getAttribute('aria-pressed') === 'true') return;
+      var f = b.getAttribute('data-f');
+      choix[f] = b.getAttribute('data-v') || '';
+      Array.prototype.forEach.call(barre.querySelectorAll('button[data-f="' + f + '"]'), function (x) {
+        x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+      });
+      /* Pas de transition de vue : elle posait un calque sur toute la page
+         pendant ~300 ms, et un second clic rapide (Coupe puis Extérieur)
+         tombait dessus et se perdait, focus compris. Un fondu CSS des mois
+         (.ms--bouge) suffit, et il ne capte aucun clic. */
+      appliquer();
+      var ms = barre.closest('.ms');
+      if (!doux && ms) { ms.classList.remove('ms--bouge'); void ms.offsetWidth; ms.classList.add('ms--bouge'); }
+    });
+    barre.hidden = false;
+  }
+
+  /* L'apparition des mois : l'état posé est l'état par défaut de la
+     CSS ; on ne pose l'état d'avant (.is-pre) que sur les mois encore
+     sous l'écran, et seulement si l'on peut le lever. */
+  function apparitions() {
+    if (doux || !('IntersectionObserver' in window) || document.visibilityState !== 'visible') return;
+    var blocs = Array.prototype.filter.call(document.querySelectorAll('.ms-m'), function (b) {
+      return b.getBoundingClientRect().top > window.innerHeight;
+    });
+    if (!blocs.length) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.remove('is-pre'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    blocs.forEach(function (b) { b.classList.add('is-pre'); io.observe(b); });
+  }
+
+  function tout() {
+    var now = new Date();
+    var idNext = cartes(now);
+    dates(now, idNext);
+    mois(now);
+    decompte(now);
+    /* Le signal des autres blocs de l'accueil (bandeau sous le hero, son
+       décompte, lignes du calendrier) : sans lui, page laissée ouverte, le
+       Match Center passait à la J3 au coup de sifflet final pendant que le
+       bandeau annonçait encore la J2. */
+    var ev;
+    try { ev = new Event('mbc:minute'); }
+    catch (e) { ev = document.createEvent('Event'); ev.initEvent('mbc:minute', false, false); }
+    document.dispatchEvent(ev);
+  }
+  tout();
+  filtres();
+  apparitions();
+  /* À la minute, et seulement onglet visible : les états basculent au
+     coup d'envoi et au coup de sifflet final sans recharger la page. Le
+     premier tour est calé sur la minute pleine (coup d'envoi et fin tombent
+     sur des minutes pleines) : sinon la bascule arrivait jusqu'à 59 s tard. */
+  function arreter() {
+    if (minuteur) { clearTimeout(minuteur); clearInterval(minuteur); minuteur = null; }
+  }
+  function demarrer() {
+    if (minuteur) return;
+    minuteur = setTimeout(function () { tout(); minuteur = setInterval(tout, MIN); },
+                          MIN - (Date.now() % MIN) + 50);
+  }
+  demarrer();
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) arreter();
+    else { tout(); demarrer(); }
+  });
 })();
