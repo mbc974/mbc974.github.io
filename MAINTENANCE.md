@@ -2338,17 +2338,88 @@ code identique (0 écart), puis après : **0 écart sur 1 218 éléments**. Le p
 des titres des 25 pages ne montre plus aucun saut dû au pied. Le seul saut
 restant, `h2` vers `h4` sur `/creneaux/`, est antérieur.
 
+### La purge des anciens styles (V185, 14/09/2026)
+
+Demande d'Alexandre : « purge les anciens styles d'en-tête et de pied de
+page ». Même branche, commit séparé.
+
+- **Ce qui est parti** (`.claude/purger-entete-pied.py`) :
+  - l'ancienne barre des pages enfants : `.seo-top`, `.seo-top__brand`,
+    `.seo-top__nav` et `html:has(.seo-top)` ;
+  - l'ancien pied des pages enfants : `.seo-foot`, `.seo-foot__links` ;
+  - l'ancien pied d'`adhesion.html` : `.footer__tag`, `.footer__actions`,
+    `.footer__trust*`, `.footer__mini-logo`, `.footer__brand .small` et
+    `.footer__brand p.small` ;
+  - le bloc « petit logo MBC dans la barre basse ».
+
+  Au total :
+  - 57 règles retirées : 51, plus les 6 du bloc « petit logo » ;
+  - 1 règle allégée : `.footer__actions a,.footer__social a` garde
+    `.footer__social a` ;
+  - 6 blocs `@media` vidés, retirés avec elles. Les 6 `@media` qui étaient
+    déjà vides avant la purge sont restés.
+
+  `style.css` perd 124 lignes, `style.min.css` 5,7 Ko ; seul son `?v=`
+  change.
+- **Le bloc « petit logo » visait deux classes vivantes**, `.footer__bottom`
+  et `.footer__legal`, mais il était inerte. Plus bas, `.footer__bottom`
+  repasse en `display:flex`, et ni `grid-template-columns` ni `justify-self`
+  n'agissent dans un conteneur flex.
+- **Les commentaires orphelins** : douze commentaires ne décrivaient plus que
+  des règles purgées. Ils ont été retirés ou réécrits au passé. Le script
+  refuse d'écrire si le CSS lui-même change : le CSS sans commentaires doit
+  être identique avant et après.
+- **`set-entete.py` garde ses motifs de migration**, l'ancienne barre `.seo-top`
+  et l'ancien pied `.seo-foot`. Ils servent encore pour la branche du
+  reportage (`93babdb`), antérieure au pied commun. Mais `verifier-classes.py`
+  lit les chaînes `class="..."` des scripts comme des classes à couvrir, et il
+  les aurait signalées sans CSS. Ils s'écrivent donc `class="%s"`, que le
+  garde-fou traite comme une famille qu'il ne réclame pas.
+- **Hors périmètre, laissés** :
+  - `.msn`, l'ancienne liste de `/matchs/` ;
+  - la classe `.small` générique ;
+  - le sélecteur `.site-footer, .seo-foot` de `floatCta` dans `script.js` ;
+  - les règles de grille inertes de `.footer__bottom` (vers la ligne 1182),
+    qui visent des classes vivantes ;
+  - les 21 pages du laboratoire `astra-motion-lab`, une branche non déployée,
+    qui gardent l'ancien en-tête.
+
+Vérifié le 14/09 :
+
+- **Contre-examen avant d'écrire** : 3 angles (usage à l'exécution, logique
+  des sélecteurs et cascade, complétude), puis un contradicteur par constat,
+  en lecture seule. Aucune règle de la liste n'a été trouvée vivante. Le
+  contre-examen a fait ajouter les trois `.footer__brand p.small` que le
+  premier motif manquait, et annoncer d'avance les écarts du bloc « petit
+  logo ».
+- **Empreinte de tout le site** (`.claude/empreinte-site.mjs`) : les 27 pages
+  à 390, 768 et 1440 px, soit 81 vues et 30 948 éléments. Pour chacun, et
+  pour ses `::before`/`::after`, la boîte et 55 styles calculés, avec l'heure
+  figée, le hasard graine et les animations coupées. La passe témoin, à code
+  identique, donne 2 écarts de bruit : les marges automatiques d'un `.wrap` de
+  `/effectif/`, dont la boîte ne bouge pas. Ils sont écartés.
+- **Après la purge : 125 écarts, tous annoncés avant la mesure, et 0
+  régression** (`.claude/comparer-empreintes.py`). Ce sont les deux valeurs du
+  bloc « petit logo », sur les 25 pages qui portent le pied :
+  `grid-template-columns` de `.footer__bottom` à 768 et 1440 px (50 écarts),
+  et `justify-self` de `.footer__legal` aux trois largeurs (75 écarts). Un
+  écart n'était admis que s'il était seul sur sa ligne : aucune boîte et
+  aucune autre propriété n'a bougé.
+- **Banc de l'en-tête et du pied** (25 pages à 375, 390, 430 et 1440 px) :
+  0 problème.
+- **Garde-fous** : `build-css --check` et `bump-assets --check` sont à 0,
+  `verifier-liens` et `verifier-jsonld` aussi. `verifier-classes` ne relève
+  plus que ses 4 anomalies antérieures.
+
+Pour une prochaine purge, remplacer les écarts `ATTENDUS` de
+`comparer-empreintes.py` par ceux qu'on annonce, AVANT de mesurer.
+
 ### Ce qui reste
 
-- **CSS morte** : `.seo-top` (une trentaine de règles), `html:has(.seo-top)`,
-  `.seo-foot` et `.seo-foot__links` (six règles), et, depuis l'alignement
-  d'`adhesion.html`, les classes de son ancien pied : `.footer__tag`,
-  `.footer__actions`, `.footer__trust*`, `.footer__mini-logo` et
-  `.footer__brand .small`. Le bloc « petit logo MBC dans la barre basse »
-  (style.css, vers la ligne 1444) n'existait que pour `.footer__mini-logo` :
-  ses règles sur `.footer__bottom` et `.footer__legal` sont à examiner lors de
-  la purge. À purger avec la preuve d'empreinte des styles calculés
-  (§ « Prouver une non-régression »).
+- **L'intégration avec la branche du reportage (`93babdb`)** : rebase, puis
+  `set-entete.py`, les générateurs et `bump-assets.py`. Ensuite,
+  `verifier-classes.py` ne doit rien signaler de nouveau. Une page restée à
+  l'ancien pied y apparaîtrait aussitôt, puisque sa CSS n'existe plus.
 
 ## 28. Le reportage de Réunion la 1ère : une vidéo tierce en façade (14/09/2026)
 

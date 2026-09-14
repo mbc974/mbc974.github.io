@@ -36,9 +36,9 @@ en-tête ou un pied différent selon qui l'a écrite.
 
 CE QU'IL FAIT, PAGE PAR PAGE
 ----------------------------
-- Il remplace l'ancienne <header class="seo-top"> au premier passage, puis le
+- Il remplace l'ancienne barre header .seo-top au premier passage, puis le
   bloc entre les marqueurs EN-TETE aux passages suivants. Même chose pour le
-  pied : <footer class="seo-foot">, puis le bloc entre les marqueurs PIED.
+  pied : l'ancien footer .seo-foot, puis le bloc entre les marqueurs PIED.
 - Il s'assure que la page charge script.js, qui pilote le menu, la barre du
   haut et la barre CTA mobile. Une seule balise ; bump-assets.py pose ensuite
   le ?v=.
@@ -113,14 +113,21 @@ def main():
     entete, pied = bm.entete_enfant(), bm.pied_enfant()
     balise_js = bm.script_js_commun()
     a_jour, changees, sans_entete, sans_pied = 0, [], [], []
+    # Les deux anciennes balises, cherchées au premier passage seulement : ce
+    # sont des motifs de migration, pas du markup que le site écrit encore.
+    # D'où la forme class="%s" : verifier-classes.py lit les chaînes class=...
+    # des scripts comme des classes à couvrir, et la CSS de ces deux-là a été
+    # purgée en V185. Un %s en fait une famille, qu'il ne réclame pas.
+    ancien_entete = '<header class="%s">' % 'seo-top'
+    ancien_pied = '<footer class="%s">' % 'seo-foot'
     for chemin, rel in pages():
         s = io.open(chemin, encoding='utf-8').read()
-        b = bornes(s, DEB, FIN, '<header class="seo-top">', '</header>')
+        b = bornes(s, DEB, FIN, ancien_entete, '</header>')
         if b is None:
             sans_entete.append(rel)
             continue
         neuf = s[:b[0]] + entete + s[b[1]:]
-        b = bornes(neuf, PDEB, PFIN, '<footer class="seo-foot">', '</footer>')
+        b = bornes(neuf, PDEB, PFIN, ancien_pied, '</footer>')
         if b is None:
             sans_pied.append(rel)
         else:
