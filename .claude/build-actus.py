@@ -17,6 +17,37 @@ article, d'ou vient ce qu'il affirme.
 L'en-tete, la barre CTA, le pied de page et le <head> sont empruntes a
 build-matchs.py, qui les releve lui-meme sur une page enfant existante. Une
 seule definition, donc, pour toutes les pages generees.
+
+Le bloc « video » (V183, 14/09/2026)
+-----------------------------------
+Un article peut reprendre une video publiee ailleurs — le premier cas est le
+reportage de Reunion la 1ere sur la naissance du club, publie sur la page
+Facebook de la chaine. On ne recopie pas la video (elle ne nous appartient
+pas) et on ne pose pas non plus le lecteur de Facebook dans la page : charge
+d'office, il pese plus d'un megaoctet de scripts tiers et depose ses cookies
+avant tout geste du visiteur, ce que la page de confidentialite promet de ne
+jamais faire. On ecrit donc une FACADE : une image fixe hebergee ici, un
+bouton « Regarder », et script.js n'injecte l'iframe du lecteur qu'au clic —
+exactement le mecanisme de la carte Google Maps de l'accueil.
+
+    {"t": "video", "c": {
+        "id": "reportage",                 ancre (#reportage) — facultatif
+        "source": "Réunion la 1ère",       qui a publie la video
+        "sourceUrl", "sourceSameAs"        son site, ses pages — facultatifs
+        "emission": "Grand Sport",         facultatif
+        "titre": "…",                      le titre tel que publie
+        "description": "…",                pour le VideoObject — facultatif
+        "url": "https://www.facebook.com/reel/…",      la page publique
+        "embed": "https://www.facebook.com/plugins/video.php?href=…",
+        "affiche": {base, crans, largeur, hauteur, alt},  comme « image »
+        "legende": "…",                    sous la video (HTML permis)
+        "datePublication": "AAAA-MM-JJ",   date de mise en ligne CHEZ LA SOURCE
+        "duree": "PT3M14S"                 ISO 8601, facultatif
+    }}
+
+Si le corps COMMENCE par ce bloc, la facade prend la place de l'image de tete.
+Le VideoObject (donnees structurees) n'est ecrit que si « datePublication »
+est renseignee : Google l'exige (uploadDate), et on n'invente pas une date.
 """
 import io
 import json
@@ -53,13 +84,16 @@ def charger():
     return d
 
 
-def image(img, sizes, classe="", lazy=True, prio=False):
+def image(img, sizes, classe="", lazy=True, prio=False, alt=None):
     """Une <img> responsive a partir des crans WebP deja presents dans assets/.
 
     On ne fabrique aucun fichier ici : les crans listes dans le JSON doivent
     exister. Le repli .jpg garde sa place pour les navigateurs sans WebP, et
     width/height sont toujours ecrits — c'est ce qui empeche la page de sauter
-    pendant le chargement."""
+    pendant le chargement.
+
+    `alt` remplace celui du JSON quand l'image est decorative dans son
+    contexte — dans la facade video, c'est le bouton qui porte le nom."""
     base, crans = img["base"], img["crans"]
     manquants = [c for c in crans
                  if not os.path.exists(os.path.join(RACINE, "%s-%d.webp" % (base, c)))]
@@ -70,9 +104,82 @@ def image(img, sizes, classe="", lazy=True, prio=False):
             u' width="%(w)d" height="%(h)d" alt="%(alt)s"%(lz)s decoding="async"%(fp)s'
             u' onerror="this.onerror=null;this.srcset=\'\';this.src=\'/%(b)s.jpg\'">'
             % {"cl": classe, "b": base, "c0": crans[0], "ss": srcset, "sz": sizes,
-               "w": img["largeur"], "h": img["hauteur"], "alt": ech(img["alt"]),
+               "w": img["largeur"], "h": img["hauteur"],
+               "alt": ech(img["alt"] if alt is None else alt),
                "lz": ' loading="lazy"' if lazy else ' loading="eager"',
                "fp": ' fetchpriority="high"' if prio else ''})
+
+
+def video_html(v, lead=False):
+    """La facade d'une video tierce (V183). Rien de Facebook n'est charge
+    ici : une image du depot, un bouton, et data-embed pour script.js.
+
+    Le bouton porte le nom accessible (aria-label) ; tout ce qu'il contient
+    est decoratif, y compris l'image (alt vide). Le lien « Voir sur Facebook »
+    de la legende reste le chemin sans JavaScript."""
+    aff = v["affiche"]
+    img = image(aff, "(min-width:900px) 860px, 100vw", "vid-facade__img",
+                lazy=not lead, prio=lead, alt=u"")
+    src = ech(v["source"])
+    if v.get("emission"):
+        src += u' <i aria-hidden="true"></i> ' + ech(v["emission"])
+    libelle = v.get("libelle") or u"Regarder le reportage"
+    titre_lecteur = v.get("titreLecteur") or (u"%s — %s" % (v["titre"], v["source"]))
+    aria = v.get("aria") or (u"%s de %s (charge le lecteur vidéo de Facebook)"
+                             % (libelle, v["source"]))
+    return u"""<figure class="ar__fig ar__fig--video" id="%(id)s">
+        <div class="vid-facade__wrap">
+          <button type="button" class="vid-facade" data-embed="%(embed)s" data-titre="%(titreLecteur)s"
+                  aria-label="%(aria)s">
+            %(img)s
+            <span class="vid-facade__veil" aria-hidden="true"></span>
+            <span class="vid-facade__src" aria-hidden="true">%(src)s</span>
+            <span class="vid-facade__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            <span class="vid-facade__cta" aria-hidden="true">%(libelle)s</span>
+            <span class="vid-facade__note" aria-hidden="true">Lecteur Facebook · chargé uniquement si vous le demandez</span>
+          </button>
+        </div>
+        <figcaption class="ar__cap">%(legende)s <a href="%(url)s" target="_blank" rel="noopener">Voir sur Facebook<span class="sr-only"> (nouvel onglet)</span></a></figcaption>
+      </figure>""" % {"id": ech(v.get("id") or "video"), "embed": ech(v["embed"]),
+             "titreLecteur": ech(titre_lecteur), "aria": ech(aria), "img": img,
+             "src": src, "libelle": ech(libelle), "legende": v.get("legende") or u"",
+             "url": ech(v["url"])}
+
+
+def video_jsonld(v, a):
+    """Le VideoObject d'un bloc video, ou None.
+
+    uploadDate est OBLIGATOIRE pour Google : sans la date de mise en ligne
+    chez la source, on n'ecrit pas le noeud plutot que d'y mettre une date
+    approximative — Search Console compterait une erreur, et le site en
+    publierait une fausse. La vignette est la notre (hebergee ici) : c'est ce
+    que Google affiche, et le verificateur controle qu'elle existe."""
+    if not v.get("datePublication"):
+        print(u"!! %s : video sans datePublication, pas de VideoObject" % a["slug"])
+        return None
+    aff = v["affiche"]
+    o = {
+        "@type": "VideoObject",
+        "@id": a["_url"] + "#video",
+        "name": v["titre"],
+        "description": v.get("description") or v["titre"],
+        "thumbnailUrl": ["%s/%s-%d.webp" % (SITE, aff["base"], aff["crans"][-1])],
+        "uploadDate": v["datePublication"],
+        "embedUrl": v["embed"],
+        "url": v["url"],
+        "inLanguage": "fr",
+        "about": {"@id": SITE + "/#club"},
+    }
+    if v.get("duree"):
+        o["duration"] = v["duree"]
+    if v.get("source"):
+        pub = {"@type": "Organization", "name": v["source"]}
+        if v.get("sourceUrl"):
+            pub["url"] = v["sourceUrl"]
+        if v.get("sourceSameAs"):
+            pub["sameAs"] = v["sourceSameAs"]
+        o["publisher"] = pub
+    return o
 
 
 def corps_html(blocs):
@@ -82,6 +189,8 @@ def corps_html(blocs):
             out.append(u'      <p>%s</p>' % b["c"])
         elif b["t"] == "h2":
             out.append(u'      <h2 class="ar__h2">%s</h2>' % ech(b["c"]))
+        elif b["t"] == "video":
+            out.append(video_html(b["c"]))
         elif b["t"] == "liens":
             liens = []
             for l in b["c"]:
@@ -100,7 +209,7 @@ def article_jsonld(a, d):
     """NewsArticle. On ne declare que ce qu'on sait : pas d'auteur nomme (les
     articles sont ecrits par le club, pas par une personne identifiee), pas de
     dateModified inventee."""
-    return {
+    ld = {
         "@context": "https://schema.org",
         "@type": "NewsArticle",
         "@id": a["_url"] + "#article",
@@ -132,6 +241,16 @@ def article_jsonld(a, d):
         # noeud WebPage, vide, a cote du vrai.
         "mainEntityOfPage": {"@id": a["_url"] + "#webpage"},
     }
+    # (V183) La video de l'article, imbriquee dans le NewsArticle : c'est la
+    # forme que Google documente pour une video au sein d'un article. Une
+    # seule par article — la premiere rencontree.
+    for b in a["corps"]:
+        if b["t"] == "video":
+            vid = video_jsonld(b["c"], a)
+            if vid:
+                ld["video"] = vid
+            break
+    return ld
 
 
 def page_article(a, d, precedent, suivant):
@@ -164,6 +283,18 @@ def page_article(a, d, precedent, suivant):
     nav = (u'\n    <nav class="ar__voisins" aria-label="Autres actualités">%s</nav>'
            % "".join(voisins)) if voisins else u""
 
+    # (V183) Si le corps COMMENCE par une video, sa facade prend la place de
+    # l'image de tete : la meme vignette deux fois de suite — en photo puis en
+    # facade — n'apporterait rien. L'image de l'article garde ses autres roles
+    # (carte de la liste, og:image, NewsArticle.image).
+    corps = list(a["corps"])
+    if corps and corps[0]["t"] == "video":
+        fig = video_html(corps.pop(0)["c"], lead=True)
+    else:
+        fig = (u'<figure class="ar__fig">%s</figure>'
+               % image(a["image"], "(min-width:900px) 860px, 100vw",
+                       "ar__img", lazy=False, prio=True))
+
     return tete + u"""%(entete)s
 %(cta)s
 <main id="contenu">
@@ -174,7 +305,7 @@ def page_article(a, d, precedent, suivant):
         <time datetime="%(iso)s">%(date)s</time></p>
       <h1 class="ar__t">%(titre)s</h1>
       <p class="ar__chapeau">%(chapeau)s</p>
-      <figure class="ar__fig">%(img)s</figure>
+      %(fig)s
 %(corps)s%(nav)s
     </div>
   </article>
@@ -188,9 +319,7 @@ def page_article(a, d, precedent, suivant):
        "scripts": bm.GABARIT[3], "fil": visible, "cat": ech(a["categorie"]),
        "iso": a["date"], "date": a["_dateLongue"], "titre": ech(a["titre"]),
        "chapeau": ech(a["chapeau"]),
-       "img": image(a["image"], "(min-width:900px) 860px, 100vw",
-                    "ar__img", lazy=False, prio=True),
-       "corps": corps_html(a["corps"]), "nav": nav}
+       "fig": fig, "corps": corps_html(corps), "nav": nav}
 
 
 def page_liste(d):
@@ -238,7 +367,7 @@ def page_liste(d):
   <section class="section ml-sec" aria-labelledby="acTitre">
     <div class="wrap">
     %(fil)s
-      <p class="kicker">Le club <i aria-hidden="true"></i> La compétition <i aria-hidden="true"></i> Le quartier</p>
+      <p class="kicker">Le club <i aria-hidden="true"></i> La compétition <i aria-hidden="true"></i> Le quartier <i aria-hidden="true"></i> Les médias</p>
       <h1 class="h2" id="acTitre">Les actualités <span class="hl">du MBC</span></h1>
       <p class="sec-head__sub">Ce qui se passe au club, à La Montagne. Chaque article s'appuie
         sur une source vérifiable&nbsp;: un document officiel, une photo, une page de ce site.</p>

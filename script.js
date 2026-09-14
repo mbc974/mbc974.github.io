@@ -797,6 +797,43 @@
 })();
 
 /* ============================================================
+   Vidéo tierce : injection à la demande (V183)
+   ------------------------------------------------------------
+   Même principe que la carte, pour le reportage de Réunion la 1ère
+   repris dans les actualités : le lecteur Facebook n'est créé qu'au
+   clic sur la façade (.vid-facade, écrite par build-actus.py).
+   Chargé d'office, il pèse plus d'un mégaoctet de scripts tiers et
+   dépose ses cookies avant tout geste du visiteur — ce que la page
+   de confidentialité promet de ne pas faire. La largeur du lecteur
+   est mesurée au clic : le plugin de Facebook cadre la vidéo sur ce
+   paramètre, pas sur la taille de l'iframe.
+   ============================================================ */
+(function () {
+  var facades = document.querySelectorAll('.vid-facade[data-embed]');
+  if (!facades.length) return;
+  Array.prototype.forEach.call(facades, function (f) {
+    f.addEventListener('click', function () {
+      var url = f.getAttribute('data-embed');
+      if (!url) return;
+      var wrap = f.parentNode;
+      var w = Math.max(220, Math.round(wrap.getBoundingClientRect().width || f.offsetWidth || 560));
+      var fr = document.createElement('iframe');
+      fr.title = f.getAttribute('data-titre') || 'Vidéo';
+      fr.src = url + (url.indexOf('?') > -1 ? '&' : '?') + 'width=' + w + '&autoplay=true';
+      fr.referrerPolicy = 'strict-origin-when-cross-origin';
+      fr.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture; web-share; fullscreen');
+      fr.setAttribute('allowfullscreen', '');
+      fr.setAttribute('scrolling', 'no');
+      fr.setAttribute('sandbox',
+        'allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation');
+      wrap.classList.add('is-loaded');
+      f.replaceWith(fr);
+      try { fr.focus(); } catch (e) {}
+    }, { once: true });
+  });
+})();
+
+/* ============================================================
    L'heure de La Réunion, pour tout le monde
    ------------------------------------------------------------
    Trois modules de ce fichier décidaient qu'une rencontre était

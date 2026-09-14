@@ -2254,3 +2254,115 @@ Banc CDP sur les 25 pages, à 390 et à 1440 px de large :
   jour.
 - **Pieds de page différents** : `.site-footer` sur l'accueil, `.seo-foot`
   ailleurs. Ce n'était pas demandé.
+
+## 28. Le reportage de Réunion la 1ère : une vidéo tierce en façade (14/09/2026)
+
+Branche `feature/season-match-center`, commit séparé.
+
+### Le fait
+
+Le 13 septembre 2026, Réunion la 1ère a publié sur sa page Facebook
+(`facebook.com/reunionla1ere`) un sujet de son émission « Grand Sport » :
+« La Montagne a désormais son club de basket, le Montagne Basket Club.
+Découverte. » — 3 min 14, tourné sous le plateau couvert de Ruisseau Blanc avec
+les jeunes du club à l'entraînement. Alexandre a demandé qu'il entre sur le
+site « de la manière la plus pertinente possible ».
+
+### Où il vit
+
+| Endroit | Quoi | Fichier |
+|---|---|---|
+| `/actualites/reportage-reunion-la-1ere-mbc-la-montagne/` | l'article, la vidéo en tête (façade), le `VideoObject` | `data/actualites.json` → `build-actus.py` |
+| `/actualites/` | la carte « Médias », en une | idem (généré) |
+| accueil, section `#inauguration` | la carte `.lp-media` « Vu dans Grand Sport », qui **mène** à l'article | `index.html` |
+| `/club-basket-la-montagne/` | une phrase dans « Un club de quartier » | écrit à la main |
+| `/confidentialite/` | le lecteur Facebook dans la liste des services tiers, et la phrase sur les cookies | écrit à la main |
+
+Pourquoi `#inauguration` et pas une section neuve : c'est la section « preuve
+locale » du site (`.local-proof`) — le quartier, la mairie, le plateau. Un
+reportage de la télévision régionale est la preuve locale la plus forte que
+le site ait à montrer. Et la section garde la hauteur que V152b lui a rendue :
+une carte compacte qui mène à l'article, pas un second lecteur.
+
+### Pourquoi une façade, et pas l'iframe de Facebook
+
+Le lecteur intégré de Facebook (`plugins/video.php`) pèse plus d'un mégaoctet
+de scripts et dépose ses cookies dès le chargement de la page, avant tout
+geste du visiteur. La page de confidentialité promet l'inverse (« aucun pixel
+ni script de ces plateformes »). On applique donc à la vidéo ce qui est fait
+pour la carte Google Maps de l'accueil : une image fixe hébergée ici
+(`assets/galerie/mbc-reportage-reunion-la-1ere-*`), un bouton « Regarder le
+reportage », et `script.js` (module « Vidéo tierce : injection à la demande »)
+n'injecte l'iframe qu'au clic. La largeur du lecteur est mesurée au clic et
+passée en `&width=` : c'est ce paramètre, pas la taille de l'iframe, qui fait
+cadrer la vidéo chez Facebook. `autoplay=true` est demandé ; Facebook garde
+néanmoins son propre bouton de lecture — deux clics, c'est le prix du choix.
+
+Sans JavaScript, la façade reste une image et le lien « Voir sur Facebook »
+sous la vidéo mène au reel. L'iframe porte le même `sandbox` que la carte,
+plus `allow-presentation`. Le conteneur (`.vid-facade__wrap`) tient sa hauteur
+du seul `aspect-ratio:16/9` : rien ne saute quand l'iframe remplace le bouton.
+
+### Le bloc « video » de `data/actualites.json`
+
+Les champs sont décrits en tête de `.claude/build-actus.py`. Trois règles :
+
+- **`affiche`** : les crans doivent exister dans `assets/`, le générateur ne
+  fabrique rien. Ici la seule image que Facebook fournit est son `og:image`,
+  1000 × 563 : d'où un cran maximal de 1000. Un écran Retina de 860 px de
+  large la verra un peu douce — c'est la source, pas un réglage.
+- **`datePublication`** : la date de mise en ligne **chez la source**, relevée
+  et jamais supposée. Sans elle, `build-actus.py` n'écrit pas de `VideoObject`
+  (`uploadDate` est obligatoire pour Google) et le dit à la console. Ici : le
+  champ `creation_time` de la page du reel, 1789314629, soit le 13/09/2026 à
+  19 h 50, heure de La Réunion.
+- Si le bloc est **le premier du corps**, sa façade prend la place de l'image
+  de tête. L'`image` de l'article garde ses autres rôles : carte de la liste,
+  `og:image`, `NewsArticle.image`.
+
+### Données structurées
+
+`NewsArticle.video` porte le `VideoObject` imbriqué : `name`, `description`,
+`thumbnailUrl` (notre vignette), `uploadDate`, `duration` (`PT3M14S`),
+`embedUrl`, `url`, et un `publisher` Organization « Réunion la 1ère ». Le
+publisher est bien la chaîne, pas le club : l'article est à nous, la vidéo non.
+
+### Pour ajouter une autre vidéo
+
+1. La vignette : `assets/galerie/<base>-<cran>.webp` pour chaque cran, plus
+   `<base>.jpg` en repli (Pillow, WEBP qualité 45 comme `build-vignettes.py`).
+   Pas de script dédié : trois lignes de Python suffisent, et une vidéo de
+   temps en temps ne justifie pas un générateur de plus.
+2. Le bloc dans `data/actualites.json`, sa source dans `_sources`, puis la
+   chaîne : `build-actus.py` → `build-css.py` (si la feuille a changé) →
+   `build-sitemap.py` → `bump-assets.py`, et les contrôles du § 7.
+3. Si la source n'est pas Facebook : `embed` change, le module de `script.js`
+   non (il ne connaît que `data-embed`). Adapter la note « Lecteur Facebook »
+   dans `video_html()` — écrite en dur, volontairement, tant qu'il n'y a
+   qu'une source — et la page de confidentialité.
+
+### Vérifié le 14/09
+
+- Chaîne complète relancée : 27 pages re-versionnées, sitemap à 26 URL,
+  `set-entete.py --check` sans écart.
+- `verifier-jsonld.py` : 29 pages, 0 erreur, 0 avertissement.
+  `verifier-classes.py` : les trois `.sponsor-pack--*` connus, rien d'autre.
+  `verifier-liens.py` : `_banc.html` seul orphelin (page de banc, hors git).
+  `build-css.py --check` et `bump-assets.py --check` en 0.
+- Chrome, 1538 px de large : l'article (façade, puis lecteur Facebook au vrai
+  clic, dans le cadre 16/9), la liste des actualités (la carte « Médias » en
+  une), la carte de l'accueil dans `#inauguration` (vue dans une iframe de
+  1240 px : `_banc-video-desktop.html`, hors git).
+- À 390 px, dans des iframes (`_banc-video.html`, hors git) : la façade tient
+  (kicker, bouton, libellé, note), la carte « Médias » passe en une colonne,
+  la page club et la liste sont intactes.
+
+### Ce qui reste
+
+- La vignette est celle de Facebook (1000 px). Si la chaîne publie le sujet
+  sur `la1ere.franceinfo.fr`, une image plus large et un lien vers son article
+  seraient à ajouter (`sourceUrl` pointe pour l'instant sur la page Réunion du
+  site de la chaîne).
+- Si la chaîne retire le reel, la façade reste (image et lien) mais le
+  lecteur affichera « Vidéo non disponible ». À vérifier de temps en temps,
+  comme n'importe quel lien externe.
