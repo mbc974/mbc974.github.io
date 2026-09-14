@@ -2414,12 +2414,58 @@ Vérifié le 14/09 :
 Pour une prochaine purge, remplacer les écarts `ATTENDUS` de
 `comparer-empreintes.py` par ceux qu'on annonce, AVANT de mesurer.
 
+### Intégration et mise en ligne (14/09/2026)
+
+« Intègre la branche au-dessus du reportage […] et mets-le en ligne sur
+main » : Alexandre, le même jour.
+
+- **Rebase** des trois commits V184, V184 bis et V185, de `cd91a15` sur le
+  commit du reportage (`93babdb`, § 28), dans une copie de travail extraite en
+  LF. Les conflits étaient attendus et mécaniques :
+  - `MAINTENANCE.md`, trois fois : la fin du § 27 touchait le début du § 28.
+    On a gardé le § 27 de la branche, puis le § 28 intact ;
+  - `sitemap.xml` : on a gardé la version du reportage, qui porte sa nouvelle
+    URL ;
+  - les `?v=` de 25 pages et le nom de cache de `sw.js` étaient la seule
+    différence entre les deux côtés, vérifiée bloc par bloc. On a gardé la
+    version du reportage, puis relancé `bump-assets.py` ;
+  - `style.css` et `style.min.css` ont fusionné seuls. La purge est
+    complète, le bloc V183 intact, et `build-css.py --check` passe.
+- **La chaîne relancée** après le rebase : la page du reportage, antérieure au
+  pied commun, le reçoit à son tour. Elle n'a plus de `.seo-foot` ni de
+  module en ligne, et les 25 pages portent le même bloc `PIED`.
+- **Les trois constats confirmés de la relecture du reportage** étaient
+  restés sans suite quand sa session a atteint sa limite. Ils sont appliqués
+  (§ 28, « Suites de la relecture »).
+- **Relecture contradictoire avant mise en ligne** : 3 angles, puis un
+  contradicteur par constat. Les angles : la fidélité de l'intégration, les
+  parties du reportage que sa relecture n'avait pas couvertes, et la
+  préparation à la production. Rien de bloquant : l'intégration n'a rien
+  perdu, d'un côté comme de l'autre. Deux constats mineurs, confirmés, sont
+  laissés pour après la mise en ligne (voir « Ce qui reste »).
+- **Vérifié avant le push** :
+  - tous les contrôles du § 7 ;
+  - `set-entete.py --check` à 0 sur 25 pages ;
+  - `verifier-classes` réduit à ses 4 anomalies antérieures ;
+  - le banc de l'en-tête et du pied, sur 26 pages à 375, 390, 430 et
+    1440 px : 0 problème.
+
 ### Ce qui reste
 
-- **L'intégration avec la branche du reportage (`93babdb`)** : rebase, puis
-  `set-entete.py`, les générateurs et `bump-assets.py`. Ensuite,
-  `verifier-classes.py` ne doit rien signaler de nouveau. Une page restée à
-  l'ancien pied y apparaîtrait aussitôt, puisque sa CSS n'existe plus.
+- **Le contraste du libellé « Réunion la 1ère • Grand Sport »**, posé sur la
+  photo de la façade vidéo (`.vid-facade__src`, 10,6 px). Il passe sous 4,5:1
+  sur environ 20 % de son fond, là où il croise le toit clair. La relecture a
+  mesuré un correctif : un second dégradé en haut du voile,
+  `linear-gradient(to bottom,rgba(6,11,20,.72) 0,rgba(6,11,20,0) 24%)`, posé
+  devant celui de `.vid-facade__veil`. Il donne au moins 6,1:1 à 768 et
+  1440 px.
+- **Le `<title>` de l'article du reportage** fait 57 caractères, au-delà de la
+  règle des 52 (voir build-matchs.py). Prévoir un champ `titreSeo` dans
+  `data/actualites.json`, lu par `build-actus.py`.
+- Facultatif :
+  - donner l'heure à l'`uploadDate` du `VideoObject`
+    (2026-09-13T19:50:29+04:00) ;
+  - un `.gitattributes`, pour garder les `.ics` en CRLF dans le dépôt.
 
 ## 28. Le reportage de Réunion la 1ère : une vidéo tierce en façade (14/09/2026)
 
@@ -2465,8 +2511,9 @@ cadrer la vidéo chez Facebook. `autoplay=true` est demandé ; Facebook garde
 néanmoins son propre bouton de lecture — deux clics, c'est le prix du choix.
 
 Sans JavaScript, la façade reste une image et le lien « Voir sur Facebook »
-sous la vidéo mène au reel. L'iframe porte le même `sandbox` que la carte,
-plus `allow-presentation`. Le conteneur (`.vid-facade__wrap`) tient sa hauteur
+sous la vidéo mène au reel. L'iframe reprend le `sandbox` de la carte, sans
+`allow-forms` (le lecteur n'a pas de formulaire à soumettre), et avec
+`allow-presentation` en plus. Le conteneur (`.vid-facade__wrap`) tient sa hauteur
 du seul `aspect-ratio:16/9` : rien ne saute quand l'iframe remplace le bouton.
 
 ### Le bloc « video » de `data/actualites.json`
@@ -2522,6 +2569,27 @@ publisher est bien la chaîne, pas le club : l'article est à nous, la vidéo no
 - À 390 px, dans des iframes (`_banc-video.html`, hors git) : la façade tient
   (kicker, bouton, libellé, note), la carte « Médias » passe en une colonne,
   la page club et la liste sont intactes.
+
+### Suites de la relecture (appliquées à l'intégration, 14/09)
+
+La relecture contradictoire de ce commit s'était arrêtée à la limite de
+session. Trois constats étaient confirmés, mais pas appliqués. Ils le sont
+au moment de l'intégration sur `main` (§ 27, « Intégration et mise en
+ligne ») :
+
+- `/confidentialite/` : la « Dernière mise à jour » passe au 14 septembre
+  2026, pour l'ajout du lecteur vidéo de Facebook. La page promet en effet
+  que toute modification substantielle y sera visible ;
+- les mentions légales de l'accueil (`#legal`) disent que les images tirées
+  du reportage restent la propriété de Réunion la 1ère (France Télévisions).
+  La légende de la vidéo porte aussi « Image d'aperçu : Réunion la 1ère. » ;
+- le paragraphe sur le `sandbox` de l'iframe vidéo, plus haut, décrit
+  désormais l'attribut tel qu'il est.
+
+Les angles « accessibilité », « JavaScript » et « CSS » de cette relecture
+n'avaient pas tourné. Ils ont été repris avant la mise en ligne, sans
+constat bloquant. Deux points restent à traiter, le contraste du libellé de
+la façade et la longueur du titre (§ 27).
 
 ### Ce qui reste
 
