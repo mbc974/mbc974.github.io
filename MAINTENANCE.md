@@ -2178,7 +2178,7 @@ chargé de réfuter : 36 constats confirmés, 1 réfuté. Ce qui a été corrig�
 
 ---
 
-## 27. Un seul en-tête pour tout le site (13/09/2026)
+## 27. Un seul en-tête et un seul pied de page pour tout le site (13–14/09/2026)
 
 Branche `feature/season-match-center`, commit séparé du Match Center.
 
@@ -2210,10 +2210,14 @@ marque « MBC 974 », « Je m'inscris » et le bouton Menu plein écran.
   l'ancienne `.seo-top` : les quatre règles d'espacement `.seo-top ~ main`
   passent telles quelles sur `.site-header--enfant ~ main` (style.css, V182).
 
-### Pour changer le menu
+### Pour changer le menu ou le pied de page
 
-Modifier `index.html` ET `adhesion.html`, qui sont tous deux écrits à la main,
-puis relancer :
+- **Le menu** : modifier `index.html` ET `adhesion.html`, qui sont tous deux
+  écrits à la main.
+- **Le pied de page** : modifier `index.html` seul, entre
+  `<!-- PIED:DEBUT -->` et `<!-- PIED:FIN -->` (V184, plus bas).
+
+Puis relancer :
 
 ```bash
 python .claude/set-entete.py
@@ -2243,17 +2247,67 @@ Banc CDP sur les 25 pages, à 390 et à 1440 px de large :
   aucune page à mettre à jour.
 - **Le Match Center** est inchangé : filtres, cartes et quatre instants simulés.
 
+### Le pied de page (V184, 14/09/2026)
+
+Branche `feature/pied-de-page`, empilée sur la précédente.
+
+Le pied de page avait le même écart que l'en-tête. L'accueil portait le grand
+pied `.site-footer` : le club, les liens utiles, le contact, l'affiliation FFBB,
+« Le basket près de chez vous ». Les 23 pages enfants gardaient `.seo-foot`,
+une ligne de liens. Il est aligné de la même façon.
+
+- **Une seule source** : `index.html`, entre `<!-- PIED:DEBUT -->` et
+  `<!-- PIED:FIN -->`. `pied_enfant()` (dans `build-matchs.py`) en tire le bloc
+  des pages enfants, avec deux retouches :
+  - les mentions légales détaillées (`details#legal`) restent sur l'accueil
+    seul. Recopiées, elles auraient fait 24 ancres `#legal` et 23 copies du
+    même texte ; les liens « Mentions légales » visent `/#legal`, comme avant ;
+  - les liens relatifs de l'accueil (`#matchs`, `benevoles/`, `adhesion.html`)
+    deviennent absolus.
+- **Les mêmes chemins que l'en-tête** : `gabarit()` pour les pages générées,
+  `set-entete.py` pour les pages écrites à la main. Ce script pose désormais
+  les deux blocs, et `--check` contrôle les deux.
+- **La barre CTA mobile** : chaque page enfant avait un module en ligne qui
+  attendait `.seo-foot` pour s'effacer. Ce module est retiré. `script.js`,
+  chargé partout depuis V182, fait exactement la même chose (`floatCta`, qui
+  cherche `.site-footer, .seo-foot`).
+- **`adhesion.html` garde son pied** : c'est déjà un `.site-footer`, avec un
+  bloc « Documents & garanties » (RNA, SIREN) utile sur la page de paiement.
+  L'aligner ferait perdre ce bloc ; c'est une décision à part.
+- **Aucun octet de CSS ni de JS** : les `?v=` ne bougent pas.
+
+Vérifié le 14/09 (banc CDP, 25 pages à 375, 390, 430 et 1440 px) :
+
+- **Structure** : un seul `<footer>` par page, plus aucune `.seo-foot`, et
+  `#legal` sur l'accueil seulement.
+- **Contenu** : aucun lien relatif dans un pied enfant, et le même texte que
+  l'accueil, mentions détaillées exceptées.
+- **Affichage** : le pied est pleine largeur et ne chevauche jamais `<main>`,
+  sans débordement ni erreur console.
+- **Liens** : les 20 liens internes du pied répondent en 200, et leurs 7
+  ancres existent.
+- **Barre CTA** : elle paraît au milieu de `/matchs/`,
+  `/ecole-de-basket-saint-denis/` et `/creneaux/`, et s'efface sur le pied.
+- **Garde-fous** : `verifier-liens` et `verifier-jsonld` sont à 0 ;
+  `verifier-classes` ne relève que les 4 anomalies antérieures, et
+  `set-entete.py --check` est à 0 après les générateurs.
+
+**Piège vécu** : une copie de travail extraite par `git worktree` sur ce poste
+sort en CRLF (`core.autocrlf=true`), alors que le dépôt est en LF.
+`bump-assets.py` hache les octets : il a changé les trois `?v=` et le nom du
+cache du service worker sans aucune modification réelle. Pour corriger :
+supprimer les fichiers hachés, les ré-extraire avec
+`git -c core.autocrlf=false checkout -- style.css style.min.css script.js consent.js`,
+puis relancer `bump-assets.py`. Un simple `checkout` ne suffit pas : git juge
+ces fichiers inchangés. Vérifier avec `git ls-files --eol` (`w/lf`).
+
 ### Ce qui reste
 
-- **CSS morte** : `.seo-top` (une trentaine de règles) et `html:has(.seo-top)`.
-  À purger avec la preuve d'empreinte des styles calculés (§ « Prouver une
-  non-régression »).
-- **Modules en ligne redondants** : les pages enfants gardent leur module
-  « Barre CTA mobile ». `script.js` fait désormais la même chose ; c'est
-  inoffensif (`/creneaux/` cumulait déjà les deux), mais c'est à retirer un
-  jour.
-- **Pieds de page différents** : `.site-footer` sur l'accueil, `.seo-foot`
-  ailleurs. Ce n'était pas demandé.
+- **CSS morte** : `.seo-top` (une trentaine de règles), `html:has(.seo-top)`
+  et désormais `.seo-foot` (quatre règles). À purger avec la preuve
+  d'empreinte des styles calculés (§ « Prouver une non-régression »).
+- **Le pied d'`adhesion.html`** : voir plus haut. Il reste à décider s'il
+  prend le pied commun.
 
 ## 28. Le reportage de Réunion la 1ère : une vidéo tierce en façade (14/09/2026)
 

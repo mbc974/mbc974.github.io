@@ -153,11 +153,13 @@ def prochain(d, maintenant=None):
 
 
 # --------------------------------------------------------------------------
-# Gabarit commun : on releve l'en-tete et le pied d'une page enfant existante
-# pour qu'ils restent automatiquement synchrones avec le reste du site.
+# Gabarit commun : on releve la barre CTA et les scripts de fin de page d'une
+# page enfant existante pour qu'ils restent automatiquement synchrones avec le
+# reste du site. L'en-tete (V182) et le pied (V184) viennent de l'accueil.
 # --------------------------------------------------------------------------
 MODELE = "ecole-de-basket-saint-denis/index.html"
 ENTETE_SOURCE = "adhesion.html"
+PIED_SOURCE = "index.html"
 
 
 def entete_enfant():
@@ -183,6 +185,37 @@ def entete_enfant():
     return (u"<!-- EN-TETE:DEBUT — recopié d'adhesion.html par .claude/set-entete.py ou un "
             u"générateur (build-matchs.py, entete_enfant) : ne pas éditer ici -->\n%s\n"
             u"<!-- EN-TETE:FIN -->" % bloc)
+
+
+def pied_enfant():
+    """Le pied de page de l'accueil, pour une page enfant. V184, 14/09/2026 :
+    les 23 pages enfants gardaient l'ancien pied .seo-foot, une ligne de
+    liens, quand l'accueil portait le grand pied .site-footer.
+
+    Source : index.html, entre ses marqueurs PIED. Deux retouches, pas plus :
+    - les mentions legales detaillees (details#legal) restent sur l'accueil :
+      recopiees, elles feraient 24 ancres #legal et 23 fois le meme texte.
+      Les liens « Mentions legales » visent /#legal, comme avant ;
+    - les liens relatifs de l'accueil (#matchs, benevoles/, adhesion.html)
+      deviennent absolus, sinon ils partiraient de la page enfant.
+    set-entete.py (pages ecrites a la main) et gabarit() (pages generees)
+    passent tous deux par ici, comme pour l'en-tete."""
+    s = lire(PIED_SOURCE)
+    i = s.index("-->", s.index("<!-- PIED:DEBUT")) + len("-->")
+    j = s.index("<!-- PIED:FIN -->")
+    bloc = s[i:j].strip("\n")
+    if bloc.count('<footer class="site-footer">') != 1:
+        raise SystemExit("!! %s : pied de page introuvable entre les marqueurs PIED" % PIED_SOURCE)
+    bloc, n = re.subn(r'\n\s*<!-- Les mentions detaillees[\s\S]*?-->\s*'
+                      r'<details class="footer-legal" id="legal">[\s\S]*?</details>', '', bloc)
+    if n != 1:
+        raise SystemExit("!! %s : mentions legales (#legal) introuvables dans le pied" % PIED_SOURCE)
+    # Absolu : tout lien qui ne commence ni par / ni par un protocole
+    # (https:, mailto:, tel:). « #matchs » devient « /#matchs ».
+    bloc = re.sub(r'href="(?![a-z][a-z0-9+.-]*:|/)([^"]*)"', r'href="/\1"', bloc)
+    return (u"<!-- PIED:DEBUT — recopié d'index.html par .claude/set-entete.py ou un "
+            u"générateur (build-matchs.py, pied_enfant) : ne pas éditer ici -->\n%s\n"
+            u"<!-- PIED:FIN -->" % bloc)
 
 
 SCRIPT_JS_COMMUN = u"""<!-- Le menu plein écran et la barre du haut (V176) sont pilotés par script.js :
@@ -233,8 +266,18 @@ def gabarit():
     #
     # Lecon : un correctif qui compense un defaut de la source doit mourir avec
     # ce defaut. On ne le garde pas \u00ab au cas ou \u00bb, il devient le defaut suivant.
-    pied = s[s.index('<footer class="seo-foot">'):s.index("</footer>") + len("</footer>")]
-    scripts = s[s.index("<script>\n/* Barre CTA mobile"):s.index("</body>")]
+    # Le pied n'est plus releve sur la page modele non plus : c'est celui de
+    # l'accueil (V184, voir pied_enfant()).
+    pied = pied_enfant()
+    # Les scripts de fin de page : tout ce qui suit le pied du modele, quelle
+    # que soit la forme de ce pied (bloc PIED, ou ancien .seo-foot).
+    fin = "<!-- PIED:FIN -->"
+    k = s.index(fin) + len(fin) if fin in s else s.index("</footer>") + len("</footer>")
+    scripts = s[k:s.index("</body>")].lstrip()
+    # Le module en ligne « Barre CTA mobile » guettait .seo-foot, qui n'existe
+    # plus (V184). script.js, charge partout depuis V182, fait la meme chose en
+    # guettant .site-footer (floatCta) : on ne garde que lui.
+    scripts = re.sub(r'<script>\s*/\* Barre CTA mobile[\s\S]*?</script>\s*', '', scripts)
     # script.js sur TOUTES les pages (V182) : le menu plein ecran et la barre
     # du haut en dependent. Une seule balise, posee ici : on retire d'abord
     # celles que la page modele porterait deja (avec leur commentaire), sinon
