@@ -57,6 +57,7 @@ suivante.
 | L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
 | Un joueur de l'effectif seniors | `data/effectif.json` | `python .claude/build-effectif.py` |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
+| Une dérogation (rencontre inversée avant un nouveau PDF) | `data/matchs.json` : la rencontre, et son champ `derogation` | `python .claude/build-og-matchs.py` puis `set-calendrier-prm.py --archive` et `bump-assets.py` (§ 29) |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
 | La feuille de style | `style.css` | `python .claude/build-css.py` |
@@ -2600,3 +2601,74 @@ la façade et la longueur du titre (§ 27).
 - Si la chaîne retire le reel, la façade reste (image et lien) mais le
   lecteur affichera « Vidéo non disponible ». À vérifier de temps en temps,
   comme n'importe quel lien externe.
+
+## 29. Une dérogation : le J5 contre Sainte-Rose se joue à domicile (14/09/2026)
+
+« Le match du 23 octobre vs Ste Rose se jouera à domicile » : Alexandre, le
+14/09. Le PDF de la Ligue (édition du 25/08) nomme Sainte-Rose en premier, et
+la place donc là-bas. L'article 4 du règlement autorise ces inversions jusqu'à
+cinq jours avant la rencontre.
+
+**Le problème** : le site tient le camp de deux sources.
+- `data/matchs.json` produit les fiches, `/matchs/` et le Match Center.
+- Le PDF produit le tableau du calendrier de l'accueil, le décompte « dont N à
+  domicile » et l'affiche.
+
+`set-calendrier-prm.py` refusait de publier dès que les deux divergeaient :
+toute la chaîne s'arrêtait.
+
+**Le mécanisme** :
+- dans `data/matchs.json`, la rencontre est modifiée comme n'importe quel match
+  à domicile (`domicile`, `lieu`, `entreeLibre`, `benevoles`, `intro`). Elle
+  reçoit en plus un champ `derogation` :
+  `{ "domicile": true, "le": "…", "source": "…" }` ;
+- `appliquer_derogations()`, dans `set-calendrier-prm.py`, reporte ce champ sur
+  la liste lue dans le PDF : le tableau, le décompte, les postes bénévoles et
+  l'affiche suivent. Une dérogation sans `source`, sans date `le` au format
+  AAAA-MM-JJ, ou qui contredit sa rencontre, est refusée ;
+- le jour où un PDF réédité intègre l'inversion, le script le signale, et le
+  champ peut alors être retiré ;
+- un PDF plus récent que la dérogation, qui la contredit encore, est signalé
+  par un « !! » : la Ligue ne l'a peut-être pas enregistrée, ou elle a été
+  annulée ;
+- pour l'annuler : retirer `derogation`, remettre la rencontre comme avant, et
+  relancer la même chaîne ;
+- `--archive` redessine l'affiche d'elle-même dès qu'un camp change par
+  rapport au tableau déjà en ligne, que la dérogation soit ajoutée ou annulée.
+  `--affiche` force ce dessin ;
+- la chaîne complète : `build-og-matchs.py` (l'image de partage dépend du
+  camp), puis `set-calendrier-prm.py --archive`, `bump-assets.py` et
+  `build-sitemap.py` ;
+- seul le camp est pris en charge. Une dérogation d'horaire demanderait la même
+  chose pour `heure`.
+
+**Ce qui a changé pour le J5** :
+- **La fiche** : « MBC vs Sainte-Rose », l'entrée libre, les trois postes
+  bénévoles et un fichier `.ics` (seuls les matchs à domicile en ont).
+- **L'image de partage et l'affiche du calendrier** ; l'affiche annonce
+  « 5 matchs à domicile ».
+- **Le tableau et le Match Center de l'accueil, et `/matchs/`**.
+- **La fiche du J6** : « cinquième — et dernière — rencontre à domicile ».
+- **L'article « Le calendrier de la phase 1 »** : cinq matchs à domicile,
+  deux déplacements, et une phrase sur l'inversion (`dateModifiee` au 14/09).
+- **`.claude/benevoles-matchs.json`** : la date est ajoutée, avec ses postes à
+  pourvoir.
+
+Vérifié le 14/09 :
+- tous les contrôles du § 7 ;
+- la présence correcte du J5 dans chaque page produite, en 13 points : ligne
+  de l'accueil, décomptes, fiche, données structurées, `.ics`, `/matchs/`,
+  article et fiche du J6 ;
+- l'affiche et l'image de partage, contrôlées à l'œil.
+
+**Relecture contradictoire** : 2 angles et 6 agents, en lecture seule. Ils
+n'ont rien trouvé sur le site. Cinq retouches du mécanisme en sont sorties :
+- l'affiche redessinée dès qu'un camp change ;
+- un message exact quand la rencontre et sa dérogation divergent ;
+- la date `le` contrôlée et comparée à l'édition du PDF ;
+- la recette complète, avec `build-og-matchs.py` ;
+- une phrase du README qui comptait « trois » déplacements.
+
+**À savoir** : le script affiche une alerte, « encart « prochain
+rendez-vous » : data-match-date introuvable ». Elle est ancienne et sans
+effet : l'encart qu'elle vérifiait a disparu avec le Match Center (§ 26).

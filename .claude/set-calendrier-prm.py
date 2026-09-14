@@ -4,6 +4,7 @@
     python .claude/set-calendrier-prm.py            met le site a jour
     python .claude/set-calendrier-prm.py --essai    montre les ecarts, n'ecrit rien
     python .claude/set-calendrier-prm.py --archive  relit le PDF deja archive
+    python .claude/set-calendrier-prm.py --archive --affiche   idem, en forcant l'affiche
 
 Depose au prealable le PDF dans Telechargements sous son nom d'origine
 (« CALENDRIER SENIOR PRM NORD*.pdf ») : le plus recent est retenu. L'option
@@ -16,6 +17,14 @@ l'edition du 21/08/2026 et celle du 25/08/2026, trois rencontres du MBC avaient
 change de camp — le site envoyait donc le public au mauvais gymnase trois fois.
 L'article 4 du reglement autorisant une derogation jusqu'a 5 jours avant chaque
 rencontre, cela se reproduira.
+
+Une derogation connue du club AVANT la reedition du PDF (une rencontre
+inversee, par exemple) s'ecrit dans data/matchs.json : champ « derogation »
+de la rencontre, avec sa source et sa date, en plus des champs de la
+rencontre elle-meme. appliquer_derogations() la reporte sur la lecture du
+PDF. La chaine habituelle (build-og-matchs.py, puis --archive) republie
+alors l'image de partage, l'accueil ET l'affiche sans attendre la Ligue :
+--archive redessine l'affiche d'elle-meme des qu'un camp change.
 
 Le script touche quatre choses, toutes reperees par des balises dans index.html :
 
@@ -425,6 +434,71 @@ def verifier_source_matchs(mbc):
     return ecarts
 
 
+def appliquer_derogations(mbc, edite_le=None):
+    """Les derogations connues du club avant la reedition du PDF.
+
+    L'article 4 du reglement permet d'inverser une rencontre jusqu'a cinq jours
+    avant. Le club l'apprend souvent avant que la Ligue ne reedite son PDF :
+    elle s'ecrit alors dans data/matchs.json, champ « derogation » de la
+    rencontre ({"domicile": true, "le": "AAAA-MM-JJ", "source": "..."}), en
+    plus des champs de la rencontre elle-meme (domicile, lieu, entreeLibre,
+    benevoles, intro). On la reporte ici sur la lecture du PDF, pour que le
+    tableau de l'accueil, le decompte « dont N a domicile », les postes
+    benevoles et l'affiche disent la meme chose que les fiches.
+
+    Rien n'est devine : une derogation sans source, sans date AAAA-MM-JJ ou
+    en desaccord avec sa rencontre est refusee, et sans derogation le PDF
+    fait foi (verifier_source_matchs() bloque tout ecart). Quand un PDF
+    reedite l'integre, on le dit : le champ peut partir. Quand un PDF plus
+    recent que la derogation la contredit encore, on le dit aussi.
+    Premier cas : J5 du 23/10/2026 contre Sainte-Rose, inversee (14/09/2026)."""
+    # Sans data/matchs.json, rien a appliquer : verifier_source_matchs() le
+    # signalera, c'est son role.
+    if not os.path.exists(SOURCE_MATCHS):
+        return mbc
+    d = json.load(io.open(SOURCE_MATCHS, encoding='utf-8'))
+    rencontres = {m['date']: m for m in d['matchs'] if dans_le_pdf(m)}
+    derog = {date: m['derogation'] for date, m in rencontres.items() if m.get('derogation')}
+    camp = lambda v: 'domicile' if v else 'exterieur'
+    ou = lambda v: 'a domicile' if v else "a l'exterieur"
+    vues = set()
+    for m in mbc:
+        x = derog.get(m['date'])
+        if not x:
+            continue
+        vues.add(m['date'])
+        if not (x.get('source') and re.match(r'\d{4}-\d{2}-\d{2}$', str(x.get('le') or ''))):
+            raise SystemExit(u'!! %s : derogation sans « source », ou sans date « le » au format '
+                             u'AAAA-MM-JJ, dans %s' % (m['date'], SOURCE_MATCHS))
+        if 'domicile' not in x:
+            raise SystemExit(u'!! %s : derogation sans « domicile », seul champ pris en charge'
+                             % m['date'])
+        # La rencontre et sa derogation doivent dire le meme camp. Sinon l'ecart
+        # que verifier_source_matchs() signale ensuite attribuerait au PDF la
+        # valeur de la derogation, ce qui serait faux.
+        if bool(rencontres[m['date']]['domicile']) != bool(x['domicile']):
+            raise SystemExit(u'!! %s : dans %s, la rencontre dit %s et sa derogation %s : les accorder'
+                             % (m['date'], SOURCE_MATCHS, camp(rencontres[m['date']]['domicile']),
+                                camp(x['domicile'])))
+        if bool(x['domicile']) == bool(m['domicile']):
+            print(u'  .. %s : le PDF integre desormais la derogation (%s) : le champ '
+                  u'« derogation » de data/matchs.json peut etre retire' % (m['date'], camp(m['domicile'])))
+            continue
+        # Un PDF edite APRES la derogation, et qui la contredit toujours : la
+        # Ligue ne l'a peut-etre pas encore enregistree, ou elle a ete annulee.
+        # On l'applique, mais on le dit fort : c'est au club de trancher.
+        if edite_le and edite_le > x['le']:
+            print(u'  !! %s : le PDF du %s, plus recent que la derogation du %s, place toujours '
+                  u'la rencontre %s : verifier qu\'elle tient' % (m['date'], edite_le, x['le'], ou(m['domicile'])))
+        print(u'  .. %s : derogation du %s appliquee, %s au lieu de %s (PDF)'
+              % (m['date'], x['le'], camp(x['domicile']), camp(m['domicile'])))
+        m['domicile'] = bool(x['domicile'])
+    for date in sorted(set(derog) - vues):
+        print(u'  !! %s : derogation dans %s, mais aucune rencontre du PDF a cette date'
+              % (date, SOURCE_MATCHS))
+    return mbc
+
+
 def synchroniser_scores(mbc, essai=False):
     """Recopie les scores du PDF dans data/matchs.json.
 
@@ -481,6 +555,38 @@ def regenerer_matchs():
     bm.main()
 
 
+def camps_changes(avant, mbc):
+    """Les dates dont le camp publie change par rapport au tableau deja dans
+    index.html (un <li> mx-row--dom est une reception). L'affiche a ete dessinee
+    pour ce tableau : si un camp change, elle est perimee. On compare les deux
+    tableaux plutot que la liste des derogations, parce que l'annulation d'une
+    derogation vide cette liste alors que l'affiche est bel et bien a refaire."""
+    avant_dom = set(re.findall(r'mx-row--dom" id="match-[^"]*" data-date="(\d{4}-\d{2}-\d{2})"', avant))
+    apres_dom = {m['date'] for m in mbc if m['domicile']}
+    return sorted(avant_dom ^ apres_dom)
+
+
+def regenerer_affiche(mbc):
+    """L'affiche partageable, redessinee depuis la liste lue dans le PDF
+    (derogations comprises), puis repointee dans index.html ; les anciens
+    fichiers, devenus orphelins, sont retires."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('aff', '.claude/affiche-calendrier.py')
+    aff = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(aff)
+    anciens = set(glob.glob('assets/affiches/calendrier-phase1-2026-2027*'))
+    nouveau = aff.produire(mbc, AFFICHE)
+    print('  affiche regeneree -> %s.png (+ 3 webp)' % nouveau)
+
+    # repointer les URL de l'affiche dans la page, puis retirer les orphelins
+    html = repointer_affiche(io.open('index.html', encoding='utf-8').read(), nouveau)
+    io.open('index.html', 'w', encoding='utf-8', newline='\n').write(html)
+    gardes = set(glob.glob('assets/affiches/%s*' % nouveau))
+    for vieux in sorted(anciens - gardes):
+        os.remove(vieux)
+        print('  retire -> %s' % vieux)
+
+
 def main():
     essai = '--essai' in sys.argv
     depuis_archive = '--archive' in sys.argv
@@ -503,6 +609,13 @@ def main():
     print('  source : %s' % os.path.basename(pdf))
     print('  edite le %(edite_le)s  ->  %(rencontres)d rencontres, %(journees)d journees' % r)
     print('  MBC : %(domicile)d a domicile, %(exterieur)d en deplacement' % r)
+    # Les derogations connues du club passent AVANT tout le reste : le tableau,
+    # le decompte, les postes et l'affiche doivent dire ce que disent les fiches.
+    appliquer_derogations(mbc, lire_cal.edite_le_date(pdf))
+    nb_dom = sum(1 for m in mbc if m['domicile'])
+    if nb_dom != r['domicile']:
+        print('  publie : %d a domicile, %d en deplacement (derogations comprises)'
+              % (nb_dom, len(mbc) - nb_dom))
 
     bnv = json.load(io.open(BENEVOLES, encoding='utf-8'))
     postes, affect = bnv['postes'], bnv['matchs']
@@ -538,7 +651,7 @@ def main():
     html = remplacer(html, 'calendrier:lignes',
                      lignes_html(mbc, postes, affect, slugs, durees, courts, libres, scores, noms))
     mot = {1: 'un', 2: 'deux', 3: 'trois', 4: 'quatre',
-           5: 'cinq', 6: 'six', 7: 'sept'}[r['domicile']]
+           5: 'cinq', 6: 'six', 7: 'sept'}[nb_dom]
     html = remplacer_compte(html, mot)
 
     for a in verifier_coherence(html, mbc):
@@ -550,6 +663,9 @@ def main():
     synchroniser_scores(mbc, essai=essai)
 
     if essai:
+        change = camps_changes(avant, mbc)
+        if change:
+            print(u"  .. camps modifies le %s : l'affiche sera redessinee" % ', '.join(change))
         print('\n  essai : %s' % ('des ecarts subsistent' if html != avant else 'index.html est deja a jour'))
         return 0
 
@@ -559,28 +675,22 @@ def main():
     regenerer_matchs()
 
     if depuis_archive:
-        print('  (--archive : PDF et affiche laisses tels quels)')
+        # Un camp a change (derogation ajoutee ou annulee) : l'affiche, dessinee
+        # pour l'ancien tableau, est perimee. --affiche force le dessin.
+        change = camps_changes(avant, mbc)
+        if '--affiche' in sys.argv or change:
+            regenerer_affiche(mbc)
+            print('  (--archive : PDF laisse tel quel, affiche redessinee%s)'
+                  % (' : camps modifies le %s' % ', '.join(change) if change else ''))
+        else:
+            print('  (--archive : PDF et affiche laisses tels quels)')
         print('\n  ne pas oublier : python .claude/bump-assets.py')
         return 0
 
     shutil.copyfile(pdf, ARCHIVE)
     print('  PDF archive -> %s' % ARCHIVE)
 
-    import importlib.util
-    spec = importlib.util.spec_from_file_location('aff', '.claude/affiche-calendrier.py')
-    aff = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(aff)
-    anciens = set(glob.glob('assets/affiches/calendrier-phase1-2026-2027*'))
-    nouveau = aff.produire(mbc, AFFICHE)
-    print('  affiche regeneree -> %s.png (+ 3 webp)' % nouveau)
-
-    # repointer les URL de l'affiche dans la page, puis retirer les orphelins
-    html = repointer_affiche(io.open('index.html', encoding='utf-8').read(), nouveau)
-    io.open('index.html', 'w', encoding='utf-8', newline='\n').write(html)
-    gardes = set(glob.glob('assets/affiches/%s*' % nouveau))
-    for vieux in sorted(anciens - gardes):
-        os.remove(vieux)
-        print('  retire -> %s' % vieux)
+    regenerer_affiche(mbc)
 
     print('\n  ne pas oublier : python .claude/bump-assets.py')
     return 0

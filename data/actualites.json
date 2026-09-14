@@ -240,10 +240,11 @@
     {
       "slug": "calendrier-phase-1-prm-2026-2027",
       "date": "2026-09-06",
+      "dateModifiee": "2026-09-14",
       "categorie": "Compétition",
       "titre": "Le calendrier de la phase 1 est publié",
       "titreCourt": "Calendrier phase 1",
-      "chapeau": "Sept journées de Pré-Régionale Masculine, toutes le vendredi à 20h30, dont quatre à domicile au Gymnase de La Montagne. Entrée libre.",
+      "chapeau": "Sept journées de Pré-Régionale Masculine, toutes le vendredi à 20h30, dont cinq à domicile au Gymnase de La Montagne. Entrée libre.",
       "image": {
         "base": "assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne",
         "crans": [
@@ -263,11 +264,11 @@
         },
         {
           "t": "h2",
-          "c": "Quatre rencontres à la maison"
+          "c": "Cinq rencontres à la maison"
         },
         {
           "t": "p",
-          "c": "Quatre des sept journées se jouent au <b>Gymnase de La Montagne</b>, le vendredi à 20h30, et l'entrée est libre. Les trois autres sont des déplacements. Chaque rencontre a désormais sa fiche sur le site, avec la date, le lieu et le fichier à ajouter à son agenda."
+          "c": "Cinq des sept journées se jouent au <b>Gymnase de La Montagne</b>, le vendredi à 20h30, et l'entrée est libre. Les deux autres sont des déplacements. Chaque rencontre a désormais sa fiche sur le site, avec la date, le lieu et le fichier à ajouter à son agenda."
         },
         {
           "t": "h2",
@@ -275,7 +276,7 @@
         },
         {
           "t": "p",
-          "c": "Le règlement sportif particulier de la compétition autorise une dérogation jusqu'à cinq jours avant chaque rencontre : une date ou un terrain peuvent changer en cours de saison. Le site est regénéré à partir du calendrier officiel de la ligue, ce qui évite de laisser une information périmée en ligne."
+          "c": "Le règlement sportif particulier de la compétition autorise une dérogation jusqu'à cinq jours avant chaque rencontre : une date ou un terrain peuvent changer en cours de saison. Le site est regénéré à partir du calendrier officiel de la ligue, ce qui évite de laisser une information périmée en ligne. C'est déjà arrivé : la rencontre du 23 octobre contre Sainte-Rose, placée là-bas par le calendrier de la ligue, a été inversée et se jouera au Gymnase de La Montagne."
         },
         {
           "t": "h2",

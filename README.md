@@ -100,7 +100,7 @@ passage — c'est pour l'éviter que l'original est versionné.
 - Balises Open Graph / Twitter Cards, URL canonique, `lang="fr"`.
 - Données structurées **Schema.org** : `SportsClub` (avec `@id`, `geo`, `openingHoursSpecification`, `member`), `VideoObject`, `FAQPage`, `BreadcrumbList`, `ItemList`, `NewsArticle`.
 - **`SportsEvent` : un par rencontre, sur SA page** (`/matchs/<slug>/`), et nulle part ailleurs. La page d'accueil ne déclare qu'une `ItemList` qui pointe vers elles. Deux nœuds `Event` pour un même match sur deux URL différentes, c'est de la duplication : Google choisit alors lui-même la page à montrer.
-- Aucun `SportsEvent` n'est écrit quand le lieu est inconnu — un `Event` sans `location` est une **erreur** Search Console, pas un avertissement. Les trois matchs en déplacement n'en ont donc pas.
+- Aucun `SportsEvent` n'est écrit quand le lieu est inconnu — un `Event` sans `location` est une **erreur** Search Console, pas un avertissement. Les matchs en déplacement n'en ont donc pas.
 - `sitemap.xml`, `robots.txt`.
 - Le domaine de référence est **`https://mbc974.com`** (canonical, sitemap, Open Graph, JSON-LD). Les comptes `@mbc974.re` sont les **réseaux sociaux** (à ne pas confondre avec le domaine web).
 

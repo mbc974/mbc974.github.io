@@ -1,11 +1,12 @@
 {
-  "_lisezmoi": "Source UNIQUE de la saison des seniors. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite, dans cet ordre, « python .claude/build-og-matchs.py », « python .claude/set-calendrier-prm.py --archive » (qui relance build-matchs.py), « python .claude/bump-assets.py » et « python .claude/build-sitemap.py ». Tout en découle : /matchs/ (le Match Center complet), les fiches de rencontre, le bandeau sous le hero, le Match Center de l'accueil et les données structurées. DEUX LISTES : « matchs » = les rencontres confirmées (une fiche /matchs/<slug>/ chacune) ; « echeances » = les dates fixées par la Ligue sans affiche connue (2e phase, phase finale, Trophée Coupe de France). SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 73, \"adverse\": 52}, toujours du point de vue du MBC) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette, mais n'est jamais annoncée comme prochain match. UNE AFFICHE OFFICIELLE DE 2e PHASE OU DE COUPE : l'ajouter dans « matchs » avec son slug, sa « competition », sa « phase » et sa « journee » + « manche » (ou son « tour ») — l'échéance correspondante disparaît d'elle-même, il n'y a rien à retirer.",
+  "_lisezmoi": "Source UNIQUE de la saison des seniors. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite, dans cet ordre, « python .claude/build-og-matchs.py », « python .claude/set-calendrier-prm.py --archive » (qui relance build-matchs.py), « python .claude/bump-assets.py » et « python .claude/build-sitemap.py ». Tout en découle : /matchs/ (le Match Center complet), les fiches de rencontre, le bandeau sous le hero, le Match Center de l'accueil et les données structurées. DEUX LISTES : « matchs » = les rencontres confirmées (une fiche /matchs/<slug>/ chacune) ; « echeances » = les dates fixées par la Ligue sans affiche connue (2e phase, phase finale, Trophée Coupe de France). SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 73, \"adverse\": 52}, toujours du point de vue du MBC) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette, mais n'est jamais annoncée comme prochain match. UNE AFFICHE OFFICIELLE DE 2e PHASE OU DE COUPE : l'ajouter dans « matchs » avec son slug, sa « competition », sa « phase » et sa « journee » + « manche » (ou son « tour ») — l'échéance correspondante disparaît d'elle-même, il n'y a rien à retirer. UNE DÉROGATION (rencontre inversée après la parution du PDF de la Ligue) : modifier la rencontre (« domicile », « lieu », « entreeLibre », « benevoles », « intro ») et lui ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. Puis relancer la chaîne habituelle ci-dessus : set-calendrier-prm.py reporte la dérogation sur le tableau et l'affiche de l'accueil (redessinée dès qu'un camp change) et signale le jour où un PDF réédité l'intègre. L'ANNULER : retirer « derogation », remettre la rencontre comme avant, et relancer la même chaîne.",
   "saison": "2026/2027",
   "_sources": {
     "phase1": "CALENDRIER SENIOR PRM NORD.pdf, édition du 25/08/2026 à 21:21:42 (archivé : assets/documents/calendrier-prm-nord-2026-2027.pdf). L'équipe nommée en premier reçoit (art. 10 du règlement).",
     "saison": "Calendrier général sportif 2026-2027, version V2 (LRBB), lignes « PRM D1 » et « PRM D2 » : dates de 2e phase (identiques dans les deux divisions), de phase finale (Division 1 seulement) et du Trophée Coupe de France (TRCF).",
     "format": "Règlement sportif particulier PRM 2026/2027 (assets/documents/reglement-sportif-prm-2026-2027.pdf) : art. 3 (phases ; Division 1 = 4 premiers de chaque poule, Division 2 = 5e à 8e) et art. 4 (horaire officiel : vendredi 20h30).",
     "scores": "J1 du 11/09/2026 : 73-52, résultat communiqué par le club le 13/09/2026. L'édition du 25/08 du PDF de la Ligue ne porte encore aucun score.",
+    "derogations": "J5 du 23/10/2026 contre Sainte-Rose. Rencontre inversée : le club (Alexandre) a communiqué le 14/09/2026 qu'elle se jouera au Gymnase de La Montagne. Le PDF de la Ligue du 25/08/2026 la place à Sainte-Rose. Voir le champ « derogation » de la rencontre.",
     "coupe": "Tours désignés d'après la légende du calendrier général : le 29/11/2026 est en jaune (« Finales régionales »), le 12/12/2026 en vert (« Finales zone »). La case TRCF du vendredi 04/09/2026, antérieure à la J1, n'est pas reprise : rien ne dit si le MBC l'a disputée."
   },
   "competition": {
@@ -185,18 +186,23 @@
       "date": "2026-10-23",
       "heure": "20:30",
       "duree": 150,
-      "domicile": false,
+      "domicile": true,
+      "derogation": { "domicile": true, "le": "2026-09-14", "source": "Rencontre inversée : le club (Alexandre) a communiqué le 14/09/2026 qu'elle se jouera au Gymnase de La Montagne. Le PDF de la Ligue du 25/08/2026 la place à Sainte-Rose." },
       "adversaire": "Basket Club Jeunesse Sportive Sainte-Rosienne",
       "adversaireCourt": "Sainte-Rose",
       "sigle": "BJSSR",
       "logo": "bjssr",
-      "lieu": null,
-      "entreeLibre": false,
+      "lieu": "gymnase",
+      "entreeLibre": true,
       "affiche": null,
       "statut": "a-venir",
       "score": null,
-      "benevoles": [],
-      "intro": "Cinquième journée, en déplacement chez le Basket Club Jeunesse Sportive Sainte-Rosienne."
+      "benevoles": [
+        "Responsable de salle",
+        "Chrono",
+        "eMarque"
+      ],
+      "intro": "Cinquième journée du championnat et quatrième rencontre à domicile, au Gymnase de La Montagne. Entrée libre. Le calendrier de la Ligue la plaçait à Sainte-Rose : la rencontre a été inversée."
     },
     {
       "slug": "mbc-sainte-marie-2-30-octobre-2026",
@@ -221,7 +227,7 @@
         "Chrono",
         "eMarque"
       ],
-      "intro": "Sixième journée du championnat et quatrième — et dernière — rencontre à domicile de la phase 1, au Gymnase de La Montagne. Entrée libre."
+      "intro": "Sixième journée du championnat et cinquième — et dernière — rencontre à domicile de la phase 1, au Gymnase de La Montagne. Entrée libre."
     },
     {
       "slug": "mbc-picks-la-possession-3-6-novembre-2026",
