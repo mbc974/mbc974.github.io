@@ -188,9 +188,11 @@ def entete_enfant():
 
 
 def pied_enfant():
-    """Le pied de page de l'accueil, pour une page enfant. V184, 14/09/2026 :
-    les 23 pages enfants gardaient l'ancien pied .seo-foot, une ligne de
-    liens, quand l'accueil portait le grand pied .site-footer.
+    """Le pied de page de l'accueil, pour une page enfant et pour
+    adhesion.html. V184, 14/09/2026 : les 23 pages enfants gardaient l'ancien
+    pied .seo-foot, une ligne de liens, quand l'accueil portait le grand pied
+    .site-footer ; adhesion.html avait sa propre variante (« Documents &
+    garanties »). Les liens rendus absolus valent aussi a la racine.
 
     Source : index.html, entre ses marqueurs PIED. Deux retouches, pas plus :
     - les mentions legales detaillees (details#legal) restent sur l'accueil :
@@ -206,13 +208,21 @@ def pied_enfant():
     bloc = s[i:j].strip("\n")
     if bloc.count('<footer class="site-footer">') != 1:
         raise SystemExit("!! %s : pied de page introuvable entre les marqueurs PIED" % PIED_SOURCE)
-    bloc, n = re.subn(r'\n\s*<!-- Les mentions detaillees[\s\S]*?-->\s*'
+    # Le commentaire qui precede les mentions part avec elles, quel que soit
+    # son texte : seul le bloc details#legal fait foi.
+    bloc, n = re.subn(r'(?:\n\s*<!--(?:(?!-->)[\s\S])*-->)?\s*'
                       r'<details class="footer-legal" id="legal">[\s\S]*?</details>', '', bloc)
     if n != 1:
         raise SystemExit("!! %s : mentions legales (#legal) introuvables dans le pied" % PIED_SOURCE)
-    # Absolu : tout lien qui ne commence ni par / ni par un protocole
-    # (https:, mailto:, tel:). « #matchs » devient « /#matchs ».
-    bloc = re.sub(r'href="(?![a-z][a-z0-9+.-]*:|/)([^"]*)"', r'href="/\1"', bloc)
+    # Absolu : tout attribut href (ni xlink:href ni data-href) dont la valeur
+    # ne commence ni par / ni par un protocole (https:, mailto:, tel:, quelle
+    # que soit la casse). « #matchs » devient « /#matchs ».
+    bloc = re.sub(r'(?<![\w:-])href="(?![A-Za-z][A-Za-z0-9+.-]*:|/)([^"]*)"', r'href="/\1"', bloc)
+    # Et rien ne doit rester relatif : un href entre apostrophes ou sans
+    # guillemets partirait de la page enfant sans que personne ne le voie.
+    restes = re.findall(r'''(?<![\w:-])href\s*=\s*(?:"(?![A-Za-z][A-Za-z0-9+.-]*:|/)[^"]*"|'[^']*'|[^\s"'>]+)''', bloc)
+    if restes:
+        raise SystemExit("!! %s : lien du pied reste relatif : %s" % (PIED_SOURCE, ", ".join(restes[:5])))
     return (u"<!-- PIED:DEBUT — recopié d'index.html par .claude/set-entete.py ou un "
             u"générateur (build-matchs.py, pied_enfant) : ne pas éditer ici -->\n%s\n"
             u"<!-- PIED:FIN -->" % bloc)

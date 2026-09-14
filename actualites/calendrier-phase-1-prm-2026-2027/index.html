@@ -168,6 +168,9 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <!-- PIED:DEBUT — recopié d'index.html par .claude/set-entete.py ou un générateur (build-matchs.py, pied_enfant) : ne pas éditer ici -->
 <footer class="site-footer">
   <div class="wrap">
+    <!-- Titre invisible (lecteurs d'écran) : les h3 du pied se rangent dessous.
+         Sans lui, /effectif/ et /actualites/ passaient du h1 aux h3 du pied. -->
+    <h2 class="sr-only">Le club : liens et contact</h2>
 
     <div class="footer__top">
       <div class="footer__brand">
@@ -236,7 +239,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="footer__bottom">
       <p class="footer__legal">&copy; 2026 MBC La Montagne Basket Club &middot; Assoc. loi 1901 &middot; Saint-Denis (974)</p>
       <p class="footer__links"><a href="/#legal">Mentions légales</a> <a href="/confidentialite/">Confidentialité</a> <a href="/confidentialite/#cookies" data-mbc-cookies>Gérer mes cookies</a></p>
-      <p class="footer__signature">Made with <span class="sig-heart" aria-hidden="true">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
+      <p class="footer__signature" lang="en">Made with <span class="sig-heart" role="img" aria-label="love">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
     </div>
   </div>
 </footer>

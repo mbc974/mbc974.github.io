@@ -154,7 +154,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <h1 class="h2">Les matchs <span class="hl">de la saison</span></h1>
         <p class="sec-head__sub">L’équipe seniors du MBC La Montagne, en Pré-Régionale Masculine (zone Nord) et en Trophée Coupe de France. À domicile, rendez-vous au Gymnase de La Montagne, à Saint-Denis&nbsp;: l’entrée est libre.</p>
       </header>
-      <div class="mc" data-mc="saison" data-publie="2026-09-14T14:06">
+      <div class="mc" data-mc="saison" data-publie="2026-09-14T15:22">
 <div class="mc__duo">
   <div class="mc__slot" data-mc-slot="dernier">
     <article class="mc-res mc-res--v" data-id="m-2026-09-11" data-debut="2026-09-11T20:30:00+04:00" data-fin="2026-09-11T23:00:00+04:00">
@@ -339,6 +339,9 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <!-- PIED:DEBUT — recopié d'index.html par .claude/set-entete.py ou un générateur (build-matchs.py, pied_enfant) : ne pas éditer ici -->
 <footer class="site-footer">
   <div class="wrap">
+    <!-- Titre invisible (lecteurs d'écran) : les h3 du pied se rangent dessous.
+         Sans lui, /effectif/ et /actualites/ passaient du h1 aux h3 du pied. -->
+    <h2 class="sr-only">Le club : liens et contact</h2>
 
     <div class="footer__top">
       <div class="footer__brand">
@@ -407,7 +410,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="footer__bottom">
       <p class="footer__legal">&copy; 2026 MBC La Montagne Basket Club &middot; Assoc. loi 1901 &middot; Saint-Denis (974)</p>
       <p class="footer__links"><a href="/#legal">Mentions légales</a> <a href="/confidentialite/">Confidentialité</a> <a href="/confidentialite/#cookies" data-mbc-cookies>Gérer mes cookies</a></p>
-      <p class="footer__signature">Made with <span class="sig-heart" aria-hidden="true">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
+      <p class="footer__signature" lang="en">Made with <span class="sig-heart" role="img" aria-label="love">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
     </div>
   </div>
 </footer>

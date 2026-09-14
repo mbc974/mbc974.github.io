@@ -60,6 +60,7 @@ suivante.
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
 | Le sitemap | rien, il se déduit des pages | `python .claude/build-sitemap.py` |
 | La feuille de style | `style.css` | `python .claude/build-css.py` |
+| Le menu, l'en-tête ou le pied de page | `index.html` (le menu aussi dans `adhesion.html`) | `python .claude/set-entete.py` puis les générateurs (§ 27) |
 
 **L'ordre compte.** `bump-assets.py` se lance **en dernier** : les générateurs relèvent le
 `?v=` sur une page existante, donc bumper avant leur ferait écrire une version périmée.
@@ -263,6 +264,7 @@ python .claude/build-og-matchs.py --essai  # les 7 affiches de partage existent-
 python .claude/build-effectif.py --essai   # les 10 joueurs sont-ils tous là ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
+python .claude/set-entete.py --check   # en-tête et pied de page à jour sur les 24 pages ?
 python .claude/build-sitemap.py --essai # le sitemap est-il encore à jour ?
 python .claude/build-css.py --check    # style.min.css correspond-il à style.css ?
 python .claude/bump-assets.py --check  # les ?v= des 25 pages sont-ils à jour ?
@@ -2271,15 +2273,21 @@ une ligne de liens. Il est aligné de la même façon.
   attendait `.seo-foot` pour s'effacer. Ce module est retiré. `script.js`,
   chargé partout depuis V182, fait exactement la même chose (`floatCta`, qui
   cherche `.site-footer, .seo-foot`).
-- **`adhesion.html` garde son pied** : c'est déjà un `.site-footer`, avec un
-  bloc « Documents & garanties » (RNA, SIREN) utile sur la page de paiement.
-  L'aligner ferait perdre ce bloc ; c'est une décision à part.
+- **`adhesion.html` aussi**, à la demande d'Alexandre, le même jour. Son pied
+  à part (« Documents & garanties », liens « Agir ») est remplacé par le bloc
+  commun. `set-entete.py` s'en charge et ne touche qu'au pied : l'en-tête
+  d'`adhesion.html` reste la source de celui des pages enfants, et reste fixe.
+  Le RNA et le SIREN ne sont plus affichés sur cette page ; ils restent dans
+  les mentions légales de l'accueil (`/#legal`).
 - **Aucun octet de CSS ni de JS** : les `?v=` ne bougent pas.
 
 Vérifié le 14/09 (banc CDP, 25 pages à 375, 390, 430 et 1440 px) :
 
 - **Structure** : un seul `<footer>` par page, plus aucune `.seo-foot`, et
-  `#legal` sur l'accueil seulement.
+  `#legal` sur l'accueil seulement. Le bloc `PIED` est identique, octet pour
+  octet, sur les 24 pages qui le reçoivent (23 enfants et `adhesion.html`).
+- **`adhesion.html`** : la barre du haut reste fixe, et la barre CTA mobile
+  s'efface sur le nouveau pied comme ailleurs.
 - **Contenu** : aucun lien relatif dans un pied enfant, et le même texte que
   l'accueil, mentions détaillées exceptées.
 - **Affichage** : le pied est pleine largeur et ne chevauche jamais `<main>`,
@@ -2301,13 +2309,46 @@ supprimer les fichiers hachés, les ré-extraire avec
 puis relancer `bump-assets.py`. Un simple `checkout` ne suffit pas : git juge
 ces fichiers inchangés. Vérifier avec `git ls-files --eol` (`w/lf`).
 
+**Relecture contradictoire du 14/09** : 5 angles (chaîne, liens et SEO,
+accessibilité, CSS, comportement), puis un contradicteur par constat, en
+lecture seule. Sur 12 constats, 7 ont été réfutés : le lien « Matchs » vers
+`/#matchs`, « L'équipe », l'impression du grand pied, l'arrêt de
+`--check`. Les 5 autres sont corrigés :
+
+- **Saut de titres** : sur `/effectif/` et `/actualites/`, on passait du `h1`
+  aux `h3` du pied. Le pied porte désormais un titre `h2` invisible
+  (`.sr-only`, « Le club : liens et contact »). Aucun CSS n'a changé.
+- **La signature** « Made with ❤ by Alex » est en anglais : `lang="en"`. Le
+  cœur, qui portait `aria-hidden`, a désormais un nom lu (`role="img"`,
+  `aria-label="love"`) ; avant, on entendait « Made with by Alex ».
+- **`pied_enfant()` durci** :
+  - le test du protocole ne dépend plus de la casse ;
+  - `xlink:href` et `data-href` ne sont plus touchés ;
+  - un `href` entre apostrophes ou sans guillemets arrête le script ;
+  - le commentaire qui précède `#legal` peut changer de texte.
+  Onze cas ont été testés en mémoire, et le bloc produit ne change pas.
+- **La documentation** : `set-entete.py --check` entre dans les tests
+  avant publication (§ 7) et dans le tableau du § 1 bis. Le décompte de
+  la CSS morte est corrigé.
+
+La preuve que ces retouches ne changent rien à l'écran : une empreinte du
+pied de page, soit la boîte de chaque élément et 14 styles calculés, sur 7
+pages à 390 et 1440 px. Elle a été relevée avant, puis une seconde fois à
+code identique (0 écart), puis après : **0 écart sur 1 218 éléments**. Le plan
+des titres des 25 pages ne montre plus aucun saut dû au pied. Le seul saut
+restant, `h2` vers `h4` sur `/creneaux/`, est antérieur.
+
 ### Ce qui reste
 
-- **CSS morte** : `.seo-top` (une trentaine de règles), `html:has(.seo-top)`
-  et désormais `.seo-foot` (quatre règles). À purger avec la preuve
-  d'empreinte des styles calculés (§ « Prouver une non-régression »).
-- **Le pied d'`adhesion.html`** : voir plus haut. Il reste à décider s'il
-  prend le pied commun.
+- **CSS morte** : `.seo-top` (une trentaine de règles), `html:has(.seo-top)`,
+  `.seo-foot` et `.seo-foot__links` (six règles), et, depuis l'alignement
+  d'`adhesion.html`, les classes de son ancien pied : `.footer__tag`,
+  `.footer__actions`, `.footer__trust*`, `.footer__mini-logo` et
+  `.footer__brand .small`. Le bloc « petit logo MBC dans la barre basse »
+  (style.css, vers la ligne 1444) n'existait que pour `.footer__mini-logo` :
+  ses règles sur `.footer__bottom` et `.footer__legal` sont à examiner lors de
+  la purge. À purger avec la preuve d'empreinte des styles calculés
+  (§ « Prouver une non-régression »).
 
 ## 28. Le reportage de Réunion la 1ère : une vidéo tierce en façade (14/09/2026)
 

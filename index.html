@@ -915,7 +915,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
          et une seule reponse a la question « quand joue-t-on ». -->
 
     <!-- MATCH-CENTER:DEBUT — genere par .claude/build-match-center.py (lance par build-matchs.py), ne pas editer a la main -->
-    <div class="mc reveal" data-mc="accueil" data-publie="2026-09-14T14:06">
+    <div class="mc reveal" data-mc="accueil" data-publie="2026-09-14T15:22">
 <div class="mc__duo">
   <div class="mc__slot" data-mc-slot="dernier">
     <article class="mc-res mc-res--v" data-id="m-2026-09-11" data-debut="2026-09-11T20:30:00+04:00" data-fin="2026-09-11T23:00:00+04:00">
@@ -1702,12 +1702,15 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 
 <!-- ===== Footer ===== -->
 <!-- PIED:DEBUT — le pied de page de tout le site (V184, 14/09/2026). C'est la
-     SOURCE de celui des 23 pages enfants : set-entete.py et les générateurs le
+     SOURCE de celui des 23 pages enfants et d'adhesion.html : set-entete.py et les générateurs le
      recopient par pied_enfant() (build-matchs.py), liens rendus absolus, sans
      les mentions légales détaillées, qui restent ici seules (#legal).
      Après une modification : MAINTENANCE.md § 27. -->
 <footer class="site-footer">
   <div class="wrap">
+    <!-- Titre invisible (lecteurs d'écran) : les h3 du pied se rangent dessous.
+         Sans lui, /effectif/ et /actualites/ passaient du h1 aux h3 du pied. -->
+    <h2 class="sr-only">Le club : liens et contact</h2>
 
     <div class="footer__top">
       <div class="footer__brand">
@@ -1776,12 +1779,13 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <div class="footer__bottom">
       <p class="footer__legal">&copy; 2026 MBC La Montagne Basket Club &middot; Assoc. loi 1901 &middot; Saint-Denis (974)</p>
       <p class="footer__links"><a href="#legal">Mentions légales</a> <a href="confidentialite/">Confidentialité</a> <a href="confidentialite/#cookies" data-mbc-cookies>Gérer mes cookies</a></p>
-      <p class="footer__signature">Made with <span class="sig-heart" aria-hidden="true">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
+      <p class="footer__signature" lang="en">Made with <span class="sig-heart" role="img" aria-label="love">&#10084;&#65039;</span> by <span class="sig-name">Alex</span> <i aria-hidden="true"></i> <span class="footer__hand">#MBC974</span></p>
     </div>
 
-    <!-- Les mentions detaillees restent sur la page : l ancre #legal est
-         citee par les 9 pages enfants, adhesion.html et 404.html. Repliees,
-         elles ne pesent qu une ligne. -->
+    <!-- Les mentions detaillees restent sur l accueil seul : l ancre #legal
+         est citee par le pied des 24 autres pages (/#legal) et par 404.html,
+         et pied_enfant() les retire des copies. Repliees, elles ne pesent
+         qu une ligne. -->
     <details class="footer-legal" id="legal">
       <summary>Mentions légales &amp; confidentialité</summary>
       <div class="footer-legal__body">

@@ -15,7 +15,9 @@ l'alignement « à décider » : il est décidé, pour toutes les pages.
 
 Le pied de page avait le même écart : le grand pied .site-footer sur l'accueil
 (le club, les liens utiles, le contact, l'affiliation FFBB), une seule ligne de
-liens .seo-foot ailleurs. Il est aligné le 14/09/2026 (V184).
+liens .seo-foot ailleurs. Il est aligné le 14/09/2026 (V184) sur les pages
+enfants, puis, à la demande d'Alexandre, sur adhesion.html. Sur cette page, seul
+le pied est remplacé : son en-tête est la source de celui des pages enfants.
 
 LES SOURCES
 -----------
@@ -136,6 +138,22 @@ def main():
         changees.append(rel)
         if not check:
             io.open(chemin, 'w', encoding='utf-8', newline='').write(neuf)
+
+    # adhesion.html (14/09/2026) : le pied commun, lui aussi. Son en-tête n'est
+    # pas touché : c'est la SOURCE de celui des pages enfants (marqueurs
+    # EN-TETE), et il reste fixe, comme celui de l'accueil.
+    s = io.open('adhesion.html', encoding='utf-8').read()
+    b = bornes(s, PDEB, PFIN, '<footer class="site-footer">', '</footer>')
+    if b is None:
+        sans_pied.append('adhesion.html')
+    else:
+        neuf = s[:b[0]] + pied + s[b[1]:]
+        if neuf == s:
+            a_jour += 1
+        else:
+            changees.append('adhesion.html')
+            if not check:
+                io.open('adhesion.html', 'w', encoding='utf-8', newline='').write(neuf)
 
     derive = False
     mi = menu(io.open('index.html', encoding='utf-8').read())
