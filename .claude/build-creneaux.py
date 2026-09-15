@@ -620,10 +620,14 @@ def page_creneaux(d, maj_le):
 %(rappels)s
       </ul>
 
-      <p class="cal-note">Les créneaux peuvent évoluer en cours de saison — contactez-nous
-        pour confirmer celui de votre catégorie. Planning à jour au %(maj)s.</p>
-      <p class="cal-note"><a href="/matchs/">Voir le calendrier des rencontres</a> —
-        et <a href="/adhesion.html">s'inscrire pour la saison %(saison)s</a>.</p>
+      <div class="cal-fin">
+        <p class="cal-fin__note"><svg class="cal-fin__i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>Les créneaux peuvent évoluer en cours de saison — <a href="/#contact">contactez-nous</a>
+          pour confirmer celui de votre catégorie. Planning à jour au %(maj)s.</p>
+        <ul class="cal-fin__liens">
+          <li><a class="cal-fin__lien" href="/matchs/"><span class="cal-fin__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="cal-fin__t"><b>Calendrier des rencontres</b><small>Saison %(saison)s</small></span><svg class="cal-fin__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="cal-fin__lien" href="/adhesion.html"><span class="cal-fin__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5M19 8v6M16 11h6"/></svg></span><span class="cal-fin__t"><b>S'inscrire au club</b><small>Pour la saison %(saison)s</small></span><svg class="cal-fin__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </div>
       <p class="ml__retour"><a href="/">Revenir à l'accueil</a></p>
     </div>
   </section>

@@ -1983,15 +1983,19 @@ MBC.dateLongue = function (d, avecAnnee) {
   }
   /* Ouvrir ou replier en largeur : de la largeur mesurée vers celle du
      contenu, puis retour à « auto », pour qu'un changement de taille de
-     police ne laisse pas une largeur figée en pixels. */
+     police ne laisse pas une largeur figée en pixels. Pendant l'animation,
+     les largeurs sont en em (V188) : la taille du prix glisse elle aussi
+     d'un état à l'autre, et une largeur en em la suit, là où une largeur
+     en px resterait calée sur la taille de départ. */
   function ouvrir(el, oui, anime) {
     window.clearTimeout(el.kcT);
     el.style.opacity = oui ? '1' : '0';
     if (!anime) { el.style.width = oui ? 'auto' : '0px'; return; }
-    var cible = oui ? el.firstElementChild.getBoundingClientRect().width : 0;
-    el.style.width = el.getBoundingClientRect().width + 'px';
+    var fs = parseFloat(window.getComputedStyle(el).fontSize) || 16;
+    var cible = oui ? el.firstElementChild.getBoundingClientRect().width / fs : 0;
+    el.style.width = (el.getBoundingClientRect().width / fs) + 'em';
     void el.offsetWidth;
-    el.style.width = cible + 'px';
+    el.style.width = cible + 'em';
     if (oui) el.kcT = window.setTimeout(function () { el.style.width = 'auto'; }, 560);
   }
 

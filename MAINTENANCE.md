@@ -2850,6 +2850,8 @@ Six demandes d'Alexandre, le 15/09, après la mise en ligne des photos de la J1.
   occupe au plus 83 % de la carte. Le prix passe de 43 à 61 px à 320, de 43 à
   78 px à 390, de 49 à 82 px à 1 440 ; plafond 90 px.
 - Sans unités de conteneur (`@supports`), la taille d'origine reste.
+- Tailles revues au § 32 (V188) : 120 px en une fois, « € » à la taille
+  du chiffre.
 
 **« Sur le terrain » : deux photos retirées, le zoom atterrit sur l'équipe.**
 - Retirées de la mosaïque : « le gymnase un samedi matin » (le parquet
@@ -2967,3 +2969,104 @@ confirmés par un sceptique, tous corrigés :
 - des commentaires et des phrases de ce document restés sur l'ancienne tuile
   d'arrivée, sur six tuiles, ou sur une signature « à 60 % d'opacité »
   qu'elle n'avait plus.
+
+## 32. « 95 € » d'un seul tenant, la fin du bloc créneaux, l'effectif avant les matchs (15/09/2026)
+
+Trois demandes d'Alexandre, le 15/09, en relisant le site en ligne. V187
+n'y était pas encore : elle a été poussée sur le même message (« Push tout
+ça et mets en ligne »).
+
+**« 95 € » : le « € » en blanc, à la taille du chiffre, et plus grand.**
+« Met le signe € en blanc et en même taille que le 95, qui n'est pas encore
+assez gros ».
+- `.kc__cur` perd son `font-size:.6em` et son orange : le symbole hérite de
+  la taille et du blanc du chiffre. Même traitement sur adhesion.html, pour
+  le bento (`.adh-bento__cur`) et le module de paiement (`.pay__cur`).
+- Anton dessine son « € » plus bas que ses chiffres (ascendante de 77 contre
+  86-87, `measureText` à 100 px) : à corps égal, il paraissait encore 11 %
+  plus petit. Les trois symboles reçoivent `transform:scale(1.13)` depuis le
+  pied. Leur hauteur peinte est celle des chiffres (rapport mesuré : 1,000),
+  sans rien changer à la mise en page : la carte garde sa hauteur, la ligne
+  de base ne bouge pas.
+- Deux tailles, une par état, en unités de conteneur (bloc V187 de
+  style.css, qui remplace la taille unique du § 31) :
+  - en une fois, `min(7.5rem, 40cqi)` : 120 px dès que la carte a 300 px
+    utiles, 97 px à 320, 95 px à 900 et 111 px à 1 024 (V187 : 61 à 82 px) ;
+  - en trois fois (`.kc__card.is-3`), `min(5.6rem, 25cqi)`, la taille de
+    V187. Avec le « € » plein, « 3 × 31,67 € » occupe au plus 91 % de la
+    carte, contre 61 à 67 % pour « 95 € ».
+- La carte ne change pas de hauteur au basculement : un `padding-top` égal
+  à la différence des deux tailles rend au trois fois ce que sa taille lui
+  retire. Taille et padding glissent ensemble en .45 s (pas de transition
+  en mouvement réduit).
+- script.js, `ouvrir()` : les largeurs de « 3 × » et « ,67 » s'animaient en
+  px, calées sur la taille de départ. Elles s'animent désormais en em, et
+  suivent la taille pendant qu'elle glisse. Mesuré à mi-transition, de 320
+  à 2 560 px : aucun débordement, hauteur du prix constante.
+- Sans unités de conteneur, la taille d'origine reste (3,6rem au plus) : les
+  deux états tiennent encore avec le « € » plein.
+- adhesion.html, bento : l'espace insécable était DANS le span du « € ». À
+  pleine taille, elle le détachait du 95 (0,29 em, deux fois l'écart de
+  l'accueil). Elle en sort ; l'écart est une marge de .1em, comme sur
+  l'accueil et dans le module de paiement.
+
+**La fin du bloc créneaux, centrée et mise en forme.** « Centre le texte
+[sous] le bouton et sur la page, la mise en forme n'est pas premium ».
+- Avant : deux lignes `.cal-note` alignées à gauche sous un bouton centré,
+  chacune en flex, dont les liens se cassaient en morceaux sur téléphone.
+- Après : un bloc `.cal-fin`, centré sur l'axe du bouton (écart mesuré :
+  0 px de 320 à 1 440). D'abord la note (« Les créneaux peuvent évoluer… —
+  contactez-nous… »), avec un vrai lien vers #contact. Puis deux
+  cartes-liens : « Calendrier de la saison » (#matchs) et « Résultats et
+  classement » (le site de la FFBB, dans un nouvel onglet).
+- Côte à côte dès 821 px seulement : en dessous, une carte de 320-350 px
+  cassait son titre et désalignait sa voisine. Empilées, elles restent
+  compactes (28rem) et centrées sous la note.
+- Même composant en bas de /creneaux/, par le gabarit de
+  `build-creneaux.py` : « Calendrier des rencontres » (/matchs/) et
+  « S'inscrire au club » (/adhesion.html). « Revenir à l'accueil » se centre
+  dessous.
+- `.cal-note` n'avait plus aucun markup : ses règles ont été retirées, à
+  cinq endroits de style.css.
+- Au focus clavier, la règle globale `a:focus-visible` (0,1,1) pose
+  `border-radius:4px` : `.cal-fin__lien:focus-visible` remet les 14 px de la
+  carte.
+- Attention : `build-creneaux.py` n'a pas de `--check`, son essai s'appelle
+  `--essai`. Lancé avec une option qu'il ne connaît pas, il réécrit les
+  pages : relancer `bump-assets.py` après.
+
+**L'effectif avant les matchs.** « Inverse les sections Les matchs de la
+saison et effectifs seniors pour équilibrer textes et images lors du
+scrolling ».
+- L'accueil enchaîne désormais : créneaux (texte), effectif (dix affiches),
+  matchs (texte, avec l'affiche du calendrier), galerie (photos).
+- Les deux `<section>` ont été déplacées entières, avec leurs commentaires ;
+  aucun octet n'a changé à l'intérieur. Preuve : `diff-v188.py` (scratchpad
+  de la session), qui rejoue l'inversion sur HEAD et compare.
+- Les générateurs trouvent leurs blocs par marqueurs (`effectif:rail`,
+  `MATCH-CENTER:DEBUT/FIN`), pas par position : rien à y changer. Les ancres
+  #matchs et #effectif, et leurs liens entrants, ne dépendent pas de l'ordre.
+- Pour revenir à l'ordre d'avant, redéplacer le bloc « Effectif seniors »,
+  commentaire compris, après la section #matchs.
+
+**Relecture contradictoire** : 4 angles et 12 agents (4 relecteurs, 8
+sceptiques). 8 constats, dont 5 confirmés, tous corrigés :
+- la hauteur peinte du « € » d'Anton ;
+- les coins des cartes-liens au focus clavier ;
+- des libellés cassés sur l'accueil (« championnat » seul sur sa ligne,
+  titres désalignés entre 724 et 784 px) ;
+- le même défaut sur /creneaux/, entre 320 et 370 px ;
+- l'espace du « € » d'adhesion.html.
+
+Les corrections sont décrites plus haut. Les libellés ont aussi été
+raccourcis, avec `text-wrap:balance`. Balayage de 320 à 1 000 px, tous les
+2 px, sur les deux pages : aucune rangée inégale ni débordement.
+
+Trois constats ont été écartés par les sceptiques :
+- le libellé de « Voir tous les créneaux », décalé de 17 à 20 px par sa
+  flèche. C'est la convention de tous les boutons à flèche du site, et
+  c'était déjà le cas avant V188 ;
+- le « 3 × 31,67 € » posé en bas de sa case. C'est voulu : il rétrécit sur
+  place ;
+- la rangée des trois cartes, allongée de 36 à 38 px. C'est la conséquence
+  du prix agrandi, que la demande impose.

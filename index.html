@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=ae8dec54">
+<link rel="stylesheet" href="style.min.css?v=89779c70">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -884,12 +884,141 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
     <p class="cal-cta reveal"><a class="btn btn--ghost btn--lg" href="/creneaux/">
       Voir tous les créneaux<svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
 
-    <p class="cal-note reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg> Les créneaux peuvent évoluer en cours de saison — contactez-nous pour confirmer celui de votre catégorie.</p>
-    <p class="cal-note reveal"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 4h8v3a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5v1a3 3 0 0 0 3 3M16 5h3v1a3 3 0 0 1-3 3M9 20h6M12 13v3"/></svg> <a href="#matchs" style="color:var(--orange-vif);font-weight:600">Voir le calendrier de la saison</a> — dates officielles du championnat, puis <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener" style="color:var(--orange-vif);font-weight:600">résultats et classement sur la FFBB<span class="sr-only"> (nouvel onglet)</span></a>.</p>
+    <!-- V188 (15/09/2026) : la fin du bloc, centrée sous le bouton et mise en
+         forme (Alexandre : « la mise en forme n'est pas premium »). La phrase
+         sur les créneaux reste une note ; les deux renvois deviennent deux
+         cartes-liens. Même composant en bas de /creneaux/ (build-creneaux.py). -->
+    <div class="cal-fin reveal">
+      <p class="cal-fin__note"><svg class="cal-fin__i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>Les créneaux peuvent évoluer en cours de saison — <a href="#contact">contactez-nous</a> pour confirmer celui de votre catégorie.</p>
+      <ul class="cal-fin__liens">
+        <li><a class="cal-fin__lien" href="#matchs"><span class="cal-fin__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg></span><span class="cal-fin__t"><b>Calendrier de la saison</b><small>Dates officielles du championnat</small></span><svg class="cal-fin__fl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        <li><a class="cal-fin__lien" href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener"><span class="cal-fin__ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v3a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5v1a3 3 0 0 0 3 3M16 5h3v1a3 3 0 0 1-3 3M9 20h6M12 13v3"/></svg></span><span class="cal-fin__t"><b>Résultats et classement</b><small>Sur le site de la FFBB<span class="sr-only"> (nouvel onglet)</span></small></span><svg class="cal-fin__fl cal-fin__fl--ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<!-- ===== Championnat Seniors — calendrier officiel LRBB ===== -->
+<!-- ===== Effectif seniors — accordeon d'affiches =====
+     Les visuels sont des affiches DEJA composees (nom, numero, ecusson et
+     saison graves dans l'image) : rien n'est ecrit par-dessus, la legende
+     est sous la photo. Le cadrage de chaque carte tient a ses deux
+     variables --fx / --fy, expliquees dans style.css (bloc EFFECTIF). -->
+<section class="section squad-sec" id="effectif" aria-labelledby="effectifTitle">
+  <span class="bg-word" style="top:6%;right:-4%" aria-hidden="true">EFFECTIF</span>
+  <div class="wrap">
+    <header class="sec-head reveal">
+      <p class="kicker">Pr&eacute;-R&eacute;gionale &middot; zone Nord</p>
+      <h2 class="h2" id="effectifTitle">L&rsquo;effectif <span class="hl">seniors</span></h2>
+      <p class="sec-head__sub">Les dix joueurs engag&eacute;s en Pr&eacute;-R&eacute;gionale Masculine, zone Nord. Le d&eacute;tail par poste est sur <a href="/effectif/">la page de l&rsquo;effectif</a>.</p>
+    </header>
+
+      <!-- ===== L'EFFECTIF, EN APERCU =====
+           Les neuf affiches occupaient ici 148 lignes et 1 974 px — un ecran
+           et demi, groupe par poste, sur une page qui en comptait seize. Et
+           l'effectif n'avait AUCUNE page a lui : ces neuf joueurs n'etaient
+           trouvables que par qui faisait defiler l'accueil jusqu'au tiers.
+
+           Il vit desormais sur /effectif/, avec ses donnees structurees. Ici,
+           un rail : les NEUF affiches, dans l'ordre du club, sur une seule
+           rangee qui defile.
+
+           Pourquoi les neuf et pas « trois ou quatre » : choisir lesquels ne
+           regarde pas un script, et cela se verrait — dans un club, une carte
+           absente se remarque.
+
+           L'ancre #effectif est conservee, comme les douze autres. -->
+      <!-- effectif:rail — genere par .claude/build-effectif.py, ne pas editer a la main -->
+      <p class="squad__lab">Meneurs &amp; arrières postes 1 à 3</p>
+      <ul class="squad reveal">
+          <li class="sq-card" style="--fx:45%;--fy:28%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-alexandre-debieuvre-360.avif 360w, /assets/joueurs/mbc-senior-alexandre-debieuvre-560.avif 560w, /assets/joueurs/mbc-senior-alexandre-debieuvre-760.avif 760w, /assets/joueurs/mbc-senior-alexandre-debieuvre-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-alexandre-debieuvre-360.webp 360w, /assets/joueurs/mbc-senior-alexandre-debieuvre-560.webp 560w, /assets/joueurs/mbc-senior-alexandre-debieuvre-760.webp 760w, /assets/joueurs/mbc-senior-alexandre-debieuvre-941.webp 941w"><img src="/assets/joueurs/mbc-senior-alexandre-debieuvre-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur Alexandre Debieuvre, meneur numéro 1 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">1</span><span class="sq-txt"><span class="sq-nom">Alexandre Debieuvre</span><span class="sq-poste">Meneur · poste 1-2</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:50.3%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-mathieu-fernandes-360.avif 360w, /assets/joueurs/mbc-senior-mathieu-fernandes-560.avif 560w, /assets/joueurs/mbc-senior-mathieu-fernandes-760.avif 760w, /assets/joueurs/mbc-senior-mathieu-fernandes-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-mathieu-fernandes-360.webp 360w, /assets/joueurs/mbc-senior-mathieu-fernandes-560.webp 560w, /assets/joueurs/mbc-senior-mathieu-fernandes-760.webp 760w, /assets/joueurs/mbc-senior-mathieu-fernandes-960.webp 960w"><img src="/assets/joueurs/mbc-senior-mathieu-fernandes-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Mathieu Fernandes, meneur numéro 4 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">4</span><span class="sq-txt"><span class="sq-nom">Mathieu Fernandes</span><span class="sq-poste">Meneur · poste 1-2</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:44%;--fy:28%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-laurent-monvoisin-360.avif 360w, /assets/joueurs/mbc-senior-laurent-monvoisin-560.avif 560w, /assets/joueurs/mbc-senior-laurent-monvoisin-760.avif 760w, /assets/joueurs/mbc-senior-laurent-monvoisin-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-laurent-monvoisin-360.webp 360w, /assets/joueurs/mbc-senior-laurent-monvoisin-560.webp 560w, /assets/joueurs/mbc-senior-laurent-monvoisin-760.webp 760w, /assets/joueurs/mbc-senior-laurent-monvoisin-960.webp 960w"><img src="/assets/joueurs/mbc-senior-laurent-monvoisin-960.jpg" width="960" height="1440" loading="lazy" decoding="async" alt="Affiche du joueur Laurent Monvoisin, arrière numéro 8 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">8</span><span class="sq-txt"><span class="sq-nom">Laurent Monvoisin</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:50%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-guillaume-moine-v2-360.avif 360w, /assets/joueurs/mbc-senior-guillaume-moine-v2-560.avif 560w, /assets/joueurs/mbc-senior-guillaume-moine-v2-760.avif 760w, /assets/joueurs/mbc-senior-guillaume-moine-v2-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-guillaume-moine-v2-360.webp 360w, /assets/joueurs/mbc-senior-guillaume-moine-v2-560.webp 560w, /assets/joueurs/mbc-senior-guillaume-moine-v2-760.webp 760w, /assets/joueurs/mbc-senior-guillaume-moine-v2-960.webp 960w"><img src="/assets/joueurs/mbc-senior-guillaume-moine-v2-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Guillaume Moine, arrière numéro 10 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">10</span><span class="sq-txt"><span class="sq-nom">Guillaume Moine</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:38%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-matthieu-andeol-360.avif 360w, /assets/joueurs/mbc-senior-matthieu-andeol-560.avif 560w, /assets/joueurs/mbc-senior-matthieu-andeol-760.avif 760w, /assets/joueurs/mbc-senior-matthieu-andeol-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-matthieu-andeol-360.webp 360w, /assets/joueurs/mbc-senior-matthieu-andeol-560.webp 560w, /assets/joueurs/mbc-senior-matthieu-andeol-760.webp 760w, /assets/joueurs/mbc-senior-matthieu-andeol-960.webp 960w"><img src="/assets/joueurs/mbc-senior-matthieu-andeol-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Matthieu Andéol, arrière numéro 14 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">14</span><span class="sq-txt"><span class="sq-nom">Matthieu Andéol</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+      </ul>
+
+      <p class="squad__lab">Ailiers &amp; intérieurs postes 3 à 5</p>
+      <ul class="squad reveal">
+          <li class="sq-card" style="--fx:39%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-kevin-nazir-360.avif 360w, /assets/joueurs/mbc-senior-kevin-nazir-560.avif 560w, /assets/joueurs/mbc-senior-kevin-nazir-760.avif 760w, /assets/joueurs/mbc-senior-kevin-nazir-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-kevin-nazir-360.webp 360w, /assets/joueurs/mbc-senior-kevin-nazir-560.webp 560w, /assets/joueurs/mbc-senior-kevin-nazir-760.webp 760w, /assets/joueurs/mbc-senior-kevin-nazir-941.webp 941w"><img src="/assets/joueurs/mbc-senior-kevin-nazir-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur Kevin Nazir, ailier numéro 11 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">11</span><span class="sq-txt"><span class="sq-nom">Kevin Nazir</span><span class="sq-poste">Ailier · poste 3-4</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:48%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-gianni-carpinelli-360.avif 360w, /assets/joueurs/mbc-senior-gianni-carpinelli-560.avif 560w, /assets/joueurs/mbc-senior-gianni-carpinelli-760.avif 760w, /assets/joueurs/mbc-senior-gianni-carpinelli-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-gianni-carpinelli-360.webp 360w, /assets/joueurs/mbc-senior-gianni-carpinelli-560.webp 560w, /assets/joueurs/mbc-senior-gianni-carpinelli-760.webp 760w, /assets/joueurs/mbc-senior-gianni-carpinelli-960.webp 960w"><img src="/assets/joueurs/mbc-senior-gianni-carpinelli-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Gianni Carpinelli, intérieur numéro 9 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">9</span><span class="sq-txt"><span class="sq-nom">Gianni Carpinelli</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:48%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-hakim-derras-360.avif 360w, /assets/joueurs/mbc-senior-hakim-derras-560.avif 560w, /assets/joueurs/mbc-senior-hakim-derras-760.avif 760w, /assets/joueurs/mbc-senior-hakim-derras-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-hakim-derras-360.webp 360w, /assets/joueurs/mbc-senior-hakim-derras-560.webp 560w, /assets/joueurs/mbc-senior-hakim-derras-760.webp 760w, /assets/joueurs/mbc-senior-hakim-derras-960.webp 960w"><img src="/assets/joueurs/mbc-senior-hakim-derras-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Hakim Derras, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">94</span><span class="sq-txt"><span class="sq-nom">Hakim Derras</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:43%;--fy:28%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-david-nugent-360.avif 360w, /assets/joueurs/mbc-senior-david-nugent-560.avif 560w, /assets/joueurs/mbc-senior-david-nugent-760.avif 760w, /assets/joueurs/mbc-senior-david-nugent-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-david-nugent-360.webp 360w, /assets/joueurs/mbc-senior-david-nugent-560.webp 560w, /assets/joueurs/mbc-senior-david-nugent-760.webp 760w, /assets/joueurs/mbc-senior-david-nugent-941.webp 941w"><img src="/assets/joueurs/mbc-senior-david-nugent-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur David Nugent, intérieur numéro 12 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">12</span><span class="sq-txt"><span class="sq-nom">David Nugent</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+          <li class="sq-card" style="--fx:47%;--fy:12%">
+            <a class="sq-card__go" href="/effectif/">
+            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-oswald-hoarau-360.avif 360w, /assets/joueurs/mbc-senior-oswald-hoarau-560.avif 560w, /assets/joueurs/mbc-senior-oswald-hoarau-760.avif 760w, /assets/joueurs/mbc-senior-oswald-hoarau-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-oswald-hoarau-360.webp 360w, /assets/joueurs/mbc-senior-oswald-hoarau-560.webp 560w, /assets/joueurs/mbc-senior-oswald-hoarau-760.webp 760w, /assets/joueurs/mbc-senior-oswald-hoarau-960.webp 960w"><img src="/assets/joueurs/mbc-senior-oswald-hoarau-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Oswald Hoarau, intérieur numéro 34 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
+            <p class="sq-card__cap"><span class="sq-num">34</span><span class="sq-txt"><span class="sq-nom">Oswald Hoarau</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
+            <span class="sr-only"> — voir l’effectif complet</span>
+            </a>
+          </li>
+      </ul>
+      <!-- /effectif:rail -->
+
+    <div class="sec-cta reveal">
+      <a href="/effectif/" class="btn btn--primary btn--lg">Voir l&rsquo;effectif complet</a>
+      <a href="/adhesion.html" class="btn btn--ghost btn--lg">Je m'inscris<span class="sr-only"> — rejoindre l&rsquo;&eacute;quipe seniors</span></a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== Championnat Seniors — calendrier officiel LRBB =====
+     V188 (15/09/2026) : APRÈS l'effectif, à la demande d'Alexandre, pour
+     alterner au défilement une section de texte et une section d'images :
+     créneaux, effectif (affiches), matchs, galerie. -->
 <section class="section matchs" id="matchs" aria-labelledby="matchsTitle">
   <span class="bg-word" style="top:6%;left:-3%" aria-hidden="true">MATCHS</span>
   <div class="wrap">
@@ -1204,123 +1333,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 
     <div class="essentiel-cta reveal">
       <a href="https://competitions.ffbb.com/ligues/reu/comites/0974/clubs/reu0974104" target="_blank" rel="noopener" class="btn btn--ghost btn--lg">Résultats &amp; classement officiels<span class="sr-only"> (nouvel onglet)</span></a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===== Effectif seniors — accordeon d'affiches =====
-     Les visuels sont des affiches DEJA composees (nom, numero, ecusson et
-     saison graves dans l'image) : rien n'est ecrit par-dessus, la legende
-     est sous la photo. Le cadrage de chaque carte tient a ses deux
-     variables --fx / --fy, expliquees dans style.css (bloc EFFECTIF). -->
-<section class="section squad-sec" id="effectif" aria-labelledby="effectifTitle">
-  <span class="bg-word" style="top:6%;right:-4%" aria-hidden="true">EFFECTIF</span>
-  <div class="wrap">
-    <header class="sec-head reveal">
-      <p class="kicker">Pr&eacute;-R&eacute;gionale &middot; zone Nord</p>
-      <h2 class="h2" id="effectifTitle">L&rsquo;effectif <span class="hl">seniors</span></h2>
-      <p class="sec-head__sub">Les dix joueurs engag&eacute;s en Pr&eacute;-R&eacute;gionale Masculine, zone Nord. Le d&eacute;tail par poste est sur <a href="/effectif/">la page de l&rsquo;effectif</a>.</p>
-    </header>
-
-      <!-- ===== L'EFFECTIF, EN APERCU =====
-           Les neuf affiches occupaient ici 148 lignes et 1 974 px — un ecran
-           et demi, groupe par poste, sur une page qui en comptait seize. Et
-           l'effectif n'avait AUCUNE page a lui : ces neuf joueurs n'etaient
-           trouvables que par qui faisait defiler l'accueil jusqu'au tiers.
-
-           Il vit desormais sur /effectif/, avec ses donnees structurees. Ici,
-           un rail : les NEUF affiches, dans l'ordre du club, sur une seule
-           rangee qui defile.
-
-           Pourquoi les neuf et pas « trois ou quatre » : choisir lesquels ne
-           regarde pas un script, et cela se verrait — dans un club, une carte
-           absente se remarque.
-
-           L'ancre #effectif est conservee, comme les douze autres. -->
-      <!-- effectif:rail — genere par .claude/build-effectif.py, ne pas editer a la main -->
-      <p class="squad__lab">Meneurs &amp; arrières postes 1 à 3</p>
-      <ul class="squad reveal">
-          <li class="sq-card" style="--fx:45%;--fy:28%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-alexandre-debieuvre-360.avif 360w, /assets/joueurs/mbc-senior-alexandre-debieuvre-560.avif 560w, /assets/joueurs/mbc-senior-alexandre-debieuvre-760.avif 760w, /assets/joueurs/mbc-senior-alexandre-debieuvre-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-alexandre-debieuvre-360.webp 360w, /assets/joueurs/mbc-senior-alexandre-debieuvre-560.webp 560w, /assets/joueurs/mbc-senior-alexandre-debieuvre-760.webp 760w, /assets/joueurs/mbc-senior-alexandre-debieuvre-941.webp 941w"><img src="/assets/joueurs/mbc-senior-alexandre-debieuvre-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur Alexandre Debieuvre, meneur numéro 1 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">1</span><span class="sq-txt"><span class="sq-nom">Alexandre Debieuvre</span><span class="sq-poste">Meneur · poste 1-2</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:50.3%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-mathieu-fernandes-360.avif 360w, /assets/joueurs/mbc-senior-mathieu-fernandes-560.avif 560w, /assets/joueurs/mbc-senior-mathieu-fernandes-760.avif 760w, /assets/joueurs/mbc-senior-mathieu-fernandes-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-mathieu-fernandes-360.webp 360w, /assets/joueurs/mbc-senior-mathieu-fernandes-560.webp 560w, /assets/joueurs/mbc-senior-mathieu-fernandes-760.webp 760w, /assets/joueurs/mbc-senior-mathieu-fernandes-960.webp 960w"><img src="/assets/joueurs/mbc-senior-mathieu-fernandes-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Mathieu Fernandes, meneur numéro 4 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">4</span><span class="sq-txt"><span class="sq-nom">Mathieu Fernandes</span><span class="sq-poste">Meneur · poste 1-2</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:44%;--fy:28%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-laurent-monvoisin-360.avif 360w, /assets/joueurs/mbc-senior-laurent-monvoisin-560.avif 560w, /assets/joueurs/mbc-senior-laurent-monvoisin-760.avif 760w, /assets/joueurs/mbc-senior-laurent-monvoisin-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-laurent-monvoisin-360.webp 360w, /assets/joueurs/mbc-senior-laurent-monvoisin-560.webp 560w, /assets/joueurs/mbc-senior-laurent-monvoisin-760.webp 760w, /assets/joueurs/mbc-senior-laurent-monvoisin-960.webp 960w"><img src="/assets/joueurs/mbc-senior-laurent-monvoisin-960.jpg" width="960" height="1440" loading="lazy" decoding="async" alt="Affiche du joueur Laurent Monvoisin, arrière numéro 8 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">8</span><span class="sq-txt"><span class="sq-nom">Laurent Monvoisin</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:50%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-guillaume-moine-v2-360.avif 360w, /assets/joueurs/mbc-senior-guillaume-moine-v2-560.avif 560w, /assets/joueurs/mbc-senior-guillaume-moine-v2-760.avif 760w, /assets/joueurs/mbc-senior-guillaume-moine-v2-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-guillaume-moine-v2-360.webp 360w, /assets/joueurs/mbc-senior-guillaume-moine-v2-560.webp 560w, /assets/joueurs/mbc-senior-guillaume-moine-v2-760.webp 760w, /assets/joueurs/mbc-senior-guillaume-moine-v2-960.webp 960w"><img src="/assets/joueurs/mbc-senior-guillaume-moine-v2-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Guillaume Moine, arrière numéro 10 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">10</span><span class="sq-txt"><span class="sq-nom">Guillaume Moine</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:38%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-matthieu-andeol-360.avif 360w, /assets/joueurs/mbc-senior-matthieu-andeol-560.avif 560w, /assets/joueurs/mbc-senior-matthieu-andeol-760.avif 760w, /assets/joueurs/mbc-senior-matthieu-andeol-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-matthieu-andeol-360.webp 360w, /assets/joueurs/mbc-senior-matthieu-andeol-560.webp 560w, /assets/joueurs/mbc-senior-matthieu-andeol-760.webp 760w, /assets/joueurs/mbc-senior-matthieu-andeol-960.webp 960w"><img src="/assets/joueurs/mbc-senior-matthieu-andeol-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Matthieu Andéol, arrière numéro 14 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">14</span><span class="sq-txt"><span class="sq-nom">Matthieu Andéol</span><span class="sq-poste">Arrière · poste 2-3</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-      </ul>
-
-      <p class="squad__lab">Ailiers &amp; intérieurs postes 3 à 5</p>
-      <ul class="squad reveal">
-          <li class="sq-card" style="--fx:39%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-kevin-nazir-360.avif 360w, /assets/joueurs/mbc-senior-kevin-nazir-560.avif 560w, /assets/joueurs/mbc-senior-kevin-nazir-760.avif 760w, /assets/joueurs/mbc-senior-kevin-nazir-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-kevin-nazir-360.webp 360w, /assets/joueurs/mbc-senior-kevin-nazir-560.webp 560w, /assets/joueurs/mbc-senior-kevin-nazir-760.webp 760w, /assets/joueurs/mbc-senior-kevin-nazir-941.webp 941w"><img src="/assets/joueurs/mbc-senior-kevin-nazir-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur Kevin Nazir, ailier numéro 11 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">11</span><span class="sq-txt"><span class="sq-nom">Kevin Nazir</span><span class="sq-poste">Ailier · poste 3-4</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:48%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-gianni-carpinelli-360.avif 360w, /assets/joueurs/mbc-senior-gianni-carpinelli-560.avif 560w, /assets/joueurs/mbc-senior-gianni-carpinelli-760.avif 760w, /assets/joueurs/mbc-senior-gianni-carpinelli-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-gianni-carpinelli-360.webp 360w, /assets/joueurs/mbc-senior-gianni-carpinelli-560.webp 560w, /assets/joueurs/mbc-senior-gianni-carpinelli-760.webp 760w, /assets/joueurs/mbc-senior-gianni-carpinelli-960.webp 960w"><img src="/assets/joueurs/mbc-senior-gianni-carpinelli-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Gianni Carpinelli, intérieur numéro 9 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">9</span><span class="sq-txt"><span class="sq-nom">Gianni Carpinelli</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:48%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-hakim-derras-360.avif 360w, /assets/joueurs/mbc-senior-hakim-derras-560.avif 560w, /assets/joueurs/mbc-senior-hakim-derras-760.avif 760w, /assets/joueurs/mbc-senior-hakim-derras-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-hakim-derras-360.webp 360w, /assets/joueurs/mbc-senior-hakim-derras-560.webp 560w, /assets/joueurs/mbc-senior-hakim-derras-760.webp 760w, /assets/joueurs/mbc-senior-hakim-derras-960.webp 960w"><img src="/assets/joueurs/mbc-senior-hakim-derras-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Hakim Derras, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">94</span><span class="sq-txt"><span class="sq-nom">Hakim Derras</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:43%;--fy:28%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-david-nugent-360.avif 360w, /assets/joueurs/mbc-senior-david-nugent-560.avif 560w, /assets/joueurs/mbc-senior-david-nugent-760.avif 760w, /assets/joueurs/mbc-senior-david-nugent-941.avif 941w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-david-nugent-360.webp 360w, /assets/joueurs/mbc-senior-david-nugent-560.webp 560w, /assets/joueurs/mbc-senior-david-nugent-760.webp 760w, /assets/joueurs/mbc-senior-david-nugent-941.webp 941w"><img src="/assets/joueurs/mbc-senior-david-nugent-941.jpg" width="941" height="1672" loading="lazy" decoding="async" alt="Affiche du joueur David Nugent, intérieur numéro 12 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">12</span><span class="sq-txt"><span class="sq-nom">David Nugent</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-          <li class="sq-card" style="--fx:47%;--fy:12%">
-            <a class="sq-card__go" href="/effectif/">
-            <div class="sq-card__media"><picture><source type="image/avif" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-oswald-hoarau-360.avif 360w, /assets/joueurs/mbc-senior-oswald-hoarau-560.avif 560w, /assets/joueurs/mbc-senior-oswald-hoarau-760.avif 760w, /assets/joueurs/mbc-senior-oswald-hoarau-960.avif 960w"><source type="image/webp" sizes="(min-width:880px) 26vw, 47vw" srcset="/assets/joueurs/mbc-senior-oswald-hoarau-360.webp 360w, /assets/joueurs/mbc-senior-oswald-hoarau-560.webp 560w, /assets/joueurs/mbc-senior-oswald-hoarau-760.webp 760w, /assets/joueurs/mbc-senior-oswald-hoarau-960.webp 960w"><img src="/assets/joueurs/mbc-senior-oswald-hoarau-960.jpg" width="960" height="1200" loading="lazy" decoding="async" alt="Affiche du joueur Oswald Hoarau, intérieur numéro 34 de l'équipe seniors du MBC La Montagne, saison 2026/2027."></picture></div>
-            <p class="sq-card__cap"><span class="sq-num">34</span><span class="sq-txt"><span class="sq-nom">Oswald Hoarau</span><span class="sq-poste">Intérieur · poste 4-5</span></span></p>
-            <span class="sr-only"> — voir l’effectif complet</span>
-            </a>
-          </li>
-      </ul>
-      <!-- /effectif:rail -->
-
-    <div class="sec-cta reveal">
-      <a href="/effectif/" class="btn btn--primary btn--lg">Voir l&rsquo;effectif complet</a>
-      <a href="/adhesion.html" class="btn btn--ghost btn--lg">Je m'inscris<span class="sr-only"> — rejoindre l&rsquo;&eacute;quipe seniors</span></a>
     </div>
   </div>
 </section>
@@ -1846,6 +1858,6 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
   </div>
 </div>
 
-<script src="script.js?v=735ac19e" defer></script>
+<script src="script.js?v=9028014b" defer></script>
 </body>
 </html>
