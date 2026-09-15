@@ -5,7 +5,7 @@
    ⚠️  Bump le nom du cache (mbc-vN) à chaque déploiement
        important pour purger l'ancien contenu.
    ============================================================ */
-const CACHE = 'mbc-d69aac69-853ab126-b4baff7f';
+const CACHE = 'mbc-1323248f-853ab126-b4baff7f';
 const OFFLINE_URL = '/offline.html';
 const PRECACHE = [
   '/',
@@ -13,7 +13,7 @@ const PRECACHE = [
   '/adhesion.html',
   '/offline.html',
   '/site.webmanifest',
-  '/style.min.css?v=d69aac69',
+  '/style.min.css?v=1323248f',
   '/script.js?v=853ab126',
   '/consent.js?v=b4baff7f',
   '/assets/logos/mbc-logo.webp',
@@ -36,7 +36,12 @@ self.addEventListener('install', function (e) {
   e.waitUntil(
     caches.open(CACHE).then(function (c) {
       // Ajout tolérant : une ressource manquante ne fait pas échouer toute l'installation.
-      return Promise.all(PRECACHE.map(function (u) { return c.add(u).catch(function () {}); }));
+      // cache:'reload' contourne le cache HTTP du navigateur (max-age=600 chez
+      // GitHub Pages). Sans lui, un visiteur revenu dans les dix minutes suivant
+      // un déploiement faisait précacher l'ANCIEN accueil, dont la feuille et le
+      // script partaient ensuite avec l'ancien cache : hors ligne, la page
+      // sortait sans style ni script (reproduit en production le 15/09/2026).
+      return Promise.all(PRECACHE.map(function (u) { return c.add(new Request(u, { cache: 'reload' })).catch(function () {}); }));
     }).then(function () { return self.skipWaiting(); })
   );
 });
@@ -108,7 +113,9 @@ self.addEventListener('fetch', function (e) {
           caches.open(CACHE).then(function (c) { c.put(req, copy); });
         }
         return res;
-      }).catch(function () { return cached; });
+        // Hors ligne ET rien en cache : une erreur réseau propre. « cached »
+        // seul valait undefined, que respondWith refuse (TypeError).
+      }).catch(function () { return cached || Response.error(); });
       return cached || network;
     })
   );

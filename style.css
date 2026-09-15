@@ -12152,8 +12152,10 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .lightbox--photo .lightbox__count{display:block;position:fixed;top:1.2rem;left:50%;z-index:202;transform:translateX(-50%);padding:.5rem 1rem;border:1px solid var(--line-strong);border-radius:var(--r-pill);background:rgba(13,21,38,.86);font-family:var(--ff-cond);font-weight:800;letter-spacing:.08em;color:var(--bleu-glacier)}
 .lightbox__nav{position:fixed;top:50%;z-index:202;display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin-top:-26px;border:1px solid var(--line-strong);border-radius:var(--r-round);background:rgba(13,21,38,.8);color:#fff;font-size:2rem;line-height:1;cursor:pointer;transition:background .2s,color .2s}
 .lightbox__nav:hover{background:var(--orange-vif);color:#190f04}
-.lightbox__nav:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:var(--r-round)}
-.lightbox__close:focus-visible{border-radius:var(--r-round)}
+/* « Fermer » suit la convention unique du site (--focus-*), comme les flèches.
+   Sans cette règle, la règle de repli orange (décalage de 2 px) l'emportait, et
+   la tabulation passait du bleu glacier à l'orange dans la même visionneuse. */
+.lightbox__nav:focus-visible,.lightbox__close:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:var(--r-round)}
 .lightbox__nav--prev{left:clamp(.4rem,1.6vw,1.4rem)}
 .lightbox__nav--next{right:clamp(.4rem,1.6vw,1.4rem)}
 @media (max-width:560px){

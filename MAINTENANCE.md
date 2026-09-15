@@ -2807,3 +2807,27 @@ de 59 à 173 Ko.
   bien la description. Les coins restent arrondis au focus. En impression A4
   portrait, les dix photos tiennent dans la largeur. Le zoom avance toujours
   (`--p` = 0,50 à mi-course).
+
+**En ligne le 15/09** (`main` = `59c415f`). GitHub Pages servait la nouvelle
+version dès le premier contrôle. La production a été vérifiée sous trois angles
+indépendants, chaque anomalie étant soumise à un sceptique :
+- le banc navigateur, rejoué sur https://mbc974.com : toutes les valeurs du
+  banc local, 0 erreur de console ;
+- le balayage de régression : les 32 pages en 200, identiques octet pour
+  octet au commit, 383 ressources sur 383 en 200 au bon type MIME, les 76
+  blocs JSON-LD lisibles, aucun débordement horizontal ;
+- le visiteur revenant : aucun mélange d'ancien et de nouveau en ligne. Le CDN
+  de GitHub Pages ignore bien le `?v=`, mais chaque déploiement purge son
+  bord : l'anomalie a été réfutée.
+
+Deux défauts confirmés, corrigés dans la foulée :
+- « Fermer » prenait l'anneau de focus orange de la règle de repli, et les
+  flèches le bleu glacier de la convention unique (`--focus-*`). Les deux
+  partagent désormais la même règle.
+- `sw.js` précachait l'accueil À TRAVERS le cache HTTP du navigateur
+  (max-age=600). Un visiteur revenu dans les dix minutes suivant un
+  déploiement faisait donc précacher l'ancien accueil, dont la feuille et le
+  script partaient avec l'ancien cache : hors ligne, la page sortait sans
+  style. Le défaut a été reproduit sur l'origine réelle. Le précache se fait
+  désormais en `cache:'reload'`, et le repli du stale-while-revalidate rend
+  `Response.error()` au lieu d'`undefined`.
