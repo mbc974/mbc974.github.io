@@ -10,10 +10,10 @@
 CE QUE CA PRODUIT
 -----------------
 Un bloc par soiree, dans index.html entre les marqueurs « galerie:soirees »,
-AU-DESSUS du zoom parallaxe de #galerie. Pas dans le zoom : ses six tuiles ont
+AU-DESSUS du zoom parallaxe de #galerie. Pas dans le zoom : ses cinq tuiles ont
 chacune une place calculee (style.css, bloc « GALERIE — zoom parallaxe ») et la
-scene collee atterrit plein cadre sur « Le cercle d'avant-seance », qui ouvre
-sur #parents. Pas dessous non plus : ce passage-la ne doit rien avoir entre les
+scene collee atterrit plein cadre sur sa tuile centrale, juste avant #parents —
+la photo d'equipe des seniors depuis V187 (elle a donc quitte les rangees). Pas dessous non plus : ce passage-la ne doit rien avoir entre les
 deux.
 
 Le titre de la soiree vient du JSON ; la date, l'adversaire, le score et le lieu

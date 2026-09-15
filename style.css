@@ -8921,12 +8921,12 @@ html:has(.ccb){scroll-padding-bottom:215px}
    GALERIE — zoom parallaxe vers « Votre enfant » (V110)
    ------------------------------------------------------------
    La galerie est passee AVANT la section parents, et elle s'y
-   jette : six cliches partent d'une constellation de vignettes,
-   grossissent ensemble, et cinq d'entre eux sortent du cadre
-   pendant que le sixieme — « Le cercle d'avant-seance », un coach
-   qui rassemble les enfants — finit exactement plein ecran. On
-   entre alors dans « Votre enfant. Notre responsabilite. » sur
-   l'image qui en est la preuve.
+   jette : cinq cliches partent d'une constellation de vignettes,
+   grossissent ensemble, et quatre d'entre eux sortent du cadre
+   pendant que la 1re tuile finit exactement plein ecran : depuis
+   V187 (15/09/2026), la photo d'equipe des seniors ; avant, « Le
+   cercle d'avant-seance ». On entre alors dans « Votre enfant.
+   Notre responsabilite. ».
 
    C'est la tuile n°1 qui reste, et le calcul le garantit : elle
    part de 25vh x 25vw et grandit x4, donc 100vh x 100vw. Les
@@ -8964,8 +8964,19 @@ html:has(.ccb){scroll-padding-bottom:215px}
 /* will-change seulement quand la scene est a l'ecran : six calques de la
    taille de la fenetre promus en permanence, c'est de la memoire graphique
    retenue pour rien pendant tout le reste de la page. .is-live est pose et
-   retire par script.js. */
-.gzoom.is-on.is-live .g-tile{will-change:transform}
+   retire par script.js.
+   V187 : et seulement PENDANT LE MOUVEMENT (.is-moving, retire 180 ms apres
+   le dernier defilement). Un calque en will-change:transform garde la trame
+   de l'echelle a laquelle il a ete rasterise : la tuile d'arrivee, peinte a
+   25 % de l'ecran puis grossie x4, restait floue a l'arret (nettete mesuree
+   77 contre 326 a 1440 px, 60 contre 259 a 1920). A l'arret, le navigateur
+   la repeint a sa taille reelle. */
+.gzoom.is-on.is-live.is-moving .g-tile{will-change:transform}
+/* V187 : cinq tuiles au lieu de six. La tuile du bas passe a gauche de l'axe
+   (-5vw), en miroir de celle du haut (+5vw) : sinon la constellation penchait
+   a droite, le coin bas-gauche restant vide. (0,5,0) : elle doit battre la
+   regle :nth-child(5) d'origine, placee plus bas. */
+.gzoom.is-on .gallery-mosaic .g-tile:nth-child(5){--gl:-5vw}
 /* les habillages de la mosaique (lisere, degrade de legende) n'ont pas de sens
    ici : grossis x4, ils voileraient l'image d'arrivee */
 .gzoom.is-on .g-tile::before,.gzoom.is-on .g-tile::after{display:none}
@@ -8978,8 +8989,10 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;
   margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;inset:auto;background:none}
 /* ---- La constellation de depart (valeurs du composant d'origine) ----
-   LA TUILE CENTRALE EST LA 1re : « Le cercle d'avant-seance ». C'est elle
-   qui finit plein cadre, et c'est une question de DEFINITION, pas de gout.
+   LA TUILE CENTRALE EST LA 1re. Depuis V187 (15/09/2026), c'est la photo
+   d'equipe des seniors (original 7008 x 4672) ; avant, « Le cercle
+   d'avant-seance ». C'est elle qui finit plein cadre, et c'est une question de
+   DEFINITION, pas de gout.
 
    Elle etait passee brievement a la 6e (le plateau couvert) parce que le
    panoramique paraissait flou une fois agrandi. Le diagnostic etait double et
@@ -12059,8 +12072,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    Un bloc par soirée de match, écrit par
    .claude/build-galerie-match.py depuis data/galerie-match.json,
    AU-DESSUS du zoom parallaxe : la scène collée doit continuer
-   d'atterrir plein cadre sur « Le cercle d'avant-séance », qui
-   ouvre sur #parents.
+   d'atterrir plein cadre sur sa tuile centrale (la photo d'équipe
+   depuis V187), juste avant #parents.
 
    Dès 880 px (et à l'impression), des rangées JUSTIFIÉES. Chaque photo a pour
    flex-grow son rapport largeur/hauteur (--r, écrit par le
@@ -12164,3 +12177,150 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .lightbox__nav{top:auto;bottom:1.1rem;margin-top:0;width:48px;height:48px}
   .lightbox__nav--prev{left:1rem}
   .lightbox__nav--next{right:1rem}}
+
+/* ============================================================
+   V187 — 15/09/2026 : la mosaïque à cinq tuiles, InPlay au mur des
+   partenaires, le crédit du site
+   ============================================================ */
+/* « 95 € » en plus grand, à toutes les tailles (Alexandre, 15/09/2026). La
+   taille suit la LARGEUR DE LA CARTE (unités de conteneur), pas celle de la
+   fenêtre : la carte passe de 482 px utiles (une colonne, de 600 à 899 px) à
+   238 px (trois colonnes, dès 900 px), et aucune formule en vw ne tient les
+   deux. Mesuré : l'état « 3 × 31,67 € » fait 3,29 em de large ; à 25cqi il
+   occupe au plus 82 % de la carte. Plafond 5,6rem (90 px). Sans unités de
+   conteneur, la taille d'origine reste. */
+@supports (font-size:1cqi){
+  .kc__card{container-type:inline-size}
+  .kc__card .kc__price{font-size:min(5.6rem,25cqi)}}
+
+/* La mosaïque de REPLI (sans JS, ou mouvement réduit) : cinq tuiles.
+   Bandes qui se ferment exactement, dans l'ordre du DOM :
+     6 colonnes : équipe 6 | team 6 | inaug 2 + gym 2 + tall 2
+     4 colonnes : équipe 4 | team 4 | inaug 2 + tall 2 | gym 4
+   (grid-auto-flow:dense remonte tall à côté d'inaug). Relecture : en bande
+   pleine largeur, le portrait « Tout le monde au centre » (0,92:1) tombait à
+   1,6:1, perdait près de la moitié de sa hauteur et, son sizes disant 47vw,
+   s'affichait agrandi x1,6. C'est le paysage qui prend la bande.
+   Sous 640 px, « .gallery-mosaic .g-tile:first-child » (0,3,0) fixe 230 px
+   de haut à la première tuile : la même levée que pour g-team (V100.4). */
+.gallery-mosaic .g-equipe{grid-column:span 6;grid-row:span 7}
+@media (max-width:900px){
+  .gallery-mosaic .g-equipe{grid-column:span 4;grid-row:span 4}
+  .gallery-mosaic .g-tall{grid-column:span 2;grid-row:span 4}
+  .gallery-mosaic .g-gym{grid-column:span 4;grid-row:span 4}}
+@media (max-width:640px){
+  .gallery-mosaic .g-tile.g-equipe{height:auto;grid-column:span 4;grid-row:span 4}}
+
+/* Six partenaires. Au-delà de 760 px la rangée passe de 5 à 6 colonnes :
+   sinon le sixième logo tombait seul sur une seconde ligne. Les 3 et 2
+   colonnes des petits écrans divisent déjà 6. */
+@media (min-width:761px){.sponsors-row{grid-template-columns:repeat(6,1fr)}}
+/* Logo paysage (2,7:1) : dans la plaque carrée, il serait le plus petit du
+   mur. Même normalisation optique que cpa-paysage, un cran plus loin. */
+.sponsors-row img[src*="inplay"]{transform:scale(1.14)}
+.sponsor-card__role{margin-top:-.3rem;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.14em;font-size:var(--text-2xs);color:var(--orange-vif);
+  text-align:center;text-wrap:balance}
+
+/* Le crédit du site (Alexandre : « je veux qu'on voie que c'est moi qui ai
+   fait ça »). La signature n'est plus une ligne de 12 px en teinte atténuée :
+   une ligne pleine largeur, au centre, en bas de chaque page — un surtitre
+   qui dit le rôle, puis la signature en grand, le mot-dièse en pastille. */
+.footer__credit{width:100%;display:grid;justify-items:center;gap:.5rem;
+  margin-top:var(--sp-70);padding-top:var(--sp-120);border-top:1px solid var(--hair);text-align:center}
+.footer__credit .footer__credit-k{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.24em;font-size:var(--text-xs);color:var(--txt-soft)}
+.footer__credit .footer__signature{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:.2em .35em;width:auto;opacity:1;font-family:var(--ff-cond);font-weight:700;letter-spacing:.04em;
+  font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;color:var(--txt)}
+.footer__credit .sig-name{font-size:1.2em}
+.footer__credit .footer__hand{display:inline-flex;align-items:center;margin-left:.25em;padding:.28em .75em;
+  border:1px solid rgb(var(--orange-vif-rgb) / .45);border-radius:var(--r-pill);
+  background:rgb(var(--orange-vif-rgb) / .08);color:var(--bleu-glacier);font-size:.6em;letter-spacing:.14em}
+
+/* ============================================================================
+   V187 — LES BOUTONS SE CENTRENT (15/09/2026)
+   ----------------------------------------------------------------------------
+   Alexandre : « centre bien les boutons sur tout le site, notamment sur la
+   page Nout kartié ». Un audit Chrome de 26 pages, à 390 et 1440 px, a relevé
+   81 cas, revus un par un sur capture : 73 à corriger, 8 déjà bons ou voulus.
+   Trois défauts, aucun ne demande de toucher au HTML.
+   1. Un libellé qui passe à la ligne restait calé à gauche : .btn centre son
+      contenu (inline-flex, justify-content:center), mais text-align n'était
+      posé nulle part — un <button> le reçoit du navigateur, un <a> non.
+   2. Les rangées de boutons en flex-wrap sans justify-content partaient à
+      gauche.
+   3. Sur téléphone, des boutons de largeurs inégales s'empilaient en
+      escalier : chaque bouton empilé prend la largeur de la colonne, comme le
+      font déjà .age__a, .pay__cta, .mp__a et .mc-cta.
+   Là où les boutons suivaient une pile de texte alignée à gauche (en-tête des
+   pages enfants, en-tête d'une fiche de rencontre, pied du format de la
+   saison), la pile se centre avec eux : des boutons seuls au centre s'en
+   décolleraient.
+   Laissés tels quels, exprès : .hd-cta (à droite dans la barre, face au
+   logo), .begin__a (sous un titre aligné à gauche, dans la colonne de 43 %
+   du volet « Voir toutes les catégories »), .essentiel-cta et .pay__cta en
+   grand écran (déjà centrés).
+   ============================================================================ */
+
+/* 1. Le libellé. text-wrap:balance égalise les deux lignes (« LE RÈGLEMENT
+   SPORTIF / DE LA COMPÉTITION (PDF) » plutôt qu'un « (PDF) » orphelin) ; un
+   navigateur qui l'ignore coupe comme avant, et centre quand même. */
+.btn{text-align:center;text-wrap:balance}
+
+/* 2. Les rangées. Même spécificité que les règles d'origine — (0,2,0) pour
+   .mc et .ms-format — : l'ordre du fichier suffit, sans !important. */
+.ar__liens,.seo-links,.age__a,.mp__a,
+.mc .mc-next__a,.ms-format .ms-liens{justify-content:center}
+
+/* 3. Téléphone. .ms-liens garde ses deux liens texte, centrés sous le
+   bouton, comme .pay__second sous le sien. */
+@media (max-width:560px){
+  .ar__liens .btn,.seo-links .btn,.essentiel-cta .btn,
+  .ms-format .ms-liens .btn{flex:1 1 100%}}
+
+/* 4. « Nout kartié » (#inauguration). La signature du club et le bouton
+   étaient aux deux bouts d'une même rangée (space-between) : le bouton
+   pendait à droite, ou tombait seul à la ligne, collé à gauche. Ils forment
+   une pile centrée : la signature, puis le bouton. */
+.lp-copy--solo .lp-fin{flex-direction:column;justify-content:center}
+.lp-copy--solo .lp-fin .lp-sign{justify-content:center}
+/* La colonne solo gardait, au-dessus de 960 px, la marge droite (3 rem) et le
+   filet vertical de l'ancienne double page (.lp-copy, plus haut) : le récit
+   était décalé de 24 px à gauche du centre, et un trait orphelin restait à
+   droite. */
+.lp-copy--solo{padding-right:0}
+.lp-copy--solo::after{content:none}
+
+/* 5. En-tête des pages enfants (.seo-hero) : bandeau sans photo, vide à
+   droite. Le surtitre, le titre, le chapô et les boutons se centrent
+   ensemble ; le filet du surtitre aussi (même règle que .sec-head .kicker). */
+.seo-hero .wrap{text-align:center}
+.seo-hero .lead{margin-inline:auto}
+.seo-hero .kicker{justify-content:center}
+
+/* 6. Fiche d'une rencontre : même raisonnement pour la pile d'en-tête
+   (surtitre, titre, écussons, score, date, lieu, boutons). Le fil d'Ariane et
+   le corps de la fiche restent alignés à gauche. */
+.mp__eyebrow,.mp__duel{justify-content:center}
+.mp .mp__score{justify-content:center;text-align:center}
+.mp__h1{margin-inline:auto}
+.mp__h1,.mp__quand,.mp__ou,.mp__affiche{text-align:center}
+/* La pastille « Entrée libre » était un inline-block : en bloc, sa marge
+   basse fusionnerait avec la marge haute de .mp__a (1,2 rem chacune) et
+   l'écart perdrait 19 px. On la double pour garder l'écart d'avant. */
+.mp__libre{display:table;margin:0 auto 2.4rem}
+
+/* 7. /matchs/, pied du « format de la saison » : les sources et le lien de
+   retour se centrent avec la rangée de liens. .ml__retour sert sur quatre
+   pages : seul celui-ci bouge. */
+.ms-format .ms-sources,.ms-format .ml__retour{margin-inline:auto;text-align:center}
+
+/* 8. Un libellé qui passe à la ligne, suivi d'une flèche : en flex, le texte
+   prend toute la largeur libre et repousse la flèche contre le bord
+   (« Découvrir nos engagements », #parents, à 390 px ; le seul cas relevé par
+   l'audit après correction). Sur téléphone, le bouton pleine largeur de
+   .sec-cta redevient un bloc de texte centré : la flèche suit le dernier mot. */
+@media (max-width:560px){
+  .sec-cta .btn{display:block}
+  .sec-cta .btn .btn__arrow{display:inline-block;vertical-align:-.18em;margin-left:.7em}}

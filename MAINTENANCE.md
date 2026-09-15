@@ -2693,10 +2693,11 @@ lé pli for » : c'est une image retouchée ou régénérée par une IA, et le �
 les exclut du site. Si l'original existe, il suffit de l'ajouter au JSON.
 
 **Où.** Dans `#galerie`, entre le titre de la section et le zoom parallaxe.
-- Pas dans le zoom : ses six tuiles ont chacune une place et une géométrie
+- Pas dans le zoom : ses cinq tuiles ont chacune une place et une géométrie
   calculées (§ 16).
-- Pas dessous : le zoom atterrit plein cadre sur « Le cercle d'avant-séance »,
-  qui ouvre sur #parents.
+- Pas dessous : le zoom atterrit plein cadre sur sa tuile centrale, juste
+  avant #parents. C'était « Le cercle d'avant-séance » ; c'est la photo
+  d'équipe depuis le § 31.
 
 **La chaîne.**
 - `data/galerie-match.json` : une entrée par soirée, la plus récente en
@@ -2734,8 +2735,9 @@ les exclut du site. Si l'original existe, il suffit de l'ajouter au JSON.
 **La mise en page** (style.css, bloc « GALERIE — les soirées photo »).
 - Dès 880 px, des rangées justifiées : chaque photo prend pour `flex-grow` son
   rapport largeur/hauteur (`--r`), avec une base nulle. Aucune photo n'est
-  recadrée. Deux rangées (6 + 4), de 273 et 252 px de haut à 1440 px, de 219
-  et 203 px à 1024.
+  recadrée. Deux rangées : 6 + 4 à la mise en ligne (273 et 252 px de haut à
+  1440 px), puis 5 + 4 depuis le § 31, avec neuf photos (332 et 312 px à 1440,
+  272 et 256 px à 1024).
 - En dessous, une bande qui défile au doigt (`scroll-snap`). Les photos y
   mesurent min(70vw, 420px) de haut, et un paysage est borné à la largeur de
   l'écran.
@@ -2831,3 +2833,137 @@ Deux défauts confirmés, corrigés dans la foulée :
   style. Le défaut a été reproduit sur l'origine réelle. Le précache se fait
   désormais en `cache:'reload'`, et le repli du stale-while-revalidate rend
   `Response.error()` au lieu d'`undefined`.
+
+---
+
+## 31. Le prix en grand, la galerie centrée sur l'équipe, InPlay et le crédit du site (15/09/2026)
+
+Six demandes d'Alexandre, le 15/09, après la mise en ligne des photos de la J1.
+
+**« 95 € » en plus grand, à toutes les tailles** (style.css, bloc V187).
+- La taille suit la largeur de la CARTE, en unités de conteneur :
+  `container-type:inline-size` sur `.kc__card`, et `font-size:min(5.6rem,25cqi)`
+  sur le prix. Pas la largeur de la fenêtre : la carte a 482 px utiles en une
+  colonne (de 600 à 899 px), puis 238 px quand les trois cartes se rangent côte
+  à côte (dès 900 px). Aucune formule en `vw` ne tient les deux.
+- Mesuré de 320 à 2 560 px : l'état « 3 × 31,67 € » fait 3,29 em de large et
+  occupe au plus 83 % de la carte. Le prix passe de 43 à 61 px à 320, de 43 à
+  78 px à 390, de 49 à 82 px à 1 440 ; plafond 90 px.
+- Sans unités de conteneur (`@supports`), la taille d'origine reste.
+
+**« Sur le terrain » : deux photos retirées, le zoom atterrit sur l'équipe.**
+- Retirées de la mosaïque : « le gymnase un samedi matin » (le parquet
+  écaillé) et « le plateau aux couleurs du club » (deux joueurs de dos). Leurs
+  fichiers restent dans `assets/galerie/`, sans usage.
+- La tuile CENTRALE, celle qui finit plein cadre, est désormais la photo
+  d'équipe en maillots blancs (DSC05056, original 7008 × 4672) :
+  `figure.g-tile.g-equipe`. Elle doit rester la première enfant de
+  `.gallery-mosaic`, car style.css place les tuiles par `:nth-child`. Deux
+  crans ont été ajoutés depuis l'original, 2600 et 3400 ;
+  `sizes="(min-aspect-ratio:3/2) 100vw, 150vh"`.
+- Elle quitte les rangées de la soirée au-dessus (`data/galerie-match.json`,
+  qui passe à 9 photos) : sinon on la voyait deux fois à 600 px d'écart. Pour
+  l'y remettre, il suffit de rajouter son entrée.
+- L'ordre des tuiles : l'équipe, puis le panoramique de l'école de basket
+  (devenu satellite, emplacement du haut), l'inauguration (portrait, à
+  gauche), Ruisseau Blanc (paysage, à droite), et « Tout le monde au centre »
+  (en bas, décalée à −5vw pour équilibrer la constellation).
+- La mosaïque de repli, sans JS ou en mouvement réduit, se range en bandes
+  6 | 6 | 2+2+2 ; sous 900 px, 4 | 4 | 2+2 | 4, le portrait « Tout le monde au
+  centre » à côté de l'inauguration et le paysage de Ruisseau Blanc en bande.
+  En bande pleine largeur, le portrait perdait près de la moitié de sa hauteur
+  (relecture).
+- `build-galerie.py` : `SIZES` suit les nouveaux rôles. Relancé,
+  `index.html` ne change pas.
+
+**Le zoom était flou à l'arrivée, et il l'avait toujours été.** Mesure dans
+Chrome, en variance du laplacien au centre de l'image : 77 à 1 440 px et 60 à
+1 920 avec `will-change:transform`, contre 326 et 259 sans, autant que la même
+photo peinte sans transformation. L'ancienne tuile centrale était floue elle
+aussi.
+- Cause : un calque en `will-change:transform` garde la trame de l'échelle à
+  laquelle il a été rasterisé, ici 25 % de l'écran, puis il est grossi ×4.
+- Correctif : `will-change` seulement pendant le mouvement. La classe
+  `.is-moving` est posée à chaque défilement et retirée 180 ms après ; à
+  l'arrêt, le navigateur repeint la scène nette.
+- Après : 328 à 1 440, 259 à 1 920. Rien ne change sur téléphone, où l'image
+  était déjà nette.
+
+**InPlay, l'équipementier, rejoint le mur des partenaires.**
+- Le logo, collé par Alexandre, faisait 738 × 294 sur fond blanc opaque. Il a
+  été détouré par `detourer-sponsors.py` (remplissage depuis les bords),
+  rogné, puis ramené à 360 px : `assets/sponsors/sponsor-inplay.png` et
+  `.webp`.
+- Lien `https://inplay.fr/`, le même que dans le pied. Une ligne
+  « Équipementier du club » sous le nom.
+- La rangée passe à 6 colonnes au-delà de 760 px ; les 3 et 2 colonnes des
+  petits écrans divisent déjà 6. Le logo, au format paysage 2,7:1, reçoit
+  `scale(1.14)`.
+
+**Le crédit du site.** « Je veux qu'on voie que c'est moi qui ai fait ça ».
+- La signature était une ligne de 12 px, en teinte atténuée. Elle devient un
+  bloc pleine largeur au bas du pied commun : le surtitre « Conception &
+  développement du site », puis « Made with ❤️ by Alex », de 22 px sur
+  téléphone à 30 px sur ordinateur, avec « Alex » agrandi et « #MBC974 » en
+  pastille.
+- La source est `index.html`, entre les marqueurs PIED. Elle est propagée aux
+  25 pages par `set-entete.py` et les générateurs (§ 27).
+
+**Les boutons centrés, sur tout le site.** « Centre bien les boutons sur tout
+le site, notamment sur la page Nout kartié ».
+- Un audit Chrome a mesuré 237 types de boutons sur 26 pages, à 390 et
+  1 440 px. Les 81 cas signalés ont été revus un par un sur capture : 73 à
+  corriger, 8 déjà centrés ou voulus. Les 8 : le « Je m'inscris » de la
+  barre, à droite face au logo ; les deux boutons de « Par où commencer »,
+  sous un titre aligné à gauche dans le volet « Voir toutes les catégories » ;
+  les paires d'adhesion.html, déjà centrées.
+- Trois défauts, tous corrigés en CSS seul (bloc « LES BOUTONS SE CENTRENT »
+  de style.css) :
+  - un libellé sur deux lignes restait aligné à gauche dans son bouton :
+    `.btn` n'avait pas de `text-align`, qu'un `<a>` ne reçoit pas du
+    navigateur ;
+  - les rangées en `flex-wrap` sans `justify-content` partaient à gauche
+    (`.seo-links`, `.ar__liens`, `.age__a`, `.mp__a`, `.mc-next__a`,
+    `.ms-liens`) ;
+  - sur téléphone, des boutons de largeurs inégales s'empilaient en escalier.
+    Sous 560 px, ils prennent désormais toute la colonne.
+- « Nout kartié » : la signature du club et le bouton étaient aux deux bouts
+  d'une même rangée. Ils forment une pile centrée ; la colonne solo perd la
+  marge droite et le filet de l'ancienne double page.
+- Deux en-têtes se centrent avec leurs boutons, pour ne pas les en décoller :
+  celui des pages enfants (`.seo-hero`) et celui des fiches de rencontre
+  (`.mp`). Pour revenir à des en-têtes alignés à gauche en grand écran,
+  retirer les points 5 et 6 du bloc ne suffit pas : le point 2 centre encore
+  `.seo-links` et `.mp__a`. Il faut ajouter
+  `.seo-hero .seo-links,.mp__a{justify-content:flex-start}`, sans retirer
+  `.seo-links` du point 2, qui centre aussi la rangée du bas des pages
+  enfants (`.seo-prose`). Recette vérifiée dans Chrome.
+- Mesuré après, à 390 et 1 440 px sur dix endroits témoins : groupes centrés
+  à 0 px, libellés centrés à 0 px dans leur bouton, aucun débordement
+  horizontal.
+- Audit complet après correction : de 83 signalements à 15, tous voulus ou
+  artefacts de mesure (un bouton d'une paire centrée, mesuré seul), sauf un.
+  « Découvrir nos engagements » (#parents, 390 px) : le libellé passait à la
+  ligne et repoussait la flèche contre le bord. Sur téléphone, ce bouton
+  redevient un bloc de texte centré, et la flèche suit le dernier mot.
+- Au passage : les deux boutons PDF de l'article du calendrier s'annonçaient
+  « (PDF) (PDF) » aux lecteurs d'écran. `build-actus.py` n'ajoute plus le
+  suffixe caché quand le libellé dit déjà « PDF ».
+- Au passage aussi, trouvé en vérifiant les suites de la relecture : la tuile
+  de Ruisseau Blanc ne recevait que son 900 WebP, sur tous les écrans. Ses
+  deux sources AVIF et WebP (560, 900, 1300) dormaient dans un commentaire
+  depuis a9a125a, et build-galerie.py, qui lisait le type AVIF dans le bloc,
+  la croyait servie. Elles sont rétablies avec
+  `sizes="(min-width:980px) 100vw, 90vw"` : le cran 1300 dès 980 px, où le
+  zoom la grossit, et 90vw pour sa bande de repli sous 900 px (sinon étirée
+  x1,54 sur tablette). Le script ignore désormais les commentaires, et signale
+  une balise qui y dort.
+
+**Relecture contradictoire** : 3 angles et 9 agents. 6 constats, dont 5
+confirmés par un sceptique, tous corrigés :
+- la mosaïque de repli sous 900 px (voir plus haut) ;
+- la ligne « Équipementier du club », alignée à gauche sous un nom centré ;
+- la recette de retour des en-têtes, qui ne marchait pas ;
+- des commentaires et des phrases de ce document restés sur l'ancienne tuile
+  d'arrivée, sur six tuiles, ou sur une signature « à 60 % d'opacité »
+  qu'elle n'avait plus.

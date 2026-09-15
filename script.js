@@ -1745,7 +1745,7 @@ MBC.dateLongue = function (d, avecAnnee) {
 
    VOLONTAIREMENT SANS IntersectionObserver. Une premiere version
    s'en servait pour ne calculer que section visible ; mais si
-   l'observateur ne repond pas, --p ne bouge plus et les six
+   l'observateur ne repond pas, --p ne bouge plus et les
    photos restent empilees au centre d'une zone collee de 240vh :
    la panne ne ressemble pas a « pas d'animation », elle ressemble
    a une page cassee. Le rectangle qu'on lit de toute facon dit
@@ -1768,7 +1768,7 @@ MBC.dateLongue = function (d, avecAnnee) {
     const h = window.innerHeight;
 
     /* hors champ : on ne touche a rien, et on rend la main au navigateur
-       (le will-change des six calques coute de la memoire graphique). */
+       (le will-change des calques coute de la memoire graphique). */
     if (r.bottom < 0 || r.top > h) {
       if (vivante) { vivante = false; zone.classList.remove('is-live'); }
       return;
@@ -1784,8 +1784,19 @@ MBC.dateLongue = function (d, avecAnnee) {
     zone.style.setProperty('--p', p.toFixed(4));
   }
 
+  /* will-change SEULEMENT pendant le mouvement (V187). Un calque en
+     will-change:transform garde la trame de l'echelle a laquelle il a ete
+     rasterise : la tuile d'arrivee, peinte a 25 % de l'ecran puis grossie x4,
+     restait floue a l'arret (nettete mesuree 77 contre 326 sans will-change,
+     a 1440 px ; l'ancienne tuile centrale l'etait deja). 180 ms apres le
+     dernier defilement, la classe tombe et le navigateur repeint la scene a
+     sa taille reelle, nette. */
+  let repos = 0;
   function auDefilement() {
     if (!demande) { demande = true; requestAnimationFrame(calculer); }
+    zone.classList.add('is-moving');
+    clearTimeout(repos);
+    repos = setTimeout(function () { zone.classList.remove('is-moving'); }, 180);
   }
 
   window.addEventListener('scroll', auDefilement, { passive: true });

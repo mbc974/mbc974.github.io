@@ -196,7 +196,11 @@ def corps_html(blocs):
             for l in b["c"]:
                 cls = "btn btn--primary" if l.get("p") else "btn btn--ghost"
                 pdf = l["h"].lower().endswith(".pdf")
-                extra = u'<span class="sr-only"> (PDF)</span>' if pdf else u''
+                # Le suffixe pour lecteur d'ecran, seulement si le libelle ne dit
+                # pas deja « PDF » : sinon le nom accessible devenait « ... (PDF)
+                # (PDF) » (relecture du 15/09/2026, calendrier de la phase 1).
+                extra = (u'<span class="sr-only"> (PDF)</span>'
+                         if pdf and u'pdf' not in l["l"].lower() else u'')
                 liens.append(u'<a class="%s" href="%s">%s%s</a>'
                              % (cls, l["h"], ech(l["l"]), extra))
             out.append(u'      <p class="ar__liens">%s</p>' % "".join(liens))

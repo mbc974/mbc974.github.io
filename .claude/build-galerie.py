@@ -63,10 +63,19 @@ GALERIE = os.path.join(RACINE, 'assets', 'galerie')
 # au-dessus du plus grand cran disponible ; la valeur mobile reste celle de la
 # mosaique, car un telephone de 390 px n'atteint jamais ces largeurs.
 SIZES = {
-    'g-banner': u'(min-width:980px) 88vw, 94vw',   # 1511px a 1717 -> cran 1400
+    # V187 (15/09/2026) : la photo d'equipe devient la tuile CENTRALE, qui finit
+    # plein cadre (100vw au-dessus du rapport 3:2, sinon 1,5 x la hauteur). Le
+    # panoramique de l'ecole de basket devient un satellite, a l'emplacement du
+    # « gymnase un samedi matin » ; celui-ci et « le plateau aux couleurs du
+    # club » ont quitte la mosaique.
+    'g-equipe': u'(min-aspect-ratio:3/2) 100vw, 150vh',
+    'g-team':   u'(min-width:980px) 88vw, 94vw',   # satellite du haut -> cran 1400 a 2000
     'g-tall':   u'(min-width:980px) 56vw, 47vw',   #  961px        -> cran  900
-    'g-shoot':  u'(min-width:980px) 56vw, 47vw',   #  961px        -> cran  900
     'g-inaug':  u'(min-width:980px) 48vw, 50vw',   #  824px        -> cran  760
+    # Ruisseau Blanc n'existe qu'en 1300x866 (assets/images, crans 560/900/1300) :
+    # le 1300 des 980 px, ou le zoom la grossit ; 90vw = sa bande de repli sous
+    # 900 px (V187).
+    'g-gym':    u'(min-width:980px) 100vw, 90vw',
 }
 
 
@@ -104,9 +113,12 @@ def poser_sources_avif(html):
     def sur_figure(m):
         nonlocal n
         bloc = m.group(0)
-        if 'image/avif' in bloc:
+        # Un commentaire ne sert rien au navigateur : les sources de g-gym y
+        # sont restees muettes de a9a125a a V187, et ce test les y lisait.
+        vrai = re.sub(r'<!--.*?-->', '', bloc, flags=re.S)
+        if 'image/avif' in vrai:
             return bloc
-        sw = re.search(r'<source([^>]*type="image/webp"[^>]*)>', bloc)
+        sw = re.search(r'<source([^>]*type="image/webp"[^>]*)>', vrai)
         if not sw:
             return bloc
         avif = sw.group(0).replace('image/webp', 'image/avif').replace('.webp', '.avif')
@@ -148,6 +160,9 @@ def main():
 
     p = os.path.join(RACINE, 'index.html')
     html = io.open(p, encoding='utf-8').read()
+    for m in re.finditer(r'<figure class=.g-tile([^"]*)..*?</figure>', html, flags=re.S):
+        if re.search(r'<!--(?:(?!-->).)*<(?:source|picture|img)\b', m.group(0), flags=re.S):
+            print(u"  !! tuile%s : une balise dort dans un commentaire" % m.group(1))
     html, na = poser_sources_avif(html)
     html, ns = poser_sizes(html)
     print(u"  %d tuile(s) recoivent une source AVIF" % na)
