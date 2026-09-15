@@ -56,6 +56,7 @@ suivante.
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
 | L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
 | Un joueur de l'effectif seniors | `data/effectif.json` | `python .claude/build-effectif.py` |
+| Les photos d'un soir de match (galerie « Sur le terrain ») | `data/galerie-match.json`, et les originaux sortis de l'appareil | `python .claude/build-galerie-match.py --images <dossier>` puis `bump-assets.py` (§ 30) |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | Une dérogation (rencontre inversée avant un nouveau PDF) | `data/matchs.json` : la rencontre, et son champ `derogation` | `python .claude/build-og-matchs.py` puis `set-calendrier-prm.py --archive` et `bump-assets.py` (§ 29) |
 | La photo du hero | `.claude/sources/hero-…jpg` | `python .claude/build-hero.py` |
@@ -263,6 +264,7 @@ python .claude/build-creneaux.py --essai # les pages catégories disent-elles en
 python .claude/build-vignettes.py --essai # les crans responsives sont-ils tous là ?
 python .claude/build-og-matchs.py --essai  # les 7 affiches de partage existent-elles ?
 python .claude/build-effectif.py --essai   # les 10 joueurs sont-ils tous là ?
+python .claude/build-galerie-match.py --check # le bloc des soirées photo correspond-il au JSON ?
 python .claude/verifier-classes.py     # classes HTML sans aucune règle CSS
 python .claude/verifier-liens.py       # liens, ancres, ressources, pages orphelines
 python .claude/set-entete.py --check   # en-tête et pied de page à jour sur les 24 pages ?
@@ -2672,3 +2674,136 @@ n'ont rien trouvé sur le site. Cinq retouches du mécanisme en sont sorties :
 **À savoir** : le script affiche une alerte, « encart « prochain
 rendez-vous » : data-match-date introuvable ». Elle est ancienne et sans
 effet : l'encart qu'elle vérifiait a disparu avec le Match Center (§ 26).
+
+---
+
+## 30. Les photos d'un soir de match dans « Sur le terrain » (15/09/2026)
+
+« ajoute ces photos dans sur le terrain » : Alexandre, le 15/09, avec onze
+photos. Dix sont publiées : les seniors le soir de la J1, le 11/09 (victoire
+73-52 contre Sainte-Suzanne, au Gymnase de La Montagne). Leur date de prise de
+vue (EXIF) le confirme. L'heure, elle, ne tranche rien : l'appareil l'enregistre
+avec un décalage de +05:00, quand La Réunion est à +04:00. Aucun `alt` ne dit
+donc « pendant le match ».
+
+**La onzième est écartée.** `DSC048468.png` fait 1024 × 1536, n'a pas d'EXIF,
+et aucun original d'appareil ne lui correspond. Sous le numéro de son maillot,
+l'inscription est illisible, là où le vrai maillot du n° 12 porte « Ansanm nou
+lé pli for » : c'est une image retouchée ou régénérée par une IA, et le § 17.4
+les exclut du site. Si l'original existe, il suffit de l'ajouter au JSON.
+
+**Où.** Dans `#galerie`, entre le titre de la section et le zoom parallaxe.
+- Pas dans le zoom : ses six tuiles ont chacune une place et une géométrie
+  calculées (§ 16).
+- Pas dessous : le zoom atterrit plein cadre sur « Le cercle d'avant-séance »,
+  qui ouvre sur #parents.
+
+**La chaîne.**
+- `data/galerie-match.json` : une entrée par soirée, la plus récente en
+  premier. Chacune porte le slug de la rencontre, un titre, et ses photos dans
+  l'ordre de la soirée. La date, l'adversaire, le score et le lieu sont lus
+  dans `data/matchs.json`.
+- `python .claude/build-galerie-match.py --images <dossier des originaux>`
+  crée les dérivés manquants dans `assets/galerie/`, puis réécrit le bloc
+  entre les marqueurs `galerie:soirees` d'`index.html`. Les dérivés : AVIF 45
+  et WebP 66, aux crans 360/560/760/1200 en portrait et 560/760/1200/1800 en
+  paysage, plus un JPEG 80 au plus grand cran.
+- Sans `--images`, le script ne réécrit que le bloc. `--check` sort en 1 si le
+  bloc publié n'est plus celui du JSON.
+- Puis `bump-assets.py`.
+- `build-matchs.py` (et donc `set-calendrier-prm.py`) réécrit aussi le bloc,
+  par `regenerer()` : un score corrigé dans `data/matchs.json` change la
+  légende du même coup. Un échec y est annoncé par un « !! », sans bloquer la
+  publication d'un résultat.
+- `--images` n'exige que les originaux des photos pas encore publiées.
+
+**Les règles.**
+- Un nom de fichier publié ne sert qu'une fois : une photo remplacée prend un
+  nouveau nom (règle du cache). Un dérivé existant n'est jamais réécrit.
+- Les dérivés sont vidés de toutes leurs métadonnées : boîtier, réglages,
+  GPS éventuel. Vérifié sur les 90 fichiers.
+- Le script signale deux cas : un original sans date de prise de vue (c'était
+  le cas du PNG), et une photo prise un autre jour que la rencontre.
+- Les `alt` décrivent ce que la photo montre. Un joueur n'est nommé que si son
+  maillot l'identifie et que l'effectif concorde : c'est le cas de Kevin Nazir
+  (floqué NAZIR, n° 11). Les autres sont désignés par leur numéro. Le flocage
+  du n° 1 et celui du n° 34 ne reprennent pas le nom inscrit dans
+  `data/effectif.json`, et le n° 12 de l'effectif, David Nugent, a rejoint le
+  club le 13/09, deux jours après le match.
+
+**La mise en page** (style.css, bloc « GALERIE — les soirées photo »).
+- Dès 880 px, des rangées justifiées : chaque photo prend pour `flex-grow` son
+  rapport largeur/hauteur (`--r`), avec une base nulle. Aucune photo n'est
+  recadrée. Deux rangées (6 + 4), de 273 et 252 px de haut à 1440 px, de 219
+  et 203 px à 1024.
+- En dessous, une bande qui défile au doigt (`scroll-snap`). Les photos y
+  mesurent min(70vw, 420px) de haut, et un paysage est borné à la largeur de
+  l'écran.
+- Le générateur écrit les `sizes` d'après cette géométrie (constantes en tête
+  du script) : si l'une change, l'autre aussi. Mesuré : le 360 pour un
+  portrait de 175 px à DPR 2, le 760 pour un paysage de 338 px.
+- Le filet de 1 px est un `::after` posé par-dessus la photo. En bordure, il
+  décalait de 1,7 px le bas des paysages par rapport à celui des portraits.
+
+**La visionneuse** (`#lightbox`, script.js). Elle n'avait plus aucun
+déclencheur sur le site.
+- Un déclencheur qui porte `data-lightbox-group` l'ouvre en mode photo : la
+  photo entière, un compteur, deux flèches, les touches ← →, le balayage du
+  doigt. À la fermeture, le focus revient sur la photo regardée.
+- Sans groupe, le mode affiche ne change pas.
+- Premier défaut corrigé au passage : avec `visibility .3s`, la visionneuse
+  était encore `hidden` quand le script lui donnait le focus, qui restait
+  derrière elle. `.lightbox.show` bascule désormais sans transition.
+- Second défaut : pas encore chargée, l'image mesurait 0 × 0. En mode photo,
+  sa boîte est désormais calculée d'après `--lb-r`, et l'image se charge sans
+  attendre (`loading` passe à `eager` à l'ouverture).
+
+**Au passage, le cadre du zoom** (style.css, bloc « GALERIE — zoom
+parallaxe »). En mode zoom, chaque tuile est un calque plein cadre. La règle
+V17 `.g-tile{box-shadow:…, var(--bevel) !important}` l'emportait sur le
+`box-shadow:none` du zoom : le liseré intérieur des six calques traçait un
+filet de 1 px tout autour de la scène, le « cadre de fenêtre » que le § 16
+croyait retiré. Il était déjà là sur main, mais il tombait désormais juste sous
+les photos. Correctif : `box-shadow:none!important`, comme pour `border`.
+Vérifié dans Chrome, à 1440 et à 390 px : le filet a disparu.
+
+**Relecture contradictoire** : 14 agents. Les `alt` ont été confrontés aux
+images : 9 sur 10 tenaient. « pendant le match » a été retiré du regroupement,
+que l'image ne prouve pas, et « suivent le match » et « garnies » du banc.
+Huit défauts de code, tous confirmés par un sceptique, tous corrigés :
+- la page défilait derrière la visionneuse ouverte : `body{overflow:hidden}`
+  ne tient pas quand `<html>` est en `overflow-x:clip`. Le verrou est posé sur
+  la racine (`html.lb-open`), comme celui du menu, barre de défilement
+  compensée ;
+- pendant le chargement, le navigateur peint encore la photo précédente dans
+  la nouvelle boîte, où elle était étirée : `object-fit:contain`, et les deux
+  voisines sont préchargées, plus seulement la suivante ;
+- `button:focus-visible{border-radius:4px}` (0,1,1) ôtait leurs coins aux
+  photos et aux flèches au clavier : l'arrondi est reposé dans leur propre
+  `:focus-visible` ;
+- à l'ouverture, le lecteur d'écran ne disait ni la photo ni son rang : le
+  dialogue porte `aria-describedby` vers le compteur ;
+- à l'impression A4 portrait, la bande coupait 7 photos sur 10 : les rangées
+  justifiées valent aussi pour `print` ;
+- le score de la légende n'était remis à jour par aucune chaîne, et `--images`
+  réclamait les originaux de toutes les soirées : voir « La chaîne ».
+
+**Le poids.** 90 fichiers, 5,9 Mo dans le dépôt. Un visiteur ne charge que les
+vignettes, en différé, sous la ligne de flottaison : 123 Ko sur ordinateur,
+142 Ko sur un téléphone à DPR 2. Une photo ouverte dans la visionneuse pèse
+de 59 à 173 Ko.
+
+**Vérifié le 15/09.**
+- Tous les contrôles du § 7. `verifier-liens` ne signale que les `_banc*.html`,
+  ignorés par git, et `verifier-classes` que les 4 anomalies connues.
+- Des mesures dans le panneau à 375, 768, 1024 et 1440 px : rangées alignées
+  au dixième de pixel, aucun débordement horizontal. Le zoom garde sa course
+  de 240vh.
+- La visionneuse : ouverture, flèches, touches, passage de la dernière photo à
+  la première, Échap, et retour du focus.
+- Dans Chrome piloté en CDP, à 1440 × 900 et 390 × 844 : de vraies touches
+  (Entrée, Tab, →, Échap), un vrai balayage du doigt, et une vraie molette,
+  visionneuse ouverte, qui ne fait plus bouger la page. Le lecteur d'écran lit
+  bien la description. Les coins restent arrondis au focus. En impression A4
+  portrait, les dix photos tiennent dans la largeur. Le zoom avance toujours
+  (`--p` = 0,50 à mi-course).

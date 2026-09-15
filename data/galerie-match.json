@@ -1,0 +1,61 @@
+{
+  "_lisezmoi": "Les soirées photo de la section « Sur le terrain » de l'accueil (#galerie), au-dessus du zoom. C'est CE fichier qu'on modifie, jamais le HTML. AJOUTER UNE SOIRÉE : une entrée dans « soirees », la plus récente en premier, avec le slug de la rencontre dans data/matchs.json — la date, l'adversaire, le score et le lieu en sont lus, rien n'est ressaisi — et ses photos dans l'ordre chronologique. UNE PHOTO : « source » = le fichier sorti de l'appareil (jamais une image générée ou retouchée par une IA : MAINTENANCE § 17.4) ; « fichier » = le nom publié, NOUVEAU pour toute nouvelle photo (règle du cache) ; « alt » = ce que la photo montre, sans nommer personne que son maillot n'identifie pas. PUIS : « python .claude/build-galerie-match.py --images <dossier des originaux> » (crée les dérivés AVIF, WebP et JPEG manquants, puis réécrit le bloc de l'accueil), et « python .claude/bump-assets.py ».",
+  "soirees": [
+    {
+      "match": "mbc-sainte-suzanne-11-septembre-2026",
+      "titre": "Le soir de la première journée",
+      "photos": [
+        {
+          "source": "DSC04831.jpg",
+          "fichier": "mbc-seniors-2026-09-11-dunk",
+          "alt": "Échauffement au gymnase de La Montagne : un joueur du MBC en tee-shirt noir du club s'élève seul vers le cercle, le ballon tenu d'une main."
+        },
+        {
+          "source": "DSC04856.jpg",
+          "fichier": "mbc-seniors-2026-09-11-lay-up",
+          "alt": "Pendant l'échauffement, un joueur du MBC en tee-shirt noir monte au panier en double pas, sous le regard de coéquipiers en maillot blanc."
+        },
+        {
+          "source": "DSC04876.jpg",
+          "fichier": "mbc-seniors-2026-09-11-numero-11",
+          "alt": "Le numéro 11 du MBC, ballon en main, en maillot blanc et short bleu ; derrière lui, le numéro 12 lève le bras sous le panier."
+        },
+        {
+          "source": "DSC04904.jpg",
+          "fichier": "mbc-seniors-2026-09-11-kevin-nazir",
+          "alt": "Kevin Nazir, numéro 11 du MBC, vu de dos en plein tir en suspension devant les tribunes ; le ballon s'élève sous la charpente du gymnase."
+        },
+        {
+          "source": "DSC04943.jpg",
+          "fichier": "mbc-seniors-2026-09-11-numero-8",
+          "alt": "Le numéro 8 du MBC arme son tir, le ballon tenu à deux mains au-dessus de la tête."
+        },
+        {
+          "source": "DSC04950.jpg",
+          "fichier": "mbc-seniors-2026-09-11-tir-tee-shirt-club",
+          "alt": "Un joueur du MBC en tee-shirt « MBC La Montagne Basket Club », vu de dos, bras tendus au bout de son tir, devant les tribunes du gymnase."
+        },
+        {
+          "source": "DSC05012.jpg",
+          "fichier": "mbc-seniors-2026-09-11-regroupement-bord-de-terrain",
+          "alt": "Au ras du parquet, un ballon flou au premier plan ; au fond, les joueurs du MBC se regroupent au bord du terrain autour d'un encadrant en tee-shirt du club."
+        },
+        {
+          "source": "DSC05056.jpg",
+          "fichier": "mbc-seniors-2026-09-11-regroupement-match",
+          "alt": "Regroupement sur le parquet : les joueurs du MBC en maillot blanc, dont le numéro 1 et Kevin Nazir (numéro 11), avec un encadrant en polo noir, devant les tribunes."
+        },
+        {
+          "source": "DSC05068.jpg",
+          "fichier": "mbc-seniors-2026-09-11-banc",
+          "alt": "Le banc du MBC vu de dos : les numéros 1, 8, 11 (Kevin Nazir) et 34, assis face au terrain et aux tribunes du gymnase de La Montagne."
+        },
+        {
+          "source": "DSC05076.jpg",
+          "fichier": "mbc-seniors-2026-09-11-numero-12",
+          "alt": "Le numéro 12 du MBC, de dos, mains sur les hanches : son maillot porte « La Montagne » et l'inscription créole « Ansanm nou lé pli for ». Au fond, le tableau d'affichage."
+        }
+      ]
+    }
+  ]
+}

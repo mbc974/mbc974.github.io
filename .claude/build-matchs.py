@@ -1108,6 +1108,25 @@ def main():
         raise SystemExit("!! Match Center de l'accueil non regenere (marqueurs MATCH-CENTER ?)")
     ecrits.append("index.html (Match Center de la saison)")
 
+    # 6. les soirees photo de #galerie (build-galerie-match.py) : leur legende
+    #    lit elle aussi la date, le score et le lieu dans data/matchs.json, elle
+    #    se regenere donc ici, du meme coup. Un echec est ANNONCE, pas avale —
+    #    la lecon du ruban ci-dessus — mais il ne bloque pas la publication d'un
+    #    score : une photo sans derives ne doit pas retenir un resultat.
+    #    build-galerie-match.py --check le rappelle ensuite (MAINTENANCE § 7).
+    gm = os.path.join(os.path.dirname(os.path.abspath(__file__)), "build-galerie-match.py")
+    if os.path.exists(gm):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("galerie_match", gm)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        try:
+            if mod.regenerer():
+                ecrits.append("index.html (soirees photo de la galerie)")
+        except SystemExit as e:
+            print(("!! soirees photo de la galerie NON regenerees : %s" % e)
+                  .encode("ascii", "replace").decode("ascii"))
+
     pm = prochain(d)
     print("Source        : data/matchs.json (%d rencontres)" % len(d["matchs"]))
     print("Prochain match: %s" % (("%s %s, %s" % (pm["_etiquette"], pm["_titre"], pm["_dateLongue"]))

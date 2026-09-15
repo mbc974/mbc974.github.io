@@ -8951,9 +8951,14 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .gzoom.is-on .gallery-mosaic{display:block;height:100%;margin:0;gap:0;
   opacity:1;transform:none;filter:none;transition:none}
 /* chaque tuile est un calque plein cadre, centre, que l'on met a l'echelle.
-   --p (0 -> 1) est pose par script.js sur .gzoom au fil du defilement. */
+   --p (0 -> 1) est pose par script.js sur .gzoom au fil du defilement.
+   box-shadow en !important, comme border : la regle V17 « .g-tile{box-shadow:
+   ..., var(--bevel) !important} » l'emportait, et le lisere interieur de
+   CHAQUE calque (six, tous plein cadre) tracait un filet de 1 px sur les bords
+   de la scene — le « cadre de fenetre » que V157 pensait avoir retire. Mesure
+   le 15/09/2026 dans Chrome : il etait deja la sur main. */
 .gzoom.is-on .g-tile{position:absolute;inset:0;margin:0;min-height:0;
-  border:0!important;border-radius:0;background:none;box-shadow:none;
+  border:0!important;border-radius:0;background:none;box-shadow:none!important;
   display:grid;place-items:center;overflow:visible;
   transform:scale(calc(1 + (var(--gs,4) - 1) * var(--p,0)))}
 /* will-change seulement quand la scene est a l'ecran : six calques de la
@@ -10545,6 +10550,13 @@ html:has(.ccb){scroll-padding-bottom:215px}
    bande du fond de page (captures a 1440 et 2560 px). */
 html.mn-open{overflow:hidden}
 html.mn-open body{padding-right:var(--mn-sbw,0px)}
+/* La visionneuse ouverte verrouille la page de la meme facon (script.js,
+   syncBodyLock) : body{overflow:hidden} seul ne tenait pas, <html> etant en
+   overflow-x:clip — la molette et le doigt faisaient defiler la page derriere
+   elle. */
+html.lb-open{overflow:hidden}
+html.lb-open body{padding-right:var(--mn-sbw,0px)}
+.lb-open .site-header{right:var(--mn-sbw,0px)}
 .mn-open .site-header{right:var(--mn-sbw,0px)}
 
 /* --- Le calque ----------------------------------------------------------- */
@@ -12040,3 +12052,113 @@ html.mn-open body{padding-right:var(--mn-sbw,0px)}
   .vid-facade,.lp-media{border:1px solid CanvasText}}
 @media print{
   .vid-facade__play,.vid-facade__note,.lp-media__play{display:none!important}}
+
+/* ============================================================
+   GALERIE — les soirées photo (V186, 15/09/2026)
+   ------------------------------------------------------------
+   Un bloc par soirée de match, écrit par
+   .claude/build-galerie-match.py depuis data/galerie-match.json,
+   AU-DESSUS du zoom parallaxe : la scène collée doit continuer
+   d'atterrir plein cadre sur « Le cercle d'avant-séance », qui
+   ouvre sur #parents.
+
+   Dès 880 px (et à l'impression), des rangées JUSTIFIÉES. Chaque photo a pour
+   flex-grow son rapport largeur/hauteur (--r, écrit par le
+   générateur) et une base nulle : les largeurs sont
+   proportionnelles aux rapports, toutes les photos d'une rangée
+   ont donc la même hauteur, et la rangée remplit exactement la
+   largeur. Aucune n'est recadrée : object-fit ne rattrape que
+   l'arrondi au pixel. Le générateur choisit les coupures (deux
+   rangées pour dix photos) et écrit des sizes qui décrivent CETTE
+   géométrie : les deux changent ensemble.
+
+   En dessous, une bande qui défile au doigt. Les rangées passent
+   en display:contents, les photos deviennent les enfants directs
+   de la bande, à hauteur commune min(70vw, 420px). Un paysage y
+   est borné à la largeur de l'écran (bords un peu rognés, sur
+   téléphone seulement) : un cliché plus large que la fenêtre ne
+   s'arrête jamais proprement sous le doigt.
+
+   Pas de filtre photo, contrairement à .g-tile : ces clichés
+   sortent de Lightroom, déjà étalonnés.
+   ============================================================ */
+.gmatch{margin-top:clamp(1.4rem,3vw,2.2rem)}
+.gmatch__head{margin-bottom:1rem}
+/* (0,2,0) : .section p (0,1,1) repeindrait sinon le surtitre en --txt-soft */
+.gmatch__head .gmatch__kicker{font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-vif)}
+.gmatch__title{margin-top:.15rem;font-family:var(--ff-display);font-weight:400;font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.08;letter-spacing:.01em;text-transform:uppercase;color:var(--txt)}
+.gmatch__head .gmatch__meta{margin-top:.4rem;max-width:62ch}
+.gmatch__meta a{color:var(--txt);font-weight:600;white-space:nowrap;text-decoration:underline;text-decoration-color:var(--orange-vif);text-decoration-thickness:2px;text-underline-offset:3px}
+.gmatch__meta a:hover{color:var(--orange-vif)}
+.gmatch__meta a:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:2px}
+.gmatch__rows{--gh:min(70vw,420px);--gpad:clamp(18px,5vw,48px);
+  display:flex;gap:.6rem;
+  margin-inline:calc(-1 * var(--gpad));padding:.4rem var(--gpad) .8rem;
+  overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gpad);
+  scrollbar-width:thin;scrollbar-color:rgb(var(--bleu-glacier-rgb) / .28) transparent}
+.gmatch__row{display:contents}
+.gmatch__ph{position:relative;flex:0 0 auto;
+  width:min(calc(var(--r) * var(--gh)),calc(100vw - 2 * var(--gpad)));height:var(--gh);
+  padding:0;border:0;border-radius:var(--r-md);
+  overflow:hidden;background:#07101d;color:inherit;font:inherit;cursor:zoom-in;
+  scroll-snap-align:start;
+  box-shadow:0 14px 34px rgba(3,7,15,.38),var(--bevel);
+  -webkit-tap-highlight-color:transparent}
+.gmatch__ph picture{position:absolute;inset:0}
+/* Le filet est dessiné PAR-DESSUS la photo, pas en bordure : une bordure de
+   1 px s'ajoute à chaque boîte sans être répartie au prorata de --r, et
+   décalait de 1,7 px le bas des paysages et celui des portraits d'une même
+   rangée (mesuré à 1280 px). */
+.gmatch__ph::after{content:"";position:absolute;inset:0;border:1px solid rgba(191,210,228,.16);border-radius:inherit;pointer-events:none}
+.gmatch__ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease-out)}
+/* l'arrondi est repose ici : la regle globale « button:focus-visible »
+   (0,1,1) le ramenait a 4 px, et la photo perdait ses coins au clavier */
+.gmatch__ph:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:var(--r-md)}
+@media (hover:hover) and (pointer:fine){.gmatch__ph:hover img{transform:scale(1.04)}}
+@media (prefers-reduced-motion:reduce){.gmatch__ph img{transition:none}.gmatch__ph:hover img{transform:none}}
+/* et a l'impression : une bande qui defile ne s'imprime pas, 7 photos sur 10
+   manquaient au papier en A4 portrait */
+@media (min-width:880px),print{
+  .gmatch__rows{display:grid;gap:.7rem;margin-inline:0;padding:0;overflow:visible;scroll-snap-type:none}
+  .gmatch__row{display:flex;align-items:flex-start;gap:.7rem}
+  .gmatch__ph{flex:var(--r) 1 0%;width:auto;height:auto;min-width:0;aspect-ratio:var(--r)}}
+
+/* ---- Visionneuse, mode photo (V186) ----
+   Posé par script.js quand le déclencheur porte data-lightbox-group : la
+   photo ENTIÈRE à l'écran (une affiche, elle, s'ouvre en pleine largeur et
+   se fait défiler), un compteur à la place de la barre de zoom, deux
+   flèches. Les flèches existent aussi pour une affiche, masquées par
+   l'attribut hidden. */
+/* À l'ouverture, la visibilité bascule SANS transition. Avec « visibility
+   .3s », la visionneuse est encore hidden à l'instant où script.js lui
+   donne le focus : lightboxClose.focus() échouait et le focus restait sur
+   la photo, derrière la visionneuse (mesuré). La fermeture garde son fondu. */
+.lightbox.show{transition:opacity .3s,visibility 0s}
+/* le doigt ne fait pas defiler la page a travers la visionneuse */
+.lightbox{overscroll-behavior:contain}
+.lightbox--photo{align-items:center;overflow:hidden;padding:4.4rem clamp(.5rem,5vw,5.4rem) 1.6rem}
+.lightbox--photo .lightbox__toolbar{display:none}
+.lightbox--photo .lightbox__stage{width:100%}
+.lightbox--photo .lightbox__viewport{display:flex;justify-content:center;width:100%;max-height:none;overflow:hidden;border-radius:0;box-shadow:none}
+/* La boîte de la photo a sa taille AVANT le chargement, d'après le rapport
+   --lb-r que script.js recopie de la vignette. En largeur et hauteur auto,
+   une image pas encore chargée mesure 0 x 0 : l'écran restait noir le temps
+   du téléchargement (mesuré sur téléphone). object-fit:contain : pendant ce
+   temps, le navigateur peint encore la photo PRÉCÉDENTE dans la nouvelle
+   boîte ; en fill, elle y était étirée (un portrait dans un cadre paysage). */
+.lightbox--photo img{--lb-h:calc(100svh - 6.4rem);width:min(100%,calc(var(--lb-h) * var(--lb-r,1)));height:auto;max-width:100%;max-height:var(--lb-h);aspect-ratio:var(--lb-r,auto);object-fit:contain;border-radius:12px;box-shadow:0 30px 90px rgba(0,0,0,.72)}
+.lightbox__count{display:none}
+.lightbox--photo .lightbox__count{display:block;position:fixed;top:1.2rem;left:50%;z-index:202;transform:translateX(-50%);padding:.5rem 1rem;border:1px solid var(--line-strong);border-radius:var(--r-pill);background:rgba(13,21,38,.86);font-family:var(--ff-cond);font-weight:800;letter-spacing:.08em;color:var(--bleu-glacier)}
+.lightbox__nav{position:fixed;top:50%;z-index:202;display:flex;align-items:center;justify-content:center;width:52px;height:52px;margin-top:-26px;border:1px solid var(--line-strong);border-radius:var(--r-round);background:rgba(13,21,38,.8);color:#fff;font-size:2rem;line-height:1;cursor:pointer;transition:background .2s,color .2s}
+.lightbox__nav:hover{background:var(--orange-vif);color:#190f04}
+.lightbox__nav:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:var(--r-round)}
+.lightbox__close:focus-visible{border-radius:var(--r-round)}
+.lightbox__nav--prev{left:clamp(.4rem,1.6vw,1.4rem)}
+.lightbox__nav--next{right:clamp(.4rem,1.6vw,1.4rem)}
+@media (max-width:560px){
+  .lightbox--photo{padding-bottom:5.6rem}
+  .lightbox--photo img{--lb-h:calc(100svh - 10.4rem)}
+  .lightbox__nav{top:auto;bottom:1.1rem;margin-top:0;width:48px;height:48px}
+  .lightbox__nav--prev{left:1rem}
+  .lightbox__nav--next{right:1rem}}

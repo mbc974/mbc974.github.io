@@ -8,6 +8,15 @@
   let lightboxOpen = false;
 
   function syncBodyLock() {
+    var root = document.documentElement;
+    /* La visionneuse se verrouille sur la RACINE, comme le menu (html.mn-open) :
+       <html> est en overflow-x:clip, c'est donc son overflow, et non celui du
+       body, qui passe a la fenetre. body{overflow:hidden} seul laissait la page
+       defiler derriere la visionneuse ouverte (molette, fleches, doigt). La
+       barre est mesuree avant d'etre retiree — sauf si le menu l'a deja fait :
+       elle vaudrait alors 0. */
+    if (lightboxOpen && !navOpen && !root.classList.contains('lb-open')) root.style.setProperty('--mn-sbw', (window.innerWidth - root.clientWidth) + 'px');
+    root.classList.toggle('lb-open', lightboxOpen);
     document.body.style.overflow = (navOpen || lightboxOpen) ? 'hidden' : '';
   }
 
@@ -244,24 +253,107 @@
       applyZoom();
     }
 
-    function openLb(src, alt, fallback) {
+    /* ---- Photos en série (V186) ----
+       Un déclencheur qui porte data-lightbox-group ouvre la visionneuse en
+       MODE PHOTO : la photo entière à l'écran (une affiche, elle, s'ouvre en
+       pleine largeur et se fait défiler), un compteur à la place de la barre
+       de zoom, deux flèches, les touches ← → et le balayage du doigt vers la
+       photo voisine du même groupe. Sans groupe, rien ne change. */
+    const precedent = document.createElement('button');
+    precedent.type = 'button';
+    precedent.className = 'lightbox__nav lightbox__nav--prev';
+    precedent.setAttribute('aria-label', 'Photo précédente');
+    precedent.innerHTML = '&lsaquo;';
+    const suivant = document.createElement('button');
+    suivant.type = 'button';
+    suivant.className = 'lightbox__nav lightbox__nav--next';
+    suivant.setAttribute('aria-label', 'Photo suivante');
+    suivant.innerHTML = '&rsaquo;';
+    const compteur = document.createElement('p');
+    compteur.className = 'lightbox__count';
+    compteur.id = 'lightboxCount';
+    compteur.setAttribute('aria-live', 'polite');
+    precedent.hidden = true;
+    suivant.hidden = true;
+    lightbox.append(precedent, suivant, compteur);
+    const dimsAffiche = [lightboxImg.getAttribute('width'), lightboxImg.getAttribute('height')];
+    let serie = [];
+    let rang = 0;
+    let photo = false;
+
+    function montrer(trigger) {
+      const fallback = trigger.getAttribute('data-lightbox-fallback');
+      const vignette = trigger.querySelector('img');
       zoom = 1;
-      lastFocused = document.activeElement;
       lightboxImg.onerror = fallback ? function () {
         lightboxImg.onerror = null;
         lightboxImg.src = fallback;
       } : null;
-      lightboxImg.src = src;
-      lightboxImg.alt = alt || 'Document MBC agrandi';
+      /* Le rapport de la vignette est posé AVANT le chargement : sans lui, la
+         photo prendrait un instant celui de l'affiche (1148 × 1370). */
+      const dims = (photo && vignette) ? [vignette.getAttribute('width'), vignette.getAttribute('height')] : dimsAffiche;
+      if (dims[0] && dims[1]) {
+        lightboxImg.setAttribute('width', dims[0]);
+        lightboxImg.setAttribute('height', dims[1]);
+      }
+      /* En mode photo, la feuille CALCULE la boîte de l'image d'après ce
+         rapport (--lb-r) : elle a donc sa taille avant d'être chargée. */
+      if (photo && dims[0] && dims[1]) lightboxImg.style.setProperty('--lb-r', (dims[0] / dims[1]).toFixed(4));
+      else lightboxImg.style.removeProperty('--lb-r');
+      /* L'image porte loading="lazy" dans le HTML (inutile tant que la
+         visionneuse est fermee) ; ouverte, elle n'est la que pour etre vue. */
+      lightboxImg.loading = 'eager';
+      lightboxImg.src = trigger.getAttribute('data-lightbox-src');
+      lightboxImg.alt = trigger.getAttribute('data-lightbox-alt') || (vignette && vignette.alt) || 'Document MBC agrandi';
       lightboxViewport.scrollTop = 0;
       lightboxViewport.scrollLeft = 0;
       applyZoom();
+      compteur.textContent = '';
+      if (serie.length > 1) {
+        const vu = document.createElement('span');
+        vu.setAttribute('aria-hidden', 'true');
+        vu.textContent = (rang + 1) + ' / ' + serie.length;
+        const dit = document.createElement('span');
+        dit.className = 'sr-only';
+        dit.textContent = 'Photo ' + (rang + 1) + ' sur ' + serie.length + ' : ' + lightboxImg.alt;
+        compteur.append(vu, dit);
+        /* les deux voisines se chargent pendant qu'on regarde celle-ci : ← et
+           le balayage vers la droite visent la précédente */
+        new Image().src = serie[(rang + 1) % serie.length].getAttribute('data-lightbox-src');
+        if (serie.length > 2) new Image().src = serie[(rang - 1 + serie.length) % serie.length].getAttribute('data-lightbox-src');
+      }
+    }
+
+    function openLb(trigger) {
+      const groupe = trigger.getAttribute('data-lightbox-group');
+      photo = !!groupe;
+      serie = groupe
+        ? Array.prototype.filter.call(lightboxTriggers, function (t) { return t.getAttribute('data-lightbox-group') === groupe; })
+        : [trigger];
+      rang = Math.max(0, serie.indexOf(trigger));
+      lightbox.classList.toggle('lightbox--photo', photo);
+      lightbox.setAttribute('aria-label', trigger.getAttribute('data-lightbox-label') || 'Affiche agrandie');
+      precedent.hidden = suivant.hidden = serie.length < 2;
+      /* Au focus sur « Fermer », le lecteur d'écran lit le nom du dialogue puis
+         sa description : « Photo 3 sur 10 : <alt> ». La région aria-live n'y
+         suffit pas : remplie avant que le dialogue ne s'affiche, elle n'est pas
+         annoncée à l'ouverture. */
+      if (serie.length > 1) lightbox.setAttribute('aria-describedby', compteur.id);
+      else lightbox.removeAttribute('aria-describedby');
+      lastFocused = document.activeElement;
+      montrer(trigger);
       lightbox.classList.add('show');
       lightbox.setAttribute('aria-hidden', 'false');
       lightbox.removeAttribute('inert');
       lightboxOpen = true;
       syncBodyLock();
       lightboxClose.focus({ preventScroll: true });
+    }
+
+    function aller(pas) {
+      if (serie.length < 2) return;
+      rang = (rang + pas + serie.length) % serie.length;
+      montrer(serie[rang]);
     }
 
     function closeLb() {
@@ -272,18 +364,23 @@
       syncBodyLock();
       zoom = 1;
       applyZoom();
-      if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus({ preventScroll: true });
+      /* Après avoir parcouru une série, le focus revient sur la photo qu'on
+         regardait, pas sur celle qui a ouvert la visionneuse — et la bande
+         défile jusqu'à elle si besoin. */
+      const retour = serie.length > 1 ? serie[rang] : lastFocused;
+      if (retour && typeof retour.focus === 'function') retour.focus({ preventScroll: true });
+      if (serie.length > 1 && retour.scrollIntoView) retour.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
 
     lightboxTriggers.forEach(function (trigger) {
       trigger.addEventListener('click', function () {
-        openLb(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt'), trigger.getAttribute('data-lightbox-fallback'));
+        openLb(trigger);
       });
       trigger.addEventListener('keydown', function (e) {
         if (trigger.tagName === 'BUTTON') return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          openLb(trigger.getAttribute('data-lightbox-src'), trigger.getAttribute('data-lightbox-alt'), trigger.getAttribute('data-lightbox-fallback'));
+          openLb(trigger);
         }
       });
     });
@@ -295,13 +392,37 @@
       lightboxViewport.scrollTop = 0;
       lightboxViewport.scrollLeft = 0;
     });
+    precedent.addEventListener('click', function () { aller(-1); });
+    suivant.addEventListener('click', function () { aller(1); });
+    /* Balayage du doigt : horizontal franc (plus de 50 px, et nettement plus
+       que le vertical), et seulement sans zoom. */
+    let x0 = null;
+    let y0 = 0;
+    lightbox.addEventListener('touchstart', function (e) {
+      x0 = (serie.length > 1 && zoom <= 1.01 && e.touches.length === 1) ? e.touches[0].clientX : null;
+      if (x0 !== null) y0 = e.touches[0].clientY;
+    }, { passive: true });
+    lightbox.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      const dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > 1.5 * Math.abs(dy)) aller(dx < 0 ? 1 : -1);
+    }, { passive: true });
     lightboxClose.addEventListener('click', closeLb);
-    lightbox.addEventListener('click', function (e) { if (e.target === lightbox) closeLb(); });
+    /* En mode photo la scène prend toute la largeur : un clic à côté de la
+       photo tombe sur elle ou sur son cadre, pas sur le fond. */
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox || (photo && (e.target === lightboxViewport || e.target === lightboxStage))) closeLb();
+    });
     document.addEventListener('keydown', function (e) {
       if (!lightbox.classList.contains('show')) return;
       if (e.key === 'Escape') closeLb();
       if (e.key === 'Tab') {
-        const focusables = Array.prototype.slice.call(lightbox.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'));
+        /* seulement ce qui est affiché : les flèches d'une affiche seule et la
+           barre de zoom en mode photo sont là, mais masquées */
+        const focusables = Array.prototype.slice.call(lightbox.querySelectorAll('button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])'))
+          .filter(function (el) { return el.getClientRects().length > 0; });
         if (!focusables.length) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
@@ -313,15 +434,21 @@
           first.focus();
         }
       }
-      if ((e.key === '+' || e.key === '=') && (e.ctrlKey || e.metaKey || e.altKey)) {
+      if (serie.length > 1 && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+        e.preventDefault();
+        aller(e.key === 'ArrowRight' ? 1 : -1);
+      }
+      /* le zoom au clavier est celui des affiches : en mode photo, sa barre
+         est masquée et la photo tient déjà tout l'écran */
+      if (!photo && (e.key === '+' || e.key === '=') && (e.ctrlKey || e.metaKey || e.altKey)) {
         e.preventDefault();
         setZoom(zoom + 0.25);
       }
-      if (e.key === '-' && (e.ctrlKey || e.metaKey || e.altKey)) {
+      if (!photo && e.key === '-' && (e.ctrlKey || e.metaKey || e.altKey)) {
         e.preventDefault();
         setZoom(zoom - 0.25);
       }
-      if (e.key === '0' && (e.ctrlKey || e.metaKey || e.altKey)) {
+      if (!photo && e.key === '0' && (e.ctrlKey || e.metaKey || e.altKey)) {
         e.preventDefault();
         setZoom(1);
       }
