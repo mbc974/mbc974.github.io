@@ -3070,3 +3070,105 @@ Trois constats ont été écartés par les sceptiques :
   place ;
 - la rangée des trois cartes, allongée de 36 à 38 px. C'est la conséquence
   du prix agrandi, que la demande impose.
+
+
+## 33. Le coin arrondi des photos de la galerie (16/09/2026)
+
+« Met un petit effet arrondi sur les images avec les coins carrés et rend
+l'effet ultra premium ». La capture jointe montrait la constellation de
+`#galerie`, juste sous la bande des photos du soir de match.
+
+### Ce qui était VRAIMENT à angle vif
+
+Balayage des 25 pages, à l'écran, par le rayon EFFECTIF de chaque image :
+son propre rayon, plus celui de chaque ancêtre qui la rogne ET dont elle
+atteint le coin, coin par coin. Le comptage naïf (« premier ancêtre qui
+rogne ») donnait 28 images sur l'accueil : il en restait 5.
+
+Les faux positifs, tous du même genre : l'image est carrée, mais la CARTE
+au-dessus d'elle est arrondie et la rogne. `.adh-bento__bg` (un `mask-image`
+arrête la remontée, alors que `.adh-bento__card` a 12 px), `.ac__media`
+(`.ac__l` a 12 px), `.cat__photo`, `.cal-lieu__ph`, `.sq-card__media` — ces
+trois-là n'ont que deux coins vifs, ceux par lesquels la photo touche le
+texte de sa carte : c'est juste. Les écussons et les logos partenaires
+(`.mx-crest`, `.nx__crest`, `.sponsor-card__plate`) sont des PNG détourés
+posés sur une plaque déjà arrondie : leur boîte est carrée, ce qui se voit
+ne l'est pas.
+
+Restent, à angle vif pour de bon : le hero (plein cadre, c'est voulu) et les
+**cinq vignettes de `.gzoom`**. Ce sont elles.
+
+### Le piège : un rayon dans une boîte mise à l'échelle
+
+Dans `.gzoom`, chaque tuile est un calque agrandi par
+`transform:scale(1 + (--gs - 1) * --p)`. Un `border-radius` posé sur le
+`<picture>` est donc MULTIPLIÉ par cette échelle. 12 px sur la tuile
+centrale (`--gs:4`) feraient 48 px à l'arrivée, au moment précis où elle
+occupe exactement la fenêtre : quatre encoches de fond sombre dans les coins
+de l'écran, et le plein cadre n'en est plus un.
+
+D'où le facteur `--gz-fin` : rayon déclaré = 12 px × (1 − `--p`) ÷ échelle.
+Le produit des deux — le rayon VU — vaut donc 12 px × (1 − `--p`).
+
+Mesuré au banc à 1440×900, 1024×768 et 390×844, sur les cinq tuiles :
+
+| `--p` | 0 | 0,25 | 0,5 | 0,75 | 1 |
+|---|---|---|---|---|---|
+| rayon vu | 12 px | 9 px | 6 px | 3 px | **0** |
+
+Et la tuile d'arrivée couvre toujours la fenêtre au pixel (1440×900,
+1024×768, 390×843).
+
+12 px, c'est `--r-md` dans la portée `main > .section` : la même valeur que
+`.gmatch__ph`, la bande de photos juste au-dessus. Les deux blocs partagent
+désormais un seul coin — c'est la rupture entre les deux que la capture
+d'Alexandre montrait.
+
+### Le filet
+
+Le filet est celui de `.gmatch__ph::after`, à la même valeur
+(`rgb(var(--bleu-glacier-rgb) / .16)`). Il s'efface par son alpha
+(.16 → .08 → 0) : sans cela il redeviendrait, à l'arrivée, le « cadre de
+fenêtre » que V187 a retiré. Il passe par un `::after` et non par un
+`box-shadow` interne sur le `<picture>` : une ombre interne se peint SOUS le
+contenu, et l'image couvre toute la boîte — on ne l'aurait jamais vue.
+
+### Le coût : rien, et la leçon du contrôle
+
+Le rayon est recalculé à chaque image du défilement. On a craint le coût
+(les calques sont en `will-change:transform` pendant le mouvement, V187).
+Un premier tir isolé a donné +0,09 ms par image, un second +0,31 : de quoi
+renoncer. Trois tirs appariés contre un contrôle où la règle est neutralisée
+disent autre chose.
+
+| | 1440×900 | 390×844 |
+|---|---|---|
+| contrôle (règle neutralisée) | 1,386 ms/image | 1,259 ms/image |
+| retenu (rayon compensé) | **1,377** | **1,249** |
+| variante « seulement au repos » | 1,587 | 1,454 |
+
+L'écart entre le contrôle et la version retenue est plus petit que la
+dispersion entre deux tirs du MÊME code (1,30 à 1,43). Il n'y a pas de coût.
+La variante `:not(.is-moving)`, elle, coûte vraiment : 382 recalculs de
+style contre 365, aux trois tirs — la bascule de classe invalide plus que la
+variable. Elle laissait en plus les coins vifs pendant tout défilement de la
+page. Écartée.
+
+### Le banc
+
+`.claude/banc-galerie-zoom.mjs`, nouveau, sur le modèle de
+`banc-parallaxe.mjs` : Chrome en CDP, viewport exact par émulation, page
+défilée par elle-même, et pour chaque tuile à chaque position le rayon
+DÉCLARÉ, l'échelle et le rayon VU — la seule valeur qui compte. `--perf`
+ajoute un défilement scripté de 90 pas et le relevé `Performance.getMetrics`.
+
+```
+node .claude/banc-galerie-zoom.mjs apres 1440x900,390x844 0,0.25,0.5,0.75,1 --shots --perf
+```
+
+### Fichiers
+
+`style.css` (bloc GALERIE — zoom parallaxe), `style.min.css`,
+`.claude/banc-galerie-zoom.mjs`, et le `?v=` des 27 pages.
+Le repli sans JS et en mouvement réduit (`.gallery-mosaic` sans `.is-on`)
+n'est pas touché : toutes les règles sont sous `.gzoom.is-on`.

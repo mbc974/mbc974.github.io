@@ -4759,7 +4759,12 @@ html:has(.ccb){scroll-padding-bottom:215px}
 .gzoom.is-on .gallery-mosaic .g-tile:nth-child(5){--gl:-5vw}
 .gzoom.is-on .g-tile::before,.gzoom.is-on .g-tile::after{display:none}
 .gzoom.is-on .g-tile picture{position:relative;display:block;overflow:hidden;
-  top:var(--gt,0);left:var(--gl,0);height:var(--gh,25vh);width:var(--gw,25vw)}
+  top:var(--gt,0);left:var(--gl,0);height:var(--gh,25vh);width:var(--gw,25vw);
+  --gz-fin:calc((1 - var(--p,0)) / (1 + (var(--gs,4) - 1) * var(--p,0)));
+  border-radius:calc(var(--r-md) * var(--gz-fin))}
+.gzoom.is-on .g-tile picture::after{content:"";position:absolute;inset:0;
+  pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgb(var(--bleu-glacier-rgb) / calc(.16 * (1 - var(--p,0))))}
 .gzoom.is-on .g-tile img{width:100%;height:100%;object-fit:cover;
   transition:none;filter:none;transform:none}
 .gzoom.is-on .g-tile figcaption{position:absolute;width:1px;height:1px;padding:0;

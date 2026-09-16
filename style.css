@@ -8977,8 +8977,45 @@ html:has(.ccb){scroll-padding-bottom:215px}
 /* les habillages de la mosaique (lisere, degrade de legende) n'ont pas de sens
    ici : grossis x4, ils voileraient l'image d'arrivee */
 .gzoom.is-on .g-tile::before,.gzoom.is-on .g-tile::after{display:none}
+/* V189 — les vignettes de la constellation prennent le coin arrondi du reste
+   du site. Elles etaient les seules photos du site a rester a angle vif, juste
+   sous la bande des cliches de match qui, elle, est arrondie.
+
+   LE PIEGE : le rayon est pose sur une boite que transform:scale() agrandit,
+   il est donc MULTIPLIE PAR L'ECHELLE. 12 px sur la tuile centrale (--gs:4)
+   feraient 48 px a l'arrivee, au moment ou elle occupe exactement la fenetre :
+   quatre encoches de fond sombre dans les coins de l'ecran, et le plein cadre
+   n'en est plus un. D'ou le facteur --gz-fin : rayon declare = 12 px x (1 --p)
+   / echelle. Le produit des deux — le rayon VU — vaut donc 12 px x (1 - --p) :
+   12 px au repos, 9 au quart de la course, 6 a la moitie, 0 PILE a l'arrivee.
+   Mesure au banc (.claude/banc-galerie-zoom.mjs) a 1440x900 et a 390x844.
+
+   Le filet est celui des photos du soir de match (.gmatch__ph::after), a la
+   meme valeur : la constellation et la bande juste au-dessus partagent un seul
+   traitement. Il s'efface par son alpha, faute de quoi il redeviendrait, a
+   l'arrivee, le « cadre de fenetre » que V187 a retire. Il passe par un
+   ::after et non par un box-shadow inset sur le <picture> : une ombre interne
+   se peint SOUS le contenu, et l'image couvre toute la boite.
+
+   Le rayon est donc recalcule a CHAQUE image du defilement. On a craint le
+   cout : il n'existe pas. Banc --perf, 90 pas, trois tirs apparies contre un
+   controle ou la regle est neutralisee (mediane a 1440x900 : 1,377 ms par
+   image contre 1,386 au controle ; a 390x844 : 1,249 contre 1,259). L'ecart
+   est plus petit que la dispersion entre deux tirs du MEME code (1,30 a 1,43).
+   Un premier tir isole avait fait croire a +0,09 puis +0,31 ms : c'etait du
+   bruit, et seul le controle a code identique l'a montre.
+   La variante « seulement au repos » (:not(.is-moving), rayon nul pendant le
+   mouvement) a ete essayee : elle coute PLUS cher, et cette fois pour de bon
+   — 1,587 ms et 382 recalculs de style contre 365, aux trois tirs. La bascule
+   de classe invalide plus que la variable. Elle laissait en plus les coins a
+   angle vif pendant tout defilement de la page. */
 .gzoom.is-on .g-tile picture{position:relative;display:block;overflow:hidden;
-  top:var(--gt,0);left:var(--gl,0);height:var(--gh,25vh);width:var(--gw,25vw)}
+  top:var(--gt,0);left:var(--gl,0);height:var(--gh,25vh);width:var(--gw,25vw);
+  --gz-fin:calc((1 - var(--p,0)) / (1 + (var(--gs,4) - 1) * var(--p,0)));
+  border-radius:calc(var(--r-md) * var(--gz-fin))}
+.gzoom.is-on .g-tile picture::after{content:"";position:absolute;inset:0;
+  pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 0 1px rgb(var(--bleu-glacier-rgb) / calc(.16 * (1 - var(--p,0))))}
 .gzoom.is-on .g-tile img{width:100%;height:100%;object-fit:cover;
   transition:none;filter:none;transform:none}
 /* la legende quitte l'ecran mais PAS le document : illisible a ces echelles,
