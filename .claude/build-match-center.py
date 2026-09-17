@@ -602,6 +602,36 @@ def phase_en_cours(es, now):
     return None
 
 
+def lien_u13():
+    """La passerelle vers /matchs/u13/, au bas de la saison des seniors.
+
+    /matchs/ est la page « calendrier » du site : elle doit mener a celui de
+    l'autre equipe engagee en championnat. Le compte est relu dans
+    data/matchs-u13.json plutot que recopie ici — une phrase qui dit « sept
+    dates » alors qu'il y en a huit est pire que pas de phrase. Fichier
+    absent, generateur U13 retire : le bloc disparait de lui-meme."""
+    chemin = os.path.join(RACINE, 'data', 'matchs-u13.json')
+    if not os.path.exists(chemin):
+        return u''
+    try:
+        u = json.load(io.open(chemin, encoding='utf-8'))
+        ms = u.get('matchs') or []
+        if not ms:
+            return u''
+        dom = len([m for m in ms if m.get('domicile')])
+        detail = u'%s · %d à domicile, %d en déplacement · le dimanche à %s' % (
+            plur(len(ms), u'rencontre'), dom, len(ms) - dom,
+            (ms[0].get('heure') or u'10:30').replace(u':', u'h'))
+    except Exception as err:                       # jamais au prix de la page
+        print(u'  !! data/matchs-u13.json illisible (%s) : lien U13 non ecrit' % err)
+        return u''
+    return (u'\n        <div class="mc">\n'
+            u'          <p class="mc-tout"><a class="mc-tout__a" href="/matchs/u13/">'
+            u'<span class="mc-tout__l">Le calendrier des U13</span>'
+            u'<span class="mc-tout__n">%s</span>%s</a></p>\n'
+            u'        </div>' % (ech(detail), FLECHE))
+
+
 def page_corps(d, es, now, fil):
     """Le <main> de /matchs/. build-matchs.py l'enveloppe du gabarit du site."""
     html_duo, tpl, dernier, prochain = duo(es, now, 2, u'saison', cd=True, eager=True, saison=u'#saison')
@@ -685,7 +715,7 @@ def page_corps(d, es, now, fil):
 %(barre)s
         <nav class="ms-mois" aria-label="Aller au mois"><ol class="ms-mois__l">%(nav)s</ol></nav>
         <p class="ms-vide" data-ms-vide hidden>Aucune date ne correspond à ces filtres.</p>
-%(blocs)s
+%(blocs)s%(u13)s
       </section>
     </div>
   </section>
@@ -703,6 +733,7 @@ def page_corps(d, es, now, fil):
         'publie': now.strftime('%Y-%m-%dT%H:%M'), 'duo': html_duo, 'tpl': tpl,
         'compte': compte(es), 'barre': barre, 'nav': u''.join(nav), 'blocs': u'\n'.join(blocs),
         'etapes': u''.join(etapes), 'poule': bloc_poule, 'ffbb': FFBB,
+        'u13': lien_u13(),
     }
 
 

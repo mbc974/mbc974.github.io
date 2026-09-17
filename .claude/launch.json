@@ -4,14 +4,44 @@
     {
       "name": "mbc-static",
       "runtimeExecutable": "powershell",
-      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".claude/static-server.ps1", "-Port", "8000"],
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".claude/static-server.ps1",
+        "-Port",
+        "8000"
+      ],
       "port": 8000
     },
     {
       "name": "mbc-static-8010",
       "runtimeExecutable": "powershell",
-      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", ".claude/static-server.ps1", "-Port", "8010"],
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".claude/static-server.ps1",
+        "-Port",
+        "8010"
+      ],
       "port": 8010
+    },
+    {
+      "name": "mbc-static-8020",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".claude/static-server.ps1",
+        "-Port",
+        "8020"
+      ],
+      "port": 8020
     }
   ]
 }

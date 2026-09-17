@@ -1,0 +1,233 @@
+{
+  "_lisezmoi": "Source UNIQUE de la saison des U13. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-matchs-u13.py », puis « python .claude/build-sitemap.py » et « python .claude/bump-assets.py » (en dernier). Tout en découle : la page /matchs/u13/, le bloc des U13 en bas de la section « Les matchs de la saison » de l'accueil, le bloc de la page basket-enfant-saint-denis/, le fichier d'agenda assets/documents/matchs-u13-2026-2027.ics et les données structurées des réceptions. SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 42, \"adverse\": 38}, toujours du point de vue du MBC, jamais dans l'ordre d'affichage) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette. Tant qu'aucun score n'est saisi, la ligne dit « Score à venir » d'elle-même dès que l'heure de fin est passée : il n'y a rien à republier pour cela. UNE DÉROGATION (rencontre inversée après la parution du calendrier) : modifier « domicile », « lieu » et « entreeLibre », et ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. POURQUOI UN FICHIER SÉPARÉ DE data/matchs.json : la chaîne des seniors est mono-équipe par construction (un seul bandeau #nxBand, des data-id datés, un bilan global, des slugs sans équipe). Les U13 vivent donc à côté, avec leur propre générateur, et réutilisent les mêmes composants CSS.",
+  "saison": "2026/2027",
+  "_sources": {
+    "calendrier": "Export du Comité de La Réunion de Basket-Ball, « DMU13 — Départementale masculine U13 », poule A, édition du 21/08/2026 à 12:51:41. Transmis au club le 17/09/2026 (archivé, ramené en noir et blanc : assets/documents/calendrier-u13-2026-2027.png). L'équipe nommée en premier reçoit : c'est l'ordre des colonnes de l'export qui porte domicile/extérieur, comme pour le calendrier des seniors.",
+    "format": "Huit équipes, sept journées, un seul tour : chaque équipe rencontre les sept autres une fois. Vingt-huit rencontres au total, toutes le dimanche à 10h30. L'export ne mentionne ni gymnase ni score.",
+    "duree": "90 minutes retenues pour la durée d'une rencontre U13 (4 × 8 minutes, plus les arrêts de jeu et la mi-temps). Elle ne sert qu'à deux choses : l'heure de fin du rendez-vous .ics, et l'instant à partir duquel une ligne bascule de « Domicile » à « Score à venir ».",
+    "villes": "Commune du siège de chaque club adverse, pour situer un déplacement. Ce n'est PAS l'adresse du gymnase, que l'export ne donne pas : la salle est communiquée par la Ligue avant la rencontre. Aiglons d'Orient (64 rue Sainte-Anne, Saint-Denis) et Olympique Basket Panonnais (Bras-Panon, association déclarée le 11/06/2024) relevés sur leurs sites respectifs le 17/09/2026.",
+    "logos": "L'écusson est celui du CLUB, pas de l'équipe : « Dionysien 2 » et « Picks La Possession 2 » réutilisent donc les fichiers bcd3 et picks3 déjà présents, déposés pour les équipes 3 engagées en seniors. Trois clubs n'ont pas encore d'écusson dans le dépôt (Panonnais, Saint-Paul 2, Aiglons d'Orient) : leur sigle s'affiche à la place, sans rien casser. Pour les ajouter, déposer les fichiers dans Téléchargements et lancer .claude/add-club-logos.py.",
+    "creneau": "ÉCART À ARBITRER PAR LE BUREAU : data/creneaux.json annonce le créneau « Match à domicile » des U13 le dimanche de 09h00 à 11h00, alors que la Ligue fixe tous les matchs de la poule à 10h30 — une rencontre à domicile se termine donc vers midi. Le présent fichier dit l'heure officielle de la Ligue ; data/creneaux.json dit la réservation de salle.",
+    "plateau": "La J7 du 15/11/2026 (déplacement à La Possession) tombe le week-end du plateau Mini-Basket Zone Nord que le MBC organise les 14 et 15 novembre 2026. Les deux ne concernent pas les mêmes catégories, mais ils mobilisent les mêmes bénévoles."
+  },
+  "equipe": {
+    "id": "u13",
+    "nom": "U13 Masculins",
+    "court": "U13",
+    "categorie": "U13",
+    "naissance": "Nés en 2014 et 2015",
+    "page": "basket-enfant-saint-denis/"
+  },
+  "competition": {
+    "nom": "Départementale Masculine U13",
+    "court": "DMU13",
+    "sigle": "DMU13",
+    "genre": "championnat",
+    "organisateur": "Comité de La Réunion de Basket-Ball",
+    "phase": "Phase 1",
+    "detail": "Huit équipes, sept journées le dimanche matin. Chaque équipe rencontre les sept autres une fois : quatre réceptions au Gymnase de La Montagne pour le MBC, trois déplacements."
+  },
+  "poule": {
+    "nom": "Poule A",
+    "equipes": [
+      {
+        "nom": "Aiglons d'Orient",
+        "court": "Aiglons d'Orient",
+        "sigle": "AO",
+        "logo": null,
+        "ville": "Saint-Denis"
+      },
+      {
+        "nom": "Basket Club Dionysien 2",
+        "court": "Dionysien 2",
+        "sigle": "BCD2",
+        "logo": "bcd3",
+        "ville": "Saint-Denis"
+      },
+      {
+        "nom": "Basket Club Sainte-Suzanne",
+        "court": "Sainte-Suzanne",
+        "sigle": "BC2S",
+        "logo": "bc2s",
+        "ville": "Sainte-Suzanne"
+      },
+      {
+        "nom": "Basket Club St Paul 2",
+        "court": "Saint-Paul 2",
+        "sigle": "BCSP2",
+        "logo": null,
+        "ville": "Saint-Paul"
+      },
+      {
+        "nom": "La Montagne Basket Club",
+        "court": "MBC",
+        "sigle": "MBC",
+        "logo": null,
+        "ville": "Saint-Denis",
+        "mbc": true
+      },
+      {
+        "nom": "Olympique Basket Panonnais",
+        "court": "Panonnais",
+        "sigle": "OBP",
+        "logo": null,
+        "ville": "Bras-Panon"
+      },
+      {
+        "nom": "Picks Basket La Possession 2",
+        "court": "Picks La Possession 2",
+        "sigle": "PICKS2",
+        "logo": "picks3",
+        "ville": "La Possession"
+      },
+      {
+        "nom": "Saint-Benoît Basket Club",
+        "court": "Saint-Benoît",
+        "sigle": "SBBC",
+        "logo": "sbbc",
+        "ville": "Saint-Benoît"
+      }
+    ]
+  },
+  "club": {
+    "nom": "MBC La Montagne Basket Club",
+    "court": "MBC",
+    "sigle": "MBC",
+    "url": "https://mbc974.com/",
+    "logo": "assets/logos/mbc-logo.webp"
+  },
+  "lieux": {
+    "gymnase": {
+      "nom": "Gymnase de La Montagne",
+      "adresse": "Chemin des Bauhinias",
+      "ville": "Saint-Denis",
+      "codePostal": "97417",
+      "region": "La Réunion",
+      "pays": "RE",
+      "latitude": -20.891557,
+      "longitude": 55.423974,
+      "carte": "https://maps.app.goo.gl/KcTePvY47wzi6JMu9"
+    }
+  },
+  "matchs": [
+    {
+      "journee": 1,
+      "numeroFFBB": 2,
+      "date": "2026-09-13",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": true,
+      "adversaire": "Basket Club St Paul 2",
+      "adversaireCourt": "Saint-Paul 2",
+      "sigle": "BCSP2",
+      "logo": null,
+      "ville": "Saint-Paul",
+      "lieu": "gymnase",
+      "entreeLibre": true,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 2,
+      "numeroFFBB": 5,
+      "date": "2026-09-20",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": true,
+      "adversaire": "Basket Club Dionysien 2",
+      "adversaireCourt": "Dionysien 2",
+      "sigle": "BCD2",
+      "logo": "bcd3",
+      "ville": "Saint-Denis",
+      "lieu": "gymnase",
+      "entreeLibre": true,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 3,
+      "numeroFFBB": 10,
+      "date": "2026-09-27",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": false,
+      "adversaire": "Saint-Benoît Basket Club",
+      "adversaireCourt": "Saint-Benoît",
+      "sigle": "SBBC",
+      "logo": "sbbc",
+      "ville": "Saint-Benoît",
+      "lieu": null,
+      "entreeLibre": false,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 4,
+      "numeroFFBB": 15,
+      "date": "2026-10-04",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": false,
+      "adversaire": "Aiglons d'Orient",
+      "adversaireCourt": "Aiglons d'Orient",
+      "sigle": "AO",
+      "logo": null,
+      "ville": "Saint-Denis",
+      "lieu": null,
+      "entreeLibre": false,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 5,
+      "numeroFFBB": 20,
+      "date": "2026-10-11",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": true,
+      "adversaire": "Olympique Basket Panonnais",
+      "adversaireCourt": "Panonnais",
+      "sigle": "OBP",
+      "logo": null,
+      "ville": "Bras-Panon",
+      "lieu": "gymnase",
+      "entreeLibre": true,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 6,
+      "numeroFFBB": 24,
+      "date": "2026-11-08",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": true,
+      "adversaire": "Basket Club Sainte-Suzanne",
+      "adversaireCourt": "Sainte-Suzanne",
+      "sigle": "BC2S",
+      "logo": "bc2s",
+      "ville": "Sainte-Suzanne",
+      "lieu": "gymnase",
+      "entreeLibre": true,
+      "statut": "a-venir",
+      "score": null
+    },
+    {
+      "journee": 7,
+      "numeroFFBB": 27,
+      "date": "2026-11-15",
+      "heure": "10:30",
+      "duree": 90,
+      "domicile": false,
+      "adversaire": "Picks Basket La Possession 2",
+      "adversaireCourt": "Picks La Possession 2",
+      "sigle": "PICKS2",
+      "logo": "picks3",
+      "ville": "La Possession",
+      "lieu": null,
+      "entreeLibre": false,
+      "statut": "a-venir",
+      "score": null
+    }
+  ]
+}

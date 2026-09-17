@@ -1,0 +1,86 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MBC La Montagne Basket Club//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:MBC U13 — saison 2026/2027
+BEGIN:VTIMEZONE
+TZID:Indian/Reunion
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0400
+TZOFFSETTO:+0400
+TZNAME:+04
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:u13-2026-09-13@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20260913T103000
+DTEND;TZID=Indian/Reunion:20260913T120000
+SUMMARY:U13 : MBC — Saint-Paul 2 (DMU13 · J1)
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
+DESCRIPTION:Départementale Masculine U13 — entrée libre.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-09-20@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20260920T103000
+DTEND;TZID=Indian/Reunion:20260920T120000
+SUMMARY:U13 : MBC — Dionysien 2 (DMU13 · J2)
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
+DESCRIPTION:Départementale Masculine U13 — entrée libre.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-09-27@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20260927T103000
+DTEND;TZID=Indian/Reunion:20260927T120000
+SUMMARY:U13 : Saint-Benoît — MBC (DMU13 · J3)
+LOCATION:Saint-Benoît — salle communiquée par la Ligue
+DESCRIPTION:Départementale Masculine U13 — déplacement.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-10-04@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20261004T103000
+DTEND;TZID=Indian/Reunion:20261004T120000
+SUMMARY:U13 : Aiglons d'Orient — MBC (DMU13 · J4)
+LOCATION:Saint-Denis — salle communiquée par la Ligue
+DESCRIPTION:Départementale Masculine U13 — déplacement.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-10-11@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20261011T103000
+DTEND;TZID=Indian/Reunion:20261011T120000
+SUMMARY:U13 : MBC — Panonnais (DMU13 · J5)
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
+DESCRIPTION:Départementale Masculine U13 — entrée libre.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-11-08@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20261108T103000
+DTEND;TZID=Indian/Reunion:20261108T120000
+SUMMARY:U13 : MBC — Sainte-Suzanne (DMU13 · J6)
+LOCATION:Gymnase de La Montagne\, Chemin des Bauhinias\, 97417 Saint-Denis
+DESCRIPTION:Départementale Masculine U13 — entrée libre.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+BEGIN:VEVENT
+UID:u13-2026-11-15@mbc974.com
+DTSTAMP:20260917T000000Z
+DTSTART;TZID=Indian/Reunion:20261115T103000
+DTEND;TZID=Indian/Reunion:20261115T120000
+SUMMARY:U13 : Picks La Possession 2 — MBC (DMU13 · J7)
+LOCATION:La Possession — salle communiquée par la Ligue
+DESCRIPTION:Départementale Masculine U13 — déplacement.
+URL:https://mbc974.com/matchs/u13/
+END:VEVENT
+END:VCALENDAR

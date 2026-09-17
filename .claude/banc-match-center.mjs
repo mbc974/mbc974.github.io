@@ -189,6 +189,47 @@ async function main() {
     process.stdout.write(`instant ${nom} ok\n`);
   }
 
+  // 4 bis. Les U13 : la page, et les deux pièges de la cohabitation
+  //
+  // Les lignes des U13 vivent dans les mêmes listes .mc-i que celles des
+  // seniors, sur l'accueil. Deux choses ne se voient qu'à une date précise :
+  //   - le dimanche à midi, la rencontre U13 vient de finir et devient la plus
+  //     récente de la page ; la carte « Dernier résultat » des seniors, elle,
+  //     parle du vendredi. Elle doit RESTER (cartes(), filtre :not([data-equipe])) ;
+  //   - la ligne U13 à venir doit porter « Prochain match » alors que la carte
+  //     du haut montre, elle, la rencontre des seniors (prochainsParEquipe()).
+  {
+    const U = { formats: {}, instants: {} };
+    for (const [w, h] of formats) {
+      const { s, targetId, erreurs } = await page('/matchs/u13/', w, h);
+      U.formats[w + 'x' + h] = { ...(await evalp(s, MESURE)), erreurs };
+      await tir(s, `${w}-u13-haut`);
+      await aller(s, '#saison', 70); await tir(s, `${w}-u13-saison`);
+      await aller(s, '#format', 70); await tir(s, `${w}-u13-format`);
+      await send('Target.closeTarget', { targetId });
+      process.stdout.write(`u13 ${w}x${h} ok (débord ${U.formats[w + 'x' + h].debord})\n`);
+    }
+    const LIGNES = `(() => { const q = s => [...document.querySelectorAll(s)];
+      return { ecrites: q('.mc-i[data-equipe="u13"]').map(l => l.dataset.id),
+               visibles: q('.mc-i[data-equipe="u13"]').filter(l => !l.hidden).map(l => l.dataset.id),
+               next: q('.mc-i[data-equipe="u13"].is-next').map(l => l.dataset.id),
+               etats: q('.mc-i[data-equipe="u13"] .mc-i__etat').map(e => e.textContent.trim()) }; })()`;
+    for (const [nom, iso] of [['u13-j2-finie', '2026-09-20T12:30:00+04:00'],
+                              ['u13-j3-passee', '2026-09-28T09:00:00+04:00'],
+                              ['u13-saison-finie', '2026-11-16T09:00:00+04:00']]) {
+      const { s, targetId, erreurs } = await page('/index.html', 390, 844, { iso });
+      await aller(s, '#matchs', 20); await sleep(600);
+      const m = await evalp(s, MESURE);
+      U.instants[nom] = { dernierCache: m.dernier && m.dernier.cache, dernierId: m.dernier && m.dernier.id,
+                          prochainId: m.prochain && m.prochain.id, debord: m.debord,
+                          u13: await evalp(s, LIGNES), erreurs };
+      await aller(s, '[data-mc="u13"]', 90); await tir(s, `390-accueil-${nom}`);
+      await send('Target.closeTarget', { targetId });
+      process.stdout.write(`u13 instant ${nom} ok (dernier ${U.instants[nom].dernierCache ? 'MASQUE' : 'visible'})\n`);
+    }
+    R.u13 = U;
+  }
+
   // 5. Les pages de banc générées à une autre date
   for (const fic of readdirSync(RACINE).filter(x => /^_banc-mc-.*\.html$/.test(x))) {
     const { s, targetId, erreurs } = await page('/' + fic, 390, 844, { iso: fic.match(/(\d{4}-\d{2}-\d{2})/) ? fic.match(/(\d{4}-\d{2}-\d{2})/)[1] + 'T09:00:00+04:00' : null });

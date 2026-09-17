@@ -2255,9 +2255,16 @@ MBC.dateLongue = function (d, avecAnnee) {
     });
     /* La dernière rencontre terminée que la page connaît : gabarits épuisés
        (site non republié depuis des semaines), la carte « Dernier résultat »
-       se retire plutôt que d'en montrer une plus ancienne. */
+       se retire plutôt que d'en montrer une plus ancienne.
+
+       :not([data-equipe]) — le duo de cartes ne parle QUE des seniors, et les
+       lignes des seniors sont les seules sans data-equipe. Sans ce filtre, un
+       match U13 joué le dimanche rendait la carte du vendredi « plus ancienne
+       que la dernière rencontre connue » : la carte « Dernier résultat »
+       disparaissait de l'accueil toute seule, du dimanche midi au vendredi
+       suivant. */
     var derniere = null;
-    chaque('.mc-i.mc-i--match[data-fin]', function (li) {
+    chaque('.mc-i.mc-i--match[data-fin]:not([data-equipe])', function (li) {
       if (li.querySelector('.mc-i__etat--annule, .mc-i__etat--reporte')) return;
       var f = t(li, 'data-fin');
       if (f && f < now && (!derniere || f > derniere)) derniere = f;
@@ -2268,21 +2275,49 @@ MBC.dateLongue = function (d, avecAnnee) {
       poser(slot, (c[0] && !(derniere && c[0].fin < derniere)) ? c[0] : null);
     });
     chaque('.mc__duo', function (duo) {
+      var slots = duo.querySelectorAll('.mc__slot');
       var vides = duo.querySelectorAll('.mc__slot[hidden]').length;
-      duo.classList.toggle('mc__duo--seul', vides > 0);
-      duo.hidden = vides === duo.querySelectorAll('.mc__slot').length;
+      /* « seul » vaut aussi pour un duo qui n'a qu'une carte de naissance : la
+         page des U13 n'a pas de « dernier résultat » à montrer. Sans le
+         slots.length, le premier passage retirait le modificateur écrit par le
+         générateur et la carte retombait sur la colonne de 5/12, moitié de
+         page vide à sa droite. */
+      duo.classList.toggle('mc__duo--seul', vides > 0 || slots.length < 2);
+      duo.hidden = vides === slots.length;
     });
     return idNext;
   }
 
+  /* Le « prochain match », équipe par équipe.
+
+     Le duo de cartes ne sert qu'une équipe — les seniors, dont les lignes ne
+     portent pas de data-equipe. Une liste peut pourtant porter les lignes
+     d'une AUTRE équipe (les U13, générés par .claude/build-matchs-u13.py) :
+     sans cette carte, aucune d'elles n'aurait jamais reçu le liséré orange
+     ni la puce « Prochain match », puisque leur data-id ne pouvait pas
+     valoir celui de la carte des seniors. */
+  function prochainsParEquipe(now, idNext) {
+    var ids = { '': idNext || null }, tot = {};
+    chaque('.mc-i.mc-i--match[data-equipe][data-fin]', function (li) {
+      var eq = li.getAttribute('data-equipe');
+      if (!eq || li.querySelector('.mc-i__etat--annule, .mc-i__etat--reporte')) return;
+      var f = t(li, 'data-fin');
+      if (!f || f < now) return;                 // le coup de sifflet final fait foi
+      var d = t(li, 'data-debut') || f;
+      if (!(eq in tot) || d < tot[eq]) { tot[eq] = d; ids[eq] = li.getAttribute('data-id'); }
+    });
+    return ids;
+  }
+
   /* --- 2. et 3. Les dates, et « À suivre » ---------------------- */
   function dates(now, idNext) {
+    var prochains = prochainsParEquipe(now, idNext);
     chaque('.mc-i[data-fin]', function (li) {
       var d = t(li, 'data-debut'), f = t(li, 'data-fin');
       if (!f) return;
       var passe = f < now;
       var live = !!d && d <= now && !passe && li.classList.contains('mc-i--match');
-      var suivant = li.getAttribute('data-id') === idNext;
+      var suivant = li.getAttribute('data-id') === prochains[li.getAttribute('data-equipe') || ''];
       li.classList.toggle('is-past', passe);
       li.classList.toggle('is-live', live);
       li.classList.toggle('is-next', suivant);
@@ -2295,6 +2330,10 @@ MBC.dateLongue = function (d, avecAnnee) {
         etat.classList.toggle('is-attente', passe);
       }
     });
+    /* « À suivre » : idNext, et non prochains[équipe]. La ligne exclue est
+       celle que la CARTE montre déjà juste au-dessus — c'est la seule raison
+       de l'exclure. Une liste sans carte (les U13) garde donc sa prochaine
+       rencontre, qui est justement ce qu'on vient y lire. */
     chaque('.mc-list--suite', function (ol) {
       var max = parseInt(ol.getAttribute('data-max') || '4', 10), n = 0;
       var perdu = false;

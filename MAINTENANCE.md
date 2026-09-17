@@ -56,6 +56,7 @@ suivante.
 | Une photo de catégorie ou un portrait du staff | remplacer le `.jpg` dans `assets/` | `python .claude/build-vignettes.py` |
 | L'image de partage d'une rencontre (og:image) | `data/matchs.json` | `python .claude/build-og-matchs.py` puis `build-matchs.py` |
 | Un joueur de l'effectif seniors | `data/effectif.json` | `python .claude/build-effectif.py` |
+| Une rencontre des **U13** (date, adversaire, score) | `data/matchs-u13.json` | `python .claude/build-matchs-u13.py` (§ 35) |
 | Les photos d'un soir de match (galerie « Sur le terrain ») | `data/galerie-match.json`, et les originaux sortis de l'appareil | `python .claude/build-galerie-match.py --images <dossier>` puis `bump-assets.py` (§ 30) |
 | Le calendrier officiel (nouveau PDF de la ligue) | déposer le PDF dans Téléchargements | `python .claude/set-calendrier-prm.py` |
 | Une dérogation (rencontre inversée avant un nouveau PDF) | `data/matchs.json` : la rencontre, et son champ `derogation` | `python .claude/build-og-matchs.py` puis `set-calendrier-prm.py --archive` et `bump-assets.py` (§ 29) |
@@ -3559,3 +3560,100 @@ qui la suit ; vérifier ce qu'on coupe, pas seulement ce qu'on colle.
 bien qu'à 320 px la barre recouvrait le bloc sur la capture. Le pied lui réserve
 pourtant 104 px sous 920 px : le site allait bien, c'est l'outil qui mentait.
 
+## 35. Le calendrier des U13, à côté de celui des seniors (17/09/2026)
+
+Le Comité de La Réunion a transmis le calendrier de la **Départementale
+Masculine U13**, poule A : huit équipes, sept journées, toutes le dimanche à
+10h30. Quatre réceptions au Gymnase de La Montagne, trois déplacements.
+
+### Pourquoi une chaîne séparée, et pas une équipe de plus dans `data/matchs.json`
+
+La chaîne des seniors est mono-équipe **par construction**, et pas par
+négligence. On l'a vérifié avant de décider :
+
+- le bandeau sous le hero est un `id` (`#nxBand`), donc un par page ;
+- l'identifiant d'une ligne est la date seule (`m-2026-09-20`) : deux équipes
+  qui jouent le même jour produisent le même `data-id`, et `script.js` écarte
+  silencieusement un identifiant vu deux fois ;
+- `bilan()` compte les victoires de **toutes** les rencontres de genre
+  « championnat » ;
+- les slugs de fiche (`mbc-<adversaire>-<date>`) ne portent aucune équipe ;
+- `set-calendrier-prm.py` réécrit le calendrier de l'accueil depuis le PDF de
+  la Ligue, qui ne connaît que la PRM.
+
+Généraliser tout cela, c'est une refonte. La doctrine du dépôt dit l'inverse.
+Les U13 ont donc **leur source** (`data/matchs-u13.json`) et **leur
+générateur** (`.claude/build-matchs-u13.py`) — mais pas leur design : le
+générateur emprunte à `build-match-center.py` son rendu de ligne (`item`), ses
+écussons (`crest`) et ses libellés (`habiller`), et à `build-matchs.py` le
+gabarit du site. Zéro CSS neuve. Une correction faite là-bas profite aux U13
+sans qu'on y pense.
+
+### Ce que le générateur écrit
+
+| Cible | Quoi |
+|---|---|
+| `matchs/u13/index.html` | la page : prochaine rencontre (carte qui se renouvelle seule), les sept journées, la poule, les entraînements, les sources |
+| `index.html` | le bloc des U13 entre `MATCHS-U13:DEBUT` / `FIN`, en bas de « Les matchs de la saison » — trois dimanches à venir |
+| `basket-enfant-saint-denis/index.html` | le calendrier complet, entre les mêmes marqueurs |
+| `assets/documents/matchs-u13-2026-2027.ics` | les sept dates d'un coup, pour le téléphone d'un parent |
+
+Et `build-match-center.py` pose, au bas de `/matchs/`, une carte vers
+`/matchs/u13/` — son libellé relit `data/matchs-u13.json` plutôt que de
+recopier « sept dates » : une phrase qui compte faux est pire que pas de phrase.
+
+**Pas de fiche par rencontre.** L'export de la Ligue ne donne ni salle de
+déplacement, ni score, ni affiche : sept pages de plus n'auraient rien dit que
+leur ligne ne dise déjà. C'est le `.ics` qui rend le service, pas une URL.
+
+### Les deux pièges de la cohabitation, corrigés dans `script.js`
+
+Les lignes des deux équipes vivent dans les mêmes listes `.mc-i`, sur l'accueil.
+Deux défauts ne se voyaient qu'à une date précise — le banc les tient
+désormais (`node .claude/banc-match-center.mjs`, section « u13 instant ») :
+
+1. **La carte « Dernier résultat » des seniors disparaissait le dimanche.**
+   `cartes()` bornait le dernier résultat par la rencontre terminée la plus
+   récente de la PAGE. Le dimanche à midi, c'était le match des U13 ; la carte
+   du vendredi paraissait « plus ancienne que la dernière rencontre connue » et
+   se retirait toute seule jusqu'au vendredi suivant. Le balayage ignore
+   maintenant les lignes qui portent un `data-equipe`.
+2. **Aucune ligne U13 ne pouvait être « Prochain match ».** L'identifiant du
+   prochain venait de la carte, donc des seniors. `prochainsParEquipe()` le
+   calcule désormais équipe par équipe. En revanche « À suivre » continue
+   d'exclure `idNext` seul : une ligne n'est masquée que parce qu'une CARTE la
+   montre déjà au-dessus, ce qui n'est pas le cas des U13.
+
+Et un troisième, de mise en page : `.mc__duo--seul` était retiré par le premier
+passage du script dès que le duo n'avait qu'une carte de naissance — la page
+des U13 n'a pas de « dernier résultat » à montrer. La carte retombait sur la
+colonne de 5/12, moitié de page vide à sa droite.
+
+### Ce qui reste à trancher par le bureau
+
+- **Le créneau du dimanche.** `data/creneaux.json` annonce « Match à domicile »
+  de **9h00 à 11h00** ; la Ligue fixe tous les matchs de la poule à **10h30**,
+  donc une réception se termine vers midi. L'un des deux dit faux. Le
+  calendrier publié ici suit la Ligue ; le planning suit la réservation de
+  salle. À corriger dans `data/creneaux.json` une fois la salle confirmée.
+- **La J7 du 15/11/2026** (déplacement à La Possession) tombe le week-end du
+  plateau Mini-Basket Zone Nord que le club organise les 14 et 15 novembre.
+  Catégories différentes, mêmes bénévoles.
+- **Le score de la J1 du 13/09** n'est pas connu : la ligne dit « Score à
+  venir » d'elle-même, sans qu'on ait rien à republier. Pour le saisir :
+  `score` + `statut: "joue"` dans `data/matchs-u13.json`, puis le générateur.
+- **Trois écussons manquent** (Panonnais, Saint-Paul 2, Aiglons d'Orient) : le
+  sigle s'affiche à leur place, sans rien casser. Pour les ajouter, déposer les
+  fichiers dans Téléchargements et lancer `.claude/add-club-logos.py`.
+
+### L'ordre
+
+```
+python .claude/build-matchs.py          # les seniors, et la carte vers /matchs/u13/
+python .claude/build-matchs-u13.py      # les U13
+python .claude/build-sitemap.py
+python .claude/bump-assets.py           # toujours en dernier
+```
+
+Puis les garde-fous : `verifier-classes.py`, `verifier-jsonld.py`,
+`verifier-liens.py`, et `node .claude/banc-match-center.mjs` pour les formats.
