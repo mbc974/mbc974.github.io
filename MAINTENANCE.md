@@ -3489,9 +3489,14 @@ AXES (dans le bloc / dans la page), pas deux nuances de l'un d'eux.
   écart 0 px à 1440 et 1920, 1 px à 768.**
 - **Le contenu est centré** dans cette largeur, et `justify-content:center` avec
   `gap:.28em` ramène « Alex » contre « by ».
-- **Le tracé descend à 66 px**, avec ses deux valeurs liées : `--hw-sw:8`
-  (8 × 66/436 = 1,21 px de plume) et `vertical-align:-.29em`
-  (29/247 × 37 px = 4,3 px d'assise).
+- **Le tracé descend à 54 px** (66 px d'abord, puis « réduis encore, c'est trop
+  gros »), avec ses deux valeurs liées : `--hw-sw:10`
+  (10 × 54/436 = 1,24 px de plume) et `vertical-align:-.24em`
+  (29/247 × 31 px = 3,6 px d'assise).
+- **L'écart avec la ligne du dessous passe de .3em à .62em.** En maigrissant, la
+  boîte du tracé descend moins bas : les deux lignes se rapprochent d'autant,
+  et l'espace perdu doit se reprendre sur la marge. C'est le corollaire de la
+  règle ci-dessus — une retouche de hauteur touche TROIS valeurs, pas deux.
 - **Le filet vertical part.** Un trait à gauche est la ponctuation d'un DRAPEAU :
   sur un pavé centré il ne dit plus rien et déséquilibre l'axe.
 

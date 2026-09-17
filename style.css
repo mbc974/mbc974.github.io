@@ -12501,8 +12501,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   display:inline-block;width:.72em;height:.66em;margin-inline:.14em .08em;
   vertical-align:-.02em;fill:var(--rouge-coeur);transition:fill .3s var(--ease)}
 
+/* .62em au lieu de .3em : Alexandre, 17/09, « espace-le un peu avec la ligne
+   du dessous ». Le tracé ayant maigri, sa boîte descend moins bas et les deux
+   lignes s'étaient rapprochées d'autant — l'écart se reprend donc ici. */
 .site-footer .footer__bottom .footer__credit .footer__credit-k{
-  margin:.3em 0 0;padding:0;font-family:var(--ff-cond);font-weight:700;
+  margin:.62em 0 0;padding:0;font-family:var(--ff-cond);font-weight:700;
   text-transform:uppercase;letter-spacing:.18em;text-indent:0;
   font-size:var(--text-xs);line-height:1.3;color:var(--txt-soft)}
 .site-footer .footer__bottom .footer__credit .footer__credit-k i{
@@ -12517,12 +12520,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
    et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;vertical-align:-.29em;
+  position:relative;display:inline-block;vertical-align:-.24em;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
 /* -.33em, et ce n'est pas une valeur trouvée à l'œil : dans le viewBox du
    générateur, y=0 EST la ligne de base de Caveat, et il reste 29 unités sous
-   elle sur 247. À 37 px de haut cela fait 4,3 px, soit .29em pour un texte de
+   elle sur 247. À 31 px de haut cela fait 3,6 px, soit .24em pour un texte de
    15,2 px. La signature s'assoit donc sur la même ligne que « Made with ♥ by »
    au lieu de flotter au-dessus. ⚠️ Toute retouche de la HAUTEUR du tracé oblige
    à refaire ce calcul : hauteur × 29/247, converti en em sur 15,2 px. */
@@ -12536,12 +12539,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    trois keyframes maison — hw-trait, hw-encre, hw-plume.
    La classe hw__pt du dernier contour a été retirée : elle colore en orange le
    POINT FINAL d'une phrase, et « Alex » n'en a pas — le « x » aurait été orange.
-   --hw-sw:8 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
-   (436 de large rendu à 66 px) est cinq fois plus serré que celui du hero.
-   8 × 66/436 = 1,21 px à l'écran, soit la plume du hero. */
+   --hw-sw:10 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
+   (436 de large rendu à 54 px) est cinq fois plus serré que celui du hero.
+   10 × 54/436 = 1,24 px à l'écran, soit la plume du hero. */
 .site-footer .footer__bottom .footer__credit .sig-hw{
-  display:block;width:66px;height:37px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:8;
+  display:block;width:54px;height:31px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:10;
   transition:color .35s var(--ease)}
 
 /* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, plume retirée. .hw__p
