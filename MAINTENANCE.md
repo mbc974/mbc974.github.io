@@ -3487,3 +3487,32 @@ calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
 candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
 que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
 entière).
+### 17/09, la retouche d'Alexandre : « parfait, réduis un peu le Alex et aligne-le à droite »
+
+Premier accord de la série. Deux réglages :
+- **Le tracé descend de 88 à 76 px** (−14 %). Deux valeurs suivent obligatoirement :
+  `--hw-sw` passe à 7 (l'épaisseur est en unités de viewBox, donc elle maigrit
+  avec le cadre — 7 × 76/436 = 1,2 px, la plume du hero), et l'assise tombe à
+  `-.33em` (29/247 × 43 px = 5,0 px). **Toute retouche de la hauteur oblige à
+  refaire ces deux calculs.**
+- **La signature part à droite du bloc** : `.footer__signature` passe en flex
+  `space-between` avec `align-items:baseline` (le baseline reste partagé, c'est
+  ce qui évite que les trois corps flottent chacun sur son axe). Et la cartouche
+  prend `width:max-content` : étirée sur toute la largeur du pied, elle laissait
+  **900 px de vide** entre « by » et « Alex ». Deux variantes ont été rendues
+  avant de choisir — la signature à droite DU BLOC, ou le bloc entier à droite
+  du pied ; Alexandre a pris la première.
+
+**Une régression introduite et rattrapée à la capture** : en remplaçant la
+section du tracé, la media query `max-width:560px` du bloc V190 avait été
+emportée. Le point médian réapparaissait alors **orphelin en fin de ligne** à
+320 px, et #MBC974 se repliait tout seul. Restaurée, avec un avertissement dans
+la feuille : toute réécriture du bloc doit la reconduire. Leçon générale —
+remplacer une SECTION d'un bloc CSS par recherche de son en-tête emporte tout ce
+qui la suit ; vérifier ce qu'on coupe, pas seulement ce qu'on colle.
+
+**Et un défaut du BANC, pas du site** : la barre CTA flottante s'appelle
+`.float-cta`, pas `.cta-bar`. Le banc masquait deux noms qui n'existent pas, si
+bien qu'à 320 px la barre recouvrait le bloc sur la capture. Le pied lui réserve
+pourtant 104 px sous 920 px : le site allait bien, c'est l'outil qui mentait.
+

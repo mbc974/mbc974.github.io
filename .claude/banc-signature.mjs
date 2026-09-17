@@ -94,7 +94,7 @@ const AIDE = (css, html) => '(() => {\n' +
   '    const st = document.createElement("style"); st.id = "__banc";\n' +
   // Le bandeau cookies couvre le bas de page, la barre CTA mobile aussi : ni
   // l'un ni l'autre n'est ce qu'on mesure, et tous deux recouvrent le bloc.
-  '    st.textContent = ".ccb{display:none!important}.cta-bar,.mbc-cta-bar{display:none!important}" + ' + JSON.stringify(css) + ';\n' +
+  '    st.textContent = ".ccb{display:none!important}.float-cta{display:none!important}" + ' + JSON.stringify(css) + ';\n' +
   '    document.head.appendChild(st);\n' +
   // Le markup d essai remplace le bloc ENTIER (.footer__credit compris), pour
   // qu une proposition puisse changer la structure et pas seulement l habillage.

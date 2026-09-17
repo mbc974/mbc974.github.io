@@ -12469,8 +12469,13 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   margin-top:var(--sp-110);padding-top:0;border-top:0;text-align:left}
 .site-footer .footer__bottom .footer__credit::before{display:none}
 .site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
+/* width:max-content : la cartouche cesse de s'étirer sur toute la largeur du
+   pied et se resserre sur sa ligne la plus longue (celle du rôle). C'est la
+   condition pour pouvoir pousser la signature à droite : étirée, elle laisserait
+   900 px de vide entre « by » et « Alex ». max-width:100% la garde dans la
+   colonne au téléphone. */
 .site-footer .footer__bottom .footer__credit .footer__cartel{
-  position:relative;min-width:0;padding-left:var(--sp-90)}
+  position:relative;min-width:0;width:max-content;max-width:100%;padding-left:var(--sp-90)}
 .site-footer .footer__bottom .footer__credit .footer__cartel::before{
   content:"";position:absolute;left:0;top:.34em;bottom:.22em;width:1px;
   background:linear-gradient(180deg,
@@ -12480,7 +12485,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
     rgb(var(--bleu-glacier-rgb) / .03))}
 
 .site-footer .footer__bottom .footer__credit .footer__signature{
-  display:block;width:100%;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
+  display:flex;align-items:baseline;justify-content:space-between;gap:1.2rem;
+  width:100%;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
   font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
   line-height:1.4;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
 .site-footer .footer__bottom .footer__credit .sig-by{color:inherit;white-space:nowrap}
@@ -12505,14 +12511,15 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
    et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;vertical-align:-.39em;
+  position:relative;display:inline-block;vertical-align:-.33em;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
-/* -.39em, et ce n'est pas une valeur trouvée à l'œil : dans le viewBox du
+/* -.33em, et ce n'est pas une valeur trouvée à l'œil : dans le viewBox du
    générateur, y=0 EST la ligne de base de Caveat, et il reste 29 unités sous
-   elle sur 247. À 50 px de haut cela fait 5,9 px, soit .39em pour un texte de
+   elle sur 247. À 43 px de haut cela fait 5,0 px, soit .33em pour un texte de
    15,2 px. La signature s'assoit donc sur la même ligne que « Made with ♥ by »
-   au lieu de flotter au-dessus. */
+   au lieu de flotter au-dessus. ⚠️ Toute retouche de la HAUTEUR du tracé oblige
+   à refaire ce calcul : hauteur × 29/247, converti en em sur 15,2 px. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
 
 /* LE TRACÉ EST CELUI DU SITE, PAS UN AUTRE. Le hero écrit déjà trois phrases
@@ -12523,12 +12530,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    trois keyframes maison — hw-trait, hw-encre, hw-plume.
    La classe hw__pt du dernier contour a été retirée : elle colore en orange le
    POINT FINAL d'une phrase, et « Alex » n'en a pas — le « x » aurait été orange.
-   --hw-sw:6 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
-   (436 de large rendu à 88 px) est cinq fois plus serré que celui du hero.
-   6 × 88/436 = 1,2 px à l'écran, soit la plume du hero. */
+   --hw-sw:7 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
+   (436 de large rendu à 76 px) est cinq fois plus serré que celui du hero.
+   7 × 76/436 = 1,2 px à l'écran, soit la plume du hero. */
 .site-footer .footer__bottom .footer__credit .sig-hw{
-  display:block;width:88px;height:50px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:6;
+  display:block;width:76px;height:43px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:7;
   transition:color .35s var(--ease)}
 
 /* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, plume retirée. .hw__p
@@ -12557,4 +12564,26 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 }
 @media (prefers-reduced-motion:reduce){
   .site-footer .footer__bottom .footer__credit.in .sig-hw .hw__p{animation:none}
+}
+
+/* SOUS 560 px. La ligne de rôle ferait ~247 px pour 284 px disponibles à
+   320 px : elle se replierait n'importe où et #MBC974 resterait orphelin
+   derrière un point médian pendu en fin de ligne. On décide donc la coupure au
+   lieu de la subir — le point s'efface, le mot-dièse prend sa propre ligne.
+   width:100% n'est PAS redondant avec display:block : dans cette chaîne, un
+   <span> passé en block garde une largeur fit-content et se retrouve CENTRÉ
+   dans sa ligne, alors que tout le reste est ferré à gauche.
+   ⚠️ Cette section avait disparu le 17/09 en remplaçant le bloc du tracé : le
+   point médian est réapparu orphelin à 320 px, vu à la capture. Toute réécriture
+   du bloc V190 doit la reconduire. */
+@media (max-width:560px){
+  .site-footer .footer__bottom .footer__credit .footer__cartel{padding-left:var(--sp-70)}
+  .site-footer .footer__bottom .footer__credit .footer__credit-k{
+    font-size:var(--text-2xs);letter-spacing:.14em}
+  .site-footer .footer__bottom .footer__credit .footer__credit-k i{display:none}
+  .site-footer .footer__bottom .footer__credit .footer__hand{
+    display:block;width:100%;margin-top:.2em;letter-spacing:.14em}
+  /* La signature reste à droite, mais l'écart minimal tombe : sur une colonne
+     de 280 px, 1,2 rem d'écart imposerait une largeur que le bloc n'a pas. */
+  .site-footer .footer__bottom .footer__credit .footer__signature{gap:.6rem}
 }
