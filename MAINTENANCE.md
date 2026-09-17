@@ -3293,20 +3293,6 @@ pour mémoire la signature d'avant le 15/09 était à 2,59:1. Le survol prouvé 
 la mesure et non par l'intention : soulignement `0px → 100%`, cœur
 `rgb(198,112,39) → rgb(232,130,42)`.
 
-### Fichiers
-
-`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
-`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
-17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
-27 pages.
-
-Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
-composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
-pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
-calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
-candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
-que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
-entière).
 ### 17/09 — « j'aime pas, trouve une meilleure mise en forme »
 
 Le lendemain de la mise en ligne, Alexandre rejette la version ci-dessus. Le
@@ -3363,3 +3349,76 @@ périmètre des sélecteurs (tous préfixés `.site-footer .footer__bottom
 .footer__credit`, donc clos sur le bloc), les gardes-fous classes/JSON-LD au
 vert, et le texte voisin du pied mesuré inchangé à 12,8 px.
 
+### 17/09, second retour — cœur rouge, lien LinkedIn, et une animation
+
+Alexandre, sur le poinçon mis en ligne : « j'aime tjs pas. je veux un cœur
+rouge pas jaune, je veux plus de subtilité, et j'aime pas l'icône du A. je veux
+une animation sur le ALEX et je veux que ça renvoie vers mon profil LinkedIn. »
+
+Cinq demandes, toutes tenues :
+- **Le cœur passe au rouge.** `--rouge-coeur:#E8453F`, 4,96:1 mesuré sur
+  `--nuit-0` (le seuil des éléments graphiques est 3:1). Il n'y avait **aucun
+  rouge** dans la palette ; ce jeton ne sert qu'à ça et ne doit pas s'étendre.
+  C'est le passage à un SVG, la veille, qui rend ce réglage possible : la
+  couleur d'un emoji appartient à la police du système, pas au site.
+- **Le monogramme « A » est retiré** ; le filet vertical reste seul repère, et
+  s'affûle d'un cran (glacier .20 au lieu de .26).
+- **« Alex » devient un lien** vers le profil LinkedIn, en `target="_blank"
+  rel="noopener"` avec la mention `sr-only` « (nouvel onglet) », comme les
+  autres liens sortants du site. Aucun traçage n'est posé dessus : la page
+  Confidentialité énumère les clics comptés, et celui-ci n'en est pas.
+- **L'animation : l'encre qui prend.** Le mot se remplit de blanc, de gauche à
+  droite, en 800 ms, UNE fois. Rien ne bouge, rien ne se dessine en plus : la
+  couleur seule travaille, ce qui répond à « plus de subtilité » sans renoncer
+  à l'animation demandée. Trois traitements ont été rendus et capturés en quatre
+  temps avant de choisir ; Alexandre a pris celui-là.
+- **Le survol** (pointeur fin) : le filet sous le prénom passe du rouge à 30 %
+  au rouge plein. Vérifié au pixel : `rgb(75,30,36)` → `rgb(232,69,63)`.
+
+**Le déclencheur, et pourquoi ce n'est pas un `:hover`.** Le bloc porte
+`.reveal` : `script.js` lui pose `.in` quand il entre à l'écran. L'animation se
+joue donc **aussi sur téléphone**, là où un survol ne se produit jamais, et une
+seule fois — la doctrine « un seul mouvement continu sur la page » (le hero)
+est tenue, rien ne boucle.
+
+**Le piège évité : l'état par défaut est l'état FINAL.** Sans JavaScript, `.in`
+n'arrive jamais. Si le repos avait été posé sur l'état initial de l'animation,
+le prénom serait resté **gris pour toujours**. Le dégradé est donc cadré sur le
+blanc au repos, et c'est l'animation qui part du gris pour y revenir. Même
+logique sous `prefers-reduced-motion`, où `script.js` pose `.in` immédiatement.
+
+**Deux défauts de cascade trouvés au banc**, tous deux du même genre que la
+veille :
+- Les essais écrits en 0,4,0 étaient battus par la feuille en ligne, qui cible
+  `.sig-name` en **0,5,0** (`.site-footer .footer__bottom .footer__credit
+  .footer__signature .sig-name`). Symptôme : un filet orange résiduel au-dessus
+  du mot et un dégradé qui ne s'appliquait pas. Le banc le dit au chiffre
+  (`background-size` restait `0px 1px`), l'œil seul l'aurait laissé passer.
+- Le bloc injecté par le banc n'était jamais animé : `script.js` fait son
+  `querySelectorAll('.reveal')` au chargement, donc un élément posé après
+  n'est jamais observé. Le banc rejoue désormais ce que le script aurait fait.
+
+**Le banc sait maintenant piloter une animation** (`--etapes=0,0.4,0.75,1`) : il
+fixe `currentTime` sur chaque animation du bloc et sort une capture par palier.
+Sans ça, une animation à remplissage `both` qui n'a pas démarré fige la capture
+sur son état **initial** — un trait à `scaleX(0)` est simplement invisible, et
+on conclurait à tort qu'il n'y a rien.
+
+Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : drapeau aligné aux six
+largeurs, zéro débordement, bloc de 41 px (56 px au téléphone), animation
+`sigEncre` détectée partout, corps inchangés à 15,2 / 16,7 / 11,5 px.
+
+### Fichiers
+
+`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
+`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
+17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
+27 pages.
+
+Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
+composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
+pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
+calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
+candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
+que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
+entière).

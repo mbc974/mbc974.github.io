@@ -54,6 +54,12 @@ const htmlFic = (argv.find(a => a.startsWith('--html=')) || '').slice(7);
 const page = (argv.find(a => a.startsWith('--page=')) || '--page=/index.html').slice(7);
 const injecte = cssFic ? readFileSync(cssFic, 'utf8') : '';
 const markup = htmlFic ? readFileSync(htmlFic, 'utf8') : '';
+// --etapes=0,0.35,0.7,1 : une capture par palier d'avancement de l'animation,
+// pour montrer un MOUVEMENT sur une image fixe. Sans l'option, tout est mene a
+// son terme (p=1) : sinon une animation `both` pas encore declenchee figerait
+// la capture sur son etat initial.
+const etapesArg = (argv.find(a => a.startsWith('--etapes=')) || '').slice(9);
+const etapes = etapesArg ? etapesArg.split(',').map(Number) : null;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const prof = mkdtempSync(join(tmpdir(), 'mbcbancsig'));
@@ -104,6 +110,12 @@ const AIDE = (css, html) => '(() => {\n' +
   // Une composition peut renommer sa racine : on retient l element pose, pour
   // savoir quoi cadrer meme si la classe .footer__credit a disparu.
   '      vieux.replaceWith(el); window.__racine = el;\n' +
+  // script.js a deja fait son querySelectorAll(".reveal") au chargement : un
+  // bloc injecte APRES n est jamais observe, donc jamais marque .in, donc son
+  // animation d arrivee ne part pas. Sur la vraie page la classe est dans le
+  // HTML au chargement et l observateur la voit. On rejoue donc ici ce que le
+  // script aurait fait, sans quoi le banc conclurait « aucune animation ».
+  '      if (el.classList.contains("reveal")) el.classList.add("in");\n' +
   '    }\n' +
   '    document.documentElement.style.scrollBehavior = "auto";\n' +
   '    await document.fonts.ready;\n' +
@@ -171,6 +183,23 @@ const AIDE = (css, html) => '(() => {\n' +
   // Le clip de Page.captureScreenshot est en coordonnees de PAGE, pas de
   // fenetre : un rect de getBoundingClientRect() seul cadre le haut du
   // document, et sort une image vide qu'on prend pour un defaut de rendu.
+  // Une capture fixe ne dit rien d une animation, et pire : une animation a
+  // remplissage `both` qui n a pas encore demarre fige l element sur son etat
+  // INITIAL (un trait a scaleX(0) est tout simplement invisible). On pilote
+  // donc la progression a la main ; p=1 est l etat final, et c est le defaut
+  // des captures, pour qu elles soient reproductibles.
+  '  etape(p) {\n' +
+  '    const vus = [];\n' +
+  '    document.getAnimations().forEach(a => {\n' +
+  '      const t = a.effect && a.effect.target;\n' +
+  '      if (!t || !t.closest || !t.closest(".footer__credit")) return;\n' +
+  '      const ct = a.effect.getComputedTiming();\n' +
+  '      if (!isFinite(ct.endTime)) return;\n' +
+  '      try { a.pause(); a.currentTime = p * ct.endTime; } catch (e) { return; }\n' +
+  '      vus.push([a.animationName || "?", Math.round(ct.endTime)]);\n' +
+  '    });\n' +
+  '    return vus;\n' +
+  '  },\n' +
   '  zone() {\n' +
   '    const c = window.__racine || document.querySelector(".footer__credit");\n' +
   '    if (!c) return null;\n' +
@@ -211,10 +240,22 @@ async function main() {
     const trouve = await evalp(s, '__banc.prep()');
     if (!trouve) { out[fm] = { erreur: 'bloc .footer__credit introuvable' }; await send('Target.closeTarget', { targetId }); continue; }
     out[fm] = await evalp(s, '__banc.mesures()');
+    out[fm].animations = await evalp(s, 'JSON.stringify(__banc.etape(1))').then(JSON.parse);
     if (shots) {
       const clip = await evalp(s, 'JSON.stringify(__banc.zone())').then(JSON.parse);
       const { data } = await send('Page.captureScreenshot', { format: 'png', clip }, s);
       writeFileSync(join(SORTIE, tag + '-' + fm + '.png'), Buffer.from(data, 'base64'));
+    }
+    if (etapes) {
+      for (const p of etapes) {
+        await evalp(s, '__banc.etape(' + p + ')');
+        await sleep(90);
+        const clip = await evalp(s, 'JSON.stringify(__banc.zone())').then(JSON.parse);
+        const { data } = await send('Page.captureScreenshot', { format: 'png', clip }, s);
+        writeFileSync(join(SORTIE, tag + '-' + fm + '-p' + String(Math.round(p * 100)).padStart(3, '0') + '.png'),
+          Buffer.from(data, 'base64'));
+      }
+      await evalp(s, '__banc.etape(1)');
     }
     if (survol && w > 640) {
       // Le survol se pose par une VRAIE souris : une classe forcee ne
