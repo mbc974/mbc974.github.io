@@ -6477,30 +6477,27 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   font-family:var(--ff-cond);font-weight:700;font-size:1em;letter-spacing:.18em;
   text-transform:uppercase;white-space:nowrap;color:rgb(var(--bleu-glacier-rgb) / .8)}
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;vertical-align:-.72em;
+  position:relative;display:inline-block;vertical-align:-.39em;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
-.site-footer .footer__bottom .footer__credit .sig-trace{
-  display:block;width:104px;height:55px;overflow:visible;
-  fill:none;stroke:var(--txt);stroke-width:3.2;
-  stroke-linecap:round;stroke-linejoin:round;
-  transition:stroke .35s var(--ease)}
-.site-footer .footer__bottom .footer__credit .sig-trace path{
-  stroke-dasharray:1 2;stroke-dashoffset:0}
-@keyframes sigEcrit{from{stroke-dashoffset:1.02}to{stroke-dashoffset:0}}
-.site-footer .footer__bottom .footer__credit.in .sig-trace path{
-  animation:sigEcrit var(--t) cubic-bezier(.55,.06,.4,.98) var(--d) both}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(1){--d:.20s;--t:.30s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(2){--d:.54s;--t:.11s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(3){--d:.69s;--t:.22s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(4){--d:.95s;--t:.22s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(5){--d:1.21s;--t:.10s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(6){--d:1.33s;--t:.10s}
-.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(7){--d:1.47s;--t:.27s}
+.site-footer .footer__bottom .footer__credit .sig-hw{
+  display:block;width:88px;height:50px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:6;
+  transition:color .35s var(--ease)}
+.site-footer .footer__bottom .footer__credit .sig-hw .hw__p{
+  fill-opacity:1;stroke-dashoffset:0;stroke-opacity:0}
+.site-footer .footer__bottom .footer__credit.in .sig-hw .hw__p{
+  animation:
+    hw-trait calc(var(--hw-trace) * var(--t)) linear
+             calc(var(--hw-trace) * var(--d) + .25s) both,
+    hw-encre calc(var(--hw-trace) * var(--t) * 1.9) var(--ease-out)
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .42) + .25s) both,
+    hw-plume calc(var(--hw-trace) * var(--t) * 1.1) var(--ease-out)
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .6) + .25s) both}
 @media (hover:hover) and (pointer:fine){
-  .site-footer .footer__bottom .footer__credit .sig-name:hover .sig-trace{stroke:var(--rouge-coeur)}
+  .site-footer .footer__bottom .footer__credit .sig-name:hover .sig-hw{color:var(--rouge-coeur)}
 }
 @media (prefers-reduced-motion:reduce){
-  .site-footer .footer__bottom .footer__credit.in .sig-trace path{animation:none;stroke-dashoffset:0}
+  .site-footer .footer__bottom .footer__credit.in .sig-hw .hw__p{animation:none}
 }

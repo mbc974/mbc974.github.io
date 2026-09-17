@@ -3408,20 +3408,6 @@ Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : drapeau aligné aux six
 largeurs, zéro débordement, bloc de 41 px (56 px au téléphone), animation
 `sigEncre` détectée partout, corps inchangés à 15,2 / 16,7 / 11,5 px.
 
-### Fichiers
-
-`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
-`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
-17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
-27 pages.
-
-Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
-composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
-pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
-calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
-candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
-que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
-entière).
 ### 17/09, quatrième refus — la signature devient MANUSCRITE
 
 « j'aime tjs pas le design, ça manque d'animation subtile et d'originalité,
@@ -3436,33 +3422,68 @@ main en courbes de Bézier, qui **s'écrit au stylo** quand le bas de page arriv
 aux trois mots de la demande : subtil (rien ne bouge, un trait se pose),
 original (aucun autre site du club n'a ça), premium (un autographe).
 
-**Le dessin.** Sept traits, dans l'ordre d'écriture : montante du A, barre, l,
-e, les deux traits du x, puis le paraphe qui remonte. Trois tracés ont été
-dessinés et comparés au banc, en grand ET à la taille réelle (104 px) — un
-quatrième, en un seul trait continu, a été écarté : le A et le l fusionnaient et
-ça se lisait « Mex ».
+**LE SITE AVAIT DÉJÀ UNE ÉCRITURE, et je ne l'avais pas vue.** Première version :
+un tracé dessiné à la main en courbes de Bézier, en trait simple, avec sa propre
+animation. Elle a été poussée, puis **remplacée le jour même** : en relisant le
+HTML servi en production, `pathLength` apparaissait 57 fois alors que ma
+signature n'en comptait que 7. Le hero écrit déjà trois phrases à la main (§ 9),
+avec un dispositif bien plus fin que le mien — Caveat 400 converti en contours,
+l'encre qui suit la plume à 42 % du passage, puis la plume qui se retire.
+Deux écritures différentes sur la même page, c'est un défaut ; la mienne était en
+plus la plus pauvre des deux.
 
-**Deux défauts que seul le rendu image par image pouvait montrer :**
-1. **Les sept traits se dessinaient TOUS EN MÊME TEMPS.** En SVG, le motif de
-   pointillé **repart à zéro à chaque sous-tracé** d'un même `<path>` : un seul
-   path animé ne s'écrit pas, il pousse. Il faut **sept `<path>` séparés**, avec
-   un retard propre à chacun — et les blancs entre eux deviennent les levers de
-   stylo.
-2. **Sept points attendaient leur tour à l'écran.** `stroke-dasharray:1` veut
-   dire tiret 1 / espace 1, donc le motif SE RÉPÈTE et un second tiret retombe
-   sur la fin du tracé ; `stroke-linecap:round` le peint en point. Corrigé par
-   `stroke-dasharray:1 2` et un décalage de départ à 1,02.
+**La bonne réponse était donc l'outil maison.** « Alex » sort du même
+générateur (`.claude/hw-signature.html`, `PHRASES = ['Alex']`, bandeau au vert :
+4 contours, viewBox `0 -218 436 247`, tous les contours relus conformes), dans
+la même main que le hero, et réutilise les trois keyframes `hw-trait`,
+`hw-encre`, `hw-plume`. Le générateur a été **remis dans son état d'origine**
+après la génération.
 
-**Le repos est l'état FINAL**, comme pour l'encre : sans JavaScript, `.in`
-n'arrive jamais, et une signature invisible serait pire que pas de signature.
+Trois réglages qui ne se devinent pas :
+- **La classe `hw__pt` du dernier contour est retirée.** Elle colore en orange
+  le POINT FINAL d'une phrase ; « Alex » n'en a pas, le « x » serait devenu
+  orange.
+- **`--hw-sw:6` et non 3.** L'épaisseur est en unités de viewBox : celui-ci
+  (436 de large rendu à 88 px) est cinq fois plus serré que celui du hero.
+  6 × 88/436 = 1,2 px à l'écran, soit exactement la plume du hero.
+- **`vertical-align:-.39em`**, calculé et non trouvé à l'œil : dans ce viewBox,
+  y=0 EST la ligne de base de Caveat, et il reste 29 unités sous elle sur 247.
+  À 50 px de haut cela fait 5,9 px, soit .39em pour un texte de 15,2 px — la
+  signature s'assoit sur la ligne de « Made with ♥ by » au lieu de flotter.
 
-**Le banc a gagné une horloge COMMUNE.** `--etapes` réglait auparavant chaque
-animation à « p % de SA propre durée » : un trait retardé paraissait en avance
-et la vignette mentait sur le geste. Il prend désormais la fin la plus tardive
-du bloc comme référence, donc une vignette à 0,70 s montre vraiment ce qu'on
-voit à 0,70 s.
+**L'état de repos est l'état final** (lettres encrées, plume retirée) : `.hw__p`
+pose l'inverse, parce que dans le hero le tracé démarre au chargement ; ici il
+démarre au défilement, et sans JavaScript `.in` n'arrive jamais.
 
-Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : sept traits animés partout,
-drapeau aligné, zéro débordement, bloc de 73 px (88 px à 320 px, où la ligne se
-replie). Corps du texte inchangés à 15,2 / 11,5 px.
+**Ce que la première version a quand même appris**, et qui reste vrai pour tout
+tracé animé : en SVG, le motif de pointillé **repart à zéro à chaque sous-tracé**
+d'un même `<path>` — un seul path animé ne s'écrit pas, tous ses traits
+poussent ensemble. Et `stroke-dasharray:1` signifie tiret 1 / espace 1, donc le
+motif se répète et un second tiret retombe sur la fin du tracé, que
+`stroke-linecap:round` peint en POINT. Le générateur maison évite les deux :
+il écrit un `<path>` par contour et le hero n'a jamais eu de points parasites.
 
+**Le banc a gagné une horloge COMMUNE.** `--etapes` réglait chaque animation à
+« p % de SA propre durée » : un trait retardé paraissait en avance et la
+vignette mentait sur le geste. Il prend désormais la fin la plus tardive du
+bloc comme référence.
+
+Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : **12 animations** (4 contours ×
+trait, encre, plume) partout, drapeau aligné, zéro débordement, bloc de 68 px
+(83 px à 320 px, où la ligne se replie). Corps du texte inchangés à
+15,2 / 11,5 px. Cœur rouge et lien LinkedIn inchangés.
+
+### Fichiers
+
+`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
+`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
+17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
+27 pages.
+
+Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
+composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
+pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
+calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
+candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
+que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
+entière).
