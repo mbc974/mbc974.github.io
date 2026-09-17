@@ -52,6 +52,9 @@ const survol = argv.includes('--survol');
 const cssFic = (argv.find(a => a.startsWith('--css=')) || '').slice(6);
 const htmlFic = (argv.find(a => a.startsWith('--html=')) || '').slice(7);
 const page = (argv.find(a => a.startsWith('--page=')) || '--page=/index.html').slice(7);
+// --marge=N : élargit le cadrage autour du bloc, pour le voir EN CONTEXTE
+// (sous les liens légaux, par exemple) et pas seulement isolé.
+const marge = Number((argv.find(a => a.startsWith('--marge=')) || '--marge=24').slice(8)) || 24;
 const injecte = cssFic ? readFileSync(cssFic, 'utf8') : '';
 const markup = htmlFic ? readFileSync(htmlFic, 'utf8') : '';
 // --etapes=0,0.35,0.7,1 : une capture par palier d'avancement de l'animation,
@@ -137,7 +140,8 @@ const AIDE = (css, html) => '(() => {\n' +
   '      nom: ".sig-name", coeur: ".sig-heart", diese: ".footer__hand",\n' +
   '      plaque: ".footer__plaque", cartel: ".footer__cartel", poincon: ".footer__poincon",\n' +
   // Les deux temoins : le texte courant du pied, auquel on compare tout.
-  '      temoinLegal: ".footer__legal", temoinLien: ".footer__links a"\n' +
+  '      temoinLegal: ".footer__legal", temoinLien: ".footer__links a",\n' +
+  '      liensLegaux: ".footer__links"\n' +
   '    };\n' +
   '    const out = {};\n' +
   '    for (const [k, sel] of Object.entries(cible)) {\n' +
@@ -214,7 +218,7 @@ const AIDE = (css, html) => '(() => {\n' +
   '    const c = window.__racine || document.querySelector(".footer__credit");\n' +
   '    if (!c) return null;\n' +
   '    const b = c.getBoundingClientRect();\n' +
-  '    const m = 24;\n' +
+  '    const m = ' + marge + ';\n' +
   '    return { x: Math.max(0, Math.round(b.left + scrollX) - m), y: Math.max(0, Math.round(b.top + scrollY) - m),\n' +
   '      width: Math.min(innerWidth, Math.round(b.width) + m * 2), height: Math.round(b.height) + m * 2, scale: 2 };\n' +
   '  },\n' +

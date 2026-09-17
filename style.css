@@ -12464,29 +12464,35 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    hiérarchie et la composition, jamais l'échelle.
    ============================================================================ */
 
+/* Alexandre, 17/09 : « quand je disais à droite je disais SOUS mentions
+   légales, confidentialité et gérer mes cookies, centre bien le tout ». Le pavé
+   se cale donc sur .footer__links, qui prend margin-left:auto dans le flex de
+   .footer__bottom : width:max-content + margin-left:auto font tomber son bord
+   droit à l'aplomb du leur, et son contenu est CENTRÉ dans cette largeur. */
 .site-footer .footer__bottom .footer__credit{
   position:relative;display:block;width:100%;
-  margin-top:var(--sp-110);padding-top:0;border-top:0;text-align:left}
+  margin-top:var(--sp-110);padding-top:0;border-top:0;text-align:center}
 .site-footer .footer__bottom .footer__credit::before{display:none}
 .site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
-/* width:max-content : la cartouche cesse de s'étirer sur toute la largeur du
-   pied et se resserre sur sa ligne la plus longue (celle du rôle). C'est la
-   condition pour pouvoir pousser la signature à droite : étirée, elle laisserait
-   900 px de vide entre « by » et « Alex ». max-width:100% la garde dans la
-   colonne au téléphone. */
+/* PLUS DE FILET VERTICAL. Un trait à gauche est la ponctuation d'un DRAPEAU :
+   il dit « le texte commence ici ». Sur un pavé centré il ne dit plus rien et
+   déséquilibre l'axe — l'espace suffit à séparer. La cartouche ne garde que sa
+   largeur de contenu, pour que le centrage porte sur la bonne mesure. */
+/* width:100% sur le pavé ET max-content sur la cartouche, et l'ordre compte :
+   c'est le width:100% qui FORCE le retour à la ligne dans le flex de
+   .footer__bottom. Sans lui, la cartouche resserrée tenait sur la même ligne que
+   .footer__links, qui cessait alors d'être le dernier élément : son
+   margin-left:auto ne la poussait plus à droite, et les deux bords droits
+   étaient décalés de 354 px (mesuré). C'est la cartouche, pas le pavé, qui porte
+   le margin-left:auto. */
 .site-footer .footer__bottom .footer__credit .footer__cartel{
-  position:relative;min-width:0;width:max-content;max-width:100%;padding-left:var(--sp-90)}
-.site-footer .footer__bottom .footer__credit .footer__cartel::before{
-  content:"";position:absolute;left:0;top:.34em;bottom:.22em;width:1px;
-  background:linear-gradient(180deg,
-    rgb(var(--bleu-glacier-rgb) / .03),
-    rgb(var(--bleu-glacier-rgb) / .20) 26%,
-    rgb(var(--bleu-glacier-rgb) / .20) 74%,
-    rgb(var(--bleu-glacier-rgb) / .03))}
+  position:relative;min-width:0;width:max-content;max-width:100%;
+  margin-left:auto;padding-left:0;text-align:center}
+.site-footer .footer__bottom .footer__credit .footer__cartel::before{display:none}
 
 .site-footer .footer__bottom .footer__credit .footer__signature{
-  display:flex;align-items:baseline;justify-content:space-between;gap:1.2rem;
-  width:100%;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
+  display:flex;align-items:baseline;justify-content:center;gap:.28em;
+  width:auto;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
   font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
   line-height:1.4;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
 .site-footer .footer__bottom .footer__credit .sig-by{color:inherit;white-space:nowrap}
@@ -12511,12 +12517,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
    et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;vertical-align:-.33em;
+  position:relative;display:inline-block;vertical-align:-.29em;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
 /* -.33em, et ce n'est pas une valeur trouvée à l'œil : dans le viewBox du
    générateur, y=0 EST la ligne de base de Caveat, et il reste 29 unités sous
-   elle sur 247. À 43 px de haut cela fait 5,0 px, soit .33em pour un texte de
+   elle sur 247. À 37 px de haut cela fait 4,3 px, soit .29em pour un texte de
    15,2 px. La signature s'assoit donc sur la même ligne que « Made with ♥ by »
    au lieu de flotter au-dessus. ⚠️ Toute retouche de la HAUTEUR du tracé oblige
    à refaire ce calcul : hauteur × 29/247, converti en em sur 15,2 px. */
@@ -12530,12 +12536,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    trois keyframes maison — hw-trait, hw-encre, hw-plume.
    La classe hw__pt du dernier contour a été retirée : elle colore en orange le
    POINT FINAL d'une phrase, et « Alex » n'en a pas — le « x » aurait été orange.
-   --hw-sw:7 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
-   (436 de large rendu à 76 px) est cinq fois plus serré que celui du hero.
-   7 × 76/436 = 1,2 px à l'écran, soit la plume du hero. */
+   --hw-sw:8 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
+   (436 de large rendu à 66 px) est cinq fois plus serré que celui du hero.
+   8 × 66/436 = 1,21 px à l'écran, soit la plume du hero. */
 .site-footer .footer__bottom .footer__credit .sig-hw{
-  display:block;width:76px;height:43px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:7;
+  display:block;width:66px;height:37px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:8;
   transition:color .35s var(--ease)}
 
 /* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, plume retirée. .hw__p
@@ -12577,13 +12583,9 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    point médian est réapparu orphelin à 320 px, vu à la capture. Toute réécriture
    du bloc V190 doit la reconduire. */
 @media (max-width:560px){
-  .site-footer .footer__bottom .footer__credit .footer__cartel{padding-left:var(--sp-70)}
   .site-footer .footer__bottom .footer__credit .footer__credit-k{
     font-size:var(--text-2xs);letter-spacing:.14em}
   .site-footer .footer__bottom .footer__credit .footer__credit-k i{display:none}
   .site-footer .footer__bottom .footer__credit .footer__hand{
     display:block;width:100%;margin-top:.2em;letter-spacing:.14em}
-  /* La signature reste à droite, mais l'écart minimal tombe : sur une colonne
-     de 280 px, 1,2 rem d'écart imposerait une largeur que le bloc n'a pas. */
-  .site-footer .footer__bottom .footer__credit .footer__signature{gap:.6rem}
 }

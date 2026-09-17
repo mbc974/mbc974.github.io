@@ -3473,6 +3473,44 @@ trait, encre, plume) partout, drapeau aligné, zéro débordement, bloc de 68 px
 (83 px à 320 px, où la ligne se replie). Corps du texte inchangés à
 15,2 / 11,5 px. Cœur rouge et lien LinkedIn inchangés.
 
+### 17/09 au soir — le crédit se cale sous les liens légaux
+
+« Quand je disais à droite je disais SOUS mentions légales, confidentialité et
+gérer mes cookies, centre bien le tout, rapproche le Alex de "by" et réduis un
+peu sa taille. » La demande précédente (« aligne-le à droite ») avait été
+comprise comme « la signature à droite DU BLOC » ; c'était « le bloc sous les
+liens légaux ». Deux variantes avaient pourtant été montrées — mais c'étaient
+deux nuances du MÊME axe. Quand un mot de position est ambigu, montrer les deux
+AXES (dans le bloc / dans la page), pas deux nuances de l'un d'eux.
+
+- **Le pavé se cale sur `.footer__links`.** Celui-ci prend `margin-left:auto`
+  dans le flex de `.footer__bottom` ; la cartouche prend `width:max-content` +
+  `margin-left:auto`, donc les deux bords droits tombent à l'aplomb. **Mesuré :
+  écart 0 px à 1440 et 1920, 1 px à 768.**
+- **Le contenu est centré** dans cette largeur, et `justify-content:center` avec
+  `gap:.28em` ramène « Alex » contre « by ».
+- **Le tracé descend à 66 px**, avec ses deux valeurs liées : `--hw-sw:8`
+  (8 × 66/436 = 1,21 px de plume) et `vertical-align:-.29em`
+  (29/247 × 37 px = 4,3 px d'assise).
+- **Le filet vertical part.** Un trait à gauche est la ponctuation d'un DRAPEAU :
+  sur un pavé centré il ne dit plus rien et déséquilibre l'axe.
+
+**LE PIÈGE : `width:100%` sur `.footer__credit` n'est pas décoratif, c'est lui
+qui FORCE le retour à la ligne dans le flex.** Remplacé par `width:max-content`
+pour caler le pavé à droite, celui-ci est remonté sur la LIGNE des liens
+légaux ; `.footer__links` cessait d'être le dernier élément, son
+`margin-left:auto` ne la poussait plus à droite, et les deux bords droits se
+retrouvaient décalés de **354 px**. Répartition correcte : `width:100%` sur le
+pavé (il tient sa ligne), `max-content` + `margin-left:auto` sur la cartouche.
+
+Le banc gagne `--marge=N` (voir le bloc EN CONTEXTE, sous les liens, et pas
+seulement isolé) et mesure `.footer__links`, pour que cet alignement entre deux
+blocs voisins se lise au chiffre.
+
+Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : zéro débordement, bloc de 61 px
+(75 px sous 560 px). À 390 px il reste 35 px d'écart avec les liens, qui ne sont
+plus ferrés à droite à cette largeur — sans conséquence, tout y est empilé.
+
 ### Fichiers
 
 `index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
