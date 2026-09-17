@@ -3422,3 +3422,47 @@ calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
 candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
 que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
 entière).
+### 17/09, quatrième refus — la signature devient MANUSCRITE
+
+« j'aime tjs pas le design, ça manque d'animation subtile et d'originalité,
+fais qqchose qui sort du lot et qui est ultra premium ».
+
+**Le constat qui débloque :** quatre versions successives tournaient autour d'un
+crédit EN TEXTE — on réglait le corps, la couleur, la composition, le lien.
+C'était le PARADIGME qui ne prenait pas. « Alex » cesse donc d'être un mot
+composé pour devenir un **tracé** : une vraie signature manuscrite, dessinée à la
+main en courbes de Bézier, qui **s'écrit au stylo** quand le bas de page arrive
+à l'écran. C'est le geste du peintre qui signe sa toile — et ça répond d'un coup
+aux trois mots de la demande : subtil (rien ne bouge, un trait se pose),
+original (aucun autre site du club n'a ça), premium (un autographe).
+
+**Le dessin.** Sept traits, dans l'ordre d'écriture : montante du A, barre, l,
+e, les deux traits du x, puis le paraphe qui remonte. Trois tracés ont été
+dessinés et comparés au banc, en grand ET à la taille réelle (104 px) — un
+quatrième, en un seul trait continu, a été écarté : le A et le l fusionnaient et
+ça se lisait « Mex ».
+
+**Deux défauts que seul le rendu image par image pouvait montrer :**
+1. **Les sept traits se dessinaient TOUS EN MÊME TEMPS.** En SVG, le motif de
+   pointillé **repart à zéro à chaque sous-tracé** d'un même `<path>` : un seul
+   path animé ne s'écrit pas, il pousse. Il faut **sept `<path>` séparés**, avec
+   un retard propre à chacun — et les blancs entre eux deviennent les levers de
+   stylo.
+2. **Sept points attendaient leur tour à l'écran.** `stroke-dasharray:1` veut
+   dire tiret 1 / espace 1, donc le motif SE RÉPÈTE et un second tiret retombe
+   sur la fin du tracé ; `stroke-linecap:round` le peint en point. Corrigé par
+   `stroke-dasharray:1 2` et un décalage de départ à 1,02.
+
+**Le repos est l'état FINAL**, comme pour l'encre : sans JavaScript, `.in`
+n'arrive jamais, et une signature invisible serait pire que pas de signature.
+
+**Le banc a gagné une horloge COMMUNE.** `--etapes` réglait auparavant chaque
+animation à « p % de SA propre durée » : un trait retardé paraissait en avance
+et la vignette mentait sur le geste. Il prend désormais la fin la plus tardive
+du bloc comme référence, donc une vignette à 0,70 s montre vraiment ce qu'on
+voit à 0,70 s.
+
+Vérifié à 320, 390, 768, 1024, 1440 et 1920 px : sept traits animés partout,
+drapeau aligné, zéro débordement, bloc de 73 px (88 px à 320 px, où la ligne se
+replie). Corps du texte inchangés à 15,2 / 11,5 px.
+

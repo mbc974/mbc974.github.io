@@ -12448,9 +12448,14 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
             drapeau contre un filet, avec un monogramme « A ».
      17/09  « coeur ROUGE pas jaune, plus de subtilité, pas l'icône du A, une
             animation sur le ALEX, et que ça renvoie vers mon LinkedIn ».
-   D'où l'état présent : le monogramme est retiré, le filet vertical reste seul
-   repère, le coeur passe au rouge, « Alex » devient un lien vers le profil
-   LinkedIn et s'encre une fois, à l'arrivée du bloc à l'écran.
+     17/09  « j'aime tjs pas, ça manque d'animation subtile et d'originalité,
+            fais qqchose qui sort du lot et qui est ultra premium ».
+   D'où l'état présent : quatre versions successives tournaient autour d'un
+   crédit EN TEXTE, et c'est le paradigme qui n'allait pas. « Alex » cesse
+   d'être un mot composé pour devenir un TRACÉ — une vraie signature
+   manuscrite, dessinée en courbes de Bézier, qui S'ÉCRIT au stylo quand le bas
+   de page arrive à l'écran. Le coeur reste rouge, le filet vertical reste le
+   seul repère, et le tracé renvoie au profil LinkedIn.
 
    LA LEÇON DES TROIS ESSAIS, écrite ici pour qu'on ne la repaye pas : répondre
    à « qu'on le voie » par la TAILLE coûte deux allers-retours. Les corps n'ont
@@ -12459,26 +12464,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    hiérarchie et la composition, jamais l'échelle.
    ============================================================================ */
 
-/* 1 — LE PAVÉ. Plus de monogramme : une seule colonne, calée à gauche, et le
-   filet vertical devient le seul repérage. width:100% est conservé, c'est lui
-   qui fait retourner l'item à la ligne dans le flex de .footer__bottom
-   (l. 4321) ; text-align:left est obligatoire, sans quoi le text-align:center
-   hérité sous 700 px (l. 1179) recentrerait tout le drapeau. */
 .site-footer .footer__bottom .footer__credit{
   position:relative;display:block;width:100%;
   margin-top:var(--sp-110);padding-top:0;border-top:0;text-align:left}
-
-/* Le bloc porte .reveal : script.js lui pose .in quand il entre à l'écran
-   (seuil 12 %). On neutralise l'effet par défaut de .reveal — le bloc ne doit
-   NI glisser NI apparaître en fondu ; seul « Alex » s'anime. */
+.site-footer .footer__bottom .footer__credit::before{display:none}
 .site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
-
-/* 2 — LE FILET. Il court de la hauteur de capitale de la première ligne à la
-   ligne de base de la dernière : il mesure le texte au lieu de flotter dans
-   les demi-interlignes, et il s'allonge tout seul si la seconde ligne se
-   replie au téléphone. Dégradé plutôt qu'aplat, et un cran plus pâle que la
-   première version du 17/09 (.20 contre .26) : « plus de subtilité » se joue
-   d'abord ici. padding-left = la gouttière entre le filet et le texte. */
 .site-footer .footer__bottom .footer__credit .footer__cartel{
   position:relative;min-width:0;padding-left:var(--sp-90)}
 .site-footer .footer__bottom .footer__credit .footer__cartel::before{
@@ -12489,133 +12479,86 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
     rgb(var(--bleu-glacier-rgb) / .20) 74%,
     rgb(var(--bleu-glacier-rgb) / .03))}
 
-/* 3 — LIGNE 1, LA SIGNATURE. display:block ET NON flex : en flux en ligne
-   normal, « Made with », le coeur et « Alex » (trois corps différents)
-   partagent UNE ligne de base ; en flex ils seraient recalés chacun sur son
-   axe médian. text-transform:none annule .footer__signature{uppercase}
-   (l. 1171), qui n'est jamais annulée par défaut ; opacity:1 annule le .6 de
-   la l. 4328, qui cumulé à une teinte déjà passée avait donné 2,59:1 en
-   production.
-   width:100% et justify-self:stretch ne sont PAS redondants avec display:block :
-   .footer__signature{justify-self:center} (l. 1171) n'est jamais annulée non
-   plus, et la boîte gardait sinon une largeur « fit-content » (139 px mesurés
-   contre 315 pour la ligne du dessous) en se centrant sur elle — les deux
-   lignes du drapeau ne partaient pas du même x. Mesuré : x=302 puis x=214. */
 .site-footer .footer__bottom .footer__credit .footer__signature{
   display:block;width:100%;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
   font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
   line-height:1.4;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
-/* Le fragment anglais, insécable. color:inherit parce que
-   .footer__signature span (l. 1178) vaut 0,1,1 et colore TOUS les span
-   descendants en orange : une règle à 0,1,0 ne la bat pas. */
 .site-footer .footer__bottom .footer__credit .sig-by{color:inherit;white-space:nowrap}
 
-/* 4 — LE COEUR, ROUGE. Aucun rouge n'existait dans la palette ; --rouge-coeur
-   est posé pour lui seul (voir :root). L'emoji ❤️ avait disparu au profit d'un
-   SVG le 16/09, et c'est ce qui rend ce changement possible : la couleur d'un
-   emoji appartient à la police du système, pas au site. Un cran plus petit que
-   la veille (.72em contre .78em) — c'est un signe de ponctuation, pas un
-   pictogramme. fill est hérité en SVG : le <path> n'a pas de règle à lui. */
 .site-footer .footer__bottom .footer__credit .sig-heart{
   display:inline-block;width:.72em;height:.66em;margin-inline:.14em .08em;
-  vertical-align:-.02em;fill:var(--rouge-coeur);
-  transition:fill .3s var(--ease)}
+  vertical-align:-.02em;fill:var(--rouge-coeur);transition:fill .3s var(--ease)}
 
-/* 5 — LIGNE 2, LA TECHNIQUE ET LE MOT-DIÈSE. Registre étiquette : condensé,
-   capitales, interlettré. text-indent:0 défait la compensation de chasse des
-   versions centrées ; ferrée à gauche, l'espace résiduel est APRÈS le dernier
-   caractère et ne décale plus rien. */
 .site-footer .footer__bottom .footer__credit .footer__credit-k{
-  margin:.26em 0 0;padding:0;font-family:var(--ff-cond);font-weight:700;
+  margin:.3em 0 0;padding:0;font-family:var(--ff-cond);font-weight:700;
   text-transform:uppercase;letter-spacing:.18em;text-indent:0;
   font-size:var(--text-xs);line-height:1.3;color:var(--txt-soft)}
-/* Le point médian maison : le sélecteur collectif de la l. 3849 vise
-   .footer__signature i — PAS .footer__credit-k i. Sans cette règle, le <i>
-   serait un élément vide sans aucun dessin et le séparateur disparaîtrait. */
 .site-footer .footer__bottom .footer__credit .footer__credit-k i{
   display:inline-block;width:3px;height:3px;border-radius:var(--r-round);
   background:currentColor;opacity:.45;vertical-align:middle;margin-inline:.5em;flex:none}
-/* #MBC974 : les six propriétés de la pastille de V188 sont remises à zéro
-   NOMMÉMENT — en oublier une et l'ancienne valeur revient. letter-spacing doit
-   être déclaré même s'il est héritable : .footer__hand{letter-spacing:.1em}
-   existe deux fois en direct (l. 658 et 4330), et l'héritage perd toujours
-   contre une déclaration. */
 .site-footer .footer__bottom .footer__credit .footer__hand{
   display:inline;margin:0;padding:0;border:0;border-radius:0;background:none;
   font-family:var(--ff-cond);font-weight:700;font-size:1em;letter-spacing:.18em;
   text-transform:uppercase;white-space:nowrap;color:rgb(var(--bleu-glacier-rgb) / .8)}
 
-/* 6 — « ALEX » EST UN LIEN vers le profil LinkedIn d'Alexandre.
-   SPÉCIFICITÉ : cinq classes, et ce n'est pas du zèle. C'est le niveau qu'il
-   faut pour battre le @supports de la l. 1813, qui pose
-   -webkit-text-fill-color:transparent avec un dégradé orange->bleu ;
-   redéclarer `color` seul ne suffirait pas, et le prénom serait peint par un
-   dégradé qui n'existe plus — donc INVISIBLE.
-   text-decoration:none parce que le soulignement est dessiné à la main : il
-   doit pouvoir s'animer et changer de couleur. Le focus clavier garde l'anneau
-   global du site (a:focus-visible), on n'y touche pas.
-   L'ENCRE : le mot est peint par un dégradé deux fois plus large que lui,
-   découpé sur le texte. Au repos la fenêtre est à GAUCHE — donc le mot est
-   blanc, et c'est volontaire : sans JavaScript, .in n'arrive jamais, et un
-   défaut posé sur l'état initial laisserait le prénom gris pour toujours.
-   C'est l'animation qui part du gris pour revenir à cet état-là. */
+/* Le lien : plus de texte dedans, c'est le tracé qui porte le nom. Le
+   sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
+   et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;text-decoration:none;
-  font-family:var(--ff-body);font-weight:600;font-size:1.1em;letter-spacing:.02em;
-  color:var(--txt);
-  background-image:linear-gradient(90deg,var(--txt) 0 50%,var(--txt-passe) 50% 100%);
-  background-size:200% 100%;background-position:0 0;background-repeat:no-repeat;
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent}
-/* Le filet sous le prénom : rouge très pâle au repos — le détail qui se voit
-   sans se réclamer — et rouge plein au survol. Il existe dès le repos, donc
-   son changement ne coûte aucun recalcul de mise en page. */
-.site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{
-  content:"";position:absolute;left:0;right:0;bottom:-.08em;height:1px;
-  background:rgb(var(--rouge-coeur-rgb) / .3);transition:background .3s var(--ease)}
+  position:relative;display:inline-block;vertical-align:-.72em;
+  margin-left:.2em;text-decoration:none;background-image:none;
+  -webkit-text-fill-color:currentColor}
+.site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
 
-/* 7 — L'ENCRE QUI PREND. Le mot se remplit de blanc, de gauche à droite, UNE
-   fois, quand le bloc arrive à l'écran. Rien ne bouge, rien ne se dessine en
-   plus : c'est la couleur seule qui travaille, et c'est ce qui la rend
-   discrète. Pas de boucle : la doctrine « un seul mouvement continu sur la
-   page » (le hero) est tenue. Et comme c'est .in qui déclenche, ça se joue
-   aussi sur téléphone, là où un :hover ne se produit jamais. */
-@keyframes sigEncre{from{background-position:100% 0}to{background-position:0 0}}
-.site-footer .footer__bottom .footer__credit.in .footer__signature .sig-name{
-  animation:sigEncre .8s var(--ease-out) .15s both}
+/* Le tracé. 104 × 55 px : la hauteur des trois lignes réunies, donc le bloc ne
+   grandit pas. stroke-width 3.2 dans un viewBox de 175 de large rendu à
+   104 px = 1,9 px à l'écran — l'épaisseur d'un stylo fin. */
+.site-footer .footer__bottom .footer__credit .sig-trace{
+  display:block;width:104px;height:55px;overflow:visible;
+  fill:none;stroke:var(--txt);stroke-width:3.2;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke .35s var(--ease)}
 
-/* 8 — LE SURVOL, au pointeur fin seulement : le filet passe au rouge plein, et
-   rien d'autre. HORS de cette media query, on neutralise le halo orange hérité
-   de la l. 1814, qui se déclencherait aussi au survol rémanent d'un écran
-   tactile — un appui laisse le :hover collé. */
-.site-footer .footer__bottom .footer__credit .footer__signature:hover .sig-name{
-  filter:none;letter-spacing:.02em}
+/* L'ÉCRITURE. pathLength="1" normalise chaque trait à une longueur de 1 : le
+   pointillé se règle alors en fractions, sans jamais mesurer la courbe.
+   SEPT TRAITS SÉPARÉS, et ce n'est pas un détail de confort : en SVG, le motif
+   de pointillé REPART À ZÉRO à chaque sous-tracé d'un même <path>. Avec un
+   seul path, les sept traits se dessinaient donc TOUS EN MÊME TEMPS — ça ne
+   s'écrivait pas, ça poussait. Mesuré au banc à 30 % : sept fragments épars.
+   Séparés et retardés l'un après l'autre, on retrouve un geste, et les blancs
+   entre les traits sont les levers de stylo.
+   Au repos le tracé est ENTIER : sans JavaScript, .in n'arrive jamais, et une
+   signature invisible serait pire que pas de signature. C'est l'animation qui
+   part de rien pour y revenir. */
+/* « 1 2 » et non « 1 » : une valeur seule signifie tiret 1 / espace 1, donc le
+   motif SE REPETE et un second tiret retombe sur la fin du trace — sept points
+   restaient allumes en attendant leur tour. Avec un espace de 2, aucun tiret ne
+   revient sur la longueur utile. */
+.site-footer .footer__bottom .footer__credit .sig-trace path{
+  stroke-dasharray:1 2;stroke-dashoffset:0}
+/* 1.02 et non 1 : a exactement 1, le trait visible a une longueur NULLE, et
+   stroke-linecap:round la peint quand meme — un point. Sept points
+   attendaient donc leur tour a l'ecran pendant 1,47 s. Les 2 % de rabiot
+   poussent le motif au-dela du debut du trace : plus rien ne se peint. */
+@keyframes sigEcrit{from{stroke-dashoffset:1.02}to{stroke-dashoffset:0}}
+.site-footer .footer__bottom .footer__credit.in .sig-trace path{
+  animation:sigEcrit var(--t) cubic-bezier(.55,.06,.4,.98) var(--d) both}
+/* Le rythme de la main : durée proportionnelle à la longueur du trait, et un
+   blanc de 40 à 60 ms entre chacun. La barre du A et les deux traits du x sont
+   brefs ; le paraphe, long, ferme la signature. Total 1,74 s. */
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(1){--d:.20s;--t:.30s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(2){--d:.54s;--t:.11s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(3){--d:.69s;--t:.22s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(4){--d:.95s;--t:.22s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(5){--d:1.21s;--t:.10s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(6){--d:1.33s;--t:.10s}
+.site-footer .footer__bottom .footer__credit .sig-trace path:nth-child(7){--d:1.47s;--t:.27s}
+
+/* Au survol, le tracé prend le rouge du cœur : la signature et le cœur
+   partagent la même encre. Rien d'autre ne bouge. */
 @media (hover:hover) and (pointer:fine){
-  .site-footer .footer__bottom .footer__credit .footer__signature .sig-name:hover::after{
-    background:var(--rouge-coeur)}
+  .site-footer .footer__bottom .footer__credit .sig-name:hover .sig-trace{stroke:var(--rouge-coeur)}
 }
-
-/* 9 — MOUVEMENT RÉDUIT. script.js pose .in immédiatement dans ce cas (il ne
-   crée pas d'observateur) : le mot doit donc être blanc tout de suite, sans
-   animation. Le filet et la couleur restent — ce sont des états, pas du
-   mouvement. */
 @media (prefers-reduced-motion:reduce){
-  .site-footer .footer__bottom .footer__credit.in .footer__signature .sig-name{
-    animation:none;background-position:0 0}
-  .site-footer .footer__bottom .footer__credit .sig-heart{transition:none}
-}
-
-/* 10 — SOUS 560 px. La ligne de technique ferait ~247 px pour 284 px
-   disponibles à 320 px : elle se replierait n'importe où et #MBC974 resterait
-   orphelin. On décide donc la coupure au lieu de la subir. width:100% n'est
-   pas redondant avec display:block : dans cette chaîne, un <span> passé en
-   block garde une largeur fit-content et se retrouve CENTRÉ dans sa ligne.
-   Le corps de la signature ne bouge pas d'un dixième : 15,2 px partout. */
-@media (max-width:560px){
-  .site-footer .footer__bottom .footer__credit .footer__cartel{padding-left:var(--sp-70)}
-  .site-footer .footer__bottom .footer__credit .footer__credit-k{
-    font-size:var(--text-2xs);letter-spacing:.14em}
-  .site-footer .footer__bottom .footer__credit .footer__credit-k i{display:none}
-  .site-footer .footer__bottom .footer__credit .footer__hand{
-    display:block;width:100%;margin-top:.2em;letter-spacing:.14em}
+  .site-footer .footer__bottom .footer__credit.in .sig-trace path{animation:none;stroke-dashoffset:0}
 }

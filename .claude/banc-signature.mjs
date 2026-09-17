@@ -190,12 +190,22 @@ const AIDE = (css, html) => '(() => {\n' +
   // des captures, pour qu elles soient reproductibles.
   '  etape(p) {\n' +
   '    const vus = [];\n' +
+  // Une horloge COMMUNE : sans elle, p=0,75 veut dire « 75 % de SA propre
+  // duree » pour chaque animation, donc un trait retarde parait en avance et
+  // la vignette ment sur le geste. On prend la fin la plus tardive du bloc.
+  '    let fin = 0;\n' +
+  '    document.getAnimations().forEach(a => {\n' +
+  '      const t = a.effect && a.effect.target;\n' +
+  '      if (!t || !t.closest || !t.closest(".footer__credit")) return;\n' +
+  '      const e = a.effect.getComputedTiming().endTime;\n' +
+  '      if (isFinite(e) && e > fin) fin = e;\n' +
+  '    });\n' +
   '    document.getAnimations().forEach(a => {\n' +
   '      const t = a.effect && a.effect.target;\n' +
   '      if (!t || !t.closest || !t.closest(".footer__credit")) return;\n' +
   '      const ct = a.effect.getComputedTiming();\n' +
   '      if (!isFinite(ct.endTime)) return;\n' +
-  '      try { a.pause(); a.currentTime = p * ct.endTime; } catch (e) { return; }\n' +
+  '      try { a.pause(); a.currentTime = Math.min(p * fin, ct.endTime); } catch (e) { return; }\n' +
   '      vus.push([a.animationName || "?", Math.round(ct.endTime)]);\n' +
   '    });\n' +
   '    return vus;\n' +
