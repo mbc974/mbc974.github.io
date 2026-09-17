@@ -6381,17 +6381,6 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .sponsor-card__role{margin-top:-.3rem;font-family:var(--ff-cond);font-weight:700;
   text-transform:uppercase;letter-spacing:.14em;font-size:var(--text-2xs);color:var(--orange-vif);
   text-align:center;text-wrap:balance}
-.footer__credit{width:100%;display:grid;justify-items:center;gap:.5rem;
-  margin-top:var(--sp-70);padding-top:var(--sp-120);border-top:1px solid var(--hair);text-align:center}
-.footer__credit .footer__credit-k{font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.24em;font-size:var(--text-xs);color:var(--txt-soft)}
-.footer__credit .footer__signature{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;
-  gap:.2em .35em;width:auto;opacity:1;font-family:var(--ff-cond);font-weight:700;letter-spacing:.04em;
-  font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.15;color:var(--txt)}
-.footer__credit .sig-name{font-size:1.2em}
-.footer__credit .footer__hand{display:inline-flex;align-items:center;margin-left:.25em;padding:.28em .75em;
-  border:1px solid rgb(var(--orange-vif-rgb) / .45);border-radius:var(--r-pill);
-  background:rgb(var(--orange-vif-rgb) / .08);color:var(--bleu-glacier);font-size:.6em;letter-spacing:.14em}
 .btn{text-align:center;text-wrap:balance}
 .ar__liens,.seo-links,.age__a,.mp__a,
 .mc .mc-next__a,.ms-format .ms-liens{justify-content:center}
@@ -6452,3 +6441,56 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .cal-fin__lien,.cal-fin__fl{transition:none}
   .cal-fin__lien:hover,.cal-fin__lien:hover .cal-fin__fl{transform:none}}
 .cal-fin + .ml__retour{text-align:center}
+.site-footer .footer__credit{
+  position:relative;width:100%;display:grid;justify-items:stretch;gap:var(--sp-50);
+  margin-top:var(--sp-140);padding-top:var(--sp-110);border-top:0;text-align:center}
+.site-footer .footer__credit::before{
+  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:min(100%,22rem);height:1px;
+  background:linear-gradient(90deg,transparent,var(--line) 22%,var(--line) 78%,transparent)}
+.site-footer .footer__credit .footer__credit-k{
+  margin:0;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.24em;text-indent:.24em;
+  font-size:var(--text-xs);line-height:1.3;color:var(--txt-soft)}
+.site-footer .footer__credit .footer__signature{
+  display:block;justify-self:stretch;width:auto;max-width:100%;margin:0;opacity:1;
+  font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
+  line-height:1.5;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
+.site-footer .footer__credit .sig-by{color:inherit;white-space:nowrap}
+.site-footer .footer__credit .footer__signature .sig-name{
+  font-family:var(--ff-body);font-weight:600;font-size:1.1em;letter-spacing:.02em;
+  color:var(--txt);
+  -webkit-text-fill-color:currentColor;
+  -webkit-background-clip:border-box;background-clip:border-box;
+  background-image:linear-gradient(var(--orange-vif),var(--orange-vif)),
+                   linear-gradient(rgb(var(--orange-vif-rgb) / .34),rgb(var(--orange-vif-rgb) / .34));
+  background-repeat:no-repeat;
+  background-position:50% 100%,50% 100%;
+  background-size:0 1px,100% 1px;
+  transition:background-size .5s var(--ease-out)}
+.site-footer .footer__credit .footer__signature:hover .sig-name{filter:none;letter-spacing:.02em}
+.site-footer .footer__credit .sig-heart{
+  display:inline-block;width:.78em;height:.71em;margin-inline:.12em .06em;
+  vertical-align:-.04em;fill:rgb(var(--orange-vif-rgb) / .85);
+  transform-origin:50% 60%;
+  transition:fill .3s var(--ease),transform .4s var(--ease-out)}
+.site-footer .footer__credit .footer__hand{
+  display:inline;margin:0 -.16em 0 0;padding:0;border:0;border-radius:0;background:none;
+  font-family:var(--ff-cond);font-weight:700;font-size:.82em;
+  letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
+  color:rgb(var(--bleu-glacier-rgb) / .8)}
+@media (hover:hover) and (pointer:fine){
+  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-name{
+    background-size:100% 1px,100% 1px}
+  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-heart{
+    fill:var(--orange-vif);transform:scale(1.12)}
+}
+@media (prefers-reduced-motion:reduce){
+  .site-footer .footer__credit .sig-name,
+  .site-footer .footer__credit .sig-heart{transition:none}
+  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-heart{transform:none}
+}
+@media (max-width:400px){
+  .site-footer .footer__credit .footer__credit-k{
+    font-size:var(--text-2xs);letter-spacing:.18em;text-indent:.18em}
+}

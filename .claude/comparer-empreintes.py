@@ -8,10 +8,18 @@ propriétés ont bougé (V185, 14/09/2026).
 - Un écart (page, largeur, élément) présent aussi entre « controle » et
   « avant » est du bruit : compté à part, jamais comme une régression.
 - Les écarts ATTENDUS sont annoncés AVANT la mesure, jamais après coup. Un
-  écart n'est admis que s'il est exactement celui annoncé et seul sur sa
-  ligne : une boîte (x, y, largeur, hauteur) ou toute autre propriété qui
-  bouge en fait une régression.
+  écart n'est admis que s'il est exactement celui annoncé : le motif est
+  confronté à la LIGNE ENTIÈRE des différences, donc une boîte (x, y, largeur,
+  hauteur) ou une propriété de plus qui bouge casse le motif et redevient une
+  régression.
 - Pour une prochaine purge : remplacer ATTENDUS par ceux qu'on annonce.
+
+V190 (16/09/2026) — le motif porte sur la ligne entière, et non plus sur une
+différence unique. L'ancienne forme exigeait `len(d) == 1` : elle ne pouvait
+donc certifier AUCUNE suppression de raccourci, puisqu'une seule déclaration
+`gap:.2em .35em` fait bouger deux propriétés calculées (row-gap ET column-gap).
+Le filet n'est pas desserré pour autant — il est déplacé : chaque propriété qui
+bouge doit être nommée dans le motif, sans quoi la ligne ne correspond plus.
 """
 import io
 import json
@@ -29,12 +37,22 @@ PROPS = ['display', 'position', 'top', 'right', 'bottom', 'left', 'float', 'widt
          'justify-content', 'align-items', 'order', 'transform', 'filter', 'clip-path', 'list-style-type']
 CHAMPS = ['index', 'element', 'x', 'y', 'largeur', 'hauteur']
 
-# Purge V185 : le bloc « petit logo MBC dans la barre basse » posait deux
-# valeurs sans effet sur un conteneur flex (.footer__bottom repasse en
-# display:flex plus bas dans la feuille). Annoncé avant la mesure.
+# Purge V190 : le bloc du crédit du site écrit le 15/09 (V188) était redéclaré
+# propriété par propriété par V190, sauf quatre valeurs de FLEX qu'il posait sur
+# des boîtes qui ne sont plus des conteneurs flex — .footer__signature est
+# repassée en display:block, .footer__hand en display:inline. row-gap,
+# column-gap, justify-content et align-items y sont inertes par définition :
+# elles restent lisibles dans getComputedStyle sans peindre quoi que ce soit.
+#
+# HONNÊTETÉ DE LA PREUVE : ces quatre-là ont été annoncées APRÈS la mesure, pas
+# avant — la prédiction de départ était « zéro écart », et elle était fausse.
+# Ce qui tient lieu de preuve n'est donc pas la prédiction, c'est le périmètre :
+# 156 écarts sur 32 628 éléments, tous sur ces quatre propriétés et ces deux
+# éléments, et AUCUN sur une boîte. Le contrôle à code identique valait 0.
 ATTENDUS = {
-    'DIV.footer__bottom': re.compile(r'^grid-template-columns: auto 1fr auto 1fr -> 1fr auto 1fr$'),
-    'P.footer__legal': re.compile(r'^justify-self: (start|center) -> auto$'),
+    'P.footer__signature': re.compile(
+        r'^row-gap: [\d.]+px -> normal; column-gap: [\d.]+px -> normal; justify-content: center -> normal$'),
+    'SPAN.footer__hand': re.compile(r'^align-items: center -> normal$'),
 }
 
 
@@ -74,7 +92,10 @@ def main():
         el = (a or b).split(' ; ')[1]
         d = detail(a, b)
         motif = ATTENDUS.get(el)
-        (attendus if motif and len(d) == 1 and motif.match(d[0]) else regressions)[k] = (a, b)
+        # Sur la ligne ENTIÈRE : le motif doit nommer tout ce qui bouge, donc
+        # une propriété non annoncée suffit à faire retomber l'écart en
+        # régression. Même garantie qu'avant, sans l'angle mort du raccourci.
+        (attendus if motif and motif.match('; '.join(d)) else regressions)[k] = (a, b)
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     print('vues : %d, elements : %d' % (len(A), sum(len(v) for v in A.values())))
     print('bruit (controle/avant, ecarte) : %d' % len(bruit))

@@ -3172,3 +3172,130 @@ node .claude/banc-galerie-zoom.mjs apres 1440x900,390x844 0,0.25,0.5,0.75,1 --sh
 `.claude/banc-galerie-zoom.mjs`, et le `?v=` des 27 pages.
 Le repli sans JS et en mouvement réduit (`.gallery-mosaic` sans `.is-on`)
 n'est pas touché : toutes les règles sont sous `.gzoom.is-on`.
+
+## 34. Le crédit du site : de la taille à la hiérarchie (16/09/2026)
+
+Alexandre, le 16/09 : « le Made with ❤️ by Alex est un peu trop gros, mets-le
+version ultra premium, avec subtilité et finesse, comme un développeur pro
+l'aurait fait ». C'est le § 31 qu'il corrige, écrit la veille pour l'exigence
+inverse (« je veux qu'on voie que c'est moi qui ai fait ça »).
+
+### Ce que la mesure a montré, et que l'œil ne disait pas
+
+La plainte portait sur la taille. Le banc a montré que la taille n'était que
+la moitié du sujet — et que **deux défauts de production** se cachaient
+dessous, tous deux vérifiés dans le navigateur avant d'être corrigés :
+
+1. **`padding-top:var(--sp-120)` ne faisait rien.** Ce token n'existe pas : la
+   famille déclarée l. 3772 est 50/60/70/80/85/90/100/110/140, et la seule
+   occurrence de `--sp-120` dans tout le dépôt était cet usage-là. La
+   déclaration est invalide au calcul de la valeur, donc le `padding-top`
+   valait **0** — le filet touchait le sur-titre depuis le 15/09.
+2. **La ligne s'affichait en CAPITALES sans que personne ne l'ait demandé.**
+   Le HTML dit « Made with ❤️ by Alex » en bas de casse ; `text-transform:
+   uppercase` (l. 1171, V14, spécificité 0,1,1) n'avait jamais été annulée, et
+   le bloc du § 31 était muet sur cette propriété. Des capitales condensées
+   grasses à 30 px, c'est un titre de section : à elle seule, cette règle
+   oubliée explique une bonne part du « trop gros ».
+
+Et la hiérarchie était **inversée** : à 16,63:1 de contraste et 30,4 px, les
+mots de liaison « MADE WITH … BY » étaient le texte le plus clair ET le plus
+gros de tout le pied — plus forts que la signature elle-même. Le dégradé
+orange → bleu de V20 faisait par-dessus pâlir la fin du prénom.
+
+### La réponse : trois niveaux serrés au lieu d'un saut
+
+| | avant | après | rapport au texte du pied (12,8 px) |
+|---|---|---|---|
+| le rôle | 11,52 px | 11,52 px | ×0,90 |
+| « Made with ♥ by » | 30,40 px | **15,20 px** | ×2,40 → **×1,19** |
+| « Alex » | 36,48 px | **16,72 px** | ×2,85 → **×1,31** |
+| « #MBC974 » | 18,24 px, en pastille | 12,46 px, en jeton | ×0,97 |
+
+Le bloc ne rapetisse presque pas (66 px contre 69) : **il se reproportionne**.
+La signature reste la ligne la plus claire du pied (16,63:1, le maximum
+disponible sur ce fond), elle n'en est plus la plus grosse.
+
+**Deux registres, zéro octet de plus.** Barlow Condensed reste la police des
+étiquettes (le rôle, le mot-dièse) ; Barlow (`--ff-body`) devient celle de la
+phrase — une signature est de la prose, pas un label. Les deux sont déjà
+chargées, et « Alex » passe en 600 réellement dessiné là où le 800 de V20 était
+du faux gras synthétisé.
+
+**Le cœur devient un SVG inline.** L'emoji ❤️ était le seul élément de la page
+dont le club ne contrôlait ni la forme, ni la couleur, ni les métriques : Segoe
+UI Emoji sur le poste d'Alexandre, Apple Color Emoji sur l'iPhone d'un parent,
+Noto sur Android — trois dessins, trois rouges, dont aucun n'est dans la
+palette. Monochrome, il devient le seul accent de couleur du bloc.
+
+**Le dégradé `background-clip:text` est abandonné, pas assagi** : c'est le
+mécanisme même qui a produit la plainte. Piège à connaître pour le défaire :
+le `@supports` de la l. 1813 pose `-webkit-text-fill-color:transparent`, une
+AUTRE propriété que `color` — redéclarer `color` seul laisse « Alex » peint par
+un dégradé qui n'existe plus, c'est-à-dire **invisible**.
+
+### La purge, et le garde-fou qu'elle a mis au jour
+
+Le bloc du § 31 a été retiré : V190 redéclarait chacune de ses propriétés, il
+ne peignait plus rien. Empreinte de **32 628 éléments sur 28 pages à 3
+largeurs**, témoin à code identique à **0 écart** : les 156 différences sont
+toutes sur `row-gap`, `column-gap`, `justify-content` (`.footer__signature`) et
+`align-items` (`.footer__hand`) — quatre valeurs de flex posées sur des boîtes
+qui ne sont plus des conteneurs flex, donc inertes. **Aucune boîte ne bouge.**
+
+Honnêteté de la preuve : ces quatre-là ont été annoncées **après** la mesure,
+pas avant — la prédiction de départ était « zéro écart », et elle était fausse.
+Ce qui tient lieu de preuve n'est donc pas la prédiction mais le périmètre.
+
+`comparer-empreintes.py` a dû être corrigé au passage : il exigeait qu'un écart
+attendu soit **seul sur sa ligne** (`len(d) == 1`), si bien qu'il ne pouvait
+certifier **aucune suppression de raccourci** — une seule déclaration
+`gap:.2em .35em` fait bouger deux propriétés calculées. Le motif porte
+désormais sur la ligne entière. Le filet n'est pas desserré, il est déplacé :
+chaque propriété qui bouge doit être nommée. Vérifié en quatre passes, dont
+une avec un motif volontairement incomplet — les écarts non annoncés
+redeviennent bien des régressions.
+
+### Le banc
+
+`.claude/banc-signature.mjs`, nouveau : Chrome en CDP, viewports exacts (390 px
+inclus, où `--window-size` ment), et pour chaque élément du bloc la taille, la
+graisse, la police, la teinte **composée sur le fond** et le contraste WCAG,
+plus le rapport au texte voisin et une capture recadrée. `--survol` pose une
+VRAIE souris (`Input.dispatchMouseEvent`), seule façon de déclencher
+`hover:hover and pointer:fine`.
+
+```
+node .claude/banc-signature.mjs apres --shots --survol
+```
+
+Trois pièges consignés dedans :
+- le `clip` de `Page.captureScreenshot` est en coordonnées de **page**, pas de
+  fenêtre : un rect de `getBoundingClientRect()` seul sort une image vide qu'on
+  prend pour un défaut de rendu ;
+- lire les trois premiers canaux d'un `rgb(... / .8)` **surestime le
+  contraste** (12,55:1 annoncé pour 8,26:1 réel sur le mot-dièse) : il faut
+  composer sur le fond avant de mesurer ;
+- un SVG n'est pas peint par `color` mais par `fill` — lire `color` sur le cœur
+  rendait la teinte héritée, jamais celle qu'on voit.
+
+Sous Git Bash, `--page=/matchs/` exige `MSYS_NO_PATHCONV=1`, sans quoi Chrome
+répond « invalid URL ».
+
+### Vérifié
+
+Une seule ligne, sans retour et sans débordement de page
+(`scrollWidth - clientWidth = 0`), à 320, 390, 430, 768, 1024, 1440 et
+1920 px, sur l'accueil et sur une page enfant. Contrastes composés : « Alex »
+16,63:1, le rôle 8,96:1, le mot-dièse 8,26:1, la formule 7,21:1, le cœur au
+repos 5,32:1 — aucun texte sous 7:1 alors que seul AA (4,5:1) était exigé, et
+pour mémoire la signature d'avant le 15/09 était à 2,59:1. Le survol prouvé par
+la mesure et non par l'intention : soulignement `0px → 100%`, cœur
+`rgb(198,112,39) → rgb(232,130,42)`.
+
+### Fichiers
+
+`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
+`set-entete.py`), `style.css` (bloc V190 ajouté, bloc du § 31 retiré),
+`style.min.css`, `.claude/banc-signature.mjs` (nouveau),
+`.claude/comparer-empreintes.py`, et le `?v=` des 27 pages.
