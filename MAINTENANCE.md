@@ -3296,6 +3296,70 @@ la mesure et non par l'intention : soulignement `0px → 100%`, cœur
 ### Fichiers
 
 `index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
-`set-entete.py`), `style.css` (bloc V190 ajouté, bloc du § 31 retiré),
-`style.min.css`, `.claude/banc-signature.mjs` (nouveau),
-`.claude/comparer-empreintes.py`, et le `?v=` des 27 pages.
+`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
+17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
+27 pages.
+
+Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
+composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
+pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
+calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
+candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
+que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
+entière).
+### 17/09 — « j'aime pas, trouve une meilleure mise en forme »
+
+Le lendemain de la mise en ligne, Alexandre rejette la version ci-dessus. Le
+retour ne porte plus sur la taille (réglée) mais sur la **forme** : deux lignes
+centrées sous un filet court, c'est le crédit de pied de page par défaut. Il
+demande une mise en page, pas un réglage.
+
+Quatre partis pris ont été rendus et capturés dans la vraie page avant de
+choisir — le cartel de musée, la plaque du fondeur, le commentaire de source et
+le poinçon. **Alexandre a choisi le poinçon sur planche comparée.** La plaque a
+été écartée d'office : quatre rivets et cinq couches de fond ne lassent pas, ils
+**datent** — et sur 26 pages pendant des années, c'est ce qui vieillit un site.
+
+**Ce qui fait la composition.** Un monogramme « A » au trait, dont la pointe
+crève le cadre qui l'enferme, puis un filet vertical, puis deux lignes en
+drapeau. Le renversement qui porte tout : **le nom passe AU-DESSUS du rôle**.
+Dans la version précédente, « Conception & développement » venait en premier,
+donc le pavé se lisait comme la légende de ce qui le précède ; dans l'ordre
+inverse, c'est une signature. Aucun corps n'a bougé (15,2 / 16,7 / 11,5 px, les
+valeurs du 16/09 au centième) et **le bloc maigrit de 66 à 41 px** : l'originalité
+vient de la composition, pas de l'échelle. C'était la contrainte du brief, et
+c'est ce qui empêche de retomber sur l'erreur du 15/09.
+
+### Le défaut que la planche ne pouvait pas montrer
+
+Une fois posée pour de vrai, la composition était **désalignée** : « Made with ♥
+by Alex » commençait à x=302 quand la ligne du dessous commençait à x=214. Un
+drapeau dont les lignes ne partent pas du même bord n'est pas un drapeau.
+
+Cause : `.footer__signature{justify-self:center}` (l. 1171) n'est jamais
+annulée. La boîte gardait une largeur « fit-content » (139 px contre 315 pour la
+ligne du dessous) et se centrait sur elle. C'est **le même défaut** que celui
+que la proposition corrigeait elle-même sur `#MBC974` sous 560 px — corrigé à un
+endroit, manqué à l'autre, où il frappait à toutes les largeurs.
+
+**Pourquoi la planche ne l'avait pas vu, et c'est la leçon** : les candidats y
+sont injectés PAR-DESSUS la feuille complète, donc l'ancien bloc V190 était
+encore là et posait `justify-self:stretch`, qui masquait le défaut. Une
+composition ne se valide pour de bon qu'une fois l'ancienne **retirée**. Le banc
+sort désormais le bord gauche et le calage (`display | width | justify-self |
+text-align | margin-left`) de chaque élément, pour que ce cas se voie au
+chiffre.
+
+Vérifié après correction à 320, 390, 768, 1024, 1440 et 1920 px : les deux
+lignes partent du même x aux six largeurs, zéro débordement de page, bloc de 41 px
+(55 px au téléphone, où `#MBC974` prend sa propre ligne). Contrastes inchangés :
+« Alex » 16,63:1, le rôle 8,96:1, le mot-dièse 8,26:1, la formule 7,21:1.
+
+**Limite assumée** : contrairement à la purge du 16/09, aucune empreinte
+avant/après n'est produite ici. `comparer-empreintes.py` prouve qu'on n'a RIEN
+changé ; une refonte assumée de la composition change tout dans le bloc, et
+exigerait un motif attendu par élément. Ce qui tient lieu de contrôle est le
+périmètre des sélecteurs (tous préfixés `.site-footer .footer__bottom
+.footer__credit`, donc clos sur le bloc), les gardes-fous classes/JSON-LD au
+vert, et le texte voisin du pied mesuré inchangé à 12,8 px.
+

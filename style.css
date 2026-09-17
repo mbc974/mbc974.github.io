@@ -12429,201 +12429,298 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .cal-fin + .ml__retour{text-align:center}
 
 /* ============================================================================
-   V190 — LE CRÉDIT DU SITE : L'OURS (16/09/2026)
+   V190 · LE POINÇON — le crédit du site cesse d'être un crédit de pied de page
    ----------------------------------------------------------------------------
-   Alexandre, le 16/09 : « le Made with ❤️ by Alex est un peu trop gros, mets-le
-   version ultra premium, avec subtilité et finesse, comme un développeur pro
-   l'aurait fait ». V188 avait répondu à « je veux qu'on voie que c'est moi » par
-   la TAILLE : 30,4 px mesurés, 2,4 fois le texte courant du pied, la ligne la
-   plus grosse du bas de page, plus grosse que les titres de colonnes. On répond
-   ici par la HIÉRARCHIE. Et on ne revient pas aux 12 px effacés d'avant le
-   15/09 : ce n'était pas la taille seule qui l'avait fait échouer, c'était
-   2,59:1 de contraste, une position en bout de ligne et aucun rôle dit.
+   TROIS ZONES EN LIGNE : [poinçon] [filet vertical] [deux lignes].
+   Le filet est le geste visible. Tous les crédits du web posent un filet
+   HORIZONTAL au-dessus ; celui-ci en pose un VERTICAL à côté. Le premier
+   sépare, le second relie : il tient ensemble un signe et deux lignes de corps
+   et de couleur différents, et c'est lui qui fait lire l'ensemble comme un
+   cartel — un objet — et non comme une bande.
 
-   Trois niveaux serrés, à intervalles réels — une quarte puis une seconde :
-     11,52 px  le rôle                         (×0,90 du texte du pied)
-     15,20 px  « Made with ♥ by »              (×1,19)
-     16,72 px  « Alex »                        (×1,31)
-   Le bloc ne rapetisse presque pas (65,6 px de haut contre 69) : il se
-   REPROPORTIONNE. La signature reste la ligne la plus claire de tout le pied
-   (16,63:1, le maximum disponible sur ce fond), elle n'en est plus la plus
-   grosse.
+   LA HIÉRARCHIE EST INVERSÉE. Le nom passe au-dessus du rôle. Dans la version
+   en ligne, « Conception & développement du site » vient en premier : le bloc
+   se lit alors comme la LÉGENDE de ce qui le précède. Cartel de musée : auteur
+   en haut, technique dessous. C'est ce qui transforme une légende en signature.
 
-   DEUX REGISTRES, ZÉRO OCTET DE PLUS. Barlow Condensed reste la police des
-   ÉTIQUETTES (le rôle, le mot-dièse), Barlow (--ff-body) devient celle de la
-   PHRASE : une signature est de la prose, pas un label. Barlow est déjà chargée
-   en 400/600/700 (@font-face l. 29-34), donc « Alex » passe en 600 RÉELLEMENT
-   dessiné — le font-weight:800 de V20 était du faux gras synthétisé, Barlow
-   Condensed ne portant que 600 et 700.
+   AUCUN CORPS NE CHANGE : 15,2 px la signature, 16,72 px « Alex », 11,52 px la
+   technique — les valeurs du 16/09 au centième. Et le bloc RAPETISSE (40,5 px
+   de contenu, 63 px marge comprise, contre 66 px en ligne).
 
-   DEUX DÉFAUTS DE PRODUCTION CORRIGÉS AU PASSAGE, tous deux vérifiés :
-   a) V188 posait `padding-top:var(--sp-120)`. CE TOKEN N'EXISTE PAS : la
-      famille définie l. 3772 est 50/60/70/80/85/90/100/110/140, et sa seule
-      occurrence du fichier est cet usage-là. La déclaration est invalide au
-      calcul de la valeur, donc le padding vaut 0 : le filet touche le
-      sur-titre depuis le 15/09. Ici --sp-110, qui existe.
-   b) `.footer__signature{text-transform:uppercase}` (l. 1171, 0,1,0) n'a jamais
-      été annulée : V188 (0,2,0) est silencieux sur cette propriété. La ligne
-      s'affiche donc « MADE WITH ❤️ BY ALEX » — des capitales condensées grasses
-      à 30 px, c'est-à-dire un titre de section. Le seul retour en bas de casse
-      fait la moitié du chemin.
-
-   SPÉCIFICITÉS. Tout est préfixé de .site-footer pour gagner par la
-   spécificité et non par l'ordre : le bloc reste juste même si V188 est laissé
-   en place, et même si quelqu'un le remonte dans le fichier. À connaître :
-   dans `.footer__signature:hover .sig-name` (V20, l. 1814), le :hover compte
-   dans la colonne des classes — cette règle vaut 0,3,0, pas 0,2,0.
+   SPÉCIFICITÉ. Tout est préfixé de `.site-footer .footer__bottom ` : les 26
+   pages portent .footer__credit DANS .footer__bottom (vérifié), ce qui donne
+   une classe de plus que la version en ligne sur CHAQUE sélecteur. Le bloc
+   gagne par la spécificité et non par l'ordre : il peut être injecté seul,
+   par-dessus la feuille, sans rien purger.
    ============================================================================ */
 
-/* Le filet pleine largeur disait « ligne de tableau ». Un filet court qui
-   s'éteint à ses deux bouts dit « colophon » — et c'est ce qui transforme deux
-   lignes centrées en un bloc signé. Il est en ::before ABSOLU : en flux, il
-   deviendrait un item de la grille et s'intercalerait entre le rôle et la
-   signature. La séparation d'avec les liens est portée par l'espace (22,4 px de
-   marge + les 11,2 px de gap de .footer__bottom), pas par un trait. */
-.site-footer .footer__credit{
-  position:relative;width:100%;display:grid;justify-items:stretch;gap:var(--sp-50);
-  margin-top:var(--sp-140);padding-top:var(--sp-110);border-top:0;text-align:center}
-.site-footer .footer__credit::before{
-  content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:min(100%,22rem);height:1px;
-  background:linear-gradient(90deg,transparent,var(--line) 22%,var(--line) 78%,transparent)}
+/* 0 — LE FILET HORIZONTAL DE LA VERSION EN LIGNE S'ÉTEINT. content:none ne
+   génère pas le pseudo-élément du tout (à la différence de content:"" +
+   width:0, qui laisse une boîte). 0,3,1 contre 0,2,1. */
+.site-footer .footer__bottom .footer__credit::before{content:none}
 
-/* 1 — LE RÔLE. Registre étiquette, et il reste le plus petit : c'est la légende,
-   pas le titre. text-indent compense la chasse ajoutée APRÈS la dernière lettre,
-   qui compte dans la largeur de la boîte sans porter aucun dessin et décale donc
-   optiquement vers la gauche toute ligne centrée et trackée. Mesuré : sans lui
-   le sur-titre penche de 1,4 px, avec lui il tombe à 0,02 px du centre. */
-.site-footer .footer__credit .footer__credit-k{
-  margin:0;font-family:var(--ff-cond);font-weight:700;
-  text-transform:uppercase;letter-spacing:.24em;text-indent:.24em;
+/* 1 — LA LIGNE D'ACCUEIL. width:100% est ce qui met le crédit sur sa propre
+   ligne du .footer__bottom (flex wrap, l. 4321) : à retirer et il remonterait
+   à côté des liens. display:flex remplace la grille en ligne (0,3,0 contre
+   0,2,0), justify-content pose la plaque À FLEUR DE MARGE GAUCHE — l'axe où
+   commencent le © et toutes les autres lignes du pied. text-align:left est
+   obligatoire : sous 700 px, .footer__bottom{text-align:center} (l. 1179)
+   descend par héritage. font-size:var(--text-base) fixe l'em de TOUTE la
+   plaque à 15,2 px : les calages en em plus bas en dépendent.
+   padding:0 et border-top:0 défont le filet de la version en ligne jusqu'à sa
+   réserve ; gap:0 défait son `gap:var(--sp-50)`. */
+.site-footer .footer__bottom .footer__credit{
+  width:100%;max-width:100%;display:flex;justify-content:flex-start;gap:0;
+  margin-top:var(--sp-140);padding:0;border-top:0;
+  font-size:var(--text-base);text-align:left}
+
+/* 2 — LA PLAQUE. Elle existe pour deux raisons précises : c'est elle qui a la
+   largeur du CONTENU (le .footer__credit, lui, fait toute la ligne), donc c'est
+   elle la zone de survol — sans elle, passer la souris à 900 px à droite du
+   texte allumerait la signature. Et c'est elle qui se centre d'un bloc au
+   téléphone sans que ses lignes cessent d'être ferrées à gauche.
+   align-items:flex-start : le poinçon n'est pas recentré sur la hauteur du
+   texte, il est calé sur ses lignes (voir 3 et 5).
+   min-width:0 autorise le texte à se replier au lieu de pousser la plaque hors
+   de l'écran. */
+.site-footer .footer__bottom .footer__credit .footer__plaque{
+  display:flex;align-items:flex-start;gap:var(--sp-90);
+  max-width:100%;min-width:0}
+
+/* 3 — LE POINÇON. viewBox 27×37 rendu en 27×37 px : échelle 1, donc le filet
+   de 1 px tombe sur la grille de pixels en dpr 1 (toutes les coordonnées du
+   cadre sont en demi-unité — .5 / 26.5 / 5.5 / 35.5 — ce qui centre un trait
+   de 1 px PILE sur un pixel). En rem et non en px : si l'utilisateur grossit
+   la police du navigateur, le signe suit le texte.
+   flex:none — sans lui, un flex item SVG se laisse écraser au pixel près dès
+   que la ligne est serrée.
+   margin-top:-.04em (-0,61 px) : la boîte SVG commence 5,5 px au-dessus du
+   cadre pour loger la pointe de la lettre ; cette correction fait tomber
+   l'arête haute du cadre sur la hauteur de capitale de « Made with », et
+   l'arête basse sur la ligne de base de la ligne du dessous. Le signe MESURE
+   le texte, il ne l'encadre pas. */
+.site-footer .footer__bottom .footer__credit .footer__poincon{
+  flex:none;width:1.6875rem;height:2.3125rem;margin-top:-.04em}
+
+/* Le cadre : rectangle arrondi (r=3) de 26 × 30 unités, filet de 1 px,
+   INTERROMPU sur 7 unités au centre haut. La proportion n'est ni un cercle
+   (ballon) ni un écu (l'écusson du club, qu'on ne copie pas) : c'est celle
+   d'un caractère de plomb, plus haut que large. Ce site est écrit à la main,
+   ligne à ligne ; sa marque est un poinçon de typographe. Filet à 34 % de bleu
+   glacier : le cadre est le contenant, il ne doit pas concurrencer la lettre. */
+.site-footer .footer__bottom .footer__credit .pnc-cadre{
+  fill:none;stroke:rgb(var(--bleu-glacier-rgb) / .34);stroke-width:1;
+  transition:stroke .45s var(--ease-out)}
+
+/* La lettre : deux jambes et une barre, au trait de 2,2 px — soit 2,2 fois le
+   cadre, pour que la hiérarchie signe/contenant soit lisible à 37 px.
+   LE POINT DE L'IDÉE : le sommet est à y=5,6 et le raccord en ONGLET prolonge
+   la pointe de ~3,6 px au-dessus, jusqu'à y≈2 — elle dépasse donc le filet du
+   cadre (y=5,5) et passe au milieu de l'ouverture de 7 px avec ~2,4 px d'air
+   de chaque côté. Une lettre qui crève son cadre, c'est une marque FRAPPÉE,
+   pas une icône d'application : c'est tout ce qui sépare ce dessin d'un logo
+   d'agence.
+   stroke-miterlimit:6 est une ceinture de sécurité : le ratio d'onglet vaut
+   ~3,3, la limite par défaut est 4 — la pointe est donc conservée partout,
+   mais au-delà de la limite un moteur la couperait à plat et l'idée tomberait. */
+.site-footer .footer__bottom .footer__credit .pnc-lettre{
+  fill:none;stroke:var(--txt);stroke-width:2.2;
+  stroke-linejoin:miter;stroke-miterlimit:6;stroke-linecap:butt}
+
+/* 4 — LE CARTEL ET SON FILET. Le filet n'est pas un séparateur pleine hauteur :
+   il court de la hauteur de capitale de la première ligne (top:.325em = 4,9 px)
+   à la LIGNE DE BASE de la dernière (bottom:.215em = 3,3 px). Il mesure le
+   texte, comme le poinçon. Et si la ligne de technique se replie au téléphone,
+   il s'allonge tout seul jusqu'à la nouvelle dernière ligne.
+   Dégradé plutôt qu'aplat : un filet court qui s'éteint à ses deux bouts se lit
+   gravé ; à pleine force il se lit « bordure de tableau ».
+   padding-left = le gap de la plaque : 14,4 px à gauche du filet, 14,4 px à sa
+   droite. Le filet est à mi-distance exacte du signe et du texte. */
+.site-footer .footer__bottom .footer__credit .footer__cartel{
+  position:relative;min-width:0;padding-left:var(--sp-90)}
+.site-footer .footer__bottom .footer__credit .footer__cartel::before{
+  content:"";position:absolute;left:0;top:.325em;bottom:.215em;width:1px;
+  background:linear-gradient(180deg,
+    rgb(var(--bleu-glacier-rgb) / .04),
+    rgb(var(--bleu-glacier-rgb) / .26) 24%,
+    rgb(var(--bleu-glacier-rgb) / .26) 76%,
+    rgb(var(--bleu-glacier-rgb) / .04))}
+
+/* 5 — LIGNE 1, LE NOM. display:block ET NON flex : en flux en ligne normal,
+   « Made with », le cœur et « Alex » (trois corps différents) partagent UNE
+   ligne de base ; en flex ils seraient recalés par align-items et flotteraient
+   chacun sur son axe médian. text-transform:none annule
+   .footer__signature{text-transform:uppercase} (l. 1171, 0,1,0), qui n'est
+   jamais annulée par défaut ; opacity:1 annule le .6 de la l. 4328, qui cumulé
+   à une couleur déjà passée avait donné 2,59:1 en production. 7,2:1 ici,
+   16,7:1 sur « Alex ».
+   .sig-by porte color:inherit parce que .footer__signature span (l. 1178,
+   0,1,1) colore TOUS les span descendants en orange : une règle à 0,1,0 ne la
+   bat pas — celle-ci vaut 0,4,0.
+   nowrap : le fragment anglais fait ~135 px, il tient à 320 px sans se couper. */
+/* width:100% et justify-self:stretch ne sont PAS redondants avec display:block :
+   c'est la correction d'un défaut mesuré au rendu, et c'est le même que celui
+   corrigé sur #MBC974 sous 560 px (§ 12) — il existait ici à TOUTES les
+   largeurs. `.footer__signature{justify-self:center}` (l. 1171) n'est jamais
+   annulée ; la boîte gardait une largeur « fit-content » (139 px mesurés contre
+   315 pour la ligne du dessous) et se retrouvait CENTRÉE sur elle : les deux
+   lignes du drapeau ne commençaient pas au même x, ce qui est précisément ce
+   qu'un drapeau ne doit pas faire. Mesuré avant/après : x=302 puis x=214, à
+   l'aplomb exact du rôle. Le banc n'avait rien vu tant que l'ancien bloc V190
+   était encore dans la feuille — il posait justify-self:stretch et masquait le
+   défaut. */
+.site-footer .footer__bottom .footer__credit .footer__signature{
+  display:block;width:100%;justify-self:stretch;max-width:100%;margin:0;padding:0;opacity:1;
+  font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
+  line-height:1.35;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
+.site-footer .footer__bottom .footer__credit .sig-by{
+  color:inherit;white-space:nowrap}
+
+/* 6 — LIGNE 2, LA TECHNIQUE, et le mot-dièse avec elle. Registre étiquette :
+   condensé, capitales, interlettré — la ligne du dessous d'un cartel. Elle
+   reste le plus petit corps du bloc. text-indent:0 défait la compensation de
+   chasse de la version en ligne, qui ne servait qu'à recentrer une ligne
+   centrée : ferrée à gauche, l'espace résiduel est APRÈS le dernier caractère,
+   il ne décale plus rien. margin-top .26em = 3 px : les deux lignes sont un
+   bloc, pas deux paragraphes. 9,0:1. */
+.site-footer .footer__bottom .footer__credit .footer__credit-k{
+  margin:.26em 0 0;padding:0;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.18em;text-indent:0;
   font-size:var(--text-xs);line-height:1.3;color:var(--txt-soft)}
 
-/* 2 — LA LIGNE. display:block ET NON flex, c'est le point qui décide du rendu :
-   en inline-flex, trois corps différents (15,2 / 16,7 / 12,5 px) sont recalés
-   par align-items:center et flottent chacun sur son propre axe médian ; en flux
-   en ligne normal ils partagent UNE ligne de base — la justesse d'un ours
-   imprimé. Bonus : le point médian maison (.footer__signature i, l. 3849, dont
-   le sélecteur visait déjà ce cas sans avoir jamais servi) retrouve le
-   vertical-align:middle pour lequel il a été écrit, et il est juste ici parce
-   que la ligne est en bas de casse. Aucune règle à lui ajouter.
-   justify-self:stretch est nécessaire : .footer__signature{justify-self:center}
-   (l. 1171) sinon dimensionne le <p> sur son contenu. */
-.site-footer .footer__credit .footer__signature{
-  display:block;justify-self:stretch;width:auto;max-width:100%;margin:0;opacity:1;
-  font-family:var(--ff-body);font-weight:400;font-size:var(--text-base);
-  line-height:1.5;letter-spacing:0;text-transform:none;color:var(--txt-passe)}
+/* Le point médian maison. Le sélecteur collectif de la l. 3849 vise
+   .footer__signature i — PAS .footer__credit-k i : sans cette règle, le <i>
+   serait un élément vide SANS AUCUN dessin et le séparateur disparaîtrait
+   silencieusement. Mêmes valeurs que la famille, chasse un peu resserrée
+   (.5em) parce que la ligne est déjà interlettrée à .18em. */
+.site-footer .footer__bottom .footer__credit .footer__credit-k i{
+  display:inline-block;width:3px;height:3px;border-radius:var(--r-round);
+  background:currentColor;opacity:.45;vertical-align:middle;
+  margin-inline:.5em;flex:none}
 
-/* Le fragment anglais, insécable : 155 px, il tient même à 320 px. Il porte
-   lang="en" — déplacé du <p>, qui contient maintenant du français et un
-   mot-dièse. color explicite : .footer__signature span (l. 1178) fait 0,1,1 et
-   colore TOUS les span descendants en orange si on ne le contredit pas. */
-.site-footer .footer__credit .sig-by{color:inherit;white-space:nowrap}
+/* #MBC974 : même corps et même chasse que la technique — il en est la
+   référence d'inventaire, pas un badge. Les six propriétés de la pastille de
+   V188 (bordure, fond, rayon, padding) sont remises à zéro NOMMÉMENT : en
+   oublier une et l'ancienne valeur revient. letter-spacing doit être déclaré
+   même s'il est héritable : .footer__hand{letter-spacing:.1em} existe deux fois
+   en direct (l. 658 et 4330) et l'héritage perd toujours contre une
+   déclaration. Bleu glacier à 80 % : 8,3:1, et un ton plus froid que le texte
+   de la ligne, ce qui suffit à le distinguer sans changer de corps. */
+.site-footer .footer__bottom .footer__credit .footer__hand{
+  display:inline;margin:0;padding:0;border:0;border-radius:0;background:none;
+  font-family:var(--ff-cond);font-weight:700;font-size:1em;
+  letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;
+  color:rgb(var(--bleu-glacier-rgb) / .8)}
 
-/* 3 — LE NOM, traité comme une marque et non comme un effet. +10 % de corps,
-   sur-graisse légère, et la seule teinte pleine du bloc — le blanc du texte,
-   pas l'orange : sur ce fond c'est lui qui donne les 16,63:1.
-   LE DÉGRADÉ DE V20 EST ABANDONNÉ, pas assagi : peindre un prénom de quatre
-   lettres avec un dégradé de marque, c'est le mécanisme même qui a produit la
-   plainte. Mais il faut le DÉFAIRE explicitement — le @supports de la l. 1813
-   pose -webkit-text-fill-color:transparent, une AUTRE propriété que color, donc
-   `color` seul ne suffit pas : sans les trois lignes ci-dessous, « Alex » est
-   peint par un dégradé qui n'existe plus, c'est-à-dire INVISIBLE.
-   Le soulignement est un background-image en deux couches plutôt qu'un ::after :
-   il fonctionne sur un élément EN LIGNE, suit le texte s'il passe à la ligne, ne
-   coûte pas de pseudo — et c'est la MÊME déclaration qui annule background-clip.
-   Couche du dessous : le filet permanent, orange à 34 %, le détail qui se voit
-   sans se réclamer. Couche du dessus : le même filet à l'orange plein, en
-   largeur 0, qui s'encre depuis le centre au survol.
-   letter-spacing:.02em est posé DÈS LE REPOS : c'est la valeur que V20 impose au
-   survol, la ligne ne bouge donc pas d'un demi-pixel même si sa règle passait. */
-.site-footer .footer__credit .footer__signature .sig-name{
-  font-family:var(--ff-body);font-weight:600;font-size:1.1em;letter-spacing:.02em;
-  color:var(--txt);
-  -webkit-text-fill-color:currentColor;
-  -webkit-background-clip:border-box;background-clip:border-box;
-  background-image:linear-gradient(var(--orange-vif),var(--orange-vif)),
-                   linear-gradient(rgb(var(--orange-vif-rgb) / .34),rgb(var(--orange-vif-rgb) / .34));
-  background-repeat:no-repeat;
-  background-position:50% 100%,50% 100%;
-  background-size:0 1px,100% 1px;
-  transition:background-size .5s var(--ease-out)}
-
-/* HORS media query, à dessein : `.footer__signature:hover .sig-name` (V20,
-   0,3,0) pose un drop-shadow orange de 10 px qui se déclencherait aussi au
-   survol rémanent d'un écran tactile, un appui laissant le :hover collé. On le
-   neutralise partout, en 0,5,0. Ne pas déplacer cette règle dans le bloc
-   @media (hover:hover) plus bas. */
-.site-footer .footer__credit .footer__signature:hover .sig-name{filter:none;letter-spacing:.02em}
-
-/* 4 — LE CŒUR : SVG inline, et l'emoji disparaît. Trois raisons, dans l'ordre.
-   (a) ❤️ est dessiné par la police système — Segoe UI Emoji chez Alexandre,
-   Apple Color Emoji sur l'iPhone d'un parent, Noto sur Android : trois formes,
-   trois rouges, et aucun de ces rouges n'existe dans la palette du club. C'est
-   aujourd'hui le seul élément de la page dont nous ne contrôlons NI la forme NI
-   la couleur. (b) Un glyphe emoji porte ses propres métriques : il ne s'assoit
-   pas sur la ligne de base, il flotte. Une boîte inline-block de .71em a
-   exactement la hauteur de capitale de Barlow (10,8 px mesurés pour un texte de
-   15,2 px) et, alignée sur la ligne de base, elle occupe pile la bande des
-   capitales ; -.04em la descend d'un cheveu parce que la masse d'un cœur est en
-   haut et qu'un objet à masse haute paraît trop haut quand il est centré.
-   (c) Monochrome, il devient le seul accent de couleur du bloc et peut répondre
-   au survol. Chemin PLEIN et non filaire : un contour de 1 px à 12 px de large
-   est fragile en dpr 1. `fill` étant une propriété héritée en SVG, la poser sur
-   <svg> suffit, le <path> n'a pas de règle à lui.
-   ► Si Alexandre le veut plus présent au repos, une seule valeur à changer :
-   l'alpha du fill ci-dessous. */
-.site-footer .footer__credit .sig-heart{
+/* 7 — LE CŒUR. SVG inline (un ❤️ système serait dessiné par Segoe, Apple ou
+   Noto — trois formes, trois rouges, aucun dans la palette). Boîte de .71em
+   assise sur la ligne de base, donc pile dans la bande des capitales. Il reste
+   le SEUL accent orange du bloc : le poinçon est volontairement monochrome,
+   une idée par objet — une barre orange dans la lettre en aurait fait un logo. */
+.site-footer .footer__bottom .footer__credit .sig-heart{
   display:inline-block;width:.78em;height:.71em;margin-inline:.12em .06em;
   vertical-align:-.04em;fill:rgb(var(--orange-vif-rgb) / .85);
   transform-origin:50% 60%;
   transition:fill .3s var(--ease),transform .4s var(--ease-out)}
 
-/* 5 — LE MOT-DIÈSE. La pastille part : bordure orange à 45 %, fond orange à
-   8 %, rayon pill — trois signaux graphiques pour sept caractères, sur une
-   ligne qui n'en demandait aucun. À 12,5 px ce serait du bruit, pas du soin. Il
-   redevient un jeton en condensé interlettré, derrière le point médian. Les six
-   propriétés de la pastille V188 sont remises à zéro NOMMÉMENT : en retirer une
-   seule et l'ancienne valeur revient.
-   margin-right négative : le tracking de .16em laisse 2 px de chasse vide après
-   le « 4 », et .footer__hand est le dernier élément de la ligne. Mesuré à
-   1440 px : sans elle le texte visible est 1 px à gauche du centre, avec elle il
-   tombe à 0,05 px. C'est ce genre de correction qui sépare une ligne « mise au
-   centre » d'une ligne centrée. */
-.site-footer .footer__credit .footer__hand{
-  display:inline;margin:0 -.16em 0 0;padding:0;border:0;border-radius:0;background:none;
-  font-family:var(--ff-cond);font-weight:700;font-size:.82em;
-  letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;
-  color:rgb(var(--bleu-glacier-rgb) / .8)}
+/* 8 — LE NOM PROPRE. Le soulignement est un background-image en deux couches
+   et non un ::after : il fonctionne sur un élément EN LIGNE, suit le texte s'il
+   se replie, ne coûte pas de pseudo — et c'est la MÊME déclaration qui annule
+   background-clip. Couche du dessous : le filet permanent à 34 % d'orange ;
+   couche du dessus : l'orange plein en largeur 0, qui s'encre depuis le centre
+   au survol.
+   Les trois propriétés -webkit-text-fill-color / background-clip sont VITALES :
+   le @supports de la l. 1813 pose -webkit-text-fill-color:transparent, une
+   AUTRE propriété que color — sans elles, « Alex » est peint par un dégradé qui
+   n'existe plus, c'est-à-dire INVISIBLE. 0,5,0 contre 0,4,0. */
+.site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
+  font-family:var(--ff-body);font-weight:600;font-size:1.1em;letter-spacing:.02em;
+  color:var(--txt);
+  -webkit-text-fill-color:currentColor;
+  -webkit-background-clip:border-box;background-clip:border-box;
+  background-color:transparent;
+  background-image:linear-gradient(var(--orange-vif),var(--orange-vif)),
+                   linear-gradient(rgb(var(--orange-vif-rgb) / .34),rgb(var(--orange-vif-rgb) / .34));
+  background-repeat:no-repeat;
+  background-position:50% 100%,50% 100%;
+  background-size:0 1px,100% 1px;
+  filter:none;
+  transition:background-size .5s var(--ease-out)}
 
-/* 6 — LA RÉCOMPENSE AU SURVOL. Sur la phrase anglaise seulement — le mot-dièse
-   est le tag du club, pas la signature — et seulement au pointeur fin. Le filet
-   s'encre depuis le centre, le cœur s'allume et respire de 12 %. Rien ne boucle :
-   la doctrine « un seul mouvement continu sur la page » est tenue, et le
-   battement sigBeat de V20 reste éteint par .site-footer .sig-heart{animation:
-   none!important} (l. 2887). Sélecteur long à dessein : 0,6,0, pour battre et
-   non égaler la règle de base. */
+/* HORS media query, à dessein : TROIS règles de la feuille se déclenchent au
+   survol RÉMANENT d'un écran tactile (un appui laisse le :hover collé) —
+   .footer__signature:hover .sig-name (V20, l. 1814, 0,3,0) pose un drop-shadow
+   orange, et les deux règles de survol de la version en ligne (0,6,0) encrent
+   le filet et allument le cœur hors de toute media query de pointeur. On les
+   neutralise ici en 0,6,0 et 0,7,0. NE PAS déplacer ces règles dans le bloc
+   @media (hover:hover) plus bas : elles doivent s'appliquer au tactile. */
+.site-footer .footer__bottom .footer__credit .footer__signature:hover .sig-name{
+  filter:none;letter-spacing:.02em}
+.site-footer .footer__bottom .footer__credit .footer__signature .sig-by:hover .sig-name{
+  background-size:0 1px,100% 1px}
+.site-footer .footer__bottom .footer__credit .footer__signature .sig-by:hover .sig-heart{
+  fill:rgb(var(--orange-vif-rgb) / .85);transform:none}
+
+/* 9 — LA RÉCOMPENSE, sur la plaque entière et au pointeur fin seulement. La
+   plaque est un objet : on l'effleure, elle répond d'un bloc. Le cadre du
+   poinçon se réchauffe, le filet sous « Alex » s'encre depuis le centre, le
+   cœur s'allume et respire de 12 %. Rien ne boucle : la doctrine « un seul
+   mouvement continu sur la page » (le hero) est tenue, et le battement sigBeat
+   de V20 reste éteint par .site-footer .sig-heart{animation:none!important}
+   (l. 2887). Les deux sélecteurs qui doivent BATTRE les neutralisations
+   ci-dessus valent 0,7,0 comme elles et sont placés APRÈS : à spécificité
+   égale, l'ordre décide. */
 @media (hover:hover) and (pointer:fine){
-  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-name{
+  .site-footer .footer__bottom .footer__credit .footer__plaque:hover .pnc-cadre{
+    stroke:rgb(var(--orange-vif-rgb) / .5)}
+  .site-footer .footer__bottom .footer__credit .footer__plaque:hover .footer__signature .sig-name{
     background-size:100% 1px,100% 1px}
-  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-heart{
+  .site-footer .footer__bottom .footer__credit .footer__plaque:hover .footer__signature .sig-heart{
     fill:var(--orange-vif);transform:scale(1.12)}
 }
 
-/* Mouvement réduit : le filet et la couleur restent — ce sont des états, pas du
-   mouvement — ils arrivent d'un coup ; le cœur ne grossit plus. Ce bloc est le
-   DERNIER : à spécificité égale avec celui du survol, c'est l'ordre qui décide. */
+/* 10 — MOUVEMENT RÉDUIT. Les couleurs et le filet restent : ce sont des états,
+   pas du mouvement — ils arrivent d'un coup. Seule l'échelle du cœur est
+   supprimée. Ce bloc doit rester APRÈS celui du survol : à spécificité égale
+   (0,7,0), c'est l'ordre qui décide. */
 @media (prefers-reduced-motion:reduce){
-  .site-footer .footer__credit .sig-name,
-  .site-footer .footer__credit .sig-heart{transition:none}
-  .site-footer .footer__credit .footer__signature .sig-by:hover .sig-heart{transform:none}
+  .site-footer .footer__bottom .footer__credit .pnc-cadre,
+  .site-footer .footer__bottom .footer__credit .sig-name,
+  .site-footer .footer__bottom .footer__credit .sig-heart{transition:none}
+  .site-footer .footer__bottom .footer__credit .footer__plaque:hover .footer__signature .sig-heart{
+    transform:none}
 }
 
-/* Sous 400 px, le rôle fait 33 caractères tracés à .24em : il passerait à la
-   ligne. Un cran de corps et de chasse en moins le ramène à 222 px, pour 284 px
-   disponibles à 320 px. La ligne de signature, elle, ne bouge pas : 15,2 px
-   partout, y compris au téléphone — c'est là qu'elle doit rester lisible. */
-@media (max-width:400px){
-  .site-footer .footer__credit .footer__credit-k{
-    font-size:var(--text-2xs);letter-spacing:.18em;text-indent:.18em}
+/* 11 — SOUS 700 px, le reste du pied se centre. La plaque se centre donc AUSSI,
+   mais D'UN SEUL BLOC : justify-content sur la ligne d'accueil, jamais
+   text-align sur le cartel. Le signe reste à gauche, le filet à sa droite, les
+   deux lignes ferrées contre lui — la composition est exactement la même,
+   simplement posée sur l'axe de la page. Elle ne s'effondre pas, elle se
+   déplace. */
+@media (max-width:700px){
+  .site-footer .footer__bottom .footer__credit{justify-content:center}
+}
+
+/* 12 — SOUS 560 px. La ligne de technique ferait ~247 px pour 284 px
+   disponibles à 320 px (.wrap : 18 px de marge de chaque côté) : elle se
+   replierait n'importe où et #MBC974 resterait orphelin. On décide donc la
+   coupure au lieu de la subir — le point médian s'efface, le mot-dièse prend sa
+   propre ligne, et le cartel se lit en trois niveaux : le nom, la technique, la
+   référence. Plus cartel encore qu'à 1440 px.
+   Le corps de la signature ne bouge pas d'un dixième : 15,2 px partout, y
+   compris au téléphone — c'est là qu'elle doit rester lisible. */
+@media (max-width:560px){
+  .site-footer .footer__bottom .footer__credit .footer__plaque{gap:var(--sp-70)}
+  .site-footer .footer__bottom .footer__credit .footer__cartel{padding-left:var(--sp-70)}
+  .site-footer .footer__bottom .footer__credit .footer__credit-k{
+    font-size:var(--text-2xs);letter-spacing:.14em}
+  .site-footer .footer__bottom .footer__credit .footer__credit-k i{display:none}
+  /* width:100% n'est PAS redondant avec display:block, c'est la correction d'un
+     défaut mesuré : dans cette chaîne (flex > flex > bloc > <p>), un <span>
+     passé en block garde une largeur « fit-content » et se retrouve CENTRÉ dans
+     sa ligne — #MBC974 partait au milieu pendant que tout le reste est ferré à
+     gauche. Avec width:100% la boîte reprend la largeur du paragraphe et le
+     texte se cale à gauche, comme les deux lignes au-dessus. */
+  .site-footer .footer__bottom .footer__credit .footer__hand{
+    display:block;width:100%;margin-top:.2em;letter-spacing:.14em}
 }

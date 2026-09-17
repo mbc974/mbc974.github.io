@@ -22,6 +22,10 @@
 //     --shots       une capture PNG du bloc par largeur (recadree sur lui)
 //     --survol      en plus : la meme capture, souris sur la signature
 //     --css=f.css   injecte une feuille d'essai apres style.min.css
+//     --html=f.html remplace le bloc .footer__credit par le contenu du fichier,
+//                   pour essayer une COMPOSITION entiere (markup + CSS) sans
+//                   rien ecrire dans le depot. C'est ce qui permet de rendre
+//                   plusieurs propositions cote a cote avant d'en choisir une.
 //     --page=/x/    une autre page que l'accueil (le pied est le meme partout).
 //                   Sous Git Bash, prefixer la commande de MSYS_NO_PATHCONV=1 :
 //                   sinon « /matchs/ » est pris pour un chemin et reecrit en
@@ -46,8 +50,10 @@ const formats = (fmtArg || '390x844,768x1024,1440x900').split(',');
 const shots = argv.includes('--shots');
 const survol = argv.includes('--survol');
 const cssFic = (argv.find(a => a.startsWith('--css=')) || '').slice(6);
+const htmlFic = (argv.find(a => a.startsWith('--html=')) || '').slice(7);
 const page = (argv.find(a => a.startsWith('--page=')) || '--page=/index.html').slice(7);
 const injecte = cssFic ? readFileSync(cssFic, 'utf8') : '';
+const markup = htmlFic ? readFileSync(htmlFic, 'utf8') : '';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const prof = mkdtempSync(join(tmpdir(), 'mbcbancsig'));
@@ -61,7 +67,7 @@ const send = (method, params = {}, sessionId) => { const id = ++n; ws.send(JSON.
 const once = (method, s, ms = 30000) => new Promise((res, rej) => { const t = setTimeout(() => { ecoute.delete(l); rej(new Error('timeout ' + method)); }, ms); const l = d => { if (d.method === method && d.sessionId === s) { clearTimeout(t); ecoute.delete(l); res(d.params); } }; ecoute.add(l); });
 async function evalp(s, expression) { const r = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, s); if (r.exceptionDetails) throw new Error(JSON.stringify(r.exceptionDetails).slice(0, 400)); return r.result.value; }
 
-const AIDE = css => '(() => {\n' +
+const AIDE = (css, html) => '(() => {\n' +
   // Le contraste WCAG se calcule sur la luminance relative : c'est la seule
   // definition qui fasse foi, et elle ne se devine pas a l'oeil sur un fond
   // #070d18 qui avale les teintes froides.
@@ -84,13 +90,28 @@ const AIDE = css => '(() => {\n' +
   // l'un ni l'autre n'est ce qu'on mesure, et tous deux recouvrent le bloc.
   '    st.textContent = ".ccb{display:none!important}.cta-bar,.mbc-cta-bar{display:none!important}" + ' + JSON.stringify(css) + ';\n' +
   '    document.head.appendChild(st);\n' +
+  // Le markup d essai remplace le bloc ENTIER (.footer__credit compris), pour
+  // qu une proposition puisse changer la structure et pas seulement l habillage.
+  // Pose avant fonts.ready : la nouvelle composition doit etre mesuree une fois
+  // ses polices chargees, comme la vraie.
+  '    const neuf = ' + JSON.stringify(html) + ';\n' +
+  '    if (neuf) {\n' +
+  '      const vieux = document.querySelector(".footer__credit");\n' +
+  '      if (!vieux) throw new Error("bloc .footer__credit introuvable : rien a remplacer");\n' +
+  '      const bac = document.createElement("div"); bac.innerHTML = neuf.trim();\n' +
+  '      const el = bac.firstElementChild;\n' +
+  '      if (!el) throw new Error("markup d essai vide");\n' +
+  // Une composition peut renommer sa racine : on retient l element pose, pour
+  // savoir quoi cadrer meme si la classe .footer__credit a disparu.
+  '      vieux.replaceWith(el); window.__racine = el;\n' +
+  '    }\n' +
   '    document.documentElement.style.scrollBehavior = "auto";\n' +
   '    await document.fonts.ready;\n' +
   // content-visibility:auto fausse toute mesure hors ecran : on descend
   // reellement au pied avant de lire quoi que ce soit.
   '    window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" });\n' +
   '    await new Promise(r => setTimeout(r, 700));\n' +
-  '    const c = document.querySelector(".footer__credit");\n' +
+  '    const c = window.__racine || document.querySelector(".footer__credit");\n' +
   '    if (c) c.scrollIntoView({ block: "center", behavior: "instant" });\n' +
   '    await new Promise(r => setTimeout(r, 500));\n' +
   '    return !!c;\n' +
@@ -102,6 +123,7 @@ const AIDE = css => '(() => {\n' +
   '    const cible = {\n' +
   '      credit: ".footer__credit", role: ".footer__credit-k", signature: ".footer__signature",\n' +
   '      nom: ".sig-name", coeur: ".sig-heart", diese: ".footer__hand",\n' +
+  '      plaque: ".footer__plaque", cartel: ".footer__cartel", poincon: ".footer__poincon",\n' +
   // Les deux temoins : le texte courant du pied, auquel on compare tout.
   '      temoinLegal: ".footer__legal", temoinLien: ".footer__links a"\n' +
   '    };\n' +
@@ -123,6 +145,10 @@ const AIDE = css => '(() => {\n' +
   // LARGEUR est l etat (0 au repos, 100% encre). C est ce qu il faut lire pour
   // prouver qu un survol fait quelque chose.
   '        fondImage: cs.backgroundSize === "auto" ? null : cs.backgroundSize,\n' +
+  // Le defaut que la planche n avait pas montre : deux lignes d un meme
+  // drapeau qui ne commencent pas au meme x. display / width / justify-self
+  // sont les trois seules valeurs qui disent laquelle des regles gagne.
+  '        calage: [cs.display, cs.width, cs.justifySelf, cs.textAlign, cs.marginLeft].join(" | "),\n' +
   '        opacite: +cs.opacity,\n' +
   // Un degrade text-clip rend la couleur calculee inutilisable : on le dit,
   // et c'est l'echantillon en pixels qui tranchera.
@@ -130,7 +156,7 @@ const AIDE = css => '(() => {\n' +
   '        contraste: transparent ? null : ratio(compose(peinture, fondRgb), fondRgb),\n' +
   '        boite: R(e) };\n' +
   '    }\n' +
-  '    const c = document.querySelector(".footer__credit");\n' +
+  '    const c = window.__racine || document.querySelector(".footer__credit");\n' +
   '    const sig = out.signature, leg = out.temoinLegal;\n' +
   '    return { vw: innerWidth, vh: innerHeight, fond: fondRgb,\n' +
   '      hauteurBloc: c ? Math.round(c.getBoundingClientRect().height) : null,\n' +
@@ -146,7 +172,7 @@ const AIDE = css => '(() => {\n' +
   // fenetre : un rect de getBoundingClientRect() seul cadre le haut du
   // document, et sort une image vide qu'on prend pour un defaut de rendu.
   '  zone() {\n' +
-  '    const c = document.querySelector(".footer__credit");\n' +
+  '    const c = window.__racine || document.querySelector(".footer__credit");\n' +
   '    if (!c) return null;\n' +
   '    const b = c.getBoundingClientRect();\n' +
   '    const m = 24;\n' +
@@ -181,7 +207,7 @@ async function main() {
     const load = once('Page.loadEventFired', s, 60000);
     await send('Page.navigate', { url: BASE + page + '?t=' + Date.now(), }, s);
     await load;
-    await evalp(s, AIDE(injecte));
+    await evalp(s, AIDE(injecte, markup));
     const trouve = await evalp(s, '__banc.prep()');
     if (!trouve) { out[fm] = { erreur: 'bloc .footer__credit introuvable' }; await send('Target.closeTarget', { targetId }); continue; }
     out[fm] = await evalp(s, '__banc.mesures()');
