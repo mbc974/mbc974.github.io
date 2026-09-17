@@ -16,10 +16,11 @@
     {
       "slug": "reportage-reunion-la-1ere-mbc-la-montagne",
       "date": "2026-09-14",
+      "dateModifiee": "2026-09-16",
       "categorie": "Médias",
       "titre": "Le MBC dans « Grand Sport », sur Réunion la 1ère",
       "titreCourt": "Le reportage de Réunion la 1ère",
-      "chapeau": "L'émission Grand Sport de Réunion la 1ère a consacré un sujet à la naissance du club, tourné sous le plateau couvert de Ruisseau Blanc, avec les jeunes du MBC à l'entraînement. Le reportage est à voir ici.",
+      "chapeau": "L'émission Grand Sport de Réunion la 1ère a consacré un sujet à la naissance du club, tourné sous le plateau couvert de Ruisseau Blanc, avec les jeunes du MBC à l'entraînement. Le reportage est en vidéo dans cet article.",
       "image": {
         "base": "assets/galerie/mbc-reportage-reunion-la-1ere",
         "crans": [
@@ -29,7 +30,7 @@
         ],
         "largeur": 1000,
         "hauteur": 563,
-        "alt": "Image du reportage de Réunion la 1ère : un joueur de dos, en t-shirt noir au logo du MBC La Montagne Basket Club, devant des enfants à l'entraînement sous le plateau couvert de Ruisseau Blanc."
+        "alt": "Image du reportage de Réunion la 1ère : un adulte de dos, en t-shirt noir au logo du MBC La Montagne Basket Club, devant des enfants à l'entraînement sous le plateau couvert de Ruisseau Blanc."
       },
       "corps": [
         {
@@ -46,25 +47,14 @@
             "description": "Sujet de l'émission Grand Sport de Réunion la 1ère sur la création du MBC La Montagne Basket Club, à Saint-Denis de La Réunion, tourné avec les jeunes du club sous le plateau couvert de Ruisseau Blanc.",
             "url": "https://www.facebook.com/reel/952846737186979",
             "embed": "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F952846737186979%2F&show_text=false&t=0",
-            "affiche": {
-              "base": "assets/galerie/mbc-reportage-reunion-la-1ere",
-              "crans": [
-                560,
-                800,
-                1000
-              ],
-              "largeur": 1000,
-              "hauteur": 563,
-              "alt": "Image du reportage de Réunion la 1ère : un joueur de dos, en t-shirt noir au logo du MBC La Montagne Basket Club, devant des enfants à l'entraînement sous le plateau couvert de Ruisseau Blanc."
-            },
             "legende": "« La Montagne a désormais son club de basket, le Montagne Basket Club. Découverte. » — sujet de l'émission <i>Grand Sport</i>, publié par Réunion la 1ère sur sa page Facebook le 13 septembre 2026 (3 min 14). Image d'aperçu : Réunion la 1ère.",
-            "datePublication": "2026-09-13",
+            "datePublication": "2026-09-13T19:50:29+04:00",
             "duree": "PT3M14S"
           }
         },
         {
           "t": "p",
-          "c": "Le 13 septembre 2026, Réunion la 1ère a publié sur sa page Facebook un sujet de son émission <b>Grand Sport</b> consacré au MBC&nbsp;: « La Montagne a désormais son club de basket ». Un peu plus de trois minutes tournées à La Montagne, sous le plateau couvert de Ruisseau Blanc, au milieu des jeunes du club à l'entraînement."
+          "c": "Le 13 septembre 2026, Réunion la 1ère a publié sur sa page Facebook un sujet de son émission <b>Grand Sport</b> consacré au MBC&nbsp;: « La Montagne a désormais son club de basket, le Montagne Basket Club. Découverte. » Un peu plus de trois minutes tournées à La Montagne, sous le plateau couvert de Ruisseau Blanc, au milieu des jeunes du club à l'entraînement."
         },
         {
           "t": "h2",
@@ -72,7 +62,7 @@
         },
         {
           "t": "p",
-          "c": "Les images sont celles d'une séance ordinaire&nbsp;: des enfants et des jeunes en maillot du MBC, ballon en main, sur le terrain bleu du plateau couvert, encadrés par le staff du club. C'est exactement le quotidien que le club veut offrir aux marmay du quartier&nbsp;: pratiquer près de chez soi, dans un cadre sérieux et convivial."
+          "c": "Les images sont celles d'un entraînement&nbsp;: des enfants et des jeunes en maillot du MBC, ballon en main, sur le terrain bleu du plateau couvert, un adulte du club en t-shirt MBC au milieu d'eux. C'est exactement le quotidien que le club veut offrir aux marmay du quartier&nbsp;: pratiquer près de chez soi, dans un cadre sérieux et convivial."
         },
         {
           "t": "h2",
@@ -80,7 +70,7 @@
         },
         {
           "t": "p",
-          "c": "Le MBC joue sa <b>saison fondatrice</b>. Qu'une rédaction régionale prenne le temps de venir voir ce qui se passe à La Montagne dit quelque chose du projet&nbsp;: un club de quartier, né autour d'un équipement public tout neuf, porté par des bénévoles. Pour les familles qui hésitent encore, le reportage est aussi la meilleure façon de voir à quoi ressemble un entraînement avant de venir essayer."
+          "c": "Le MBC joue sa <b>saison fondatrice</b>. Qu'une rédaction régionale prenne le temps de venir voir ce qui se passe à La Montagne dit quelque chose du projet&nbsp;: un club de quartier, porté par des bénévoles, qui fait jouer les marmay sur les équipements publics de La Montagne. Pour les familles qui hésitent encore, le reportage est aussi la meilleure façon de voir à quoi ressemble un entraînement avant de venir essayer."
         },
         {
           "t": "h2",
@@ -109,7 +99,7 @@
           ]
         }
       ],
-      "meta": "Réunion la 1ère a consacré un sujet de Grand Sport à la naissance du MBC, tourné sous le plateau couvert avec les jeunes du club. Le reportage est à voir ici."
+      "meta": "Réunion la 1ère a consacré un sujet de Grand Sport à la naissance du MBC, tourné sous le plateau couvert de Ruisseau Blanc avec les jeunes du club. Reportage en vidéo."
     },
     {
       "slug": "inscriptions-2026-2027-ouvertes",
@@ -307,5 +297,5 @@
       ]
     }
   ],
-  "_video": "Un bloc {\"t\": \"video\"} reprend une vidéo publiée ailleurs, en façade : rien n'est chargé chez le tiers avant le clic du visiteur. Les champs sont décrits en tête de .claude/build-actus.py. « datePublication » est la date de mise en ligne CHEZ LA SOURCE, relevée et non supposée ; sans elle, le générateur n'écrit pas de VideoObject."
+  "_video": "Un bloc {\"t\": \"video\"} reprend une vidéo publiée ailleurs, en façade : rien n'est chargé chez le tiers avant le clic du visiteur. Les champs sont décrits en tête de .claude/build-actus.py. « datePublication » est la date de mise en ligne CHEZ LA SOURCE, relevée et non supposée (ISO 8601, avec l'heure et le décalage quand on les a) ; sans elle, le générateur n'écrit pas de VideoObject. « affiche » est facultative : par défaut, l'image de l'article sert de vignette."
 }

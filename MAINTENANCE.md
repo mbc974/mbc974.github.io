@@ -170,7 +170,8 @@ La page `/confidentialite/` est en ligne. **Deux points y restent en attente**, 
 la page par un encadré, plutôt que remplis avec des valeurs inventées :
 
 1. **Transferts hors UE** — les garanties (clauses contractuelles types, décision d'adéquation)
-   doivent être confirmées service par service auprès de GitHub, Google et Web3Forms.
+   doivent être confirmées service par service auprès de GitHub, Google, Web3Forms et
+   Meta (le lecteur vidéo de Facebook, chargé au clic — § 28).
 2. **Activation de Plausible** — si elle a lieu, la section « Cookies » doit être révisée.
 
 Les **durées de conservation** ne sont plus en attente : elles sont publiées sous forme de
@@ -2491,7 +2492,8 @@ site « de la manière la plus pertinente possible ».
 | `/actualites/` | la carte « Médias », en une | idem (généré) |
 | accueil, section `#inauguration` | la carte `.lp-media` « Vu dans Grand Sport », qui **mène** à l'article | `index.html` |
 | `/club-basket-la-montagne/` | une phrase dans « Un club de quartier » | écrit à la main |
-| `/confidentialite/` | le lecteur Facebook dans la liste des services tiers, et la phrase sur les cookies | écrit à la main |
+| `/confidentialite/` | le lecteur Facebook (services tiers, transferts hors UE, clics comptés), la phrase sur les cookies, la date de mise à jour | écrit à la main |
+| accueil, mentions légales `#legal` | la propriété des images tirées du reportage (France Télévisions) | `index.html` |
 
 Pourquoi `#inauguration` et pas une section neuve : c'est la section « preuve
 locale » du site (`.local-proof`) — le quartier, la mairie, le plateau. Un
@@ -2518,20 +2520,27 @@ sous la vidéo mène au reel. L'iframe reprend le `sandbox` de la carte, sans
 `allow-forms` (le lecteur n'a pas de formulaire à soumettre), et avec
 `allow-presentation` en plus. Le conteneur (`.vid-facade__wrap`) tient sa hauteur
 du seul `aspect-ratio:16/9` : rien ne saute quand l'iframe remplace le bouton.
+Le lien « Voir sur Facebook » porte `data-ga="video_source_click"` : consent.js
+le compte à part, et non comme un clic vers les réseaux sociaux du club (sa
+détection par domaine l'aurait rangé dans `social_click`).
 
 ### Le bloc « video » de `data/actualites.json`
 
 Les champs sont décrits en tête de `.claude/build-actus.py`. Trois règles :
 
-- **`affiche`** : les crans doivent exister dans `assets/`, le générateur ne
-  fabrique rien. Ici la seule image que Facebook fournit est son `og:image`,
-  1000 × 563 : d'où un cran maximal de 1000. Un écran Retina de 860 px de
-  large la verra un peu douce — c'est la source, pas un réglage.
+- **`affiche`** est facultative : par défaut, la façade prend l'`image` de
+  l'article. Dans les deux cas les crans doivent exister dans `assets/`, le
+  générateur ne fabrique rien, et l'`alt` n'est pas lu — l'image est décorative,
+  c'est le bouton qui porte le nom. Ici la seule image que Facebook fournit est
+  son `og:image`, 1000 × 563 : d'où un cran maximal de 1000. Un écran Retina de
+  860 px de large la verra un peu douce — c'est la source, pas un réglage.
 - **`datePublication`** : la date de mise en ligne **chez la source**, relevée
   et jamais supposée. Sans elle, `build-actus.py` n'écrit pas de `VideoObject`
-  (`uploadDate` est obligatoire pour Google) et le dit à la console. Ici : le
-  champ `creation_time` de la page du reel, 1789314629, soit le 13/09/2026 à
-  19 h 50, heure de La Réunion.
+  (`uploadDate` est obligatoire pour Google) et le dit à la console. On l'écrit
+  en ISO 8601 avec l'heure et le décalage quand on les a — Google applique
+  sinon le fuseau de son robot. Ici : le champ `creation_time` de la page du
+  reel, 1789314629, soit `2026-09-13T19:50:29+04:00` (19 h 50, heure de La
+  Réunion).
 - Si le bloc est **le premier du corps**, sa façade prend la place de l'image
   de tête. L'`image` de l'article garde ses autres rôles : carte de la liste,
   `og:image`, `NewsArticle.image`.
@@ -2552,10 +2561,13 @@ publisher est bien la chaîne, pas le club : l'article est à nous, la vidéo no
 2. Le bloc dans `data/actualites.json`, sa source dans `_sources`, puis la
    chaîne : `build-actus.py` → `build-css.py` (si la feuille a changé) →
    `build-sitemap.py` → `bump-assets.py`, et les contrôles du § 7.
-3. Si la source n'est pas Facebook : `embed` change, le module de `script.js`
-   non (il ne connaît que `data-embed`). Adapter la note « Lecteur Facebook »
-   dans `video_html()` — écrite en dur, volontairement, tant qu'il n'y a
-   qu'une source — et la page de confidentialité.
+3. Si le lecteur n'est pas celui de Facebook : `embed` change, le module de
+   `script.js` non (il ne connaît que `data-embed`). Poser `"plateforme"` dans
+   le bloc : la note « Lecteur … » sous le bouton, le lien « Voir sur … » et le
+   nom accessible du bouton en dérivent tous trois. Puis compléter la page de
+   confidentialité — services tiers, transferts hors UE, clics comptés, date de
+   mise à jour : la relecture du 14/09 a montré que ces endroits bougent
+   ensemble.
 
 ### Vérifié le 14/09
 
@@ -2593,6 +2605,51 @@ Les angles « accessibilité », « JavaScript » et « CSS » de cette relectur
 n'avaient pas tourné. Ils ont été repris avant la mise en ligne, sans
 constat bloquant. Deux points restent à traiter, le contraste du libellé de
 la façade et la longueur du titre (§ 27).
+
+### Suites de la relecture, second lot (16/09/2026)
+
+Les angles « générateur », « SEO », « éditorial » et « conventions » de la
+relecture du 14/09 avaient rendu leurs constats, mais leurs sceptiques étaient
+tombés sur la limite de session. Repris et jugés un par un :
+
+- **Éditorial** — deux affirmations non sourcées sont retirées : le club
+  « né autour d'un équipement public tout neuf » (rien ne le dit ; la page club
+  dit autre chose) et le rôle de l'adulte visible (« joueur » dans l'alt,
+  « staff » dans le corps) — il est désormais « un adulte du club ». Le titre
+  du sujet est cité en entier dans l'article, et sa coupe est marquée sur la
+  carte de l'accueil. « Le reportage est à voir ici », repris tel quel sur la
+  carte de `/actualites/` et dans la méta, devient « en vidéo dans cet
+  article » / « Reportage en vidéo ». `dateModifiee` est posée au 16/09.
+- **Données structurées** — `uploadDate` porte l'heure et le décalage relevés
+  (`2026-09-13T19:50:29+04:00`) au lieu de la date seule.
+- **Générateur** — `affiche` devient facultative (défaut : l'`image` de
+  l'article, dont l'alt n'était de toute façon pas lu) ; l'id par défaut est
+  numéroté (`video`, `video-2`…) pour que deux blocs sans `id` ne se
+  dupliquent pas ; les trois libellés qui citaient Facebook en dur dérivent
+  d'une clé `plateforme` ; la liste des champs en tête du script est complète
+  (`libelle`, `titreLecteur`, `aria`).
+- **Confidentialité et mesure d'audience** — Meta rejoint la section
+  « Transferts hors Union européenne » (et le § 4 ci-dessus) ; le lien « Voir
+  sur Facebook » porte `data-ga="video_source_click"` pour ne plus être compté
+  comme un clic vers les réseaux sociaux du club, et la liste des clics
+  comptés le dit ; la « Dernière mise à jour » passe au 16 septembre.
+
+Un constat n'est pas appliqué : rendre le hachage de `bump-assets.py`
+insensible aux fins de ligne. Il venait d'un `git stash` de la relecture qui
+avait réextrait la copie de travail en CRLF ; sur une copie propre, le
+contrôle passe. Le point reste vrai pour un poste en `core.autocrlf=true`
+fraîchement cloné — à traiter à part s'il se présente.
+
+Vérifié le 16/09 : chaîne relancée (`build-actus.py`, `build-sitemap.py`,
+`bump-assets.py` — cinq pages d'actualités re-versionnées, le sitemap rattrape
+les dates des commits du 15/09) ; `verifier-jsonld.py` 29 pages, 0 erreur,
+0 avertissement ; `verifier-classes.py` et `verifier-liens.py` inchangés (les
+trois `.sponsor-pack--*`, `_banc.html` seul orphelin) ; `build-css.py --check`,
+`bump-assets.py --check` et `set-entete.py --check` en 0. Dans Chrome, la page
+générée porte bien `id="reportage"`, `data-ga="video_source_click"` sur « Voir
+sur Facebook », le crédit d'image dans la légende, `alt=""` sur l'image de la
+façade, `datePublished` 2026-09-14, `dateModified` 2026-09-16 et `uploadDate`
+`2026-09-13T19:50:29+04:00`.
 
 ### Ce qui reste
 
@@ -3473,20 +3530,6 @@ trait, encre, plume) partout, drapeau aligné, zéro débordement, bloc de 68 px
 (83 px à 320 px, où la ligne se replie). Corps du texte inchangés à
 15,2 / 11,5 px. Cœur rouge et lien LinkedIn inchangés.
 
-### Fichiers
-
-`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
-`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
-17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
-27 pages.
-
-Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
-composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
-pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
-calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
-candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
-que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
-entière).
 ### 17/09, la retouche d'Alexandre : « parfait, réduis un peu le Alex et aligne-le à droite »
 
 Premier accord de la série. Deux réglages :
@@ -3516,3 +3559,17 @@ qui la suit ; vérifier ce qu'on coupe, pas seulement ce qu'on colle.
 bien qu'à 320 px la barre recouvrait le bloc sur la capture. Le pied lui réserve
 pourtant 104 px sous 920 px : le site allait bien, c'est l'outil qui mentait.
 
+### Fichiers
+
+`index.html` (bloc `.footer__credit`, recopié sur les 25 autres pages par
+`set-entete.py`), `style.css` (bloc V190 — l'ours du 16/09 puis le poinçon du
+17/09, qui le REMPLACE ; bloc du § 31 retiré), `style.min.css`, et le `?v=` des
+27 pages.
+
+Outillage : `.claude/banc-signature.mjs` (nouveau — viewports exacts, contraste
+composé sur le fond, survol à la vraie souris, injection `--css=` ET `--html=`
+pour essayer une composition sans rien écrire dans le dépôt, bord gauche et
+calage de chaque élément), `.claude/planche-signature.py` (nouveau — rend N
+candidats et les empile en une planche légendée, pour choisir sur pièces plutôt
+que sur description) et `.claude/comparer-empreintes.py` (motif sur la ligne
+entière).

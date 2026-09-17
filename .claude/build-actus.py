@@ -31,7 +31,12 @@ bouton « Regarder », et script.js n'injecte l'iframe du lecteur qu'au clic —
 exactement le mecanisme de la carte Google Maps de l'accueil.
 
     {"t": "video", "c": {
-        "id": "reportage",                 ancre (#reportage) — facultatif
+        "id": "reportage",                 ancre (#reportage) — facultatif ;
+                                           defaut « video », puis « video-2 »…
+        "plateforme": "Facebook",          qui heberge le lecteur — facultatif,
+                                           defaut Facebook ; la note sous le
+                                           bouton, le lien « Voir sur … » et le
+                                           nom accessible en derivent
         "source": "Réunion la 1ère",       qui a publie la video
         "sourceUrl", "sourceSameAs"        son site, ses pages — facultatifs
         "emission": "Grand Sport",         facultatif
@@ -39,10 +44,22 @@ exactement le mecanisme de la carte Google Maps de l'accueil.
         "description": "…",                pour le VideoObject — facultatif
         "url": "https://www.facebook.com/reel/…",      la page publique
         "embed": "https://www.facebook.com/plugins/video.php?href=…",
-        "affiche": {base, crans, largeur, hauteur, alt},  comme « image »
+        "affiche": {base, crans, largeur, hauteur},  facultatif — par defaut
+                                           l'« image » de l'article ; son alt
+                                           n'est pas lu : l'image est decorative,
+                                           c'est le bouton qui porte le nom
         "legende": "…",                    sous la video (HTML permis)
-        "datePublication": "AAAA-MM-JJ",   date de mise en ligne CHEZ LA SOURCE
-        "duree": "PT3M14S"                 ISO 8601, facultatif
+        "datePublication": "…",            date de mise en ligne CHEZ LA SOURCE,
+                                           ISO 8601 : avec l'heure et le decalage
+                                           quand on les a (2026-09-13T19:50:29+04:00),
+                                           sinon AAAA-MM-JJ
+        "duree": "PT3M14S",                ISO 8601, facultatif
+        "libelle": "Regarder le reportage", texte du bouton — facultatif
+        "titreLecteur": "…",               title de l'iframe — facultatif
+                                           (defaut : « titre — source »)
+        "aria": "…"                        nom accessible du bouton — facultatif
+                                           (defaut : « libelle de source (charge
+                                           le lecteur video de plateforme) »)
     }}
 
 Si le corps COMMENCE par ce bloc, la facade prend la place de l'image de tete.
@@ -110,14 +127,22 @@ def image(img, sizes, classe="", lazy=True, prio=False, alt=None):
                "fp": ' fetchpriority="high"' if prio else ''})
 
 
-def video_html(v, lead=False):
-    """La facade d'une video tierce (V183). Rien de Facebook n'est charge
-    ici : une image du depot, un bouton, et data-embed pour script.js.
+def video_html(v, a, lead=False, n=1):
+    """La facade d'une video tierce (V183). Rien du tiers n'est charge ici :
+    une image du depot, un bouton, et data-embed pour script.js.
 
     Le bouton porte le nom accessible (aria-label) ; tout ce qu'il contient
-    est decoratif, y compris l'image (alt vide). Le lien « Voir sur Facebook »
-    de la legende reste le chemin sans JavaScript."""
-    aff = v["affiche"]
+    est decoratif, y compris l'image (alt vide). Le lien « Voir sur … » de la
+    legende reste le chemin sans JavaScript ; il porte data-ga pour que la
+    mesure d'audience le compte a part, et non comme un clic vers les
+    reseaux sociaux du club (consent.js detecte sinon par domaine).
+
+    `n` est le rang du bloc dans l'article : il numerote l'id par defaut
+    (video, video-2…) pour qu'un second bloc sans « id » ne duplique pas le
+    premier — un id en double casse les ancres, et le verificateur le signale
+    seulement apres ecriture (relecture du 14/09/2026)."""
+    aff = v.get("affiche") or a["image"]
+    plateforme = v.get("plateforme") or u"Facebook"
     img = image(aff, "(min-width:900px) 860px, 100vw", "vid-facade__img",
                 lazy=not lead, prio=lead, alt=u"")
     src = ech(v["source"])
@@ -125,8 +150,9 @@ def video_html(v, lead=False):
         src += u' <i aria-hidden="true"></i> ' + ech(v["emission"])
     libelle = v.get("libelle") or u"Regarder le reportage"
     titre_lecteur = v.get("titreLecteur") or (u"%s — %s" % (v["titre"], v["source"]))
-    aria = v.get("aria") or (u"%s de %s (charge le lecteur vidéo de Facebook)"
-                             % (libelle, v["source"]))
+    aria = v.get("aria") or (u"%s de %s (charge le lecteur vidéo de %s)"
+                             % (libelle, v["source"], plateforme))
+    id_defaut = u"video" if n == 1 else u"video-%d" % n
     return u"""<figure class="ar__fig ar__fig--video" id="%(id)s">
         <div class="vid-facade__wrap">
           <button type="button" class="vid-facade" data-embed="%(embed)s" data-titre="%(titreLecteur)s"
@@ -136,14 +162,14 @@ def video_html(v, lead=False):
             <span class="vid-facade__src" aria-hidden="true">%(src)s</span>
             <span class="vid-facade__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" focusable="false"><path d="M8 5.5v13l11-6.5z"/></svg></span>
             <span class="vid-facade__cta" aria-hidden="true">%(libelle)s</span>
-            <span class="vid-facade__note" aria-hidden="true">Lecteur Facebook · chargé uniquement si vous le demandez</span>
+            <span class="vid-facade__note" aria-hidden="true">Lecteur %(plateforme)s · chargé uniquement si vous le demandez</span>
           </button>
         </div>
-        <figcaption class="ar__cap">%(legende)s <a href="%(url)s" target="_blank" rel="noopener">Voir sur Facebook<span class="sr-only"> (nouvel onglet)</span></a></figcaption>
-      </figure>""" % {"id": ech(v.get("id") or "video"), "embed": ech(v["embed"]),
+        <figcaption class="ar__cap">%(legende)s <a href="%(url)s" target="_blank" rel="noopener" data-ga="video_source_click">Voir sur %(plateforme)s<span class="sr-only"> (nouvel onglet)</span></a></figcaption>
+      </figure>""" % {"id": ech(v.get("id") or id_defaut), "embed": ech(v["embed"]),
              "titreLecteur": ech(titre_lecteur), "aria": ech(aria), "img": img,
              "src": src, "libelle": ech(libelle), "legende": v.get("legende") or u"",
-             "url": ech(v["url"])}
+             "url": ech(v["url"]), "plateforme": ech(plateforme)}
 
 
 def video_jsonld(v, a):
@@ -157,7 +183,7 @@ def video_jsonld(v, a):
     if not v.get("datePublication"):
         print(u"!! %s : video sans datePublication, pas de VideoObject" % a["slug"])
         return None
-    aff = v["affiche"]
+    aff = v.get("affiche") or a["image"]
     o = {
         "@type": "VideoObject",
         "@id": a["_url"] + "#video",
@@ -182,15 +208,19 @@ def video_jsonld(v, a):
     return o
 
 
-def corps_html(blocs):
+def corps_html(blocs, a, depart=1):
+    """`depart` : rang du premier bloc video rencontre ici (2 si la video de
+    tete a deja pris le rang 1)."""
     out = []
+    n = depart
     for b in blocs:
         if b["t"] == "p":
             out.append(u'      <p>%s</p>' % b["c"])
         elif b["t"] == "h2":
             out.append(u'      <h2 class="ar__h2">%s</h2>' % ech(b["c"]))
         elif b["t"] == "video":
-            out.append(video_html(b["c"]))
+            out.append(video_html(b["c"], a, n=n))
+            n += 1
         elif b["t"] == "liens":
             liens = []
             for l in b["c"]:
@@ -292,8 +322,10 @@ def page_article(a, d, precedent, suivant):
     # facade — n'apporterait rien. L'image de l'article garde ses autres roles
     # (carte de la liste, og:image, NewsArticle.image).
     corps = list(a["corps"])
+    rang_suivant = 1
     if corps and corps[0]["t"] == "video":
-        fig = video_html(corps.pop(0)["c"], lead=True)
+        fig = video_html(corps.pop(0)["c"], a, lead=True, n=1)
+        rang_suivant = 2
     else:
         fig = (u'<figure class="ar__fig">%s</figure>'
                % image(a["image"], "(min-width:900px) 860px, 100vw",
@@ -323,7 +355,7 @@ def page_article(a, d, precedent, suivant):
        "scripts": bm.GABARIT[3], "fil": visible, "cat": ech(a["categorie"]),
        "iso": a["date"], "date": a["_dateLongue"], "titre": ech(a["titre"]),
        "chapeau": ech(a["chapeau"]),
-       "fig": fig, "corps": corps_html(corps), "nav": nav}
+       "fig": fig, "corps": corps_html(corps, a, depart=rang_suivant), "nav": nav}
 
 
 def page_liste(d):
