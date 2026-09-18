@@ -12790,7 +12790,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .floc__pin{font-size:3.6cqi}
 }
 
-.floc__note{margin:0;display:grid;gap:var(--sp-100);align-content:start}
+/* 62ch : en une seule colonne, la legende heriterait de la largeur du .wrap —
+   774 px mesures a 860 px de fenetre, soit plus de cent signes par ligne, quand
+   la prose de la page tient a 72ch. Au-dela de 880 px la colonne de droite fait
+   485 px et le plafond ne sert plus a rien : il ne gene donc jamais. */
+.floc__note{margin:0;display:grid;gap:var(--sp-100);align-content:start;max-width:62ch}
 .floc__lead{margin:0;color:var(--txt-soft);line-height:1.7}
 
 /* Deux lignes de texte par emplacement, et la pastille à cheval sur les deux :
@@ -12821,3 +12825,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .floc{grid-template-columns:420px minmax(280px,1fr);gap:var(--sp-140) 2.2rem;
     align-items:center}
 }
+
+/* V192 · La note d'asterisque des formules (reserve du dossier partenaire) vit
+   dans un .wrap nu, pas dans .seo-prose : sans plafond elle heriterait des
+   1 124 px de la grille, soit environ 140 signes par ligne quand la prose de la
+   page tient a 72ch. On ne touche pas a .vis-src, qui sert aussi la source des
+   chiffres Search Console DANS la prose, deja bornee : la regle est portee par
+   le seul contexte .packs. */
+.packs > .vis-src{max-width:82ch;margin-top:var(--sp-140)}

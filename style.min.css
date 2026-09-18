@@ -6537,7 +6537,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .floc__photo{container-type:inline-size}
   .floc__pin{font-size:3.6cqi}
 }
-.floc__note{margin:0;display:grid;gap:var(--sp-100);align-content:start}
+.floc__note{margin:0;display:grid;gap:var(--sp-100);align-content:start;max-width:62ch}
 .floc__lead{margin:0;color:var(--txt-soft);line-height:1.7}
 .floc__spots{list-style:none;counter-reset:floc;margin:0;padding:0;display:grid;gap:var(--sp-85)}
 .floc__spots li{counter-increment:floc;display:grid;grid-template-columns:auto 1fr;
@@ -6554,3 +6554,4 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .floc{grid-template-columns:420px minmax(280px,1fr);gap:var(--sp-140) 2.2rem;
     align-items:center}
 }
+.packs > .vis-src{max-width:82ch;margin-top:var(--sp-140)}
