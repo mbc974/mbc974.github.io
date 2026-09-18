@@ -12464,31 +12464,103 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    hiérarchie et la composition, jamais l'échelle.
    ============================================================================ */
 
-/* Alexandre, 17/09 : « quand je disais à droite je disais SOUS mentions
-   légales, confidentialité et gérer mes cookies, centre bien le tout ». Le pavé
-   se cale donc sur .footer__links, qui prend margin-left:auto dans le flex de
-   .footer__bottom : width:max-content + margin-left:auto font tomber son bord
-   droit à l'aplomb du leur, et son contenu est CENTRÉ dans cette largeur. */
-.site-footer .footer__bottom .footer__credit{
-  position:relative;display:block;width:100%;
-  margin-top:var(--sp-110);padding-top:0;border-top:0;text-align:center}
+/* V191, 18/09/2026 — UN SEUL AXE PAR LIGNE.
+   Alexandre : « le footer du site n'est pas bien aligné à partir de © 2026 ».
+   Le défaut, mesuré à 1440 px : le bloc de clôture portait TROIS lignes d'appui
+   là où le pied n'en a que deux. Le © partait du bord gauche de la colonne
+   (x=158), les liens légaux finissaient au bord droit (x=1282) — et la
+   cartouche, coincée entre les deux, était ferrée à droite par sa BOÎTE mais
+   centrée par son TEXTE : « Made with ♥ by Alex » commençait à 1047 et finissait
+   à 1195, sans toucher ni l'un ni l'autre bord. Un axe invisible, que rien
+   d'autre dans la page ne venait confirmer.
+   Sur téléphone c'était pire, et cette fois chiffrable : les liens légaux
+   s'arrêtaient à x=335, la cartouche à x=371. 36 px d'écart entre deux bords
+   droits censés n'en faire qu'un, avec le © centré par-dessus les deux.
+
+   LA DISPOSITION RETENUE — le colophon. La ligne haute garde ses deux ferrages,
+   qui sont les deux seuls du pied : le © à gauche, les liens légaux à droite.
+   La cartouche descend SOUS eux (c'est la demande du 17/09), détachée par un
+   filet, et centrée sur la colonne pour de bon — pas dans une boîte poussée à
+   droite. Elle cesse d'être un reste pour devenir le sceau qui ferme la page,
+   et c'est le seul endroit du pied où un centrage se lit comme une intention.
+
+   POURQUOI UNE GRILLE ET PLUS UN FLEX. En flex, chaque bloc choisissait son
+   ferrage (margin-left:auto ici, width:100% là) et l'ordre des déclarations
+   décidait du résultat — d'où les 354 px de décalage déjà payés le 17/09. La
+   grille nomme la case de chacun : plus rien ne dépend de qui passe à la ligne
+   en premier. Spécificité (0,2,0) et (0,3,0) : elle l'emporte sur les trois
+   .footer__bottom (0,1,0) plus haut dans la feuille sans avoir besoin d'un
+   !important, et sans les supprimer — ils servent encore les pages générées si
+   cette section venait à sauter. */
+.site-footer .footer__bottom{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;column-gap:2.4rem;row-gap:0}
+.site-footer .footer__bottom>.footer__legal{
+  grid-column:1;grid-row:1;margin:0;text-align:left}
+.site-footer .footer__bottom>.footer__links{
+  grid-column:2;grid-row:1;margin-left:0;justify-content:flex-end}
+/* grid-column:1 / -1 : la cartouche prend la largeur des DEUX colonnes, sinon
+   elle se centrerait sur la colonne de droite seule et on aurait rebâti le
+   défaut qu'on corrige. Le filet remplace le retrait : il dit « ce qui suit
+   n'est plus le pied, c'est sa signature ». */
+.site-footer .footer__bottom>.footer__credit{
+  position:relative;display:block;grid-column:1 / -1;grid-row:2;width:100%;
+  margin-top:var(--sp-100);padding-top:var(--sp-100);
+  border-top:1px solid var(--hair-2);text-align:center}
 .site-footer .footer__bottom .footer__credit::before{display:none}
 .site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
 /* PLUS DE FILET VERTICAL. Un trait à gauche est la ponctuation d'un DRAPEAU :
    il dit « le texte commence ici ». Sur un pavé centré il ne dit plus rien et
    déséquilibre l'axe — l'espace suffit à séparer. La cartouche ne garde que sa
    largeur de contenu, pour que le centrage porte sur la bonne mesure. */
-/* width:100% sur le pavé ET max-content sur la cartouche, et l'ordre compte :
-   c'est le width:100% qui FORCE le retour à la ligne dans le flex de
-   .footer__bottom. Sans lui, la cartouche resserrée tenait sur la même ligne que
-   .footer__links, qui cessait alors d'être le dernier élément : son
-   margin-left:auto ne la poussait plus à droite, et les deux bords droits
-   étaient décalés de 354 px (mesuré). C'est la cartouche, pas le pavé, qui porte
-   le margin-left:auto. */
 .site-footer .footer__bottom .footer__credit .footer__cartel{
   position:relative;min-width:0;width:max-content;max-width:100%;
-  margin-left:auto;padding-left:0;text-align:center}
+  margin-inline:auto;padding-left:0;text-align:center}
 .site-footer .footer__bottom .footer__credit .footer__cartel::before{display:none}
+
+/* SOUS 880 px, la colonne unique. Les trois blocs s'empilent et se centrent sur
+   le même axe — celui du texte du pied, qui passe déjà au centre à cette
+   largeur.
+   880 ET PAS 760, ET LE CHIFFRE EST MESURÉ. La piste de droite est figée sur le
+   max-content des liens légaux (315 px) ; toute la compression retombe donc sur
+   la piste de gauche, qui porte le © — et le © demande 416 px sur une ligne.
+   Relevé largeur par largeur le 18/09 : une ligne à 856 px, deux lignes à
+   850 px. Un seuil à 760 laissait donc une bande de 90 px (761 → 850) où le ©
+   se coupait en deux à côté d'un bloc de liens sur une seule ligne — la
+   première version de V191 annonçait « à 768 px le © tient encore sur une
+   ligne », et c'était faux. 880 place le seuil au-dessus de la bande avec de la
+   marge, et couvre l'iPad (768) comme l'iPad Air (820) en portrait. */
+@media (max-width:880px){
+  .site-footer .footer__bottom{
+    grid-template-columns:minmax(0,1fr);row-gap:var(--sp-70)}
+  .site-footer .footer__bottom>.footer__legal{text-align:center}
+  .site-footer .footer__bottom>.footer__links{
+    grid-column:1;grid-row:2;justify-content:center;flex-wrap:wrap}
+  .site-footer .footer__bottom>.footer__credit{grid-column:1;grid-row:3}
+}
+
+/* LA DERNIÈRE LIGNE DU PIED, ET LE </div> QUI LA FAISAIT FUIR.
+   Alexandre citait « Mentions légales & confidentialité » parmi les lignes mal
+   alignées. Elle l'était, et la cause n'était pas dans la feuille : le pied
+   d'index.html fermait DIX <div> pour NEUF ouverts (un </div> en trop juste
+   après .footer__credit). Le surnuméraire refermait .wrap, si bien que
+   <details class="footer-legal" id="legal"> se retrouvait enfant direct de
+   <footer> — donc privé du padding horizontal de .wrap, donc décalé de 18 px
+   vers la gauche, et hors de portée de .site-footer>.wrap>.footer-legal
+   {order:4} (l. 4585), la règle de V100.7 qui devait le remonter AU-DESSUS de
+   la barre de copyright. Le pavé traînait sous la signature depuis.
+   Le </div> est retiré d'index.html (bilan : 9/9, et 9/9 sur les 26 pages
+   filles après set-entete.py).
+
+   L'EFFET DE BORD, corrigé ici. Redevenue enfant de .wrap, .footer-legal y est
+   un ÉLÉMENT FLEX de la colonne — et son `margin:0 auto` de la l. 1917, resté
+   sans effet tant qu'elle flottait ailleurs, s'est mis à la centrer sur sa
+   largeur de contenu (229 px mesurés). Même famille de piège que le
+   `vertical-align` de .sig-name : une déclaration inerte qui se réveille quand
+   le contexte de formatage change. Les deux blocs qui la précèdent,
+   .footer__ident et .footer__seo, sont pleine largeur et ferrés à gauche ;
+   elle le redevient. */
+.site-footer>.wrap>.footer-legal{width:100%;max-width:none;margin-inline:0}
 
 .site-footer .footer__bottom .footer__credit .footer__signature{
   display:flex;align-items:baseline;justify-content:center;gap:.28em;
@@ -12520,15 +12592,31 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
    et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;vertical-align:-.20em;
+  position:relative;display:inline-block;top:2.7px;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
-/* -.33em, et ce n'est pas une valeur trouvée à l'œil : dans le viewBox du
-   générateur, y=0 EST la ligne de base de Caveat, et il reste 29 unités sous
-   elle sur 247. À 26 px de haut cela fait 3,1 px, soit .20em pour un texte de
-   15,2 px. La signature s'assoit donc sur la même ligne que « Made with ♥ by »
-   au lieu de flotter au-dessus. ⚠️ Toute retouche de la HAUTEUR du tracé oblige
-   à refaire ce calcul : hauteur × 29/247, converti en em sur 15,2 px. */
+/* LE CALAGE VERTICAL, ET LA PROPRIÉTÉ QUI NE SERVAIT À RIEN.
+   Le besoin : dans le viewBox du générateur, y=0 EST la ligne de base de
+   Caveat, et il reste 29 unités sous elle sur 247. Le bas de la BOÎTE du <svg>
+   n'est donc pas la ligne de base du mot : il est 29/247 plus bas.
+
+   Le piège, mesuré le 18/09 : .footer__signature est un display:flex, donc
+   .sig-name est un ÉLÉMENT FLEX — et `vertical-align` ne s'applique PAS aux
+   éléments flex. Le -.20em posé en V190, puis le -.175em de la première passe
+   de V191, ne faisaient strictement rien : forcer la propriété à -3em ne
+   déplaçait le rect d'aucun pixel (vérifié dans le navigateur). Ce qui plaçait
+   le tracé, c'était `align-items:baseline` : faute de line box interne (le seul
+   contenu textuel de .sig-name est un .sr-only en position:absolute), sa ligne
+   de base synthétisée est son BORD BAS. Le bas de la boîte du SVG se posait
+   donc sur la ligne de base du texte, et « Alex » flottait 26 × 29/247 =
+   3,05 px trop haut. Mesuré : bas du svg 711,58 = ligne de base du texte
+   711,58, ligne de base du glyphe 708,53.
+
+   La correction : `top`, qui lui s'applique (la boîte est en position:relative)
+   et ne touche à aucune mesure de la grille — c'est un décalage de peinture.
+   2,7 px = hauteur × 29/247 = 23 × 29/247. ⚠️ Toute retouche de la HAUTEUR du
+   tracé oblige à refaire ce calcul, et à le refaire EN PIXELS : la hauteur du
+   svg est en px, pas en em du texte voisin. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
 
 /* LE TRACÉ EST CELUI DU SITE, PAS UN AUTRE. Le hero écrit déjà trois phrases
@@ -12539,12 +12627,16 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    trois keyframes maison — hw-trait, hw-encre, hw-plume.
    La classe hw__pt du dernier contour a été retirée : elle colore en orange le
    POINT FINAL d'une phrase, et « Alex » n'en a pas — le « x » aurait été orange.
-   --hw-sw:11.5 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
-   (436 de large rendu à 46 px) est cinq fois plus serré que celui du hero.
-   11,5 × 46/436 = 1,21 px à l'écran, soit la plume du hero. */
+   --hw-sw:13.2 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
+   (436 de large rendu à 40 px) est onze fois plus serré que celui du hero.
+   13,2 × 40/436 = 1,21 px à l'écran, soit la plume du hero.
+   ⚠️ CETTE VALEUR SUIT LA LARGEUR. Réduire le tracé sans la recalculer épaissit
+   la plume d'autant : à 40 px, laisser 11,5 aurait donné 1,06 px au lieu de
+   1,21 — une écriture plus maigre que celle du hero. La formule est
+   --hw-sw = 1,21 × 436 / largeur. (V191, 18/09 : 46 → 40 px, 11,5 → 13,2.) */
 .site-footer .footer__bottom .footer__credit .sig-hw{
-  display:block;width:46px;height:26px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:11.5;
+  display:block;width:40px;height:23px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:13.2;
   transition:color .35s var(--ease)}
 
 /* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, plume retirée. .hw__p

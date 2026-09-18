@@ -3660,3 +3660,212 @@ python .claude/bump-assets.py           # toujours en dernier
 
 Puis les garde-fous : `verifier-classes.py`, `verifier-jsonld.py`,
 `verifier-liens.py`, et `node .claude/banc-match-center.mjs` pour les formats.
+
+## 36. Le bloc de clôture du pied : un seul axe par ligne (18/09/2026)
+
+Alexandre, le 18/09 : « le footer du site n'est pas bien aligné à partir de
+© 2026 […] repense la disposition des éléments et réduis encore un peu la
+taille de la police sur Alex ». Il énumérait les lignes concernées, jusqu'à la
+dernière : « Mentions légales & confidentialité ». C'est le § 34 et son
+correctif du 17/09 qu'il corrige — non plus sur la taille, cette fois, mais sur
+le **calage**.
+
+### Le défaut visible, en chiffres
+
+Le pied n'a que **deux** lignes d'appui : le bord gauche de la colonne de
+contenu, où commencent le ©, l'affiliation FFBB et les liens SEO, et son bord
+droit, où finissent les liens légaux. Le bloc de clôture en portait **trois**.
+
+| à 1440 px | bord gauche | bord droit |
+|---|---|---|
+| colonne de contenu | 158 | 1282 |
+| `.footer__legal` (le ©) | **158** ✓ | 574 |
+| `.footer__links` (mentions légales…) | 967 | **1282** ✓ |
+| `.footer__cartel` (la boîte) | 967 | **1282** ✓ |
+| « Made with ♥ by Alex » (le texte) | 1047 | 1195 |
+
+La cartouche était ferrée à droite par sa **boîte** et centrée par son
+**texte** : la ligne de signature ne touchait donc ni 158 ni 1282. Un axe
+invisible à 1121, que rien d'autre dans la page ne venait confirmer — et la
+ligne du dessous, « CONCEPTION & DÉVELOPPEMENT DU SITE · #MBC974 », remplissait
+la boîte entière, si bien que les deux lignes d'une même cartouche ne
+partageaient aucun bord.
+
+Sur téléphone, c'était pire et chiffrable autrement : à 390 px, les liens
+légaux s'arrêtaient à `x=335` et la cartouche à `x=371` — **36 px d'écart entre
+deux bords droits censés n'en faire qu'un**, avec le © centré par-dessus les
+deux.
+
+### La cause, et pourquoi elle revenait
+
+`.footer__bottom` était un **flex**, et chaque bloc y choisissait son ferrage :
+`margin-left:auto` sur la cartouche, `width:100%` sur le pavé, `margin-left:
+auto` sur les liens. Le résultat dépendait donc de l'**ordre du retour à la
+ligne** — c'est déjà ce qui avait coûté les 354 px de décalage du 17/09 (§ 34).
+Une disposition qui se décide par « qui passe à la ligne en premier » ne se
+répare pas, elle se rejoue.
+
+Elle est passée en **grille**. La grille nomme la case de chacun :
+
+```css
+.site-footer .footer__bottom{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;column-gap:2.4rem;row-gap:0}
+```
+
+- rangée 1, colonne 1 : le © ferré à gauche ;
+- rangée 1, colonne 2 : les liens légaux ferrés à droite ;
+- rangée 2, `grid-column:1 / -1` : la cartouche, **centrée sur les deux
+  colonnes** et détachée par un filet `border-top:1px solid var(--hair-2)`.
+
+`grid-column:1 / -1` n'est pas cosmétique : sans lui la cartouche se centrerait
+sur la colonne de droite seule, et on aurait rebâti le défaut qu'on corrige.
+
+**Spécificité plutôt que `!important`.** Les trois anciennes déclarations de
+`.footer__bottom` (l. 663, 1176, 4328) restent en place, inertes : le nouveau
+bloc est en `.site-footer .footer__bottom` (0,2,0) et
+`.site-footer .footer__bottom>.footer__legal` (0,3,0), il les bat sans les
+supprimer.
+
+### Le point de bascule est 880 px, et le chiffre est mesuré
+
+La piste de droite est figée sur le max-content des liens légaux (315 px) :
+toute la compression retombe sur la piste de gauche, qui porte le ©, et le ©
+demande 416 px sur une ligne. Relevé largeur par largeur :
+
+| largeur | lignes du © |
+|---|---|
+| 900, 880, 870, 860, **856** | 1 |
+| **850**, 840, 800, 768 | 2 |
+
+La première écriture de V191 plaçait la bascule à 760 px en affirmant qu'« à
+768 px le © tient encore sur une ligne à côté des liens ». **C'était faux**, et
+cela laissait une bande de 90 px (761 → 850) où le © se coupait en deux à côté
+d'un bloc de liens sur une seule ligne. Le seuil est remonté à **880 px**,
+au-dessus de la bande avec de la marge, ce qui couvre l'iPad (768) comme
+l'iPad Air (820) en portrait.
+
+⚠️ **Toute retouche du texte du © déplace ce seuil.** Il se remesure en comptant
+les lignes de `.footer__legal` largeur par largeur, jamais à l'estime.
+
+### Le résultat, mesuré
+
+| largeur | colonne de contenu | centre de la colonne | centre de la cartouche |
+|---|---|---|---|
+| 1440 | 158 → 1282 | 720 | **720** |
+| 1100 | 48 → 1052 | 550 | **550** |
+| 900 | 45 → 855 | 450 | **450** |
+| 860 | 43 → 817 | 430 | **430** |
+| 768 | 38 → 730 | 384 | **384** |
+| 560 | 72 → 488 | 280 | **280** |
+| 390 | 20 → 371 | 195,5 | **195** |
+| 320 | 18 → 302 | 160 | **160** |
+
+Un seul axe à chaque largeur. La règle des < 560 px du § 34 (le point médian
+qui s'efface, `#MBC974` sur sa propre ligne) est reconduite et vérifiée à
+320 px.
+
+### « Alex » : 46 → 40 px, et les trois valeurs qui en dépendent
+
+Réduire le tracé ne se fait pas en changeant `width` seul. Le viewBox est
+`0 -218 436 247`, et **trois** valeurs se recalculent :
+
+| | avant | après | d'où |
+|---|---|---|---|
+| `.sig-hw` | 46 × 26 px | **40 × 23 px** | 436/247 = 1,765 |
+| `--hw-sw` | 11,5 | **13,2** | 1,21 px à l'écran × 436/40 |
+| calage vertical | −.20em | **`top:2.7px`** | hauteur × 29/247 = 23 × 29/247 |
+
+`--hw-sw` est une épaisseur en **unités de viewBox** : la laisser à 11,5 aurait
+donné 1,06 px de plume au lieu de 1,21, soit une écriture plus maigre que celle
+du hero. La formule est `--hw-sw = 1,21 × 436 / largeur`.
+
+### Le piège qui a failli passer : `vertical-align` ne faisait rien
+
+`.footer__signature` est un `display:flex`. `.sig-name` est donc un **élément
+flex**, et `vertical-align` ne s'applique pas aux éléments flex. Le `-.20em`
+posé en V190 — et le `-.175em` de la première passe de V191 — ne déplaçaient
+rien : forcer la propriété à `-3em` ne bougeait le rect d'aucun pixel.
+
+Ce qui plaçait le tracé, c'était `align-items:baseline`. Faute de line box
+interne (le seul contenu textuel de `.sig-name` est un `.sr-only` en
+`position:absolute`), sa ligne de base synthétisée est son **bord bas** : le bas
+de la boîte du `<svg>` se posait donc sur la ligne de base du texte, et comme le
+viewBox laisse 29/247 sous la ligne de base de Caveat, « Alex » flottait
+26 × 29/247 = **3,05 px trop haut**. Mesuré : bas du svg 711,58 = ligne de base
+du texte 711,58, ligne de base du glyphe 708,53.
+
+La correction est `top`, qui lui s'applique (la boîte est en
+`position:relative`) et ne touche à aucune mesure de la grille. Après :
+**écart 0,01 px**.
+
+⚠️ Le calage se refait **en pixels**, pas en em : la hauteur du svg est en px,
+pas en em du texte voisin.
+
+### La dernière ligne du pied : un `</div>` en trop
+
+Le pied d'`index.html` fermait **dix** `<div>` pour **neuf** ouverts (un
+`</div>` surnuméraire juste après `.footer__credit`). Le surnuméraire refermait
+`.wrap`, si bien que `<details class="footer-legal" id="legal">` se retrouvait
+enfant direct de `<footer>` :
+
+- privé du padding horizontal de `.wrap`, donc **décalé de 18 px** vers la
+  gauche — exactement la ligne qu'Alexandre citait en dernier ;
+- hors de portée de `.site-footer>.wrap>.footer-legal{order:4}` (l. 4585), la
+  règle de V100.7 dont le commentaire dit pourtant « le pavé de mentions
+  légales se retrouvait sous la barre de copyright, il remonte juste avant, où
+  on l'attend ». Il ne remontait plus.
+
+Le `</div>` est retiré d'index.html, et `set-entete.py` propage : bilan **9/9**
+sur les 27 pages. (`404.html` et `offline.html` n'ont pas de `<footer>`.)
+
+**L'effet de bord, corrigé dans la foulée.** Redevenue enfant de `.wrap`,
+`.footer-legal` y est un élément flex de la colonne — et son `margin:0 auto`
+de la l. 1917, resté sans effet tant qu'elle flottait ailleurs, s'est mis à la
+**centrer** sur sa largeur de contenu (229 px mesurés). Même famille de piège
+que le `vertical-align` ci-dessus : une déclaration inerte qui se réveille quand
+le contexte de formatage change. `.site-footer>.wrap>.footer-legal{width:100%;
+max-width:none;margin-inline:0}` la remet sur l'axe gauche, comme
+`.footer__ident` et `.footer__seo` juste au-dessus.
+
+### Ce qui reste en travers, et qui n'a pas été touché
+
+**Le pied ne s'imprime pas.** Sous `@media print`, `.site-footer` garde
+`background-color:rgb(7,13,24)` — mais les navigateurs n'impriment pas les fonds
+par défaut. Sur papier, le tracé (`color:var(--txt)`, #E7EEF6) est invisible, le
+filet de la cartouche (`var(--hair-2)`, 20 % d'opacité) aussi, et le texte
+courant du pied (#9FB2C8) tombe à ~2,2:1 de contraste. **C'est tout le pied
+sombre qui est en cause, pas cette version-ci** : ne corriger que la signature
+et le filet donnerait une impression incohérente. À traiter comme un sujet à
+part, pour le pied entier.
+
+### La preuve de non-régression
+
+Empreinte du site avant / après (`.claude/empreinte-site.mjs`), 87 vues,
+**35 781 éléments**, bruit mesuré à code identique = 2.
+
+L'écart annoncé **avant** la mesure : « tout ce qui bouge est `.footer__bottom`
+ou un de ses descendants, ou `.footer-legal` et les siens, ou un conteneur du
+pied dont seule la hauteur change, ou une boîte `.sr-only` de 1 × 1 px dont seul
+le `bottom` calculé se recalcule ; rien au-dessus du bloc ne bouge, sur aucune
+page, à aucune largeur ».
+
+Deux familles méritent d'être connues, parce qu'elles ressemblent à des
+régressions sans en être :
+
+- `FOOTER.site-footer` et `DIV.wrap` grandissent : ce sont les **conteneurs** du
+  bloc.
+- des centaines de `SPAN.sr-only` et `H2.sr-only` voient leur `bottom` calculé
+  changer. Ils n'ont pas bougé : ce sont des boîtes de 1 × 1 px en
+  `position:absolute`, et `bottom` se mesure depuis le bas d'un bloc conteneur
+  qui a grandi. Leurs `x`, `y`, largeur et hauteur sont identiques.
+
+### L'ordre
+
+```
+python .claude/set-entete.py            # le pied corrigé sur les 26 pages filles
+python .claude/build-css.py             # style.css -> style.min.css
+python .claude/bump-assets.py           # toujours en dernier
+```
+
+Puis `verifier-classes.py` et `verifier-liens.py`.
