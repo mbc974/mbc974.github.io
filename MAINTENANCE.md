@@ -3923,6 +3923,79 @@ sombre qui est en cause, pas cette version-ci** : ne corriger que la signature
 et le filet donnerait une impression incohérente. À traiter comme un sujet à
 part, pour le pied entier.
 
+### « Toujours flou sur PC » : un vrai `filter: blur(6px)`, pas de l'anticrénelage
+
+Le 18/09, après les deux passes ci-dessus, Alexandre : « **tjs flou sur pc** ».
+Sur sa capture, **tout le cartouche bave** — la ligne « CONCEPTION &
+DÉVELOPPEMENT DU SITE · #MBC974 également — alors que le © juste au-dessus est
+net. Un texte qui bave en bloc pendant que son voisin reste net, ce n'est pas
+une affaire de taille de glyphe : c'est un **filtre**.
+
+`.footer__credit` porte la classe `.reveal` — pour une seule raison : déclencher
+l'écriture manuscrite à l'arrivée à l'écran. Or `style.css` l. 1500 pose, à
+partir de **760 px de large** :
+
+```css
+@media (min-width:760px) and (prefers-reduced-motion:no-preference){
+  .reveal{filter:blur(6px); …}
+  .reveal.in{filter:blur(0)}
+}
+```
+
+Le bloc V190/V191 annulait bien `opacity` et `transform` pour ce cartouche —
+**il avait oublié `filter`**. Restait donc à espérer que `.in` arrive. Il
+n'arrivait pas.
+
+#### Pourquoi `.in` n'arrivait jamais sur une fenêtre haute
+
+L'observateur de `script.js` : `threshold: 0.12`,
+`rootMargin: '0px 0px -8% 0px'`. La racine est donc la fenêtre **amputée de 8 %
+en bas**. Le cartouche vit à **22 px** du bas du document et fait **66 px** de
+haut : page défilée à fond, il occupe les 88 derniers pixels de la fenêtre.
+
+| fenêtre | 8 % du bas | part du bloc dans la racine | `.in` | filtre |
+|---|---|---|---|---|
+| 2560 × 1440 | 115 px | **0 %** | NON | blur(6px) |
+| 1920 × 1080 | 86 px | **3,4 %** | NON | blur(6px) |
+| 1600 × 1200 | 96 px | **0 %** | NON | blur(6px) |
+| 1440 × 900 | 72 px | 24,7 % | OUI | blur(0) |
+| 1024 × 768 | 61 px | 40,9 % | OUI | blur(0) |
+
+Le seuil exigé est 12 %. **Au-delà d'environ 1 000 px de hauteur de fenêtre, le
+pied restait flouté pour de bon.**
+
+⚠️ **ET VOILÀ POURQUOI AUCUN BANC NE L'AVAIT VU.** Tous mesurent à
+`1440×900`, `768×1024`, `390×844` — c'est-à-dire **sous le seuil**. Le défaut
+n'était pas dans ce qu'on regardait, il était dans la **hauteur à laquelle on
+regardait**. À ajouter aux formats de tout banc qui touche au bas de page :
+**1920×1080 et 2560×1440**.
+
+⚠️ **Et pourquoi la mesure d'encre n'a rien vu non plus** : `controle.mjs`
+retrame le `<svg>` dans un canvas à partir de son balisage. Un `filter` CSS posé
+sur un ANCÊTRE n'existe pas dans ce canvas. La mesure était juste, elle ne
+portait simplement pas sur ce qui floutait. Le travail sur l'encre (§ ci-dessus)
+reste valable — il améliore réellement la densité — mais **ce n'était pas la
+cause du « flou »**.
+
+#### La correction, aux deux niveaux
+
+1. **`filter:none`** sur `.site-footer .footer__bottom .footer__credit.reveal`.
+   Ce bloc ne fait pas l'animation d'entrée : il ne doit ni apparaître en fondu,
+   ni monter, ni être flouté. Il ne dépend plus de personne.
+2. **Un filet « fin de page » dans `script.js`**, parce que le trou est
+   GÉNÉRAL : n'importe quel `.reveal` posé dans les derniers pixels du document
+   est inatteignable pour l'observateur. Arrivé en bas du document, on révèle ce
+   qui est **réellement à l'écran** — pas tout, pour ne pas déclencher en masse
+   des blocs que le visiteur n'a pas atteints.
+
+Effet de bord heureux : l'écriture manuscrite du pied est pilotée par `.in`. Sur
+un écran haut, **elle ne s'était donc jamais jouée**. Elle se joue maintenant.
+
+Vérification (`reveal-nonregression.mjs`, à 1920×1080) : à mi-page, **0** des 35
+`.reveal` restés sous la ligne de flottaison d'`index.html` sont prématurément
+révélés ; en bas, le cartouche est `.in` avec `filter:none` sur les 5 pages
+testées, aucun bloc visible non révélé, aucune erreur console.
+
 ### La preuve de non-régression
 
 Empreinte du site avant / après (`.claude/empreinte-site.mjs`), 87 vues,

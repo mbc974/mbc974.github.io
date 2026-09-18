@@ -176,6 +176,34 @@
       }
       io.observe(el);
     });
+
+    /* Le filet du BAS DE PAGE (18/09/2026).
+       Le rootMargin ampute la racine de 8 % en bas. Un .reveal qui vit dans ces
+       derniers pixels du document n'y entre donc JAMAIS, même page défilée à
+       fond : il garde son état de départ — opacité 0, décalage, et surtout
+       filter:blur(6px) au-delà de 760 px de large (style.css l. 1500).
+       Vécu : la cartouche de signature du pied est à 22 px du bas du document et
+       fait 66 px de haut. À 1080 px de fenêtre, les 8 % valent 86 px et il ne
+       reste que 3,4 % du bloc dans la racine, pour un seuil de 12 %. Le pied
+       était donc flouté sur tout écran de plus de ~1000 px de haut — et sur
+       aucun banc, qui mesurent à 900.
+       On révèle seulement ce qui est RÉELLEMENT à l'écran à ce moment-là : pas
+       de révélation en masse de blocs que le visiteur n'a pas encore atteints. */
+    const finDePage = function () {
+      const doc = document.documentElement;
+      if (window.innerHeight + window.scrollY < doc.scrollHeight - 2) return;
+      let reste = false;
+      reveals.forEach(function (el) {
+        if (el.classList.contains('in')) return;
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('in'); io.unobserve(el); }
+        else reste = true;
+      });
+      if (!reste) window.removeEventListener('scroll', finDePage);
+    };
+    window.addEventListener('scroll', finDePage, { passive: true });
+    window.addEventListener('resize', finDePage, { passive: true });
+    finDePage();
   }
 
   /* ---- Counters (numeric only) ---- */

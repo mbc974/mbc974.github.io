@@ -12508,7 +12508,30 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   margin-top:var(--sp-100);padding-top:var(--sp-100);
   border-top:1px solid var(--hair-2);text-align:center}
 .site-footer .footer__bottom .footer__credit::before{display:none}
-.site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
+/* LE CARTOUCHE NE FAIT PAS L'ANIMATION D'ENTRÉE — ET `filter` EN FAIT PARTIE.
+   Le bloc porte la classe .reveal pour une seule raison : déclencher l'écriture
+   manuscrite quand il arrive à l'écran. Il ne doit ni apparaître en fondu, ni
+   monter, ni être flouté. Les deux premières étaient annulées ici ; la
+   troisième avait été oubliée, et elle coûtait cher.
+
+   Ce qu'Alexandre voyait le 18/09 (« tjs flou sur pc ») : `.reveal` pose
+   `filter:blur(6px)` à partir de 760 px de large (l. 1500), retiré seulement
+   par `.in`. Or `.in` n'arrivait JAMAIS sur une fenêtre haute. L'observateur de
+   script.js a un rootMargin de -8 % en bas ; le cartouche vit à 22 px du bas du
+   document et fait 66 px de haut, donc il occupe les 88 derniers pixels de la
+   fenêtre une fois la page défilée à fond. À 1080 px de haut, ces 8 % font
+   86 px : il ne restait que 3,4 % du bloc dans la racine, pour un seuil de
+   12 %. Mesuré : .in NON et blur(6px) à 1920×1080, .in OUI et blur(0) à
+   1440×900 et 1024×768.
+
+   ⚠️ ET C'EST POURQUOI AUCUN BANC NE L'AVAIT VU : ils mesurent tous à 900 px de
+   haut ou moins, c'est-à-dire juste sous le seuil (il faut une fenêtre de plus
+   de ~1000 px). Le défaut n'était pas dans ce qu'on regardait, il était dans la
+   HAUTEUR à laquelle on regardait. Le filet côté script.js (voir « fin de
+   page » dans script.js) traite le cas général ; `filter:none` ici garantit que
+   ce bloc-là ne dépend plus de personne. */
+.site-footer .footer__bottom .footer__credit.reveal{
+  opacity:1;transform:none;filter:none;transition:none}
 /* PLUS DE FILET VERTICAL. Un trait à gauche est la ponctuation d'un DRAPEAU :
    il dit « le texte commence ici ». Sur un pavé centré il ne dit plus rien et
    déséquilibre l'axe — l'espace suffit à séparer. La cartouche ne garde que sa

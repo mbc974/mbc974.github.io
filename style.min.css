@@ -6455,7 +6455,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   margin-top:var(--sp-100);padding-top:var(--sp-100);
   border-top:1px solid var(--hair-2);text-align:center}
 .site-footer .footer__bottom .footer__credit::before{display:none}
-.site-footer .footer__bottom .footer__credit.reveal{opacity:1;transform:none;transition:none}
+.site-footer .footer__bottom .footer__credit.reveal{
+  opacity:1;transform:none;filter:none;transition:none}
 .site-footer .footer__bottom .footer__credit .footer__cartel{
   position:relative;min-width:0;width:max-content;max-width:100%;
   margin-inline:auto;padding-left:0;text-align:center}
