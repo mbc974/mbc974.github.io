@@ -3773,12 +3773,55 @@ Réduire le tracé ne se fait pas en changeant `width` seul. Le viewBox est
 | | avant | après | d'où |
 |---|---|---|---|
 | `.sig-hw` | 46 × 26 px | **40 × 23 px** | 436/247 = 1,765 |
-| `--hw-sw` | 11,5 | **13,2** | 1,21 px à l'écran × 436/40 |
 | calage vertical | −.20em | **`top:2.7px`** | hauteur × 29/247 = 23 × 29/247 |
 
-`--hw-sw` est une épaisseur en **unités de viewBox** : la laisser à 11,5 aurait
-donné 1,06 px de plume au lieu de 1,21, soit une écriture plus maigre que celle
-du hero. La formule est `--hw-sw = 1,21 × 436 / largeur`.
+`--hw-sw` est une épaisseur en **unités de viewBox**, elle suit donc la largeur.
+Elle a changé deux fois le même jour, et la deuxième fois pour une autre raison :
+voir la section suivante.
+
+### « C'est flou, je n'arrive pas à distinguer » — et ce n'était pas la taille
+
+Alexandre, le 18/09 au soir, après la mise en ligne. Mesure au pixel : le tracé
+tramé à sa taille d'écran ne compte que **79 pixels franchement encrés contre
+188 gris d'anticrénelage** — 70 % de ce qu'on voit n'est pas de l'encre.
+
+La surprise est ailleurs. La version de **46 px d'avant en comptait 117 contre
+229, soit 66 %**, et celle de 52 px encore 62 %. **Le flou ne venait donc pas de
+la réduction** : un mot de quatre lettres en écriture manuscrite rendu sur 40 à
+52 px de large a des déliés d'environ un pixel, qui ne peuvent QUE s'anticréner.
+Agrandir n'y change presque rien. Ce qui le change, c'est l'ÉPAISSEUR.
+
+Le tracé porte déjà un `stroke` : c'était la plume de l'animation d'écriture,
+éteinte au repos par `stroke-opacity:0` et par la keyframe `hw-plume`, qui la
+fait disparaître une fois l'encre posée. **On la laisse sur le papier.** Le
+contour s'ajoute au remplissage et grossit les lettres sans les agrandir :
+
+| | plume | pixels encrés | part floue |
+|---|---|---|---|
+| avant (40 px, plume retirée) | — | 79 | 70,4 % |
+| **après (40 px, encre gardée)** | **0,60 px** | **116** | 68,6 % |
+| 46 px, encre gardée | 0,60 px | 159 | 65,1 % |
+| 52 px, encre gardée | 0,60 px | 205 | 62,0 % |
+
+À taille strictement égale, **+47 % d'encre** — soit la densité de la version de
+46 px dans l'encombrement de celle de 40.
+
+Deux réglages écartés sur planche : une plume de **1,21 px** bouche les
+contre-formes du « A » et du « e » (le mot devient un pâté, même si le chiffre
+de « part floue » tombe à 41,5 % — **ce ratio mesure la solidité, pas la
+lisibilité**, il faut regarder la planche) ; **0,30 px** ne se distingue pas de
+l'état de départ. La formule est `--hw-sw = 0,60 × 436 / largeur`, soit **6,5**
+à 40 px.
+
+`hw-plume` est **omise** de la liste d'animations du pied. Le hero la garde :
+son écriture fait 93 % de la largeur de l'écran, ses déliés font plusieurs
+pixels, il n'a pas ce problème.
+
+⚠️ **Le banc `loupe.mjs` forçait `stroke:none` dans son clone** : il mesurait le
+remplissage seul et ne pouvait donc PAS voir l'encre ajoutée — il a annoncé 79
+pixels encrés sur une version qui en avait 116. C'est `controle.mjs` qui trame
+le `<svg>` tel qu'il est calculé, `fill` ET `stroke`. Un banc qui neutralise la
+propriété qu'on est en train de corriger ne mesure rien.
 
 ### Le piège qui a failli passer : `vertical-align` ne faisait rien
 

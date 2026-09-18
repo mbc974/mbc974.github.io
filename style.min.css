@@ -6496,18 +6496,16 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
 .site-footer .footer__bottom .footer__credit .sig-hw{
   display:block;width:40px;height:23px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:13.2;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:6.5;
   transition:color .35s var(--ease)}
 .site-footer .footer__bottom .footer__credit .sig-hw .hw__p{
-  fill-opacity:1;stroke-dashoffset:0;stroke-opacity:0}
+  fill-opacity:1;stroke-dashoffset:0;stroke-opacity:1}
 .site-footer .footer__bottom .footer__credit.in .sig-hw .hw__p{
   animation:
     hw-trait calc(var(--hw-trace) * var(--t)) linear
              calc(var(--hw-trace) * var(--d) + .25s) both,
     hw-encre calc(var(--hw-trace) * var(--t) * 1.9) var(--ease-out)
-             calc(var(--hw-trace) * (var(--d) + var(--t) * .42) + .25s) both,
-    hw-plume calc(var(--hw-trace) * var(--t) * 1.1) var(--ease-out)
-             calc(var(--hw-trace) * (var(--d) + var(--t) * .6) + .25s) both}
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .42) + .25s) both}
 @media (hover:hover) and (pointer:fine){
   .site-footer .footer__bottom .footer__credit .sig-name:hover .sig-hw{color:var(--rouge-coeur)}
 }

@@ -12627,37 +12627,52 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    trois keyframes maison — hw-trait, hw-encre, hw-plume.
    La classe hw__pt du dernier contour a été retirée : elle colore en orange le
    POINT FINAL d'une phrase, et « Alex » n'en a pas — le « x » aurait été orange.
-   --hw-sw:13.2 et non 3 : l'épaisseur est en unités de viewBox, et ce viewBox-ci
-   (436 de large rendu à 40 px) est onze fois plus serré que celui du hero.
-   13,2 × 40/436 = 1,21 px à l'écran, soit la plume du hero.
-   ⚠️ CETTE VALEUR SUIT LA LARGEUR. Réduire le tracé sans la recalculer épaissit
-   la plume d'autant : à 40 px, laisser 11,5 aurait donné 1,06 px au lieu de
-   1,21 — une écriture plus maigre que celle du hero. La formule est
-   --hw-sw = 1,21 × 436 / largeur. (V191, 18/09 : 46 → 40 px, 11,5 → 13,2.) */
+   LA PLUME NE SE RETIRE PLUS : ELLE EST L'ENCRE (V191.2, 18/09).
+   Alexandre, le 18/09 au soir : « c'est flou je n'arrive pas à distinguer ».
+   Mesuré au pixel, sur le tracé tramé à sa taille d'écran : à 40 px, 79 pixels
+   seulement sont franchement encrés contre 188 gris d'anticrénelage — 70 % de
+   ce qu'on voit n'est pas de l'encre, c'est du flou. Et la surprise est
+   ailleurs : la version de 46 px d'avant en comptait 117 contre 229, soit
+   66 %. **Le flou ne venait donc pas de la réduction.** Un mot de quatre
+   lettres en écriture manuscrite, rendu sur 40 à 52 px de large, a des déliés
+   d'environ un pixel : ils ne peuvent QUE s'anticréner. Agrandir n'y change
+   presque rien (52 px : encore 62 %). Ce qui le change, c'est l'ÉPAISSEUR.
+
+   Le tracé porte déjà un `stroke` — c'était la plume de l'animation d'écriture,
+   éteinte au repos par `stroke-opacity:0`. On la laisse allumée : le contour
+   s'ajoute au remplissage et grossit les lettres SANS les agrandir. 116 pixels
+   franchement encrés au lieu de 79, à taille strictement égale (+47 %), soit la
+   densité de la version de 46 px dans l'encombrement de celle de 40.
+
+   --hw-sw:6.5 et non 13.2 : l'épaisseur est en unités de viewBox, et
+   6,5 × 40/436 = 0,60 px à l'écran. Deux essais écartés sur planche :
+   1,21 px bouche les contre-formes du « A » et du « e » (le mot devient un
+   pâté), 0,30 px ne se distingue plus de l'état actuel.
+   ⚠️ CETTE VALEUR SUIT LA LARGEUR : --hw-sw = 0,60 × 436 / largeur. */
 .site-footer .footer__bottom .footer__credit .sig-hw{
   display:block;width:40px;height:23px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:13.2;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:6.5;
   transition:color .35s var(--ease)}
 
-/* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, plume retirée. .hw__p
-   pose l'inverse (fill-opacity:0, dashoffset:1) parce que dans le hero le
-   tracé démarre au chargement ; ici il démarre au défilement, et sans
-   JavaScript .in n'arrive jamais — une signature invisible serait pire que pas
-   de signature. */
+/* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, ET la plume restée sur
+   le papier. .hw__p pose l'inverse (fill-opacity:0, dashoffset:1) parce que
+   dans le hero le tracé démarre au chargement ; ici il démarre au défilement,
+   et sans JavaScript .in n'arrive jamais — une signature invisible serait pire
+   que pas de signature. */
 .site-footer .footer__bottom .footer__credit .sig-hw .hw__p{
-  fill-opacity:1;stroke-dashoffset:0;stroke-opacity:0}
+  fill-opacity:1;stroke-dashoffset:0;stroke-opacity:1}
 
-/* L'ÉCRITURE, au défilement. Mêmes trois animations que le hero, mêmes --d et
-   --t (posés par le générateur sur chaque contour), même décalage de 42 % entre
-   la plume et l'encre. */
+/* L'ÉCRITURE, au défilement. Deux animations et non trois : hw-plume, qui fait
+   disparaître le contour une fois l'encre posée, est volontairement OMISE ici.
+   C'est elle qui laissait le tracé aux seuls déliés du remplissage, et donc au
+   flou. Le hero la garde : son écriture fait 93 % de la largeur de l'écran,
+   ses déliés font plusieurs pixels, il n'a pas ce problème. */
 .site-footer .footer__bottom .footer__credit.in .sig-hw .hw__p{
   animation:
     hw-trait calc(var(--hw-trace) * var(--t)) linear
              calc(var(--hw-trace) * var(--d) + .25s) both,
     hw-encre calc(var(--hw-trace) * var(--t) * 1.9) var(--ease-out)
-             calc(var(--hw-trace) * (var(--d) + var(--t) * .42) + .25s) both,
-    hw-plume calc(var(--hw-trace) * var(--t) * 1.1) var(--ease-out)
-             calc(var(--hw-trace) * (var(--d) + var(--t) * .6) + .25s) both}
+             calc(var(--hw-trace) * (var(--d) + var(--t) * .42) + .25s) both}
 
 /* Au survol, la signature prend le rouge du cœur : même encre pour les deux. */
 @media (hover:hover) and (pointer:fine){
