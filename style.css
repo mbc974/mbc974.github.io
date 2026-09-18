@@ -12592,7 +12592,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sr-only garde « profil LinkedIn (nouvel onglet) » pour les lecteurs d'écran,
    et le <svg> porte aria-label="Alex" — le nom reste donc annoncé. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name{
-  position:relative;display:inline-block;top:2.7px;
+  position:relative;display:inline-block;top:2.35px;
   margin-left:.2em;text-decoration:none;background-image:none;
   -webkit-text-fill-color:currentColor}
 /* LE CALAGE VERTICAL, ET LA PROPRIÉTÉ QUI NE SERVAIT À RIEN.
@@ -12614,9 +12614,27 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 
    La correction : `top`, qui lui s'applique (la boîte est en position:relative)
    et ne touche à aucune mesure de la grille — c'est un décalage de peinture.
-   2,7 px = hauteur × 29/247 = 23 × 29/247. ⚠️ Toute retouche de la HAUTEUR du
-   tracé oblige à refaire ce calcul, et à le refaire EN PIXELS : la hauteur du
-   svg est en px, pas en em du texte voisin. */
+   2,35 px pour une boîte de 36 × 20. (2,7 px quand elle faisait 40 × 23.)
+
+   ⚠️ LE CALCUL EXACT, parce que « hauteur × 29/247 » n'est vrai QUE PARFOIS.
+   Le svg porte preserveAspectRatio="xMinYMid meet" : l'échelle retenue est la
+   PLUS PETITE des deux, et le reste est centré verticalement.
+       échelle  = min(largeur/436, hauteur/247)
+       margeHaut = (hauteur − 247 × échelle) / 2
+       top       = hauteur − margeHaut − 218 × échelle
+   À 36 × 20 c'est la HAUTEUR qui pilote (36/436 > 20/247), margeHaut = 0, et la
+   formule courte tombe juste : 20 × 29/247 = 2,35. À 40 × 23 c'était la LARGEUR
+   (40/436 < 23/247) : il restait 0,17 px de marge en haut et en bas, et la
+   vraie valeur était 2,83 px, pas les 2,70 posés. L'écart de 0,13 px ne se
+   voyait pas, mais la formule courte est un piège — elle n'est exacte que quand
+   le rapport largeur/hauteur de la boîte égale 436/247.
+
+   ⚠️ ET LE PIÈGE DE LA MESURE. Pour lire la ligne de base du texte voisin, le
+   témoin doit être un inline-block de **0 × 0** en vertical-align:baseline. Un
+   témoin qui contient un caractère fait 21 px de haut, sa ligne de base est son
+   bord bas, donc il exige 21 px AU-DESSUS de la ligne : il agrandit la boîte de
+   .sig-by, décale l'alignement du flex et fait mentir la mesure de 1,3 px.
+   Le premier relevé du 18/09 réclamait top:3,63 px à cause de lui. */
 .site-footer .footer__bottom .footer__credit .footer__signature .sig-name::after{content:none}
 
 /* LE TRACÉ EST CELUI DU SITE, PAS UN AUTRE. Le hero écrit déjà trois phrases
@@ -12644,14 +12662,23 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    franchement encrés au lieu de 79, à taille strictement égale (+47 %), soit la
    densité de la version de 46 px dans l'encombrement de celle de 40.
 
-   --hw-sw:6.5 et non 13.2 : l'épaisseur est en unités de viewBox, et
-   6,5 × 40/436 = 0,60 px à l'écran. Deux essais écartés sur planche :
-   1,21 px bouche les contre-formes du « A » et du « e » (le mot devient un
-   pâté), 0,30 px ne se distingue plus de l'état actuel.
-   ⚠️ CETTE VALEUR SUIT LA LARGEUR : --hw-sw = 0,60 × 436 / largeur. */
+   --hw-sw:9.7 : l'épaisseur est en unités de viewBox, et 9,7 × 36/436 = 0,80 px
+   à l'écran. Essais écartés sur planche : à 40 px, 1,21 px bouchait les
+   contre-formes du « A » et du « e » (le mot devient un pâté) et 0,30 px ne se
+   distinguait pas de l'état de départ ; à 36 px, 0,90 px referme le « A ».
+
+   ⚠️ DEUX CHOSES CHANGENT QUAND LA LARGEUR CHANGE, PAS UNE.
+   1. La conversion : --hw-sw = plume × 436 / largeur.
+   2. La plume elle-même. Elle n'est PAS une constante : c'est ce qui tient la
+      densité d'encre quand le tracé rétrécit. 0,60 px suffisait à 40 px ; à
+      36 px il faut 0,80 px pour garder le même nombre de pixels franchement
+      encrés (99 contre 92, là où la version de 40 px en comptait 116).
+      Elle se choisit sur la planche, jamais par extrapolation.
+   (V191 : 46 → 40 px ; V191.2 : la plume reste sur le papier ;
+    V191.3, 18/09 : 40 → 36 px, plume 0,60 → 0,80.) */
 .site-footer .footer__bottom .footer__credit .sig-hw{
-  display:block;width:40px;height:23px;overflow:visible;
-  color:var(--txt);--hw-trace:1.6s;--hw-sw:6.5;
+  display:block;width:36px;height:20px;overflow:visible;
+  color:var(--txt);--hw-trace:1.6s;--hw-sw:9.7;
   transition:color .35s var(--ease)}
 
 /* L'ÉTAT DE REPOS EST L'ÉTAT FINAL : lettres encrées, ET la plume restée sur
@@ -12698,4 +12725,99 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .site-footer .footer__bottom .footer__credit .footer__credit-k i{display:none}
   .site-footer .footer__bottom .footer__credit .footer__hand{
     display:block;width:100%;margin-top:.2em;letter-spacing:.14em}
+}
+
+/* ============================================================================
+   V192 · LE FLOCAGE — la page partenaires montre le maillot PORTÉ
+   ----------------------------------------------------------------------------
+   Ce que la page montrait avant : un rendu 3D du maillot domicile, floqué d'un
+   « 23 » qui n'existe pas et vierge de tout logo. Elle promettait donc à une
+   entreprise un emplacement qu'elle ne lui montrait pas. MAINTENANCE § 17.4
+   avait relevé ces maquettes comme le dernier reste de synthèse du site, « à
+   vérifier un jour ».
+
+   Ce qu'elle montre maintenant : le maillot 2026/2027 en match, avec DEUX
+   partenaires déjà floqués. Le bloc n'est donc plus une illustration, c'est une
+   démonstration — d'où les deux pastilles posées sur la photo et la légende
+   numérotée en regard, qui disent quel emplacement est lequel.
+
+   TROIS DÉCISIONS, ET LEUR RAISON
+
+   1. La photo est bornée à 420 px, y compris quand la colonne est plus large.
+      Mesure : le mot « OXYSOM » fait 338 px dans le cadrage retenu (1954 px de
+      large). À 420 px d'affichage il en fait 74 — lisible. Sur le cliché plein
+      pied d'origine, il en aurait fait 33 : la preuve ne se serait pas vue.
+
+   2. Les pastilles sont dimensionnées en unités de conteneur (cqi), pas en rem.
+      Une pastille de 30 px posée à 41 % d'une photo de 420 px devient un point
+      perdu sur la même photo à 338 px et un jeton sur une photo à 760. En cqi
+      elle garde sa part de l'image à toutes les largeurs. Le repli sans
+      @supports garde une taille fixe : mieux vaut une pastille un peu grande
+      qu'une pastille absente.
+
+   3. Les coordonnées des pastilles sont écrites ICI et non dans le HTML : ce
+      sont des mesures faites sur le cadrage de .claude/set-maillot-partenaires.py
+      (fractions GAUCHE/HAUT/DROITE/BAS). Recadrer la photo sans reprendre ces
+      deux règles ferait pointer les pastilles à côté. Les deux fichiers se
+      citent l'un l'autre pour cette raison.
+
+   Relevés sur le cadrage publié : le logo Oxysom occupe 47 → 73 % en largeur
+   et 70 → 75 % en hauteur ; « Les Agitateurs du Midi » 52 → 70 % et 78 → 88 %.
+   Les pastilles se posent donc à GAUCHE des deux, sur le blanc du maillot, où
+   rien n'est masqué.
+   ============================================================================ */
+.floc{margin:0;display:grid;gap:var(--sp-140);max-width:940px}
+
+.floc__photo{position:relative;margin:0;max-width:420px;border-radius:var(--r-md);
+  overflow:hidden;border:1px solid var(--line);box-shadow:var(--e2),var(--bevel);
+  background:var(--nuit-3)}
+.floc__photo img{display:block;width:100%;height:auto}
+
+/* La pastille et la puce de la légende partagent le même dessin : c'est ce qui
+   fait lire « 1 sur la photo = 1 dans la liste » sans le dire. */
+.floc__pin,
+.floc__spots li::before{display:grid;place-items:center;width:1.85em;height:1.85em;
+  border-radius:50%;background:var(--orange-vif);color:var(--nuit-0);
+  font-family:var(--ff-cond);font-weight:700;line-height:1;
+  box-shadow:0 0 0 2px rgb(var(--nuit-0-rgb) / .55),0 2px 8px rgba(2,6,14,.45)}
+
+.floc__pin{position:absolute;font-size:15px;
+  left:var(--px);top:var(--py);transform:translate(-50%,-50%)}
+.floc__pin--1{--px:41%;--py:72.5%}
+.floc__pin--2{--px:41%;--py:83.5%}
+@supports (font-size:1cqi){
+  .floc__photo{container-type:inline-size}
+  .floc__pin{font-size:3.6cqi}
+}
+
+.floc__note{margin:0;display:grid;gap:var(--sp-100);align-content:start}
+.floc__lead{margin:0;color:var(--txt-soft);line-height:1.7}
+
+/* Deux lignes de texte par emplacement, et la pastille à cheval sur les deux :
+   la même figure que .essentiel-card__ico (grid-row:1 / 3). Sans ces
+   grid-column explicites, <b> et <span> tomberaient dans deux colonnes
+   implicites de part et d'autre de la pastille. */
+.floc__spots{list-style:none;counter-reset:floc;margin:0;padding:0;display:grid;gap:var(--sp-85)}
+.floc__spots li{counter-increment:floc;display:grid;grid-template-columns:auto 1fr;
+  column-gap:var(--sp-85);color:var(--txt-soft);line-height:1.4}
+.floc__spots li::before{content:counter(floc);font-size:14px;
+  grid-column:1;grid-row:1 / 3;align-self:center}
+.floc__spots b{grid-column:2;grid-row:1;font-family:var(--ff-cond);font-weight:700;
+  text-transform:uppercase;letter-spacing:.08em;font-size:var(--text-sm);
+  color:var(--orange-vif)}
+.floc__spots span{grid-column:2;grid-row:2;font-size:var(--text-base);color:var(--txt)}
+
+/* La réserve du dossier partenaire, reprise mot pour mot (« selon planning de
+   production et disponibilité des supports »). Elle est en petit, mais elle est
+   là : une page qui promet un flocage sans elle promet ce que le club ne
+   maîtrise pas. */
+.floc__fine{margin:0;font-size:var(--text-md);line-height:1.6;color:var(--txt-soft);
+  padding-top:var(--sp-90);border-top:1px solid var(--line)}
+
+/* DEUX COLONNES à partir de 880 px. En dessous, la photo garde ses 420 px et se
+   ferre à gauche comme le texte qui la précède : la centrer créerait un troisième
+   axe dans une colonne qui n'en a qu'un. */
+@media (min-width:880px){
+  .floc{grid-template-columns:420px minmax(280px,1fr);gap:var(--sp-140) 2.2rem;
+    align-items:center}
 }

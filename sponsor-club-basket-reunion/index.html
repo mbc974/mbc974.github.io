@@ -66,7 +66,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="../assets/fonts/anton-400-latin.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="../assets/fonts/barlow-condensed-700-latin.woff2">
-<link rel="stylesheet" href="/style.min.css?v=fa24c3a3">
+<link rel="stylesheet" href="/style.min.css?v=b7a39923">
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebPage","name":"Sponsor d'un club de basket à La Réunion — MBC La Montagne Basket Club","url":"https://mbc974.com/sponsor-club-basket-reunion/","inLanguage":"fr","description":"Devenir sponsor ou partenaire du MBC La Montagne Basket Club à La Réunion : visibilité, formules et contact.","isPartOf":{"@type":"WebSite","@id":"https://mbc974.com/#website","name":"MBC La Montagne Basket Club","url":"https://mbc974.com/"},"about":{"@type":"SportsClub","@id":"https://mbc974.com/#club"}}
@@ -77,8 +77,8 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
   {"@type":"Question","name":"À partir de quel budget peut-on devenir sponsor ?","acceptedAnswer":{"@type":"Answer","text":"Dès 200 € (formule Rookie), jusqu'aux partenariats majeurs. Le soutien peut aussi être matériel ou en services."}},
-  {"@type":"Question","name":"Quelles contreparties concrètes ?","acceptedAnswer":{"@type":"Answer","text":"Selon la formule : logo sur le site et les réseaux sociaux, affiches et flyers, invitations aux événements, et maillots ou visibilité au gymnase pour les formules les plus engagées."}},
-  {"@type":"Question","name":"Sponsoring ou mécénat ?","acceptedAnswer":{"@type":"Answer","text":"Les deux formes de soutien sont possibles. Selon la nature de la contribution et votre situation, certaines peuvent relever du mécénat : rapprochez-vous de votre conseil comptable ou fiscal pour vérifier les conditions applicables."}}
+  {"@type":"Question","name":"Quelles contreparties concrètes ?","acceptedAnswer":{"@type":"Answer","text":"Cela dépend de la formule. Dès 200 €, votre logo est en ligne : site et réseaux sociaux. À partir de 500 €, il passe sur les affiches et les flyers, avec une publication dédiée et des invitations à nos événements. À partir de 1 000 €, il est floqué sur les maillots et affiché au gymnase, sous réserve d'autorisation et des emplacements disponibles."}},
+  {"@type":"Question","name":"Sponsoring ou mécénat ?","acceptedAnswer":{"@type":"Answer","text":"Les deux sont possibles. Le sponsoring est un achat de visibilité : des contreparties identifiées, et une facture. Le mécénat est un don, dont le traitement fiscal dépend de votre situation comme de celle du club. Rapprochez-vous de votre conseil comptable ou fiscal pour vérifier les conditions applicables."}}
 ]}
 </script>
 
@@ -167,7 +167,14 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <p class="lead">Vous êtes une entreprise, un commerçant ou un mécène et souhaitez soutenir le sport péi ? Le MBC, club de basket de La Montagne à Saint-Denis, vous offre une visibilité locale concrète et un impact direct sur la jeunesse du quartier, dès sa saison fondatrice 2026/2027.</p>
       <div class="seo-links">
         <a href="/#contact" class="btn btn--primary btn--lg">Discuter d'un partenariat</a>
-        <a href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download class="btn btn--ghost btn--lg">Recevoir le dossier partenaire</a>
+        <!-- V192 · Meme libelle, mot pour mot, que le bouton de la section
+             « Le one-page partenaire » 4 000 px plus bas : c'est LE MEME
+             fichier. Il portait trois libelles differents sur une seule page
+             (« Recevoir le dossier partenaire », « Telecharger le dossier
+             partenaire (PDF) », « Telecharger le dossier partenaire »), dont
+             deux a 665 px l'un de l'autre — mesure a 1280 px. Un lecteur ne
+             peut pas savoir s'il s'agit d'un ou de trois documents. -->
+        <a href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download class="btn btn--ghost btn--lg">Télécharger le dossier partenaire (PDF)</a>
       </div>
     </div>
   </section>
@@ -183,14 +190,72 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       </ul>
 
       <h2 class="h2">Votre visibilité <span class="hl">concrète</span></h2>
-      <p>Selon la formule, votre marque peut apparaître sur&nbsp;: notre <b>site web</b>, nos <b>réseaux sociaux</b> (Facebook, Instagram, TikTok), nos <b>affiches et flyers</b>, lors de nos <b>événements</b> et, pour les formules les plus engagées, sur les <b>maillots</b> ou au gymnase (sous réserve d'autorisation). Des contenus photo et vidéo peuvent également valoriser votre soutien.</p>
+      <!-- V192 · Cette phrase disait « pour les formules les plus engagees, sur
+           les maillots OU au gymnase (sous reserve d'autorisation) ». Deux
+           defauts, pour un lecteur qui doit decider d'un budget :
+             - « les formules les plus engagees » ne dit pas laquelle. La carte
+               All-Star (1 000 €) et le dossier partenaire donnent pourtant le
+               seuil exact. Le lecteur pouvait croire qu'il fallait 2 000 €.
+             - « OU » retire une contrepartie : All-Star donne la bache ET le
+               flocage, la carte comme le PDF le disent.
+           La reserve, elle, RESTE — elle est meme precisee : le gymnase est
+           municipal, et le jeu de maillots peut deja etre imprime.
+           ⚠️ Cette promesse vit a TROIS endroits : ici, dans la FAQ visible et
+           dans le JSON-LD FAQPage de l'en-tete. Les trois ont ete alignes le
+           18/09 ; les faire bouger ensemble. -->
+      <p>Selon la formule, votre marque peut apparaître sur&nbsp;: notre <b>site web</b>, nos <b>réseaux sociaux</b> (Facebook, Instagram, TikTok), nos <b>affiches et flyers</b>, lors de nos <b>événements</b> et, à partir de la formule <b>All-Star (1&nbsp;000&nbsp;€)</b>, sur les <b>maillots</b> et au gymnase — bâche ou panneau, sous réserve d'autorisation et des emplacements disponibles. Des contenus photo et vidéo peuvent également valoriser votre soutien.</p>
+      <!-- V192 · La page demandait 200 a 2 000 € sans montrer une seule
+           entreprise ayant deja dit oui, alors que l'accueil affiche leurs six
+           logos. On RENVOIE au mur de l'accueil au lieu de le recopier : ce
+           bloc n'a aucun generateur, le dupliquer creerait une seconde source
+           de verite a tenir a jour — exactement ce que MAINTENANCE reproche a
+           l'affiche dessinee a la main. Le compte (cinq + l'equipementier) est
+           celui de index.html : le corriger ici si le mur change. -->
+      <p>Cinq entreprises et associations soutiennent déjà le club, aux côtés de notre équipementier&nbsp;: <a href="/#soutenir">voir les partenaires 2026/2027</a>.</p>
 
-      <figure style="margin:2rem auto 0;max-width:420px">
-        <img src="/assets/maillots/maillot-domicile.webp" alt="Maillot domicile du MBC La Montagne Basket Club, Saint-Denis (La Réunion) — le logo de votre entreprise peut y être floqué" width="690" height="960" loading="lazy" decoding="async" style="width:100%;height:auto;border-radius:18px">
-        <figcaption style="font-size:.85rem;color:var(--txt-soft);margin-top:.6rem;text-align:center">Le maillot domicile 2026/2027 — le logo de votre entreprise peut y être floqué, selon la formule choisie.</figcaption>
+    </div>
+
+    <!-- V192 · LE FLOCAGE. Cette figure montrait un RENDU 3D du maillot domicile,
+         floque d'un « 23 » qui n'existe pas et vierge de tout logo : la page
+         promettait a une entreprise un emplacement qu'elle ne lui montrait pas.
+         MAINTENANCE § 17.4 avait releve ces maquettes comme le dernier reste de
+         synthese du site, « a verifier un jour ».
+
+         Elle montre desormais le maillot 2026/2027 PORTE en match (cliche du
+         11/09/2026, Sony ILCE-7M4 — la date de prise de vue est controlee par le
+         generateur, cf. § 17.4). Deux partenaires y sont deja floques : ce n'est
+         plus une illustration, c'est une preuve.
+
+         ⚠️ On ne dit PAS « maillot domicile ». Le rendu bleu nuit de
+         /club-basket-la-montagne/ porte ce nom ; la tenue photographiee est
+         l'autre. Le site ne tranchera pas lequel est lequel sans le bureau.
+
+         Photo et pastilles : .claude/set-maillot-partenaires.py pour le cadrage,
+         .floc dans style.css pour les coordonnees. Recadrer sans reprendre les
+         deux ferait pointer les pastilles a cote. -->
+    <div class="wrap">
+      <figure class="floc">
+        <div class="floc__photo">
+          <picture>
+            <source type="image/avif" sizes="(min-width:460px) 420px, calc(100vw - 2.4rem)" srcset="/assets/maillots/maillot-mbc-2026-2027-partenaires-360.avif 360w, /assets/maillots/maillot-mbc-2026-2027-partenaires-560.avif 560w, /assets/maillots/maillot-mbc-2026-2027-partenaires-760.avif 760w, /assets/maillots/maillot-mbc-2026-2027-partenaires-1200.avif 1200w">
+            <source type="image/webp" sizes="(min-width:460px) 420px, calc(100vw - 2.4rem)" srcset="/assets/maillots/maillot-mbc-2026-2027-partenaires-360.webp 360w, /assets/maillots/maillot-mbc-2026-2027-partenaires-560.webp 560w, /assets/maillots/maillot-mbc-2026-2027-partenaires-760.webp 760w, /assets/maillots/maillot-mbc-2026-2027-partenaires-1200.webp 1200w">
+            <img src="/assets/maillots/maillot-mbc-2026-2027-partenaires.jpg" alt="Maillot blanc 2026/2027 du MBC La Montagne, porté au gymnase de La Montagne à Saint-Denis (La Réunion) : la marque de l'équipementier InPlay en haut, le numéro 34, l'écusson du club au centre, le logo Oxysom sous l'écusson et la signature Les Agitateurs du Midi en bas de maillot." width="1200" height="1522" loading="lazy" decoding="async">
+          </picture>
+          <span class="floc__pin floc__pin--1" aria-hidden="true">1</span>
+          <span class="floc__pin floc__pin--2" aria-hidden="true">2</span>
+        </div>
+        <figcaption class="floc__note">
+          <p class="floc__lead">Ce n'est pas une maquette&nbsp;: ce maillot a été porté le 11 septembre 2026 au gymnase de La Montagne, le soir de la première journée de championnat. Deux des emplacements partenaires y sont déjà occupés&nbsp;:</p>
+          <ol class="floc__spots">
+            <li><b>Sous l'écusson</b><span>Oxysom, assistance respiratoire</span></li>
+            <li><b>Bas de maillot</b><span>Les Agitateurs du Midi</span></li>
+          </ol>
+          <p class="floc__fine">Le flocage sur les maillots fait partie de la formule All-Star (1&nbsp;000&nbsp;€). Il dépend du planning de production et des emplacements disponibles&nbsp;: en cours de saison, le jeu peut déjà être imprimé — le club vous le dit dès le premier échange.</p>
+        </figcaption>
       </figure>
+    </div>
 
-
+    <div class="wrap seo-prose">
       <!-- Chiffres de visibilite. Deux règles tenues ici :
            1. on dit « apparitions » et « recherches », jamais « personnes » —
               1 130 impressions Google ne sont PAS 1 130 individus ;
@@ -213,9 +278,17 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           </dd>
         </div>
         <div class="vis-stat">
-          <dt class="vis-stat__v">4</dt>
+          <!-- V192 · Ce chiffre disait 4, et la page en listait 6 trente lignes
+               plus haut (la prose) comme trente lignes plus bas (le bloc .visi).
+               Trois comptages sur une meme page, dans un bloc qui se presente
+               comme verifiable — « sans arrondi flatteur », juste au-dessus.
+               C'est le 4 qui bouge : retirer les flyers et les maillots de la
+               liste reviendrait a retirer ce que les formules MVP et All-Star
+               facturent. Le gloss reprend desormais la liste du bloc .visi,
+               mot pour mot et dans le meme ordre. -->
+          <dt class="vis-stat__v">6</dt>
           <dd class="vis-stat__l">supports de diffusion
-            <span>Le site, les réseaux du club, les affiches de match et les événements du quartier.</span>
+            <span>Le site, les réseaux du club, les affiches, les flyers, les maillots et les événements du quartier.</span>
           </dd>
         </div>
       </dl>
@@ -236,9 +309,22 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <div class="packs-grid packs-grid--four">
           <article class="pack sponsor-pack sponsor-pack--rookie"><span class="pack__name">Rookie</span><span class="pack__price">200 €</span><span class="pack__desc">Pour un premier soutien local.</span><ul><li>Réseaux sociaux</li><li>Logo site web</li><li>Remerciements fin de saison</li></ul><a href="/?formule=Rookie#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
           <article class="pack sponsor-pack sponsor-pack--mvp pack--feat"><span class="pack__tag">Populaire</span><span class="pack__name">MVP</span><span class="pack__price">500 €</span><span class="pack__desc">Le meilleur rapport visibilité / budget.</span><ul><li>Logo affiches</li><li>Logo flyers</li><li>Publication dédiée</li><li>Invitations événements</li><li>Inclut Rookie</li></ul><a href="/?formule=MVP#contact" class="btn btn--primary pack__cta">Choisir cette formule</a></article>
-          <article class="pack sponsor-pack sponsor-pack--allstar"><span class="pack__name">All-Star</span><span class="pack__price">1 000 €</span><span class="pack__desc">Présence forte, jusque sur le terrain.</span><ul><li>Bâche gymnase</li><li>Logo maillots</li><li>Mise en avant saison</li><li>Inclut MVP</li></ul><a href="/?formule=All-Star#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
+          <article class="pack sponsor-pack sponsor-pack--allstar"><span class="pack__name">All-Star</span><span class="pack__price">1 000 €</span><span class="pack__desc">Présence forte, jusque sur le terrain.</span><ul><li>Bâche gymnase*</li><li>Logo floqué sur les maillots*</li><li>Mise en avant saison</li><li>Inclut MVP</li></ul><a href="/?formule=All-Star#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
           <article class="pack sponsor-pack sponsor-pack--hof"><span class="pack__name">Hall of Fame</span><span class="pack__price">2 000 €+</span><span class="pack__desc">Partenaire majeur, exclusivité secteur.</span><ul><li>Partenaire titre événement</li><li>Prise de parole cérémonies</li><li>Visibilité premium</li><li>Exclusivité secteur</li><li>Inclut All-Star</li></ul><a href="/?formule=Hall%20of%20Fame#contact" class="btn btn--ghost pack__cta">Choisir cette formule</a></article>
         </div>
+        <!-- V192 · L'asterisque du dossier partenaire, que la page avait perdue.
+             Le PDF ecrit « Logo floque sur maillots officiels* » et, en pied de
+             page, « *Logo maillot selon planning de production et disponibilite
+             des supports ». La page, elle, promettait « Logo maillots » sans
+             condition — et la photo publiee 700 px plus haut prouve que le jeu
+             2026/2027 est deja imprime et deja floque. Une entreprise qui signe
+             en octobre ne sera pas sur CE maillot-la : le lui dire ici coute
+             moins cher que de le lui apprendre apres signature.
+             On reste au plus pres du PDF : pas de « jeu suivant », pas de delai
+             promis — le club n'en maitrise pas le calendrier.
+             La classe .vis-src existe deja (source des chiffres Search Console
+             au-dessus) : aucune regle CSS nouvelle, donc rien a purger. -->
+        <p class="vis-src">* Bâche, panneau et flocage dépendent du planning de production de l'équipementier, des emplacements encore disponibles et, pour le gymnase, de l'autorisation de la Ville&nbsp;: en cours de saison, le jeu de maillots peut déjà être imprimé. Le club vous le dit dès le premier échange. Tous les autres supports — site, réseaux, affiches, flyers, événements — démarrent dès la signature.</p>
         <div class="visi">
           <h3 class="visi__title">Vos supports de visibilité</h3>
           <ul class="visi__tags" aria-label="Supports de visibilité pour les partenaires">
@@ -272,7 +358,14 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
         <li><b>3 saisons</b><span>−20&nbsp;% et mention «&nbsp;Partenaire fidèle&nbsp;»</span></li>
       </ul>
 
-      <h2 class="h2">Le one-page <span class="hl">partenaire</span></h2>
+      <!-- V192 · Le titre disait « Le one-page partenaire » alors que le bouton
+           juste en dessous, et celui du hero, disent « le dossier partenaire ».
+           UN SEUL fichier (verifie : le PDF fait une page), DEUX noms sur la
+           meme page : un dirigeant croit a deux documents et telecharge deux
+           fois le meme. Le titre prend donc le nom du bouton, et le fait « ca
+           tient sur une page » redevient ce qu'il est — un argument, pas un
+           nom de document. -->
+      <h2 class="h2">Le dossier <span class="hl">partenaire</span></h2>
       <p>Tout tient sur une page&nbsp;: le projet, les formules, les contreparties. À montrer à votre direction ou à votre comptable.</p>
       <!-- ============ IMAGE RETIREE TEMPORAIREMENT — 09/09/2026 ============
            Le rendu one-page (assets/images/one-page-partenaire.jpg) contredit le
@@ -305,16 +398,41 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       <p style="text-align:center;margin:1.4rem 0 0">
         <a class="btn btn--primary btn--lg" href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download>
           Télécharger le dossier partenaire (PDF)</a></p>
-      <p style="margin-top:1.6rem"><b>Plusieurs formes de soutien sont possibles</b>&nbsp;: financier, matériel ou en services. Chaque partenariat se construit avec le club, selon vos moyens et vos objectifs.</p>
+      <!-- V192 · Un paragraphe retire ici : « Plusieurs formes de soutien sont
+           possibles : financier, materiel ou en services. Chaque partenariat se
+           construit avec le club, selon vos moyens et vos objectifs. » Ses deux
+           moities etaient deja ecrites plus haut, a 25 et 20 lignes d'ici —
+           etape 2 de « Comment devenir partenaire ? » (« soutien financier,
+           materiel ou en services, selon vos moyens et vos objectifs ») et le
+           chapeau de la grille (« adaptables selon vos moyens et vos
+           objectifs »). La FAQ le redit une quatrieme fois en une incise, et
+           celle-la reste : une reponse de FAQ doit se suffire a elle-meme.
+           Rien n'est perdu, seule la troisieme redite part. -->
       <p style="font-size:.92rem">Selon la nature du soutien et la situation du partenaire, certaines contributions peuvent relever du mécénat. Chaque entreprise est invitée à se rapprocher de son conseil comptable ou fiscal afin de vérifier les conditions applicables.</p>
       <h2 class="h2">Questions <span class="hl">fréquentes</span></h2>
       <details class="faq__item"><summary>À partir de quel budget peut-on devenir sponsor&nbsp;?</summary><p>Dès 200 € (formule Rookie), jusqu'aux partenariats majeurs. Le soutien peut aussi être matériel ou en services.</p></details>
-      <details class="faq__item"><summary>Quelles contreparties concrètes&nbsp;?</summary><p>Selon la formule&nbsp;: logo sur le site et les réseaux sociaux, affiches et flyers, invitations aux événements, et maillots ou visibilité au gymnase pour les formules les plus engagées. Le détail figure dans les quatre formules ci-dessus.</p></details>
-      <details class="faq__item"><summary>Sponsoring ou mécénat&nbsp;?</summary><p>Les deux formes de soutien sont possibles. Selon la nature de la contribution et votre situation, certaines peuvent relever du mécénat&nbsp;: rapprochez-vous de votre conseil comptable ou fiscal pour vérifier les conditions applicables.</p></details>
+      <!-- V192 · Ces deux reponses repetaient mot pour mot ce que la page dit
+           deja en clair : la premiere recopiait la prose de « Votre visibilite
+           concrete », la seconde le paragraphe qui la precede de quatre lignes.
+           Elles repondent desormais a la question posee — les SEUILS pour l'une,
+           la DIFFERENCE entre les deux regimes pour l'autre — au lieu de reciter.
+           ⚠️ Leur texte est epingle au mot pres par le JSON-LD FAQPage de
+           l'en-tete (bloc @type FAQPage). Modifier l'un sans l'autre met les
+           donnees structurees en contradiction avec la page : les deux ont ete
+           repris ensemble le 18/09.
+           ⚠️ On ne dit pas que le mecenat ouvre droit a une reduction d'impot :
+           cela depend de l'eligibilite du club, que ce depot n'a pas a affirmer. -->
+      <details class="faq__item"><summary>Quelles contreparties concrètes&nbsp;?</summary><p>Cela dépend de la formule. Dès 200&nbsp;€, votre logo est en ligne&nbsp;: site et réseaux sociaux. À partir de 500&nbsp;€, il passe sur les affiches et les flyers, avec une publication dédiée et des invitations à nos événements. À partir de 1&nbsp;000&nbsp;€, il est floqué sur les maillots et affiché au gymnase, sous réserve d'autorisation et des emplacements disponibles. Le détail figure dans les quatre formules ci-dessus.</p></details>
+      <details class="faq__item"><summary>Sponsoring ou mécénat&nbsp;?</summary><p>Les deux sont possibles. Le sponsoring est un achat de visibilité&nbsp;: des contreparties identifiées, et une facture. Le mécénat est un don, dont le traitement fiscal dépend de votre situation comme de celle du club. Rapprochez-vous de votre conseil comptable ou fiscal pour vérifier les conditions applicables.</p></details>
 
+      <!-- V192 · Le second bouton de ce bloc pointait sur le dossier partenaire,
+           soit le TROISIEME lien vers le meme PDF — et le deuxieme en 665 px,
+           l'autre etant juste au-dessus de la FAQ. Il est retire, pas remplace :
+           la page se termine sur la seule action qu'elle n'a pas encore
+           proposee, parler au club. Le dossier reste a deux endroits, sous le
+           meme libelle : le hero et la section qui lui est consacree. -->
       <div class="seo-links">
         <a href="/#contact" class="btn btn--primary btn--lg">Recevoir une proposition</a>
-        <a href="/assets/documents/DOSSIER-PARTENARIAT-MBC-2026-2027.pdf" download class="btn btn--ghost btn--lg">Télécharger le dossier partenaire</a>
       </div>
       <p style="margin-top:2rem;font-size:.95rem">À lire aussi&nbsp;: <a href="/club-basket-la-montagne/">le club de basket de La Montagne</a> · <a href="/soutenir-le-club/">soutenir le club par un don</a> · <a href="/benevoles/">devenir bénévole</a>.</p>
     </div>

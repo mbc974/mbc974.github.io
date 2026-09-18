@@ -3772,8 +3772,12 @@ Réduire le tracé ne se fait pas en changeant `width` seul. Le viewBox est
 
 | | avant | après | d'où |
 |---|---|---|---|
-| `.sig-hw` | 46 × 26 px | **40 × 23 px** | 436/247 = 1,765 |
-| calage vertical | −.20em | **`top:2.7px`** | hauteur × 29/247 = 23 × 29/247 |
+| `.sig-hw` | 46 × 26 px | **36 × 20 px** | 436/247 = 1,765 |
+| calage vertical | −.20em | **`top:2.35px`** | voir le calcul exact ci-dessous |
+
+(V191 : 46 → 40 px ; V191.3, le même jour : 40 → 36 px, sur « réduis encore un
+petit peu ». **36 px est le plancher** : à 34 px le traé retombe à 75 pixels
+franchement encrés, soit en dessous des 79 dont Alexandre se plaignait.)
 
 `--hw-sw` est une épaisseur en **unités de viewBox**, elle suit donc la largeur.
 Elle a changé deux fois le même jour, et la deuxième fois pour une autre raison :
@@ -3798,10 +3802,18 @@ contour s'ajoute au remplissage et grossit les lettres sans les agrandir :
 
 | | plume | pixels encrés | part floue |
 |---|---|---|---|
-| avant (40 px, plume retirée) | — | 79 | 70,4 % |
-| **après (40 px, encre gardée)** | **0,60 px** | **116** | 68,6 % |
+| 40 px, plume retirée (l'état dont il se plaignait) | — | 79 | 70,4 % |
+| 40 px, encre gardée | 0,60 px | 116 | 68,6 % |
+| **36 px, encre gardée** — en ligne | **0,80 px** | **99** | 68,7 % |
+| 34 px, encre gardée | 0,77 px | 75 | 73,2 % |
 | 46 px, encre gardée | 0,60 px | 159 | 65,1 % |
 | 52 px, encre gardée | 0,60 px | 205 | 62,0 % |
+
+**La plume n'est pas une constante.** Elle tient la densité d'encre quand le
+tracé rétrécit : 0,60 px suffisait à 40 px, il en faut 0,80 à 36 px pour rester
+à 99 pixels encrés (contre 92 à 0,60). À 0,90 px le « A » se referme. La
+conversion reste `--hw-sw = plume × 436 / largeur`, mais **la plume se choisit
+sur la planche, jamais par extrapolation**.
 
 À taille strictement égale, **+47 % d'encre** — soit la densité de la version de
 46 px dans l'encombrement de celle de 40.
@@ -3844,6 +3856,35 @@ La correction est `top`, qui lui s'applique (la boîte est en
 
 ⚠️ Le calage se refait **en pixels**, pas en em : la hauteur du svg est en px,
 pas en em du texte voisin.
+
+#### Le calcul exact du calage, et les deux pièges qui l'entourent
+
+« hauteur × 29/247 » n'est vrai QUE PARFOIS. Le svg porte
+`preserveAspectRatio="xMinYMid meet"` : l'échelle retenue est la **plus petite**
+des deux, et le reste est centré verticalement.
+
+```
+échelle   = min(largeur/436, hauteur/247)
+margeHaut = (hauteur − 247 × échelle) / 2
+top       = hauteur − margeHaut − 218 × échelle
+```
+
+À **36 × 20** c'est la HAUTEUR qui pilote (36/436 > 20/247), `margeHaut` vaut 0,
+et la formule courte tombe juste : 20 × 29/247 = **2,35 px**. À **40 × 23**
+c'était la LARGEUR (40/436 < 23/247) : il restait 0,17 px de marge en haut et en
+bas, et la vraie valeur était **2,83 px**, pas les 2,70 posés. L'écart de 0,13 px
+ne se voyait pas, mais la formule courte n'est exacte que quand le rapport
+largeur/hauteur de la boîte égale 436/247.
+
+⚠️ **Le piège de la MESURE, qui a coûté une passe.** Pour lire la ligne de base du
+texte voisin, le témoin doit être un `inline-block` de **0 × 0** en
+`vertical-align:baseline`. Un témoin qui contient un caractère fait 21 px de
+haut ; sa ligne de base étant son bord bas, il réclame 21 px AU-DESSUS de la
+ligne, agrandit la boîte de `.sig-by` et **décale l'alignement du flex qu'il est
+censé observer**. Il a fait lire « −1,29 px d'écart » et réclamer `top:3,63px`
+sur une valeur qui était déjà juste. Même famille que « ne jamais forcer dans un
+banc la propriété qu'on corrige » : ici le banc perturbait la géométrie qu'il
+mesurait.
 
 ### La dernière ligne du pied : un `</div>` en trop
 
