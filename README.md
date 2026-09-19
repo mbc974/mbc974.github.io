@@ -53,7 +53,6 @@ git push
     ├── galerie/            Photos de matchs / équipe
     ├── flyers/             Affiches (recrutement, bénévoles, service civique)
     ├── images/             Visuels divers (créneaux, partenariat, partage social)
-    ├── videos/             Vidéo d'adhésion + posters
     ├── fonts/              Polices auto-hébergées (14 woff2) — plus rien chez Google
     └── documents/          PDF (partenariat, calendrier officiel) + .ics des matchs
 ```
