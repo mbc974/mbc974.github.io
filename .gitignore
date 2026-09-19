@@ -1,16 +1,65 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Ce dépôt EST le site publié : GitHub Pages sert la racine de `main` telle
+# quelle. Tout ce qui est servi doit donc rester versionné — y compris les
+# pages GÉNÉRÉES (creneaux/, matchs/, actualites/, effectif/, sitemap.xml…) et
+# style.min.css. N'ignorez jamais un fichier parce qu'il est « généré » :
+# ici, généré ne veut pas dire jetable.
+#
+# Ce fichier ne couvre que ce qui n'a pas à voyager : dépendances, caches,
+# bancs d'essai, captures de rendu et fichiers d'éditeur.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Dépendances (outillage seulement — le site reste sans build)
 node_modules/
+.pnpm-store/
+.npm/
 dist/
 .vite/
-.pnpm-store/
-*.local
-planche-logos.png
+npm-debug.log*
+pnpm-debug.log*
+
+# Caches Python
 __pycache__/
-planning-rendu.png
-essentiel-rendu.png
-planning-v2-rendu.png
-essai-cadrage.png
-apercu-photo.png
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Worktrees de travail (branches parallèles, jamais publiées)
 .claude/worktrees/
 
-# Pages de test temporaires (bancs de mesure), jamais publiees
+# Bancs de mesure : pages et styles d'essai montés à la racine, jamais publiés
 _*.html
+_*.css
+
+# Captures et planches de rendu produites par les bancs, à la racine
+/planche-logos.png
+/planning-rendu.png
+/planning-v2-rendu.png
+/essentiel-rendu.png
+/essai-cadrage.png
+/apercu-photo.png
+/capture-*.png
+/rendu-*.png
+/*-rendu.png
+
+# Exports et brouillons temporaires
+*.local
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Fichiers d'éditeur
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
