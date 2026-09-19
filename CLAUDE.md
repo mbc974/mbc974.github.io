@@ -4,25 +4,29 @@ Tu travailles sur le site officiel du La Montagne Basket Club.
 
 Objectif : améliorer le site sans casser sa structure ni ses chemins de fichiers.
 
-## Contexte
-Le site est un site statique simple :
-- `index.html`
-- `style.css`
-- `script.js`
-- dossier `assets/`
+## Commence par lire AGENTS.md
+`AGENTS.md` porte les règles du dépôt (structure, assets, pages générées,
+publication). Elles ne sont pas recopiées ici. **Lis-le avant de modifier quoi
+que ce soit.** `MAINTENANCE.md` est le mode d'emploi de la chaîne de génération
+et des garde-fous.
 
-Il est publié avec GitHub Pages depuis la branche `main`, dossier `/root`.
+Trois règles ne souffrent aucune exception, rappelées ici parce qu'une erreur
+dessus se voit en production :
+1. Ne jamais casser les chemins `assets/...`.
+2. Ne pas éditer à la main une page marquée « GÉNÉRÉ » : on change `data/*.json`
+   puis on relance le générateur.
+3. Site statique, sans build ni framework : aucune dépendance lourde.
 
 ## Priorités
 1. Garder le site simple, rapide et maintenable.
 2. Améliorer le rendu visuel premium/sportif.
 3. Optimiser le responsive mobile.
 4. Renforcer le SEO local : La Montagne, Saint-Denis, La Réunion, basket.
-5. Ne jamais casser les chemins `assets/...`.
 
 ## Avant toute modification
-- Lire `index.html`, `style.css`, `script.js`.
-- Identifier les chemins d’images utilisés.
+- Lire les fichiers concernés (`index.html`, `style.css`, `script.js`, ou la
+  source `data/*.json` s'il s'agit d'une page générée).
+- Identifier les chemins d'images utilisés.
 - Proposer un plan court avant de modifier.
 - Éviter les refontes inutiles si une correction ciblée suffit.
 
