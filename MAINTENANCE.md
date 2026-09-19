@@ -4026,3 +4026,92 @@ python .claude/bump-assets.py           # toujours en dernier
 ```
 
 Puis `verifier-classes.py` et `verifier-liens.py`.
+
+
+## 37. La bande de preuves et le bloc communauté (19/09/2026)
+
+Deux ajouts à l'accueil, aucun composant réécrit.
+
+### Où, et pourquoi là
+
+**La bande de preuves** (`#preuves`) s'insère **entre `#inauguration` et
+`#soutenir`**, dans le creux laissé par la section STAFF repliée le 09/09. Le
+brief demandait « avant le pied » ; ç'aurait placé la réassurance **après** le
+formulaire de contact, c'est-à-dire après la décision. Elle prolonge au
+contraire `#inauguration` — la section « preuve locale » du site — et ferme le
+dossier juste avant qu'on demande quelque chose.
+
+⚠️ **Il existait déjà une section de preuves** : `#inauguration`, classe
+`.local-proof`, « Nout kartié. Nout basket. ». On ne l'a pas dupliquée — la
+bande la complète avec les trois photos qui lui manquaient.
+
+**Le bloc communauté** vit **entre les marqueurs `PIED`**, sous `.footer__social`.
+C'est donc la SOURCE recopiée sur les 26 autres pages par `set-entete.py` : le
+bloc est sur tout le site, et c'est voulu.
+
+### Les volumes d'abonnés — comment on les remplit
+
+Une seule chaîne par ligne, dans le `<b class="com__n">` correspondant
+d'`index.html`, puis `python .claude/set-entete.py` pour propager :
+
+```html
+<b class="com__n">1 240 abonnés</b>
+```
+
+**Tant qu'un chiffre est inconnu, la balise reste VIDE.** La règle
+`.com__n:empty{display:none}` la fait disparaître et la flèche récupère la
+marge automatique (`.com__n:empty + .com__go{margin-left:auto}`) : le site
+n'affiche jamais « X abonnés » ni un tiret en attente. Vérifié au banc.
+
+⚠️ **WhatsApp** : le lien pointe vers la CONVERSATION directe du club (wa.me),
+celle qui sert déjà partout. Le libellé dit donc « WhatsApp du club », pas
+« Communauté WhatsApp ». Si le club ouvre une vraie communauté, remplacer le
+`href` par son lien `chat.whatsapp.com` **et** le libellé. Ne pas annoncer une
+communauté tant que le lien mène à une conversation. Et ne pas ajouter ce lien
+au `sameAs` du JSON-LD : un code d'invitation se révoque.
+
+### Les trois photos
+
+Ce sont les seules du dépôt encore inemployées sur l'accueil — vérifié fichier
+par fichier, en excluant `.claude/worktrees/`, dont les copies périmées font
+croire à tort que certaines servent déjà :
+
+| carte | fichier | crans |
+|---|---|---|
+| Avec la Ville | `inauguration-plateau-officiels` | 500 + plein 760 |
+| Le plateau | `mbc-plateau-ruisseau-blanc-couleurs-club` | 420 / 660 / 900 |
+| La communauté | `mbc-gymnase-la-montagne-ecole-de-basket` | 640 / 1000 / 1400 |
+
+Leurs rapports vont de **3:4 à 1,88:1**. Sans `aspect-ratio` commun, la rangée
+de trois casserait — les hauteurs divergeaient du simple au double.
+`.proof-card__ph{aspect-ratio:4/3}` + `object-fit:cover` le règlent ; seule la
+photo portrait porte un `object-position` en ligne. Mesuré au banc : les trois
+cartes font 386 px de haut et 363 px de large au pixel près, ratio photo
+1,333 sur les trois.
+
+**Ne pas renommer ces figures en `g-tile…`** : `build-galerie.py` réécrirait
+leurs `sizes`, calibrés pour le zoom parallaxe (jusqu'à 56vw).
+
+### Deux pièges rencontrés
+
+1. **`verifier-classes.py` a mordu sur `.preuves`** : la section portait
+   `class="section preuves"` sans qu'aucune règle ne vise `.preuves`. La
+   convention du site est qu'une classe modificatrice ne s'ajoute que si elle
+   porte du style — elle a été retirée, l'`id` suffit pour l'ancre.
+2. **Dans le panneau d'aperçu, les 62 `.reveal` de la page restent à
+   `opacity:0`**, y compris ceux des sections existantes : l'observateur
+   d'intersection n'y tourne pas. Ce n'est pas une régression — on le vérifie
+   en comparant avec `#soutenir` et `#contact`, pas en accusant le nouveau
+   bloc. Pour capturer, forcer `.in` dans une copie `_*.html` (ignorée par git).
+
+### L'ordre suivi
+
+```bash
+python .claude/build-css.py      # style.css a changé -> style.min.css
+python .claude/set-entete.py     # propage le pied sur les 26 pages
+python .claude/bump-assets.py    # toujours en dernier
+```
+
+Puis `set-entete.py --check`, `verifier-classes.py`, `verifier-liens.py`,
+`verifier-jsonld.py`, `build-css.py --check`, `bump-assets.py --check` — tous
+au vert.

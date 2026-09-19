@@ -87,7 +87,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/images/mbc-hero-regroupement-2048.avif"
       imagesrcset="assets/images/mbc-hero-regroupement-1280.avif 1280w, assets/images/mbc-hero-regroupement-1672.avif 1672w, assets/images/mbc-hero-regroupement-2048.avif 2048w, assets/images/mbc-hero-regroupement-2400.avif 2400w, assets/images/mbc-hero-regroupement-2800.avif 2800w"
       imagesizes="(max-width:1550px) 1550px, 100vw">
-<link rel="stylesheet" href="style.min.css?v=23de239a">
+<link rel="stylesheet" href="style.min.css?v=08dfd7d6">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale,.hero .reveal-fade{opacity:1!important;transform:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -1616,6 +1616,77 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
 
 
 
+<!-- ===== Preuves locales — trois photos, avant l'appel a soutenir =====
+     Emplacement choisi : APRES #inauguration (la section « preuve locale »
+     du site, qui raconte l'inauguration) et AVANT #soutenir, qui demande
+     quelque chose. La reassurance sert avant la demande, jamais apres le
+     formulaire. Elle comble aussi le creux laisse par la section STAFF,
+     repliee le 09/09/2026.
+
+     Les trois photos etaient les seules du depot encore INEMPLOYEES sur
+     l'accueil — verifie fichier par fichier. Leurs rapports vont de 3:4 a
+     1,88:1 : c'est .proof-card__ph qui impose un 4/3 commun, sinon la rangee
+     se casserait. Ne pas renommer ces figures en « g-tile… » : build-galerie.py
+     reecrirait leurs attributs sizes, calibres pour le zoom parallaxe. -->
+<section class="section" id="preuves" aria-labelledby="preuvesTitle">
+  <div class="wrap">
+    <header class="sec-head sec-head--center reveal">
+      <p class="kicker kicker--center">Ce qui existe déjà</p>
+      <h2 class="h2" id="preuvesTitle">Un club <span class="hl">déjà ancré</span></h2>
+      <p class="sec-head__sub" style="margin-inline:auto">Deux équipements municipaux à La Montagne, une inauguration avec la Ville, et un quartier qui s&rsquo;en est emparé.</p>
+    </header>
+
+    <div class="proof-band reveal">
+
+      <figure class="proof-card">
+        <span class="proof-card__ph">
+          <picture>
+            <source srcset="assets/galerie/inauguration-plateau-officiels-500.avif 500w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/avif">
+            <source srcset="assets/galerie/inauguration-plateau-officiels-500.webp 500w, assets/galerie/inauguration-plateau-officiels.webp 760w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/webp">
+            <img src="assets/galerie/inauguration-plateau-officiels.jpg" width="760" height="1009" loading="lazy" decoding="async" style="object-position:50% 42%"
+                 alt="Élus de la Ville de Saint-Denis, dont un élu en écharpe tricolore, et joueurs du MBC réunis sous le plateau sportif couvert le jour de son inauguration.">
+          </picture>
+        </span>
+        <figcaption class="proof-card__body">
+          <h3 class="proof-card__t">Avec la Ville de Saint-Denis</h3>
+          <p class="proof-card__p">Inauguration du plateau couvert de Ruisseau Blanc, août 2026.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="proof-card">
+        <span class="proof-card__ph">
+          <picture>
+            <source srcset="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-420.avif 420w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-660.avif 660w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-900.avif 900w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/avif">
+            <source srcset="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-420.webp 420w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-660.webp 660w, assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club-900.webp 900w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/webp">
+            <img src="assets/galerie/mbc-plateau-ruisseau-blanc-couleurs-club.jpg" width="900" height="1000" loading="lazy" decoding="async"
+                 alt="Deux joueurs du MBC devant le panier du plateau couvert de Ruisseau Blanc, l&rsquo;écusson du club peint au sol et la montagne en fond.">
+          </picture>
+        </span>
+        <figcaption class="proof-card__body">
+          <h3 class="proof-card__t">Le plateau de Ruisseau Blanc</h3>
+          <p class="proof-card__p">Un plateau couvert aux couleurs du club, en plein air, ouvert sur le quartier.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="proof-card">
+        <span class="proof-card__ph">
+          <picture>
+            <source srcset="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-640.avif 640w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1000.avif 1000w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1400.avif 1400w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/avif">
+            <source srcset="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-640.webp 640w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1000.webp 1000w, assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket-1400.webp 1400w" sizes="(min-width:1180px) 364px, (min-width:760px) 30vw, 92vw" type="image/webp">
+            <img src="assets/galerie/mbc-gymnase-la-montagne-ecole-de-basket.jpg" width="1400" height="745" loading="lazy" decoding="async"
+                 alt="Le parquet du gymnase de La Montagne couvert d&rsquo;enfants de l&rsquo;école de basket, ballons en main, familles sur les côtés.">
+          </picture>
+        </span>
+        <figcaption class="proof-card__body">
+          <h3 class="proof-card__t">Une vraie communauté locale</h3>
+          <p class="proof-card__p">Le samedi matin, l&rsquo;école de basket remplit le gymnase de La Montagne.</p>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
 <!-- ===== Soutenir — bénévolat, don, partenariat (détail sur pages dédiées) ===== -->
 <section class="section soutenir" id="soutenir" aria-labelledby="soutenirTitle">
   <span class="bg-word" style="top:5%;left:-3%" aria-hidden="true">AGIR</span>
@@ -1788,6 +1859,29 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
           <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="TikTok (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
         </div>
+
+        <!-- LES VOLUMES SE REMPLISSENT ICI, et nulle part ailleurs : une seule
+             chaîne par ligne, dans le <b class="com__n"> correspondant.
+                 <b class="com__n">1 240 abonnés</b>
+             Tant qu'un chiffre n'est pas connu, LAISSER LA BALISE VIDE :
+             la règle `.com__n:empty{display:none}` la fait disparaître, la
+             ligne reste lisible et le site n'affiche jamais « X abonnés ».
+             Après modification : relancer .claude/set-entete.py, qui recopie
+             ce bloc sur les 26 autres pages.
+
+             ⚠ WHATSAPP — le lien pointe aujourd'hui vers la CONVERSATION
+             directe du club (wa.me), celle qui sert déjà partout sur le site.
+             Si le club ouvre une COMMUNAUTÉ WhatsApp, remplacer le href par
+             son lien d'invitation chat.whatsapp.com ET le libellé par
+             « Communauté WhatsApp ». Ne pas annoncer une communauté tant que
+             le lien mène à une conversation. -->
+        <p class="com__label">Rejoignez la communauté</p>
+        <ul class="com">
+          <li><a class="com__line" href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg><span class="com__name">Facebook</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — page Facebook du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg><span class="com__name">Instagram</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — compte Instagram du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg><span class="com__name">TikTok</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — compte TikTok du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20suivre%20l%27actualit%C3%A9%20du%20MBC." target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8z"/></svg><span class="com__name">WhatsApp du club</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — écrire au club sur WhatsApp (nouvel onglet)</span></a></li>
+        </ul>
       </div>
 
       <nav class="footer__col" aria-label="Le club">

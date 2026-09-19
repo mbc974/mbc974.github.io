@@ -73,7 +73,7 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
       href="assets/fonts/barlow-condensed-700-latin.woff2">
 
 <link rel="preload" as="image" href="assets/logos/mbc-logo.webp" type="image/webp">
-<link rel="stylesheet" href="style.min.css?v=23de239a">
+<link rel="stylesheet" href="style.min.css?v=08dfd7d6">
 <noscript><style>.reveal,.reveal--l,.reveal--r,.reveal--scale{opacity:1!important;transform:none!important;filter:none!important}</style></noscript>
 
 <script type="application/ld+json">
@@ -474,6 +474,29 @@ try{var c=localStorage.getItem('mbc-consent');if(c==='accepted'||c==='granted'){
           <a href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener" aria-label="Instagram (nouvel onglet)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></a>
           <a href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener" aria-label="TikTok (nouvel onglet)"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg></a>
         </div>
+
+        <!-- LES VOLUMES SE REMPLISSENT ICI, et nulle part ailleurs : une seule
+             chaîne par ligne, dans le <b class="com__n"> correspondant.
+                 <b class="com__n">1 240 abonnés</b>
+             Tant qu'un chiffre n'est pas connu, LAISSER LA BALISE VIDE :
+             la règle `.com__n:empty{display:none}` la fait disparaître, la
+             ligne reste lisible et le site n'affiche jamais « X abonnés ».
+             Après modification : relancer .claude/set-entete.py, qui recopie
+             ce bloc sur les 26 autres pages.
+
+             ⚠ WHATSAPP — le lien pointe aujourd'hui vers la CONVERSATION
+             directe du club (wa.me), celle qui sert déjà partout sur le site.
+             Si le club ouvre une COMMUNAUTÉ WhatsApp, remplacer le href par
+             son lien d'invitation chat.whatsapp.com ET le libellé par
+             « Communauté WhatsApp ». Ne pas annoncer une communauté tant que
+             le lien mène à une conversation. -->
+        <p class="com__label">Rejoignez la communauté</p>
+        <ul class="com">
+          <li><a class="com__line" href="https://www.facebook.com/mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H7v3h3v6h3v-6h2.5l.5-3H13v-2c0-.6.4-1 1-1z"/></svg><span class="com__name">Facebook</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — page Facebook du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://www.instagram.com/mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg><span class="com__name">Instagram</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — compte Instagram du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://www.tiktok.com/@mbc974.re" target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 3c.3 2 1.6 3.6 3.6 4v3c-1.4 0-2.7-.4-3.6-1v6.5A5.5 5.5 0 1 1 10.5 10v3a2.5 2.5 0 1 0 2.5 2.5V3z"/></svg><span class="com__name">TikTok</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — compte TikTok du MBC (nouvel onglet)</span></a></li>
+          <li><a class="com__line" href="https://wa.me/262692556458?text=Bonjour%2C%20je%20souhaite%20suivre%20l%27actualit%C3%A9%20du%20MBC." target="_blank" rel="noopener"><svg class="com__ic" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9 3 3.5 8.5 3.5 15.5c0 2.4.7 4.6 1.8 6.5L3 29l7.2-2.3c1.8 1 3.7 1.5 5.8 1.5 7 0 12.5-5.5 12.5-12.5S23 3 16 3zm0 22.8c-1.9 0-3.6-.5-5.1-1.4l-.4-.2-4.3 1.4 1.4-4.2-.3-.4a10.2 10.2 0 0 1-1.6-5.5C5.7 9.8 10.3 5.2 16 5.2S26.3 9.8 26.3 15.5 21.7 25.8 16 25.8z"/></svg><span class="com__name">WhatsApp du club</span><b class="com__n"></b><svg class="com__go" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only"> — écrire au club sur WhatsApp (nouvel onglet)</span></a></li>
+        </ul>
       </div>
 
       <nav class="footer__col" aria-label="Le club">
