@@ -5,7 +5,7 @@
     "phase1": "CALENDRIER SENIOR PRM NORD.pdf, édition du 25/08/2026 à 21:21:42 (archivé : assets/documents/calendrier-prm-nord-2026-2027.pdf). L'équipe nommée en premier reçoit (art. 10 du règlement).",
     "saison": "Calendrier général sportif 2026-2027, version V2 (LRBB), lignes « PRM D1 » et « PRM D2 » : dates de 2e phase (identiques dans les deux divisions), de phase finale (Division 1 seulement) et du Trophée Coupe de France (TRCF).",
     "format": "Règlement sportif particulier PRM 2026/2027 (assets/documents/reglement-sportif-prm-2026-2027.pdf) : art. 3 (phases ; Division 1 = 4 premiers de chaque poule, Division 2 = 5e à 8e) et art. 4 (horaire officiel : vendredi 20h30).",
-    "scores": "J1 du 11/09/2026 : 73-52, résultat communiqué par le club le 13/09/2026. L'édition du 25/08 du PDF de la Ligue ne porte encore aucun score.",
+    "scores": "J1 du 11/09/2026 : 73-52, résultat communiqué par le club le 13/09/2026. J2 : défaite 57-68 chez le Basket Club Dionysien 3, relevée le 19/09/2026 sur la feuille de match officielle et le résumé e-Marque signés de la rencontre n° 7 (quarts-temps 22-14, 14-13, 14-19, 18-11). À CONTRÔLER : ces deux documents datent la rencontre du 17/09/2026, alors que le calendrier de la Ligue du 25/08/2026 la place le 18/09. La date publiée reste celle du calendrier, dont dépendent le slug, l'ancre du tableau et l'appariement de set-calendrier-prm.py ; si la rencontre a bien été avancée d'un jour, il faut une dérogation de DATE, que la chaîne ne sait pas encore porter. L'édition du 25/08 du PDF de la Ligue ne porte encore aucun score.",
     "derogations": "J5 du 23/10/2026 contre Sainte-Rose. Rencontre inversée : le club (Alexandre) a communiqué le 14/09/2026 qu'elle se jouera au Gymnase de La Montagne. Le PDF de la Ligue du 25/08/2026 la place à Sainte-Rose. Voir le champ « derogation » de la rencontre.",
     "coupe": "Tours désignés d'après la légende du calendrier général : le 29/11/2026 est en jaune (« Finales régionales »), le 12/12/2026 en vert (« Finales zone »). La case TRCF du vendredi 04/09/2026, antérieure à la J1, n'est pas reprise : rien ne dit si le MBC l'a disputée."
   },
@@ -123,10 +123,13 @@
       "lieu": null,
       "entreeLibre": false,
       "affiche": null,
-      "statut": "a-venir",
-      "score": null,
+      "statut": "joue",
+      "score": {
+        "mbc": 57,
+        "adverse": 68
+      },
       "benevoles": [],
-      "intro": "Deuxième journée, en déplacement chez le Basket Club Dionysien 3."
+      "intro": "Deuxième journée, en déplacement chez le Basket Club Dionysien 3 : le MBC s'incline 57 à 68 à Saint-Denis. Distancé de huit points dès le premier quart-temps (22-14), le club revient à quatre longueurs à l'entame du dernier (50-46) avant de céder sur les dix dernières minutes (18-11). David Nugent est le meilleur marqueur du MBC avec 19 points."
     },
     {
       "slug": "mbc-saint-benoit-2-octobre-2026",
