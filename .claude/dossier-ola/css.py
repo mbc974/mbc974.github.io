@@ -102,6 +102,18 @@ def feuille():
     a(".im{position:absolute;display:block;object-fit:cover}")
     a(".qr{position:absolute;display:block}")
 
+    # --- Liens -------------------------------------------------------------
+    # Chrome headless emet une ANNOTATION DE LIEN par <a href> dans le PDF :
+    # une adresse imprimee devient cliquable sans rien changer a son allure.
+    # Encore faut-il neutraliser le style par defaut du navigateur, sinon le
+    # texte vire au bleu souligne au milieu d'une page bleu nuit.
+    # `.zn` est une zone cliquable transparente : posee sur une plaque de QR,
+    # elle rend le QR lui-meme cliquable a l'ecran, et le QR reste scannable
+    # sur le papier. Mesure faite : 5 liens sur 5 survivent au rendu, y compris
+    # mailto:, tel: et une zone vide.
+    a("a{color:inherit;text-decoration:none}")
+    a(".zn{position:absolute;display:block}")
+
     # --- Pied de page, identique sur toutes les pages ----------------------
     a(".pied{position:absolute;left:%dpx;width:%dpx;bottom:%dpx;"
       "display:flex;align-items:baseline;justify-content:space-between}"

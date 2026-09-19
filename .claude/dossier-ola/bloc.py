@@ -6,6 +6,35 @@ import grille as G
 def esc(t):
     return _h.escape(t, quote=False)
 
+
+# --- Ponctuation francaise -------------------------------------------------
+# En francais, le point-virgule, le deux-points, le point d'exclamation, le
+# point d'interrogation et les guillemets prennent une espace AVANT. Avec une
+# espace ordinaire, la ligne peut casser juste avant le signe : la page 8 de
+# la V3.1 affichait « ... fait l'objet d'une facture » puis, ligne suivante,
+# « ; si votre soutien... ». L'espace fine insecable U+202F serait la bonne,
+# mais elle est ABSENTE des sous-ensembles du site (Chrome y substituerait
+# Times New Roman en silence) ; U+00A0, elle, est couverte par les huit
+# fichiers de police. Verifie.
+#
+# L'option est DESACTIVEE par defaut : les dossiers OLA et generique ont ete
+# rendus et relus sans elle, et la changer decalerait leurs coupures de ligne
+# sans qu'on l'ait demande. `dossier_v3` l'active pour lui seul.
+TYPO_FR = False
+INSECABLE = "\u00A0"
+
+
+def _typo_fr(html):
+    """Espace insecable avant ; : ! ? et dans les guillemets, HORS balises."""
+    import re
+    morceaux = re.split(r"(<[^>]+>)", html)
+    for i in range(0, len(morceaux), 2):        # 0, 2, 4... = le texte
+        t = morceaux[i]
+        t = re.sub(r" ([;:!?\u00BB])", INSECABLE + r"\1", t)
+        t = re.sub(r"(\u00AB) ", r"\1" + INSECABLE, t)
+        morceaux[i] = t
+    return "".join(morceaux)
+
 def _cls(*c):
     return " ".join(x for x in c if x)
 
@@ -59,6 +88,8 @@ def txt(style, contenu, left=None, top=None, cap=None, largeur=None,
     if extra:
         st.append(extra.rstrip(";"))
     corps = contenu if brut else esc(contenu)
+    if TYPO_FR:
+        corps = _typo_fr(corps)
     return (f'<div class="{_cls("b", "t-" + style, couleur)}" '
             f'style="{";".join(st)}">{corps}</div>')
 
@@ -125,13 +156,17 @@ BAS_CONTENU = Y_FILET - 76      # 572 : rien d'autre ne descend plus bas
 SIGNATURE = "MBC × OLA ENERGY  ·  SAISON 2026/2027"
 
 
-def pied(numero, sombre, mention=None, largeur_mention=None, left_mention=None):
+def pied(numero, sombre, mention=None, largeur_mention=None, left_mention=None,
+         brut_mention=False):
+    """`brut_mention` laisse passer le HTML de la mention — utile depuis la V3,
+    dont les mentions citent des URL que l'on veut CLIQUABLES. Sans lui, un
+    <a href> s'affiche en toutes lettres au bas de la page."""
     coul = "c-glacier" if sombre else "c-douce"
     out = filet(G.MARGE, Y_FILET, G.CONTENU, "r-sombre" if sombre else "r-clair")
     if mention:
         out += txt("mention", mention, left=left_mention or G.MARGE,
                    bottom=BAS_MENTION, largeur=largeur_mention or G.CONTENU,
-                   couleur=coul)
+                   couleur=coul, brut=brut_mention)
     out += txt("pied", SIGNATURE, left=G.MARGE,
                cap=CAP_PIED, couleur=coul)
     if numero:

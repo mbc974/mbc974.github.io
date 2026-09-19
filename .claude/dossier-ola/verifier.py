@@ -173,7 +173,7 @@ def controle_squelette(doc):
     """
     import typo
     releve = {}
-    for i in range(1, 9):                       # pages 2 a 9 : le contenu
+    for i in range(1, doc.page_count - 1):      # tout sauf couverture et cloture
         p = doc[i]
         spans = [sp for bl in p.get_text("dict")["blocks"] if bl["type"] == 0
                  for ln in bl["lines"] for sp in ln["spans"] if sp["text"].strip()]
@@ -197,7 +197,7 @@ def controle_squelette(doc):
     # position absolue mais l'ECART entre le bas de l'encre du titre et lui.
     m_anton = typo.metrics("anton")
     pas_titre = 64 * G.LH_TITRE
-    for i in range(1, 9):
+    for i in range(1, doc.page_count - 1):
         p = doc[i]
         tits = [sp for bl in p.get_text("dict")["blocks"] if bl["type"] == 0
                 for ln in bl["lines"] for sp in ln["spans"]
@@ -330,7 +330,8 @@ def controle_debords(doc):
 # --------------------------------------------- 5 bis. bande utile respectee
 BAS_CONTENU = 588          # doit valoir dossier.BAS_CONTENU
 STYLES_DE_PIED = {13, 15}  # mention (13 px) et signature/numero (15 px)
-PAGES_SANS_MENTION = {1, 10}
+PAGES_SANS_MENTION = {int(n) for n in
+                      os.environ.get("MBC_SANS_MENTION", "1,10").split(",") if n.strip()}
 
 def controle_bande(doc):
     """Aucun contenu sous 588 px : c'est la zone de la mention.
@@ -362,6 +363,64 @@ def controle_bande(doc):
                     cap = (sp["origin"][1] - typo.metrics(police)["cap"] * sp["size"]) / PT
                     if cap > BAS_CONTENU + 0.5:
                         probs.append((i + 1, round(cap, 1), taille_px, sp["text"][:44]))
+    return probs
+
+
+def controle_mention(doc, max_lignes=2):
+    """La MENTION non plus ne doit pas remonter au-dessus de 588 px.
+
+    Le controle de bande interdit au contenu de DESCENDRE sous 588 ; il ne dit
+    rien de la mention, qui monte. Or la mention est ancree par le BAS : une
+    ligne de plus et tout le bloc remonte d'un interligne, sans qu'une seule
+    coordonnee change dans le code. C'est ce qui est arrive a la V3.1 : la
+    fidelite retablie page 7, l'etat civil descendu page 8 et le detail du
+    calendrier page 4 ont fait passer ces mentions a TROIS lignes, et elles
+    sont venues se poser sur le bas des cartes et sur le numero de telephone.
+
+    COMMENT ON LA RECONNAIT. Ni par sa taille — les precisions des cartes de la
+    page 7 et l'offre du maillot page 6 emploient le meme corps de 13 px — ni
+    par son bloc, dont le decoupage par PyMuPDF varie (page 4, la signature et
+    le numero de page avaient fusionne, et la mention echappait au controle).
+    On part de sa ligne la PLUS BASSE et on remonte tant que la suivante est a
+    un interligne au-dessus. Ce qui est plus loin n'est pas la mention :
+    l'offre du maillot de la page 6, a 28 px de la derniere ligne, ne compte
+    pas, la mention a deux lignes du dessous si.
+
+    ET ON MESURE L'INTERLIGNE DANS LE PDF, on ne le calcule pas. Une premiere
+    version le tirait de grille.py — 13 px x 1,35 = 17,55 — et ne trouvait
+    jamais la deuxieme ligne : Chrome arrondit les metriques de ligne et pose
+    les siennes a 17,00 px. Le garde-fou passait alors deux sabotages de suite
+    en annoncant que tout allait bien.
+    """
+    probs = []
+    taille_mention = 13 * PT
+    HAUT, BAS = BAS_CONTENU - 70, 645      # sous le contenu, au-dessus du pied
+    for i, p in enumerate(doc):
+        hauts = set()
+        for bl in p.get_text("dict")["blocks"]:
+            if bl["type"] != 0:
+                continue
+            for ln in bl["lines"]:
+                for sp in ln["spans"]:
+                    if not sp["text"].strip():
+                        continue
+                    if abs(sp["size"] - taille_mention) > 0.3:
+                        continue
+                    h = (sp["origin"][1] - 0.7203 * sp["size"]) / PT
+                    if HAUT <= h <= BAS:
+                        hauts.add(round(h, 2))
+        if not hauts:
+            continue
+        ordre = sorted(hauts, reverse=True)
+        n, courant = 1, ordre[0]
+        for h in ordre[1:]:
+            if 14.0 <= courant - h <= 21.0:    # un interligne de mention
+                n += 1
+                courant = h
+            elif courant - h > 21.0:
+                break
+        if n > max_lignes:
+            probs.append((i + 1, n, round(courant, 1), ""))
     return probs
 
 
@@ -492,6 +551,15 @@ def rapport(html_path, pdf_path, pixels=True):
                   % (pg, cap, tp, tx))
     else:
         print("   aucun contenu ne descend dans la zone de la mention")
+
+    remontees = controle_mention(doc)
+    if remontees:
+        ok = False
+        for pg, nb, haut, tx in remontees:
+            print("   p%02d  mention de %d lignes : elle remonte a %6.1f px  %r"
+                  % (pg, nb, haut, tx))
+    else:
+        print("   aucune mention ne remonte au-dessus de la bande")
 
     panneaux = controle_panneaux(doc)
     if panneaux:
