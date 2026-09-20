@@ -242,24 +242,43 @@ def p2():
 # 3 - DES PREUVES, PAS DES PROMESSES
 # ===========================================================================
 def p3():
+    """V3.2 : la page passe a TROIS colonnes de quatre.
+
+    Elle n'en portait que deux, et sa seule image etait le bandeau du
+    reportage — un dos de tee-shirt en letterbox, la plus faible des preuves
+    a l'oeil. La colonne de gauche accueille desormais la photo des elus sous
+    le plateau : un ecran tricolore, des costumes, les joueurs du club. C'est
+    l'ancrage local prouve en une image, la ou trois lignes n'y suffisaient
+    pas. Le reportage garde son chiffre, sa phrase, sa photo et son QR : rien
+    n'a ete retire, la page a ete redistribuee.
+    """
     o = [entete(C.P3_SUR, C.P3_TITRE, C.P3_LEAD)]
 
-    # --- Le reportage, a gauche : le chiffre d'abord, la photo ensuite ------
-    TX, TW = G.x(1), G.w(7)
-    o.append(txt("stat-l", C.P3_TV_CHIFFRE, left=TX, cap=HAUT_CONTENU,
-                 couleur="c-roi"))
-    o.append(txt("etiquette-s", lien("reportage", C.P3_TV_ETIQ), left=TX + 336,
-                 cap=HAUT_CONTENU + 8, couleur="c-encre", brut=True))
-    o.append(txt("corps-s", C.P3_TV_TEXTE, left=TX, cap=320, couleur="c-encre",
-                 largeur=TW))
-    IM_H = 186
-    o.append(pave(TX, 396, TW, IM_H, "var(--papier-2)"))
-    o.append(image("reportage.jpg", TX, 396, TW, IM_H, pos="50% 40%",
-                   alt="Le sujet de Reunion La 1ere consacre au MBC, septembre 2026."))
-    o.append(zone("reportage", TX, 396, TW, IM_H))
+    # --- Colonne A : la preuve d'ancrage, en photo -------------------------
+    AX, AW = G.x(1), G.w(4)
+    o.append(pave(AX, HAUT_CONTENU, AW, 310, "var(--papier-2)"))
+    o.append(image("officiels-ville.jpg", AX, HAUT_CONTENU, AW, 310, pos="50% 44%",
+                   alt="Elus de la Ville de Saint-Denis et joueurs du MBC reunis "
+                       "sous le plateau sportif couvert, le jour de son inauguration."))
+    o.append(txt("mention", C.P3_PHOTO_LEGENDE, left=AX, cap=558,
+                 couleur="c-douce", largeur=AW))
 
-    # --- Les trois preuves a scanner, a droite ------------------------------
-    # Les plaques font 96 px : en dessous, le plus dense des trois codes passe
+    # --- Colonne B : le reportage ------------------------------------------
+    BX, BW = G.x(5), G.w(4)
+    o.append(txt("stat-l", tient("stat-l", C.P3_TV_CHIFFRE, BW, "p3 chiffre TV"),
+                 left=BX, cap=HAUT_CONTENU, couleur="c-roi"))
+    o.append(txt("etiquette-s", lien("reportage", tient("etiquette-s", C.P3_TV_ETIQ, BW, "p3 etiquette")),
+                 left=BX, cap=316, couleur="c-encre", brut=True))
+    o.append(txt("corps-s", C.P3_TV_TEXTE, left=BX, cap=344, couleur="c-encre",
+                 largeur=BW))
+    IM_H = 130
+    o.append(pave(BX, 446, BW, IM_H, "var(--papier-2)"))
+    o.append(image("reportage.jpg", BX, 446, BW, IM_H, pos="50% 40%",
+                   alt="Le sujet de Reunion La 1ere consacre au MBC, septembre 2026."))
+    o.append(zone("reportage", BX, 446, BW, IM_H))
+
+    # --- Colonne C : les trois preuves a scanner ---------------------------
+    # Les plaques font 88 px : en dessous, le plus dense des trois codes passe
     # sous 0,40 mm par module a l'impression A4 et cesse de se scanner.
     CX, CW, QT = G.x(9), G.w(4), QR_P3
     for i, (q, cle, lab, dessous) in enumerate(C.P3_PREUVES):
@@ -274,16 +293,14 @@ def p3():
         o.append(txt("petit", dessous, left=CX + QT + 20, cap=yy + 40,
                      couleur="c-douce", largeur=CW - QT - 20, brut=True))
     o.append(filet(CX, HAUT_CONTENU + 3 * 104 - 20, CW, "r-clair"))
-    # Les cinq partenaires, nommes. Une ligne par entree, posee separement :
-    # un bloc de deux lignes ne recevrait que la compensation optique de son
-    # premier glyphe, et la seconde partirait de travers.
     o.append(txt("etiquette-s", C.P3_DEJA[0], left=CX, cap=534, couleur="c-roi"))
     for l in C.P3_DEJA[1]:
         tient("mention", l, CW, "p3 partenaire")
     o.append(lignes("mention", C.P3_DEJA[1], left=CX, cap=556, pas=18,
                     couleur="c-douce", largeur=CW))
 
-    o.append(pied("03", sombre=False, mention=C.P3_MENTION))
+    o.append(pied("03", sombre=False, mention=mention(C.P3_MENTION),
+                  brut_mention=True))
     return page("f-papier", "".join(o))
 
 
@@ -318,13 +335,15 @@ def p4():
         o.append(lignes("petit", det, left=CX, cap=442, pas=22,
                         couleur="c-glacier", largeur=CW))
 
-    o.append(filet(G.x(1), 506, G.CONTENU, "r-sombre"))
+    o.append(filet(G.x(1), 500, G.CONTENU, "r-sombre"))
     o.append(txt("fort-l", tient("fort-l", C.P4_CHUTE, G.CONTENU, "p4 chute"),
-                 left=G.x(1), cap=528, couleur="c-blanc", largeur=G.CONTENU))
-    chif = "  ·  ".join("%s %s" % (v, l) for v, l in C.P4_CHIFFRES)
-    o.append(txt("petit", tient("petit", chif, G.w(8), "p4 chiffres"),
-                 right=G.MARGE, cap=566, couleur="c-glacier", largeur=G.w(8),
-                 align="right"))
+                 left=G.x(1), cap=520, couleur="c-blanc", largeur=G.CONTENU))
+    # DEUX lignes ferrees a droite, et non une : « 9 receptions » et « jusqu'a
+    # 9 dates » cote a cote remettraient la collision de deux « neuf ».
+    for i, ligne_c in enumerate(C.P4_CHIFFRES):
+        o.append(txt("petit", tient("petit", ligne_c, G.w(8), "p4 chiffres"),
+                     right=G.MARGE, cap=552 + i * 22, couleur="c-glacier",
+                     largeur=G.w(8), align="right"))
 
     o.append(pied("04", sombre=True, mention=mention(C.P4_MENTION),
                   brut_mention=True))
@@ -414,20 +433,24 @@ def p6():
     PX, PW = G.x(8), G.w(5)
     o.append(pave(PX, 212, PW, BAS_CONTENU - 212, "var(--nuit-3)"))
     IX, IW = PX + RETRAIT_PANNEAU, PW - 2 * RETRAIT_PANNEAU
-    o.append(image("maillot-dos-large.jpg", IX, 228, IW, 160, pos="50% 42%",
+    # V3.2 : la photo perd 20 px de haut pour que l'offre tienne sur DEUX
+    # lignes. Elle disait « pour le dos, parlons-en » ; elle dit maintenant ce
+    # qu'All-Star donne ET ce qu'il ne donne pas, ce qui prend une ligne de
+    # plus et vaut largement les 20 px.
+    o.append(image("maillot-dos-large.jpg", IX, 224, IW, 140, pos="50% 42%",
                    alt="Le dos du maillot du MBC : nom du club et numero, aucun "
                        "logo de partenaire."))
-    o.append(txt("etiquette-s", C.P6_RARETE_ETIQ, left=IX, cap=408,
+    o.append(txt("etiquette-s", C.P6_RARETE_ETIQ, left=IX, cap=384,
                  couleur="c-glacier"))
     for i, ligne in enumerate(C.P6_RARETE):
         o.append(txt("stat-s", tient("stat-s", ligne, IW, "p6 rarete"), left=IX,
-                     cap=434 + i * 37, couleur="c-blanc"))
+                     cap=410 + i * 37, couleur="c-blanc"))
     # Le seul mot qui dit que l'emplacement est A PRENDRE. Il etait ecrit dans
     # le contenu depuis la V3 et n'avait jamais ete imprime.
     o.append(txt("etiquette", tient("etiquette", C.P6_RARETE_ETAT, IW, "p6 etat"),
-                 left=IX, cap=552, couleur="c-orange"))
-    o.append(txt("mention", tient("mention", C.P6_RARETE_OFFRE, IW, "p6 offre"),
-                 left=IX, cap=574, couleur="c-glacier", largeur=IW))
+                 left=IX, cap=528, couleur="c-orange"))
+    o.append(txt("mention", C.P6_RARETE_OFFRE, left=IX, cap=552,
+                 couleur="c-glacier", largeur=IW))
 
     o.append(pied("06", sombre=True, mention=C.P6_MENTION))
     return page("f-nuit", "".join(o))

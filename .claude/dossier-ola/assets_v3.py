@@ -50,6 +50,15 @@ recadre(os.path.join(SITE, "assets/galerie/ecole-basket-enfant-mbc-saint-denis.j
 recadre(os.path.join(SITE, "assets/galerie/mbc-reportage-reunion-la-1ere.jpg"),
         "reportage.jpg", 1000, 281, fx=0.5, fy=0.42)
 
+# Page 3, V3.2 : LES ELUS DE LA VILLE. C'est la preuve visuelle d'ancrage la
+# plus forte du depot — un elu en echarpe tricolore, des costumes, et les
+# joueurs du MBC sous le plateau le jour de son inauguration. Elle n'etait
+# employee nulle part dans le dossier. L'original fait 760x1009 : on ne monte
+# donc pas au-dessus (aucun master haute definition n'existe), et le cadre
+# 1,187:1 rogne la hauteur sans toucher la largeur — le groupe reste entier.
+recadre(os.path.join(SITE, "assets/galerie/inauguration-plateau-officiels.jpg"),
+        "officiels-ville.jpg", 760, 640, fx=0.5, fy=0.44)
+
 # Page 6 : le dos du maillot, en paysage cette fois (la V3 le pose dans une
 # colonne large et non plus en portrait a cote d'un second cliche).
 recadre(os.path.join(os.path.expanduser("~"), "Downloads", "DSC05076.jpg"),

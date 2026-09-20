@@ -108,7 +108,9 @@ P2_MENTION = (
 # ---------------------------------------------------------------------------
 P3_SUR = "QUELQUES MOIS, DÉJÀ DU TERRAIN"
 P3_TITRE = "DES PREUVES, PAS DES PROMESSES"
-P3_LEAD = "Tout ce que vous lisez ici s’ouvre en un clic."
+# « Tout ce que vous lisez ici » promettait plus que la page ne tient : la
+# phrase du reportage et les noms des partenaires ne sont pas cliquables.
+P3_LEAD = "Toutes les preuves ci-dessous sont accessibles en un clic."
 
 # Le reportage. Source : actualites/reportage-reunion-la-1ere-mbc-la-montagne/.
 P3_TV_ETIQ = "RÉUNION LA 1ÈRE · 13 SEPTEMBRE 2026"
@@ -116,6 +118,13 @@ P3_TV_CHIFFRE = "3 MIN 14"
 P3_TV_TEXTE = ("Quelques mois après sa création, le club a fait l’objet d’un "
                "sujet dans « Grand Sport », le magazine sportif de Réunion "
                "La 1ère.")
+
+# LA PREUVE D'ANCRAGE, page 3. La legende ne nomme PERSONNE et n'attribue
+# aucune fonction : le depot permet d'identifier l'evenement avec certitude,
+# pas chaque personne presente. « Avec la Ville de Saint-Denis » est ce que
+# l'alt publie sur /club-basket-la-montagne/ autorise, mot pour mot.
+P3_PHOTO_LEGENDE = ("Inauguration du plateau de Ruisseau Blanc avec la Ville "
+                    "de Saint-Denis, août 2026.")
 
 # Le premier QR vise la PAGE DU CLUB qui raconte le reportage, et non le reel
 # Facebook : plus durable, et le visiteur reste sur mbc974.com.
@@ -182,16 +191,18 @@ P4_PUBLICS = [
 
 # Source : data/matchs.json + data/matchs-u13.json (5 receptions seniors +
 # 4 receptions U13 en phase 1 ; 7 matchs + 23 echeances = 30 dates).
-# Ces deux libelles sont poses sur UNE ligne ferree a droite : le detail
-# (phase 1, 5 seniors + 4 U13, 7 journees + 23 echeances) vit dans la mention.
-# « 30 echeances sportives PROGRAMMEES » a ete ecarte : sur les 23 echeances,
-# 5 sont des tours de Coupe de France « selon qualification » et 4 des dates de
-# finale « selon classement ». Neuf d'entre elles n'auront donc lieu que sous
-# condition — « programmees » serait plus fort que la donnee. « Dates au
-# calendrier sportif » est exact pour les trente ; la mention detaille.
+# « 30 dates, dont 21 acquises » demandait une soustraction au lecteur. On
+# pose les deux nombres dans le sens ou ils se lisent : ce qui est certain
+# d'abord, ce qui s'y ajoutera ensuite. Les donnees ne bougent pas — 7 journees
+# de phase 1 + 14 de phase 2 = 21 ; 5 tours de Coupe « selon qualification » +
+# 4 dates de finale « selon classement » = 9.
+#
+# DEUX LIGNES et non une : « 9 receptions » et « jusqu'a 9 dates » sur la meme
+# ligne remettraient la collision de deux « neuf » que la V3.1 avait retiree.
 P4_CHIFFRES = [
-    ("9", "réceptions en entrée libre"),
-    ("30", "dates au calendrier sportif, dont 21 acquises"),
+    "9 réceptions à domicile, en entrée libre",
+    "21 dates déjà programmées · jusqu’à 9 dates supplémentaires selon "
+    "qualification et classement",
 ]
 # La version precedente opposait l'audience aux voisins — vrai, mais trop
 # absolu : le club a AUSSI une audience en ligne, et la page 6 la chiffre.
@@ -264,12 +275,10 @@ P5_FAMILLES = [
 
 # Les reperes PUBLIES par le club. Source : mbc974.com/soutenir-le-club/.
 # Le bandeau posait une EQUIVALENCE — 20 EUR = un ballon — que la mention
-# reprenait en bas de page (« n'est pas affecté à une dépense précise »). Les
-# deux acheteurs a 500 et 1 000 EUR ont releve la contradiction : « si je dis
-# que j'ai paye cinq licences, le club me dement en corps 8 ». Les memes
-# chiffres, presentes comme des ORDRES DE GRANDEUR DES DEPENSES, ne promettent
-# plus de flechage — et la mention redevient une precision.
-P5_REPERES_TITRE = "CE QUE COÛTE UNE SAISON, EN REPÈRES"
+# reprenait en bas de page. La V3.1 l'avait retitre « ce que coute une
+# saison » : plus d'equivalence, mais un autre malentendu, car 20 + 95 + 300
+# ne sont pas le cout d'une saison. Trois reperes sont trois reperes.
+P5_REPERES_TITRE = "QUELQUES REPÈRES CONCRETS"
 P5_REPERES = [
     ("20 €", "un ballon de match pour une équipe"),
     ("95 €", "une licence offerte — le tarif de la saison"),
@@ -335,9 +344,14 @@ P6_RARETE_ETAT = "Disponible."
 # « trois marques » face a « cinq partenaires » page 3 : la phrase qui
 # reconciliait les deux comptes avait disparu de la V3.
 P6_RARETE_TEXTE = "La face en porte trois, équipementier compris."
-# Le flocage appartient a All-Star ; le DOS, lui, reste a negocier — aucun
-# tarif specifique n'a ete valide par le bureau.
-P6_RARETE_OFFRE = "Le flocage entre dans All-Star. Pour le dos, parlons-en."
+# « Le flocage entre dans All-Star. Pour le dos, parlons-en. » laissait deux
+# lectures ouvertes : celle du prospect qui comprend que le dos lui revient a
+# 1 000 EUR, et celle qui doute qu'All-Star donne un maillot du tout. La phrase
+# dit maintenant les deux choses separement. Aucun tarif n'est attache au dos :
+# le bureau n'en a valide aucun.
+P6_RARETE_OFFRE = ("All-Star inclut un emplacement maillot défini avec le "
+                   "club. L’emplacement dos, unique, fait l’objet d’un "
+                   "échange spécifique.")
 
 # La version precedente promettait que CINQ supports demarraient des la
 # signature — or une affiche depend d'une reception a venir et un flyer d'une
@@ -368,7 +382,7 @@ P7_LEAD = ("Chaque formule inclut la précédente. Contreparties adaptables, "
 # ce qu'ils valent concretement, sans rien promettre de neuf.
 P7_FORMULES = [
     dict(nom="ROOKIE", prix="200", populaire=False,
-         tempo="Votre logo en ligne, dès la signature.",
+         tempo="Votre logo en ligne, dès validation du partenariat.",
          lignes=[("Votre logo sur le site", "présent sur mbc974.com"),
                  ("Mention sur nos réseaux", "Facebook, Instagram, TikTok"),
                  ("Remerciements en fin de saison", "publication du club")]),
@@ -398,9 +412,15 @@ P7_FORMULES = [
          # promesse que rien ne fondait. Les deux renvoient desormais a la
          # convention, seul document ou ces perimetres se definissent.
          lignes=[("Exclusivité dans votre secteur", "périmètre défini dans la convention"),
-                 ("Partenaire titre d’un événement", "événement défini à la signature"),
+                 ("Partenaire titre d’un événement", "événement défini à la validation"),
                  ("Prise de parole lors des remises", "devant les familles"),
-                 ("Visibilité premium", "définie avec vous dans la convention"),
+                 # « Visibilite premium » a ete RETIREE, sans remplacement :
+                 # ni le site ni la convention ne disent ce qu'elle recouvre,
+                 # et un acheteur a 2 000 EUR pouvait exiger le premier rang
+                 # sur chaque support sans qu'on puisse lui opposer autre
+                 # chose. Hall of Fame garde ses trois contreparties
+                 # verifiables. On ne remplace pas une promesse vague par une
+                 # autre.
                  ("Inclut All-Star", "")]),
 ]
 
