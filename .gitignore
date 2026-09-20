@@ -10,7 +10,22 @@ essentiel-rendu.png
 planning-v2-rendu.png
 essai-cadrage.png
 apercu-photo.png
-.claude/worktrees/
+# L'atelier interne : generateurs, garde-fous, bancs de mesure et dossiers
+# partenaires. Il RESTE sur le disque et sert tous les jours — il ne doit
+# simplement plus voyager avec le site.
+#
+# POURQUOI. Ce depot est un depot GitHub Pages d'utilisateur : Pages publie
+# l'arbre de la branche TEL QUEL, et le .nojekyll de la racine coupe l'etape
+# Jekyll qui aurait au moins ecarte les dossiers commencant par un point.
+# Resultat, .claude/ etait servi : verifie le 20/09/2026, l'URL
+# https://mbc974.com/.claude/dossier-ola/dossier.pdf renvoyait bien le fichier
+# — une proposition commerciale nominative « MBC x OLA ENERGY », 3 000 EUR,
+# que le LISEZMOI de ce meme dossier declare ne devoir JAMAIS etre publiee.
+#
+# NE PAS « corriger » en supprimant .nojekyll : Jekyll ecarterait bien les
+# dossiers en point, mais il rendrait AUSSI MAINTENANCE.md (218 Ko de notes
+# internes) en page HTML indexable. Le remede serait pire.
+.claude/
 
 # Pages de test temporaires (bancs de mesure), jamais publiees
 _*.html
