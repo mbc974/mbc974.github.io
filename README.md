@@ -59,8 +59,12 @@ git push
 ```
 
 Les dossiers marqués **GÉNÉRÉ** ne se modifient pas à la main : on édite le JSON
-correspondant dans `data/`, puis on relance le script indiqué dans
-[MAINTENANCE.md](MAINTENANCE.md#1-bis-les-pages-générées--on-modifie-le-json-jamais-le-html).
+correspondant dans `data/`, puis on relance le script indiqué juste en
+dessous, dans « Modifier le contenu ».
+
+*(La documentation de maintenance détaillée — les 39 sections qui retracent
+chaque chantier et ses pièges — est conservée en interne et n'est pas
+publiée avec le site.)*
 
 ---
 
@@ -69,7 +73,7 @@ correspondant dans `data/`, puis on relance le script indiqué dans
 - **Textes** : modifiez directement le texte entre les balises dans `index.html` / `adhesion.html`.
 - **Créneaux / catégories** : `data/creneaux.json`, puis `python .claude/build-creneaux.py`. Un seul fichier alimente le planning de l'accueil, la page `/creneaux/`, les huit cartes catégories, les six panneaux du sélecteur d'âge **et** le bloc `openingHoursSpecification` du JSON-LD. Il n'y a plus rien à mettre à jour « en cohérence » : c'est le script qui s'en charge.
 - **Matchs** : `data/matchs.json`, puis `python .claude/build-matchs.py`. ⚠️ Le `slug` d'une rencontre **est** son URL publique : le changer casse un lien déjà partagé.
-- **Actualités** : `data/actualites.json`, puis `python .claude/build-actus.py`. Chaque article doit avoir sa source citée dans le bloc `_sources` du fichier — on ne publie rien qu'on ne puisse pas montrer. Un article peut reprendre une vidéo publiée ailleurs (bloc `{"t": "video"}`, voir [MAINTENANCE.md § 28](MAINTENANCE.md#28-le-reportage-de-réunion-la-1ère--une-vidéo-tierce-en-façade-14092026)) : le lecteur du tiers n'est chargé qu'au clic du visiteur, jamais d'office.
+- **Actualités** : `data/actualites.json`, puis `python .claude/build-actus.py`. Chaque article doit avoir sa source citée dans le bloc `_sources` du fichier — on ne publie rien qu'on ne puisse pas montrer. Un article peut reprendre une vidéo publiée ailleurs (bloc `{"t": "video"}`) : le lecteur du tiers n'est chargé qu'au clic du visiteur, jamais d'office.
 - **Staff** : photos dans `assets/staff/`, noms/rôles affichés via `.team__cap` (et déclarés dans le `member` du JSON-LD).
 - **Sponsors** : ajoutez le logo dans `assets/sponsors/` puis dupliquez une carte dans la section `id="partenaires"`.
 - **Maillots / galerie** : remplacez les images dans `assets/maillots/` et `assets/galerie/` (gardez les mêmes noms de fichiers).
