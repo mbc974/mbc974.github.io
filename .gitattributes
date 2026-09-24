@@ -1,0 +1,4 @@
+# Les agendas .ics sont ecrits en CRLF, lignes pliees a 75 octets, comme le
+# veut la RFC 5545. Sans cette regle, core.autocrlf les stockait en LF et
+# GitHub Pages servait des calendriers hors norme. Octets servis = octets ecrits.
+*.ics -text

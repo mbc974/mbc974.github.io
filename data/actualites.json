@@ -1,7 +1,7 @@
 {
   "_lisezmoi": "Source UNIQUE des actualites. On modifie CE fichier, jamais le HTML, puis on lance « python .claude/build-actus.py ». REGLE DE REDACTION : rien ici ne doit etre invente. Pas de citation qu'on n'a pas, pas de score, pas de chiffre de frequentation, pas de date approximative presentee comme exacte. Le champ « date » est la date de PUBLICATION de l'article (celle qui part dans datePublished) ; si le fait raconte s'est produit a une autre date, on le dit dans le texte, avec la precision qu'on a reellement.",
   "_sources": {
-    "calendrier-phase-1-prm-2026-2027": "assets/documents/calendrier-prm-nord-2026-2027.pdf (edition du 25/08/2026) et assets/documents/reglement-sportif-prm-2026-2027.pdf",
+    "calendrier-phase-1-prm-2026-2027": "assets/documents/calendrier-prm-nord-2026-2027.pdf (edition du 25/08/2026) et assets/documents/reglement-sportif-prm-2026-2027.pdf ; J5 inversee et J3 avancee au mercredi 30/09 : derogations de data/matchs.json (communications du club des 14/09 et 24/09/2026)",
     "plateau-couvert-ruisseau-blanc": "section « inauguration » de la page d'accueil et photos assets/galerie/mbc-*-ruisseau-blanc-*, mbc-la-montagne-inauguration-terrain-*",
     "inscriptions-2026-2027-ouvertes": "adhesion.html (tarif, contenu de la licence, parcours Yapla puis e-Licence) et la FAQ de la page d'accueil",
     "reportage-reunion-la-1ere-mbc-la-montagne": "le reel https://www.facebook.com/reel/952846737186979 publié par la page Facebook « Réunion la 1ère » (facebook.com/reunionla1ere), relevé le 14/09/2026 : titre et légende tels que publiés, date de mise en ligne 13/09/2026 (champ creation_time de la page, 19 h 50 heure de La Réunion), durée 3 min 14 (194 s), image 1920 × 1080, habillage « Grand Sport ». La vignette assets/galerie/mbc-reportage-reunion-la-1ere* est l'image d'aperçu (og:image) que Facebook fournit pour ce reel, 1000 × 563 px — la seule taille disponible, d'où un cran maximal de 1000."
@@ -240,11 +240,11 @@
     {
       "slug": "calendrier-phase-1-prm-2026-2027",
       "date": "2026-09-06",
-      "dateModifiee": "2026-09-14",
+      "dateModifiee": "2026-09-24",
       "categorie": "Compétition",
       "titre": "Le calendrier de la phase 1 est publié",
       "titreCourt": "Calendrier phase 1",
-      "chapeau": "Sept journées de Pré-Régionale Masculine, toutes le vendredi à 20h30, dont cinq à domicile au Gymnase de La Montagne. Entrée libre.",
+      "chapeau": "Sept journées de Pré-Régionale Masculine, le vendredi à 20h30 (sauf la J3, avancée au mercredi 30 septembre), dont cinq à domicile au Gymnase de La Montagne. Entrée libre.",
       "image": {
         "base": "assets/galerie/mbc-ecole-de-basket-regroupement-la-montagne",
         "crans": [
@@ -268,7 +268,7 @@
         },
         {
           "t": "p",
-          "c": "Cinq des sept journées se jouent au <b>Gymnase de La Montagne</b>, le vendredi à 20h30, et l'entrée est libre. Les deux autres sont des déplacements. Chaque rencontre a désormais sa fiche sur le site, avec la date, le lieu et le fichier à ajouter à son agenda."
+          "c": "Cinq des sept journées se jouent au <b>Gymnase de La Montagne</b>, le vendredi à 20h30 (la J3, le mercredi 30 septembre), et l'entrée est libre. Les deux autres sont des déplacements. Chaque rencontre a désormais sa fiche sur le site, avec la date, le lieu et le fichier à ajouter à son agenda."
         },
         {
           "t": "h2",
@@ -276,7 +276,7 @@
         },
         {
           "t": "p",
-          "c": "Le règlement sportif particulier de la compétition autorise une dérogation jusqu'à cinq jours avant chaque rencontre : une date ou un terrain peuvent changer en cours de saison. Le site est regénéré à partir du calendrier officiel de la ligue, ce qui évite de laisser une information périmée en ligne. C'est déjà arrivé : la rencontre du 23 octobre contre Sainte-Rose, placée là-bas par le calendrier de la ligue, a été inversée et se jouera au Gymnase de La Montagne."
+          "c": "Le règlement sportif particulier de la compétition autorise une dérogation jusqu'à cinq jours avant chaque rencontre : une date ou un terrain peuvent changer en cours de saison. Le site est regénéré à partir du calendrier officiel de la ligue, ce qui évite de laisser une information périmée en ligne. C'est déjà arrivé : la rencontre du 23 octobre contre Sainte-Rose, placée là-bas par le calendrier de la ligue, a été inversée et se jouera au Gymnase de La Montagne. Et la rencontre contre Saint-Benoît, prévue le vendredi 2 octobre, est avancée au mercredi 30 septembre, toujours au Gymnase de La Montagne."
         },
         {
           "t": "h2",

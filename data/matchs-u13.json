@@ -1,14 +1,15 @@
 {
-  "_lisezmoi": "Source UNIQUE de la saison des U13. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-matchs-u13.py », puis « python .claude/build-sitemap.py » et « python .claude/bump-assets.py » (en dernier). Tout en découle : la page /matchs/u13/, le bloc des U13 en bas de la section « Les matchs de la saison » de l'accueil, le bloc de la page basket-enfant-saint-denis/, le fichier d'agenda assets/documents/matchs-u13-2026-2027.ics et les données structurées des réceptions. SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 42, \"adverse\": 38}, toujours du point de vue du MBC, jamais dans l'ordre d'affichage) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette. Tant qu'aucun score n'est saisi, la ligne dit « Score à venir » d'elle-même dès que l'heure de fin est passée : il n'y a rien à republier pour cela. UNE DÉROGATION (rencontre inversée après la parution du calendrier) : modifier « domicile », « lieu » et « entreeLibre », et ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. POURQUOI UN FICHIER SÉPARÉ DE data/matchs.json : la chaîne des seniors est mono-équipe par construction (un seul bandeau #nxBand, des data-id datés, un bilan global, des slugs sans équipe). Les U13 vivent donc à côté, avec leur propre générateur, et réutilisent les mêmes composants CSS.",
+  "_lisezmoi": "Source UNIQUE de la saison des U13. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-matchs-u13.py », puis « python .claude/build-sitemap.py » et « python .claude/bump-assets.py » (en dernier). Tout en découle : la page /matchs/u13/, le bloc des U13 en bas de la section « Les matchs de la saison » de l'accueil, le bloc de la page basket-enfant-saint-denis/, le fichier d'agenda assets/documents/matchs-u13-2026-2027.ics et les données structurées des réceptions. SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 42, \"adverse\": 38}, toujours du point de vue du MBC, jamais dans l'ordre d'affichage) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette. Tant qu'aucun score n'est saisi, la ligne dit « Score à venir » d'elle-même dès que l'heure de fin est passée : il n'y a rien à republier pour cela. UNE DÉROGATION (rencontre inversée après la parution du calendrier) : modifier « domicile », « lieu » et « entreeLibre », et ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. UNE SALLE DE DÉPLACEMENT CONNUE (communiquée au club avant la rencontre) : l'ajouter à « lieux » (nom, adresse, codePostal, ville, carte ; latitude/longitude facultatives pour un déplacement), la citer dans « lieu » de la rencontre et incrémenter sa « revision » (voir plus bas). « domicile » et « entreeLibre » restent false : c'est « domicile », jamais « lieu », qui dit qui reçoit, et un déplacement n'a pas de SportsEvent. Noter la source dans « _sources.salles ». UNE RENCONTRE DÉJÀ PUBLIÉE QUI CHANGE (date, heure, salle, camp, ou dérogation annulée) : incrémenter « revision » : { n (1, puis 2, 3...), le (AAAA-MM-JJ du changement), motif } — c'est ce qui fait accepter la mise à jour par les agendas qui ont déjà importé le .ics (SEQUENCE et DTSTAMP). Ne jamais retirer ce champ, même quand la dérogation part. POURQUOI UN FICHIER SÉPARÉ DE data/matchs.json : la chaîne des seniors est mono-équipe par construction (un seul bandeau #nxBand, des data-id datés, un bilan global, des slugs sans équipe). Les U13 vivent donc à côté, avec leur propre générateur, et réutilisent les mêmes composants CSS.",
   "saison": "2026/2027",
   "_sources": {
     "calendrier": "Export du Comité de La Réunion de Basket-Ball, « DMU13 — Départementale masculine U13 », poule A, édition du 21/08/2026 à 12:51:41. Transmis au club le 17/09/2026 (archivé, ramené en noir et blanc : assets/documents/calendrier-u13-2026-2027.png). L'équipe nommée en premier reçoit : c'est l'ordre des colonnes de l'export qui porte domicile/extérieur, comme pour le calendrier des seniors.",
     "format": "Huit équipes, sept journées, un seul tour : chaque équipe rencontre les sept autres une fois. Vingt-huit rencontres au total, toutes le dimanche à 10h30. L'export ne mentionne ni gymnase ni score.",
     "duree": "90 minutes retenues pour la durée d'une rencontre U13 (4 × 8 minutes, plus les arrêts de jeu et la mi-temps). Elle ne sert qu'à deux choses : l'heure de fin du rendez-vous .ics, et l'instant à partir duquel une ligne bascule de « Domicile » à « Score à venir ».",
-    "villes": "Commune du siège de chaque club adverse, pour situer un déplacement. Ce n'est PAS l'adresse du gymnase, que l'export ne donne pas : la salle est communiquée par la Ligue avant la rencontre. Aiglons d'Orient (64 rue Sainte-Anne, Saint-Denis) et Olympique Basket Panonnais (Bras-Panon, association déclarée le 11/06/2024) relevés sur leurs sites respectifs le 17/09/2026.",
+    "villes": "Commune du siège de chaque club adverse, pour situer un déplacement tant que la salle n'est pas connue. Ce n'est PAS l'adresse du gymnase, que l'export ne donne pas : la salle est communiquée avant la rencontre, et elle entre alors dans « lieux » (voir « salles »). Aiglons d'Orient (64 rue Sainte-Anne, Saint-Denis) et Olympique Basket Panonnais (Bras-Panon, association déclarée le 11/06/2024) relevés sur leurs sites respectifs le 17/09/2026.",
     "logos": "L'écusson est celui du CLUB, pas de l'équipe : « Dionysien 2 » et « Picks La Possession 2 » réutilisent donc les fichiers bcd3 et picks3 déjà présents, déposés pour les équipes 3 engagées en seniors. Trois clubs n'ont pas encore d'écusson dans le dépôt (Panonnais, Saint-Paul 2, Aiglons d'Orient) : leur sigle s'affiche à la place, sans rien casser. Pour les ajouter, déposer les fichiers dans Téléchargements et lancer .claude/add-club-logos.py.",
     "creneau": "ÉCART À ARBITRER PAR LE BUREAU : data/creneaux.json annonce le créneau « Match à domicile » des U13 le dimanche de 09h00 à 11h00, alors que la Ligue fixe tous les matchs de la poule à 10h30 — une rencontre à domicile se termine donc vers midi. Le présent fichier dit l'heure officielle de la Ligue ; data/creneaux.json dit la réservation de salle.",
-    "plateau": "La J7 du 15/11/2026 (déplacement à La Possession) tombe le week-end du plateau Mini-Basket Zone Nord que le MBC organise les 14 et 15 novembre 2026. Les deux ne concernent pas les mêmes catégories, mais ils mobilisent les mêmes bénévoles."
+    "plateau": "La J7 du 15/11/2026 (déplacement à La Possession) tombe le week-end du plateau Mini-Basket Zone Nord que le MBC organise les 14 et 15 novembre 2026. Les deux ne concernent pas les mêmes catégories, mais ils mobilisent les mêmes bénévoles.",
+    "salles": "J3 du 27/09/2026 (Saint-Benoît BC – MBC, 10h30) : Gymnase de Bras-Fusil, à Saint-Benoît, communiqué par le club (Alexandre) le 24/09/2026. Adresse « rue du Stade Jean Allane », 97470 Saint-Benoît : page « Gymnases et stades » du site de la Ville de Saint-Benoît (saint-benoit.re), relevée le 24/09/2026. Coordonnées : bâtiment « Gymnase de Bras-Fusil » d'OpenStreetMap (way 115999938), relevées le 24/09/2026 ; elles ne servent qu'au lien d'itinéraire."
   },
   "equipe": {
     "id": "u13",
@@ -107,6 +108,17 @@
       "latitude": -20.891557,
       "longitude": 55.423974,
       "carte": "https://maps.app.goo.gl/KcTePvY47wzi6JMu9"
+    },
+    "bras-fusil": {
+      "nom": "Gymnase de Bras-Fusil",
+      "adresse": "Rue du Stade Jean Allane",
+      "ville": "Saint-Benoît",
+      "codePostal": "97470",
+      "region": "La Réunion",
+      "pays": "RE",
+      "latitude": -21.0482405,
+      "longitude": 55.7142303,
+      "carte": "https://www.google.com/maps/search/?api=1&query=-21.0482405%2C55.7142303"
     }
   },
   "matchs": [
@@ -156,7 +168,8 @@
       "sigle": "SBBC",
       "logo": "sbbc",
       "ville": "Saint-Benoît",
-      "lieu": null,
+      "lieu": "bras-fusil",
+      "revision": { "n": 1, "le": "2026-09-24", "motif": "Salle communiquée : Gymnase de Bras-Fusil" },
       "entreeLibre": false,
       "statut": "a-venir",
       "score": null

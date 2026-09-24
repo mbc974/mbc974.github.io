@@ -1021,6 +1021,14 @@ MBC.instant = function (iso, heureDefaut) {
   return isNaN(d) ? null : d;
 };
 
+/* « C'est ce soir » disait vrai pour les seniors (20h30), pas pour les
+   U13 : leur rencontre de 10h30 s'annonçait « ce soir » le dimanche
+   matin. Le moment se lit sur l'heure de La Réunion du coup d'envoi. */
+MBC.cestLeJour = function (debut) {
+  var h = debut ? (debut.getUTCHours() + 4) % 24 : 20;
+  return h < 12 ? 'C’est ce matin' : h < 18 ? 'C’est cet après-midi' : 'C’est ce soir';
+};
+
 /* « 20h30 » tel qu'il est écrit dans la ligne -> « 20:30 ».
    Sert de repli quand data-debut manque : l'heure lue dans la page
    vaut toujours mieux qu'une heure inventée dans le script — c'est
@@ -1267,8 +1275,32 @@ MBC.dateLongue = function (d, avecAnnee) {
       var d = new Date();
       j = JOURS[d.getDay()];
       min = d.getHours() * 60 + d.getMinutes();
+      iso = null;
     }
-    return { jour: j, minutes: min };
+    return { jour: j, minutes: min, iso: iso };
+  }
+
+  /* Un créneau « Match à domicile » est une RÉSERVATION de salle, pas un
+     match : il revient chaque semaine, qu'il y ait une réception ou non. Le
+     marquer « En cours » un vendredi de déplacement — ou le dimanche 27/09/2026,
+     quand les U13 jouaient au Gymnase de Bras-Fusil — envoyait des parents au
+     Gymnase de La Montagne pour rien. On ne l'éclaire donc que si la page
+     porte ce jour-là une réception de l'équipe concernée : une ligne du
+     calendrier (.mx-row--dom), la carte « Prochain match » marquée Domicile,
+     ou une rencontre des listes du Match Center (.mc-i--dom), U13 comprises.
+     Sans date lisible, on s'abstient. */
+  function receptionCeJour(s, iso) {
+    if (!s.classList.contains('cw__s--match')) return true;
+    if (!iso) return false;
+    var cats = (s.querySelector('.cw__c') || {}).textContent || '';
+    var sel = [];
+    if (/Seniors/.test(cats)) {
+      sel.push('.mx-row--dom[data-date="' + iso + '"]',
+               '.mc-next[data-debut^="' + iso + '"] .mc-tag--dom',
+               '.mc-i--dom:not([data-equipe])[data-debut^="' + iso + '"]');
+    }
+    if (/U13/.test(cats)) sel.push('.mc-i--dom[data-equipe="u13"][data-debut^="' + iso + '"]');
+    return sel.length > 0 && !!document.querySelector(sel.join(','));
   }
 
   /* « 17:30 » -> 1050. Rend null si l'attribut manque ou n'a pas cette forme :
@@ -1302,6 +1334,7 @@ MBC.dateLongue = function (d, avecAnnee) {
       var t = s.querySelectorAll('.cw__h time');
       var d = enMinutes(t[0]), f = enMinutes(t[1]);
       if (d === null || f === null) return;
+      if (!receptionCeJour(s, now.iso)) return;
       if (now.minutes >= d && now.minutes < f) {
         s.classList.add('is-live');
         etiquette(s, 'En cours');
@@ -1386,7 +1419,7 @@ MBC.dateLongue = function (d, avecAnnee) {
        affichait « 00 jour 00 h 00 min » pendant soixante secondes. */
     if (reste < MIN) {
       cd.className = 'nx__cd nx__cd--soir';
-      cd.textContent = maintenant <= f ? 'C’est ce soir' : '';
+      cd.textContent = maintenant <= f ? MBC.cestLeJour(d) : '';
       cd.hidden = maintenant > f;
       if (timer) { clearInterval(timer); timer = null; }
       return;
@@ -1431,8 +1464,9 @@ MBC.dateLongue = function (d, avecAnnee) {
    ------------------------------------------------------------
    La refonte replie ce qui n'a pas a s'imposer : les huit
    categories, les sept rencontres, la FAQ. Or ces blocs portent
-   des ancres citees ailleurs — /#match-2026-10-02 est l'URL
-   canonique d'une rencontre dans le JSON-LD, /#faq est en pied
+   des ancres citees ailleurs — /#match-2026-10-02 a ete l'URL
+   canonique d'une rencontre dans le JSON-LD (une rencontre
+   redatee la garde, en alias sur son <time>), /#faq est en pied
    de page. Sans ceci, le lien menerait a un bloc ferme.
    On ouvre donc chaque volet ancetre de la cible, puis on
    recale le defilement (le contenu vient de changer de hauteur).
@@ -2401,7 +2435,7 @@ MBC.dateLongue = function (d, avecAnnee) {
       var reste = d - now;
       if (reste < MIN) {                 // la dernière minute compte déjà
         cd.className = 'mc-cd mc-cd--soir';
-        cd.textContent = 'C’est ce soir';
+        cd.textContent = MBC.cestLeJour(d);
         cd.hidden = false;
         return;
       }

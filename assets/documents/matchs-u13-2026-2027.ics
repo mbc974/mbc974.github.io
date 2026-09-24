@@ -35,11 +35,13 @@ URL:https://mbc974.com/matchs/u13/
 END:VEVENT
 BEGIN:VEVENT
 UID:u13-2026-09-27@mbc974.com
-DTSTAMP:20260917T000000Z
+DTSTAMP:20260924T000000Z
+SEQUENCE:1
 DTSTART;TZID=Indian/Reunion:20260927T103000
 DTEND;TZID=Indian/Reunion:20260927T120000
 SUMMARY:U13 : Saint-Benoît — MBC (DMU13 · J3)
-LOCATION:Saint-Benoît — salle communiquée par la Ligue
+LOCATION:Gymnase de Bras-Fusil\, Rue du Stade Jean Allane\, 97470 Saint-Ben
+ oît
 DESCRIPTION:Départementale Masculine U13 — déplacement.
 URL:https://mbc974.com/matchs/u13/
 END:VEVENT
