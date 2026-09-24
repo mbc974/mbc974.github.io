@@ -43,6 +43,24 @@
           "fy": "12%"
         },
         {
+          "nom": "Benoît Gouin",
+          "poste": "Meneur · poste 1-2",
+          "image": "mbc-senior-benoit-gouin",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-benoit-gouin-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur Benoît Gouin, meneur de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "36%",
+          "fy": "28%",
+          "_numero_a_attribuer": "Numero non publie. L'affiche porte « #22 » grave (maillot du shooting : deux joueurs y portent le 22, deux le 23) ; le bureau n'a pas encore attribue les numeros de la saison. Decision d'Alexandre le 24/09/2026 : pas de pastille plutot que deux #22 et deux #23. Ajouter la cle « numero » le jour ou ils sont connus."
+        },
+        {
           "numero": "8",
           "nom": "Laurent Monvoisin",
           "poste": "Arrière · poste 2-3",
@@ -95,6 +113,25 @@
           "alt": "Affiche du joueur Matthieu Andéol, arrière numéro 14 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
           "fx": "38%",
           "fy": "12%"
+        },
+        {
+          "nom": "Kylian",
+          "poste": "Arrière · poste 2-3",
+          "image": "mbc-senior-kylian",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-kylian-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur Kylian, arrière de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "45.5%",
+          "fy": "29%",
+          "_numero_a_attribuer": "Numero non publie. L'affiche porte « #23 » grave (maillot du shooting : deux joueurs y portent le 22, deux le 23) ; le bureau n'a pas encore attribue les numeros de la saison. Decision d'Alexandre le 24/09/2026 : pas de pastille plutot que deux #22 et deux #23. Ajouter la cle « numero » le jour ou ils sont connus.",
+          "_nom_incomplet": "L'affiche ne porte que le prenom. Decision d'Alexandre le 24/09/2026 : publier « Kylian » seul plutot qu'un nom de famille invente. Completer des qu'il est connu (legende, alt, JSON-LD athlete)."
         }
       ]
     },
@@ -116,8 +153,27 @@
           "largeur": 941,
           "hauteur": 1672,
           "alt": "Affiche du joueur Kevin Nazir, ailier numéro 11 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
-          "fx": "39%",
-          "fy": "12%"
+          "fx": "36%",
+          "fy": "12%",
+          "_cadrage": "Cadrage retouche le 24/09/2026 (fx 39 -> 36) et ce n'est PAS gratuit : en passant de cinq a sept cartes par rangee, la carte fermee est tombee de 0,324 a 0,2104. A fx 39 le bord droit arrivait a un demi-point du « K » grave de KEVIN ; a 36 il en reste deux points et demi, le visage restant centre. Mesure : .claude/banc-effectif.mjs, planche : .claude/planche-cadrage.py."
+        },
+        {
+          "nom": "Jérôme Nabuchodonosor",
+          "poste": "Intérieur · poste 4",
+          "image": "mbc-senior-jerome-nabuchodonosor",
+          "crans": [
+            360,
+            560,
+            760,
+            941
+          ],
+          "repli": "mbc-senior-jerome-nabuchodonosor-941.jpg",
+          "largeur": 941,
+          "hauteur": 1672,
+          "alt": "Affiche du joueur Jérôme Nabuchodonosor, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "32%",
+          "fy": "6%",
+          "_numero_a_attribuer": "Numero non publie. L'affiche porte « #22 » grave (maillot du shooting : deux joueurs y portent le 22, deux le 23) ; le bureau n'a pas encore attribue les numeros de la saison. Decision d'Alexandre le 24/09/2026 : pas de pastille plutot que deux #22 et deux #23. Ajouter la cle « numero » le jour ou ils sont connus."
         },
         {
           "numero": "9",
@@ -154,7 +210,8 @@
           "alt": "Affiche du joueur Hakim Derras, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
           "fx": "48%",
           "fy": "12%",
-          "_affiche_a_refaire": "Le visuel assets/joueurs/mbc-senior-hakim-derras-*.jpg porte « #10 » grave a trois endroits (maillot, nom, grand chiffre). Le bureau a valide le passage au 94 le 10/09/2026 en connaissance de cause : la legende dit 94, l'image dit 10, jusqu'a ce qu'une nouvelle affiche soit deposee. Retirer cette cle le jour ou c'est fait."
+          "_affiche_a_refaire": "Le visuel assets/joueurs/mbc-senior-hakim-derras-*.jpg porte « #10 » grave a trois endroits (maillot, nom, grand chiffre). Le bureau a valide le passage au 94 le 10/09/2026 en connaissance de cause : la legende dit 94, l'image dit 10, jusqu'a ce qu'une nouvelle affiche soit deposee. Retirer cette cle le jour ou c'est fait.",
+          "_cadrage": "Cadrage GARDE a 48 % le 24/09/2026 contre une proposition de 53,5 % : a 53,5 le « 10 » du maillot devient pleinement lisible dans la bande fermee, alors que la legende annonce le 94 (voir _affiche_a_refaire). Mieux vaut un cadrage moins centre qu'une carte qui affiche deux numeros."
         },
         {
           "numero": "12",
@@ -191,6 +248,25 @@
           "alt": "Affiche du joueur Oswald Hoarau, intérieur numéro 34 de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
           "fx": "47%",
           "fy": "12%"
+        },
+        {
+          "nom": "Kainoa Ruellan",
+          "poste": "Intérieur · poste 4-5",
+          "image": "mbc-senior-kainoa-ruellan",
+          "crans": [
+            360,
+            560,
+            760,
+            1122
+          ],
+          "repli": "mbc-senior-kainoa-ruellan-1122.jpg",
+          "largeur": 1122,
+          "hauteur": 1402,
+          "alt": "Affiche du joueur Kainoa Ruellan, intérieur de l'équipe seniors du MBC La Montagne, saison 2026/2027.",
+          "fx": "52%",
+          "fy": "12%",
+          "_numero_a_attribuer": "Numero non publie. L'affiche porte « 23 » grave (maillot du shooting : deux joueurs y portent le 22, deux le 23) ; le bureau n'a pas encore attribue les numeros de la saison. Decision d'Alexandre le 24/09/2026 : pas de pastille plutot que deux #22 et deux #23. Ajouter la cle « numero » le jour ou ils sont connus.",
+          "_cadrage": "Seule affiche en 4/5 (0,8003) : elle est plus LARGE que le cadre ouvert (0,7690) et que la grille du telephone (0,7504), donc rognee sur les cotes dans TOUS les etats — --fy n'agit qu'au point de bascule 880 px. L'orange du bas court jusqu'a 98,6 % de la largeur : le « #23 » grave perd un demi-point a droite en carte ouverte et 1,6 point en grille, QUEL QUE SOIT --fx (il faudrait fx 87 pour le sauver, ce qui sortirait le visage de la bande fermee). fx 52 est le meilleur compromis : a 50 et moins un liseré d'ecusson entre par la gauche sur le cadre 0,2213, a 54 et plus le portrait fantome entre par la droite. Le vrai remede est un export 9/16 comme les dix autres."
         }
       ]
     }
