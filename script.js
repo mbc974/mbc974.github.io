@@ -17,7 +17,14 @@
        elle vaudrait alors 0. */
     if (lightboxOpen && !navOpen && !root.classList.contains('lb-open')) root.style.setProperty('--mn-sbw', (window.innerWidth - root.clientWidth) + 'px');
     root.classList.toggle('lb-open', lightboxOpen);
-    document.body.style.overflow = (navOpen || lightboxOpen) ? 'hidden' : '';
+    /* Plus de body{overflow:hidden} (25/09/2026) : le verrou est sur <html>
+       (html.mn-open / html.lb-open). Posé EN PLUS sur le body, il en faisait
+       un conteneur de défilement — <html> n'étant plus « visible », le body ne
+       transmet plus son overflow à la fenêtre — et l'en-tête sticky des pages
+       intérieures se collait en haut du DOCUMENT : menu ouvert au milieu d'une
+       page, le bouton « Fermer » et le logo sortaient de l'écran (sur
+       téléphone, plus moyen de fermer le menu), et rendre le focus au bouton
+       faisait sauter la page de 458 px. */
   }
 
   /* ---- Menu plein écran (V176) ----
@@ -50,7 +57,12 @@
       var first = menu.querySelector('.mn__lien');
       if (first) first.focus({ preventScroll: true });
     } else if (document.activeElement && menu.contains(document.activeElement)) {
-      menuBtn.focus();
+      /* preventScroll : sur les pages intérieures (en-tête sticky), rendre le
+         focus au bouton faisait remonter la page de 458 px à la fermeture par
+         Échap — le lecteur perdait sa place (revue V195, 25/09/2026). Le
+         bouton reste visible : .site-header.hide:focus-within réaffiche
+         l'en-tête. */
+      menuBtn.focus({ preventScroll: true });
     }
   }
   if (menu && menuBtn) {
