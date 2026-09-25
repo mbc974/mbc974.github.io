@@ -11505,7 +11505,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    La hiérarchie, du plus fort au plus discret :
      1. le score (Anton ; blanc pour le vainqueur, glacier atténué pour
         l'autre) et le nom des équipes ;
-     2. la date et l'heure (Barlow Condensed, capitales) ;
+     2. la date et l'heure (Anton depuis V194) ;
      3. la compétition, le camp, l'état : des étiquettes à filet fin.
    L'orange est un ACCENT et jamais un fond de bloc : le trait de tête de la
    carte principale, le rail de la date à suivre, le pictogramme de la Coupe,
@@ -11520,26 +11520,109 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
        du générateur et du script s'appuient dessus, rien n'est à redire ici.
    ============================================================================ */
 
-/* --- Les deux cartes ------------------------------------------------------ */
+/* ============================================================================
+   V194 — « GAME DAY » : LA SECTION DES MATCHS SE JOUE SUR UN PARQUET (24/09/2026)
+   ----------------------------------------------------------------------------
+   Demande : la section était juste mais « administrative » — tout y parlait la
+   même langue (petites capitales condensées, filets, chiffres), sans rien qui
+   dise « basket ». Refonte visuelle SEULE : aucune donnée, aucune accroche du
+   JS, aucun marqueur de générateur ne change (vérifié : empreinte des faits
+   avant/après, banc-match-center.mjs aux quatre instants).
+
+   UNE idée : l'affiche du prochain match est posée sur un terrain tracé au
+   trait (raquettes, arcs, ligne médiane, cercle central autour du « vs »),
+   dans le vocabulaire du dessin de terrain qui existait déjà au menu
+   (.mn__forme--3). Quatre détails, pas davantage :
+     1. un halo chaud sous l'écusson du MBC (jamais un néon autour) ;
+     2. le dernier score en tableau d'affichage : bandeau « Score final »,
+        issue en lettre (V / D / N), série de la saison ;
+     3. « À suivre » en piste de saison : fiches sur un rail, en ligne sur
+        ordinateur, en frise sur téléphone ;
+     4. deux traits qui se tracent une fois à l'apparition (terrain, rail).
+   Deux registres typographiques, enfin distincts : Anton pour ce qui se
+   crie (équipes, scores, dates, heure) ; Barlow, en casse normale, pour ce
+   qui se lit (lieux, adresses, horaires secondaires, bilan). Les capitales
+   condensées restent aux surtitres et aux pastilles d'état.
+
+   Écarté exprès : une photo (les seules photos d'action sont celles de la
+   J1, déjà dans #galerie juste en dessous, et #matchs est la section
+   « texte » de l'alternance V188) ; un mot géant en filigrane (le .bg-word
+   a été éteint en V100.4, « l'élément le plus template ») ; toute boucle
+   d'animation.
+
+   Ordre des cartes : le prochain match d'abord (générateur), 2/3 – 1/3 au-delà
+   de 1100 px. La carte des U13 (build-matchs-u13.py, non régénérée) porte
+   les mêmes classes et prend le même terrain, sans halo (.mc-team--mbc est
+   posé par le générateur des seniors seulement).
+   ============================================================================ */
+
+/* L'en-tête de la section : en deux colonnes au-delà de 1000 px, le titre à
+   gauche, le texte à droite contre un filet — plus un paragraphe de sept
+   lignes centré sous le titre. Aligné à gauche à toutes les tailles, comme
+   l'en-tête de /matchs/ : un texte de cette longueur ne se lit pas centré.
+   Le paragraphe garde MOT POUR MOT la phrase « Sept rencontres pour la
+   première phase … dont cinq à domicile » : c'est un point d'ancrage de
+   set-calendrier-prm.py (COMPTES), sans balise entre les deux. */
+.section > .wrap > .sec-head.sec-head--split{max-width:none;margin-inline:0;text-align:left}
+.section .sec-head--split .kicker{justify-content:flex-start}
+.section .sec-head--split .sec-head__sub{margin-inline:0;max-width:62ch}
+.sec-head--split .sec-head__titre{min-width:0}
+.section .sec-head--split .sec-head__note{
+  margin:.9rem 0 0;max-width:62ch;font-size:var(--text-base);line-height:1.5;color:var(--txt-soft)}
+.sec-head--split .sec-head__note b{color:var(--txt);font-weight:600}
+/* Sous 760 px, le texte courant ne descend jamais sous 16 px (§ 18) : la
+   phrase des U13 suit donc .section p, comme quand elle vivait dans
+   .sec-head__sub (revue V194, F3). */
+@media (max-width:760px){
+  .section .sec-head--split .sec-head__note{font-size:var(--text-lg);line-height:1.6}}
+@media (min-width:1001px){
+  .section > .wrap > .sec-head.sec-head--split{
+    display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:end;
+    column-gap:clamp(2.5rem,5vw,5rem)}
+  .sec-head--split .sec-head__texte{
+    padding-left:clamp(1.4rem,2.4vw,2rem);border-left:1px solid var(--hair-2)}
+  .section .sec-head--split .sec-head__sub{margin-top:0}}
+
+/* --- Les deux cartes ------------------------------------------------------
+   V194 : le prochain match d'abord (le générateur l'écrit en premier), et en
+   grand — 2/3 de la rangée contre 1/3 au tableau du dernier score. Entre 980
+   et 1100 px, 3/5 – 2/5 : à 2/3, la colonne du score tombait à 245 px utiles. */
+/* Les pièces dessinées du Match Center, en variables : les deux bouts du
+   terrain (un par fond de terrain, le droit en miroir) et six pictogrammes
+   au trait, utilisés en masque — ils prennent la couleur qu'on leur donne. */
+.mc{
+  --mc-bout-g:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400' fill='none' stroke='%23BFD2E4' stroke-opacity='.2' stroke-width='1.25'%3E%3Cpath vector-effect='non-scaling-stroke' d='M1 0V400'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 150H160V250H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='160' cy='200' r='50'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 58H68A142 142 0 0 1 68 342H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='30' cy='200' r='10' stroke='%23D96A1B' stroke-opacity='.55'/%3E%3C/svg%3E");
+  --mc-bout-d:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400' fill='none' stroke='%23BFD2E4' stroke-opacity='.2' stroke-width='1.25'%3E%3Cg transform='matrix(-1 0 0 1 240 0)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M1 0V400'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 150H160V250H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='160' cy='200' r='50'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 58H68A142 142 0 0 1 68 342H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='30' cy='200' r='10' stroke='%23D96A1B' stroke-opacity='.55'/%3E%3C/g%3E%3C/svg%3E");
+  --mc-ic-date:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E");
+  --mc-ic-heure:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 7.5V12l3 2'/%3E%3C/svg%3E");
+  --mc-ic-lieu:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z'/%3E%3Ccircle cx='12' cy='10' r='2.3'/%3E%3C/svg%3E");
+  --mc-ic-route:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 11.5 20 4l-7.5 16-2.2-6.3z'/%3E%3C/svg%3E");
+  --mc-ic-agenda:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4M12 12.5v5M9.5 15h5'/%3E%3C/svg%3E");
+  --mc-ic-ticket:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5V7A1.5 1.5 0 0 1 5 5.5h14A1.5 1.5 0 0 1 20.5 7v1.5a2.5 2.5 0 0 0 0 5V17a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 17v-3.5a2.5 2.5 0 0 0 0-5z'/%3E%3Cpath d='M14 6v1.5M14 11v2M14 16.5V18'/%3E%3C/svg%3E");}
 .mc{position:relative;margin:0 0 clamp(1.6rem,3.2vw,2.6rem)}
 .mc__duo{display:grid;gap:clamp(.9rem,1.8vw,1.4rem);align-items:stretch}
 @media (min-width:980px){
-  .mc__duo{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+  .mc__duo{grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
   .mc__duo.mc__duo--seul{grid-template-columns:minmax(0,1fr)}}
+@media (min-width:1100px){
+  .mc__duo{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}}
 .mc__slot{display:grid;min-width:0}
 
 .mc-next,.mc-res{
+  --mc-pad:clamp(1.15rem,2.4vw,1.9rem);
   position:relative;display:flex;flex-direction:column;min-width:0;
-  padding:clamp(1.15rem,2.4vw,1.9rem);
+  padding:var(--mc-pad);
   background:var(--surf-2);border:1px solid var(--hair);border-radius:var(--r-lg);
   box-shadow:var(--bevel)}
+/* Le terrain de la carte principale va d'un bord à l'autre : la carte le
+   rogne à son arrondi. */
+.mc-next{overflow:hidden}
 /* Le trait de tête de la rencontre principale : 48 px d'orange, pas un bandeau. */
 .mc-next::before{
-  content:"";position:absolute;top:-1px;left:clamp(1.15rem,2.4vw,1.9rem);
+  content:"";position:absolute;top:0;left:var(--mc-pad);
   width:48px;height:3px;border-radius:0 0 3px 3px;background:var(--orange-vif)}
 
-.mc-next__top,.mc-res__top{
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.55rem .9rem}
+.mc-next__top,.mc-res__top{display:flex;flex-wrap:wrap;align-items:center;row-gap:.55rem}
 .mc .mc-eyebrow{
   display:inline-flex;align-items:center;gap:.6em;margin:0;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
@@ -11547,20 +11630,33 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .mc .mc-eyebrow--calme{color:var(--bleu-glacier)}
 .mc-dot{width:7px;height:7px;flex:none;border-radius:var(--r-round);background:var(--orange-vif)}
 
-.mc .mc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:0}
+/* Les étiquettes. La première est la compétition (« PRM · Brassage · J3 ») :
+   ce n'est pas un état, c'est le surtitre de l'affiche — elle perd sa
+   pastille et se lit à la suite de « Prochain match ». Restent en pastilles
+   les vrais états : Domicile, Extérieur, Entrée libre. */
+.mc .mc-tags{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:0}
 .mc-tag{
-  display:inline-flex;align-items:center;padding:.36em .74em;
+  display:inline-flex;align-items:center;gap:.45em;padding:.36em .74em;
   border:1px solid var(--hair-2);border-radius:var(--r-pill);
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.12em;font-size:var(--text-2xs);line-height:1.1;
   color:var(--bleu-glacier);white-space:nowrap}
-.mc-tag--dom{border-color:rgb(var(--orange-vif-rgb) / .5);color:var(--orange-vif)}
+.mc .mc-tags .mc-tag:first-child{
+  border-color:transparent;padding-inline:0;white-space:normal;
+  font-size:var(--text-xs);letter-spacing:.14em;color:var(--txt)}
+.mc-next__top{column-gap:1.1rem}
+.mc-next__top .mc-tags{flex:1 1 auto}
+.mc-next__top .mc-tags .mc-tag:first-child{margin-right:auto}
+.mc-tag--dom{border-color:rgb(var(--orange-vif-rgb) / .55);color:var(--orange-vif)}
 .mc-tag--ext{color:var(--bleu-glacier)}
 .mc-tag--libre{border-color:transparent;background:rgb(var(--orange-vif-rgb) / .12);color:#F3C79A}
-.mc-tag--date{border-color:transparent;padding-inline:0;color:var(--txt-soft)}
+.mc-tag--libre::before{
+  content:"";width:1.25em;height:1.25em;flex:none;background:currentColor;
+  -webkit-mask:var(--mc-ic-ticket) center / contain no-repeat;mask:var(--mc-ic-ticket) center / contain no-repeat}
 
 /* L'écusson : une tuile blanche, comme partout sur le site. Sa taille vient
-   du contexte (--mc-c) : 72 px dans l'affiche, 40 au tableau, 28 en liste. */
+   du contexte (--mc-c) : jusqu'à 104 px sur le terrain, 44 au tableau, 28 en
+   liste. */
 .mc-crest{
   display:grid;place-items:center;flex:none;overflow:hidden;
   width:var(--mc-c,40px);height:var(--mc-c,40px);padding:calc(var(--mc-c,40px) * .1);
@@ -11573,54 +11669,155 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   font-size:calc(var(--mc-c,40px) * .26);letter-spacing:.02em}
 .mc-crest--vide{background:transparent;border:1.5px dashed rgb(var(--bleu-glacier-rgb) / .35)}
 
-/* L'affiche de la rencontre principale : le recevant à gauche, comme la
-   Ligue le nomme en premier. « vs » est centré sur les écussons. */
+/* --- Le terrain (V194) ------------------------------------------------------
+   LA grande idée de la section : l'affiche se joue SUR un parquet. La bande
+   du duel est un terrain vu de haut, tracé au trait comme le dessin de
+   l'entrée « Créneaux » du menu (.mn__forme--3 : même glacier à .2, même
+   cercle de panier orange) — le vocabulaire existe déjà, on le reprend.
+     - les deux lignes de touche : les filets haut et bas de la bande ;
+     - les deux fonds de terrain : les bords de la carte ; à chaque bout, la
+       raquette, le cercle de lancer franc, l'arc à 3 points et le panier
+       (deux SVG en fond, un par bout, hauts comme la bande) ;
+     - la ligne médiane (::after) et le cercle central, qui entoure le « vs ».
+   Le recevant est à gauche, chaque équipe dans sa moitié. Tout est décor :
+   pseudo-éléments et fonds, rien dans le DOM, rien pour un lecteur d'écran.
+   La carte des U13 (générateur à part) a les mêmes classes : elle a donc le
+   même terrain, sans rien régénérer. */
 .mc .mc-duel{
-  --mc-c:clamp(54px,6vw,72px);
-  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:start;
-  gap:clamp(.6rem,2vw,1.4rem);margin:clamp(1.2rem,2.6vw,1.9rem) 0 clamp(1.1rem,2.2vw,1.6rem)}
-.mc-team{display:flex;flex-direction:column;align-items:center;gap:.7rem;min-width:0;text-align:center}
+  --mc-c:clamp(64px,8vw,104px);
+  /* le même glacier à .2 que les deux SVG des bouts (écrit en dur dans
+     --mc-bout-g / -d) : un seul trait pour tout le terrain */
+  --mc-court:rgb(var(--bleu-glacier-rgb) / .2);
+  position:relative;isolation:isolate;
+  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
+  gap:clamp(.5rem,2vw,1.4rem);
+  margin:clamp(1.1rem,2.4vw,1.6rem) calc(-1 * var(--mc-pad)) 0;
+  padding:clamp(1.5rem,3.6vw,2.7rem) var(--mc-pad);
+  border-block:1px solid var(--mc-court);
+  /* la lumière de la salle, au rond central */
+  background:radial-gradient(ellipse 44% 78% at 50% 50%,rgb(var(--bleu-roi-rgb) / .2),transparent 72%)}
+.mc .mc-duel::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--mc-bout-g) left center / auto 100% no-repeat,
+             var(--mc-bout-d) right center / auto 100% no-repeat}
+.mc .mc-duel::after{
+  content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:1px;
+  margin-left:-.5px;background:var(--mc-court);pointer-events:none}
+.mc-team{position:relative;display:flex;flex-direction:column;align-items:center;gap:.8rem;min-width:0;text-align:center}
+/* Les deux colonnes prennent la hauteur de la rangée : les écussons restent
+   alignés en haut même si un nom tient sur deux lignes (« Saint-Benoît »,
+   « MTG Basketball ») ; le « vs » reste centré sur le terrain. */
+.mc .mc-duel > .mc-team{align-self:stretch}
 .mc-team__n{
   font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
-  font-size:clamp(1.45rem,3.3vw,2.6rem);line-height:.98;letter-spacing:.01em;
+  font-size:clamp(1.5rem,3.3vw,2.85rem);line-height:1.15;letter-spacing:.01em;
   color:var(--blanc);overflow-wrap:break-word;text-wrap:balance}
+/* Le halo du MBC : une lumière chaude posée SOUS la tuile, jamais une ombre
+   portée ni un néon autour d'elle. */
+.mc-team--mbc::before{
+  content:"";position:absolute;z-index:-1;top:calc(var(--mc-c) / 2);left:50%;
+  width:calc(var(--mc-c) * 2.5);aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:var(--r-round);pointer-events:none;
+  background:radial-gradient(closest-side,rgb(var(--orange-vif-rgb) / .24),rgb(var(--orange-vif-rgb) / .07) 58%,transparent)}
+/* Le « vs » au centre du terrain : un médaillon qui masque la ligne médiane,
+   et autour de lui le vrai cercle central, au trait. */
 .mc-vs{
-  display:grid;place-items:center;height:var(--mc-c);
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.2em;font-size:var(--text-sm);color:var(--orange-vif)}
+  position:relative;display:grid;place-items:center;
+  width:clamp(50px,6.2vw,76px);aspect-ratio:1;border-radius:var(--r-round);
+  border:1px solid rgb(var(--bleu-glacier-rgb) / .3);background:var(--surf-2);
+  font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.04em;font-size:clamp(1rem,1.7vw,1.3rem);line-height:1;color:var(--orange-vif)}
+.mc-vs::before{
+  content:"";position:absolute;inset:-40%;border-radius:var(--r-round);
+  border:1px solid var(--mc-court);pointer-events:none}
 /* Une échéance sans affiche occupe la carte principale (fin de phase 1,
    affiches de 2e phase pas encore publiées) : son trait de tête passe au
-   glacier. L'orange reste réservé à une rencontre confirmée. */
+   glacier, le halo s'éteint. L'orange reste réservé à une rencontre
+   confirmée. */
 .mc-next--tbd::before{background:var(--bleu-glacier)}
+.mc-next--tbd .mc-team--mbc::before{display:none}
+.mc-next--tbd .mc-vs{color:var(--bleu-glacier)}
 .mc-team--tbd .mc-team__n{color:var(--txt-soft);font-size:clamp(1.05rem,2.2vw,1.5rem)}
+/* Carte étroite : le duel s'empile, le terrain tourne d'un quart de tour.
+   Jusqu'à 20 em d'emplacement (inclus) — 320 px au texte par défaut, soit
+   les écrans de 356 px et moins ; tous les téléphones quand le texte est
+   agrandi —, deux colonnes ne tiennent plus : « MTG BASKETBALL » dépassait
+   la sienne de 10 px à 320, et à 200 % de texte les noms se seraient
+   cassés. On empile dans l'ordre du DOM : le recevant, le « vs » au rond
+   central, le visiteur (rangées 1fr auto 1fr : le « vs » reste au milieu
+   même si un nom prend deux lignes) ; la ligne médiane devient
+   horizontale et les raquettes se retirent (elles tiendraient mal sur une
+   bande aussi haute). Les noms gardent leur taille, en rem : ils suivent le
+   texte agrandi. La requête vise l'emplacement (.mc__slot), que script.js
+   garde quand il change de carte. */
+.mc__slot{container-type:inline-size}
+@container (max-width:20em){
+  .mc .mc-duel{grid-template-columns:minmax(0,1fr);grid-template-rows:1fr auto 1fr;justify-items:center;row-gap:1.5rem}
+  .mc .mc-duel > .mc-team{align-self:auto}
+  .mc .mc-duel::before{display:none}
+  .mc .mc-duel::after{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px;margin:-.5px 0 0}}
+/* Duel en ligne sur un très grand écran, texte agrandi : le nom (3,3vw, soit
+   84 px à 2560) débordait sa colonne et la carte le rognait. Plafond à 23 %
+   de SA colonne, en ligne seulement (la colonne n'est un conteneur qu'au-
+   delà de 20 em) ; au texte par défaut, le plafond n'est jamais atteint
+   (25,2 px à 360 contre 24). La taille reste hors du @container : sinon le
+   conteneur le plus proche du nom serait la colonne et la requête échouerait. */
+@supports (font-size:1cqi){
+  @container (min-width:20.01em){.mc .mc-duel > .mc-team{container-type:inline-size}}
+  .mc-team__n{font-size:min(clamp(1.5rem,3.3vw,2.85rem),23cqi)}}
 .mc .mc-tbd{
-  margin:-.4rem auto 1.1rem;max-width:44ch;text-align:center;
+  margin:1rem auto 0;max-width:44ch;text-align:center;
   font-size:var(--text-md);line-height:1.5;color:var(--txt-soft)}
 
-.mc-facts{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1.2rem;margin:0;
-  padding-top:clamp(.95rem,2vw,1.2rem);border-top:1px solid var(--hair)}
-.mc-fact{margin:0;min-width:0}
-.mc-fact--date{grid-column:1 / -1}
-@media (min-width:560px){
-  /* Un plancher pour « Lieu » : à 200 % de texte, les deux premières
-     colonnes (auto) l'écrasaient à 21 px, une lettre par ligne. */
-  .mc-facts{grid-template-columns:auto auto minmax(min(12ch,100%),1fr);column-gap:clamp(1.2rem,3vw,2.4rem)}
-  .mc-fact--date{grid-column:auto}}
+/* --- Les infos pratiques -------------------------------------------------
+   Plus d'étiquettes « DATE / COUP D'ENVOI / LIEU » en petites capitales : un
+   pictogramme dit la nature de l'information, le libellé reste pour le
+   lecteur d'écran (dt masqué à l'œil). Deux registres : la date et l'heure en
+   Anton, comme une affiche ; le lieu et l'adresse en Barlow, pour être lus. */
+.mc .mc-facts{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:.85rem 1.4rem;margin:0;
+  padding-top:clamp(1.1rem,2.4vw,1.5rem)}
+/* Au-delà de 720 px, deux rangées centrées sous l'affiche, comme au bas
+   d'une affiche de match : la date et l'heure, puis le lieu et son adresse
+   sur une ligne. Une rangée souple plutôt qu'une grille à trois colonnes :
+   V181 avait vu la colonne « Lieu » tomber à 21 px à 200 % de texte, et à
+   trois colonnes la date se coupait en trois lignes vers 1000 px. */
+@media (min-width:720px){
+  .mc .mc-facts{display:flex;flex-wrap:wrap;justify-content:center;gap:.8rem clamp(1.6rem,3.4vw,2.6rem)}
+  .mc .mc-fact--lieu{flex:1 1 100%;grid-template-columns:1.2rem minmax(0,max-content);justify-content:center}
+  .mc .mc-fact--lieu .mc-fact__s{display:inline;margin:0}
+  .mc .mc-fact--lieu .mc-fact__s::before{content:"·";content:"·" / "";margin:0 .5em 0 .15em}}
+.mc-fact{
+  display:grid;grid-template-columns:1.2rem minmax(0,1fr);column-gap:.6rem;align-items:start;
+  margin:0;min-width:0}
+.mc-fact::before{
+  content:"";width:1.2rem;height:1.2rem;margin-top:.12rem;background:var(--bleu-glacier);
+  -webkit-mask:var(--mc-ic-heure) center / contain no-repeat;mask:var(--mc-ic-heure) center / contain no-repeat}
+.mc-fact--date::before{-webkit-mask-image:var(--mc-ic-date);mask-image:var(--mc-ic-date)}
+.mc-fact--lieu::before{-webkit-mask-image:var(--mc-ic-lieu);mask-image:var(--mc-ic-lieu)}
 .mc-fact dt{
-  margin:0 0 .3rem;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.16em;font-size:var(--text-2xs);color:var(--txt-passe)}
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .mc-fact dd{
-  margin:0;font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.05em;font-size:clamp(1.02rem,1.5vw,1.2rem);line-height:1.2;color:var(--blanc)}
+  margin:0;font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.015em;font-size:clamp(1.2rem,1.9vw,1.55rem);line-height:1.08;color:var(--blanc)}
+/* L'heure — seul chiffre orange de la carte : le coup d'envoi. */
+.mc-fact:not(.mc-fact--date):not(.mc-fact--lieu) dd{color:var(--orange-vif)}
+.mc-next--tbd .mc-eyebrow{color:var(--bleu-glacier)}
+.mc-next--tbd .mc-dot{background:var(--bleu-glacier)}
+.mc-next--tbd .mc-fact dd,
+.mc-next--tbd .mc-fact:not(.mc-fact--date):not(.mc-fact--lieu) dd{color:var(--txt)}
+.mc .mc-fact--lieu dd{
+  font-family:var(--ff-body);font-weight:600;text-transform:none;letter-spacing:0;
+  font-size:1.02rem;line-height:1.3;overflow-wrap:break-word}
 .mc-fact__s{
-  display:block;margin-top:.25rem;font-weight:600;text-transform:none;
-  letter-spacing:.02em;font-size:var(--text-sm);color:var(--txt-soft)}
+  display:block;margin-top:.22rem;font-family:var(--ff-body);font-weight:400;
+  text-transform:none;letter-spacing:0;font-size:.86rem;line-height:1.4;color:var(--txt-soft)}
 
 /* Le compte à rebours : il ne s'affiche que sur /matchs/ (sur l'accueil, le
    bandeau sous le hero porte déjà le sien) et seulement sous 60 jours. */
 .mc .mc-cd{
-  display:flex;flex-wrap:wrap;align-items:baseline;gap:.35rem .9rem;margin:1rem 0 0;
+  display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:.35rem .9rem;margin:1.1rem 0 0;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.14em;font-size:var(--text-2xs);color:var(--txt-passe)}
 .mc-cd__val{display:inline-flex;gap:.85rem}
@@ -11631,73 +11828,152 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .mc-cd__s{letter-spacing:.1em;color:var(--txt-soft)}
 .mc .mc-cd--soir{color:var(--orange-vif);font-size:var(--text-sm)}
 
+/* Les actions : le bouton du match, puis deux vrais boutons secondaires
+   (itinéraire, agenda) avec leur pictogramme — plus des liens soulignés en
+   capitales qui se confondaient avec le texte. Le pictogramme se choisit
+   d'après l'adresse du lien : la carte des U13 l'a donc aussi. */
 .mc .mc-next__a{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.4rem;
-  margin:clamp(1.1rem,2.2vw,1.5rem) 0 0}
-.mc-cta{min-height:52px;border-radius:8px;padding-inline:1.5rem}
+  display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;
+  margin:clamp(1.2rem,2.4vw,1.6rem) 0 0}
+.mc-cta{min-height:52px;border-radius:8px;padding-inline:1.6rem}
 .mc-lien{
   display:inline-flex;align-items:center;min-height:44px;gap:.4em;
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;letter-spacing:.11em;
   font-size:var(--text-md);color:rgb(240 246 252 / .86);
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.35em;
   text-decoration-color:rgb(var(--bleu-glacier-rgb) / .35);
-  transition:color .22s,text-decoration-color .22s}
+  transition:color .22s,text-decoration-color .22s,border-color .22s,background-color .22s}
 .mc-lien:hover{color:var(--blanc);text-decoration-color:var(--orange-vif)}
+.mc-next__a .mc-lien{
+  min-height:48px;padding:.5em 1.05em;border:1px solid var(--hair-2);border-radius:8px;
+  font-weight:700;letter-spacing:.08em;font-size:var(--text-base);color:var(--txt);text-decoration:none}
+.mc-next__a .mc-lien[href*="maps"]::before,.mc-next__a .mc-lien[href$=".ics"]::before{
+  content:"";width:1.15em;height:1.15em;flex:none;background:var(--orange-vif);
+  -webkit-mask:var(--mc-ic-route) center / contain no-repeat;mask:var(--mc-ic-route) center / contain no-repeat}
+.mc-next__a .mc-lien[href$=".ics"]::before{-webkit-mask-image:var(--mc-ic-agenda);mask-image:var(--mc-ic-agenda)}
+@media (hover:hover){
+  .mc-next__a .mc-lien:hover{border-color:rgb(var(--orange-vif-rgb) / .55);background:rgb(var(--blanc-rgb) / .03);color:var(--blanc)}}
 @media (max-width:559px){
-  .mc .mc-next__a{gap:.2rem 1.2rem}
-  .mc-cta{flex:1 1 100%;justify-content:center}}
+  .mc .mc-next__a{gap:.5rem}
+  .mc-cta{flex:1 1 100%;justify-content:center}
+  /* Côte à côte s'ils tiennent, chacun sur sa ligne sinon : « Ajouter à
+     l'agenda » ne se coupe jamais en deux dans un demi-bouton. */
+  .mc-next__a .mc-lien{flex:1 1 auto;justify-content:center;padding-inline:.5em;letter-spacing:.03em;gap:.35em}}
+/* Entre 980 et 1099 px, la carte n'a que 3/5 de la rangée : « Ajouter à
+   l'agenda » passait seul sur une seconde rangée. Même resserrage qu'au
+   téléphone. */
+@media (min-width:980px) and (max-width:1099px){
+  .mc-next__a .mc-lien{padding-inline:.5em;letter-spacing:.03em;gap:.35em}
+  .mc-next__a .mc-cta{padding-inline:1.2rem}}
 
-/* --- Le dernier résultat : un tableau d'affichage à deux lignes ------------ */
-.mc .mc-board{--mc-c:40px;display:grid;margin:clamp(1rem,2.2vw,1.5rem) 0 .2rem}
+/* --- Le dernier résultat : un tableau d'affichage ----------------------------
+   V194 : le score se lit en premier. Un panneau plus sombre que la carte,
+   tramé des picots du ballon (--dimple-url, dormant depuis V12), avec son
+   bandeau « Score final ». Le vainqueur en blanc, le perdant en glacier
+   atténué — MBC compris : c'est son point orange, pas la couleur de son
+   nom, qui le désigne, qu'il gagne ou non (revue V194, DA-3). Le
+   trait sous le score gagnant n'est orange que si c'est le MBC qui gagne :
+   l'orange du tableau veut dire « le MBC », rien d'autre. */
+.mc-res__top{flex-direction:column;align-items:flex-start;gap:.4rem}
+.mc-res .mc-tags{gap:0}
+.mc .mc-res .mc-tags .mc-tag{border:0;padding:0;margin:0;background:none;color:var(--txt-soft);letter-spacing:.12em;font-size:var(--text-2xs)}
+.mc-res .mc-tag--date::before{content:"·";content:"·" / "";margin:0 .6em 0 .5em}
+.mc .mc-board{
+  --mc-c:44px;display:grid;margin:clamp(1rem,2.2vw,1.4rem) 0 .2rem;
+  padding:0 clamp(.85rem,1.8vw,1.15rem) .3rem;
+  border:1px solid var(--hair);border-radius:12px;
+  background:var(--dimple-url) 0 0 / 60px 60px,rgb(var(--nuit-0-rgb) / .55)}
+.mc .mc-board__t{
+  display:flex;align-items:center;gap:.6em;margin:0;padding:.7rem 0 .6rem;
+  border-bottom:1px solid var(--hair);
+  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
+  letter-spacing:.24em;font-size:var(--text-2xs);line-height:1;color:var(--txt-soft)}
+.mc-board__t::before{content:"";width:6px;height:6px;border-radius:var(--r-round);background:currentColor}
 .mc .mc-row{
   display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.85rem;
-  margin:0;padding:.7rem 0}
+  margin:0;padding:.8rem 0}
 .mc .mc-row + .mc-row{border-top:1px solid var(--hair)}
+/* Texte agrandi (réglage du navigateur, 200 %) : dans le tiers de rangée,
+   la colonne du nom tombait à 41 px et « Dionysien 3 » se coupait en six
+   morceaux. Sous 13 em de panneau — une unité qui suit la taille du
+   texte —, l'écusson et le score gardent la 1re rangée, le nom passe
+   dessous, sur toute la largeur. Au texte par défaut, le plus petit
+   panneau mesure 216 px (à 320) : la règle ne se déclenche pas. */
+.mc .mc-board{container-type:inline-size}
+@container (max-width:13em){
+  .mc .mc-row{grid-template-columns:auto minmax(0,1fr);row-gap:.75rem}
+  .mc .mc-row .mc-row__n{grid-column:1 / -1;grid-row:2}}
 .mc-row__n{
-  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;letter-spacing:.03em;
-  font-size:clamp(1.05rem,1.8vw,1.3rem);line-height:1.15;color:var(--txt-soft);
+  font-family:var(--ff-display);font-weight:400;text-transform:uppercase;letter-spacing:.01em;
+  font-size:clamp(1.15rem,1.6vw,1.4rem);line-height:1.05;color:var(--txt-soft);
   overflow-wrap:break-word}
+.mc-row--mbc .mc-row__n::after{
+  content:"";display:inline-block;width:.34em;height:.34em;margin-left:.4em;vertical-align:.32em;
+  border-radius:var(--r-round);background:var(--orange-vif)}
 .mc-row__s{
   position:relative;min-width:2ch;text-align:right;
-  font-family:var(--ff-display);font-weight:400;font-size:clamp(2.5rem,5.4vw,3.6rem);
-  line-height:.9;letter-spacing:.01em;font-variant-numeric:tabular-nums;
+  font-family:var(--ff-display);font-weight:400;font-size:clamp(2.9rem,5.2vw,4.1rem);
+  line-height:.88;letter-spacing:.01em;font-variant-numeric:tabular-nums;
   color:rgb(var(--bleu-glacier-rgb) / .5)}
 .mc-row--gagne .mc-row__n,.mc-row--gagne .mc-row__s,
 .mc-res--n .mc-row__n,.mc-res--n .mc-row__s{color:var(--blanc)}
 .mc .mc-row__s--vide{color:var(--txt-passe)}
-/* Le trait sous le score gagnant, seule animation du tableau. Décor pur : si
-   l'horloge d'animation est gelée (onglet en arrière-plan), il reste à son
-   état de départ, invisible — le score ne dépend, lui, d'aucune animation. */
+/* Le trait sous le score gagnant. Décor pur : si l'horloge d'animation est
+   gelée (onglet en arrière-plan), il reste à son état de départ — le score
+   ne dépend, lui, d'aucune animation. */
 .mc-row--gagne .mc-row__s::after{
-  content:"";position:absolute;right:0;bottom:-.32rem;width:100%;height:3px;
-  border-radius:2px;background:var(--orange-vif);transform-origin:right center}
+  content:"";position:absolute;right:0;bottom:-.36rem;width:100%;height:3px;
+  border-radius:2px;background:var(--blanc);transform-origin:right center}
+.mc-res--v .mc-row--gagne .mc-row__s::after{background:var(--orange-vif)}
 @media (prefers-reduced-motion:no-preference){
   .mc:not(.reveal) .mc-row--gagne .mc-row__s::after,
-  .mc.reveal.in .mc-row--gagne .mc-row__s::after{animation:mcTrait .9s var(--ease-out) .35s both}}
+  .mc.reveal.in .mc-row--gagne .mc-row__s::after{animation:mcTrait .5s var(--ease-out) .25s both}}
 @keyframes mcTrait{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 .mc .mc-res__foot{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;margin:auto 0 0;padding-top:.9rem}
+  display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;margin:auto 0 0;padding-top:1rem}
 .mc-issue{
+  display:inline-flex;align-items:center;gap:.6em;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.2em;font-size:var(--text-xs);color:var(--orange-vif)}
+.mc-issue__l{
+  flex:none;display:inline-grid;place-items:center;width:1.95em;height:1.95em;border-radius:5px;
+  background:var(--orange-vif);color:#190f04;letter-spacing:0;font-size:1.05em}
 .mc-issue--d,.mc-issue--n{color:var(--bleu-glacier)}
+.mc-issue--d .mc-issue__l,.mc-issue--n .mc-issue__l{
+  background:transparent;box-shadow:inset 0 0 0 1px rgb(var(--bleu-glacier-rgb) / .5);color:var(--bleu-glacier)}
 .mc-issue--attente{color:var(--txt-soft)}
 .mc-res__lieu{
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.08em;font-size:var(--text-xs);color:var(--txt-soft)}
+  font-family:var(--ff-body);font-weight:400;font-size:.86rem;line-height:1.3;color:var(--txt-soft)}
 .mc-res__foot .mc-lien{margin-left:auto}
+/* En colonne étroite (2/5 puis 1/3), « Fiche du match » tombait seul sur
+   une seconde rangée : l'issue et le lieu s'empilent à gauche, le lien se
+   centre à droite sur les deux — si l'emplacement fait au moins 20 em : à
+   200 % de texte, la colonne du lieu tombait à 17 px sous le lien. */
+@media (min-width:980px){
+  @container (min-width:20em){
+    .mc .mc-res__foot{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+    .mc-res__foot .mc-lien{grid-column:2;grid-row:1 / span 2}}}
 .mc .mc-bilan{
-  margin:.7rem 0 0;padding-top:.8rem;border-top:1px solid var(--hair);
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.1em;font-size:var(--text-xs);line-height:1.3;color:var(--txt-passe)}
+  display:flex;flex-wrap:wrap;align-items:center;gap:.45rem .75rem;
+  margin:.8rem 0 0;padding-top:.9rem;border-top:1px solid var(--hair);
+  font-family:var(--ff-body);font-weight:400;font-size:.86rem;line-height:1.35;color:var(--txt-soft)}
+.mc-bilan__t{min-width:0}
+/* La série, comme au tableau d'affichage : les cinq derniers matchs de
+   championnat, du plus ancien au plus récent (le générateur la borne). */
+.mc-forme{display:inline-flex;flex-wrap:wrap;gap:3px}
+.mc-forme__i{
+  flex:none;display:inline-grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:4px;
+  font-family:var(--ff-cond);font-weight:700;font-size:.74rem;line-height:1;letter-spacing:0}
+.mc-forme__i--v{background:var(--orange-vif);color:#190f04}
+.mc-forme__i--d,.mc-forme__i--n{box-shadow:inset 0 0 0 1px rgb(var(--bleu-glacier-rgb) / .45);color:var(--bleu-glacier)}
 
 /* --- Les dates de la saison (« À suivre » et la page /matchs/) -------------- */
-.mc-suite{margin-top:clamp(1.6rem,3.2vw,2.4rem)}
+.mc-suite{margin-top:clamp(2rem,4vw,3rem)}
 .mc .mc-suite__t{
-  display:flex;align-items:center;gap:1rem;margin:0 0 .3rem;
-  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.2em;font-size:var(--text-xs);line-height:1.2;color:var(--bleu-glacier)}
+  display:flex;align-items:center;gap:1.1rem;margin:0 0 1rem;
+  font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.01em;font-size:clamp(1.45rem,2.6vw,2rem);line-height:1;color:var(--blanc)}
 .mc-suite__t::after{content:"";flex:1;height:1px;background:var(--hair)}
 
 .mc-list{list-style:none;margin:0;padding:0}
@@ -11706,7 +11982,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   position:relative;display:grid;align-items:center;
   grid-template-columns:4rem minmax(0,1fr) auto 1.1rem;gap:.3rem 1.3rem;
   padding:1.05rem .6rem 1.05rem .55rem;color:inherit;text-decoration:none;
-  transition:background-color .2s var(--ease-out)}
+  transition:background-color .2s var(--ease-out),border-color .2s var(--ease-out)}
 .mc-i__d{display:grid;justify-items:center;align-content:center;line-height:1;text-align:center}
 .mc-i__dj{
   font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
@@ -11717,28 +11993,31 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 .mc-i__dm{
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.1em;font-size:var(--text-2xs);color:var(--bleu-glacier)}
-.mc-i__corps{display:grid;gap:.3rem;min-width:0}
+.mc-i__corps{display:grid;gap:.35rem;min-width:0}
 .mc-i__c{
   display:flex;align-items:center;gap:.45em;
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.13em;font-size:var(--text-2xs);line-height:1.25;color:var(--bleu-glacier)}
+  letter-spacing:.13em;font-size:var(--text-xs);line-height:1.25;color:var(--bleu-glacier)}
 .mc-i--coupe .mc-i__c{color:#F3C79A}
-.mc-ic{width:1.15em;height:1.15em;flex:none;color:var(--orange-vif)}
+.mc-ic{width:1.2em;height:1.2em;flex:none;color:var(--orange-vif)}
 .mc-i__duel{
   display:flex;flex-wrap:wrap;align-items:center;gap:.3rem .55rem;min-width:0;
   font-family:var(--ff-display);text-transform:uppercase;
   font-size:clamp(1.02rem,2vw,1.35rem);line-height:1.08;color:var(--blanc)}
-.mc-i__t{--mc-c:28px;display:inline-flex;align-items:center;gap:.45rem;min-width:0}
+.mc-i__t{--mc-c:28px;display:inline-flex;align-items:center;gap:.5rem;min-width:0}
 .mc-i__t b{font-weight:400;overflow-wrap:break-word}
 .mc-i__vs{
   font-family:var(--ff-cond);font-weight:600;font-size:.6em;
   letter-spacing:.16em;color:var(--orange-vif)}
+/* Ce qui n'est pas encore une affiche se lit comme une phrase, en Barlow. */
 .mc-i__duel--tbd{
-  font-family:var(--ff-cond);font-weight:600;text-transform:none;letter-spacing:.01em;
-  font-size:clamp(.98rem,1.6vw,1.1rem);line-height:1.3;color:var(--txt-soft)}
+  font-family:var(--ff-body);font-weight:600;text-transform:none;letter-spacing:0;
+  font-size:clamp(.98rem,1.5vw,1.06rem);line-height:1.35;color:var(--txt)}
+/* L'heure, le lieu, l'entrée : de l'information pratique, en Barlow et en
+   casse normale — plus en capitales condensées. */
 .mc-i__m{
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.07em;font-size:var(--text-sm);line-height:1.35;color:var(--txt-soft)}
+  font-family:var(--ff-body);font-weight:400;text-transform:none;
+  letter-spacing:0;font-size:.88rem;line-height:1.4;color:var(--txt-soft)}
 .mc-i__fin{display:grid;justify-items:end;gap:.4rem;text-align:right}
 .mc-i__score{
   font-family:var(--ff-display);font-weight:400;font-size:clamp(1.55rem,2.6vw,2rem);
@@ -11749,8 +12028,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
   letter-spacing:.12em;font-size:var(--text-2xs);line-height:1.1;white-space:nowrap}
 .mc-i__etat{border:1px solid var(--hair-2);color:var(--bleu-glacier)}
-.mc-i__etat--dom{border-color:rgb(var(--orange-vif-rgb) / .5);color:var(--orange-vif)}
-.mc-i__etat--ext{color:var(--bleu-glacier)}
+.mc-i__etat--dom{border-color:rgb(var(--orange-vif-rgb) / .55);color:var(--orange-vif)}
+.mc-i__etat--ext{border-color:rgb(var(--bleu-glacier-rgb) / .42);color:var(--txt)}
 .mc-i__etat--v,.mc-i__etat--d,.mc-i__etat--n{border-color:transparent;padding-inline:0}
 .mc-i__etat--v{color:var(--orange-vif)}
 .mc-i__etat--d,.mc-i__etat--n{color:var(--bleu-glacier)}
@@ -11804,24 +12083,168 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .mc-i--joue .mc-i__d{grid-row:auto}
   .mc-i--joue .mc-i__fin{grid-column:auto;display:grid;justify-items:end}}
 
+/* --- « À suivre » : la piste de la saison (V194) ----------------------------
+   Plus une suite de lignes de tableur : chaque rencontre est une fiche, posée
+   sur un rail comme les jalons d'une saison. Frise verticale sur téléphone et
+   tablette ; au-delà de 1000 px, les fiches se rangent côte à côte et le rail
+   court au-dessus d'elles — la largeur de l'écran sert enfin.
+   Trois langages, sans une couleur de plus :
+     - domicile : jalon orange plein, pastille orange au trait ;
+     - extérieur : jalon creux, pastille blanche au trait ;
+     - à déterminer / selon qualification (Coupe comprise) : fiche et
+       pastille en pointillés, jalon creux — rien n'est encore sûr.
+   Le rail est un décor (::before) ; l'ordre du DOM, qui fait l'ordre des
+   dates, ne bouge pas (script.js en dépend : enfants directs de l'<ol>).
+   La liste des U13 de l'accueil (data-max="3") suit, sans régénération. */
+.mc .mc-list--suite{
+  --mc-rail:1.5rem;
+  position:relative;display:grid;gap:.7rem;margin:0;padding-left:var(--mc-rail)}
+.mc .mc-list--suite::before{
+  content:"";position:absolute;left:.42rem;top:1rem;bottom:1rem;width:1px;pointer-events:none;
+  background:linear-gradient(180deg,rgb(var(--orange-vif-rgb) / .75),rgb(var(--bleu-glacier-rgb) / .24) 34%,rgb(var(--bleu-glacier-rgb) / .1));
+  transform-origin:top center}
+.mc-list--suite > .mc-i{position:relative;display:flex;border:0}
+.mc-list--suite > .mc-i::before{
+  content:"";position:absolute;z-index:1;left:calc(.42rem - var(--mc-rail) - 4.5px);top:1.45rem;
+  width:9px;height:9px;border-radius:var(--r-round);background:var(--surf-1);
+  box-shadow:inset 0 0 0 1.5px rgb(var(--bleu-glacier-rgb) / .6),0 0 0 3px var(--surf-1)}
+.mc-list--suite > .mc-i--dom::before{background:var(--orange-vif);box-shadow:0 0 0 3px var(--surf-1)}
+.mc-list--suite > .mc-i--echeance::before{box-shadow:inset 0 0 0 1.5px rgb(var(--bleu-glacier-rgb) / .35),0 0 0 3px var(--surf-1)}
+.mc-list--suite > .mc-i.is-next::before{background:var(--orange-vif);box-shadow:0 0 0 3px var(--surf-1),0 0 0 4px rgb(var(--orange-vif-rgb) / .55)}
+/* Un prochain match à l'extérieur garde son jalon CREUX (la légende :
+   plein = domicile), cerclé d'orange (= prochain). */
+.mc-list--suite > .mc-i.is-next:not(.mc-i--dom)::before{background:var(--surf-1);box-shadow:inset 0 0 0 2px var(--orange-vif),0 0 0 3px var(--surf-1),0 0 0 4px rgb(var(--orange-vif-rgb) / .55)}
+.mc .mc-list--suite .mc-i__a{
+  flex:1 1 auto;min-width:0;padding:1rem 1rem 1.05rem .9rem;
+  border:1px solid var(--hair);border-radius:12px;background:rgb(var(--blanc-rgb) / .02)}
+.mc .mc-list--suite .mc-i--echeance .mc-i__a{border-style:dashed;border-color:var(--hair-2);background:transparent}
+.mc .mc-list--suite .mc-i.is-next .mc-i__a{border-color:rgb(var(--orange-vif-rgb) / .45)}
+.mc-list--suite .mc-i.is-next .mc-i__a::before{display:none}
+.mc-list--suite .mc-i__a:focus-visible{border-radius:12px}
+/* Texte agrandi : « Selon qualification » débordait de sa fiche et la
+   section (overflow:hidden) la rognait. Les pastilles et les noms peuvent
+   passer à la ligne ; au texte par défaut, rien ne bouge. */
+.mc-list--suite .mc-i__fin{flex-shrink:0;max-width:100%}
+.mc-list--suite .mc-i__etat,.mc-list--suite .mc-i__next{white-space:normal}
+.mc-list--suite .mc-i__t{max-width:100%}
+.mc-list--suite .mc-i__t b{overflow-wrap:anywhere}
+/* Le duel d'une fiche. En frise (téléphone, tablette), sur une ligne s'il
+   tient ; sinon « MBC », puis « vs MTG BASKETBALL » : le « vs » est
+   accroché à la seconde équipe, jamais seul en bout de ligne (.mc-i__vs,
+   aria-hidden, est masqué ; le lecteur d'écran entend « contre », sr-only,
+   et rien pour ce « vs » dessiné — texte alternatif vide). En piste, les
+   deux équipes l'une sous l'autre, comme au tableau d'affichage. */
+.mc-list--suite .mc-i__vs{display:none}
+.mc-list--suite .mc-i__duel{flex-direction:row;flex-wrap:wrap;align-items:center;gap:.3rem .55rem}
+.mc-list--suite .mc-i__t ~ .mc-i__t::before{
+  content:"vs";content:"vs" / "";font-family:var(--ff-cond);font-weight:600;font-size:.6em;
+  letter-spacing:.16em;color:var(--orange-vif);margin-right:.05rem}
+/* Frise étroite, mesurée en em sur .mc-suite (elle suit le texte agrandi,
+   là où la règle téléphone de .mc-i__a, en px, ne voit rien) : la date à
+   gauche sur deux rangées, les pastilles sous le texte ; plus étroite
+   encore, tout sur une colonne — y compris au texte par défaut sous 309 px
+   (Galaxy Fold replié). À 200 % de texte, les noms se hachaient lettre par
+   lettre (« M/B/C ») jusqu'à 768 px. */
+@container (max-width:30em){
+  .mc .mc-list--suite .mc-i__a{grid-template-columns:3.1rem minmax(0,1fr);row-gap:.45rem;column-gap:.7rem}
+  .mc-list--suite .mc-i__d{grid-row:1 / span 2;align-self:start;padding-top:.1rem}
+  .mc-list--suite .mc-i__fin{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:.4rem;text-align:left}
+  .mc-list--suite .mc-i__go{display:none}}
+@container (max-width:17em){
+  .mc .mc-list--suite .mc-i__a{grid-template-columns:minmax(0,1fr)}
+  .mc-list--suite .mc-i__d{grid-row:auto;display:flex;align-items:baseline;gap:.4em;padding-top:0}
+  .mc-list--suite .mc-i__fin{grid-column:1}}
+/* Téléphone : rail et fiches resserrés — la frise prenait +200 px à 390. */
+@media (max-width:559px){
+  .mc .mc-list--suite{--mc-rail:1.05rem;gap:.55rem}
+  .mc .mc-list--suite .mc-i__a{padding:.8rem .75rem .85rem .6rem;column-gap:.7rem}}
+@media (hover:hover){
+  .mc .mc-list--suite a.mc-i__a:hover{border-color:var(--hair-2);background:rgb(var(--blanc-rgb) / .045)}
+  .mc-list--suite a.mc-i__a:hover .mc-crest{transform:translateY(-2px)}}
+/* La piste se déclenche sur la largeur de SON bloc, en em — pas sur celle
+   de l'écran en px : avec un texte agrandi par le navigateur, les fiches
+   tombaient à 225 px et leurs pastilles mordaient sur la voisine. Au texte
+   par défaut, .mc-suite mesure 904 px à 1000 de large et 905 à 1001 :
+   56,53 em (904,5 px) garde la bascule exactement entre les deux. Sans
+   requêtes de conteneur, la frise verticale reste. Des colonnes
+   implicites prennent le relais si data-max dépasse --mc-cols. */
+.mc-suite{container-type:inline-size}
+@container (min-width:56.53em){
+  .mc .mc-list--suite{
+    grid-template-columns:repeat(var(--mc-cols,4),minmax(0,1fr));
+    grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:1rem;
+    padding:var(--mc-rail) 0 0}
+  .mc .mc-list--suite[data-max="3"]{--mc-cols:3}
+  .mc .mc-list--suite::before{
+    left:0;right:0;top:.42rem;bottom:auto;width:auto;height:1px;
+    background:linear-gradient(90deg,rgb(var(--orange-vif-rgb) / .75),rgb(var(--bleu-glacier-rgb) / .24) 22%,rgb(var(--bleu-glacier-rgb) / .1));
+    transform-origin:left center}
+  .mc-list--suite > .mc-i::before{left:1.1rem;top:calc(.42rem - var(--mc-rail) - 4.5px)}
+  /* Une rangée souple, pas une grille : la date à gauche, la pastille à
+     droite si elle tient, sinon sous la date — à 1024 px, « Selon
+     qualification » recouvrait le jour. L'ordre visuel (date, pastille,
+     texte) ne change rien à la lecture : tout est dans un même lien. */
+  .mc .mc-list--suite .mc-i__a{
+    display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;
+    gap:.8rem .6rem;padding:1.05rem 1.1rem 1.25rem}
+  .mc-list--suite .mc-i__d{
+    order:0;margin-right:auto;grid-template-columns:auto auto;grid-template-areas:"dn dj" "dn dm";
+    justify-items:start;align-items:center;column-gap:.5rem;text-align:left}
+  /* sous les noms de l'affiche (3,3vw) à toutes les largeurs : 43 px fixes
+     les dépassaient sous 1309 px (revue V194, DA-2) */
+  .mc-list--suite .mc-i__dn{grid-area:dn;margin:0;font-size:clamp(1.9rem,2.3vw,2.25rem);line-height:.85}
+  .mc-list--suite .mc-i__dj{grid-area:dj;align-self:end}
+  .mc-list--suite .mc-i__dm{grid-area:dm;align-self:start;margin-top:.2rem}
+  .mc-list--suite .mc-i__fin{order:1;display:flex;flex-wrap:wrap;gap:.35rem;justify-content:flex-end}
+  .mc-list--suite .mc-i__corps{order:2;flex:1 1 100%;gap:.55rem;margin-top:.15rem}
+  .mc-list--suite .mc-i__duel{flex-direction:column;align-items:flex-start;flex-wrap:nowrap;gap:.4rem}
+  .mc-list--suite .mc-i__t ~ .mc-i__t::before{content:none}
+  .mc-list--suite .mc-i__go{position:absolute;right:1rem;bottom:1.1rem}
+  .mc-list--suite .mc-i__m{padding-right:1.4rem}}
+
 /* --- « Toute la saison » (accueil) ------------------------------------------ */
-.mc .mc-tout{margin:clamp(1.1rem,2.2vw,1.5rem) 0 0}
+.mc .mc-tout{margin:clamp(1.2rem,2.4vw,1.6rem) 0 0;container-type:inline-size}
 .mc-tout__a{
-  display:flex;flex-wrap:wrap;align-items:center;gap:.25rem 1rem;min-height:56px;
-  padding:.85rem 1.1rem;border:1px solid var(--hair-2);border-radius:var(--r-md);
+  display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;
+  gap:.3rem 1rem;min-height:64px;padding:1rem 1.15rem 1rem 1.3rem;
+  border:1px solid var(--hair-2);border-radius:12px;
+  background:linear-gradient(90deg,rgb(var(--blanc-rgb) / .03),transparent 70%);
   color:var(--blanc);text-decoration:none;transition:border-color .22s,background-color .22s}
 .mc-tout__l{
-  font-family:var(--ff-cond);font-weight:700;text-transform:uppercase;
-  letter-spacing:.1em;font-size:var(--text-lg)}
+  grid-column:1;font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
+  letter-spacing:.01em;font-size:clamp(1.3rem,2.1vw,1.65rem);line-height:1}
 .mc-tout__n{
-  font-family:var(--ff-cond);font-weight:600;text-transform:uppercase;
-  letter-spacing:.08em;font-size:var(--text-xs);color:var(--txt-soft)}
+  grid-column:1;font-family:var(--ff-body);font-weight:400;
+  font-size:.88rem;line-height:1.35;color:var(--txt-soft)}
 .mc-tout__a .btn__arrow{
-  width:1.15em;height:1.15em;margin-left:auto;color:var(--orange-vif);
-  transition:transform .22s var(--ease-out)}
+  grid-column:2;grid-row:1 / span 2;box-sizing:content-box;
+  width:1.1em;height:1.1em;padding:.7em;margin:0;
+  border:1px solid rgb(var(--orange-vif-rgb) / .5);border-radius:var(--r-round);color:var(--orange-vif);
+  transition:transform .22s var(--ease-out),background-color .22s,color .22s}
+/* Très étroit (texte agrandi sur petit téléphone) : la flèche passe sous le
+   texte au lieu de recouvrir « rencontres confirmées ». */
+@container (max-width:12em){
+  .mc-tout__a{grid-template-columns:minmax(0,1fr)}
+  .mc-tout__a .btn__arrow{grid-column:1;grid-row:auto;justify-self:start}}
 @media (hover:hover){
-  .mc-tout__a:hover{border-color:rgb(var(--orange-vif-rgb) / .45);background:rgb(var(--blanc-rgb) / .025)}
-  .mc-tout__a:hover .btn__arrow{transform:translateX(4px)}}
+  .mc-tout__a:hover{border-color:rgb(var(--orange-vif-rgb) / .45);background-color:rgb(var(--blanc-rgb) / .025)}
+  .mc-tout__a:hover .btn__arrow{transform:translateX(3px);background:var(--orange-vif);color:#190f04}}
+
+/* --- Ce qui se trace à l'apparition (V194) ----------------------------------
+   Deux gestes, joués une fois quand le bloc entre à l'écran : les lignes du
+   terrain s'ouvrent depuis le rond central, le rail de la saison se déroule.
+   Même règle que le trait du score : l'état final est l'état par défaut ;
+   sans JS, sans observateur ou en mouvement réduit, tout est déjà tracé. Et
+   rien ne boucle. Durées de 0,5 s, dans la plage du brief (200-500 ms). */
+@media (prefers-reduced-motion:no-preference){
+  .mc:not(.reveal) .mc-duel::before,
+  .mc.reveal.in .mc-duel::before{animation:mcTerrain .5s var(--ease-out) .1s both}
+  .mc.reveal.in .mc-list--suite::before{animation:mcRailV .5s var(--ease-out) .2s both}
+  @container (min-width:56.53em){
+    .mc.reveal.in .mc-list--suite::before{animation-name:mcRailH}}}
+@keyframes mcTerrain{from{clip-path:inset(0 50%);opacity:0}to{clip-path:inset(0 0);opacity:1}}
+@keyframes mcRailV{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes mcRailH{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* --- La page /matchs/ ------------------------------------------------------- */
 .mc-page{padding-top:clamp(2rem,4vw,3.2rem)}
@@ -11939,9 +12362,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    distingue pas un défaut d'un oubli, et c'est voulu. */
 .mc-i--match,.mc-i--echeance,.mc-i--championnat,.mc-i--coupe,
 .mc-i--dom,.mc-i--ext{scroll-margin-top:96px}
-.mc-list--suite{margin-bottom:0}
-.mc .mc-duel--tbd{margin-bottom:.9rem}
-.mc-fact--lieu dd{overflow-wrap:break-word}
+.mc .mc-duel--tbd{margin-bottom:0}
 .mc-issue--v{color:var(--orange-vif)}
 .mc-res--v .mc-row--gagne .mc-row__s,.mc-res--d .mc-row--gagne .mc-row__s{color:var(--blanc)}
 .mc-res--attente .mc-row__n{color:var(--txt)}
@@ -11961,7 +12382,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    tableau se centre dans la place gagnée au lieu de laisser un trou entre
    les deux scores et le pied de carte. */
 @media (min-width:980px){
-  .mc-res .mc-board{margin-block:auto;padding-block:1rem}
+  .mc-res .mc-board{margin-block:auto}
   .mc .mc-res__foot{margin-top:0}}
 /* Téléphone : « Fiche du match » passe à la ligne ; aligné à gauche sous
    l'issue plutôt que seul contre le bord droit. */
@@ -11974,7 +12395,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .ms-m.is-pre{opacity:1;transform:none}
   .mc-i__a,.mc-i__go,.mc-crest,.mc-lien,.mc-tout__a,.mc-tout__a .btn__arrow,
   .ms-f__b,.ms-mois__a{transition:none}
-  a.mc-i__a:hover .mc-crest,a.mc-i__a:hover .mc-i__go,.mc-tout__a:hover .btn__arrow{transform:none}}
+  a.mc-i__a:hover .mc-crest,a.mc-i__a:hover .mc-i__go,.mc-tout__a:hover .btn__arrow,
+  .mc-list--suite a.mc-i__a:hover .mc-crest{transform:none}}
 /* Les filtres : un fondu court des mois après un clic (script.js pose
    .ms--bouge). Jamais une chorégraphie, et rien qui capte les clics — la
    transition de vue essayée d'abord avalait un second clic rapide. */
@@ -11982,12 +12404,26 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .ms--bouge .ms-m:not(.is-pre){animation:msFondu .28s var(--ease-out)}}
 @keyframes msFondu{from{opacity:.35}to{opacity:1}}
 @media (forced-colors:active){
-  .mc-next,.mc-res,.mc-tag,.mc-i__etat,.ms-f,.ms-mois__a,.mc-tout__a{border-color:CanvasText}
+  .mc-next,.mc-res,.mc-tag,.mc-i__etat,.ms-f,.ms-mois__a,.mc-tout__a,
+  .mc-vs,.mc .mc-board,.mc .mc-list--suite .mc-i__a,.mc-next__a .mc-lien{border-color:CanvasText}
+  /* V194 : les pictogrammes et les cases de la série sont des masques ou des
+     fonds — un système de couleurs forcées les efface ; on les repeint. */
+  .mc-fact::before,.mc-tag--libre::before,.mc-next__a .mc-lien::before,
+  .mc-list--suite > .mc-i::before,.mc .mc-list--suite::before{forced-color-adjust:none;background:CanvasText}
+  .mc-issue .mc-issue__l,.mc-bilan .mc-forme__i{forced-color-adjust:none;background:Canvas;color:CanvasText;box-shadow:inset 0 0 0 1px CanvasText}
+  .mc-next__a .mc-lien[href]::before{background:CanvasText}
+  /* Une bordure transparente redevient visible : sans padding, elle
+     traversait la 1re et la dernière lettre. */
+  .mc .mc-tags .mc-tag:first-child,.mc-i__etat--v,.mc-i__etat--d,.mc-i__etat--n{border-style:none}
   /* Pressé ≠ focalisé : un fond système, pas un second contour. */
   .ms-f__b[aria-pressed="true"]{forced-color-adjust:none;background:Highlight;color:HighlightText}
   /* Le fond de texte forcé du quantième masquait le bas du jour. */
   .mc-i__dj{position:relative;z-index:1}
-  .mc-next::before,.mc-row--gagne .mc-row__s::after,.mc-i.is-next .mc-i__a::before{background:Highlight}}
+  .mc-next::before,.mc-row--gagne .mc-row__s::after,.mc-i.is-next .mc-i__a::before{background:Highlight}
+  .mc-list--suite > .mc-i:not(.mc-i--dom)::before{background:Canvas;box-shadow:inset 0 0 0 1.5px CanvasText}
+  .mc-list--suite > .mc-i.is-next::before,.mc-list--suite > .mc-i--dom::before{background:Highlight}
+  .mc-res .mc-row--gagne .mc-row__s::after{background:Highlight}
+  .mc-list--suite > .mc-i.is-next:not(.mc-i--dom)::before{background:Canvas;box-shadow:inset 0 0 0 2px Highlight}}
 @media print{
   /* Tout bloc .reveal pas encore paru à l'écran restait à opacité 0 dans
      l'impression : l'accueil imprimé perdait le Match Center (et 56 autres
@@ -11995,7 +12431,31 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .reveal{opacity:1!important;transform:none!important;filter:none!important}
   .ms-bar,.ms-mois,.mc-cd,.mc-i__go{display:none!important}
   .ms-m.is-pre{opacity:1;transform:none}
-  .mc-i,.mc-next,.mc-res{break-inside:avoid}}
+  .mc-i,.mc-next,.mc-res{break-inside:avoid}
+  /* V194 : le terrain, le halo et le rail sont des fonds ; sur papier ils ne
+     sortent qu'à moitié. On les retire plutôt que d'imprimer des traces. */
+  .mc .mc-duel::before,.mc .mc-duel::after,.mc-team--mbc::before,.mc .mc-list--suite::before,
+  .mc-list--suite > .mc-i::before{display:none}
+  /* Le blanc de l'écran sort gris clair sur papier (2,3:1) : l'affiche, la
+     date, le score gagnant et les titres passent à l'encre de la nuit. */
+  .mc .mc-team__n,.mc .mc-fact dd,.mc .mc-row--gagne .mc-row__n,.mc .mc-res .mc-row--gagne .mc-row__s,
+  .mc .mc-res--n .mc-row__n,.mc .mc-res--n .mc-row__s,.mc .mc-i__dn,.mc .mc-i__duel,
+  .mc .mc-suite__t,.mc .mc-tout__l{color:#0A1120}
+  /* L'heure : un orange foncé fixe. Chrome n'assombrit pas --orange-ballon
+     à l'impression (3,48:1) ; #94531A est l'orange qu'il imprime (5,98:1). */
+  .mc .mc-fact:not(.mc-fact--date):not(.mc-fact--lieu) dd{color:#94531A}
+  .mc .mc-next--tbd .mc-fact:not(.mc-fact--date):not(.mc-fact--lieu) dd{color:#0A1120}
+  /* Et les listes (/matchs/, U13) et les noms d'un résultat en attente, que
+     les règles ci-dessus ne couvrent pas. Spécificité faible : une date
+     passée garde son gris. */
+  .mc .mc-res--attente .mc-row__n,.mc-i__dn,.mc-i__duel,.mc-i__score{color:#0A1120}
+  /* Les pictogrammes remplacent des libellés masqués ; le point du MBC et
+     la case V sont des fonds : sans « graphiques d'arrière-plan » (réglage
+     par défaut), ils ne sortaient pas. Surtout pas les cases D/N : exact y
+     empêcherait Chrome d'assombrir leur lettre (1,55:1 sur papier). */
+  .mc-fact::before,.mc-tag--libre::before,.mc-next__a .mc-lien::before,
+  .mc-row--mbc .mc-row__n::after,.mc-issue--v .mc-issue__l,.mc-forme__i--v{
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
 /* ============================================================================
    V182 — UN SEUL EN-TÊTE POUR TOUT LE SITE (13/09/2026)
