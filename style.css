@@ -11619,14 +11619,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    V194 : le prochain match d'abord (le générateur l'écrit en premier), et en
    grand — 2/3 de la rangée contre 1/3 au tableau du dernier score. Entre 980
    et 1100 px, 3/5 – 2/5 : à 2/3, la colonne du score tombait à 245 px utiles. */
-/* Les pièces dessinées du Match Center, en variables : les deux bouts du
-   terrain (un par fond de terrain, le droit en miroir) et six pictogrammes
-   au trait, utilisés en masque — ils prennent la couleur qu'on leur donne. */
+/* Les pièces dessinées du Match Center, en variables : six pictogrammes
+   au trait (V196 : les deux bouts du terrain sont partis avec lui), utilisés en masque — ils prennent la couleur qu'on leur donne. */
 /* (V195 : .ms et .ms-format aussi — la saison et la poule de /matchs/ vivent
    à côté de .mc, pas dedans, et prennent le même verre et les mêmes jetons.) */
 .mc,.ms,.ms-format{
-  --mc-bout-g:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400' fill='none' stroke='%23BFD2E4' stroke-opacity='.2' stroke-width='1.25'%3E%3Cpath vector-effect='non-scaling-stroke' d='M1 0V400'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 150H160V250H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='160' cy='200' r='50'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 58H68A142 142 0 0 1 68 342H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='30' cy='200' r='10' stroke='%23D96A1B' stroke-opacity='.55'/%3E%3C/svg%3E");
-  --mc-bout-d:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 400' fill='none' stroke='%23BFD2E4' stroke-opacity='.2' stroke-width='1.25'%3E%3Cg transform='matrix(-1 0 0 1 240 0)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M1 0V400'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 150H160V250H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='160' cy='200' r='50'/%3E%3Cpath vector-effect='non-scaling-stroke' d='M0 58H68A142 142 0 0 1 68 342H0'/%3E%3Ccircle vector-effect='non-scaling-stroke' cx='30' cy='200' r='10' stroke='%23D96A1B' stroke-opacity='.55'/%3E%3C/g%3E%3C/svg%3E");
   --mc-ic-date:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='5' width='17' height='15.5' rx='2.5'/%3E%3Cpath d='M3.5 10h17M8 3v4M16 3v4'/%3E%3C/svg%3E");
   --mc-ic-heure:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='8.5'/%3E%3Cpath d='M12 7.5V12l3 2'/%3E%3C/svg%3E");
   --mc-ic-lieu:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z'/%3E%3Ccircle cx='12' cy='10' r='2.3'/%3E%3C/svg%3E");
@@ -11789,40 +11786,35 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   background:transparent;box-shadow:none;
   border:1.5px dashed rgb(var(--bleu-glacier-rgb) / .38)}
 
-/* --- Le terrain (V194) ------------------------------------------------------
-   LA grande idée de la section : l'affiche se joue SUR un parquet. La bande
-   du duel est un terrain vu de haut, tracé au trait comme le dessin de
-   l'entrée « Créneaux » du menu (.mn__forme--3 : même glacier à .2, même
-   cercle de panier orange) — le vocabulaire existe déjà, on le reprend.
-     - les deux lignes de touche : les filets haut et bas de la bande ;
-     - les deux fonds de terrain : les bords de la carte ; à chaque bout, la
-       raquette, le cercle de lancer franc, l'arc à 3 points et le panier
-       (deux SVG en fond, un par bout, hauts comme la bande) ;
-     - la ligne médiane (::after) et le cercle central, qui entoure le « vs ».
-   Le recevant est à gauche, chaque équipe dans sa moitié. Tout est décor :
-   pseudo-éléments et fonds, rien dans le DOM, rien pour un lecteur d'écran.
-   La carte des U13 (générateur à part) a les mêmes classes : elle a donc le
-   même terrain, sans rien régénérer. */
+/* --- La scène (V196, remplace le terrain tracé de V194) --------------------
+   Le terrain au trait (raquettes, arcs, ligne médiane, cercle central)
+   chargeait la bande : trop de lignes derrière deux plaques qui ont déjà
+   leur filet. On garde UNE idée, plus simple : la salle éteinte et un
+   projecteur sur le duel.
+     - un cône de lumière froide qui tombe du haut, au centre ;
+     - la lumière bleu roi de la salle, au « vs » ;
+     - deux filets haut et bas qui s'éteignent vers les bords (::before,
+       ::after) : la bande est cadrée sans être enfermée.
+   Tout est décor : fonds et pseudo-éléments, rien dans le DOM. La carte des
+   U13 (générateur à part) a les mêmes classes : elle suit sans régénération.
+   (--mc-court reste : le filet du « vs » l'utilise.) */
 .mc .mc-duel{
   --mc-c:clamp(76px,8.2vw,116px);
-  /* le même glacier à .2 que les deux SVG des bouts (écrit en dur dans
-     --mc-bout-g / -d) : un seul trait pour tout le terrain */
   --mc-court:rgb(var(--bleu-glacier-rgb) / .2);
   position:relative;isolation:isolate;
   display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;
   gap:clamp(.5rem,2vw,1.4rem);
   margin:clamp(1.1rem,2.4vw,1.6rem) calc(-1 * var(--mc-pad)) 0;
   padding:clamp(1.5rem,3.6vw,2.7rem) var(--mc-pad);
-  border-block:1px solid var(--mc-court);
-  /* la lumière de la salle, au rond central */
-  background:radial-gradient(ellipse 44% 78% at 50% 50%,rgb(var(--bleu-roi-rgb) / .2),transparent 72%)}
-.mc .mc-duel::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-  background:var(--mc-bout-g) left center / auto 100% no-repeat,
-             var(--mc-bout-d) right center / auto 100% no-repeat}
-.mc .mc-duel::after{
-  content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:1px;
-  margin-left:-.5px;background:var(--mc-court);pointer-events:none}
+  background:
+    radial-gradient(ellipse 38% 85% at 50% -12%,rgb(var(--bleu-glacier-rgb) / .13),transparent 70%),
+    radial-gradient(ellipse 52% 70% at 50% 55%,rgb(var(--bleu-roi-rgb) / .24),transparent 72%),
+    linear-gradient(180deg,rgb(var(--nuit-0-rgb) / .28),rgb(var(--nuit-0-rgb) / 0) 38%,rgb(var(--nuit-0-rgb) / .34))}
+.mc .mc-duel::before,.mc .mc-duel::after{
+  content:"";position:absolute;z-index:-1;left:0;right:0;height:1px;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgb(var(--bleu-glacier-rgb) / .26) 30%,rgb(var(--bleu-glacier-rgb) / .26) 70%,transparent)}
+.mc .mc-duel::before{top:0}
+.mc .mc-duel::after{bottom:0}
 .mc-team{position:relative;display:flex;flex-direction:column;align-items:center;gap:.95rem;min-width:0;text-align:center}
 /* La PLAQUE d'équipe (V195) : jeton + nom, dans une plaque de verre posée
    sur le terrain — on devine les lignes à travers (flou léger : les traits
@@ -11873,8 +11865,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   font-family:var(--ff-display);font-weight:400;text-transform:uppercase;
   letter-spacing:.04em;font-size:clamp(1rem,1.6vw,1.25rem);line-height:1;color:var(--orange-vif)}
 .mc-vs::before{
-  content:"";position:absolute;inset:-40%;border-radius:var(--r-round);
-  border:1px solid var(--mc-court);pointer-events:none}
+  content:"";position:absolute;z-index:-1;inset:-55%;border-radius:var(--r-round);
+  background:radial-gradient(closest-side,rgb(var(--bleu-glacier-rgb) / .1),transparent);pointer-events:none}
 /* Une échéance sans affiche occupe la carte principale (fin de phase 1,
    affiches de 2e phase pas encore publiées) : son trait de tête passe au
    glacier, le halo s'éteint. L'orange reste réservé à une rencontre
@@ -11903,9 +11895,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    la sienne de 10 px à 320, et à 200 % de texte les noms se seraient
    cassés. On empile dans l'ordre du DOM : le recevant, le « vs » au rond
    central, le visiteur (rangées 1fr auto 1fr : le « vs » reste au milieu
-   même si un nom prend deux lignes) ; la ligne médiane devient
-   horizontale et les raquettes se retirent (elles tiendraient mal sur une
-   bande aussi haute). Les noms gardent leur taille, en rem : ils suivent le
+   même si un nom prend deux lignes). Les noms gardent leur taille, en rem : ils suivent le
    texte agrandi. La requête vise l'emplacement (.mc__slot), que script.js
    garde quand il change de carte — sauf pour un pseudo-élément de la plaque,
    qui interrogerait la plaque : le halo passe par des variables. */
@@ -11919,8 +11909,7 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
     --mc-plaque-h:.85rem;--mc-halo-x:calc(1rem + var(--mc-c) / 2);--mc-halo-y:50%;
     align-self:auto;max-width:none;
     flex-direction:row;justify-content:flex-start;gap:1rem;text-align:left;padding:.85rem 1rem}
-  .mc .mc-duel::before{display:none}
-  .mc .mc-duel::after{top:50%;bottom:auto;left:0;right:0;width:auto;height:1px;margin:-.5px 0 0}}
+}
 /* Plus étroit encore — le texte agrandi sur téléphone (390 px à 200 % :
    11,2 em) —, la rangée ne laisse plus au nom que 50 à 100 px et la plaque
    le rognait (« PICKS LA POSSESSI », revue V195, RESP-03) : le jeton
@@ -12644,8 +12633,8 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    sans JS, sans observateur ou en mouvement réduit, tout est déjà tracé. Et
    rien ne boucle. Durées de 0,5 s, dans la plage du brief (200-500 ms). */
 @media (prefers-reduced-motion:no-preference){
-  .mc:not(.reveal) .mc-duel::before,
-  .mc.reveal.in .mc-duel::before{animation:mcTerrain .5s var(--ease-out) .1s both}
+  .mc:not(.reveal) .mc-duel::before,.mc:not(.reveal) .mc-duel::after,
+  .mc.reveal.in .mc-duel::before,.mc.reveal.in .mc-duel::after{animation:mcTerrain .5s var(--ease-out) .1s both}
   .mc.reveal.in .mc-list--suite::before{animation:mcRailV .5s var(--ease-out) .2s both}
   @container (min-width:56.53em){
     .mc.reveal.in .mc-list--suite::before{animation-name:mcRailH}}}
