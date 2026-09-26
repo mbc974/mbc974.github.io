@@ -13292,10 +13292,18 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
 @media (max-width:640px){
   .gallery-mosaic .g-tile.g-equipe{height:auto;grid-column:span 4;grid-row:span 4}}
 
-/* Six partenaires. Au-delà de 760 px la rangée passe de 5 à 6 colonnes :
-   sinon le sixième logo tombait seul sur une seconde ligne. Les 3 et 2
-   colonnes des petits écrans divisent déjà 6. */
-@media (min-width:761px){.sponsors-row{grid-template-columns:repeat(6,1fr)}}
+/* Sept partenaires (Bourbon Véto, 26/09). Une seule rangée de 7 dès 1000 px :
+   à 6 colonnes, le septième logo tombait seul sur une seconde ligne. Entre
+   761 et 999 px, 7 plaques seraient trop étroites pour les noms : 4 + 3.
+   Sur 3 et 2 colonnes, le logo orphelin de la dernière ligne prend toute la
+   ligne : la plaque (max-width + margin auto) se centre au lieu de rester
+   collée à gauche. Règle générique, elle suit le nombre de partenaires. */
+@media (min-width:761px){.sponsors-row{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1000px){.sponsors-row{grid-template-columns:repeat(7,1fr)}}
+@media (min-width:421px) and (max-width:760px){
+  .sponsors-row > li:last-child:nth-child(3n+1){grid-column:1 / -1}}
+@media (max-width:420px){
+  .sponsors-row > li:last-child:nth-child(2n+1){grid-column:1 / -1}}
 /* Logo paysage (2,7:1) : dans la plaque carrée, il serait le plus petit du
    mur. Même normalisation optique que cpa-paysage, un cran plus loin. */
 .sponsors-row img[src*="inplay"]{transform:scale(1.14)}

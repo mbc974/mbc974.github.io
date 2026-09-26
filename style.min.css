@@ -6913,7 +6913,12 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .gallery-mosaic .g-gym{grid-column:span 4;grid-row:span 4}}
 @media (max-width:640px){
   .gallery-mosaic .g-tile.g-equipe{height:auto;grid-column:span 4;grid-row:span 4}}
-@media (min-width:761px){.sponsors-row{grid-template-columns:repeat(6,1fr)}}
+@media (min-width:761px){.sponsors-row{grid-template-columns:repeat(4,1fr)}}
+@media (min-width:1000px){.sponsors-row{grid-template-columns:repeat(7,1fr)}}
+@media (min-width:421px) and (max-width:760px){
+  .sponsors-row > li:last-child:nth-child(3n+1){grid-column:1 / -1}}
+@media (max-width:420px){
+  .sponsors-row > li:last-child:nth-child(2n+1){grid-column:1 / -1}}
 .sponsors-row img[src*="inplay"]{transform:scale(1.14)}
 .sponsor-card__role{margin-top:-.3rem;font-family:var(--ff-cond);font-weight:700;
   text-transform:uppercase;letter-spacing:.14em;font-size:var(--text-2xs);color:var(--orange-vif);
