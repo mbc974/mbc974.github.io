@@ -370,6 +370,12 @@
       serie = groupe
         ? Array.prototype.filter.call(lightboxTriggers, function (t) { return t.getAttribute('data-lightbox-group') === groupe; })
         : [trigger];
+      /* V197 : dans la galerie collante de #matchs, l'ordre du DOM est celui
+         des colonnes (gauche, collée, droite). data-lightbox-rang, écrit par
+         build-galerie-match.py, rend aux flèches l'ordre de la soirée. */
+      if (serie.length > 1 && serie.every(function (t) { return t.hasAttribute('data-lightbox-rang'); })) {
+        serie.sort(function (x, y) { return x.getAttribute('data-lightbox-rang') - y.getAttribute('data-lightbox-rang'); });
+      }
       rang = Math.max(0, serie.indexOf(trigger));
       lightbox.classList.toggle('lightbox--photo', photo);
       lightbox.setAttribute('aria-label', trigger.getAttribute('data-lightbox-label') || 'Affiche agrandie');

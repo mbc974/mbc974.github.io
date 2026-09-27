@@ -147,6 +147,16 @@
       document.body.insertBefore(b, document.body.firstChild);
     }
     requestAnimationFrame(function () { b.classList.add('is-on'); });
+
+    /* V197 : la hauteur REELLE du bandeau, en variable CSS (--ccb-h). Elle
+       depend de la largeur et de la taille du texte (210 px a 390 x 844 en
+       16 px, 446 px en 24 px) : la colonne collee de la galerie de #matchs
+       s'en sert pour ne pas laisser sa derniere photo sous le bandeau le
+       temps de la premiere visite (style.css, « html:has(.ccb) .gmatch »). */
+    var racine = document.documentElement;
+    function mesurer() { racine.style.setProperty('--ccb-h', b.offsetHeight + 'px'); }
+    mesurer();
+    if ('ResizeObserver' in window) new ResizeObserver(mesurer).observe(b);
   }
 
   /* ---- 1 bis. Rouvrir le choix --------------------------------------- */

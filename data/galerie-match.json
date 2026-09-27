@@ -1,5 +1,5 @@
 {
-  "_lisezmoi": "Les soirées photo de la section « Sur le terrain » de l'accueil (#galerie), au-dessus du zoom. C'est CE fichier qu'on modifie, jamais le HTML. AJOUTER UNE SOIRÉE : une entrée dans « soirees », la plus récente en premier, avec le slug de la rencontre dans data/matchs.json — la date, l'adversaire, le score et le lieu en sont lus, rien n'est ressaisi — et ses photos dans l'ordre chronologique. UNE PHOTO : « source » = le fichier sorti de l'appareil (jamais une image générée ou retouchée par une IA : MAINTENANCE § 17.4) ; « fichier » = le nom publié, NOUVEAU pour toute nouvelle photo (règle du cache) ; « alt » = ce que la photo montre, sans nommer personne que son maillot n'identifie pas. PUIS : « python .claude/build-galerie-match.py --images <dossier des originaux> » (crée les dérivés AVIF, WebP et JPEG manquants, puis réécrit le bloc de l'accueil), et « python .claude/bump-assets.py ».",
+  "_lisezmoi": "Les soirées photo de l'accueil, dans « Les matchs de la saison » (#matchs), après le calendrier des seniors et son affiche (depuis V197 ; avant, dans « Sur le terrain »). Chaque soirée s'affiche en galerie collante : trois colonnes, celle du milieu reste à l'écran pendant que les deux autres défilent. C'est CE fichier qu'on modifie, jamais le HTML. AJOUTER UNE SOIRÉE : une entrée dans « soirees », la plus récente en premier, avec le slug de la rencontre dans data/matchs.json — la date, l'adversaire, le score et le lieu en sont lus, rien n'est ressaisi — et ses photos dans l'ordre chronologique. UNE PHOTO : « source » = le fichier sorti de l'appareil (jamais une image générée ou retouchée par une IA : MAINTENANCE § 17.4) ; « fichier » = le nom publié, NOUVEAU pour toute nouvelle photo (règle du cache) ; « alt » = ce que la photo montre, sans nommer personne que son maillot n'identifie pas. FACULTATIF : « epingle »: true met la photo dans la colonne collée (3 ou 4 par soirée, dont au moins deux portraits ; c'est là que va un paysage, ses cases sont en paysage sur ordinateur) ; « cadrage » = le point de la photo à garder quand sa case la recadre, en object-position (« 50% 40% »). Au moins quatre photos qui défilent par soirée, en plus des épinglées (trois par défaut), et qui se partagent en deux colonnes de même hauteur (en pratique, un nombre pair de portraits) : le générateur refuse sinon. PUIS : « python .claude/build-galerie-match.py --images <dossier des originaux> » (crée les dérivés AVIF, WebP et JPEG manquants, puis réécrit le bloc de l'accueil), et « python .claude/bump-assets.py ».",
   "soirees": [
     {
       "match": "mbc-sainte-suzanne-11-septembre-2026",
@@ -23,7 +23,8 @@
         {
           "source": "DSC04904.jpg",
           "fichier": "mbc-seniors-2026-09-11-kevin-nazir",
-          "alt": "Kevin Nazir, numéro 11 du MBC, vu de dos en plein tir en suspension devant les tribunes ; le ballon s'élève sous la charpente du gymnase."
+          "alt": "Kevin Nazir, numéro 11 du MBC, vu de dos en plein tir en suspension devant les tribunes ; le ballon s'élève sous la charpente du gymnase.",
+          "cadrage": "50% 20%"
         },
         {
           "source": "DSC04943.jpg",
@@ -33,7 +34,8 @@
         {
           "source": "DSC04950.jpg",
           "fichier": "mbc-seniors-2026-09-11-tir-tee-shirt-club",
-          "alt": "Un joueur du MBC en tee-shirt « MBC La Montagne Basket Club », vu de dos, bras tendus au bout de son tir, devant les tribunes du gymnase."
+          "alt": "Un joueur du MBC en tee-shirt « MBC La Montagne Basket Club », vu de dos, bras tendus au bout de son tir, devant les tribunes du gymnase.",
+          "epingle": true
         },
         {
           "source": "DSC05012.jpg",
@@ -43,12 +45,16 @@
         {
           "source": "DSC05068.jpg",
           "fichier": "mbc-seniors-2026-09-11-banc",
-          "alt": "Le banc du MBC vu de dos : les numéros 1, 8, 11 (Kevin Nazir) et 34, assis face au terrain et aux tribunes du gymnase de La Montagne."
+          "alt": "Le banc du MBC vu de dos : les numéros 1, 8, 11 (Kevin Nazir) et 34, assis face au terrain et aux tribunes du gymnase de La Montagne.",
+          "epingle": true,
+          "cadrage": "52% 50%"
         },
         {
           "source": "DSC05076.jpg",
           "fichier": "mbc-seniors-2026-09-11-numero-12",
-          "alt": "Le numéro 12 du MBC, de dos, mains sur les hanches : son maillot porte « La Montagne » et l'inscription créole « Ansanm nou lé pli for ». Au fond, le tableau d'affichage."
+          "alt": "Le numéro 12 du MBC, de dos, mains sur les hanches : son maillot porte « La Montagne » et l'inscription créole « Ansanm nou lé pli for ». Au fond, le tableau d'affichage.",
+          "epingle": true,
+          "cadrage": "50% 28%"
         }
       ]
     }

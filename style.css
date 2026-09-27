@@ -8925,8 +8925,8 @@ html:has(.ccb){scroll-padding-bottom:215px}
    GALERIE — zoom parallaxe vers « Votre enfant » (V110)
    ------------------------------------------------------------
    La galerie est passee AVANT la section parents, et elle s'y
-   jette : cinq cliches partent d'une constellation de vignettes,
-   grossissent ensemble, et quatre d'entre eux sortent du cadre
+   jette : quatre cliches (cinq avant V197) partent d'une constellation
+   de vignettes, grossissent ensemble, et trois d'entre eux sortent du cadre
    pendant que la 1re tuile finit exactement plein ecran : depuis
    V187 (15/09/2026), la photo d'equipe des seniors ; avant, « Le
    cercle d'avant-seance ». On entre alors dans « Votre enfant.
@@ -8934,7 +8934,7 @@ html:has(.ccb){scroll-padding-bottom:215px}
 
    C'est la tuile n°1 qui reste, et le calcul le garantit : elle
    part de 25vh x 25vw et grandit x4, donc 100vh x 100vw. Les
-   autres portent des facteurs 5 a 8 ET un decalage : ce decalage
+   trois autres portent des facteurs 5 et 6 ET un decalage : ce decalage
    est multiplie par l'echelle, donc plus elles grossissent, plus
    elles s'ecartent. A la fin il ne reste qu'elle.
 
@@ -8976,11 +8976,8 @@ html:has(.ccb){scroll-padding-bottom:215px}
    77 contre 326 a 1440 px, 60 contre 259 a 1920). A l'arret, le navigateur
    la repeint a sa taille reelle. */
 .gzoom.is-on.is-live.is-moving .g-tile{will-change:transform}
-/* V187 : cinq tuiles au lieu de six. La tuile du bas passe a gauche de l'axe
-   (-5vw), en miroir de celle du haut (+5vw) : sinon la constellation penchait
-   a droite, le coin bas-gauche restant vide. (0,5,0) : elle doit battre la
-   regle :nth-child(5) d'origine, placee plus bas. */
-.gzoom.is-on .gallery-mosaic .g-tile:nth-child(5){--gl:-5vw}
+/* V187 : cinq tuiles au lieu de six ; V197 : quatre. Les satellites sont
+   places par leur classe, plus bas (« La constellation de depart »). */
 /* les habillages de la mosaique (lisere, degrade de legende) n'ont pas de sens
    ici : grossis x4, ils voileraient l'image d'arrivee */
 .gzoom.is-on .g-tile::before,.gzoom.is-on .g-tile::after{display:none}
@@ -8997,9 +8994,9 @@ html:has(.ccb){scroll-padding-bottom:215px}
    12 px au repos, 9 au quart de la course, 6 a la moitie, 0 PILE a l'arrivee.
    Mesure au banc (.claude/banc-galerie-zoom.mjs) a 1440x900 et a 390x844.
 
-   Le filet est celui des photos du soir de match (.gmatch__ph::after), a la
-   meme valeur : la constellation et la bande juste au-dessus partagent un seul
-   traitement. Il s'efface par son alpha, faute de quoi il redeviendrait, a
+   Le filet est celui des photos du soir de match (.gmatch__ph::after, dans
+   #matchs depuis V197), a la meme valeur : les deux galeries partagent un
+   seul traitement. Il s'efface par son alpha, faute de quoi il redeviendrait, a
    l'arrivee, le « cadre de fenetre » que V187 a retire. Il passe par un
    ::after et non par un box-shadow inset sur le <picture> : une ombre interne
    se peint SOUS le contenu, et l'image couvre toute la boite.
@@ -9047,12 +9044,23 @@ html:has(.ccb){scroll-padding-bottom:215px}
    Regle : la tuile qui finit plein cadre se choisit sur la DEFINITION de son
    original, pas sur celle du derive qu'on servait jusque-la. */
 .gzoom.is-on .g-tile:nth-child(1){--gs:4;--gt:0vh;--gl:0vw;--gh:25vh;--gw:25vw;z-index:0}
-.gzoom.is-on .g-tile:nth-child(2){--gs:5;--gt:-30vh;--gl:5vw;--gh:30vh;--gw:35vw}
-.gzoom.is-on .g-tile:nth-child(3){--gs:6;--gt:-10vh;--gl:-25vw;--gh:45vh;--gw:20vw}
-.gzoom.is-on .g-tile:nth-child(4){--gs:5;--gl:27.5vw;--gh:25vh;--gw:25vw}
-.gzoom.is-on .g-tile:nth-child(5){--gs:6;--gt:27.5vh;--gl:5vw;--gh:25vh;--gw:20vw}
-.gzoom.is-on .g-tile:nth-child(6){--gs:8;--gt:27.5vh;--gl:-22.5vw;--gh:25vh;--gw:30vw}
-/* la centrale passe DESSOUS : les cinq autres doivent la survoler en sortant
+/* V197 (27/09/2026) : « Le cercle d'avant-seance » (le panoramique du haut)
+   quitte la galerie. Les trois satellites restants sont places par CLASSE,
+   plus par rang : retirer une tuile decalait tous les :nth-child suivants,
+   et l'inauguration (portrait) serait montee dans la case panoramique du
+   haut. Nouvelle constellation a trois branches autour de l'arrivee :
+   l'inauguration a gauche, sur toute la hauteur de la scene centrale ;
+   Ruisseau Blanc (paysage) en haut a droite, dans l'ancienne case du
+   panoramique ; « Tout le monde au centre » en bas a droite, dans l'emprise
+   VERTICALE de l'ancienne tuile du bas (15vh a 40vh sous le centre) : un
+   bas a 44vh touchait le repere « Faites defiler » sur telephone (revue
+   V197 : 6 px de recouvrement a 390 x 844, la fleche sur la photo). Toutes
+   sortent du cadre avant l'arrivee (decalage x echelle > 50 + demi-taille
+   x echelle). */
+.gzoom.is-on .g-tile.g-inaug{--gs:6;--gt:-2.5vh;--gl:-26vw;--gh:46vh;--gw:20vw}
+.gzoom.is-on .g-tile.g-gym{--gs:5;--gt:-29vh;--gl:13vw;--gh:27vh;--gw:28vw}
+.gzoom.is-on .g-tile.g-tall{--gs:6;--gt:27.5vh;--gl:16vw;--gh:25vh;--gw:19vw}
+/* la centrale passe DESSOUS : les trois autres doivent la survoler en sortant
    du cadre, pas etre recouvertes par elle a mesure qu'elle grandit */
 .gzoom.is-on .g-tile{z-index:1}
 /* ---- Repere de defilement : une scene collee de 240vh sans indice donne
@@ -11544,9 +11552,9 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
    qui se lit (lieux, adresses, horaires secondaires, bilan). Les capitales
    condensées restent aux surtitres et aux pastilles d'état.
 
-   Écarté exprès : une photo (les seules photos d'action sont celles de la
-   J1, déjà dans #galerie juste en dessous, et #matchs est la section
-   « texte » de l'alternance V188) ; un mot géant en filigrane (le .bg-word
+   Écarté exprès : une photo DANS le Match Center (depuis V197, les photos
+   de la J1 ont quitté #galerie pour suivre plus bas dans #matchs, en
+   galerie collante, à la demande d'Alexandre) ; un mot géant en filigrane (le .bg-word
    a été éteint en V100.4, « l'élément le plus template ») ; toute boucle
    d'animation.
 
@@ -13127,75 +13135,171 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .vid-facade__play,.vid-facade__note,.lp-media__play{display:none!important}}
 
 /* ============================================================
-   GALERIE — les soirées photo (V186, 15/09/2026)
+   GALERIE — les soirées photo (V186, 15/09/2026 ; V197, 27/09/2026)
    ------------------------------------------------------------
    Un bloc par soirée de match, écrit par
-   .claude/build-galerie-match.py depuis data/galerie-match.json,
-   AU-DESSUS du zoom parallaxe : la scène collée doit continuer
-   d'atterrir plein cadre sur sa tuile centrale (la photo d'équipe
-   depuis V187), juste avant #parents.
+   .claude/build-galerie-match.py depuis data/galerie-match.json.
 
-   Dès 880 px (et à l'impression), des rangées JUSTIFIÉES. Chaque photo a pour
-   flex-grow son rapport largeur/hauteur (--r, écrit par le
-   générateur) et une base nulle : les largeurs sont
-   proportionnelles aux rapports, toutes les photos d'une rangée
-   ont donc la même hauteur, et la rangée remplit exactement la
-   largeur. Aucune n'est recadrée : object-fit ne rattrape que
-   l'arrondi au pixel. Le générateur choisit les coupures (deux
-   rangées pour dix photos) et écrit des sizes qui décrivent CETTE
-   géométrie : les deux changent ensemble.
+   V197 : le bloc a quitté « Sur le terrain » (#galerie) pour « Les
+   matchs de la saison » (#matchs), après le calendrier des seniors
+   (Match Center, volet de la phase 1, horaire, affiche), et
+   ses rangées justifiées sont devenues une GALERIE COLLANTE, d'après
+   le composant « sticky scroll » collé par Alexandre (React + Lenis),
+   refait en CSS seul. Trois colonnes : celle du milieu est collée
+   (position:sticky, ses photos au prorata de 1/r) pendant que les
+   deux autres défilent de part et d'autre. Pas de Lenis : la page
+   défile normalement, aucun défilement n'est détourné, aucun script.
 
-   En dessous, une bande qui défile au doigt. Les rangées passent
-   en display:contents, les photos deviennent les enfants directs
-   de la bande, à hauteur commune min(70vw, 420px). Un paysage y
-   est borné à la largeur de l'écran (bords un peu rognés, sur
-   téléphone seulement) : un cliché plus large que la fenêtre ne
-   s'arrête jamais proprement sous le doigt.
+   Prérequis, comme pour le zoom de #galerie : `overflow:clip` (et non
+   hidden) sur html, body et #matchs. Avec hidden, l'ancêtre devient un
+   conteneur de défilement et la colonne ne colle plus (MAINTENANCE
+   § 16, § 39).
+
+   Qui va où : le générateur place dans la colonne collée les photos
+   que le JSON marque « epingle » (ses cases sont en paysage sur un
+   ordinateur : c'est là que va le paysage du banc), et partage les
+   autres entre les deux colonnes qui défilent, dans l'ordre de la
+   soirée, en équilibrant leurs hauteurs. Il écrit des sizes qui
+   décrivent CETTE géométrie : les deux changent ensemble.
+
+   Écran en portrait (téléphone, tablette debout) : deux colonnes. Celle
+   de gauche empile les deux colonnes qui défilent, celle de droite
+   reste collée. Trois colonnes y feraient des vignettes de 110 px.
 
    Pas de filtre photo, contrairement à .g-tile : ces clichés
    sortent de Lightroom, déjà étalonnés.
    ============================================================ */
-.gmatch{margin-top:clamp(1.4rem,3vw,2.2rem)}
-.gmatch__head{margin-bottom:1rem}
+/* --pin-top : 72 px, la hauteur de l'en-tête fixe du site (.site-header),
+   plus une marge d'au moins 16 px, donc 88 px au moins. L'en-tête se masque
+   à la descente mais revient à la moindre REMONTÉE : collée plus haut, la
+   1re photo passait dessous (56 à 62 px mesurés à la revue V197). Et 88 px,
+   c'est html{scroll-padding-top} : une photo collée qui prend le focus
+   clavier est donc déjà « visible » pour le navigateur, qui ne fait plus
+   défiler la page (ce défilement de 72 px ramenait l'en-tête par-dessus la
+   photo focalisée). --pin-bas : l'air sous la colonne. */
+.gmatch{--gg:clamp(8px,.8vw,11px);
+  --pin-top:calc(72px + clamp(16px,1.8vh,20px));--pin-bas:clamp(10px,1.8vh,20px);
+  margin-block:clamp(3rem,7vw,5.5rem) clamp(2.4rem,5vw,4rem)}
+/* L'en-tête se centre au-dessus des trois colonnes, sur la trame du
+   composant d'origine : c'est celle de .map-facade__grid (même pas, même
+   filet), un plan qui s'efface par un masque radial. */
+.gmatch__head{position:relative;isolation:isolate;max-width:62ch;
+  margin:0 auto clamp(1.4rem,3vw,2.2rem);padding-block:clamp(.6rem,2vw,1.4rem);text-align:center}
+.gmatch__head::before{content:"";position:absolute;inset:-35% -30%;z-index:-1;pointer-events:none;opacity:.55;
+  background-image:linear-gradient(rgb(var(--bleu-glacier-rgb) / .10) 1px,transparent 1px),
+    linear-gradient(90deg,rgb(var(--bleu-glacier-rgb) / .10) 1px,transparent 1px);
+  background-size:34px 34px;background-position:center;
+  -webkit-mask-image:radial-gradient(closest-side,#000 35%,transparent);
+  mask-image:radial-gradient(closest-side,#000 35%,transparent)}
 /* (0,2,0) : .section p (0,1,1) repeindrait sinon le surtitre en --txt-soft */
 .gmatch__head .gmatch__kicker{font-family:var(--ff-cond);font-weight:700;font-size:.92rem;letter-spacing:.1em;text-transform:uppercase;color:var(--orange-vif)}
 .gmatch__title{margin-top:.15rem;font-family:var(--ff-display);font-weight:400;font-size:clamp(1.5rem,2.6vw,2.1rem);line-height:1.08;letter-spacing:.01em;text-transform:uppercase;color:var(--txt)}
-.gmatch__head .gmatch__meta{margin-top:.4rem;max-width:62ch}
+.gmatch__head .gmatch__meta{margin:.4rem auto 0;max-width:62ch}
 .gmatch__meta a{color:var(--txt);font-weight:600;white-space:nowrap;text-decoration:underline;text-decoration-color:var(--orange-vif);text-decoration-thickness:2px;text-underline-offset:3px}
 .gmatch__meta a:hover{color:var(--orange-vif)}
 .gmatch__meta a:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:2px}
-.gmatch__rows{--gh:min(70vw,420px);--gpad:clamp(18px,5vw,48px);
-  display:flex;gap:.6rem;
-  margin-inline:calc(-1 * var(--gpad));padding:.4rem var(--gpad) .8rem;
-  overflow-x:auto;overscroll-behavior-x:contain;
-  scroll-snap-type:x mandatory;scroll-padding-inline:var(--gpad);
-  scrollbar-width:thin;scrollbar-color:rgb(var(--bleu-glacier-rgb) / .28) transparent}
-.gmatch__row{display:contents}
-.gmatch__ph{position:relative;flex:0 0 auto;
-  width:min(calc(var(--r) * var(--gh)),calc(100vw - 2 * var(--gpad)));height:var(--gh);
+
+/* ---- La grille. De base (écran en portrait) : deux colonnes. À gauche,
+        les colonnes A et B l'une sous l'autre ; à droite, la colonne
+        collée, sur toute la hauteur des deux. Sous 600 px, trois colonnes
+   feraient des vignettes de 110 px. ---- */
+.gmatch__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto;gap:var(--gg)}
+.gmatch__col{display:flex;flex-direction:column;gap:var(--gg);min-width:0}
+.gmatch__col--a{grid-column:1;grid-row:1}
+.gmatch__col--b{grid-column:1;grid-row:2}
+/* La colonne COLLÉE. Sa zone de grille couvre toute la hauteur des
+   colonnes qui défilent : c'est dans cette zone que sticky la retient, et
+   la différence de hauteur entre les deux est la course de l'effet. En haut,
+   la place de l'en-tête du site (--pin-top, voir .gmatch). svh : la hauteur
+   avec les barres du navigateur mobile affichées, sinon la photo du bas
+   passerait sous elles. */
+.gmatch__col--pin{grid-column:2;grid-row:1 / 3;align-self:start;
+  position:sticky;top:var(--pin-top);
+  height:calc(100vh - var(--pin-top) - var(--pin-bas));
+  height:calc(100svh - var(--pin-top) - var(--pin-bas))}
+/* Jusqu'à 920 px, la barre flottante « Une question · Je m'inscris »
+   (.float-cta, à 16 px du bas) est à l'écran pendant toute la traversée :
+   --pin-bas lui laisse sa place, sinon elle masquait le bas de la troisième
+   photo (le « 12 » du maillot, mesuré à 390 x 844). Sa hauteur suit le
+   texte (54 px en 16 px, 79 en 24) : d'où les rem. */
+@media (max-width:920px){.gmatch{--pin-bas:calc(26px + 3.375rem + env(safe-area-inset-bottom,0px))}}
+/* Première visite : le bandeau de consentement (.ccb) couvre le bas de
+   l'écran, et la barre flottante remonte au-dessus de lui (voir « body:has(
+   .ccb) .float-cta » : son haut est à 1rem + 132 px + 3.375rem du bas). La
+   photo collée du bas ne peut pas sortir de dessous en défilant, comme le
+   ferait un contenu ordinaire : la colonne raccourcit le temps du bandeau.
+   --ccb-h est sa hauteur RÉELLE, posée par consent.js (elle suit la largeur
+   et le texte : 210 px à 390 x 844 en 16 px, 446 en 24 ; une valeur fixe
+   laissait le n° 12 entièrement dessous en texte 24, revue V197 vague 2).
+   921 px et non 900 : jusqu'à 920, la barre flottante est encore là.
+   (0,2,1) : bat le .gmatch du @media ci-dessus. */
+html:has(.ccb) .gmatch{--pin-bas:max(calc(var(--ccb-h,206px) + 16px),calc(148px + 4.375rem))}
+@media (min-width:921px){html:has(.ccb) .gmatch{--pin-bas:calc(var(--ccb-h,124px) + 16px)}}
+
+.gmatch__ph{position:relative;display:block;width:100%;
   padding:0;border:0;border-radius:var(--r-md);
   overflow:hidden;background:#07101d;color:inherit;font:inherit;cursor:zoom-in;
-  scroll-snap-align:start;
   box-shadow:0 14px 34px rgba(3,7,15,.38),var(--bevel);
   -webkit-tap-highlight-color:transparent}
+/* Dans les colonnes qui défilent : la photo garde son rapport (--r), mais
+   jamais plus étroit que 4:5 (--rm, écrit par le générateur) sur deux
+   colonnes, et jamais plus haut que 38 % de l'écran : sur une tablette
+   debout, six portraits entiers faisaient 2 600 px de colonne. flex-grow :
+   la colonne la plus courte rattrape l'autre en recadrant à peine. */
+.gmatch__col--a .gmatch__ph,.gmatch__col--b .gmatch__ph{flex:1 0 auto;aspect-ratio:var(--rm);max-height:38svh}
+/* Dans la colonne collée, chaque photo prend une part de la hauteur
+   proportionnelle à 1/--r : toutes les cases ont alors le MÊME facteur de
+   recadrage. En parts égales (le composant d'origine), le banc, seul
+   paysage, perdait le n° 1 sur téléphone et les portraits la moitié de leur
+   hauteur sur un portable (revue V197 : part visible la plus faible 0,47
+   à 390 x 844, 0,37 à 1366 x 657 ; au prorata, 0,86 et 0,40 depuis
+   --pin-top = 88 px). Sur un portable, le reste se règle par le
+   « cadrage » du JSON : le n° 12 cadré à 28 % garde sa tête. */
+.gmatch__col--pin .gmatch__ph{flex:calc(1 / var(--r,1)) 1 0;min-height:0}
 .gmatch__ph picture{position:absolute;inset:0}
 /* Le filet est dessiné PAR-DESSUS la photo, pas en bordure : une bordure de
    1 px s'ajoute à chaque boîte sans être répartie au prorata de --r, et
    décalait de 1,7 px le bas des paysages et celui des portraits d'une même
-   rangée (mesuré à 1280 px). */
+   rangée (mesuré à 1280 px, V186). */
 .gmatch__ph::after{content:"";position:absolute;inset:0;border:1px solid rgba(191,210,228,.16);border-radius:inherit;pointer-events:none}
-.gmatch__ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease-out)}
+/* --fp : le point à garder quand la case recadre (« cadrage » dans le JSON) */
+.gmatch__ph img{width:100%;height:100%;object-fit:cover;object-position:var(--fp,50% 50%);transition:transform .6s var(--ease-out)}
 /* l'arrondi est repose ici : la regle globale « button:focus-visible »
    (0,1,1) le ramenait a 4 px, et la photo perdait ses coins au clavier */
 .gmatch__ph:focus-visible{outline:var(--focus-width) solid var(--focus-color);outline-offset:var(--focus-offset);border-radius:var(--r-md)}
 @media (hover:hover) and (pointer:fine){.gmatch__ph:hover img{transform:scale(1.04)}}
 @media (prefers-reduced-motion:reduce){.gmatch__ph img{transition:none}.gmatch__ph:hover img{transform:none}}
-/* et a l'impression : une bande qui defile ne s'imprime pas, 7 photos sur 10
-   manquaient au papier en A4 portrait */
-@media (min-width:880px),print{
-  .gmatch__rows{display:grid;gap:.7rem;margin-inline:0;padding:0;overflow:visible;scroll-snap-type:none}
-  .gmatch__row{display:flex;align-items:flex-start;gap:.7rem}
-  .gmatch__ph{flex:var(--r) 1 0%;width:auto;height:auto;min-width:0;aspect-ratio:var(--r)}}
+
+/* ---- Écran en paysage : les trois colonnes du composant ----
+   Les photos des colonnes qui défilent y sont entières (--r). min-height :
+   la colonne doit rester nettement plus haute que la fenêtre, sinon la
+   colonne collée n'a plus rien à regarder défiler (écran très haut). */
+/* (max-height:500px) : un écran bas et large de moins de 600 px (568 x 320,
+   ou un téléphone couché zoomé) prend aussi les trois colonnes ; en
+   mise en page portrait, ses photos plafonnées à 38svh devenaient des
+   bandeaux de 122 px (revue V197 vague 2). */
+@media (min-width:600px) and (min-aspect-ratio:1/1),(max-height:500px) and (min-aspect-ratio:1/1){
+  .gmatch__grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}
+  .gmatch__col--a{grid-column:1;grid-row:1}
+  .gmatch__col--pin{grid-column:2;grid-row:1}
+  .gmatch__col--b{grid-column:3;grid-row:1}
+  .gmatch__col--a .gmatch__ph,.gmatch__col--b .gmatch__ph{aspect-ratio:var(--r);max-height:none;min-height:40svh}}
+/* Écran bas et large (téléphone couché : 844 x 390) : la colonne collée
+   n'y aurait que 300 px pour trois photos, des bandeaux de 95 px où un
+   portrait se réduit à un logo. Elle cesse d'y coller : elle prend la
+   hauteur de la rangée (stretch), partagée au prorata comme ci-dessus, et
+   les trois colonnes finissent au même pixel. */
+@media (max-height:500px) and (min-aspect-ratio:1/1){
+  .gmatch__col--pin{position:static;height:auto;align-self:stretch}}
+
+/* À l'impression, rien ne colle : les trois colonnes, photos entières. */
+@media print{
+  .gmatch__grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}
+  .gmatch__col--a{grid-column:1;grid-row:1}
+  .gmatch__col--pin{grid-column:2;grid-row:1;position:static;height:auto}
+  .gmatch__col--b{grid-column:3;grid-row:1}
+  .gmatch__ph,.gmatch__col--pin .gmatch__ph{flex:0 0 auto;aspect-ratio:var(--r);max-height:none;min-height:0;box-shadow:none}
+  .gmatch__head::before{display:none}}
 
 /* ---- Visionneuse, mode photo (V186) ----
    Posé par script.js quand le déclencheur porte data-lightbox-group : la
@@ -13263,10 +13367,11 @@ html.lb-open body{padding-right:var(--mn-sbw,0px)}
   .kc__card.is-3 .kc__price{font-size:var(--kc-f3);padding-top:calc(var(--kc-f1) - var(--kc-f3))}}
 @media (prefers-reduced-motion:reduce){.kc__card .kc__price{transition:none}}
 
-/* La mosaïque de REPLI (sans JS, ou mouvement réduit) : cinq tuiles.
+/* La mosaïque de REPLI (sans JS, ou mouvement réduit) : cinq tuiles, quatre
+   depuis V197 (« team » retirée : ses règles ne visent plus rien).
    Bandes qui se ferment exactement, dans l'ordre du DOM :
-     6 colonnes : équipe 6 | team 6 | inaug 2 + gym 2 + tall 2
-     4 colonnes : équipe 4 | team 4 | inaug 2 + tall 2 | gym 4
+     6 colonnes : équipe 6 | inaug 2 + gym 2 + tall 2
+     4 colonnes : équipe 4 | inaug 2 + tall 2 | gym 4
    (grid-auto-flow:dense remonte tall à côté d'inaug). Relecture : en bande
    pleine largeur, le portrait « Tout le monde au centre » (0,92:1) tombait à
    1,6:1, perdait près de la moitié de sa hauteur et, son sizes disant 47vw,
