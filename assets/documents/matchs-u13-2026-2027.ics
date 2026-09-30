@@ -47,12 +47,13 @@ URL:https://mbc974.com/matchs/u13/
 END:VEVENT
 BEGIN:VEVENT
 UID:u13-2026-10-04@mbc974.com
-DTSTAMP:20260917T000000Z
+DTSTAMP:20260930T000000Z
+SEQUENCE:1
+STATUS:CANCELLED
 DTSTART;TZID=Indian/Reunion:20261004T103000
 DTEND;TZID=Indian/Reunion:20261004T120000
-SUMMARY:U13 : Aiglons d'Orient — MBC (DMU13 · J4)
-LOCATION:Saint-Denis — salle communiquée par la Ligue
-DESCRIPTION:Départementale Masculine U13 — déplacement.
+SUMMARY:ANNULÉ — U13 : Aiglons d’Orient — MBC (DMU13 · J4)
+DESCRIPTION:Rencontre annulée. Forfait général de l’adversaire.
 URL:https://mbc974.com/matchs/u13/
 END:VEVENT
 BEGIN:VEVENT

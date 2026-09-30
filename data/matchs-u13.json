@@ -1,9 +1,18 @@
 {
-  "_lisezmoi": "Source UNIQUE de la saison des U13. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-matchs-u13.py », puis « python .claude/build-sitemap.py » et « python .claude/bump-assets.py » (en dernier). Tout en découle : la page /matchs/u13/, le bloc des U13 en bas de la section « Les matchs de la saison » de l'accueil, le bloc de la page basket-enfant-saint-denis/, le fichier d'agenda assets/documents/matchs-u13-2026-2027.ics et les données structurées des réceptions. SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 42, \"adverse\": 38}, toujours du point de vue du MBC, jamais dans l'ordre d'affichage) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette. Tant qu'aucun score n'est saisi, la ligne dit « Score à venir » d'elle-même dès que l'heure de fin est passée : il n'y a rien à republier pour cela. UNE DÉROGATION (rencontre inversée après la parution du calendrier) : modifier « domicile », « lieu » et « entreeLibre », et ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. UNE SALLE DE DÉPLACEMENT CONNUE (communiquée au club avant la rencontre) : l'ajouter à « lieux » (nom, adresse, codePostal, ville, carte ; latitude/longitude facultatives pour un déplacement), la citer dans « lieu » de la rencontre et incrémenter sa « revision » (voir plus bas). « domicile » et « entreeLibre » restent false : c'est « domicile », jamais « lieu », qui dit qui reçoit, et un déplacement n'a pas de SportsEvent. Noter la source dans « _sources.salles ». UNE RENCONTRE DÉJÀ PUBLIÉE QUI CHANGE (date, heure, salle, camp, ou dérogation annulée) : incrémenter « revision » : { n (1, puis 2, 3...), le (AAAA-MM-JJ du changement), motif } — c'est ce qui fait accepter la mise à jour par les agendas qui ont déjà importé le .ics (SEQUENCE et DTSTAMP). Ne jamais retirer ce champ, même quand la dérogation part. POURQUOI UN FICHIER SÉPARÉ DE data/matchs.json : la chaîne des seniors est mono-équipe par construction (un seul bandeau #nxBand, des data-id datés, un bilan global, des slugs sans équipe). Les U13 vivent donc à côté, avec leur propre générateur, et réutilisent les mêmes composants CSS.",
+  "_lisezmoi": "Source UNIQUE de la saison des U13. C'est ce fichier qu'on modifie, jamais le HTML : lancer ensuite « python .claude/build-matchs-u13.py », puis « python .claude/build-sitemap.py » et « python .claude/bump-assets.py » (en dernier). Tout en découle : la page /matchs/u13/, le bloc des U13 en bas de la section « Les matchs de la saison » de l'accueil, le bloc de la page basket-enfant-saint-denis/, le fichier d'agenda assets/documents/matchs-u13-2026-2027.ics et les données structurées des réceptions. SAISIR UN RÉSULTAT : remplir « score » ({\"mbc\": 42, \"adverse\": 38}, toujours du point de vue du MBC, jamais dans l'ordre d'affichage) et passer « statut » à « joue ». Les autres statuts : « a-venir », « annule », « reporte » — une rencontre annulée ou reportée reste dans la saison avec son étiquette. UNE RENCONTRE ANNULÉE (forfait de l'adversaire, décision de la Ligue) : « statut » à « annule », « motif » (une courte phrase, affichée sur la ligne à la place de l'heure et du lieu) et « revision » (voir plus bas ; si la rencontre en porte déjà une, l'incrémenter), TOUS DEUX OBLIGATOIRES — le générateur refuse de publier sans eux, parce que le rendez-vous reste dans le .ics, marqué STATUS:CANCELLED : le retirer du fichier ne l'enlèverait d'aucun agenda qui l'a déjà importé. Les comptes publiés (« 6 rencontres », « 6 dates », « six autres clubs ») ne comptent que les rencontres qui se jouent : rien à corriger à la main dans les sorties de ce générateur. Un compte vit ailleurs : la ligne « Le calendrier des U13 » de /matchs/, écrite par la chaîne des seniors (lien_u13() de build-match-center.py) — la régénérer par page_liste, voir MAINTENANCE § 38 et § 42. UN FORFAIT GÉNÉRAL : en plus, ajouter « forfait » : { portee, le } à l'équipe dans « poule.equipes » (elle reste dans la liste, avec la mention), relire « competition.detail », et écrire « avis » : { le, jusqu, titre, texte, agenda, source } — « titre », « texte » et « agenda » s'affichent en tête de /matchs/u13/ jusqu'au jour « jusqu » inclus (AAAA-MM-JJ ; la page est statique : ils partent à la première régénération qui suit), « source » à côté de la source du calendrier. NE PAS retirer « source » tant que la ligne annulée et la mention de forfait sont affichées : c'est elle qui les justifie en bas de page. Une date dans un texte s'écrit avec une espace insécable en échappement (« 4\\u00a0octobre ») pour ne pas être coupée en fin de ligne. Tant qu'aucun score n'est saisi, la ligne dit « Score à venir » d'elle-même dès que l'heure de fin est passée : il n'y a rien à republier pour cela. UNE DÉROGATION (rencontre inversée après la parution du calendrier) : modifier « domicile », « lieu » et « entreeLibre », et ajouter « derogation » : { domicile, le (AAAA-MM-JJ), source }. UNE SALLE DE DÉPLACEMENT CONNUE (communiquée au club avant la rencontre) : l'ajouter à « lieux » (nom, adresse, codePostal, ville, carte ; latitude/longitude facultatives pour un déplacement), la citer dans « lieu » de la rencontre et incrémenter sa « revision » (voir plus bas). « domicile » et « entreeLibre » restent false : c'est « domicile », jamais « lieu », qui dit qui reçoit, et un déplacement n'a pas de SportsEvent. Noter la source dans « _sources.salles ». UNE RENCONTRE DÉJÀ PUBLIÉE QUI CHANGE (date, heure, salle, camp, ou dérogation annulée) : incrémenter « revision » : { n (1, puis 2, 3...), le (AAAA-MM-JJ du changement), motif } — c'est ce qui fait accepter la mise à jour par les agendas qui ont déjà importé le .ics (SEQUENCE et DTSTAMP). Ne jamais retirer ce champ, même quand la dérogation part. POURQUOI UN FICHIER SÉPARÉ DE data/matchs.json : la chaîne des seniors est mono-équipe par construction (un seul bandeau #nxBand, des data-id datés, un bilan global, des slugs sans équipe). Les U13 vivent donc à côté, avec leur propre générateur, et réutilisent les mêmes composants CSS.",
   "saison": "2026/2027",
+  "avis": {
+    "le": "2026-09-30",
+    "jusqu": "2026-10-04",
+    "titre": "Dimanche 4\u00a0octobre : rencontre annulée.",
+    "texte": "La Ligue a déclaré le forfait général des Aiglons d’Orient pour toute la saison. Les autres dates ne changent pas.",
+    "agenda": "Dates déjà dans votre agenda ? Supprimez celle du 4\u00a0octobre à la main : elle ne s’efface pas toute seule.",
+    "source": "Depuis, la Ligue Régionale de Basket-Ball de La Réunion a déclaré le forfait général des Aiglons d’Orient (courriel aux clubs du 30\u00a0septembre 2026) : leurs rencontres sont annulées, le reste du calendrier est inchangé."
+  },
   "_sources": {
     "calendrier": "Export du Comité de La Réunion de Basket-Ball, « DMU13 — Départementale masculine U13 », poule A, édition du 21/08/2026 à 12:51:41. Transmis au club le 17/09/2026 (archivé, ramené en noir et blanc : assets/documents/calendrier-u13-2026-2027.png). L'équipe nommée en premier reçoit : c'est l'ordre des colonnes de l'export qui porte domicile/extérieur, comme pour le calendrier des seniors.",
-    "format": "Huit équipes, sept journées, un seul tour : chaque équipe rencontre les sept autres une fois. Vingt-huit rencontres au total, toutes le dimanche à 10h30. L'export ne mentionne ni gymnase ni score.",
+    "format": "Huit équipes, sept journées, un seul tour : chaque équipe rencontre les sept autres une fois. Vingt-huit rencontres au total, toutes le dimanche à 10h30. L'export ne mentionne ni gymnase ni score. Depuis le forfait général des Aiglons d'Orient (voir « forfait ») : sept équipes en lice, vingt et une rencontres, et chaque équipe est exempte le jour où elle devait les rencontrer.",
+    "forfait": "Courriel de la Ligue Régionale de Basket-Ball de La Réunion (commission sportive), « ERRATUM : INFORMATION / COMMISSION SPORTIVE : Forfait Général DMU13 des Aiglons », reçu par le club le 30/09/2026 à 9h46 : l'équipe U13 DM des Aiglons est déclarée forfait général pour toute la saison 2026-2027, toutes ses rencontres sont annulées, le reste du calendrier est inchangé. L'export du 21/08/2026 ne connaît qu'une équipe de ce nom dans la poule, Aiglons d'Orient, que le MBC ne rencontrait qu'une fois : la rencontre n° 15 du 04/10/2026 (J4, déplacement). Le MBC ne joue donc pas ce dimanche-là et dispute six rencontres, quatre réceptions et deux déplacements. Un second courriel du même jour (10h22) annonce le forfait général de l'ABC en RMU13 : le MBC n'y est pas engagé, rien ne change ici.",
     "duree": "90 minutes retenues pour la durée d'une rencontre U13 (4 × 8 minutes, plus les arrêts de jeu et la mi-temps). Elle ne sert qu'à deux choses : l'heure de fin du rendez-vous .ics, et l'instant à partir duquel une ligne bascule de « Domicile » à « Score à venir ».",
     "villes": "Commune du siège de chaque club adverse, pour situer un déplacement tant que la salle n'est pas connue. Ce n'est PAS l'adresse du gymnase, que l'export ne donne pas : la salle est communiquée avant la rencontre, et elle entre alors dans « lieux » (voir « salles »). Aiglons d'Orient (64 rue Sainte-Anne, Saint-Denis) et Olympique Basket Panonnais (Bras-Panon, association déclarée le 11/06/2024) relevés sur leurs sites respectifs le 17/09/2026.",
     "logos": "L'écusson est celui du CLUB, pas de l'équipe : « Dionysien 2 » et « Picks La Possession 2 » réutilisent donc les fichiers bcd3 et picks3 déjà présents, déposés pour les équipes 3 engagées en seniors. Trois clubs n'ont pas encore d'écusson dans le dépôt (Panonnais, Saint-Paul 2, Aiglons d'Orient) : leur sigle s'affiche à la place, sans rien casser. Pour les ajouter, déposer les fichiers dans Téléchargements et lancer .claude/add-club-logos.py.",
@@ -26,17 +35,18 @@
     "genre": "championnat",
     "organisateur": "Comité de La Réunion de Basket-Ball",
     "phase": "Phase 1",
-    "detail": "Huit équipes, sept journées le dimanche matin. Chaque équipe rencontre les sept autres une fois : quatre réceptions au Gymnase de La Montagne pour le MBC, trois déplacements."
+    "detail": "Huit équipes engagées, sept en lice depuis le forfait général des Aiglons d’Orient. Sept journées le dimanche matin : le MBC en joue six, quatre réceptions au Gymnase de La Montagne et deux déplacements."
   },
   "poule": {
     "nom": "Poule A",
     "equipes": [
       {
-        "nom": "Aiglons d'Orient",
-        "court": "Aiglons d'Orient",
+        "nom": "Aiglons d’Orient",
+        "court": "Aiglons d’Orient",
         "sigle": "AO",
         "logo": null,
-        "ville": "Saint-Denis"
+        "ville": "Saint-Denis",
+        "forfait": { "portee": "général", "le": "2026-09-30" }
       },
       {
         "nom": "Basket Club Dionysien 2",
@@ -181,14 +191,16 @@
       "heure": "10:30",
       "duree": 90,
       "domicile": false,
-      "adversaire": "Aiglons d'Orient",
-      "adversaireCourt": "Aiglons d'Orient",
+      "adversaire": "Aiglons d’Orient",
+      "adversaireCourt": "Aiglons d’Orient",
       "sigle": "AO",
       "logo": null,
       "ville": "Saint-Denis",
       "lieu": null,
       "entreeLibre": false,
-      "statut": "a-venir",
+      "statut": "annule",
+      "motif": "Forfait général de l’adversaire",
+      "revision": { "n": 1, "le": "2026-09-30", "motif": "Rencontre annulée : forfait général des Aiglons d’Orient" },
       "score": null
     },
     {
