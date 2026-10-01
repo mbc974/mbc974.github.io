@@ -5,7 +5,7 @@
     "phase1": "CALENDRIER SENIOR PRM NORD.pdf, édition du 25/08/2026 à 21:21:42 (archivé : assets/documents/calendrier-prm-nord-2026-2027.pdf). L'équipe nommée en premier reçoit (art. 10 du règlement).",
     "saison": "Calendrier général sportif 2026-2027, version V2 (LRBB), lignes « PRM D1 » et « PRM D2 » : dates de 2e phase (identiques dans les deux divisions), de phase finale (Division 1 seulement) et du Trophée Coupe de France (TRCF).",
     "format": "Règlement sportif particulier PRM 2026/2027 (assets/documents/reglement-sportif-prm-2026-2027.pdf) : art. 3 (phases ; Division 1 = 4 premiers de chaque poule, Division 2 = 5e à 8e) et art. 4 (horaire officiel : vendredi 20h30).",
-    "scores": "J1 du 11/09/2026 : 73-52, résultat communiqué par le club le 13/09/2026. J2 : défaite 57-68 chez le Basket Club Dionysien 3, relevée le 19/09/2026 sur la feuille de match officielle et le résumé e-Marque signés de la rencontre n° 7 (quarts-temps 22-14, 14-13, 14-19, 18-11). À CONTRÔLER : ces deux documents datent la rencontre du 17/09/2026, alors que le calendrier de la Ligue du 25/08/2026 la place le 18/09. La date publiée reste celle du calendrier, dont dépendent le slug, l'ancre du tableau et l'appariement de set-calendrier-prm.py ; si la rencontre a bien été avancée d'un jour, il faut une dérogation de DATE, que la chaîne sait porter depuis le 24/09/2026 (voir la J3). L'édition du 25/08 du PDF de la Ligue ne porte encore aucun score.",
+    "scores": "J1 du 11/09/2026 : 73-52, résultat communiqué par le club le 13/09/2026. J2 : défaite 57-68 chez le Basket Club Dionysien 3, relevée le 19/09/2026 sur la feuille de match officielle et le résumé e-Marque signés de la rencontre n° 7 (quarts-temps 22-14, 14-13, 14-19, 18-11). À CONTRÔLER : ces deux documents datent la rencontre du 17/09/2026, alors que le calendrier de la Ligue du 25/08/2026 la place le 18/09. La date publiée reste celle du calendrier, dont dépendent le slug, l'ancre du tableau et l'appariement de set-calendrier-prm.py ; si la rencontre a bien été avancée d'un jour, il faut une dérogation de DATE, que la chaîne sait porter depuis le 24/09/2026 (voir la J3). J3 : défaite 60-76 face au Saint-Benoît Basket Club, au Gymnase de La Montagne, relevée le 01/10/2026 sur le résumé e-Marque de la rencontre n° 10 (PRM poule A ; mi-temps 29-40, seconde période 31-36 ; plus grand écart : 3 points pour le MBC, 27 pour Saint-Benoît). Le résumé date bien la rencontre du mercredi 30/09/2026, ce qui confirme la dérogation de date. À CONTRÔLER : il porte un coup d'envoi à 20h45, quand le site publie l'horaire officiel de 20h30 (art. 4), retenu faute d'information ; si le club confirme 20h45, corriger « heure » ET ajouter « heure » à la dérogation. L'édition du 25/08 du PDF de la Ligue ne porte encore aucun score.",
     "derogations": "J5 du 23/10/2026 contre Sainte-Rose. Rencontre inversée : le club (Alexandre) a communiqué le 14/09/2026 qu'elle se jouera au Gymnase de La Montagne. Le PDF de la Ligue du 25/08/2026 la place à Sainte-Rose. Voir le champ « derogation » de la rencontre. J3 contre Saint-Benoît. Rencontre avancée : le club (Alexandre) a communiqué le 24/09/2026 qu'elle se jouera le mercredi 30/09/2026 au Gymnase de La Montagne, au lieu du vendredi 02/10/2026 du PDF du 25/08/2026. Le coup d'envoi n'a pas été précisé : l'horaire officiel de 20h30 (art. 4) est conservé, à corriger dans « heure » ET en ajoutant « heure » à la dérogation s'il diffère. Le slug garde « 2-octobre » : c'est l'URL déjà publiée.",
     "coupe": "Tours désignés d'après la légende du calendrier général : le 29/11/2026 est en jaune (« Finales régionales »), le 12/12/2026 en vert (« Finales zone »). La case TRCF du vendredi 04/09/2026, antérieure à la J1, n'est pas reprise : rien ne dit si le MBC l'a disputée."
   },
@@ -149,14 +149,17 @@
       "lieu": "gymnase",
       "entreeLibre": true,
       "affiche": null,
-      "statut": "a-venir",
-      "score": null,
+      "statut": "joue",
+      "score": {
+        "mbc": 60,
+        "adverse": 76
+      },
       "benevoles": [
         "Responsable de salle",
         "Chrono",
         "eMarque"
       ],
-      "intro": "Troisième journée du championnat et deuxième rencontre à domicile, au Gymnase de La Montagne. Entrée libre. Le calendrier de la Ligue la plaçait le vendredi 2 octobre : la rencontre a été avancée au mercredi 30 septembre."
+      "intro": "Troisième journée, avancée du vendredi 2 octobre au mercredi 30 septembre, au Gymnase de La Montagne : le MBC s'incline 60 à 76 face au Saint-Benoît Basket Club. Mené de onze points à la pause (29-40), le club perd aussi la seconde période (31-36) contre une équipe qui a compté jusqu'à 27 points d'avance. David Nugent est le meilleur marqueur du MBC avec 15 points."
     },
     {
       "slug": "mbc-mtg-basketball-9-octobre-2026",
