@@ -1,0 +1,5 @@
+{
+  "name": "mbc974-motion-preview",
+  "private": true,
+  "scripts": { "dev": "node .claude/motion-preview.mjs" }
+}
