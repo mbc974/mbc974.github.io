@@ -1940,9 +1940,26 @@ MBC.dateLongue = function (d, avecAnnee) {
     nb.textContent = v.toFixed(2).replace('.', ',');
   }
 
-  function versLaValeur(depart, arrivee, libelleFinal) {
+  /* V198 : « 3 × » et sa phrase ne s'affichent qu'une fois 31,67 posé ; « 3 × » disparaît dès
+     qu'on quitte ce mode. Avant, il s'ouvrait au clic, AVANT que le chiffre
+     ne roule — et requestAnimationFrame ne tourne pas dans un onglet en
+     arrière-plan ni dans certains rendus : la page restait alors figée sur
+     « 3 × 95 € », soit 285 €. Le minuteur de secours pose la valeur finale
+     même si aucune image n'est jamais peinte. */
+  var secours = null;
+  function atterrir(libelleFinal, mode) {
     if (anim) { cancelAnimationFrame(anim); anim = null; }
-    if (!doux || depart === arrivee) { nb.textContent = libelleFinal; return; }
+    if (secours) { clearTimeout(secours); secours = null; }
+    nb.textContent = libelleFinal;
+    sub.textContent = VUES[mode].sous;
+    if (mult) mult.hidden = (mode !== '3');
+  }
+
+  function versLaValeur(depart, arrivee, libelleFinal, mode) {
+    if (anim) { cancelAnimationFrame(anim); anim = null; }
+    if (secours) { clearTimeout(secours); secours = null; }
+    if (mult) mult.hidden = true;
+    if (!doux || depart === arrivee || document.hidden) { atterrir(libelleFinal, mode); return; }
     var duree = 420, t0 = null;
     function pas(t) {
       if (t0 === null) t0 = t;
@@ -1951,9 +1968,10 @@ MBC.dateLongue = function (d, avecAnnee) {
       var e = 1 - Math.pow(1 - p, 3);
       ecrire(depart + (arrivee - depart) * e);
       if (p < 1) { anim = requestAnimationFrame(pas); }
-      else { anim = null; nb.textContent = libelleFinal; }
+      else { atterrir(libelleFinal, mode); }
     }
     anim = requestAnimationFrame(pas);
+    secours = setTimeout(function () { atterrir(libelleFinal, mode); }, duree + 150);
   }
 
   var courant = '1';
@@ -1974,9 +1992,7 @@ MBC.dateLongue = function (d, avecAnnee) {
       if (on && deplacerFocus) b.focus();
     });
 
-    versLaValeur(avant, vue.valeur, vue.libelle);
-    sub.textContent = vue.sous;
-    if (mult) mult.hidden = (mode !== '3');
+    versLaValeur(avant, vue.valeur, vue.libelle, mode);
     if (ech) ech.hidden = (mode !== '3');
     if (tot) tot.hidden = (mode !== '3');
     if (dit) dit.textContent = vue.dit;

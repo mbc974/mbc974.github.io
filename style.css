@@ -14057,3 +14057,18 @@ html:has(.ccb) .gmatch{--pin-bas:max(calc(var(--ccb-h,206px) + 16px),calc(148px 
   .proof-card:hover .proof-card__ph img{transform:none}
   .com__line:hover{transform:none}
 }
+
+/* ===========================================================================
+   V198 — Paiement en 3 fois : plus jamais « 3 × 95 € »
+   ---------------------------------------------------------------------------
+   Le « 3 × » et la phrase « par échéance, soit 95 € au total » étaient écrits
+   en toutes lettres dans le HTML, juste à côté de « 95 € réglés en une fois ».
+   Masqués à l'écran, ils restaient dans le TEXTE de la page : celui que lisent
+   Google, les aperçus, le mode lecture et le copier-coller, qui obtenaient
+   « 3 × 95 € réglés en une fois ». Ils sont désormais dessinés ici, en contenu
+   généré : visibles quand le mode 3 fois est actif, absents du texte. Les
+   lecteurs d'écran n'y perdent rien : ces blocs sont aria-hidden, et la phrase
+   complète passe par #kcDit / #payDit (aria-live).
+   =========================================================================== */
+.kc__mult > span::before,.pay__mult::before{content:"3\00a0\00d7"}
+.kc__per--duo > span[data-t]::before{content:attr(data-t)}

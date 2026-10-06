@@ -7162,3 +7162,5 @@ html:has(.ccb) .gmatch{--pin-bas:max(calc(var(--ccb-h,206px) + 16px),calc(148px 
   .proof-card:hover .proof-card__ph img{transform:none}
   .com__line:hover{transform:none}
 }
+.kc__mult > span::before,.pay__mult::before{content:"3\00a0\00d7"}
+.kc__per--duo > span[data-t]::before{content:attr(data-t)}
