@@ -47,6 +47,7 @@ textarea{min-height:76px;resize:vertical}
 .etat{font-size:12px;padding:1px 6px;border-radius:4px;background:var(--fond);margin-left:6px}
 .refus{background:#FDE7E7;color:var(--erreur);padding:14px;border-radius:10px}
 .charge{color:var(--gris);padding:24px 0;text-align:center}
+.secondaire{font:inherit;font-size:15px;min-height:48px;padding:10px 16px;border-radius:10px;border:2px solid var(--bleu);background:#fff;color:var(--bleu);cursor:pointer}
 </style></head>
 <body><div class="page">
 <header><h1>🏀 MBC · Saisie du bureau</h1><p id="qui"></p></header>
@@ -132,6 +133,9 @@ textarea{min-height:76px;resize:vertical}
   <h2>Mes derniers enregistrements</h2>
   <p class="sous">Enregistrements faits depuis CET appareil. Vous pouvez en annuler un tant que personne n'a modifié la ligne depuis. Chaque annulation est vérifiée et notée dans le journal.</p>
   <div id="liste-recents"></div>
+  <h2 style="margin-top:24px">Ouvrir la saisie sur un autre appareil</h2>
+  <p class="sous">Envoyez le lien d'accès à votre téléphone ou à un membre du bureau. Ce lien ouvre la saisie : ne l'envoyez qu'au bureau.</p>
+  <button type="button" id="partager" class="secondaire">📲 Envoyer le lien d'accès</button>
 </section>
 </main>
 </div>
@@ -356,10 +360,22 @@ function demarrer() {
   recharger();   // « Mes derniers enregistrements » de cet appareil
 }
 (function () {
-  if (!LIEN.k) { $('#charge').hidden = true; var r = $('#refus'); r.hidden = false; r.textContent = 'Lien incomplet : il manque la clé. Ouvrez le lien complet envoyé par le bureau (il se termine par #k=…).'; return; }
-  appel('initial', [{ k: LIEN.k, env: LIEN.env || '', action: LIEN.action || '', cat: LIEN.cat || '', sujet: LIEN.sujet || '', id: LIEN.id || '' }])
-    .then(function (d) { D = d; }, function (e) { D = { erreurFatale: e.message }; })
+  // La clé d'accès est mémorisée sur l'appareil à la première ouverture du lien complet,
+  // puis retirée de la barre d'adresse : les boutons de l'accueil (sans clé) suffisent ensuite.
+  var cle = LIEN.k || '';
+  try { if (cle) localStorage.setItem('mbc_cle', cle); else cle = localStorage.getItem('mbc_cle') || ''; } catch (e) { /* stockage indisponible */ }
+  if (LIEN.k && history.replaceState) history.replaceState(null, '', location.pathname + location.hash.replace(/(^#|&)k=[^&]*/, '$1').replace(/^#&/, '#').replace(/^#$/, ''));
+  if (!cle) { $('#charge').hidden = true; var r = $('#refus'); r.hidden = false; r.textContent = 'Première utilisation sur cet appareil : ouvrez une fois le lien d’accès envoyé par le bureau (il commence par mbc974.com/bureau/#k=). Ensuite, les boutons de l’accueil du classeur suffisent.'; return; }
+  appel('initial', [{ k: cle, env: LIEN.env || '', action: LIEN.action || '', cat: LIEN.cat || '', sujet: LIEN.sujet || '', id: LIEN.id || '' }])
+    .then(function (d) { D = d; if (/Lien invalide/.test(D.refus || '')) { try { localStorage.removeItem('mbc_cle'); } catch (e) { /* rien */ } } }, function (e) { D = { erreurFatale: e.message }; })
     .then(function () { $('#charge').hidden = true; demarrer(); });
 })();
+/** Envoie le lien d'accès complet vers un autre appareil (partage du téléphone, sinon copie). */
+document.getElementById('partager').onclick = function () {
+  var l = location.origin + location.pathname + '#k=' + encodeURIComponent(D.k || '');
+  if (navigator.share) { navigator.share({ title: 'MBC · Saisie du bureau', url: l }).catch(function () { /* annulé */ }); return; }
+  (navigator.clipboard ? navigator.clipboard.writeText(l) : Promise.reject()).then(function () { retour(true, '📋 Lien d’accès copié : collez-le dans un message à vous-même ou à un membre du bureau.'); },
+    function () { window.prompt('Copiez ce lien d’accès :', l); });
+};
 </script>
 </body></html>
