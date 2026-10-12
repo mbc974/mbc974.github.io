@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<!-- Page interne du bureau du club : hors moteurs de recherche, hors sitemap, inutile sans la clé du lien.
+     Générée depuis l'appli Google « MBC · Saisie du bureau » (Page.html) — modifier l'appli, puis régénérer. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>MBC · Saisie du bureau</title>
+<link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+<style>
+:root{--encre:#0B1F33;--orange:#FF7A00;--gris:#566273;--ligne:#D5DAE0;--fond:#F6F7F9;--erreur:#A11B1B;--ok:#14532D;--bleu:#1A4C9C}
+*{box-sizing:border-box}
+body{font:16px/1.5 Arial,sans-serif;color:var(--encre);margin:0;background:#fff}
+.page{max-width:640px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--encre);color:#fff;padding:14px 16px;margin:0 -16px 12px}
+header h1{font-size:20px;margin:0}
+header p{margin:4px 0 0;font-size:13px;color:#C9D3DE}
+.test{background:#FFE08A;color:#4A3300;font-weight:bold;padding:8px 12px;border-radius:8px;margin-bottom:12px;font-size:14px}
+nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+nav button{font:inherit;font-size:14px;padding:10px 6px;border:2px solid var(--ligne);background:#fff;border-radius:10px;cursor:pointer;color:var(--encre);min-height:48px}
+nav button[aria-pressed=true]{border-color:var(--orange);background:#FFF1E0;font-weight:bold}
+h2{font-size:18px;margin:6px 0 2px}
+.sous{color:var(--gris);font-size:14px;margin:0 0 8px}
+label{display:block;font-weight:bold;margin:14px 0 4px}
+.aide{font-weight:normal;color:var(--gris);font-size:13px;display:block}
+input,select,textarea{font:inherit;width:100%;padding:10px;border:2px solid var(--ligne);border-radius:8px;background:#fff;color:var(--encre);min-height:48px}
+textarea{min-height:76px;resize:vertical}
+:focus-visible{outline:3px solid var(--bleu);outline-offset:2px}
+[aria-invalid=true]{border-color:var(--erreur)}
+.err{color:var(--erreur);font-size:14px;margin-top:4px}
+.err:empty{display:none}
+.err::before{content:"⚠ "}
+.principal{margin-top:18px;width:100%;min-height:52px;font:bold 16px Arial,sans-serif;background:var(--orange);color:var(--encre);border:0;border-radius:10px;cursor:pointer}
+.principal[disabled]{opacity:.6;cursor:wait}
+.info{background:var(--fond);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:14px}
+.attention{color:#7A4100;background:#FFF1E0;border-radius:8px;padding:8px 10px;font-size:14px;margin-top:6px}
+.attention:empty{display:none}
+.boite{border-radius:10px;padding:12px;margin:0 0 14px;font-size:15px}
+.boite.ok{background:#E7F6EC;color:var(--ok);border:2px solid #9AD3AE}
+.boite.ko{background:#FDE7E7;color:var(--erreur);border:2px solid #F0AAAA}
+.boite .num{font-size:12px;color:var(--gris);display:block;margin-top:4px}
+.boite a,.boite button{display:inline-block;font:inherit;font-size:14px;margin:10px 8px 0 0;padding:8px 12px;min-height:44px;border-radius:8px;border:2px solid currentColor;background:#fff;color:inherit;cursor:pointer;text-decoration:none}
+.vue{display:none}.vue.vu{display:block}
+.recent{border-bottom:1px solid var(--ligne);padding:10px 0;font-size:14px}
+.recent b{display:block}
+.recent button{font:inherit;font-size:14px;margin-top:6px;padding:6px 10px;min-height:40px;border-radius:8px;border:2px solid var(--bleu);background:#fff;color:var(--bleu);cursor:pointer}
+.etat{font-size:12px;padding:1px 6px;border-radius:4px;background:var(--fond);margin-left:6px}
+.refus{background:#FDE7E7;color:var(--erreur);padding:14px;border-radius:10px}
+.charge{color:var(--gris);padding:24px 0;text-align:center}
+</style></head>
+<body><div class="page">
+<header><h1>🏀 MBC · Saisie du bureau</h1><p id="qui"></p></header>
+<div id="test" class="test" hidden></div>
+<div id="refus" class="refus" hidden></div>
+<p id="charge" class="charge">Chargement du classeur…</p>
+<main id="app" hidden>
+<nav aria-label="Choisir une action">
+  <button type="button" data-vue="tache">➕ Ajouter une tâche</button>
+  <button type="button" data-vue="maj">✏️ Mettre à jour une tâche</button>
+  <button type="button" data-vue="coach">🧑‍🏫 Affecter un coach</button>
+  <button type="button" data-vue="benevole">🙋 Affecter un bénévole</button>
+  <button type="button" data-vue="recents" style="grid-column:1/-1">🧾 Mes derniers enregistrements</button>
+</nav>
+<label for="prenom" style="margin-top:0">Votre prénom <span class="aide">Noté dans le journal avec chaque enregistrement. Mémorisé sur cet appareil.</span></label>
+<input id="prenom" autocomplete="given-name" aria-describedby="e-prenom" placeholder="Exemple : Alexandre">
+<div class="err" id="e-prenom"></div>
+<div id="retour" role="status" aria-live="polite"></div>
+
+<form id="f-tache" class="vue" data-vue="tache" novalidate>
+  <h2>Ajouter une tâche</h2><p class="sous">Rien n'est écrit tant que vous n'avez pas appuyé sur le bouton orange.</p>
+  <label for="t-sujet">Que faut-il faire ? <span class="aide">Une phrase courte. Exemple : « Réserver le gymnase pour le plateau du 14/11 ».</span></label>
+  <input id="t-sujet" name="sujet" autocomplete="off" aria-describedby="e-tache-sujet"><div class="err" id="e-tache-sujet"></div>
+  <label for="t-categorie">Rubrique</label>
+  <select id="t-categorie" name="categorie" aria-describedby="e-tache-categorie"></select><div class="err" id="e-tache-categorie"></div>
+  <label for="t-resp">Qui s'en occupe ? <span class="aide">À choisir à chaque fois : rien n'est repris de la tâche précédente.</span></label>
+  <select id="t-resp" name="resp" aria-describedby="e-tache-resp"></select><div class="err" id="e-tache-resp"></div>
+  <label for="t-echeance">Pour quand ? <span class="aide">Proposé : dans 7 jours. Videz le champ s'il n'y a pas de date.</span></label>
+  <input id="t-echeance" name="echeance" type="date" aria-describedby="e-tache-echeance"><div class="err" id="e-tache-echeance"></div>
+  <label for="t-priorite">Importance</label>
+  <select id="t-priorite" name="priorite"></select>
+  <label for="t-action">Première étape <span class="aide">Facultatif. Exemple : « Appeler la mairie lundi matin ».</span></label>
+  <textarea id="t-action" name="action"></textarea>
+  <div class="err" id="e-tache-general"></div>
+  <button class="principal" type="submit">Enregistrer la tâche</button>
+</form>
+
+<form id="f-maj" class="vue" data-vue="maj" novalidate>
+  <h2>Mettre à jour une tâche</h2><p class="sous">Seules les tâches en cours sont proposées.</p>
+  <label for="m-filtre">Rechercher <span class="aide">Tapez un mot du sujet ou un prénom.</span></label>
+  <input id="m-filtre" type="search" autocomplete="off">
+  <label for="m-tache">Tâche</label>
+  <select id="m-tache" aria-describedby="e-maj-tache"></select><div class="err" id="e-maj-tache"></div>
+  <label for="m-statut">Où en est-on ? <span class="aide">« Terminé » la retire de l'accueil.</span></label>
+  <select id="m-statut" name="statut" aria-describedby="e-maj-statut"></select><div class="err" id="e-maj-statut"></div>
+  <label for="m-action">Prochaine étape</label>
+  <textarea id="m-action" name="action"></textarea>
+  <label for="m-echeance">Échéance <span class="aide">Videz le champ pour retirer la date.</span></label>
+  <input id="m-echeance" name="echeance" type="date" aria-describedby="e-maj-echeance"><div class="err" id="e-maj-echeance"></div>
+  <div class="err" id="e-maj-general"></div>
+  <button class="principal" type="submit">Enregistrer la mise à jour</button>
+</form>
+
+<form id="f-coach" class="vue" data-vue="coach" novalidate>
+  <h2>Affecter un coach à une séance</h2><p class="sous">Séances des 3 prochaines semaines.</p>
+  <label for="c-choix">Séance</label>
+  <select id="c-choix" aria-describedby="e-coach-choix"></select><div class="err" id="e-coach-choix"></div>
+  <div class="info" id="c-info">Choisissez une séance pour voir qui est déjà affecté et qui s'est déclaré disponible.</div>
+  <label for="c-poste">Poste <span class="aide">Le premier poste libre est proposé.</span></label>
+  <select id="c-poste" aria-describedby="e-coach-poste"></select><div class="err" id="e-coach-poste"></div>
+  <div class="attention" id="c-remplace"></div>
+  <label for="c-nom">Encadrant</label>
+  <select id="c-nom" aria-describedby="e-coach-nom"></select><div class="err" id="e-coach-nom"></div>
+  <div class="err" id="e-coach-general"></div>
+  <button class="principal" type="submit">Affecter ce coach</button>
+</form>
+
+<form id="f-benevole" class="vue" data-vue="benevole" novalidate>
+  <h2>Affecter un bénévole à un match</h2><p class="sous">Matchs et événements à domicile à venir.</p>
+  <label for="b-choix">Match</label>
+  <select id="b-choix" aria-describedby="e-benevole-choix"></select><div class="err" id="e-benevole-choix"></div>
+  <div class="info" id="b-info">Choisissez un match pour voir les postes et les volontaires.</div>
+  <label for="b-poste">Poste <span class="aide">⏱ Chrono : le temps de jeu · 💻 e-Marque : la feuille de match sur ordinateur · 🏟 Responsable de salle : accueil et sécurité.</span></label>
+  <select id="b-poste" aria-describedby="e-benevole-poste"></select><div class="err" id="e-benevole-poste"></div>
+  <div class="attention" id="b-remplace"></div>
+  <label for="b-nom">Bénévole <span class="aide">Les volontaires déclarés pour ce poste sont en tête de liste (★).</span></label>
+  <select id="b-nom" aria-describedby="e-benevole-nom"></select><div class="err" id="e-benevole-nom"></div>
+  <div class="err" id="e-benevole-general"></div>
+  <button class="principal" type="submit">Affecter ce bénévole</button>
+</form>
+
+<section class="vue" data-vue="recents">
+  <h2>Mes derniers enregistrements</h2>
+  <p class="sous">Enregistrements faits depuis CET appareil. Vous pouvez en annuler un tant que personne n'a modifié la ligne depuis. Chaque annulation est vérifiée et notée dans le journal.</p>
+  <div id="liste-recents"></div>
+</section>
+</main>
+</div>
+<script>
+var D = {};
+var API = 'https://script.google.com/macros/s/AKfycby0B2iIA2HdSQBrG9d03BS1rlXOy22arZIfFeaUpgxNTzsDx6fq-cRIVBwM0eD_uvSCxQ/exec';
+/** Équivalent de google.script.run : appel de l'API de l'appli, sans cookies (évite le souci des comptes Google multiples). */
+function appel(fn, args) {
+  return fetch(API, { method: 'POST', credentials: 'omit', redirect: 'follow', cache: 'no-store',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn: fn, args: args }) })
+    .then(function (r) { if (!r.ok) throw new Error('le serveur a répondu ' + r.status + '.'); return r.json(); })
+    .then(function (x) { if (!x.ok) throw new Error(x.erreur); return x.r; }, function (e) { throw new Error(/serveur a répondu/.test(e.message) ? e.message : 'connexion impossible (réseau ?).'); });
+}
+var google = { script: { get run() {
+  var ok = function () {}, ko = function () {}, o = {
+    withSuccessHandler: function (f) { ok = f; return o; }, withFailureHandler: function (f) { ko = f; return o; } };
+  ['donnees', 'ajouterTache', 'majTache', 'affecter', 'annuler'].forEach(function (fn) {
+    o[fn] = function () { appel(fn, Array.prototype.slice.call(arguments)).then(function (r) { ok(r); }, function (e) { ko(e); }); };
+  });
+  return o;
+} } };
+/** Clé et options lues après le # : le navigateur ne les envoie jamais au site. */
+var LIEN = (function () { var p = {}; location.hash.replace(/^#/, '').split('&').forEach(function (x) { var i = x.indexOf('='); if (i > 0) p[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1)); }); return p; })();
+var $ = function (s) { return document.querySelector(s); };
+var VUE = 'tache';
+function nouvelAppareil() { var a = new Uint8Array(12); (window.crypto || window.msCrypto).getRandomValues(a); return Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+var APPAREIL = (function () { try { var x = localStorage.getItem('mbc_appareil'); if (!x) { x = nouvelAppareil(); localStorage.setItem('mbc_appareil', x); } return x; } catch (e) { return nouvelAppareil(); } })();
+function ctx() { return { k: D.k, env: D.env, appareil: APPAREIL, prenom: (document.getElementById('prenom').value || '').trim() }; }
+/** Le prénom est demandé avant toute écriture (pour que le journal dise qui a fait quoi). */
+function exigerPrenom() {
+  var p = document.getElementById('prenom'), e = document.getElementById('e-prenom');
+  if ((p.value || '').trim().length >= 2) { e.textContent = ''; p.removeAttribute('aria-invalid'); return true; }
+  e.textContent = 'Indiquez votre prénom avant d\'enregistrer (il est noté dans le journal).'; p.setAttribute('aria-invalid', 'true'); p.focus(); window.scrollTo(0, 0); return false;
+}
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function memo(k, v) { try { var cle = 'mbc_' + APPAREIL + '_' + k; if (v === undefined) return localStorage.getItem(cle); if (v === null) localStorage.removeItem(cle); else localStorage.setItem(cle, v); } catch (e) { return null; } }
+function options(sel, liste, choisi, vide) {
+  sel.innerHTML = (vide ? '<option value="">' + esc(vide) + '</option>' : '') + liste.map(function (x) {
+    var v = typeof x === 'string' ? x : x.v, t = typeof x === 'string' ? x : x.t;
+    return '<option value="' + esc(v) + '"' + (String(v) === String(choisi) ? ' selected' : '') + '>' + esc(t) + '</option>';
+  }).join('');
+}
+function montrer(v) {
+  VUE = v;
+  document.querySelectorAll('nav button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.vue === v); });
+  document.querySelectorAll('.vue').forEach(function (f) { f.classList.toggle('vu', f.dataset.vue === v); });
+}
+function erreurs(form, e) {
+  var nom = form.dataset.vue;
+  form.querySelectorAll('.err').forEach(function (x) { x.textContent = ''; });
+  form.querySelectorAll('[aria-invalid]').forEach(function (x) { x.removeAttribute('aria-invalid'); });
+  var premier = null;
+  Object.keys(e || {}).forEach(function (k) {
+    var box = document.getElementById('e-' + nom + '-' + k) || document.getElementById('e-' + nom + '-general');
+    box.textContent = e[k];
+    var champ = form.querySelector('[aria-describedby="' + box.id + '"]');
+    if (champ) { champ.setAttribute('aria-invalid', 'true'); premier = premier || champ; }
+  });
+  if (premier) premier.focus();
+}
+function retour(ok, html, boutons) {
+  var r = $('#retour');
+  r.innerHTML = '<div></div>'; r.firstChild.className = ok ? 'boite ok' : 'boite ko'; r.firstChild.innerHTML = html;
+  (boutons || []).forEach(function (b) { r.firstChild.appendChild(b); });
+  window.scrollTo(0, 0);
+}
+function lien(url, texte) { var a = document.createElement('a'); a.href = url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = texte; return a; }
+function boutonAnnuler(id) {
+  var b = document.createElement('button'); b.type = 'button'; b.textContent = 'Annuler cet enregistrement';
+  b.onclick = function () { annulerOp(id, b); };
+  return b;
+}
+function occupe(form, oui) { var b = form.querySelector('.principal'); b.disabled = oui; if (oui) { b.dataset.t = b.textContent; b.textContent = 'Enregistrement…'; } else if (b.dataset.t) b.textContent = b.dataset.t; }
+function echec(form) { return function (err) { occupe(form, false); erreurs(form, { general: 'Rien n\'a été enregistré : ' + (err && err.message || err) + ' Vos saisies sont conservées.' }); }; }
+function dans7() { var d = new Date(Date.now() + 7 * 864e5); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+function recharger(apres) {
+  google.script.run.withSuccessHandler(function (d) { Object.assign(D, d); remplir(); if (apres) apres(); })
+    .withFailureHandler(function (e) { retour(false, 'Les listes n\'ont pas pu être rechargées : ' + esc(e.message || e) + '. Rechargez la page.'); }).donnees(ctx());
+}
+
+function remplir() {
+  var L = D.listes;
+  options($('#t-categorie'), L['CATÉGORIE'] || [], $('#t-categorie').value || memo('t-categorie') || '', 'Choisir…');
+  options($('#t-resp'), L['RESP.'] || [], $('#t-resp').value || '', 'Choisir…');
+  options($('#t-priorite'), L['PRIORITÉ'] || ['🔵 Normale'], $('#t-priorite').value || '🔵 Normale');
+  if (!$('#t-echeance').value) $('#t-echeance').value = memo('t-echeance') || dans7();
+  ['t-sujet', 't-action'].forEach(function (id) { if (!$('#' + id).value) $('#' + id).value = memo(id) || ''; });
+  options($('#m-statut'), L['STATUT'] || [], $('#m-statut').value || '', 'Choisir…');
+  filtrerTaches();
+  var s = D.seances.map(function (x) { return { v: x.id, t: x.libelle + ' — ' + x.statut.replace(/^[^A-Za-zÀ-ÿ0-9]+/, '').toLowerCase() }; });
+  options($('#c-choix'), s, $('#c-choix').value, D.seances.length ? 'Choisir une séance…' : 'Aucune séance dans les 3 semaines');
+  var m = D.matchs.map(function (x) { return { v: x.id, t: x.libelle + ' — ' + x.statut.replace(/^[^A-Za-zÀ-ÿ0-9]+/, '').toLowerCase() }; });
+  options($('#b-choix'), m, $('#b-choix').value, D.matchs.length ? 'Choisir un match…' : 'Aucun match à domicile à venir');
+  if (!$('#c-poste').options.length) options($('#c-poste'), ['COACH PRINCIPAL', 'ASSISTANT 1', 'ASSISTANT 2'], '');
+  if (!$('#b-poste').options.length) options($('#b-poste'), ['⏱ CHRONO', '💻 E-MARQUE', '🏟 RESP. SALLE'], '');
+  majCoach(false); majBenevole(false); afficherRecents();
+}
+function cleTache(t) { return t.cat + '|' + t.sujet; }
+function filtrerTaches() {
+  var q = ($('#m-filtre').value || '').toLowerCase(), choisi = $('#m-tache').value;
+  var l = D.taches.filter(function (t) { return !q || (t.sujet + ' ' + t.resp).toLowerCase().indexOf(q) >= 0; });
+  options($('#m-tache'), l.map(function (t) { return { v: cleTache(t), t: (t.sujet.length > 70 ? t.sujet.slice(0, 69) + '…' : t.sujet) + ' — ' + (t.resp || '?') + ' · ' + t.instantane.statut }; }), choisi,
+    l.length ? 'Choisir une tâche… (' + l.length + ')' : 'Aucune tâche ne correspond');
+}
+function tacheChoisie() { var v = $('#m-tache').value; return D.taches.filter(function (t) { return cleTache(t) === v; })[0]; }
+function majTacheChoisie() {
+  var t = tacheChoisie(); if (!t) return;
+  options($('#m-statut'), D.listes['STATUT'] || [], t.instantane.statut, 'Choisir…');
+  $('#m-action').value = t.instantane.action; $('#m-echeance').value = t.instantane.echeance;
+  if (t.ambigu) erreurs($('#f-maj'), { tache: 'Deux tâches portent exactement ce titre : modifiez-la directement dans le classeur.' });
+}
+function parId(liste, id) { return liste.filter(function (x) { return x.id === id; })[0]; }
+function majCoach(proposer) {
+  var s = parId(D.seances, $('#c-choix').value), poste = $('#c-poste');
+  options($('#c-nom'), D.listes.encadrants || [], $('#c-nom').value, 'Choisir…');
+  if (!s) { $('#c-info').textContent = 'Choisissez une séance pour voir qui est déjà affecté et qui s\'est déclaré disponible.'; $('#c-remplace').textContent = ''; return; }
+  var p = s.postes;
+  if (proposer) { var libre = Object.keys(p).filter(function (k) { return !p[k]; })[0]; if (libre) poste.value = libre; }
+  $('#c-info').innerHTML = '<b>État :</b> ' + esc(s.statut) + '<br>' + Object.keys(p).map(function (k) { return esc(k.toLowerCase()) + ' : ' + (esc(p[k]) || '<i>à pourvoir</i>'); }).join('<br>') +
+    '<br><b>Disponibles déclarés :</b> ' + esc(s.dispos || '—');
+  $('#c-remplace').textContent = p[poste.value] ? 'Ce poste est occupé par ' + p[poste.value] + ' : il sera remplacé.' : '';
+}
+function majBenevole(proposer) {
+  var m = parId(D.matchs, $('#b-choix').value), poste = $('#b-poste');
+  var viv = D.listes.vivier || [];
+  if (!m) { $('#b-info').textContent = 'Choisissez un match pour voir les postes et les volontaires.'; $('#b-remplace').textContent = ''; options($('#b-nom'), viv, '', 'Choisir…'); return; }
+  var p = m.postes;
+  if (proposer) { var libre = Object.keys(p).filter(function (k) { return !p[k]; })[0]; if (libre) poste.value = libre; }
+  $('#b-info').innerHTML = '<b>État :</b> ' + esc(m.statut) + '<br>' + Object.keys(p).map(function (k) { return esc(k) + ' : ' + (esc(p[k]) || '<i>à pourvoir</i>'); }).join('<br>');
+  $('#b-remplace').textContent = p[poste.value] ? 'Ce poste est occupé par ' + p[poste.value] + ' : il sera remplacé.' : '';
+  var vol = String(m.volontaires[poste.value] || '').split(/[·,]/).map(function (x) { return x.replace('🎓', '').trim(); }).filter(String);
+  var tete = viv.filter(function (n) { return vol.some(function (v) { return n.indexOf(v) >= 0; }); });
+  options($('#b-nom'), tete.map(function (n) { return { v: n, t: '★ ' + n + ' (volontaire)' }; }).concat(viv.filter(function (n) { return tete.indexOf(n) < 0; })), '', 'Choisir…');
+}
+function afficherRecents() {
+  var box = $('#liste-recents');
+  if (!D.recents || !D.recents.length) { box.innerHTML = '<p class="sous">Aucun enregistrement fait avec ce compte pour le moment.</p>'; return; }
+  box.innerHTML = '';
+  D.recents.forEach(function (r) {
+    var d = document.createElement('div'); d.className = 'recent';
+    d.innerHTML = '<b>' + esc(r.action) + '<span class="etat">' + esc(r.etat) + '</span></b>' + esc(r.resume) + '<br><span class="sous">' + esc(r.quand) + ' · n° ' + esc(r.id) + '</span><br>';
+    if (r.etat === 'Enregistré') d.appendChild(boutonAnnuler(r.id));
+    box.appendChild(d);
+  });
+}
+function annulerOp(id, bouton) {
+  if (!exigerPrenom()) return;
+  bouton.disabled = true; bouton.textContent = 'Vérification…';
+  google.script.run.withSuccessHandler(function (r) {
+    retour(r.ok, (r.ok ? '↩️ ' : '⛔ Annulation refusée. ') + esc(r.message));
+    recharger();
+  }).withFailureHandler(function (e) { bouton.disabled = false; bouton.textContent = 'Annuler cet enregistrement'; retour(false, 'L\'annulation n\'a pas pu être faite : ' + esc(e.message || e)); }).annuler(ctx(), id);
+}
+function succes(r) {
+  retour(true, '✅ <b>' + esc(r.message) + '</b><span class="num">N° d\'opération ' + esc(r.id) + '</span>', [lien(r.lien, 'Voir dans le classeur'), boutonAnnuler(r.id)]);
+}
+
+document.querySelectorAll('nav button').forEach(function (b) { b.onclick = function () { $('#retour').innerHTML = ''; montrer(b.dataset.vue); }; });
+['t-sujet', 't-action', 't-echeance', 't-categorie'].forEach(function (id) { $('#' + id).addEventListener('input', function () { memo(id, this.value); }); });
+$('#m-filtre').addEventListener('input', filtrerTaches);
+$('#m-tache').addEventListener('change', majTacheChoisie);
+$('#c-choix').addEventListener('change', function () { majCoach(true); });
+$('#c-poste').addEventListener('change', function () { majCoach(false); });
+$('#b-choix').addEventListener('change', function () { majBenevole(true); });
+$('#b-poste').addEventListener('change', function () { majBenevole(false); });
+
+$('#f-tache').onsubmit = function (ev) {
+  ev.preventDefault(); if (!exigerPrenom()) return; var f = this, data = Object.fromEntries(new FormData(f));
+  occupe(f, true);
+  google.script.run.withFailureHandler(echec(f)).withSuccessHandler(function (r) {
+    occupe(f, false);
+    if (!r.ok) { erreurs(f, r.erreurs); return; }
+    erreurs(f, {}); succes(r);
+    ['t-sujet', 't-action', 't-echeance', 't-categorie'].forEach(function (id) { memo(id, null); });
+    $('#t-sujet').value = ''; $('#t-action').value = ''; $('#t-echeance').value = dans7(); $('#t-resp').value = ''; $('#t-priorite').value = '🔵 Normale';
+    recharger();
+  }).ajouterTache(ctx(), data);
+};
+$('#f-maj').onsubmit = function (ev) {
+  ev.preventDefault(); if (!exigerPrenom()) return; var f = this, t = tacheChoisie(), data = Object.fromEntries(new FormData(f));
+  if (!t) { erreurs(f, { tache: 'Choisissez la tâche à mettre à jour.' }); return; }
+  data.cat = t.cat; data.sujet = t.sujet; data.instantane = t.instantane;
+  occupe(f, true);
+  google.script.run.withFailureHandler(echec(f)).withSuccessHandler(function (r) {
+    occupe(f, false);
+    if (!r.ok) {
+      erreurs(f, r.erreurs);
+      if (r.actuel) { t.instantane = r.actuel; options($('#m-statut'), D.listes['STATUT'] || [], r.actuel.statut, 'Choisir…'); $('#m-action').value = r.actuel.action; $('#m-echeance').value = r.actuel.echeance; }
+      return;
+    }
+    erreurs(f, {}); succes(r); recharger(function () { $('#m-tache').value = cleTache(t); majTacheChoisie(); });
+  }).majTache(ctx(), data);
+};
+function soumettreAffectation(type, f) {
+  if (!exigerPrenom()) return;
+  var p = type === 'coach' ? 'c' : 'b', liste = type === 'coach' ? D.seances : D.matchs;
+  var id = $('#' + p + '-choix').value, poste = $('#' + p + '-poste').value, nom = $('#' + p + '-nom').value, el = parId(liste, id);
+  occupe(f, true);
+  google.script.run.withFailureHandler(echec(f)).withSuccessHandler(function (r) {
+    occupe(f, false);
+    if (!r.ok) { erreurs(f, r.erreurs); if (r.conflit) recharger(function () { $('#' + p + '-choix').value = id; type === 'coach' ? majCoach(false) : majBenevole(false); }); return; }
+    erreurs(f, {}); succes(r);
+    recharger(function () { $('#' + p + '-choix').value = id; type === 'coach' ? majCoach(false) : majBenevole(false); });
+  }).affecter(ctx(), type, id, poste, nom, el ? el.postes[poste] : '');
+}
+$('#f-coach').onsubmit = function (ev) { ev.preventDefault(); soumettreAffectation('coach', this); };
+$('#f-benevole').onsubmit = function (ev) { ev.preventDefault(); soumettreAffectation('benevole', this); };
+
+function demarrer() {
+  $('#qui').textContent = 'Lien du bureau · sans connexion Google · vos enregistrements sont liés à cet appareil';
+  try { $('#prenom').value = localStorage.getItem('mbc_prenom') || ''; } catch (e) { /* stockage indisponible */ }
+  $('#prenom').addEventListener('input', function () { try { localStorage.setItem('mbc_prenom', this.value.trim()); } catch (e) { /* stockage indisponible */ } });
+  if (D.test) { var b = $('#test'); b.hidden = false; b.textContent = '🧪 Mode test : vous travaillez sur « ' + D.nomClasseur + ' », pas sur le vrai classeur.'; }
+  if (D.erreurFatale || D.refus) { var r = $('#refus'); r.hidden = false; r.textContent = D.refus || ('Erreur au chargement : ' + D.erreurFatale); return; }
+  if (!D.ecriture) { var r2 = $('#refus'); r2.hidden = false; r2.textContent = 'Ce compte peut consulter le classeur mais pas le modifier : les formulaires sont désactivés. Demandez au bureau un accès en modification.'; return; }
+  $('#app').hidden = false;
+  var P = D.params || {}, v = ['tache', 'maj', 'coach', 'benevole', 'recents'].indexOf(P.action) >= 0 ? P.action : 'tache';
+  remplir(); montrer(v);
+  if (v === 'maj' && P.sujet) { $('#m-tache').value = (P.cat || '') + '|' + P.sujet; majTacheChoisie(); }
+  if (v === 'coach' && P.id) { $('#c-choix').value = P.id; majCoach(true); }
+  if (v === 'benevole' && P.id) { $('#b-choix').value = P.id; majBenevole(true); }
+  recharger();   // « Mes derniers enregistrements » de cet appareil
+}
+(function () {
+  if (!LIEN.k) { $('#charge').hidden = true; var r = $('#refus'); r.hidden = false; r.textContent = 'Lien incomplet : il manque la clé. Ouvrez le lien complet envoyé par le bureau (il se termine par #k=…).'; return; }
+  appel('initial', [{ k: LIEN.k, env: LIEN.env || '', action: LIEN.action || '', cat: LIEN.cat || '', sujet: LIEN.sujet || '', id: LIEN.id || '' }])
+    .then(function (d) { D = d; }, function (e) { D = { erreurFatale: e.message }; })
+    .then(function () { $('#charge').hidden = true; demarrer(); });
+})();
+</script>
+</body></html>
